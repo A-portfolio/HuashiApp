@@ -2,18 +2,15 @@ package net.muxi.huashiapp.common.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Scroller;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.util.DimensUtil;
@@ -59,7 +56,7 @@ public class TimeTable extends FrameLayout {
     }
 
     public void setupCourseTimeLayout(Context context) {
-        LinearLayout linearLayout = context.
+
     }
 
 

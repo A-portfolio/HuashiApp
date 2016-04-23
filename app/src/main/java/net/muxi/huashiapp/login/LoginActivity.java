@@ -1,14 +1,17 @@
 package net.muxi.huashiapp.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import net.muxi.huashiapp.MainActivity;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.ToastUtil;
@@ -72,6 +75,13 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             ToastUtil.showShort(VERIFY_FAILED);
         }
+       mBtnLogin.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent i = new Intent(LoginActivity.this, MainActivity.class);
+               startActivity(i);
+           }
+       });
 
     }
 
