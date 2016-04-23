@@ -26,6 +26,6 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'com.jakewharton:butterknife:7.0.1'
-
+    compile 'com.github.mmin18.layoutcast:library:1.+@aar'
 
 }

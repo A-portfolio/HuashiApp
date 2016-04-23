@@ -83,10 +83,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showLoginDialog() {
+        ToastUtil.showShort("登陆成功");
     }
 
     private boolean checkAccount() {
-        return false;
+        return true;
     }
 
     private boolean checkNetwork() {

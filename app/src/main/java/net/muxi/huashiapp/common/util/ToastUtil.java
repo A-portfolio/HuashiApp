@@ -2,6 +2,8 @@ package net.muxi.huashiapp.common.util;
 
 import android.widget.Toast;
 
+import net.muxi.huashiapp.App;
+
 /**
  * Created by ybao on 16/4/19.
  */

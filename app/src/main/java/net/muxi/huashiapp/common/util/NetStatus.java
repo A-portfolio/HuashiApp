@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import net.muxi.huashiapp.App;
+
 /**
  * Created by ybao on 16/4/19.
  * 获取网络状态
