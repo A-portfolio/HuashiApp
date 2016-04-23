@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="titles">
+
+        <item>课程表</item>
+        <item>学生卡</item>
+        <item>成绩查询</item>
+        <item>电费查询</item>
+        <item>校历查询</item>
+        <item>部门信息</item>
+        <item>图书馆</item>
+        <item>学而</item>
+
+    </string-array>
+
+</resources>
