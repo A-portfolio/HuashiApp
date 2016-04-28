@@ -6,15 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.MainActivity;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.ui.MainActivity;
 import net.muxi.huashiapp.common.util.NetStatus;
-import net.muxi.huashiapp.common.util.ToastUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -66,22 +64,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.btn_login)
+
     public void onClick() {
-        if (!checkNetwork()) {
-            ToastUtil.showLong(NETCONNECT_FAILED);
-        }
-        if (checkAccount()) {
-            showLoginDialog();
-        } else {
-            ToastUtil.showShort(VERIFY_FAILED);
-        }
-       mBtnLogin.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Intent i = new Intent(LoginActivity.this, MainActivity.class);
-               startActivity(i);
-           }
-       });
+
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(i);
+
+//        if (!checkNetwork()) {
+//            ToastUtil.showLong(NETCONNECT_FAILED);
+//        }
+//        if (checkAccount()) {
+//            showLoginDialog();
+//        } else {
+//            ToastUtil.showShort(VERIFY_FAILED);
+//        }
+
 
     }
 

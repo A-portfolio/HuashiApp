@@ -20,7 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".common.ui.MainActivity"/>
+        <activity android:name=".common.ui.DetailActivity"/>
+                  android:parentActivityName=".common.ui.NewsActivity"/>
     </application>
 
 </manifest>

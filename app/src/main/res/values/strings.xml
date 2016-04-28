@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">HuashiApp</string>
+    <string name="action_settings">设置</string>
+    <string name="action_news">公告</string>
+
+    <string name="news_one_title">匹诺曹</string>
+
+    <string name="news_one_desc">我个人觉得匹诺曹还是一部不错的韩剧</string>
+    <string name="news_two_title">来自星星的你</string>
+    <string name="news_two_desc">肖遥最帅帅帅帅</string>
+    <string name="news_three_title">城市猎人</string>
+    <string name="news_tree_desc">就问肖遥帅不帅</string>
+
 </resources>
