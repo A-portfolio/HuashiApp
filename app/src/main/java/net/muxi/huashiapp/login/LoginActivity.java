@@ -10,14 +10,15 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.MainActivity;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.Api;
 import net.muxi.huashiapp.common.data.MainLoginResponse;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.net.RetrofitService;
+import net.muxi.huashiapp.common.ui.MainActivity;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.schedule.ScheduleActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -98,11 +99,24 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.btn_login)
+
     public void onClick() {
         if (!checkNetwork()) {
             ToastUtil.showLong(NETCONNECT_FAILED);
         }
         checkAccount();
+
+
+//        if (!checkNetwork()) {
+//            ToastUtil.showLong(NETCONNECT_FAILED);
+//        }
+//        if (checkAccount()) {
+//            showLoginDialog();
+//        } else {
+//            ToastUtil.showShort(VERIFY_FAILED);
+//        }
+
+
     }
 
     private void updateButton() {
@@ -141,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onNext(MainLoginResponse mainLoginResponse) {
                         if (mainLoginResponse.getStatus() == 200){
-                            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this,ScheduleActivity.class);
                             startActivity(intent);
                             ToastUtil.showShort(LOGIN_SUCCESS);
                         }else ToastUtil.showLong(VERIFY_FAILED);

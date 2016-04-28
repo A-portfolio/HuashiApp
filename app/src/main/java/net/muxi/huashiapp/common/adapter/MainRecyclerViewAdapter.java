@@ -13,7 +13,7 @@ import net.muxi.huashiapp.R;
 /**
  * Created by december on 16/4/19.
  */
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class MainRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
 
 
     public static enum ITEM_TYPE {
@@ -28,11 +28,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
      */
     private String[] mTitles;
 
+    private String[] pics;
+
     private final LayoutInflater mLayoutInflater;
     private final Context mContext;
 
 
-    public RecyclerViewAdapter(Context context){
+    public MainRecyclerViewAdapter(Context context){
         mTitles = context.getResources().getStringArray(R.array.titles);
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
@@ -104,7 +106,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ImageViewHolder(View view){
             super(view);
             mTextView = (TextView) view.findViewById(R.id.text_view);
-            mImageView = (ImageView) view.findViewById(R.id.image_view);
+            mImageView = (ImageView) view.findViewById(R.id.pic);
 
         }
 

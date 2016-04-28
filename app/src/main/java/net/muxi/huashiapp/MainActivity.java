@@ -6,7 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import net.muxi.huashiapp.common.adapter.RecyclerViewAdapter;
+import net.muxi.huashiapp.common.adapter.MainRecyclerViewAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity{
 
         setSupportActionBar(mToolbar);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        mRecyclerView.setAdapter(new RecyclerViewAdapter(this));
+        mRecyclerView.setAdapter(new MainRecyclerViewAdapter(this));
 
 
     }
