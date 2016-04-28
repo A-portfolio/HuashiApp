@@ -14,6 +14,8 @@
     <dimen name="schedule_tv_course_week">18sp</dimen>
     <dimen name="schedule_tv_course_date">18sp</dimen>
     <dimen name="schedule_divider_height">4dp</dimen>
-    <dimen name="schedule_width">800dp</dimen>
-    <dimen name="schedule_height">1600dp</dimen>
+    <dimen name="schedule_content_width">490dp</dimen>
+    <dimen name="schedule_content_height">735dp</dimen>
+    <dimen name="schedule_week_day_width">70dp</dimen>
+    <dimen name="schedule_course_time_height">105dp</dimen>
 </resources>

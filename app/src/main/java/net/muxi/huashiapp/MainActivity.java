@@ -11,7 +11,7 @@ import net.muxi.huashiapp.common.adapter.RecyclerViewAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
 
     @Bind(R.id.recycler_view)

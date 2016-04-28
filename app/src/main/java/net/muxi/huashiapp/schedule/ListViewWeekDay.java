@@ -16,5 +16,4 @@ public class ListViewWeekDay extends ListView{
         super(context);
     }
 
-    public
 }

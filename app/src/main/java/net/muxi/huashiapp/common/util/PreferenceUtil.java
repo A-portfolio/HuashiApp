@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 
 /**
  * Created by ybao on 16/4/19.
+ * SharedPreferences存储类
  */
 public class PreferenceUtil {
 

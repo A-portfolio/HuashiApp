@@ -6,4 +6,6 @@ package net.muxi.huashiapp.common;
 public class Api {
 
 
+    public static final String BASE_URL = "http://47.88.193.105:8080/api/";
+    public static final String MAIN_LOGIN= "login";
 }
