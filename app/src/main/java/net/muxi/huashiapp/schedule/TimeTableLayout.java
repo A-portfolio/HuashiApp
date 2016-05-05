@@ -13,7 +13,7 @@ import net.muxi.huashiapp.common.widget.TimeTable;
  */
 public class TimeTableLayout extends TableLayout {
 
-    protected Scroller mScroller;
+    public Scroller mScroller;
 
     public TimeTableLayout(Context context) {
         this(context, null);
@@ -25,11 +25,18 @@ public class TimeTableLayout extends TableLayout {
     }
 
 
-    @Override
-    public void scrollBy(int x, int y) {
+    public void scrollBy(int x, int y,int flag) {
         x = checkPositionX(x);
-        y = checkPositionY(y);
+        y = checkPositionY(y,flag);
         super.scrollBy(x, y);
+    }
+
+    @Override
+    public void computeScroll() {
+        if (mScroller.computeScrollOffset()){
+            scrollTo(mScroller.getCurrX(),mScroller.getCurrY());
+            postInvalidate();
+        }
     }
 
     public int checkPositionX(int x) {
@@ -42,21 +49,23 @@ public class TimeTableLayout extends TableLayout {
         return x;
     }
 
-    public int checkPositionY(int y) {
+    public int checkPositionY(int y,int flag) {
         if (getScrollY() + y < 0) {
             y = -getScrollY();
         } else if ((getScrollY() + y) >
-                (TimeTable.COURSE_TIME_HEIGHT * 7 - DimensUtil.getScreenHeight() + DimensUtil.getToolbarHeight() + DimensUtil.getNavigationBarHeight() + TimeTable.LITTLE_VIEW_HEIGHT)) {
-            y = TimeTable.COURSE_TIME_HEIGHT * 7 - getScrollY() - DimensUtil.getScreenHeight() + DimensUtil.getToolbarHeight() + DimensUtil.getNavigationBarHeight() + TimeTable.LITTLE_VIEW_HEIGHT;
+                (TimeTable.COURSE_TIME_HEIGHT * 7 - DimensUtil.getScreenHeight() + ScheduleActivity.SELECT_WEEK_LAYOUT_HEIGHT * flag
+                        + DimensUtil.getActionbarHeight() + DimensUtil.getStatusBarHeight() + TimeTable.LITTLE_VIEW_HEIGHT)) {
+            y = TimeTable.COURSE_TIME_HEIGHT * 7 - getScrollY() - DimensUtil.getScreenHeight() + ScheduleActivity.SELECT_WEEK_LAYOUT_HEIGHT * flag
+                    + DimensUtil.getActionbarHeight() + DimensUtil.getStatusBarHeight() + TimeTable.LITTLE_VIEW_HEIGHT;
         }
         return y;
     }
 
-    public void smoothScrollBy(int deltaX, int deltaY) {
+    public void smoothScrollBy(int deltaX, int deltaY,int flag) {
         int scrollX = getScrollX();
         int scrollY = getScrollY();
         deltaX = checkPositionX(deltaX);
-        deltaY = checkPositionY(deltaY);
+        deltaY = checkPositionY(deltaY,flag);
         mScroller.startScroll(scrollX, scrollY, deltaX, deltaY, 1000);
     }
 

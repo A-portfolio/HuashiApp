@@ -1,10 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:id="@+id/schedule_linearlayout"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
 
-    <include layout="@layout/view_toolbar"/>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-</LinearLayout>
+    <include android:id="@+id/appbar_layout"
+             layout="@layout/view_toolbar"/>
+
+    <FrameLayout
+        android:id="@+id/schedule_framelayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appbar_layout">
+
+        <LinearLayout
+            android:id="@+id/schedule_ll"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <HorizontalScrollView
+                android:id="@+id/schedule_hscrollview"
+                android:layout_width="match_parent"
+                android:background="#e3e"
+                android:layout_height="@dimen/schedule_layout_week_height"
+            ></HorizontalScrollView>
+
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/week_number_layout"
+            android:layout_width="match_parent"
+            android:background="#3e3"
+            android:layout_height="@dimen/schedule_layout_week_height">
+
+            <TextView
+                android:id="@+id/tv_schedule_week_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="第8周"/>
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+</RelativeLayout>
+
+
+
+
+
+

@@ -18,4 +18,6 @@
     <dimen name="schedule_content_height">735dp</dimen>
     <dimen name="schedule_week_day_width">70dp</dimen>
     <dimen name="schedule_course_time_height">105dp</dimen>
+    <dimen name="schedule_layout_week_height">30dp</dimen>
+    <dimen name="schedule_layout_select_week_height">30dp</dimen>
 </resources>

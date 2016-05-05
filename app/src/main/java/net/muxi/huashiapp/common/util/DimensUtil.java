@@ -2,6 +2,7 @@ package net.muxi.huashiapp.common.util;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -22,6 +23,7 @@ public class DimensUtil {
         return windowManager.getDefaultDisplay();
     }
 
+    //获取屏幕的高度,已除去虚拟按键的高度
     public static int getScreenWidth() {
         return getDisplay().getWidth();
     }
@@ -46,7 +48,6 @@ public class DimensUtil {
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        Logger.d("" + statusBarHeight);
         return statusBarHeight;
     }
 
@@ -55,27 +56,32 @@ public class DimensUtil {
         Resources resources = App.getContext().getResources();
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         if (resourceId > 0) {
-            Logger.d(resources.getDimensionPixelSize(resourceId) + "");
             return resources.getDimensionPixelSize(resourceId);
         }
         return 0;
     }
 
-    public static int getToolbarHeight(){
-//        TypedArray typedArray = App.getContext().getTheme().obtainStyledAttributes(ATTRS)
-        return dip2px(32);
+    //获取actionbar的高度
+    public static int getActionbarHeight(){
+        int actionBarHeight = 0;
+        TypedValue tv = new TypedValue();
+        if (App.getContext().getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+        {
+            actionBarHeight =
+                    TypedValue.complexToDimensionPixelSize(tv.data,App.getContext().getResources().getDisplayMetrics());
+        }
+        return actionBarHeight;
     }
-
 
     /**
      * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
      */
-    public static int px2dip(float pxValue) {
+    public static int px2dp(float pxValue) {
         final float scale = App.getContext().getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
-    public static int dip2px(int dpValue){
+    public static int dp2px(int dpValue){
         final float scale = App.getContext().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }

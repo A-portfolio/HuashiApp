@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL -->
+<set android:ordering="sequentially" xmlns:android="http://schemas.android.com/apk/res/android">
+    <objectAnimator
+        android:propertyName="y"
+        android:duration="200"
+        android:valueTo="60"/>
+</set>

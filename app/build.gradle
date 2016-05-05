@@ -34,4 +34,7 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
     compile 'com.squareup.okhttp3:logging-interceptor:3.0.0-RC1'
     compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.github.orhanobut:logger:1.12'
+    compile 'br.com.mauker.materialsearchview:materialsearchview:1.1.0'
+    compile 'com.zhuge.analysis:visual:latest.integration'
 }

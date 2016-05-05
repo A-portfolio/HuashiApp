@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import net.muxi.huashiapp.App;
+
 /**
  * Created by ybao on 16/4/19.
  * SharedPreferences存储类
@@ -11,11 +13,10 @@ import android.preference.PreferenceManager;
 public class PreferenceUtil {
 
     private SharedPreferences mSharedPreferences;
-    private Context mContext;
 
-    public PreferenceUtil(Context context) {
-        mContext = context;
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+    public PreferenceUtil() {
+        Context context = App.getContext();
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public void saveBoolean(String key, boolean value) {

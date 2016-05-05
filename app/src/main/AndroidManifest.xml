@@ -4,6 +4,14 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission
+        android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!--获取设备唯一标识-->
+    <uses-permission
+        android:name="android.permission.READ_PHONE_STATE"/>
+    <!--获取访问用户账户名的权限用以精准匹配标签(可选)-->
+    <uses-permission
+        android:name="android.permission.GET_ACCOUNTS"/>
 
     <application
         android:name="net.muxi.huashiapp.App"
@@ -11,7 +19,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:value="9197e7dd1e5c40cab4556a8b7c3145d3" android:name = "ZHUGE_APPKEY"/>
+        <meta-data
+            android:value="校园通" android:name = "ZHUGE_CHANNEL"/>
         <activity android:name=".login.LoginActivity"
+                  android:launchMode="singleTask"
         >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -34,6 +47,9 @@
         <activity android:name=".common.ui.MainActivity"/>
         <activity android:name=".common.ui.DetailActivity"/>
         <!--<android:parentActivityName=".common.ui.NewsActivity"/>-->
+        <activity android:name=".library.LibraryActivity"
+        android:windowSoftInputMode="adjustResize"/>
+
     </application>
 
 </manifest>

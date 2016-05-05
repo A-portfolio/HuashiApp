@@ -11,23 +11,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.Api;
 import net.muxi.huashiapp.common.data.MainLoginResponse;
 import net.muxi.huashiapp.common.data.User;
-import net.muxi.huashiapp.common.net.RetrofitService;
-import net.muxi.huashiapp.common.ui.MainActivity;
+import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.NetStatus;
+import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.library.LibraryActivity;
 import net.muxi.huashiapp.schedule.ScheduleActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -45,9 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     //此处方便登录调试,到时候要删除
     public static final boolean DEBUG_VALUE = true;
 
-    private RetrofitService mRetrofitService;
     private User mUser = new User();
-    private Retrofit mRetrofit;
 
 
     @Bind(R.id.edit_userName)
@@ -76,18 +69,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(httpLoggingInterceptor)
-                .build();
-        mRetrofit = new Retrofit.Builder()
-                .baseUrl(Api.BASE_URL)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-        mRetrofitService = mRetrofit.create(RetrofitService.class);
+//        ZhugeSDK.getInstance().openDebug();
+//        ZhugeSDK.getInstance().openLog();
 
         init();
 
@@ -96,26 +79,26 @@ public class LoginActivity extends AppCompatActivity {
     private void init() {
         mEditUserName.addTextChangedListener(mTextWatcher);
         mEditPassword.addTextChangedListener(mTextWatcher);
+        mBtnLogin.setEnabled(DEBUG_VALUE);
     }
 
     @OnClick(R.id.btn_login)
-
     public void onClick() {
-        if (!checkNetwork()) {
-            ToastUtil.showLong(NETCONNECT_FAILED);
-        }
-        checkAccount();
+//        JSONObject eventObject = new JSONObject();
+//        try {
+//            eventObject.put("主界面登录","true");
+//            ZhugeSDK.getInstance().track(App.getContext(),"主界面登录",eventObject);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+        Intent intent = new Intent(this,LibraryActivity.class);
+        startActivity(intent);
 
 
 //        if (!checkNetwork()) {
 //            ToastUtil.showLong(NETCONNECT_FAILED);
 //        }
-//        if (checkAccount()) {
-//            showLoginDialog();
-//        } else {
-//            ToastUtil.showShort(VERIFY_FAILED);
-//        }
-
+//        checkAccount();
 
     }
 
@@ -123,11 +106,7 @@ public class LoginActivity extends AppCompatActivity {
         if (mEditUserName.length() != 0
                 && mEditPassword.length() != 0) {
             mBtnLogin.setEnabled(true);
-        } else mBtnLogin.setEnabled(false);
-    }
-
-    private void showLoginDialog() {
-        ToastUtil.showShort("登陆成功");
+        } else mBtnLogin.setEnabled(DEBUG_VALUE);
     }
 
     private boolean checkAccount() {
@@ -138,7 +117,8 @@ public class LoginActivity extends AppCompatActivity {
         if (mEditPassword != null) {
             mUser.setPassword(mEditPassword.getText().toString());
         }
-        mRetrofitService.mainLogin(mUser)
+
+        CampusFactory.getRetrofitService().mainLogin(mUser)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MainLoginResponse>() {
@@ -154,12 +134,21 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(MainLoginResponse mainLoginResponse) {
-                        if (mainLoginResponse.getStatus() == 200){
-                            Intent intent = new Intent(LoginActivity.this,ScheduleActivity.class);
-                            startActivity(intent);
-                            ToastUtil.showShort(LOGIN_SUCCESS);
-                        }else ToastUtil.showLong(VERIFY_FAILED);
+                        if (mainLoginResponse.getStatus() == 200) {
 
+                            PreferenceUtil loader = new PreferenceUtil();
+                            loader.saveString("lastUserId", mUser.getSid());
+                            loader.saveString("lastUserMainPwd", mUser.getPassword());
+
+                            Intent intent = new Intent(LoginActivity.this, ScheduleActivity.class);
+                            startActivity(intent);
+
+                            ToastUtil.showShort(LOGIN_SUCCESS);
+
+                        } else if (mainLoginResponse.getStatus() == 403) {
+                            ToastUtil.showLong(VERIFY_FAILED);
+
+                        } else ToastUtil.showLong(SERVICE_PROBLEM);
                     }
                 });
         return true;
@@ -170,4 +159,17 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        ZhugeSDK.getInstance().init(App.getContext());
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        ZhugeSDK.getInstance().flush(App.getContext());
+    }
 }
