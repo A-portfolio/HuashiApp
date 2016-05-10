@@ -14,7 +14,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/Theme.AppCompat.Light"/>
 
-    <br.com.mauker.materialsearchview.MaterialSearchView
+    <com.miguelcatalan.materialsearchview.MaterialSearchView
         android:id="@+id/searchview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

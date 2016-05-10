@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,8 +38,6 @@ public class ScheduleActivity extends ToolbarActivity {
     Toolbar mToolbar;
     @Bind(R.id.appbar_layout)
     AppBarLayout mAppbarLayout;
-    @Bind(R.id.schedule_hscrollview)
-    HorizontalScrollView mScheduleHscrollview;
     @Bind(R.id.schedule_ll)
     LinearLayout mScheduleLl;
     @Bind(R.id.tv_schedule_week_number)
@@ -51,6 +48,10 @@ public class ScheduleActivity extends ToolbarActivity {
     FrameLayout mScheduleFramelayout;
     @Bind(R.id.root_layout)
     RelativeLayout mRootLayout;
+    @Bind(R.id.schedule_hscrollview)
+    WeekHScrollView mScheduleHscrollview;
+
+    private String weekFormat = "第%d周";
 
     private TimeTable mTimeTable;
     private float mx, my;
@@ -67,17 +68,20 @@ public class ScheduleActivity extends ToolbarActivity {
     }
 
     private void init() {
-
-
-
         mTimeTable = new TimeTable(this);
         LinearLayout.LayoutParams timeTableParams = new
                 LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mTimeTable.setLayoutParams(timeTableParams);
         mScheduleLl.addView(mTimeTable);
 
-
         initToolbar("课程表");
+
+        mScheduleHscrollview.setOnWeekChangeListener(new OnWeekChangeListener() {
+            @Override
+            public void OnWeekChange(int week) {
+                mTvScheduleWeekNumber.setText(String.format(weekFormat, week));
+            }
+        });
     }
 
     public int getActionbarHeight() {
@@ -119,6 +123,14 @@ public class ScheduleActivity extends ToolbarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    //当周数改变时更改课程表
+//    @Override
+//    public void OnWeekChange(int week) {
+//        // TODO: 16/5/10  get the course of schedule
+////        mTimeTable.getCourse(week);
+//        mTvScheduleWeekNumber.setText(String.format(weekFormat, week));
+//    }
 
     @Override
     public void onBackPressed() {

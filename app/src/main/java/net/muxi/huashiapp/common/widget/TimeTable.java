@@ -12,14 +12,13 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableRow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.schedule.ScheduleTimeLayout;
-import net.muxi.huashiapp.schedule.TimeTableLayout;
 
 /**
  * Created by ybao on 16/4/19.
@@ -42,10 +41,8 @@ public class TimeTable extends FrameLayout {
     public static final int MIN_SPEED = 200;
 
 
-    private TimeTableLayout mTableLayout;
-    private TableRow[] mTableRows;
-    //各课程的名称,上课地点和老师
-    private TextView[][] mContentTextViews;
+    private ScheduleTimeLayout mScheduleLayout;
+    private RelativeLayout[] mRelativeLayout;
 
     private View view;
     private ScheduleTimeLayout mCourseLayout;
@@ -167,35 +164,42 @@ public class TimeTable extends FrameLayout {
 
     public void setupScrollerView(Context context) {
 
-        mTableLayout = new TimeTableLayout(context);
+        mScheduleLayout = new ScheduleTimeLayout(context);
 
-        FrameLayout.LayoutParams tableLayoutParams = new
+
+        FrameLayout.LayoutParams scheduleLayoutParams = new
                 FrameLayout.LayoutParams(WEEK_DAY_WIDTH * 7, COURSE_TIME_HEIGHT * 7 );
-        tableLayoutParams.setMargins(LITTLE_VIEW_WIDTH,LITTLE_VIEW_HEIGHT,0,0);
-        mTableLayout.setLayoutParams(tableLayoutParams);
+        scheduleLayoutParams.setMargins(LITTLE_VIEW_WIDTH,LITTLE_VIEW_HEIGHT,0,0);
+        mScheduleLayout.setLayoutParams(scheduleLayoutParams);
 
-        addView(mTableLayout,tableLayoutParams);
-        TableRow.LayoutParams tableRowParams = new
-                TableRow.LayoutParams(WEEK_DAY_WIDTH * 7, COURSE_TIME_HEIGHT);
-        mContentTextViews = new TextView[7][7];
-        mTableRows = new TableRow[7];
+        addView(mScheduleLayout,scheduleLayoutParams);
+
+        mRelativeLayout = new RelativeLayout[7];
 
         for (int i = 0; i < 7; i++) {
-            mTableRows[i] = new TableRow(context);
-            mTableRows[i].setBackgroundColor(Color.BLUE);
-            mTableRows[i].setLayoutParams(tableRowParams);
-            mTableLayout.addView(mTableRows[i]);
 
-            for (int j = 0; j < 7; j++) {
-                mContentTextViews[i][j] = new TextView(context);
-                mContentTextViews[i][j].setBackgroundColor(Color.YELLOW);
-                mContentTextViews[i][j].setWidth(WEEK_DAY_WIDTH);
-                mContentTextViews[i][j].setGravity(Gravity.TOP);
-                mContentTextViews[i][j].setHeight(COURSE_TIME_HEIGHT);
-                mContentTextViews[i][j].setText("数据结构\n@7109\n 熊回香 ");
-                mTableRows[i].addView(mContentTextViews[i][j]);
-            }
+            LinearLayout.LayoutParams relativeParams = new LinearLayout.LayoutParams(
+                    WEEK_DAY_WIDTH,
+                    COURSE_TIME_HEIGHT * 7
+            );
+            mRelativeLayout[i] = new RelativeLayout(context);
+            mRelativeLayout[i].setBackgroundColor(Color.YELLOW);
+            mRelativeLayout[i].setLayoutParams(relativeParams);
+            mScheduleLayout.addView(mRelativeLayout[i]);
+
+//            for (int j = 0; j < 7; j++) {
+//                mContentTextViews[i][j] = new TextView(context);
+//                mContentTextViews[i][j].setBackgroundColor(Color.YELLOW);
+//                mContentTextViews[i][j].setWidth(WEEK_DAY_WIDTH);
+//                mContentTextViews[i][j].setGravity(Gravity.TOP);
+//                mContentTextViews[i][j].setHeight(COURSE_TIME_HEIGHT);
+//                mContentTextViews[i][j].setText("数据结构\n@7109\n 熊回香 ");
+//                mTableRows[i].addView(mContentTextViews[i][j]);
+//            }
         }
+
+        mRelativeLayout[4].setBackgroundColor(Color.RED);
+        mRelativeLayout[3].setBackgroundColor(Color.alpha(Color.WHITE));
 
     }
 
@@ -227,7 +231,7 @@ public class TimeTable extends FrameLayout {
                 curX = event.getX();
                 curY = event.getY();
                 mWeekDayLayout.scrollBy((int) (mx - curX), 0,mTouchFlag);
-                mTableLayout.scrollBy((int) (mx - curX), (int) (my - curY),mTouchFlag);
+                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY),mTouchFlag);
                 mCourseLayout.scrollBy(0, (int) (my - curY),mTouchFlag);
                 mx = curX;
                 my = curY;

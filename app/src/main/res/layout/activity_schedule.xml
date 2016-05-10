@@ -21,12 +21,12 @@
             android:orientation="vertical"
             android:layout_height="match_parent">
 
-            <HorizontalScrollView
+            <net.muxi.huashiapp.schedule.WeekHScrollView
                 android:id="@+id/schedule_hscrollview"
                 android:layout_width="match_parent"
                 android:background="#e3e"
                 android:layout_height="@dimen/schedule_layout_week_height"
-            ></HorizontalScrollView>
+            ></net.muxi.huashiapp.schedule.WeekHScrollView>
 
 
         </LinearLayout>

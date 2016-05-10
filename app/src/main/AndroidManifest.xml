@@ -19,10 +19,20 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+
+        <!--<provider-->
+            <!--android:name="br.com.mauker.materialsearchview.db.HistoryProvider"-->
+            <!--android:authorities="br.com.mauker.materialsearchview.searchhistorydatabase"-->
+            <!--android:exported="false"-->
+            <!--android:protectionLevel="signature"-->
+            <!--android:syncable="true"/>-->
+
         <meta-data
             android:value="9197e7dd1e5c40cab4556a8b7c3145d3" android:name = "ZHUGE_APPKEY"/>
         <meta-data
             android:value="校园通" android:name = "ZHUGE_CHANNEL"/>
+
+
         <activity android:name=".login.LoginActivity"
                   android:launchMode="singleTask"
         >
@@ -45,6 +55,7 @@
         <activity android:name=".score.ScoreActivity"/>
 
         <activity android:name=".common.ui.MainActivity"/>
+
         <activity android:name=".common.ui.DetailActivity"/>
         <!--<android:parentActivityName=".common.ui.NewsActivity"/>-->
         <activity android:name=".library.LibraryActivity"

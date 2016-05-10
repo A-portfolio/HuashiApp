@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/background_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/detail_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="三国演义"
+            android:textSize="@dimen/large_size"
+        />
+
+        <TextView android:id="@+id/tv_author" android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/tv_title"
+                  android:layout_marginTop="@dimen/activity_horizontal_margin"
+                  android:gravity="center"
+                  android:text="罗贯中"
+                  android:textSize="@dimen/medium_size"/>
+
+        <TextView
+            android:id="@+id/tv_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_author"
+            android:text="fengnskfaskld\nfenngnasf\n\n\n\n\n\n\n\n\nfeng\n\n\nfe"
+            android:textSize="40sp"
+        />
+    </RelativeLayout>
+</RelativeLayout>

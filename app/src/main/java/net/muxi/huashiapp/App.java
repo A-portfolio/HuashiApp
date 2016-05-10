@@ -2,6 +2,7 @@ package net.muxi.huashiapp;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 
 import com.zhuge.analysis.stat.ZhugeSDK;
 
@@ -11,7 +12,10 @@ import com.zhuge.analysis.stat.ZhugeSDK;
  */
 public class App extends Application {
 
+
     public static Context sContext;
+
+    public static AppCompatActivity sActivity = null;
 
     @Override
     public void onCreate() {
@@ -27,5 +31,14 @@ public class App extends Application {
 
     public static Context getContext() {
         return sContext;
+    }
+
+
+    public static void setCurrentActivity(AppCompatActivity activity){
+        sActivity = activity;
+    }
+
+    public static AppCompatActivity getCurrentActivity(){
+        return sActivity;
     }
 }
