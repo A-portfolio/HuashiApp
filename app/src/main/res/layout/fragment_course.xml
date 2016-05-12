@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="#ffffff"
               android:orientation="vertical"
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
-              android:background="#ffffff"
               android:paddingTop="@dimen/activity_vertical_margin">
 
     <EditText android:id="@+id/edit_course_name"
@@ -18,23 +18,26 @@
               android:layout_height="wrap_content"
               android:drawableLeft="@drawable/delete_edit_login_black"
               android:hint="老师名称"/>
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-              android:id="@+id/tv_week_select"
+    <TextView android:id="@+id/tv_week_select" android:layout_width="match_parent"
+              android:layout_height="wrap_content"
               android:drawableLeft="@drawable/delete_edit_login_black"
               android:text="1-17周"
     />
 
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-              android:id="@+id/tv_course_time"
+    <TextView android:id="@+id/tv_course_time" android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:drawableLeft="@drawable/delete_edit_login_black"
               android:text="添加上课时间"
-              android:drawableLeft="@drawable/delete_edit_login_black"
     />
 
-    <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
+    <EditText android:id="@+id/edit_course_place" android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:drawableLeft="@drawable/delete_edit_login_black"
               android:hint="输入上课地点"
-              android:id="@+id/edit_course_place"
-              android:drawableLeft="@drawable/delete_edit_login_black"
     />
 
+    <Button android:id="@+id/btn" android:layout_width="wrap_content"
+            android:text="确定"
+            android:layout_height="wrap_content"/>
 </LinearLayout>
 

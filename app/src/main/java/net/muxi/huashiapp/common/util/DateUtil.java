@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.common.util;
 
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,22 +40,20 @@ public class DateUtil {
         return toDate(calendar.getTime());
     }
 
-    //获取本周的所有日期,用在课程表里面
-    public static List<String> getTheWeekDate() {
+    //获取本周的所有日期,用在课程表里面,这边的 weekDistance 指代 距离本周的周数,例如本周为0,上周为-1
+    public static List<String> getTheWeekDate(int weekDistance) {
         List<String> dateInWeek = new ArrayList<String>();
 
-        Calendar calendar = Calendar.getInstance();
-        Date curDate = calendar.getTime();
+//        Calendar calendar = Calendar.getInstance();
+        Date curDate = new Date();
         String theWeek = toWeek(curDate);
         int i = 0;
         while(! theWeek.equals("星期一") ){
             i --;
             theWeek = toWeek(curDate,i);
         }
-        calendar.setTime(curDate);
         for (int j = 0 ;j < 7 ;j ++){
-            dateInWeek.add(j,getTheDate(curDate,i));
-            i ++;
+            dateInWeek.add(getTheDate(curDate,i + j + weekDistance * 7));
         }
         return dateInWeek;
     }

@@ -4,16 +4,15 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -25,9 +24,8 @@ import net.muxi.huashiapp.common.util.DimensUtil;
 /**
  * Created by ybao on 16/5/6.
  */
-public class BookDetailView extends ScrollView implements GestureDetector.OnGestureListener {
+public class BookDetailView extends ScrollView {
 
-    public static final int TIME_SLIDE = 200;
 
     private RelativeLayout detailLayout;
     private RelativeLayout backgroundLayout;
@@ -40,11 +38,13 @@ public class BookDetailView extends ScrollView implements GestureDetector.OnGest
     //上次监听的scrollY值
     private int lastScrollY;
 
+    //详情页下滑到底部的时间
+    public static final int TIME_SLIDE_BOTTOM = 400;
+
     private ActionBar mActionBar;
     private Toolbar toolbar;
     private Context mContext;
 
-    private GestureDetector mGestureDetector;
     private OnScrollListener mOnScrollListener;
 
     private Handler mHandler = new Handler() {
@@ -79,7 +79,6 @@ public class BookDetailView extends ScrollView implements GestureDetector.OnGest
         detailLayout = new RelativeLayout(context);
         mContext = context;
 
-        mGestureDetector = new GestureDetector(this);
     }
 
     private void initScrollView(Context context) {
@@ -100,29 +99,18 @@ public class BookDetailView extends ScrollView implements GestureDetector.OnGest
 //        view.setPadding(0,DimensUtil.getScreenHeight() + DimensUtil.getActionbarHeight() + LibraryActivity.ACTIONBAR_DISTANCE ,0,0);;
 
         addView(view, viewParams);
-        scrollTo(0, DimensUtil.getScreenHeight());
     }
 
-
-    public RelativeLayout getDetailLayout() {
-        return detailLayout;
-    }
-
-
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return super.onInterceptTouchEvent(ev);
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (mOnScrollListener != null) {
             mOnScrollListener.onScroll(lastScrollY = this.getScrollY());
         }
-        mGestureDetector.onTouchEvent(ev);
-        switch (ev.getAction()) {
+        int action = MotionEventCompat.getActionMasked(ev);
+        switch (action) {
             case MotionEvent.ACTION_DOWN:
-                my = (int)ev.getY();
+                my = (int) ev.getY();
                 if (getScrollY() == DimensUtil.getScreenHeight()) {
                     LibraryActivity.detailState = LibraryActivity.APPEAR_TOP;
                 }
@@ -132,128 +120,55 @@ public class BookDetailView extends ScrollView implements GestureDetector.OnGest
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (getScrollY() < DimensUtil.getScreenHeight()){
+                if (getScrollY() < DimensUtil.getScreenHeight()) {
                     LibraryActivity.detailState = LibraryActivity.APPEAR_TOP;
                 }
-//                curY = (int)ev.getY();
-//                if (LibraryActivity.detailState == LibraryActivity.APPEAR_TOP &&
-//                        curY - my > 0){
-//
-//                }
+                break;
             case MotionEvent.ACTION_UP:
-                if (getScrollY() < DimensUtil.getScreenHeight() - DimensUtil.getActionbarHeight()){
+                if (getScrollY() < DimensUtil.getScreenHeight() - DimensUtil.getActionbarHeight() - LibraryActivity.ACTIONBAR_DISTANCE) {
                     App.getCurrentActivity().onBackPressed();
-                }else if (getScrollY() > DimensUtil.getScreenHeight() - DimensUtil.getActionbarHeight()
-                        && getScrollY() < DimensUtil.getScreenHeight()){
-                    smoothScrollTo(0,DimensUtil.getScreenHeight());
+                }
+                if (getScrollY() > DimensUtil.getScreenHeight() - DimensUtil.getActionbarHeight() - LibraryActivity.ACTIONBAR_DISTANCE
+                        && getScrollY() < DimensUtil.getScreenHeight()) {
+                    this.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            smoothScrollTo(0, DimensUtil.getScreenHeight());
+                        }
+                    });
                 }
                 mHandler.sendMessageDelayed(mHandler.obtainMessage(), 50);
                 break;
-
         }
 
         return super.onTouchEvent(ev);
     }
 
-    private void slideDownDetail() {
-        App.getCurrentActivity().onBackPressed();
-    }
-
-    private void slideUpScrollView() {
-        this.scrollTo(0, 0);
-    }
-
-    private void initToolbar() {
-        toolbar = new Toolbar(mContext);
-        RelativeLayout.LayoutParams toolbarParams = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        toolbar.setTitle("详情");
-        toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.delete_edit_login));
-        toolbar.setNavigationOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                App.getCurrentActivity().onBackPressed();
-
-            }
-        });
-        toolbarParams.setMargins(0, -DimensUtil.getActionbarHeight(), 0, 0);
-        contentLayout = (FrameLayout) App.getCurrentActivity().findViewById(android.R.id.content);
-        contentLayout.addView(toolbar, toolbarParams);
-
-    }
 
     @Override
     public void fling(int velocityY) {
         //当详情页不处于初始位置时,快速下拉手势下将其移动到初始位置
-        if (velocityY < -200 && LibraryActivity.detailState != LibraryActivity.APPEAR_TOP) {
+        if (velocityY < -5000 && LibraryActivity.detailState != LibraryActivity.APPEAR_TOP) {
             smoothScrollTo(0, DimensUtil.getScreenHeight());
-        } else if (velocityY < -200 && LibraryActivity.detailState == LibraryActivity.APPEAR_TOP){
+        } else if (velocityY < -5000 && LibraryActivity.detailState == LibraryActivity.APPEAR_TOP) {
             App.getCurrentActivity().onBackPressed();
-        }else {
+        } else {
             super.fling(velocityY);
         }
     }
 
 
     // 将详情页滑动至底端,在退出详情页的时候调用
-    public void slideDetailLayoutBottom(){
-        smoothScrollTo(0,0);
-    }
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        return false;
-    }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-
-    }
-
-    public void removeToolbar() {
-        removeView(toolbar);
-    }
-
-
-    private void slideDownToolbar() {
-        TranslateAnimation translateAnimation = new TranslateAnimation(0, 0,
-                -DimensUtil.getActionbarHeight(), 0);
-        translateAnimation.setDuration(TIME_SLIDE);
-        translateAnimation.setFillAfter(true);
-        toolbar.startAnimation(translateAnimation);
-    }
-
-
-    private void slideUpToolbar() {
-        TranslateAnimation translateAnimation = new TranslateAnimation(0, 0,
-                0, -DimensUtil.getActionbarHeight());
-        translateAnimation.setDuration(TIME_SLIDE);
-        translateAnimation.setFillBefore(true);
-        translateAnimation.setFillAfter(true);
-        toolbar.startAnimation(translateAnimation);
+    public void slideDetailLayoutBottom() {
+        smoothScrollTo(0, DimensUtil.getActionbarHeight() + LibraryActivity.ACTIONBAR_DISTANCE);
+//        TranslateAnimation animation = new TranslateAnimation(
+//                0,
+//                0,
+//                DimensUtil.getActionbarHeight() + LibraryActivity.ACTIONBAR_DISTANCE,
+//                DimensUtil.getScreenHeight());
+//        animation.setDuration(TIME_SLIDE_BOTTOM);
+//        animation.setFillAfter(true);
+//        detailLayout.startAnimation(animation);
     }
 
 

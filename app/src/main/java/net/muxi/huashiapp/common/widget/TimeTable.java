@@ -20,6 +20,8 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.schedule.ScheduleTimeLayout;
 
+import java.util.List;
+
 /**
  * Created by ybao on 16/4/19.
  */
@@ -40,6 +42,7 @@ public class TimeTable extends FrameLayout {
 
     public static final int MIN_SPEED = 200;
 
+    private List<String> weekDate;
 
     private ScheduleTimeLayout mScheduleLayout;
     private RelativeLayout[] mRelativeLayout;
@@ -136,8 +139,29 @@ public class TimeTable extends FrameLayout {
         addView(mWeekDayLayout,weekDayParams);
 
         mWeekDayTextView = new TextView[7];
+
+//        Observable.just(0)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.computation())
+//                .subscribe(new Observer<Integer>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(Integer integer) {
+//                        weekDate = DateUtil.getTheWeekDate(integer);
+//                    }
+//                });
+
         ImageView[] divider = new ImageView[7];
-        String[] weekdays = new String[7];
+        String[] weekdays;
         weekdays = getResources().getStringArray(R.array.week_day);
         for (int i = 0; i < 7; i++) {
 
@@ -154,8 +178,7 @@ public class TimeTable extends FrameLayout {
             mWeekDayTextView[i].setLayoutParams(new
                     ViewGroup.LayoutParams(WEEK_DAY_WIDTH - 1, ViewGroup.LayoutParams.MATCH_PARENT));
             mWeekDayTextView[i].setGravity(Gravity.CENTER);
-            weekdays = getResources().getStringArray(R.array.week_day);
-            mWeekDayTextView[i].setText(weekdays[i]);
+            mWeekDayTextView[i].setText(weekdays[i] + "\n"  );
             mWeekDayLayout.addView(mWeekDayTextView[i]);
         }
 

@@ -23,6 +23,7 @@
 
             <net.muxi.huashiapp.schedule.WeekHScrollView
                 android:id="@+id/schedule_hscrollview"
+                android:scrollbars="none"
                 android:layout_width="match_parent"
                 android:background="#e3e"
                 android:layout_height="@dimen/schedule_layout_week_height"

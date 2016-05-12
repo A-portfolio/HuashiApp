@@ -35,7 +35,7 @@ import butterknife.ButterKnife;
 /**
  * Created by ybao on 16/5/1.
  */
-public class LibraryActivity extends AppCompatActivity implements BookDetailView.OnScrollListener{
+public class LibraryActivity extends AppCompatActivity implements BookDetailView.OnScrollListener {
 
     // TODO: 16/5/3 material searchView has bug ...
 
@@ -108,7 +108,6 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
         mSearchview.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d("feng", "feng");
                 return true;
             }
 
@@ -132,7 +131,6 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
 
     @Override
     public void onScroll(int scrollY) {
-        Log.d("scrollY", scrollY + "");
         if (detailState != TOOLBAR_APPEAR && scrollY > DimensUtil.getScreenHeight() + DimensUtil.getActionbarHeight() + ACTIONBAR_DISTANCE) {
             initDetailToolbar("详情");
             slideDownToolbar();
@@ -196,8 +194,9 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
             @Override
             public void onItemClick(View view, Book book) {
 
+                Log.d("feng","" + detailState);
                 hideItem(view);
-//                addShadowView();
+                addShadowView();
                 startScale(view);
                 addScrollView();
 
@@ -231,7 +230,7 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
 
     }
 
-
+//
 //    @Override
 //    public void onScrollChanged() {
 //        if (detailState != TOOLBAR_APPEAR &&
@@ -255,7 +254,7 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
 
     //强制 scrollview 滑动
     public void forceScrollTo(final ScrollView scrollView, final int deltaY) {
-        new Handler().post(new Runnable() {
+        scrollView.post(new Runnable() {
             @Override
             public void run() {
                 scrollView.scrollTo(0, deltaY);
@@ -289,13 +288,24 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
         scaleAnimation.setFillAfter(true);
         animView.startAnimation(scaleAnimation);
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (animView != null) {
+                    contentLayout.removeView(animView);
+                }
+            }
+        }, TIME_ALPH * 2 + TIME_ALPH);
+
     }
 
 
     private void hideItem(View view) {
         AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
         alphaAnimation.setDuration(TIME_ALPH);
-        view.setAnimation(alphaAnimation);
+        alphaAnimation.setFillEnabled(true);
+        alphaAnimation.setFillBefore(true);
+        (view.findViewById(R.id.tv_title)).startAnimation(alphaAnimation);
     }
 
     private void showItem(View view) {
@@ -317,20 +327,21 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
     //当当前有详情页显示时,改写后退键的方法
     @Override
     public void onBackPressed() {
-        Log.d("onback","onback");
-        if (detailState != NOT_APPEAR){
-            if (detailState == TOOLBAR_APPEAR){
+        Log.d("detailState","" + detailState);
+        if (detailState != NOT_APPEAR) {
+            if (detailState == TOOLBAR_APPEAR) {
                 slideUpToolbar();
             }
             mBookDetailView.slideDetailLayoutBottom();
+            detailState = NOT_APPEAR;
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     contentLayout.removeView(detailToolbar);
+                    detailToolbar = null;
                     removeView();
-                    detailState = NOT_APPEAR;
                 }
-            },1000);
+            }, BookDetailView.TIME_SLIDE_BOTTOM);
             return;
         }
         super.onBackPressed();
@@ -341,7 +352,6 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
     private void removeView() {
         contentLayout.removeView(mBookDetailView);
         contentLayout.removeView(mShadowView);
-        Log.d("dimen", "" + (contentLayout.getBottom() - contentLayout.getTop()));
 
 //        TranslateAnimation translateAnimation = new TranslateAnimation(0, 0,
 //                DimensUtil.getActionbarHeight() + ACTIONBAR_DISTANCE, FRAGMENT_HEIGHT);
