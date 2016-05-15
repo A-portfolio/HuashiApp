@@ -34,14 +34,10 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
     compile 'com.squareup.okhttp3:logging-interceptor:3.0.0-RC1'
     compile 'io.reactivex:rxandroid:1.1.0'
-<<<<<<< HEAD
     compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'cn.bingoogolapple:bga-banner:1.0.0'
-
-=======
     compile 'com.github.orhanobut:logger:1.12'
     compile 'com.zhuge.analysis:visual:latest.integration'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
->>>>>>> b5cd7dac227f57cf2e5f09b0d42a1ad3d8bcfe10
 }
