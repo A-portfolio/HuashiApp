@@ -6,6 +6,7 @@ import net.muxi.huashiapp.App;
 
 /**
  * Created by ybao on 16/4/19.
+ * Toast工具类
  */
 public class ToastUtil {
 

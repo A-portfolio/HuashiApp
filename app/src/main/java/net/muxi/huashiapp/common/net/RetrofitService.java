@@ -11,6 +11,7 @@ import rx.Observable;
 
 /**
  * Created by ybao on 16/4/28.
+ *
  */
 public interface RetrofitService {
 

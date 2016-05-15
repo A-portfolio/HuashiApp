@@ -31,22 +31,16 @@ public abstract class ToolbarActivity extends BaseActivity {
         super.setContentView(layoutResId);
         initToolbar();
 
-
     }
 
     public void initToolbar() {
         mAppBarLayout = ButterKnife.findById(this,R.id.appbar_layout);
         mToolbar = ButterKnife.findById(this, R.id.toolbar);
         if (mToolbar != null) {
-//            mToolbar.setTitle("校园通");
+            mToolbar.setTitle("校园通");
             Log.d("toolbar",mToolbar.getHeight() + "");
             this.setSupportActionBar(mToolbar);
-//            toolbar.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                }
-//            });
+
             if (canBack()){
                 ActionBar actionbar = getSupportActionBar();
                 if (actionbar != null){
@@ -57,15 +51,37 @@ public abstract class ToolbarActivity extends BaseActivity {
 
     }
 
+    public void initToolbar(CharSequence title){
+        if (mToolbar != null){
+            mToolbar.setTitle(title);
+            this.setSupportActionBar(mToolbar);
+        }
+        if (canBack()){
+            ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null){
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){
             onBackPressed();
-            this.finish();
-            return true;
-        }else return super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0 ){
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    //如果当前的Activity不能退出则需要改写
     protected boolean canBack() {
         return true;
     }

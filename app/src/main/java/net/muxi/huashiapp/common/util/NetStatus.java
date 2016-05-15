@@ -17,11 +17,13 @@ public class NetStatus {
         return cm.getActiveNetworkInfo();
     }
 
+    //设备网路是否连接
     public static boolean isConnected(){
         NetworkInfo netInfo = getNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+    //当前是否处于 wifi 状态
     public static boolean isWifi(){
         NetworkInfo netInfo = getNetworkInfo();
         return netInfo != null && netInfo.getType() == ConnectivityManager.TYPE_WIFI;

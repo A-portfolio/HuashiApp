@@ -12,4 +12,8 @@
     <string name="news_three_title">城市猎人</string>
     <string name="news_tree_desc">就问肖遥帅不帅</string>
 
+
+    <string name="action_search">查找</string>
+
+    <string name="action_add">添加</string>
 </resources>
