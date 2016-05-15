@@ -13,4 +13,5 @@
         </attr>
         <attr name="digits" format="string" />
     </declare-styleable>
+
 </resources>

@@ -34,4 +34,8 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
     compile 'com.squareup.okhttp3:logging-interceptor:3.0.0-RC1'
     compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'cn.bingoogolapple:bga-banner:1.0.0'
+
 }

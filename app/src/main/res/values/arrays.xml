@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="titles">
+    <string-array name="mdesc">
         <item>课程表</item>
         <item>学生卡</item>
         <item>成绩查询</item>

@@ -38,7 +38,7 @@ public abstract class ToolbarActivity extends BaseActivity {
         mAppBarLayout = ButterKnife.findById(this,R.id.appbar_layout);
         mToolbar = ButterKnife.findById(this, R.id.toolbar);
         if (mToolbar != null) {
-            mToolbar.setTitle("校园通");
+//            mToolbar.setTitle("校园通");
             Log.d("toolbar",mToolbar.getHeight() + "");
             this.setSupportActionBar(mToolbar);
 //            toolbar.setOnClickListener(new View.OnClickListener() {

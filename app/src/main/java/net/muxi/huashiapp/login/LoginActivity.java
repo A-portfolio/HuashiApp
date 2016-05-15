@@ -18,7 +18,6 @@ import net.muxi.huashiapp.common.net.RetrofitService;
 import net.muxi.huashiapp.common.ui.MainActivity;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.ToastUtil;
-import net.muxi.huashiapp.schedule.ScheduleActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -155,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onNext(MainLoginResponse mainLoginResponse) {
                         if (mainLoginResponse.getStatus() == 200){
-                            Intent intent = new Intent(LoginActivity.this,ScheduleActivity.class);
+                            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                             startActivity(intent);
                             ToastUtil.showShort(LOGIN_SUCCESS);
                         }else ToastUtil.showLong(VERIFY_FAILED);
