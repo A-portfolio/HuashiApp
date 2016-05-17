@@ -17,6 +17,7 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.schedule.ScheduleActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -132,10 +133,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(MainLoginResponse mainLoginResponse) {
-<<<<<<< HEAD
-                        if (mainLoginResponse.getStatus() == 200){
-                            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-=======
                         if (mainLoginResponse.getStatus() == 200) {
 
                             PreferenceUtil loader = new PreferenceUtil();
@@ -143,7 +140,6 @@ public class LoginActivity extends AppCompatActivity {
                             loader.saveString("lastUserMainPwd", mUser.getPassword());
 
                             Intent intent = new Intent(LoginActivity.this, ScheduleActivity.class);
->>>>>>> b5cd7dac227f57cf2e5f09b0d42a1ad3d8bcfe10
                             startActivity(intent);
 
                             ToastUtil.showShort(LOGIN_SUCCESS);

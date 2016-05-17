@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.common.news;
+package net.muxi.huashiapp.news;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -28,6 +28,7 @@ public class NewsActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
         ButterKnife.bind(this);
+
 
         setSupportActionBar(mToolbar);
         mToolbar.setTitle("消息公告");

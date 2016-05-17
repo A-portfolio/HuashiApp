@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.common.ui;
+package net.muxi.huashiapp.main;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

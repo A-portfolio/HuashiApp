@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.common.ui;
+package net.muxi.huashiapp.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,23 +11,24 @@ import android.view.MenuItem;
 import android.view.View;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.adapter.MainAdapter;
-import net.muxi.huashiapp.common.news.NewsActivity;
+import net.muxi.huashiapp.library.LibraryActivity;
+import net.muxi.huashiapp.news.NewsActivity;
+import net.muxi.huashiapp.schedule.ScheduleActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
     private int[] mpics = {R.drawable.t, R.drawable.t,
             R.drawable.t, R.drawable.t,
             R.drawable.t, R.drawable.t};
 
-    private String[] mdesc = {"课程表", "学生卡", "成绩查询", "电费查询", "校历查询", "部门信息"};
-    MainAdapter mAdapter;
+    private String[] mdesc = {"课程表", "图书查询", "成绩查询", "电费查询", "校历查询", "部门信息"};
+    private MainAdapter mAdapter;
 
 
     @Override
@@ -36,25 +37,33 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-
         setSupportActionBar(mToolbar);
-        mToolbar.setOnMenuItemClickListener(mOnMenuItemClickListener);
+        initRecyclerView();
 
+    }
+
+    public void initRecyclerView(){
         mAdapter = new MainAdapter(mdesc, mpics);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        mRecyclerView.setAdapter(new MainAdapter(mdesc, mpics));
+        mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new MyItemDecoration());
         mAdapter.setItemClickListener(new MainAdapter.ItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
                 switch (position) {
-                    case R.drawable.t:
-                        Intent intent = new Intent(MainActivity.this, NewsActivity.class);
+                    case 0:
+                        Intent intent = new Intent(MainActivity.this,ScheduleActivity.class);
                         startActivity(intent);
+                        break;
+
+                    case 1:
+                        Intent intent1 = new Intent(MainActivity.this, LibraryActivity.class);
+                        startActivity(intent1);
+                        break;
+
                 }
             }
         });
-
 
     }
 
@@ -64,15 +73,14 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private Toolbar.OnMenuItemClickListener mOnMenuItemClickListener = new Toolbar.OnMenuItemClickListener() {
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.action_news:
-                    Intent i = new Intent(MainActivity.this, NewsActivity.class);
-                    startActivity(i);
-            }
-            return true;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_news:
+                Intent intent = new Intent(MainActivity.this, NewsActivity.class);
+                startActivity(intent);
         }
-    };
+        return super.onOptionsItemSelected(item);
+    }
 }

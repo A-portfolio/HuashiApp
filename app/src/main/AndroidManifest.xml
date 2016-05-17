@@ -33,7 +33,7 @@
             android:value="校园通" android:name = "ZHUGE_CHANNEL"/>
 
 
-        <activity android:name=".login.LoginActivity"
+        <activity android:name=".main.MainActivity"
                   android:launchMode="singleTask"
         >
             <intent-filter>
@@ -49,8 +49,8 @@
         />
 
         <activity android:name=".score.ScoreActivity"/>
-        <activity android:name=".common.news.NewsActivity"/>
-        <activity android:name=".common.ui.MainActivity"/>
+        <activity android:name=".news.NewsActivity"/>
+        <!--<activity android:name=".common.ui.MainActivity"/>-->
         <activity android:name=".library.LibraryActivity"
         android:windowSoftInputMode="adjustResize"/>
 

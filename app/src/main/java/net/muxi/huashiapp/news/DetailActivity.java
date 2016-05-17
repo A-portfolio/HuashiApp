@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.common.news;
+package net.muxi.huashiapp.news;
 
 import android.support.v7.app.AppCompatActivity;
 
