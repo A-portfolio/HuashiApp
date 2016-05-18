@@ -2,6 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="toolbar_height">56dp</dimen>
 
     <dimen name="large_size">24sp</dimen>
     <dimen name="medium_size">18sp</dimen>
@@ -24,6 +25,9 @@
     <dimen name="schedule_course_time_height">105dp</dimen>
     <dimen name="schedule_layout_week_height">30dp</dimen>
     <dimen name="schedule_layout_select_week_height">30dp</dimen>
+
+    <dimen name="library_searchview_height">48dp</dimen>
+    <dimen name="library_searchview_marginright">64dp</dimen>
 
 
 </resources>

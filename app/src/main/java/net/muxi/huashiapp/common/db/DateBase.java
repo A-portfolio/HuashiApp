@@ -40,11 +40,12 @@ public class DateBase extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createSearchHistory = "CREATE TABLE IF NOT EXISTS" + TABLE_SEARCH_HISTORY +
+        String createSearchHistory = "CREATE TABLE IF NOT EXISTS " + TABLE_SEARCH_HISTORY +
                 "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 KEY_LIBRARY_USER_ID + " TEXT, " +
                 KEY_BOOK + " TEXT);";
         db.execSQL(createSearchHistory);
+
     }
 
 

@@ -3,6 +3,7 @@ package net.muxi.huashiapp;
 import android.app.Application;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.zhuge.analysis.stat.ZhugeSDK;
 
@@ -22,8 +23,8 @@ public class App extends Application {
     public static AppCompatActivity sActivity = null;
 
     //获取上次的已经登录的用户账号信息
-    public static User sUser;
-    public static LibrarayUser sLibrarayUser;
+    public static User sUser = new User();
+    public static LibrarayUser sLibrarayUser= new LibrarayUser();
 
     private PreferenceUtil sp;
 
@@ -36,17 +37,20 @@ public class App extends Application {
         ZhugeSDK.getInstance().disablePhoneNumber();
 //禁止收集用户个人账户信息默认为收集
         ZhugeSDK.getInstance().disableAccounts();
+
         sContext = getApplicationContext();
+        sp = new PreferenceUtil();
+        //delete after
+        Log.d("app","oncreate");
+        sp.saveString(PreferenceUtil.STUDENT_ID,"0");
+        sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, "0"));
+        sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
 
-        sUser = new User();
-        sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, null));
-        sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, null));
+        //delete after
+        sp.saveString(PreferenceUtil.LIBRARY_ID,"0");
+        sLibrarayUser.setLibraryId(sp.getString(PreferenceUtil.LIBRARY_ID, "0"));
+        sLibrarayUser.setLibraryPwd(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
 
-        sLibrarayUser = new LibrarayUser();
-        sLibrarayUser.setLibraryId(sp.getString(PreferenceUtil.LIBRARY_ID, null));
-        sLibrarayUser.setLibraryPwd(sp.getString(PreferenceUtil.LIBRARY_PWD, null));
-
-        sLibrarayUser = new LibrarayUser();
 
     }
 

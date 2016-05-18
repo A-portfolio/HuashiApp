@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-</LinearLayout>
+    <include layout="@layout/view_toolbar"
+             android:id="@+id/view_toolbar"/>
+
+    <Space
+        android:id="@+id/center_space"
+        android:layout_width="1px"
+        android:layout_height="1px"
+        android:layout_centerInParent="true"/>
+
+    <EditText
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/library_searchview_height"
+        android:layout_above="@+id/center_space"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_toLeftOf="@+id/btn_search"
+        android:hint="@string/library_search_tip"/>
+
+    <Button android:id="@+id/btn_search"
+            android:layout_width="@dimen/library_searchview_height"
+            android:layout_height="@dimen/library_searchview_height"
+            android:layout_above="@+id/center_space"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+
+</RelativeLayout>

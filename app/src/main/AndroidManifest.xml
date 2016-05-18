@@ -14,7 +14,7 @@
         android:name="android.permission.GET_ACCOUNTS"/>
 
     <application
-        android:name="net.muxi.huashiapp.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -54,12 +54,32 @@
 
         <activity android:name=".score.ScoreActivity"/>
 
+        <activity android:name=".common.ui.SettingActivity"/>
+
+
         <activity android:name=".common.ui.MainActivity"/>
 
         <activity android:name=".common.ui.DetailActivity"/>
         <!--<android:parentActivityName=".common.ui.NewsActivity"/>-->
-        <activity android:name=".library.LibraryActivity"
-        android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".library.LibraryActivity"/>
+
+        <activity android:name=".library.LibrarySearchActivity"/>
+
+        <activity android:name=".library.LibraryLoginActivity"/>
+
+        <activity android:name=".library.MineActivity"/>
+
+        <receiver android:name=".common.service.AlarmLiveReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".common.service.AlarmReceiveer">
+            <intent-filter>
+                <action android:name="net.muxi.huashiapp.alarm"/>
+            </intent-filter>
+        </receiver>
 
     </application>
 

@@ -26,6 +26,8 @@ import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.OnItemClickListener;
 import net.muxi.huashiapp.common.data.Book;
+import net.muxi.huashiapp.common.db.HuaShiDao;
+import net.muxi.huashiapp.common.util.AlarmUtil;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.widget.ShadowView;
 
@@ -43,10 +45,6 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
     Toolbar mToolbar;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.root_layout)
-    RelativeLayout mRootLayout;
-    @Bind(R.id.frame_layout)
-    FrameLayout mFrameLayout;
 
     private FrameLayout contentLayout;
 
@@ -75,9 +73,13 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
     private LibraryAdapter mLibraryAdapter;
     private View animView;
 
+    private HuaShiDao dao;
+
     private View mItemView;
 
     private View mShadowView;
+
+    private String[] suggestions;
 
     private int my;
     private int curY;
@@ -105,9 +107,12 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
         contentLayout = (FrameLayout) findViewById(android.R.id.content);
         setupRecyclerview();
 
+        dao = new HuaShiDao();
+
         mSearchview.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                dao.insertSearchHistory(query);
                 return true;
             }
 
@@ -116,12 +121,27 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
                 return false;
             }
         });
+        mSearchview.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                mSearchview.showSuggestions();
+            }
 
+            @Override
+            public void onSearchViewClosed() {
+
+            }
+        });
+
+        AlarmUtil.register(this);
 
         mToolbar.setTitle("图书馆");
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         setSupportActionBar(mToolbar);
 
-
+//        mSearchview.setSuggestions(dao.loadSearchHistory());
+//        suggestions = dao.loadSearchHistory();
+        mSearchview.setSuggestions(suggestions);
         App.setCurrentActivity(this);
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.setDisplayShowTitleEnabled(false);
@@ -161,8 +181,9 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
         if (detailToolbar == null) {
             detailToolbar = new Toolbar(LibraryActivity.this);
             detailToolbar.setTitle(title);
+            detailToolbar.setTitleTextColor(Color.WHITE);
+            detailToolbar.setNavigationIcon(R.drawable.ic_clear_white_24dp);
             detailToolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            detailToolbar.setNavigationIcon(R.drawable.delete_edit_login);
             detailToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -195,12 +216,15 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
             public void onItemClick(View view, Book book) {
 
                 Log.d("feng","" + detailState);
-                hideItem(view);
+                // TODO: 16/5/15 hide item not show after
+//                hideItem(view);
+
                 addShadowView();
                 startScale(view);
                 addScrollView();
 
                 mItemView = view;
+
 //                addDetailViewGroup();
 
             }
@@ -374,6 +398,8 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
         switch (id) {
             case R.id.action_search:
                 return true;
+            case android.R.id.home:
+                onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
