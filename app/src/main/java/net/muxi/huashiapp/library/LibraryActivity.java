@@ -45,6 +45,10 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
     Toolbar mToolbar;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.searchview)
+    MySearchView mSearchview;
+    @Bind(R.id.root_layout)
+    FrameLayout mRootLayout;
 
     private FrameLayout contentLayout;
 
@@ -61,8 +65,6 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
     public static final int TIME_SLIDE = 200;
     //toolbar 的滑动时间
     public static final int TIME_TOOLBAR_SLIDE = 200;
-    @Bind(R.id.searchview)
-    MaterialSearchView mSearchview;
 
 
     //点击后详情页布局
@@ -215,7 +217,7 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
             @Override
             public void onItemClick(View view, Book book) {
 
-                Log.d("feng","" + detailState);
+                Log.d("feng", "" + detailState);
                 // TODO: 16/5/15 hide item not show after
 //                hideItem(view);
 
@@ -351,7 +353,7 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
     //当当前有详情页显示时,改写后退键的方法
     @Override
     public void onBackPressed() {
-        Log.d("detailState","" + detailState);
+        Log.d("detailState", "" + detailState);
         if (detailState != NOT_APPEAR) {
             if (detailState == TOOLBAR_APPEAR) {
                 slideUpToolbar();

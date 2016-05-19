@@ -14,11 +14,11 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.MainLoginResponse;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.ui.SettingActivity;
 import net.muxi.huashiapp.common.util.AlarmUtil;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.main.MainActivity;
 import net.muxi.huashiapp.schedule.ScheduleActivity;
 
 import butterknife.Bind;
@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
 //        } catch (JSONException e) {
 //            e.printStackTrace();
 //        }
-        Intent intent = new Intent(this, SettingActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
 

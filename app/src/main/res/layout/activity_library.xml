@@ -20,7 +20,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/Theme.AppCompat.Light"/>
 
-    <com.miguelcatalan.materialsearchview.MaterialSearchView
+    <net.muxi.huashiapp.library.MySearchView
         android:id="@+id/searchview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

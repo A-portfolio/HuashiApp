@@ -51,6 +51,17 @@ public class App extends Application {
         sLibrarayUser.setLibraryId(sp.getString(PreferenceUtil.LIBRARY_ID, "0"));
         sLibrarayUser.setLibraryPwd(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
 
+        sContext = getApplicationContext();
+//        sp = new PreferenceUtil();
+//        sUser = new User();
+//        sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, null));
+//        sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, null));
+//
+//        sLibrarayUser = new LibrarayUser();
+//        sLibrarayUser.setLibraryId(sp.getString(PreferenceUtil.LIBRARY_ID, null));
+//        sLibrarayUser.setLibraryPwd(sp.getString(PreferenceUtil.LIBRARY_PWD, null));
+//
+//        sLibrarayUser = new LibrarayUser();
 
     }
 

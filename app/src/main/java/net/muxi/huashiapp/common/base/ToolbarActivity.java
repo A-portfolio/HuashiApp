@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import net.muxi.huashiapp.R;
@@ -37,6 +38,7 @@ public abstract class ToolbarActivity extends BaseActivity {
         mToolbar = ButterKnife.findById(this, R.id.toolbar);
         if (mToolbar != null) {
             mToolbar.setTitle("校园通");
+            Log.d("toolbar",mToolbar.getHeight() + "");
             this.setSupportActionBar(mToolbar);
 
             if (canBack()){

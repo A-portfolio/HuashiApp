@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import net.muxi.huashiapp.R;
+
 /**
  * Created by ybao on 16/5/16.
  */
@@ -16,7 +18,7 @@ public class MySearchView extends MaterialSearchView{
 
     public MySearchView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setSuggestionIcon();
+        setSuggestionIcon(getResources().getDrawable(R.drawable.ic_history_black_24dp));
     }
 
     @Override
