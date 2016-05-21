@@ -80,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_news:
                 Intent intent = new Intent(MainActivity.this, NewsActivity.class);
                 startActivity(intent);
+                break;
+
+
         }
         return super.onOptionsItemSelected(item);
     }
