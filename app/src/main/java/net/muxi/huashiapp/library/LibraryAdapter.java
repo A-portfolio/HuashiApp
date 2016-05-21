@@ -11,7 +11,6 @@ import android.widget.TextView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.OnItemClickListener;
 import net.muxi.huashiapp.common.data.Book;
-import net.muxi.huashiapp.common.util.DimensUtil;
 
 /**
  * Created by ybao on 16/5/3.
@@ -105,12 +104,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.book_layout:
-                    int top = mBookLayout.getTop();
-                    int bottom = mBookLayout.getBottom();
-                    int distance = DimensUtil.getScreenHeight() - DimensUtil.getStatusBarHeight() - DimensUtil.getActionbarHeight();
-                    v.animate().alpha(0).setDuration(200);
-//                    ToastUtil.showShort("top" + top + "bottom" + bottom + distance);
-                    mBookLayout.getY();
+
                     book = new Book();
 
                     book.setAuthor(mTvTitle.getText().toString());

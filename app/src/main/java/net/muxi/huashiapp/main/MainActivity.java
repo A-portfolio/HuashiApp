@@ -11,9 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.library.LibraryActivity;
+import net.muxi.huashiapp.common.ui.SettingActivity;
+import net.muxi.huashiapp.library.LibrarySearchActivity;
 import net.muxi.huashiapp.news.NewsActivity;
 import net.muxi.huashiapp.schedule.ScheduleActivity;
+import net.muxi.huashiapp.webview.WebViewActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,8 +59,12 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 1:
-                        Intent intent1 = new Intent(MainActivity.this, LibraryActivity.class);
+                        Intent intent1 = new Intent(MainActivity.this, LibrarySearchActivity.class);
                         startActivity(intent1);
+                        break;
+                    case 2:
+                        Intent intent2 = WebViewActivity.newIntent(MainActivity.this,"http://xueer.ccnuer.cn","学而");
+                        startActivity(intent2);
                         break;
 
                 }
@@ -75,14 +81,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         int id = item.getItemId();
         switch (id) {
             case R.id.action_news:
-                Intent intent = new Intent(MainActivity.this, NewsActivity.class);
+                intent = new Intent(MainActivity.this, NewsActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.action_settings:
+                intent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(intent);
+                break;
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> b895eee8562f66931a8c7af179dc454aecdd949e
         }
         return super.onOptionsItemSelected(item);
     }

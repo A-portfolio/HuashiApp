@@ -2,6 +2,7 @@ package net.muxi.huashiapp.common.db;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import net.muxi.huashiapp.App;
 
@@ -14,7 +15,6 @@ import java.util.List;
 public class HuaShiDao {
 
     private SQLiteDatabase db;
-
 
     public HuaShiDao() {
         db = DateBase.getInstance();
@@ -33,19 +33,24 @@ public class HuaShiDao {
 
     public List<String> loadSearchHistory() {
         String libraryId = App.sLibrarayUser.getLibraryId();
-        List<String> list = new ArrayList<String>();
+        Log.d("tag",libraryId);
+        List<String> records = new ArrayList<>();
         Cursor cursor;
         cursor = db.rawQuery("SELECT * FROM " + DateBase.TABLE_SEARCH_HISTORY +
-                        "WHERE" + DateBase.KEY_LIBRARY_USER_ID + " = ? " +
-                        "ORDER BY " + DateBase.KEY_ID + "DESC",
+                        " WHERE " + DateBase.KEY_LIBRARY_USER_ID + " = ? " +
+                        "ORDER BY " + DateBase.KEY_ID + " DESC",
                 new String[]{libraryId});
         if (cursor.getCount() > 0) {
+            int i = 0;
             while (cursor.moveToNext()) {
-                list.add(cursor.getString(cursor.getColumnIndex(DateBase.KEY_BOOK)));
+//                records[i] = cursor.getString(cursor.getColumnIndex(DateBase.KEY_BOOK));
+//                Log.d("cursor",records[i]);
+                records.add(cursor.getString(cursor.getColumnIndex(DateBase.KEY_BOOK)));
+                i ++;
             }
-            cursor.close();
         }
-        return list;
+        cursor.close();
+        return records;
     }
 
 
@@ -55,6 +60,8 @@ public class HuaShiDao {
                 " WHERE " + DateBase.KEY_LIBRARY_USER_ID + " = ? " +
                 new String[]{libraryId});
     }
+
+
 
 
 }

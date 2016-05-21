@@ -14,9 +14,11 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.MainLoginResponse;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.common.util.AlarmUtil;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.main.MainActivity;
 import net.muxi.huashiapp.schedule.ScheduleActivity;
 
 import butterknife.Bind;
@@ -38,10 +40,6 @@ public class LoginActivity extends AppCompatActivity {
 
     //此处方便登录调试,到时候要删除
     public static final boolean DEBUG_VALUE = true;
-
-    private User mUser = new User();
-
-
     @Bind(R.id.edit_userName)
     LoginEditText mEditUserName;
     @Bind(R.id.edit_password)
@@ -54,6 +52,10 @@ public class LoginActivity extends AppCompatActivity {
     Button mBtnLogin;
     @Bind(R.id.login_bottom_layout)
     RelativeLayout mLoginBottomLayout;
+
+    private User mUser = new User();
+
+
     private TextWatcher mTextWatcher = new SimpleTextWatcher() {
         @Override
         public void afterTextChanged(Editable s) {
@@ -73,6 +75,8 @@ public class LoginActivity extends AppCompatActivity {
 
         init();
 
+        AlarmUtil.register(this);
+
     }
 
     private void init() {
@@ -90,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
 //        } catch (JSONException e) {
 //            e.printStackTrace();
 //        }
-        Intent intent = new Intent(this,ScheduleActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
 

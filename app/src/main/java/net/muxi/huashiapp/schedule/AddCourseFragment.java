@@ -22,12 +22,6 @@ import butterknife.ButterKnife;
  */
 public class AddCourseFragment extends BaseFragment implements View.OnClickListener {
 
-//    EditText mEditCourseName;
-//    EditText mEditTeacherName;
-//    TextView mTvWeekSelect;
-//    TextView mTvCourseTime;
-//    EditText mEditCoursePlace;
-//    Button btn;
     @Bind(R.id.edit_course_name)
     EditText mEditCourseName;
     @Bind(R.id.edit_teacher_name)

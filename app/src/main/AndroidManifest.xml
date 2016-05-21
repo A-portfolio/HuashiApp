@@ -14,28 +14,27 @@
         android:name="android.permission.GET_ACCOUNTS"/>
 
     <application
-        android:name="net.muxi.huashiapp.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
         <!--<provider-->
-            <!--android:name="br.com.mauker.materialsearchview.db.HistoryProvider"-->
-            <!--android:authorities="br.com.mauker.materialsearchview.searchhistorydatabase"-->
-            <!--android:exported="false"-->
-            <!--android:protectionLevel="signature"-->
-            <!--android:syncable="true"/>-->
+        <!--android:name="br.com.mauker.materialsearchview.db.HistoryProvider"-->
+        <!--android:authorities="br.com.mauker.materialsearchview.searchhistorydatabase"-->
+        <!--android:exported="false"-->
+        <!--android:protectionLevel="signature"-->
+        <!--android:syncable="true"/>-->
 
         <meta-data
-            android:value="9197e7dd1e5c40cab4556a8b7c3145d3" android:name = "ZHUGE_APPKEY"/>
+            android:name="ZHUGE_APPKEY" android:value="9197e7dd1e5c40cab4556a8b7c3145d3"/>
         <meta-data
-            android:value="校园通" android:name = "ZHUGE_CHANNEL"/>
+            android:name="ZHUGE_CHANNEL" android:value="校园通"/>
 
 
-        <activity android:name=".main.MainActivity"
-                  android:launchMode="singleTask"
-        >
+        <activity android:name=".login.LoginActivity"
+                  android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -43,16 +42,44 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".main.MainActivity"/>
+
         <activity
             android:name=".schedule.ScheduleActivity"
-            android:launchMode="singleTask"
-        />
+            android:launchMode="singleTask"/>
 
         <activity android:name=".score.ScoreActivity"/>
+
+        <activity android:name=".common.ui.SettingActivity"/>
+
+
+        <activity android:name=".news.DetailActivity"/>
+
+        <!--<android:parentActivityName=".common.ui.NewsActivity"/>-->
+        <activity android:name=".library.LibraryActivity"/>
+
+        <activity android:name=".library.LibrarySearchActivity"/>
+
+        <activity android:name=".library.LibraryLoginActivity"/>
+
+        <activity android:name=".library.MineActivity"/>
+
+        <activity android:name=".webview.WebViewActivity"/>
+
+        <receiver android:name=".common.service.AlarmLiveReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".common.service.AlarmReceiveer">
+            <intent-filter>
+                <action android:name="net.muxi.huashiapp.alarm"/>
+            </intent-filter>
+        </receiver>
+
         <activity android:name=".news.NewsActivity"/>
-        <!--<activity android:name=".common.ui.MainActivity"/>-->
-        <activity android:name=".library.LibraryActivity"
-        android:windowSoftInputMode="adjustResize"/>
+
 
     </application>
 

@@ -3,6 +3,15 @@
 
     <string name="action_settings">设置</string>
     <string name="action_news">公告</string>
+    <string name="action_search">查找</string>
+    <string name="action_add">添加</string>
+    <string name="action_login">登录</string>
+    <string name="action_share_wechat">分享到朋友圈</string>
+    <string name="action_share_qq">分享到qq空间</string>
+    <string name="action_share_weibo">分享到微博</string>
+    <string name="action_copy_url">复制链接</string>
+    <string name="action_open_browser">在浏览器中打开</string>
+    <string name="action_refresh">刷新本页面</string>
 
     <string name="news_one_title">匹诺曹</string>
 
@@ -13,7 +22,18 @@
     <string name="news_tree_desc">就问肖遥帅不帅</string>
 
 
-    <string name="action_search">查找</string>
+    <string name="tip_id_text">学号</string>
+    <string name="tip_pwd_text">密码</string>
+    <string name="tip_login">(请输入信息门户的密码)</string>
+    <string name="tip_library_login">(图书馆初始密码为123456)</string>
 
-    <string name="action_add">添加</string>
+    <string name="library_search_tip">请输入要搜索的图书或作者</string>
+
+    <!--setting activity key-->
+    <string name="pre_schedule">pre_schedule</string>
+    <string name="pre_library">pre_library</string>
+    <string name="pre_card">pre_card</string>
+    <string name="pre_score">pre_score</string>
+    <string name="pre_all">pre_all</string>
+
 </resources>
