@@ -25,6 +25,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.OnItemClickListener;
+import net.muxi.huashiapp.common.base.BaseDetailLayout;
 import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.util.AlarmUtil;
@@ -49,6 +50,8 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
     MySearchView mSearchview;
     @Bind(R.id.root_layout)
     FrameLayout mRootLayout;
+    @Bind(R.id.content_layout)
+    FrameLayout mContentLayout;
 
     private FrameLayout contentLayout;
 
@@ -85,6 +88,8 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
 
     private int my;
     private int curY;
+
+    private BaseDetailLayout mBaseDetailLayout;
 
     //详情页未出现的状态
     public static final int NOT_APPEAR = 0;
@@ -223,7 +228,8 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
 
                 addShadowView();
                 startScale(view);
-                addScrollView();
+                mBaseDetailLayout = new BaseDetailLayout(LibraryActivity.this);
+                mContentLayout.addView(mBaseDetailLayout);
 
                 mItemView = view;
 
@@ -236,7 +242,9 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
 
     private void addShadowView() {
         mShadowView = new ShadowView(LibraryActivity.this);
-        contentLayout.addView(mShadowView);
+        mShadowView.setBackgroundColor(Color.BLACK);
+        mShadowView.setAlpha(0.6f);
+        mContentLayout.addView(mShadowView);
     }
 
     private void addScrollView() {
@@ -256,27 +264,6 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
 
     }
 
-//
-//    @Override
-//    public void onScrollChanged() {
-//        if (detailState != TOOLBAR_APPEAR &&
-//                mBookDetailView.getScrollY() > DimensUtil.getScreenHeight() + DimensUtil.getActionbarHeight() + ACTIONBAR_DISTANCE) {
-//            initDetailToolbar("详情");
-//            slideDownToolbar();
-//            detailState = TOOLBAR_APPEAR;
-//        }
-//        if (detailState == TOOLBAR_APPEAR &&
-//                mBookDetailView.getScrollY() < DimensUtil.getScreenHeight() + DimensUtil.getActionbarHeight() + ACTIONBAR_DISTANCE) {
-//            slideUpToolbar();
-//            detailState = TOOLBAR_DISAPPEAR;
-//        }
-//        if (mBookDetailView.getScrollY() > DimensUtil.getScreenHeight() + DimensUtil.getActionbarHeight()){
-//            onBackPressed();
-//        }else if (mBookDetailView.getScrollY() < DimensUtil.getScreenHeight() + DimensUtil.getActionbarHeight()
-//                && mBookDetailView.getScrollY() > DimensUtil.getScreenHeight()){
-//            mBookDetailView.smoothScrollTo(0,DimensUtil.getScreenHeight());
-//        }
-//    }
 
     //强制 scrollview 滑动
     public void forceScrollTo(final ScrollView scrollView, final int deltaY) {
@@ -354,30 +341,46 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
     @Override
     public void onBackPressed() {
         Log.d("detailState", "" + detailState);
-        if (detailState != NOT_APPEAR) {
-            if (detailState == TOOLBAR_APPEAR) {
-                slideUpToolbar();
-            }
-            mBookDetailView.slideDetailLayoutBottom();
-            detailState = NOT_APPEAR;
+
+        if (mContentLayout.getChildCount() > 0) {
+            mBaseDetailLayout.slideContentView();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    contentLayout.removeView(detailToolbar);
-                    detailToolbar = null;
-                    removeView();
+                    mContentLayout.removeView(mBaseDetailLayout);
+                    if (mShadowView != null) {
+                        mContentLayout.removeView(mShadowView);
+                        mShadowView = null;
+                    }
                 }
-            }, BookDetailView.TIME_SLIDE_BOTTOM);
+            },250);
             return;
         }
+//        if (detailState != NOT_APPEAR) {
+//            if (detailState == TOOLBAR_APPEAR) {
+//                slideUpToolbar();
+//            }
+//            mBookDetailView.slideDetailLayoutBottom();
+//            detailState = NOT_APPEAR;
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    contentLayout.removeView(detailToolbar);
+//                    detailToolbar = null;
+//                    removeView();
+//                }
+//            }, BookDetailView.TIME_SLIDE_BOTTOM);
+//            return;
+//        }
         super.onBackPressed();
     }
 
 
     //移除详情页
     private void removeView() {
-        contentLayout.removeView(mBookDetailView);
-        contentLayout.removeView(mShadowView);
+
+//        contentLayout.removeView(mBookDetailView);
+//        contentLayout.removeView(mShadowView);
 
 //        TranslateAnimation translateAnimation = new TranslateAnimation(0, 0,
 //                DimensUtil.getActionbarHeight() + ACTIONBAR_DISTANCE, FRAGMENT_HEIGHT);

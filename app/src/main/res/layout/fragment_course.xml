@@ -10,34 +10,53 @@
 
     <EditText android:id="@+id/edit_course_name"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:drawableLeft="@drawable/delete_edit_login_black"
+              android:background="@drawable/frame_course"
+              android:layout_height="40dp"
+              android:textSize="22sp"
+              android:drawableLeft="@drawable/ic_date_range_black_48dp"
               android:hint="课程名称"/>
 
     <EditText android:id="@+id/edit_teacher_name" android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:drawableLeft="@drawable/delete_edit_login_black"
+              android:background="@drawable/frame_course"
+              android:textSize="22sp"
+              android:drawableLeft="@drawable/ic_person_black_24dp"
               android:hint="老师名称"/>
+
     <TextView android:id="@+id/tv_week_select" android:layout_width="match_parent"
+              android:textSize="22sp"
               android:layout_height="wrap_content"
-              android:drawableLeft="@drawable/delete_edit_login_black"
+              android:background="@drawable/frame_course"
+              android:drawableLeft="@drawable/ic_event_black_24dp"
               android:text="1-17周"
     />
 
     <TextView android:id="@+id/tv_course_time" android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:drawableLeft="@drawable/delete_edit_login_black"
+              android:background="@drawable/frame_course"
+              android:drawableLeft="@drawable/ic_access_time_black_24dp"
               android:text="添加上课时间"
     />
 
     <EditText android:id="@+id/edit_course_place" android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:drawableLeft="@drawable/delete_edit_login_black"
+              android:drawableLeft="@drawable/ic_place_black_24dp"
+              android:background="@drawable/frame_course"
               android:hint="输入上课地点"
     />
+
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:drawableLeft="@drawable/ic_mode_comment_black_24dp"
+              android:drawableRight="@drawable/ic_check_box_outline_blank_black_24dp"
+              android:background="@drawable/frame_course"
+    android:id="@+id/tv_course_reind"/>
+
+
 
     <Button android:id="@+id/btn" android:layout_width="wrap_content"
             android:text="确定"
             android:layout_height="wrap_content"/>
+
+
 </LinearLayout>
 

@@ -134,6 +134,9 @@ public class ScheduleActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0){
+            setTitle("课程表");
+        }
         super.onBackPressed();
     }
 

@@ -64,6 +64,14 @@ public abstract class ToolbarActivity extends BaseActivity {
         }
     }
 
+
+    public void setTitle(String title){
+        if (mToolbar != null){
+            mToolbar.setTitle(title);
+            setSupportActionBar(mToolbar);
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){

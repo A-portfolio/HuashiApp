@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.schedule;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -41,22 +42,9 @@ public class AddCourseFragment extends BaseFragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course, container, false);
 
-//        mEditCourseName = (EditText) view.findViewById(R.id.edit_course_name);
-//        mEditCourseName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ToastUtil.showShort("edit");
-//            }
-//        });
-//        mEditTeacherName = (EditText) view.findViewById(R.id.edit_teacher_name);
-//        mTvWeekSelect = (TextView) view.findViewById(R.id.tv_week_select);
-//        btn = (Button) view.findViewById(R.id.btn);
-//        btn.setOnClickListener(this);
-//        mTvCourseTime = (TextView) view.findViewById(R.id.tv_course_time);
-//        mEditCoursePlace = (EditText) view.findViewById(R.id.edit_course_place);
         ButterKnife.bind(this, view);
-        mEditCourseName.setText("feng");
         mBtn.setOnClickListener(this);
+        ((ScheduleActivity) getActivity()).setTitle("添加课程");
         return view;
 
     }
@@ -96,4 +84,13 @@ public class AddCourseFragment extends BaseFragment implements View.OnClickListe
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
 }

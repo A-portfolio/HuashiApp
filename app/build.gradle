@@ -39,5 +39,6 @@ dependencies {
     compile 'cn.bingoogolapple:bga-banner:1.0.0'
     compile 'com.github.orhanobut:logger:1.12'
     compile 'com.zhuge.analysis:visual:latest.integration'
+    compile 'com.daimajia.numberprogressbar:library:1.2@aar'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
 }

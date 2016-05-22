@@ -48,7 +48,7 @@ public class DateUtil {
         Date curDate = new Date();
         String theWeek = toWeek(curDate);
         int i = 0;
-        while(! theWeek.equals("星期一") ){
+        while(! theWeek.equals("周一") ){
             i --;
             theWeek = toWeek(curDate,i);
         }

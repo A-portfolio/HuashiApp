@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.util.DateUtil;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.schedule.ScheduleTimeLayout;
 
@@ -46,6 +47,9 @@ public class TimeTable extends FrameLayout {
 
     private ScheduleTimeLayout mScheduleLayout;
     private RelativeLayout[] mRelativeLayout;
+
+
+    List<String> weekDates;
 
     private View view;
     private ScheduleTimeLayout mCourseLayout;
@@ -161,6 +165,10 @@ public class TimeTable extends FrameLayout {
 //                });
 
         ImageView[] divider = new ImageView[7];
+        weekDates = DateUtil.getTheWeekDate(0);
+        for(int i=0;i<weekDates.size();i++){
+            Log.d("what",weekDates.get(i));
+        }
         String[] weekdays;
         weekdays = getResources().getStringArray(R.array.week_day);
         for (int i = 0; i < 7; i++) {
@@ -178,7 +186,7 @@ public class TimeTable extends FrameLayout {
             mWeekDayTextView[i].setLayoutParams(new
                     ViewGroup.LayoutParams(WEEK_DAY_WIDTH - 1, ViewGroup.LayoutParams.MATCH_PARENT));
             mWeekDayTextView[i].setGravity(Gravity.CENTER);
-            mWeekDayTextView[i].setText(weekdays[i] + "\n"  );
+            mWeekDayTextView[i].setText(weekdays[i] + "\n" + weekDates.get(i)  );
             mWeekDayLayout.addView(mWeekDayTextView[i]);
         }
 
@@ -273,7 +281,7 @@ public class TimeTable extends FrameLayout {
                 if (isLowerMinSpeed(velocityY)){
                     velocityY = 0;
                 }
-//                mCourseLayout.smoothScrollBy(0, -velocityY / 2);
+//                mCourseLayout.smoothScrollBy(0, 500,1);
 //                mWeekDayLayout.smoothScrollBy(-velocityX / 2, 0);
 //                mTableLayout.smoothScrollBy(-velocityX / 2, -velocityY / 2);
 
