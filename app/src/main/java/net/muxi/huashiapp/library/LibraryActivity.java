@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,8 +19,6 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.OnItemClickListener;
@@ -32,13 +29,18 @@ import net.muxi.huashiapp.common.util.AlarmUtil;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.widget.ShadowView;
 
+import java.util.concurrent.TimeUnit;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by ybao on 16/5/1.
  */
-public class LibraryActivity extends AppCompatActivity implements BookDetailView.OnScrollListener {
+public class LibraryActivity extends AppCompatActivity {
 
     // TODO: 16/5/3 material searchView has bug ...
 
@@ -57,30 +59,22 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
 
     //设置fragment 的高度
     public static final int FRAGMENT_HEIGHT =
-            DimensUtil.getScreenHeight() - DimensUtil.getStatusBarHeight() - DimensUtil.getActionbarHeight() - DimensUtil.dp2px(50);
+            DimensUtil.getScreenHeight() - DimensUtil.getStatusBarHeight() - DimensUtil.dp2px(48);
     //设置 fragment 距离actionbar的距离
-    public static final int ACTIONBAR_DISTANCE = DimensUtil.dp2px(50);
+    public static final int ACTIONBAR_DISTANCE = DimensUtil.dp2px(48) - DimensUtil.getActionbarHeight();
     //animView 扩张的时间
-    public static final int TIME_STRETCH = 300;
-    //文字隐藏,展现的时间
-    public static final int TIME_ALPH = 200;
-    //变换的 view 的下滑时间
-    public static final int TIME_SLIDE = 200;
-    //toolbar 的滑动时间
-    public static final int TIME_TOOLBAR_SLIDE = 200;
 
+    public static final int DURATION_SCALE = 250;
+    public static final int DURATION_ALPH = 250;
 
     //点击后详情页布局
     private RelativeLayout detailLayout;
     private Toolbar detailToolbar;
-    private BookDetailView mBookDetailView;
 
     private LibraryAdapter mLibraryAdapter;
     private View animView;
 
     private HuaShiDao dao;
-
-    private View mItemView;
 
     private View mShadowView;
 
@@ -90,19 +84,6 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
     private int curY;
 
     private BaseDetailLayout mBaseDetailLayout;
-
-    //详情页未出现的状态
-    public static final int NOT_APPEAR = 0;
-    //详情页出现,处于最上方的状态
-    public static final int APPEAR_TOP = 1;
-    //详情页已经向下滑动的状态
-    public static final int SLIDE_DOWN = 4;
-    //详情页滑到 toolbar 出现的状态
-    public static final int TOOLBAR_APPEAR = 2;
-    //详情页滑动toolbar 消失状态
-    public static final int TOOLBAR_DISAPPEAR = 3;
-    //往下滑但释放不足以下拉详情列表
-    public static int detailState = NOT_APPEAR;
 
 
     @Override
@@ -116,7 +97,7 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
 
         dao = new HuaShiDao();
 
-        mSearchview.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+        mSearchview.setOnQueryTextListener(new MySearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 dao.insertSearchHistory(query);
@@ -128,7 +109,7 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
                 return false;
             }
         });
-        mSearchview.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+        mSearchview.setOnSearchViewListener(new MySearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
                 mSearchview.showSuggestions();
@@ -156,22 +137,15 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
     }
 
 
-    @Override
-    public void onScroll(int scrollY) {
-        if (detailState != TOOLBAR_APPEAR && scrollY > DimensUtil.getScreenHeight() + DimensUtil.getActionbarHeight() + ACTIONBAR_DISTANCE) {
-            initDetailToolbar("详情");
-            slideDownToolbar();
-            detailState = TOOLBAR_APPEAR;
-        }
-        if (detailState == TOOLBAR_APPEAR && scrollY < DimensUtil.getScreenHeight() + DimensUtil.getActionbarHeight() + ACTIONBAR_DISTANCE) {
-            slideUpToolbar();
-            detailState = TOOLBAR_DISAPPEAR;
-        }
+    private void fadeOutItem(View view){
+        AlphaAnimation animation = new AlphaAnimation(1,0);
+        animation.setDuration(DURATION_ALPH);
+        view.startAnimation(animation);
     }
 
     private void slideUpToolbar() {
         TranslateAnimation animation = new TranslateAnimation(0, 0, 0, -DimensUtil.getActionbarHeight());
-        animation.setDuration(TIME_TOOLBAR_SLIDE);
+        animation.setDuration(DURATION_SCALE);
         animation.setFillBefore(true);
         animation.setFillAfter(true);
         detailToolbar.startAnimation(animation);
@@ -179,7 +153,7 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
 
     private void slideDownToolbar() {
         TranslateAnimation animation = new TranslateAnimation(0, 0, -DimensUtil.getActionbarHeight(), 0);
-        animation.setDuration(TIME_TOOLBAR_SLIDE);
+        animation.setDuration(DURATION_SCALE);
         animation.setFillAfter(true);
         detailToolbar.startAnimation(animation);
     }
@@ -213,7 +187,7 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
 
         String[] s = new String[17];
         for (int i = 0; i < 17; i++) {
-            s[i] = "it is the title " + i;
+            s[i] = "title " + i;
         }
         mLibraryAdapter = new LibraryAdapter(s);
         mRecyclerView.setAdapter(mLibraryAdapter);
@@ -222,18 +196,30 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
             @Override
             public void onItemClick(View view, Book book) {
 
-                Log.d("feng", "" + detailState);
                 // TODO: 16/5/15 hide item not show after
-//                hideItem(view);
+                fadeOutItem(view);
 
-                addShadowView();
                 startScale(view);
-                mBaseDetailLayout = new BaseDetailLayout(LibraryActivity.this);
-                mContentLayout.addView(mBaseDetailLayout);
+                Observable.timer(DURATION_SCALE, TimeUnit.MILLISECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Long>() {
+                            @Override
+                            public void onCompleted() {
+                            }
 
-                mItemView = view;
+                            @Override
+                            public void onError(Throwable e) {
+                                e.printStackTrace();
 
-//                addDetailViewGroup();
+                            }
+
+                            @Override
+                            public void onNext(Long aLong) {
+                                addShadowView();
+                                mBaseDetailLayout = new BaseDetailLayout(LibraryActivity.this);
+                                mContentLayout.addView(mBaseDetailLayout);
+                            }
+                        });
 
             }
 
@@ -245,23 +231,6 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
         mShadowView.setBackgroundColor(Color.BLACK);
         mShadowView.setAlpha(0.6f);
         mContentLayout.addView(mShadowView);
-    }
-
-    private void addScrollView() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mBookDetailView = new BookDetailView(LibraryActivity.this);
-                mBookDetailView.setBackgroundColor(Color.alpha(Color.WHITE));
-//                mBookDetailView.scrollTo(0,DimensUtil.getScreenHeight());
-                contentLayout.addView(mBookDetailView);
-                forceScrollTo(mBookDetailView, DimensUtil.getScreenHeight());
-                mBookDetailView.setOnScrollListener(LibraryActivity.this);
-//                mBookDetailView.getViewTreeObserver().addOnScrollChangedListener(LibraryActivity.this);
-            }
-        }, TIME_ALPH + TIME_STRETCH);
-        detailState = APPEAR_TOP;
-
     }
 
 
@@ -280,7 +249,7 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
         int viewTop = view.getTop();
         int viewHeight = view.getHeight();
         animView = new View(LibraryActivity.this);
-        animView.setBackgroundColor(Color.BLUE);
+        animView.setBackgroundColor(Color.WHITE);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 viewHeight
@@ -291,13 +260,12 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
                 1,
                 1,
                 1,
-                FRAGMENT_HEIGHT / viewHeight,
+                FRAGMENT_HEIGHT / (float)viewHeight,
                 0,
-                (float) ((viewTop - ACTIONBAR_DISTANCE) * 1.0 / (FRAGMENT_HEIGHT / viewHeight - 1))
+                (float) ((viewTop - ACTIONBAR_DISTANCE) * 1.0 /  ((float)FRAGMENT_HEIGHT * 1.0 /(float) viewHeight - 1))
         );
 
-        scaleAnimation.setStartTime(TIME_ALPH);
-        scaleAnimation.setDuration(TIME_STRETCH + TIME_ALPH);
+        scaleAnimation.setDuration(DURATION_SCALE);
         scaleAnimation.setFillAfter(true);
         animView.startAnimation(scaleAnimation);
 
@@ -308,24 +276,11 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
                     contentLayout.removeView(animView);
                 }
             }
-        }, TIME_ALPH * 2 + TIME_ALPH);
+        },DURATION_SCALE);
 
     }
 
 
-    private void hideItem(View view) {
-        AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
-        alphaAnimation.setDuration(TIME_ALPH);
-        alphaAnimation.setFillEnabled(true);
-        alphaAnimation.setFillBefore(true);
-        (view.findViewById(R.id.tv_title)).startAnimation(alphaAnimation);
-    }
-
-    private void showItem(View view) {
-        AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
-        alphaAnimation.setDuration(TIME_ALPH);
-        view.setAnimation(alphaAnimation);
-    }
 
 
     @Override
@@ -340,10 +295,10 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
     //当当前有详情页显示时,改写后退键的方法
     @Override
     public void onBackPressed() {
-        Log.d("detailState", "" + detailState);
 
         if (mContentLayout.getChildCount() > 0) {
             mBaseDetailLayout.slideContentView();
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -356,46 +311,9 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
             },250);
             return;
         }
-//        if (detailState != NOT_APPEAR) {
-//            if (detailState == TOOLBAR_APPEAR) {
-//                slideUpToolbar();
-//            }
-//            mBookDetailView.slideDetailLayoutBottom();
-//            detailState = NOT_APPEAR;
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    contentLayout.removeView(detailToolbar);
-//                    detailToolbar = null;
-//                    removeView();
-//                }
-//            }, BookDetailView.TIME_SLIDE_BOTTOM);
-//            return;
-//        }
         super.onBackPressed();
     }
 
-
-    //移除详情页
-    private void removeView() {
-
-//        contentLayout.removeView(mBookDetailView);
-//        contentLayout.removeView(mShadowView);
-
-//        TranslateAnimation translateAnimation = new TranslateAnimation(0, 0,
-//                DimensUtil.getActionbarHeight() + ACTIONBAR_DISTANCE, FRAGMENT_HEIGHT);
-//        translateAnimation.setDuration(TIME_SLIDE * 10);
-//        translateAnimation.setFillAfter(true);
-//        animView.startAnimation(translateAnimation);
-//
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                contentLayout.removeView(animView);
-//            }
-//        }, 1000);
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -409,69 +327,6 @@ public class LibraryActivity extends AppCompatActivity implements BookDetailView
         return super.onOptionsItemSelected(item);
     }
 
-//
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        switch (ev.getAction()){
-//            case MotionEvent.ACTION_DOWN:
-//                my = (int)ev.getY();
-//                if (mBookDetailView != null && mBookDetailView.getScrollY() == 0){
-//                    detailState = APPEAR_TOP;
-//                }
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                curY = (int) ev.getY();
-//                if (detailState == APPEAR_TOP && (curY - my) > 0){
-//                    mBookDetailView.scrollBy(0,my - curY);
-//                    Log.d("dispatch","false");
-//                    return false;
-//                }
-//                break;
-//        }
-//        return super.dispatchTouchEvent(ev);
-//    }
-
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        switch (event.getAction()){
-//            case MotionEvent.ACTION_DOWN:
-//                my = (int)event.getY();
-//                if (mBookDetailView != null && mBookDetailView.getScrollY() == 0){
-//                    detailState = APPEAR_TOP;
-//                }
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                curY = (int)event.getY();
-//                if (detailState == APPEAR_TOP && (curY - my ) > 0 ){
-//                    mBookDetailView.scrollBy(0,my - curY);
-//                }
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                if (detailState == APPEAR_TOP && mBookDetailView.getScrollY() < -DimensUtil.getActionbarHeight()){
-//                    slideDownScrollView();
-//                }
-//        }
-//        Log.d("LibraryActivity","feng");
-//        return super.onTouchEvent(event);
-//
-//    }
-
-
-//    private void slideDownScrollView() {
-//        TranslateAnimation translateAnimation = new TranslateAnimation(0, 0, -mScrollView.getScrollY(), DimensUtil.getScreenHeight());
-//        translateAnimation.setFillAfter(true);
-//        translateAnimation.setDuration(TIME_STRETCH);
-//        mScrollView.startAnimation(translateAnimation);
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                contentLayout.removeView(mScrollView);
-//                contentLayout.removeView(mShadowView);
-//
-//            }
-//        }, TIME_STRETCH);
-//
-//    }
 
     @Override
     protected void onPause() {

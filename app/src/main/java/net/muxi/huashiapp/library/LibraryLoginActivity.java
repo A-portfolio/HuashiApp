@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
@@ -23,14 +22,10 @@ public class LibraryLoginActivity extends ToolbarActivity{
     LoginEditText mEditUserName;
     @Bind(R.id.edit_password)
     LoginEditText mEditPassword;
-    @Bind(R.id.tv_tips)
-    TextView mTvTips;
     @Bind(R.id.login_center_layout)
     RelativeLayout mLoginCenterLayout;
     @Bind(R.id.btn_login)
     Button mBtnLogin;
-    @Bind(R.id.login_bottom_layout)
-    RelativeLayout mLoginBottomLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +36,6 @@ public class LibraryLoginActivity extends ToolbarActivity{
     }
 
     private void initView() {
-        mTvTips.setText(getResources().getString(R.string.tip_library_login));
         initToolbar("图书馆");
     }
 

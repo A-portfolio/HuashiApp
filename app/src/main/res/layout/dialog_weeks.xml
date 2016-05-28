@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tip_select_weeks"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/large_size"/>
+
+    <LinearLayout android:id="@+id/ll"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_centerHorizontal="true"
+                  android:layout_marginTop="40dp">
+
+        <CheckBox
+            android:id="@+id/checkbox_single_week"
+            android:layout_width="@dimen/course_convenient_select_width"
+            android:layout_height="@dimen/course_convenient_select_height"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/course_single_week"
+            android:textSize="@dimen/medium_size"/>
+
+        <CheckBox
+            android:id="@+id/checkbox_double_week"
+            android:layout_width="@dimen/course_convenient_select_width"
+            android:layout_height="@dimen/course_convenient_select_height"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/course_double_week"
+            android:textSize="@dimen/medium_size"/>
+
+        <CheckBox
+            android:id="@+id/checkbox_all_week"
+            android:layout_width="@dimen/course_convenient_select_width"
+            android:layout_height="@dimen/course_convenient_select_height"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/course_all_week"
+            android:textSize="@dimen/medium_size"/>
+
+    </LinearLayout>
+
+    <GridLayout
+        android:id="@+id/weeks_layout"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:rowCount="4"
+        android:columnCount="6"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll">
+
+    </GridLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/weeks_layout">
+
+        <TextView
+            android:id="@+id/btn_negative"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:padding="@dimen/course_dialog_btn_padding"
+            android:text="@string/btn_negative"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/large_size"/>
+
+        <TextView
+            android:id="@+id/btn_positive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:padding="@dimen/course_dialog_btn_padding"
+            android:text="@string/btn_positive"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/large_size"/>
+    </LinearLayout>
+</RelativeLayout>

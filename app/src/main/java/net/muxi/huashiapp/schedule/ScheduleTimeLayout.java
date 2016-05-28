@@ -57,9 +57,9 @@ public class ScheduleTimeLayout extends LinearLayout {
         if (getScrollY() + y < 0) {
             y = -getScrollY();
         } else if ((getScrollY() + y) >
-                (TimeTable.COURSE_TIME_HEIGHT * 7 - DimensUtil.getScreenHeight() + ScheduleActivity.SELECT_WEEK_LAYOUT_HEIGHT * flag
+                (TimeTable.COURSE_TIME_HEIGHT * 7 - DimensUtil.getScreenHeight() + ScheduleActivity.SELECT_WEEK_LAYOUT_HEIGHT * flag + ScheduleActivity.WEEK_LAYOUT_HEIGHT
                         + DimensUtil.getActionbarHeight() + DimensUtil.getStatusBarHeight() + TimeTable.LITTLE_VIEW_HEIGHT)) {
-            y = TimeTable.COURSE_TIME_HEIGHT * 7 - getScrollY() - DimensUtil.getScreenHeight() + ScheduleActivity.SELECT_WEEK_LAYOUT_HEIGHT * flag
+            y = TimeTable.COURSE_TIME_HEIGHT * 7 - getScrollY() - DimensUtil.getScreenHeight() + ScheduleActivity.SELECT_WEEK_LAYOUT_HEIGHT * flag + ScheduleActivity.WEEK_LAYOUT_HEIGHT
                     + DimensUtil.getActionbarHeight() + DimensUtil.getStatusBarHeight() + TimeTable.LITTLE_VIEW_HEIGHT;
         }
         return y;
@@ -71,6 +71,7 @@ public class ScheduleTimeLayout extends LinearLayout {
         int scrollY = getScrollY();
         deltaX = checkPositionX(deltaX);
         deltaY = checkPositionY(deltaY, flag);
-        mScroller.startScroll(scrollX, scrollY, deltaX, deltaY, 1000);
+        mScroller.startScroll(scrollX, scrollY, deltaX, deltaY, 250);
+        invalidate();
     }
 }

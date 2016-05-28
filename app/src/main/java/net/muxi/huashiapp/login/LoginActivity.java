@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.MainLoginResponse;
@@ -44,14 +44,10 @@ public class LoginActivity extends AppCompatActivity {
     LoginEditText mEditUserName;
     @Bind(R.id.edit_password)
     LoginEditText mEditPassword;
-    @Bind(R.id.tv_tips)
-    TextView mTvTips;
     @Bind(R.id.login_center_layout)
     RelativeLayout mLoginCenterLayout;
     @Bind(R.id.btn_login)
     Button mBtnLogin;
-    @Bind(R.id.login_bottom_layout)
-    RelativeLayout mLoginBottomLayout;
 
     private User mUser = new User();
 
@@ -74,6 +70,13 @@ public class LoginActivity extends AppCompatActivity {
 //        ZhugeSDK.getInstance().openLog();
 
         init();
+        mBtnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         AlarmUtil.register(this);
 
@@ -94,8 +97,8 @@ public class LoginActivity extends AppCompatActivity {
 //        } catch (JSONException e) {
 //            e.printStackTrace();
 //        }
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//        startActivity(intent);
 
 
 //        if (!checkNetwork()) {

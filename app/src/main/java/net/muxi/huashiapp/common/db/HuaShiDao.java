@@ -4,7 +4,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.common.data.Course;
+import net.muxi.huashiapp.common.util.PreferenceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +16,17 @@ import java.util.List;
 public class HuaShiDao {
 
     private SQLiteDatabase db;
+    private PreferenceUtil sp;
 
     public HuaShiDao() {
         db = DateBase.getInstance();
+        sp = new PreferenceUtil();
     }
 
 
     //插入当前用户的搜索记录,如果当前用户没有登录则为 null
     public void insertSearchHistory(String book) {
-        String libraryId = App.sLibrarayUser.getLibraryId();
+        String libraryId = sp.getString(PreferenceUtil.LIBRARY_ID);
         db.execSQL("INSERT INTO " + DateBase.TABLE_SEARCH_HISTORY +
                         " VALUES(NULL,?,? )",
                 new String[]{libraryId, book});
@@ -32,8 +35,8 @@ public class HuaShiDao {
 
 
     public List<String> loadSearchHistory() {
-        String libraryId = App.sLibrarayUser.getLibraryId();
-        Log.d("tag",libraryId);
+        String libraryId = sp.getString(PreferenceUtil.LIBRARY_ID);
+        Log.d("tag", libraryId);
         List<String> records = new ArrayList<>();
         Cursor cursor;
         cursor = db.rawQuery("SELECT * FROM " + DateBase.TABLE_SEARCH_HISTORY +
@@ -46,7 +49,7 @@ public class HuaShiDao {
 //                records[i] = cursor.getString(cursor.getColumnIndex(DateBase.KEY_BOOK));
 //                Log.d("cursor",records[i]);
                 records.add(cursor.getString(cursor.getColumnIndex(DateBase.KEY_BOOK)));
-                i ++;
+                i++;
             }
         }
         cursor.close();
@@ -55,13 +58,81 @@ public class HuaShiDao {
 
 
     public void deleteAllHistory() {
-        String libraryId = App.sLibrarayUser.getLibraryId();
+        String libraryId = sp.getString(PreferenceUtil.LIBRARY_ID);
         db.execSQL("DELETE * FROM " + DateBase.TABLE_SEARCH_HISTORY +
                 " WHERE " + DateBase.KEY_LIBRARY_USER_ID + " = ? " +
                 new String[]{libraryId});
     }
 
+    //添加课程
+    public void insertCourse(String courseName, String teacher, List<String> weeks, String weekday, int time, int duration, String place, String remind) {
+        String userId = sp.getString(PreferenceUtil.STUDENT_ID,"0");
+        for (int i = 0; i < weeks.size(); i++) {
+            db.execSQL("INSERT INTO " + DateBase.TABLE_COURSE + " values (null,?,?,?,?,?, " + time + "," + duration + ",?,?) ",
+                    new String[]{
+                            userId,
+                            courseName,
+                            teacher,
+                            weeks.get(i),
+                            weekday,
+                            place,
+                            remind
+                    });
+        }
+        Log.d("insert",courseName);
+    }
 
+    //获取指定周的课程
+    public List<Course> loadCourse(String weeks) {
+        String userId = sp.getString(PreferenceUtil.STUDENT_ID);
+        Cursor cursor =
+                db.rawQuery("SELECT * FROM " +
+                                DateBase.TABLE_COURSE + " WHERE " +
+                                DateBase.KEY_USER_ID + " =? AND " +
+                                DateBase.KEY_WEEKS + " = ?",
+                        new String[]{
+                                userId,
+                                weeks
+                        });
+        List<Course> courses = new ArrayList<>();
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                Course course = new Course();
+                course.setCourseName(cursor.getString(cursor.getColumnIndex(DateBase.KEY_COURSE_NAME)));
+                course.setTeacher(cursor.getString(cursor.getColumnIndex(DateBase.KEY_TEACHER)));
+                course.setWeeks(cursor.getString(cursor.getColumnIndex(DateBase.KEY_WEEKS)));
+                course.setWeekday(cursor.getString(cursor.getColumnIndex(DateBase.KEY_WEEKDAY)));
+                course.setTime(cursor.getInt(cursor.getColumnIndex(DateBase.KEY_TIME)));
+                course.setDuration(cursor.getInt(cursor.getColumnIndex(DateBase.KEY_DURATION)));
+                course.setPlace(cursor.getString(cursor.getColumnIndex(DateBase.KEY_PLACE)));
+                course.setRemind(cursor.getString(cursor.getColumnIndex(DateBase.KEY_REMIND)));
+                courses.add(course);
+            }
+        }
+        return courses;
+    }
+
+    //删除指定的课程
+    public void deleteCourse(String courseName, String teacher) {
+        String userId = sp.getString(PreferenceUtil.STUDENT_ID);
+        db.execSQL("DELETE * FROM " + DateBase.TABLE_COURSE +
+                        " WHERE " + DateBase.KEY_COURSE_NAME + " = ? and" +
+                        " WHERE " + DateBase.KEY_TEACHER + " =? ",
+                new String[]{
+                        courseName,
+                        teacher
+                });
+    }
+
+    //删除所有的课程
+    public void deleteAllCourse() {
+        String userId = sp.getString(PreferenceUtil.STUDENT_ID);
+        db.execSQL("DELETE * FROM " + DateBase.TABLE_COURSE +
+                        " WHERE " + DateBase.KEY_USER_ID + " =? ",
+                new String[]{
+                        userId
+                });
+    }
 
 
 }

@@ -22,7 +22,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
     private OnItemClickListener mOnItemClickListener;
     private Book book;
 
-
     public LibraryAdapter(String[] titles) {
         super();
         mTitles = titles;
@@ -117,7 +116,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
         private void beginAnim(View v) {
         }
-
 
     }
 }

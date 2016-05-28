@@ -38,8 +38,8 @@ dependencies {
     compile 'com.github.orhanobut:logger:1.12'
     compile 'com.zhuge.analysis:visual:latest.integration'
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
-    compile 'com.miguelcatalan:materialsearchview:1.4.0'
     compile 'com.bigkoo:convenientbanner:2.0.5'
+    compile 'com.miguelcatalan:materialsearchview:1.4.0'
     compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
     compile files('libs/universal-image-loader-1.9.5.jar')
 }

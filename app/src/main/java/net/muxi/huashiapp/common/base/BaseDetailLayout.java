@@ -50,19 +50,18 @@ public class BaseDetailLayout extends FrameLayout {
 
     private Toolbar mToolbar;
 
+    //当scrollView 处于初始状态也就是scrollY为0的状态
     public static final int TOP_STATE = 0;
+    //toolbar 所处的状态
     public static final int TOOLBAR_APPEAR = 1;
     public static final int TOOLBAR_NOT_APPEAR = 2;
+    //当移除详情页的时候的状态
     public static final int REMOVE_TOOLBAR = 3;
-
-
-//    private View floatView;
-//    private ImageView navView;
 
     private int toolbarState = TOP_STATE;
 
     public static final int DURATION_ANIMATION = 250;
-
+    //能够下拉的的最小滑动距离
     public static final int DISTANCE_TO_SLIDE = DimensUtil.dp2px(80);
 
     public BaseDetailLayout(Context context) {
@@ -74,7 +73,6 @@ public class BaseDetailLayout extends FrameLayout {
         view = LayoutInflater.from(context).inflate(R.layout.view_base_detail, this, false);
         this.addView(view);
 
-//        initFloatView(context);
         initToolbar(context);
         Logger.init("basedetail")
                 .setMethodCount(1)
@@ -83,7 +81,6 @@ public class BaseDetailLayout extends FrameLayout {
         mScroller = new Scroller(context);
         mScrollView = (ScrollView) view.findViewById(R.id.scroll_view);
         mDetailContentLayout = (ContentLayout) view.findViewById(R.id.detail_content_layout);
-
 
         mScrollView.setVerticalScrollBarEnabled(false);
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -95,14 +92,14 @@ public class BaseDetailLayout extends FrameLayout {
                     slideDownToolabr();
                 }
                 if (mScrollView.getScrollY() < 2 * DimensUtil.getActionbarHeight()
-                        && toolbarState == TOOLBAR_APPEAR
-                        && toolbarState != REMOVE_TOOLBAR) {
+                        && toolbarState == TOOLBAR_APPEAR) {
                     slideUpToolbar();
-                    Logger.d("", getScrollY(), mScrollView.getScaleY());
+                    Logger.d("", getScrollY(), mScrollView.getScrollY());
 
                 }
             }
         });
+
     }
 
 
@@ -125,6 +122,7 @@ public class BaseDetailLayout extends FrameLayout {
         mDetailContentLayout.smoothScrollTo(-mScrollView.getScrollY() - DimensUtil.getScreenHeight());
 
     }
+
 
     public void addToolbar() {
         FrameLayout.LayoutParams barParams = new FrameLayout.LayoutParams(
@@ -194,6 +192,7 @@ public class BaseDetailLayout extends FrameLayout {
         invalidate();
     }
 
+
     //在滑到详情页顶端的时候拦截触摸事件
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -231,8 +230,8 @@ public class BaseDetailLayout extends FrameLayout {
             case MotionEvent.ACTION_DOWN:
                 mYDown = (int) event.getY();
                 mCurY = mYDown;
-
                 break;
+
             case MotionEvent.ACTION_MOVE:
                 if (mVelocityTracker == null) {
                     mVelocityTracker = VelocityTracker.obtain();
@@ -248,37 +247,29 @@ public class BaseDetailLayout extends FrameLayout {
                 mCurY = (int) event.getY();
                 mVelocityTracker.addMovement(event);
                 mVelocityTracker.computeCurrentVelocity(1000);
-
                 break;
+
             case MotionEvent.ACTION_UP:
                 if (this.getScrollY() < 0 && mVelocityTracker.getYVelocity() > 500) {
                     this.smoothScrollTo(-DimensUtil.getScreenHeight());
                     this.removeView(mToolbar);
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
                     App.getCurrentActivity().onBackPressed();
-//                        }
-//                    }, DURATION_ANIMATION);
                 } else if ((this.getScrollY() < 0) && (this.getScrollY() > -DISTANCE_TO_SLIDE)) {
                     this.smoothScrollTo(0);
                     break;
                 } else if (this.getScrollY() < -DISTANCE_TO_SLIDE) {
                     this.smoothScrollTo(-DimensUtil.getScreenHeight());
                     this.removeView(mToolbar);
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
                     App.getCurrentActivity().onBackPressed();
-//                        }
-//                    }, DURATION_ANIMATION);
                 }
                 break;
+
             case MotionEvent.ACTION_CANCEL:
                 if (mVelocityTracker != null) {
                     mVelocityTracker.recycle();
                 }
                 break;
+
         }
         return true;
 

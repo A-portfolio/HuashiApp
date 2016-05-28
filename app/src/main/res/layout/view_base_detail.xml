@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
-        android:paddingTop="120dp">
+        android:paddingTop="@dimen/library_detail_margin_top">
 
         <net.muxi.huashiapp.library.ContentLayout
             android:id="@+id/detail_content_layout"

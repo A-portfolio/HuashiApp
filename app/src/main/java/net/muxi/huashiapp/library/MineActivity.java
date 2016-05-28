@@ -8,8 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.db.HuaShiDao;
@@ -52,7 +50,7 @@ public class MineActivity extends BaseActivity {
             Log.d("dao",suggestions[i]);
         }
         mSearchView.setSuggestions(suggestions);
-        mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+        mSearchView.setOnQueryTextListener(new MySearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -63,10 +61,10 @@ public class MineActivity extends BaseActivity {
                 return false;
             }
         });
-        mSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+        mSearchView.setOnSearchViewListener(new MySearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
-                mSearchView.showSuggestions();
+//                mSearchView.showSuggestions();
 
             }
 

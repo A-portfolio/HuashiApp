@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -18,9 +17,12 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.util.DimensUtil;
+import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.widget.TimeTable;
 
 import butterknife.Bind;
@@ -33,7 +35,6 @@ import butterknife.OnClick;
 public class ScheduleActivity extends ToolbarActivity {
 
 
-    public static int n = 0;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.appbar_layout)
@@ -51,23 +52,37 @@ public class ScheduleActivity extends ToolbarActivity {
     @Bind(R.id.schedule_hscrollview)
     WeekHScrollView mScheduleHscrollview;
 
+    private PreferenceUtil sp;
+
     private String weekFormat = "第%d周";
 
+    private HuaShiDao dao;
+
+    //选择周数的 view 滑动时间
+    private static final int DURATION_SLIDE = 200;
+
     private TimeTable mTimeTable;
-    private float mx, my;
+
+    //标识当前处于是否选择周数显示的状态
     private boolean clickFlag = false;
-    public static final int SELECT_WEEK_LAYOUT_HEIGHT = DimensUtil.dp2px(30);
+    //选择周数layout 的高度
+    public static final int SELECT_WEEK_LAYOUT_HEIGHT = DimensUtil.dp2px(40);
+    //显示周数的 layout的高度
+    public static final int WEEK_LAYOUT_HEIGHT = DimensUtil.dp2px(36);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         ButterKnife.bind(this);
-        init();
+        App.setCurrentActivity(this);
+        dao = new HuaShiDao();
+        sp = new PreferenceUtil();
+        initView();
         Logger.init();
     }
 
-    private void init() {
+    private void initView() {
         mTimeTable = new TimeTable(this);
         LinearLayout.LayoutParams timeTableParams = new
                 LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -75,24 +90,23 @@ public class ScheduleActivity extends ToolbarActivity {
         mScheduleLl.addView(mTimeTable);
 
         initToolbar("课程表");
-
+        // TODO: 16/5/25 debug
+        mTvScheduleWeekNumber.setText(String.format(weekFormat, sp.getInt(PreferenceUtil.CUR_WEEK, 8)));
+        mScheduleHscrollview.setCurWeek(sp.getInt(PreferenceUtil.CUR_WEEK,8));
         mScheduleHscrollview.setOnWeekChangeListener(new OnWeekChangeListener() {
             @Override
             public void OnWeekChange(int week) {
+                //更新显示的当前周,更新课表
                 mTvScheduleWeekNumber.setText(String.format(weekFormat, week));
+                mTimeTable.changeTheDate(week - sp.getInt(PreferenceUtil.CUR_WEEK,8));
+                mTimeTable.removeCourse();
+                mTimeTable.setCourse(dao.loadCourse(mTvScheduleWeekNumber.getText().toString()));
             }
         });
+
+        mTimeTable.setCourse(dao.loadCourse(mTvScheduleWeekNumber.getText().toString()));
     }
 
-    public int getActionbarHeight() {
-        int actionBarHeight = 0;
-        TypedValue tv = new TypedValue();
-        if (this.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-            actionBarHeight =
-                    TypedValue.complexToDimensionPixelSize(tv.data, this.getResources().getDisplayMetrics());
-        }
-        return actionBarHeight;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -110,13 +124,6 @@ public class ScheduleActivity extends ToolbarActivity {
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(R.id.schedule_framelayout, new AddCourseFragment());
                 ft.addToBackStack(null);
-
-                if (n == 0) {
-                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                } else {
-                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                }
-                n++;
                 ft.commit();
                 break;
         }
@@ -124,18 +131,12 @@ public class ScheduleActivity extends ToolbarActivity {
     }
 
 
-    //当周数改变时更改课程表
-//    @Override
-//    public void OnWeekChange(int week) {
-//        // TODO: 16/5/10  get the course of schedule
-////        mTimeTable.getCourse(week);
-//        mTvScheduleWeekNumber.setText(String.format(weekFormat, week));
-//    }
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0){
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
             setTitle("课程表");
+            mTimeTable.setCourse(dao.loadCourse(mTvScheduleWeekNumber.getText().toString()));
         }
         super.onBackPressed();
     }
@@ -145,36 +146,37 @@ public class ScheduleActivity extends ToolbarActivity {
         super.onDestroy();
     }
 
+
     //选择查看第几周课程的点击事件
     @OnClick(R.id.week_number_layout)
     public void onClick() {
         if (clickFlag) {
             beginBackAnim();
-            clickFlag = !clickFlag;
-            mTimeTable.setTouchFlag(TimeTable.TOUCH_FLAG_BACK);
         } else {
             beginExtendAnim();
-            clickFlag = !clickFlag;
-            mTimeTable.setTouchFlag(TimeTable.TOUCH_FLAG_EXTEND);
         }
     }
 
-    private void beginExtendAnim() {
+    public void beginExtendAnim() {
         ObjectAnimator animator = ObjectAnimator.ofFloat(mScheduleLl,
                 "y",
                 0,
-                SELECT_WEEK_LAYOUT_HEIGHT);
-        animator.setDuration(200);
+                WEEK_LAYOUT_HEIGHT);
+        animator.setDuration(DURATION_SLIDE);
         animator.start();
+        clickFlag = !clickFlag;
+        mTimeTable.setTouchFlag(TimeTable.TOUCH_FLAG_EXTEND);
     }
 
-    private void beginBackAnim() {
+    public void beginBackAnim() {
         ObjectAnimator animator = ObjectAnimator.ofFloat(mScheduleLl,
                 "y",
-                SELECT_WEEK_LAYOUT_HEIGHT,
+                WEEK_LAYOUT_HEIGHT,
                 0);
-        animator.setDuration(200);
+        animator.setDuration(DURATION_SLIDE);
         animator.start();
+        clickFlag = !clickFlag;
+        mTimeTable.setTouchFlag(TimeTable.TOUCH_FLAG_BACK);
 
     }
 }

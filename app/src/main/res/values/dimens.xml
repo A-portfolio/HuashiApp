@@ -7,12 +7,14 @@
     <dimen name="large_size">24sp</dimen>
     <dimen name="medium_size">18sp</dimen>
     <dimen name="small_size">14sp</dimen>
-
-    <dimen name="login_horizontal_margin">48dp</dimen>
-
-    <dimen name="login_edit_text_size">18sp</dimen>
+    <dimen name="login_edit_text_size">22sp</dimen>
     <dimen name="login_btn_text_size">22sp</dimen>
     <dimen name="login_hint_text_size">16sp</dimen>
+    <dimen name="schedule_add_course_size">22sp</dimen>
+
+    <dimen name="login_horizontal_margin">56dp</dimen>
+
+
 
     <dimen name="schedule_tv_course_number">18sp</dimen>
     <dimen name="schedule_tv_course_time">18sp</dimen>
@@ -23,11 +25,16 @@
     <dimen name="schedule_content_height">735dp</dimen>
     <dimen name="schedule_week_day_width">70dp</dimen>
     <dimen name="schedule_course_time_height">105dp</dimen>
-    <dimen name="schedule_layout_week_height">30dp</dimen>
-    <dimen name="schedule_layout_select_week_height">30dp</dimen>
+    <dimen name="schedule_layout_week_height">36dp</dimen>
+    <dimen name="schedule_layout_select_week_height">40dp</dimen>
+    <dimen name="schedule_vertical_margin">20dp</dimen>
+    <dimen name="course_convenient_select_height">40dp</dimen>
+    <dimen name="course_convenient_select_width">60dp</dimen>
+    <dimen name="course_dialog_btn_padding">10dp</dimen>
 
     <dimen name="library_searchview_height">48dp</dimen>
     <dimen name="library_searchview_marginright">64dp</dimen>
+    <dimen name="library_detail_margin_top">48dp</dimen>
 
 
 </resources>

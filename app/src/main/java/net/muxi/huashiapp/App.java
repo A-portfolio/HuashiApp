@@ -24,7 +24,7 @@ public class App extends Application {
 
     //获取上次的已经登录的用户账号信息
     public static User sUser = new User();
-    public static LibrarayUser sLibrarayUser= new LibrarayUser();
+    public static LibrarayUser sLibrarayUser = new LibrarayUser();
 
     private PreferenceUtil sp;
 
@@ -41,13 +41,13 @@ public class App extends Application {
         sContext = getApplicationContext();
         sp = new PreferenceUtil();
         //delete after
-        Log.d("app","oncreate");
-        sp.saveString(PreferenceUtil.STUDENT_ID,"0");
+        Log.d("app", "oncreate");
+        sp.saveString(PreferenceUtil.STUDENT_ID, "0");
         sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, "0"));
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
 
         //delete after
-        sp.saveString(PreferenceUtil.LIBRARY_ID,"0");
+        sp.saveString(PreferenceUtil.LIBRARY_ID, "0");
         sLibrarayUser.setLibraryId(sp.getString(PreferenceUtil.LIBRARY_ID, "0"));
         sLibrarayUser.setLibraryPwd(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
 
