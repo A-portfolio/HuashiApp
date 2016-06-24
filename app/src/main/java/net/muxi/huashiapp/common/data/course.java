@@ -8,19 +8,19 @@ public class Course {
     private String courseName;
     private String teacher;
     private String weeks;
-    private String weekday;
-    private int time;
-    private int duration;
+    private int day;
+    private int start;
+    private int during;
     private String place;
     private String remind;
 
 
-    public int getDuration() {
-        return duration;
+    public int getDuring() {
+        return during;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setDuring(int during) {
+        this.during = during;
     }
 
     public String getCourseName() {
@@ -47,20 +47,20 @@ public class Course {
         this.weeks = weeks;
     }
 
-    public String getWeekday() {
-        return weekday;
+    public int getDay() {
+        return day;
     }
 
-    public void setWeekday(String weekday) {
-        this.weekday = weekday;
+    public void setDay(int day) {
+        this.day = day;
     }
 
-    public int getTime() {
-        return time;
+    public int getStart() {
+        return start;
     }
 
-    public void setTime(int time) {
-        this.time = time;
+    public void setStart(int start) {
+        this.start = start;
     }
 
     public String getPlace() {

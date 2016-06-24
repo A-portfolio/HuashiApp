@@ -7,8 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Space;
 
+import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 
@@ -21,12 +21,10 @@ import butterknife.OnClick;
  */
 public class LibrarySearchActivity extends ToolbarActivity {
 
-    @Bind(R.id.center_space)
-    Space mCenterSpace;
-    @Bind(R.id.search_view)
-    EditText mSearchView;
     @Bind(R.id.btn_search)
     Button mBtnSearch;
+    @Bind(R.id.edit_search_view)
+    EditText mEditSearchView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,8 +35,7 @@ public class LibrarySearchActivity extends ToolbarActivity {
     }
 
     private void initView() {
-        initToolbar("图书馆");
-
+        setTitle("图书馆");
     }
 
 
@@ -53,12 +50,17 @@ public class LibrarySearchActivity extends ToolbarActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_login:
-                Intent intent = new Intent(this,MineActivity.class);
+                Intent intent = new Intent(this, MineActivity.class);
                 startActivity(intent);
 
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private String getQueryText() {
+        return mEditSearchView.getText().toString();
+    }
+
 
     @Override
     protected void onResume() {
@@ -73,6 +75,8 @@ public class LibrarySearchActivity extends ToolbarActivity {
     @OnClick(R.id.btn_search)
     public void onClick() {
         Intent intent = new Intent(this, LibraryActivity.class);
+        String queryText = getQueryText();
+        intent.putExtra(AppConstants.LIBRARY_QUERY_TEXT,queryText);
         startActivity(intent);
     }
 }

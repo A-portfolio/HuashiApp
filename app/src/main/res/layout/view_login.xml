@@ -42,9 +42,10 @@
             android:hint="@string/tip_pwd_text"
             android:inputType="textPassword"
             android:maxLines="1"
+            android:imeOptions="actionDone"
             android:layout_marginTop="32dp"
             android:singleLine="true"
-            android:textColorHint="@color/colorPrimary"
+            android:textColorHint="@color/hintColor"
             android:textSize="@dimen/login_edit_text_size"/>
     </RelativeLayout>
 

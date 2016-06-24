@@ -18,9 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Scroller;
 
-import com.orhanobut.logger.Logger;
-
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.library.ContentLayout;
@@ -38,6 +35,8 @@ public class BaseDetailLayout extends FrameLayout {
     ScrollView mScrollView;
     @Bind(R.id.detail_content_layout)
     ContentLayout mDetailContentLayout;
+
+    private BaseActivity mContext;
 
     private View view;
 
@@ -64,19 +63,18 @@ public class BaseDetailLayout extends FrameLayout {
     //能够下拉的的最小滑动距离
     public static final int DISTANCE_TO_SLIDE = DimensUtil.dp2px(80);
 
-    public BaseDetailLayout(Context context) {
+    public BaseDetailLayout(BaseActivity context) {
         this(context, null);
     }
 
-    public BaseDetailLayout(final Context context, AttributeSet attrs) {
+    public BaseDetailLayout(BaseActivity context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
+
         view = LayoutInflater.from(context).inflate(R.layout.view_base_detail, this, false);
         this.addView(view);
 
         initToolbar(context);
-        Logger.init("basedetail")
-                .setMethodCount(1)
-                .hideThreadInfo();
 
         mScroller = new Scroller(context);
         mScrollView = (ScrollView) view.findViewById(R.id.scroll_view);
@@ -94,7 +92,6 @@ public class BaseDetailLayout extends FrameLayout {
                 if (mScrollView.getScrollY() < 2 * DimensUtil.getActionbarHeight()
                         && toolbarState == TOOLBAR_APPEAR) {
                     slideUpToolbar();
-                    Logger.d("", getScrollY(), mScrollView.getScrollY());
 
                 }
             }
@@ -150,12 +147,13 @@ public class BaseDetailLayout extends FrameLayout {
     }
 
 
-    private void initToolbar(Context context) {
+    private void initToolbar(final Context context) {
         mToolbar = new Toolbar(context);
         mToolbar.setTitle("详情");
         mToolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         mToolbar.setNavigationIcon(R.drawable.ic_clear_white_24dp);
         mToolbar.setTitleTextColor(Color.WHITE);
+        mToolbar.setMinimumHeight(DimensUtil.getActionbarHeight());
         mToolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,7 +164,7 @@ public class BaseDetailLayout extends FrameLayout {
                         BaseDetailLayout.this.removeView(mToolbar);
                     }
                 }, DURATION_ANIMATION);
-                App.getCurrentActivity().onBackPressed();
+                mContext.onBackPressed();
             }
         });
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
@@ -253,14 +251,14 @@ public class BaseDetailLayout extends FrameLayout {
                 if (this.getScrollY() < 0 && mVelocityTracker.getYVelocity() > 500) {
                     this.smoothScrollTo(-DimensUtil.getScreenHeight());
                     this.removeView(mToolbar);
-                    App.getCurrentActivity().onBackPressed();
+                    mContext.onBackPressed();
                 } else if ((this.getScrollY() < 0) && (this.getScrollY() > -DISTANCE_TO_SLIDE)) {
                     this.smoothScrollTo(0);
                     break;
                 } else if (this.getScrollY() < -DISTANCE_TO_SLIDE) {
                     this.smoothScrollTo(-DimensUtil.getScreenHeight());
                     this.removeView(mToolbar);
-                    App.getCurrentActivity().onBackPressed();
+                    mContext.onBackPressed();
                 }
                 break;
 

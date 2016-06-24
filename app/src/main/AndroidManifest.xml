@@ -34,7 +34,8 @@
 
 
         <activity android:name=".login.LoginActivity"
-                  android:launchMode="singleTask">
+                  android:launchMode="singleTask"
+                  android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -47,6 +48,8 @@
         <activity
             android:name=".schedule.ScheduleActivity"
             android:launchMode="singleTask"/>
+
+        <activity android:name=".schedule.AddCourseActivity"/>
 
         <activity android:name=".score.ScoreActivity"/>
 

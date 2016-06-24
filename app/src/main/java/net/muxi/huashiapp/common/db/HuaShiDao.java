@@ -65,21 +65,30 @@ public class HuaShiDao {
     }
 
     //添加课程
-    public void insertCourse(String courseName, String teacher, List<String> weeks, String weekday, int time, int duration, String place, String remind) {
-        String userId = sp.getString(PreferenceUtil.STUDENT_ID,"0");
-        for (int i = 0; i < weeks.size(); i++) {
-            db.execSQL("INSERT INTO " + DateBase.TABLE_COURSE + " values (null,?,?,?,?,?, " + time + "," + duration + ",?,?) ",
-                    new String[]{
-                            userId,
-                            courseName,
-                            teacher,
-                            weeks.get(i),
-                            weekday,
-                            place,
-                            remind
-                    });
-        }
-        Log.d("insert",courseName);
+//    public void insertCourse(String courseName, String teacher, String weeks, int day, int time, int duration, String place, String remind) {
+//        String userId = sp.getString(PreferenceUtil.STUDENT_ID, "0");
+//        db.execSQL("INSERT INTO " + DateBase.TABLE_COURSE + " values (null,?,?,?,?, " + day + "," + time + "," + duration + ",?,?) ",
+//                new String[]{
+//                        userId,
+//                        courseName,
+//                        teacher,
+//                        weeks,
+//                        place,
+//                        remind
+//                });
+//        Log.d("insert", courseName);
+//    }
+    public void insertCourse(Course course) {
+        String userId = sp.getString(PreferenceUtil.STUDENT_ID, "0");
+        db.execSQL("INSERT INTO " + DateBase.TABLE_COURSE + " values (null,?,?,?,?, " + course.getDay() + "," + course.getStart() + "," + course.getDuring() + ",?,?) ",
+                new String[]{
+                        userId,
+                        course.getCourseName(),
+                        course.getTeacher(),
+                        course.getWeeks(),
+                        course.getPlace(),
+                        course.getRemind()
+                });
     }
 
     //获取指定周的课程
@@ -88,25 +97,26 @@ public class HuaShiDao {
         Cursor cursor =
                 db.rawQuery("SELECT * FROM " +
                                 DateBase.TABLE_COURSE + " WHERE " +
-                                DateBase.KEY_USER_ID + " =? AND " +
-                                DateBase.KEY_WEEKS + " = ?",
+                                DateBase.KEY_USER_ID + " =?",
                         new String[]{
                                 userId,
-                                weeks
                         });
+
         List<Course> courses = new ArrayList<>();
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
-                Course course = new Course();
-                course.setCourseName(cursor.getString(cursor.getColumnIndex(DateBase.KEY_COURSE_NAME)));
-                course.setTeacher(cursor.getString(cursor.getColumnIndex(DateBase.KEY_TEACHER)));
-                course.setWeeks(cursor.getString(cursor.getColumnIndex(DateBase.KEY_WEEKS)));
-                course.setWeekday(cursor.getString(cursor.getColumnIndex(DateBase.KEY_WEEKDAY)));
-                course.setTime(cursor.getInt(cursor.getColumnIndex(DateBase.KEY_TIME)));
-                course.setDuration(cursor.getInt(cursor.getColumnIndex(DateBase.KEY_DURATION)));
-                course.setPlace(cursor.getString(cursor.getColumnIndex(DateBase.KEY_PLACE)));
-                course.setRemind(cursor.getString(cursor.getColumnIndex(DateBase.KEY_REMIND)));
-                courses.add(course);
+                if (cursor.getString(cursor.getColumnIndex(DateBase.KEY_WEEKS)).contains(weeks)) {
+                    Course course = new Course();
+                    course.setCourseName(cursor.getString(cursor.getColumnIndex(DateBase.KEY_COURSE_NAME)));
+                    course.setTeacher(cursor.getString(cursor.getColumnIndex(DateBase.KEY_TEACHER)));
+                    course.setWeeks(cursor.getString(cursor.getColumnIndex(DateBase.KEY_WEEKS)));
+                    course.setDay(cursor.getInt(cursor.getColumnIndex(DateBase.KEY_WEEKDAY)));
+                    course.setStart(cursor.getInt(cursor.getColumnIndex(DateBase.KEY_TIME)));
+                    course.setDuring(cursor.getInt(cursor.getColumnIndex(DateBase.KEY_DURATION)));
+                    course.setPlace(cursor.getString(cursor.getColumnIndex(DateBase.KEY_PLACE)));
+                    course.setRemind(cursor.getString(cursor.getColumnIndex(DateBase.KEY_REMIND)));
+                    courses.add(course);
+                }
             }
         }
         return courses;

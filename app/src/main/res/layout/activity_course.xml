@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#ffffff">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff">
+
+    <include android:id="@+id/view_toolbar"
+             layout="@layout/view_toolbar"/>
 
     <LinearLayout android:id="@+id/layout_course_add"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
+                  android:layout_below="@+id/view_toolbar"
                   android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                  android:layout_marginTop="@dimen/activity_vertical_margin"
                   android:layout_marginRight="@dimen/activity_horizontal_margin"
+                  android:layout_marginTop="@dimen/activity_vertical_margin"
                   android:background="#ffffff"
                   android:elevation="8dp"
                   android:orientation="vertical">
@@ -18,7 +22,7 @@
                   android:layout_width="match_parent"
                   android:layout_height="60dp"
                   android:background="@null"
-                  android:drawableLeft="@drawable/ic_date_range_black_48dp"
+                  android:drawableLeft="@drawable/ic_date_range_black_24dp"
                   android:hint="课程名称"
                   android:textSize="@dimen/schedule_add_course_size"/>
 
@@ -49,7 +53,7 @@
                   android:layout_height="60dp"
                   android:drawableLeft="@drawable/ic_access_time_black_24dp"
                   android:gravity="center_vertical"
-                  android:text="添加上课时间"
+                  android:text="请添加上课时间"
                   android:textSize="@dimen/schedule_add_course_size"/>
 
         <ImageView android:layout_width="match_parent" android:layout_height="1dp"

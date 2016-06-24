@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <declare-styleable name="LoginEditText">
-        <attr name="topLine" format="boolean" />
-        <attr name="hint" format="string" />
-        <attr name="captcha" format="boolean" />
-        <attr name="showPassword" format="boolean" />
+        <attr name="topLine" format="boolean"/>
+        <attr name="hint" format="string"/>
+        <attr name="captcha" format="boolean"/>
+        <attr name="showPassword" format="boolean"/>
         <attr name="loginInput" format="enum">
-            <enum name="text" value="0" />
-            <enum name="password" value="1" />
-            <enum name="number" value="2" />
-            <enum name="globalKey" value="3" />
+            <enum name="text" value="0"/>
+            <enum name="password" value="1"/>
+            <enum name="number" value="2"/>
+            <enum name="globalKey" value="3"/>
         </attr>
-        <attr name="digits" format="string" />
+        <attr name="digits" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="MySearchView">
+        <attr name="searchBackground" format="integer"/>
+        <attr name="searchClearIcon" format="integer"/>
+        <attr name="searchBackIcon" format="integer"/>
+        <attr name="searchSuggestionIcon" format="integer"/>
+        <attr name="searchSuggestionBackground" format="integer"/>
+        <attr name="android:hint"/>
+        <attr name="android:textColorHint"/>
+        <attr name="android:textColor"/>
     </declare-styleable>
 
 </resources>

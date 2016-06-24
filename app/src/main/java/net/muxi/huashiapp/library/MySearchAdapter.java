@@ -2,83 +2,36 @@ package net.muxi.huashiapp.library;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.muxi.huashiapp.R;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by ybao on 16/5/23.
  */
-public class MySearchAdapter extends BaseAdapter implements Filterable{
-    private ArrayList<String> data;
+public class MySearchAdapter extends BaseAdapter {
+
     private String[] suggestions;
     private Drawable suggestionIcon;
     private LayoutInflater inflater;
-    private boolean ellipsize;
 
     public MySearchAdapter(Context context, String[] suggestions) {
         inflater = LayoutInflater.from(context);
-        data = new ArrayList<>();
         this.suggestions = suggestions;
     }
 
-    public MySearchAdapter(Context context, String[] suggestions, Drawable suggestionIcon, boolean ellipsize) {
+    public MySearchAdapter(Context context, String[] suggestions, Drawable suggestionIcon) {
         inflater = LayoutInflater.from(context);
-        data = new ArrayList<>();
         this.suggestions = suggestions;
         this.suggestionIcon = suggestionIcon;
-        this.ellipsize = ellipsize;
-    }
-
-    @Override
-    public Filter getFilter() {
-        Filter filter = new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults filterResults = new FilterResults();
-                if (!TextUtils.isEmpty(constraint)) {
-
-                    // Retrieve the autocomplete results.
-                    List<String> searchData = new ArrayList<>();
-
-                    for (String string : suggestions) {
-                        if (string.toLowerCase().startsWith(constraint.toString().toLowerCase())) {
-                            searchData.add(string);
-                        }
-                    }
-
-                    // Assign the data to the FilterResults
-                    filterResults.values = searchData;
-                    filterResults.count = searchData.size();
-                }else {
-
-                }
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                if (results.values != null) {
-                    data = (ArrayList<String>) results.values;
-                    notifyDataSetChanged();
-                }
-            }
-        };
-        return filter;
-    }
-
-    @Override
-    public int getCount() {
-        return suggestions.length;
     }
 
     @Override
@@ -87,45 +40,40 @@ public class MySearchAdapter extends BaseAdapter implements Filterable{
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-        SuggestionsViewHolder viewHolder;
-
+        SuggestionViewHolder viewHolder;
         if (convertView == null) {
-            convertView = inflater.inflate(com.miguelcatalan.materialsearchview.R.layout.suggest_item, parent, false);
-            viewHolder = new SuggestionsViewHolder(convertView);
+            convertView = inflater.inflate(R.layout.item_suggestion, parent, false);
+            viewHolder = new SuggestionViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = (SuggestionsViewHolder) convertView.getTag();
+            viewHolder = (SuggestionViewHolder) convertView.getTag();
         }
-
-        String currentListData = (String) getItem(position);
-
-        viewHolder.textView.setText(currentListData);
-        if (ellipsize) {
-            viewHolder.textView.setSingleLine();
-            viewHolder.textView.setEllipsize(TextUtils.TruncateAt.END);
-        }
+        viewHolder.mSuggestionText.setText((String) getItem(position));
 
         return convertView;
     }
 
-    private class SuggestionsViewHolder {
+    @Override
+    public int getCount() {
+        return suggestions.length;
+    }
 
-        TextView textView;
-        ImageView imageView;
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
-        public SuggestionsViewHolder(View convertView) {
-            textView = (TextView) convertView.findViewById(com.miguelcatalan.materialsearchview.R.id.suggestion_text);
-            if (suggestionIcon != null) {
-                imageView = (ImageView) convertView.findViewById(com.miguelcatalan.materialsearchview.R.id.suggestion_icon);
-                imageView.setImageDrawable(suggestionIcon);
-            }
+
+    public class SuggestionViewHolder {
+        @Bind(R.id.suggestion_icon)
+        ImageView mSuggestionIcon;
+        @Bind(R.id.suggestion_text)
+        TextView mSuggestionText;
+
+        public SuggestionViewHolder(View view) {
+            ButterKnife.bind(this, view);
+            mSuggestionIcon.setImageDrawable(suggestionIcon);
         }
     }
 }

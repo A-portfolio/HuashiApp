@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Created by december on 16/5/20.
  */
-public class BGAbanner extends AppCompatActivity implements AdapterView.OnItemClickListener, ViewPager.OnPageChangeListener, OnItemClickListener{
+public class BGAbanner extends AppCompatActivity implements AdapterView.OnItemClickListener, ViewPager.OnPageChangeListener, OnItemClickListener {
 
 
     private ConvenientBanner convenientBanner;//顶部广告栏控件
@@ -46,7 +46,7 @@ public class BGAbanner extends AppCompatActivity implements AdapterView.OnItemCl
     private void initViews() {
         convenientBanner = (ConvenientBanner) findViewById(R.id.convenientBanner);
         listView = (ListView) findViewById(R.id.listView);
-        transformerArrayAdapter = new ArrayAdapter(this,R.layout.adapter_transformer,transformerList);
+        transformerArrayAdapter = new ArrayAdapter(this, R.layout.adapter_transformer, transformerList);
         listView.setAdapter(transformerArrayAdapter);
         listView.setOnItemClickListener(this);
     }
@@ -79,7 +79,7 @@ public class BGAbanner extends AppCompatActivity implements AdapterView.OnItemCl
 //        },networkImages);
     }
 
-    private void initImageLoader(){
+    private void initImageLoader() {
         //网络图片例子,结合常用的图片缓存库UIL,根据需要换其他网络图片库
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
                 showImageForEmptyUri(R.drawable.ic_default_adimage)

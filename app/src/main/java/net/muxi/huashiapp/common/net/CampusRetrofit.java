@@ -17,10 +17,13 @@ public class CampusRetrofit{
     private final RetrofitService mRetrofitService;
 
     public CampusRetrofit() {
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+//        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+//        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
+                .addInterceptor(interceptor)
+//                .addNetworkInterceptor(interceptor)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()

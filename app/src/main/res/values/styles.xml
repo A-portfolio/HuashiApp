@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
     </style>
 
     <style name="ActionbarAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -29,7 +30,28 @@
     <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
+        <item name="android:windowTitleStyle">@color/colorAccent</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+
+
+    <style name="AlertDialogTheme">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:textColorPrimary">@color/colorAccent</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+        <item name="android:windowTitleStyle">@color/colorAccent</item>
+    </style>
+
+    <style name="searchview_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/library_icon_padding</item>
+        <item name="android:paddingRight">@dimen/library_icon_padding</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+
 
 </resources>

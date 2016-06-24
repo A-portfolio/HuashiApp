@@ -40,20 +40,38 @@ public class DateUtil {
         return toDate(calendar.getTime());
     }
 
-    //获取本周的所有日期,用在课程表里面,这边的 weekDistance 指代 距离本周的周数,例如本周为0,上周为-1
-    public static List<String> getTheWeekDate(int weekDistance) {
-        List<String> dateInWeek = new ArrayList<String>();
 
-//        Calendar calendar = Calendar.getInstance();
-        Date curDate = new Date();
-        String theWeek = toWeek(curDate);
-        int i = 0;
-        while(! theWeek.equals("周一") ){
-            i --;
-            theWeek = toWeek(curDate,i);
+    //获取本周的所有日期,用在课程表里面,这边的 weekDistance 指代 距离本周的周数,例如本周为0,上周为-1
+//    public static List<String> getTheWeekDate(int weekDistance) {
+//        List<String> dateInWeek = new ArrayList<String>();
+//
+////        Calendar calendar = Calendar.getInstance();
+//        Date curDate = new Date();
+//        String theWeek = toWeek(curDate);
+//        int i = 0;
+//        while(! theWeek.equals("周一") ){
+//            i --;
+//            theWeek = toWeek(curDate,i);
+//        }
+//        for (int j = 0 ;j < 7 ;j ++){
+//            dateInWeek.add(getTheDate(curDate,i + j + weekDistance * 7));
+//        }
+//        return dateInWeek;
+//    }
+
+
+    public static List<String> getTheWeekDate(int weekDistance){
+        List<String> dateInWeek = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date(System.currentTimeMillis());
+        calendar.setTime(date);
+        //求今天是一周的第几天
+        int w = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w < 1){
+            w = 1;
         }
-        for (int j = 0 ;j < 7 ;j ++){
-            dateInWeek.add(getTheDate(curDate,i + j + weekDistance * 7));
+        for (int j = 0;j < 7;j ++){
+            dateInWeek.add(getTheDate(date,j - w + 1 + weekDistance * 7));
         }
         return dateInWeek;
     }

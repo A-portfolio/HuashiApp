@@ -14,7 +14,7 @@
         android:layout_centerInParent="true"/>
 
     <EditText
-        android:id="@+id/search_view"
+        android:id="@+id/edit_search_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/library_searchview_height"
         android:layout_above="@+id/center_space"

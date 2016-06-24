@@ -8,7 +8,8 @@
     tools:context=".main.MainActivity">
 
 
-    <include layout="@layout/view_toolbar"/>
+    <include android:id="@+id/view_toolbar"
+             layout="@layout/view_toolbar"/>
 
     <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,10 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingTop="?attr/actionBarSize"
-        />
-
-
+        android:layout_below="@+id/view_toolbar"/>
 
 
 </RelativeLayout>

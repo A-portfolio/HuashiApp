@@ -62,6 +62,7 @@ public class WeekHScrollView extends HorizontalScrollView {
             mTextViews[i].setWidth(DimensUtil.dp2px(50));
             mTextViews[i].setGravity(Gravity.CENTER);
             mTextViews[i].setText(String.format(weekFormat, i + 1));
+            mTextViews[i].setTextColor(Color.BLACK);
             mTextViews[i].setLayoutParams(tvParams);
 
             mTextViews[i].setOnClickListener(new OnClickListener() {
@@ -70,7 +71,7 @@ public class WeekHScrollView extends HorizontalScrollView {
                     for (int j = 0;j < 24 ;j ++) {
                         if (v == mTextViews[j]) {
                             mOnWeekChangeListener.OnWeekChange(j + 1);
-                            v.setBackgroundColor(getResources().getColor(R.color.colorWeekLayout));
+                            v.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                             ((TextView) v).setTextColor(Color.WHITE);
                             //在重复按同一个TextView的情况下
                             if (j != mLastClickWeek - 1) {

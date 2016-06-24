@@ -3,8 +3,18 @@
     <color name="colorPrimary">#673AB7</color>
     <color name="colorPrimaryDark">#512DA8</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
 
-    <color name="hintColor">#c4c4c4</color>
+    <color name="hintColor">#C4C4C4</color>
     <color name="dividerGrey">#B6B6B6</color>
     <color name="colorWeekLayout">#8865C7</color>
+    <color name="shadow_bg">#50000000</color>
+
+    //课程表选择周数的渐变色
+    <color name="colorScheduleStart">#FF673ABA</color>
+    <color name="colorScheduleEnd">#C0673ABA</color>
+           
+
+    <color name="colorCheckBox">@color/colorAccent</color>
 </resources>

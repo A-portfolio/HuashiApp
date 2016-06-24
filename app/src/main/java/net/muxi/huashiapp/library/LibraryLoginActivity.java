@@ -2,11 +2,14 @@ package net.muxi.huashiapp.library;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Space;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.login.LoginEditText;
 
 import butterknife.Bind;
@@ -16,7 +19,7 @@ import butterknife.OnClick;
 /**
  * Created by ybao on 16/5/15.
  */
-public class LibraryLoginActivity extends ToolbarActivity{
+public class LibraryLoginActivity extends BaseActivity {
 
     @Bind(R.id.edit_userName)
     LoginEditText mEditUserName;
@@ -26,6 +29,12 @@ public class LibraryLoginActivity extends ToolbarActivity{
     RelativeLayout mLoginCenterLayout;
     @Bind(R.id.btn_login)
     Button mBtnLogin;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+    @Bind(R.id.appbar_layout)
+    AppBarLayout mAppbarLayout;
+    @Bind(R.id.space_divider)
+    Space mSpaceDivider;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +45,7 @@ public class LibraryLoginActivity extends ToolbarActivity{
     }
 
     private void initView() {
-        initToolbar("图书馆");
+        mToolbar.setTitle("图书馆");
     }
 
     @Override

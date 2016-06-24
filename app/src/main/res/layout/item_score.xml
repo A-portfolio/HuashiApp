@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_course_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/score_item_tv_margin"
+        android:text="@string/title_course_name"
+        android:textSize="@dimen/medium_size"/>
+
+    <TextView
+        android:id="@+id/tv_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_course_name"
+        android:text="@string/title_score"
+        android:textSize="@dimen/medium_size"/>
+
+    <TextView
+        android:id="@+id/tv_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/score_item_tv_margin"
+        android:text="@string/title_category"
+        android:textSize="@dimen/medium_size"/>
+
+    <TextView
+        android:id="@+id/tv_credit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tv_category"
+        android:text="@string/title_credit"
+        android:textSize="@dimen/medium_size"/>
+
+</RelativeLayout>

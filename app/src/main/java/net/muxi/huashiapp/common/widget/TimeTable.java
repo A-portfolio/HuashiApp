@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.util.DateUtil;
@@ -56,6 +55,12 @@ public class TimeTable extends FrameLayout {
 
     private float mx, my;
     private float curX, curY;
+
+    private OnScrollBottomListener mScrollBottomListener;
+
+    public interface OnScrollBottomListener {
+        public void onScrollBottom(boolean b);
+    }
 
     public TimeTable(Context context) {
         this(context, null);
@@ -196,6 +201,11 @@ public class TimeTable extends FrameLayout {
 
     }
 
+
+    public void setOnScrollBottomListener(OnScrollBottomListener onScrollBottomListener) {
+        mScrollBottomListener = onScrollBottomListener;
+    }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         return super.dispatchTouchEvent(ev);
@@ -217,7 +227,7 @@ public class TimeTable extends FrameLayout {
                 if ((mScheduleLayout.getScrollY() + my - curY) >
                         (TimeTable.COURSE_TIME_HEIGHT * 7 - DimensUtil.getScreenHeight() + ScheduleActivity.SELECT_WEEK_LAYOUT_HEIGHT
                                 + DimensUtil.getActionbarHeight() + DimensUtil.getStatusBarHeight() + TimeTable.LITTLE_VIEW_HEIGHT) && mTouchFlag == TOUCH_FLAG_EXTEND) {
-                    ((ScheduleActivity) App.getCurrentActivity()).beginBackAnim();
+                    mScrollBottomListener.onScrollBottom(true);
                     return false;
                 }
                 mWeekDayLayout.scrollBy((int) (mx - curX), 0, mTouchFlag);
@@ -252,45 +262,23 @@ public class TimeTable extends FrameLayout {
         for (int i = 0; i < courses.size(); i++) {
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    courses.get(i).getDuration() * COURSE_TIME_HEIGHT / 2
+                    courses.get(i).getDuring() * COURSE_TIME_HEIGHT / 2
             );
-            params.setMargins(0, COURSE_TIME_HEIGHT / 2 * courses.get(i).getTime(), 0, 0);
+            params.setMargins(0, COURSE_TIME_HEIGHT / 2 * courses.get(i).getStart(), 0, 0);
             TextView courseTv = new TextView(mContext);
             courseTv.setBackgroundColor(Color.BLUE);
-            courseTv.setText(courses.get(i).getCourseName() + "\n" +
-                    courses.get(i).getTeacher() + "\n" +
-                    courses.get(i).getPlace());
+            courseTv.setText(courses.get(i).getCourseName() + "\n@" +
+                    courses.get(i).getPlace() + "\n" +
+                    courses.get(i).getTeacher());
 
             int j = 0;
-            switch (courses.get(i).getWeeks()) {
-                case "星期一":
-                    j = 0;
-                    break;
-                case "星期二":
-                    j = 1;
-                    break;
-                case "星期三":
-                    j = 2;
-                    break;
-                case "星期四":
-                    j = 3;
-                    break;
-                case "星期五":
-                    j = 4;
-                    break;
-                case "星期六":
-                    j = 5;
-                    break;
-                case "星期天":
-                    j = 6;
-                    break;
-            }
+            j = courses.get(i).getDay() - 1;
             dayCourseLayout[j].addView(courseTv, params);
         }
     }
 
 
-    //删除所有课,在更新课程表视图时开始调用
+    //删除所有课,在更新课程表视图时开始调
     public void removeCourse() {
         for (int i = 0; i < 7; i++) {
             if (dayCourseLayout[i].getChildCount() > 0) {

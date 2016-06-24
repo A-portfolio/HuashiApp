@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.common.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -46,7 +47,6 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
         initActionBar();
         sp = new PreferenceUtil();
 
-
         preSchedule = getResources().getString(R.string.pre_schedule);
         preLibrary = getResources().getString(R.string.pre_library);
         preCard = getResources().getString(R.string.pre_card);
@@ -61,14 +61,9 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
         mCardPreference.setOnPreferenceChangeListener(this);
         mScorePreference.setOnPreferenceChangeListener(this);
         mAllPreference.setOnPreferenceChangeListener(this);
-
     }
 
     private void initView() {
-//        mBtnLogout = new Button(this);
-//        mBtnLogout.setText("注销");
-//        ListView v = getListView();
-//        v.addFooterView(mBtnLogout);
         mSchedulePreference = (CheckBoxPreference) findPreference(preSchedule);
         mLibraryPreference = (CheckBoxPreference) findPreference(preLibrary);
         mCardPreference = (CheckBoxPreference) findPreference(preCard);
@@ -82,6 +77,7 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
         mAppBarLayout = (AppBarLayout) LayoutInflater.from(this).inflate(R.layout.view_toolbar, root, false);
         mToolbar = (Toolbar) mAppBarLayout.findViewById(R.id.toolbar);
         mToolbar.setTitle("设置");
+        mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +125,7 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
         sp.saveBoolean(preScore, mScorePreference.isChecked());
         sp.saveBoolean(preAll, mAllPreference.isChecked());
     }
+
 
     private void loadAllValue() {
         mSchedulePreference.setDefaultValue(sp.getBoolean(preSchedule, true));

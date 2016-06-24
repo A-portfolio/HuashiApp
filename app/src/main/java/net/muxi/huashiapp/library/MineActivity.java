@@ -1,13 +1,15 @@
 package net.muxi.huashiapp.library;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.db.HuaShiDao;
@@ -37,40 +39,33 @@ public class MineActivity extends BaseActivity {
         ButterKnife.bind(this);
         dao = new HuaShiDao();
         initView();
+
+
     }
+
 
     private void initView() {
 
-        mToolbar.setTitle("library");
+        mToolbar.setTitle("我的图书馆");
+        mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         setSupportActionBar(mToolbar);
+
         suggestions = dao.loadSearchHistory().toArray(new String[0]);
-        Log.d("length",suggestions.length + "");
-        for (int i = 0;i < suggestions.length; i ++){
-            Log.d("dao",suggestions[i]);
-        }
         mSearchView.setSuggestions(suggestions);
         mSearchView.setOnQueryTextListener(new MySearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                dao.insertSearchHistory(query);
+                Intent intent = new Intent(MineActivity.this,LibraryActivity.class);
+                intent.putExtra(AppConstants.LIBRARY_QUERY_TEXT,query);
+                startActivity(intent);
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
-            }
-        });
-        mSearchView.setOnSearchViewListener(new MySearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-//                mSearchView.showSuggestions();
-
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-
             }
         });
 //        mSearchView.setSuggestions(dao.loadSearchHistory());
@@ -85,6 +80,14 @@ public class MineActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mSearchView.isSearchOpen()){
+            mSearchView.closeSearchView();
+            return;
+        }
+        super.onBackPressed();
+    }
 
     @Override
     protected void onResume() {

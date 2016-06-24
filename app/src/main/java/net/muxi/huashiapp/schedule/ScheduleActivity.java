@@ -1,8 +1,7 @@
 package net.muxi.huashiapp.schedule;
 
 import android.animation.ObjectAnimator;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -15,25 +14,33 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.orhanobut.logger.Logger;
-
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.common.data.Course;
+import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.db.HuaShiDao;
+import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.common.util.Base64Util;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.widget.TimeTable;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by ybao on 16/4/19.
  */
 public class ScheduleActivity extends ToolbarActivity {
 
+    // TODO: 16/6/21 添加课程时需要向服务端发 course
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -53,15 +60,16 @@ public class ScheduleActivity extends ToolbarActivity {
     WeekHScrollView mScheduleHscrollview;
 
     private PreferenceUtil sp;
-
-    private String weekFormat = "第%d周";
-
     private HuaShiDao dao;
 
     //选择周数的 view 滑动时间
     private static final int DURATION_SLIDE = 200;
 
     private TimeTable mTimeTable;
+
+    //当前用户所有的课程
+    private List<Course> mCourses;
+    private int mCurWeekNumber;
 
     //标识当前处于是否选择周数显示的状态
     private boolean clickFlag = false;
@@ -75,36 +83,87 @@ public class ScheduleActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         ButterKnife.bind(this);
-        App.setCurrentActivity(this);
+
         dao = new HuaShiDao();
         sp = new PreferenceUtil();
+        //获取当前周和当前用户的所有课程
+        getCurWeek();
+        getCurCourses();
+
         initView();
-        Logger.init();
+    }
+
+    private void getCurWeek() {
+        mCurWeekNumber = sp.getInt(PreferenceUtil.CUR_WEEK, 1);
+    }
+
+    private void getCurCourses() {
+        mCourses = dao.loadCourse(new String("" + mCurWeekNumber));
+        User user = new User();
+        user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
+        user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
+        CampusFactory.getRetrofitService().getSchedule(Base64Util.createBaseStr(user))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Observer<List<Course>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Course> courses) {
+                        if (mCourses.size() != courses.size()) {
+                            dao.deleteAllCourse();
+                            for (int i = 0, max = courses.size(); i < max; i++) {
+                                dao.insertCourse(courses.get(i));
+                                mCourses.addAll(courses);
+                            }
+                        }
+                        mTimeTable.setCourse(mCourses);
+                    }
+                });
     }
 
     private void initView() {
         mTimeTable = new TimeTable(this);
+
         LinearLayout.LayoutParams timeTableParams = new
                 LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mTimeTable.setLayoutParams(timeTableParams);
         mScheduleLl.addView(mTimeTable);
 
-        initToolbar("课程表");
+        setTitle("课程表");
         // TODO: 16/5/25 debug
-        mTvScheduleWeekNumber.setText(String.format(weekFormat, sp.getInt(PreferenceUtil.CUR_WEEK, 8)));
-        mScheduleHscrollview.setCurWeek(sp.getInt(PreferenceUtil.CUR_WEEK,8));
+        mTvScheduleWeekNumber.setText(String.format(App.getContext().getResources().getString(R.string.course_week_format),
+                sp.getInt(PreferenceUtil.CUR_WEEK, 1)));
+
+        mScheduleHscrollview.setCurWeek(sp.getInt(PreferenceUtil.CUR_WEEK, 8));
         mScheduleHscrollview.setOnWeekChangeListener(new OnWeekChangeListener() {
             @Override
             public void OnWeekChange(int week) {
                 //更新显示的当前周,更新课表
-                mTvScheduleWeekNumber.setText(String.format(weekFormat, week));
-                mTimeTable.changeTheDate(week - sp.getInt(PreferenceUtil.CUR_WEEK,8));
+                mTvScheduleWeekNumber.setText(String.format(App.getContext().getResources().getString(R.string.course_week_format), week));
+                mTimeTable.changeTheDate(week - sp.getInt(PreferenceUtil.CUR_WEEK, 8));
                 mTimeTable.removeCourse();
-                mTimeTable.setCourse(dao.loadCourse(mTvScheduleWeekNumber.getText().toString()));
+                mTimeTable.setCourse(mCourses);
             }
         });
 
-        mTimeTable.setCourse(dao.loadCourse(mTvScheduleWeekNumber.getText().toString()));
+        mTimeTable.setCourse(mCourses);
+        mTimeTable.setOnScrollBottomListener(new TimeTable.OnScrollBottomListener() {
+            @Override
+            public void onScrollBottom(boolean b) {
+                if (b) {
+                    beginBackAnim();
+                }
+            }
+        });
     }
 
 
@@ -119,25 +178,32 @@ public class ScheduleActivity extends ToolbarActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_add_course:
-                FragmentManager fm = getFragmentManager();
-                fm.enableDebugLogging(true);
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.schedule_framelayout, new AddCourseFragment());
-                ft.addToBackStack(null);
-                ft.commit();
+//                startActivity(new Intent(ScheduleActivity.this,AddCourseActivity.class));
+                Intent intent = new Intent(ScheduleActivity.this, AddCourseActivity.class);
+                startActivityForResult(intent, 2);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            mTimeTable.setCourse(dao.loadCourse(getTheWeek(mTvScheduleWeekNumber.getText().toString())));
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public String getTheWeek(String s) {
+        int start = s.indexOf("第");
+        int end = s.indexOf("周");
+        return s.substring(start + 1, end);
+    }
+
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            setTitle("课程表");
-            mTimeTable.setCourse(dao.loadCourse(mTvScheduleWeekNumber.getText().toString()));
-        }
         super.onBackPressed();
     }
 

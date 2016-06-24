@@ -51,19 +51,6 @@ public abstract class ToolbarActivity extends BaseActivity {
 
     }
 
-    public void initToolbar(CharSequence title){
-        if (mToolbar != null){
-            mToolbar.setTitle(title);
-            this.setSupportActionBar(mToolbar);
-        }
-        if (canBack()){
-            ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null){
-                actionBar.setDisplayHomeAsUpEnabled(true);
-            }
-        }
-    }
-
 
     public void setTitle(String title){
         if (mToolbar != null){

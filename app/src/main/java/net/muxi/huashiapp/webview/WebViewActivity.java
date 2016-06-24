@@ -52,7 +52,7 @@ public class WebViewActivity extends ToolbarActivity {
 
         title = getIntent().getStringExtra(WEB_TITLE);
         url = getIntent().getStringExtra(WEB_URL);
-        initToolbar(title);
+        setTitle(title);
 
         WebSettings webSettings = mWebview.getSettings();
         webSettings.setJavaScriptEnabled(true);

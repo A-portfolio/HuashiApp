@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.squareup.leakcanary.LeakCanary;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import net.muxi.huashiapp.common.data.LibrarayUser;
@@ -31,6 +32,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        LeakCanary.install(this);
+
         ZhugeSDK.getInstance().openDebug();
         //必须在init之前调用
 //禁止收集用户手机号码默认为收集
@@ -72,6 +75,10 @@ public class App extends Application {
 
     public static void setCurrentActivity(AppCompatActivity activity) {
         sActivity = activity;
+    }
+
+    public static void releaseCurActivty(){
+        sActivity = null;
     }
 
     public static AppCompatActivity getCurrentActivity() {
