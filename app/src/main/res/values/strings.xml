@@ -49,7 +49,7 @@
     <!--成绩查询-->
     <string name="tip_none_more">没有更多的成绩信息</string>
     <string name="title_course_name">课程名称</string>
-    <string name="title_score">成绩</string>
+    <string name="title_score">成绩:</string>
     <string name="title_category">类别</string>
-    <string name="title_credit">学分</string>
+    <string name="title_credit">学分:  </string>
 </resources>

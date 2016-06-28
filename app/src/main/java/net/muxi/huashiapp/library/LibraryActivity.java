@@ -130,7 +130,7 @@ public class LibraryActivity extends BaseActivity {
     }
 
     private void searchBook(String query){
-        CampusFactory.getRetrofitService().searchBook()
+        CampusFactory.getRetrofitService().searchBook(query,"1")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BookSearchResult>() {
@@ -292,7 +292,6 @@ public class LibraryActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     protected void onPause() {

@@ -23,6 +23,7 @@ import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.Base64Util;
 import net.muxi.huashiapp.common.util.DimensUtil;
+import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.widget.TimeTable;
 
@@ -99,10 +100,14 @@ public class ScheduleActivity extends ToolbarActivity {
 
     private void getCurCourses() {
         mCourses = dao.loadCourse(new String("" + mCurWeekNumber));
+        //如果当前未连接网络则不从服务器获取课表,使用本地课表
+        if (!NetStatus.isConnected()){
+            return;
+        }
         User user = new User();
         user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
         user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
-        CampusFactory.getRetrofitService().getSchedule(Base64Util.createBaseStr(user))
+        CampusFactory.getRetrofitService().getSchedule(Base64Util.createBaseStr(user),"2015","12","2014214629")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<Course>>() {
@@ -118,6 +123,7 @@ public class ScheduleActivity extends ToolbarActivity {
 
                     @Override
                     public void onNext(List<Course> courses) {
+                        //因为每次增删服务器与本地数据库都同时进行,所以就直接比较课程数有无差别
                         if (mCourses.size() != courses.size()) {
                             dao.deleteAllCourse();
                             for (int i = 0, max = courses.size(); i < max; i++) {

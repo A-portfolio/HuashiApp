@@ -18,6 +18,7 @@
 
     <item
         android:title="关于"
+        android:id="@+id/action_about"
         android:orderInCategory="100"
         app:showAsAction="never"/>
 

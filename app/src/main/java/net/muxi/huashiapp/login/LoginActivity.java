@@ -133,6 +133,8 @@ public class LoginActivity extends AppCompatActivity {
         if (mEditPassword != null) {
             mUser.setPassword(mEditPassword.getText().toString());
         }
+        mUser.setSid("2014214629");
+        mUser.setPassword("fmc2014214629");
         CampusFactory.getRetrofitService()
                 .mainLogin(Base64Util.createBaseStr(mUser))
                 .subscribeOn(Schedulers.newThread())

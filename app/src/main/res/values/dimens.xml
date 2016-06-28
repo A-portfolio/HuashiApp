@@ -5,6 +5,7 @@
     <dimen name="dialog_horizontal_margin">64dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
 
+    <dimen name="most_large_size">28sp</dimen>
     <dimen name="large_size">24sp</dimen>
     <dimen name="medium_size">18sp</dimen>
     <dimen name="small_size">14sp</dimen>
@@ -42,7 +43,11 @@
     <dimen name="library_item_text_padding">12dp</dimen>
     <dimen name="library_icon_padding">12dp</dimen>
 
-    <dimen name="score_item_tv_margin">4dp</dimen>
+    <dimen name="item_score_vertical_margin">8dp</dimen>
+    <dimen name="spinner_height">36dp</dimen>
+    <dimen name="spinner_marigin">170dp</dimen>
+
+
 
 
 </resources>

@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.muxi.material_dialog.MaterialDialog;
+
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.ui.SettingActivity;
 import net.muxi.huashiapp.library.LibrarySearchActivity;
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent;
                 switch (position) {
                     case 0:
-                        intent = new Intent(MainActivity.this,ScheduleActivity.class);
+                        intent = new Intent(MainActivity.this, ScheduleActivity.class);
                         startActivity(intent);
                         break;
 
@@ -116,6 +118,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 intent = new Intent(MainActivity.this, SettingActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.action_about:
+                MaterialDialog materialDialog = new MaterialDialog(MainActivity.this);
+                materialDialog.setTitle("about")
+                        .setContent("fskafsfdsakm")
+                        .show();
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -22,4 +22,5 @@
               android:textSize="@dimen/medium_size"
               android:layout_height="wrap_content"/>
 
+
 </LinearLayout>

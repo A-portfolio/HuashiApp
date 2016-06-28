@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Material-dialog</string>
+    <string name="action_positive">确认</string>
+    <string name="action_negative">取消</string>
+</resources>

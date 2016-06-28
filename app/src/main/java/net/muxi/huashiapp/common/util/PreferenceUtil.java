@@ -21,6 +21,7 @@ public class PreferenceUtil {
     public static final String STUDENT_PWD = "sPwd";
     public static final String LIBRARY_ID = "libraryId";
     public static final String LIBRARY_PWD = "libraryPwd";
+    public static final String COURSE_ID = "course_id";
     //课程表中的当前周
     public static final String CUR_WEEK = "curWeek";
 

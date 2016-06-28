@@ -13,7 +13,10 @@ import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Course;
+import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.db.HuaShiDao;
+import net.muxi.huashiapp.common.util.NetStatus;
+import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -49,6 +52,7 @@ public class AddCourseActivity extends ToolbarActivity
     Button mBtnAdd;
 
     private HuaShiDao dao;
+    private PreferenceUtil sp;
     private List<Integer> mWeeks;
     //上课的周 存储形式为 1,3,4,5,
     private int mDay;
@@ -69,6 +73,7 @@ public class AddCourseActivity extends ToolbarActivity
         //填入数据,debug
         addData();
         dao = new HuaShiDao();
+        sp = new PreferenceUtil();
         mBtnAdd.setOnClickListener(this);
         mTvWeekSelect.setOnClickListener(this);
         mTvCourseTime.setOnClickListener(this);
@@ -101,6 +106,15 @@ public class AddCourseActivity extends ToolbarActivity
 
             case R.id.btn_add:
                 if (!isEmpty()) {
+                    if (NetStatus.isConnected() == true){
+                        User user = new User();
+                        user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
+                        user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
+                        int id = sp.getInt(PreferenceUtil.COURSE_ID,0);
+                        Course course = new Course();
+//                        course.set
+//                        CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(user),)
+                    }
                     inserCourse();
                     Intent intent = new Intent();
                     AddCourseActivity.this.setResult(RESULT_OK, intent);
