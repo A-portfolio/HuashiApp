@@ -2,6 +2,8 @@ package net.muxi.huashiapp.library;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -10,26 +12,31 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.login.LoginEditText;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * Created by ybao on 16/5/15.
  */
-public class LibraryLoginActivity extends ToolbarActivity{
+public class LibraryLoginActivity extends ToolbarActivity {
 
-    @Bind(R.id.edit_userName)
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.appbar_layout)
+    AppBarLayout mAppbarLayout;
+    @BindView(R.id.edit_userName)
     LoginEditText mEditUserName;
-    @Bind(R.id.edit_password)
+    @BindView(R.id.edit_password)
     LoginEditText mEditPassword;
-    @Bind(R.id.tv_tips)
+    @BindView(R.id.tv_tips)
     TextView mTvTips;
-    @Bind(R.id.login_center_layout)
+    @BindView(R.id.login_center_layout)
     RelativeLayout mLoginCenterLayout;
-    @Bind(R.id.btn_login)
+    @BindView(R.id.btn_login)
     Button mBtnLogin;
-    @Bind(R.id.login_bottom_layout)
+    @BindView(R.id.login_bottom_layout)
     RelativeLayout mLoginBottomLayout;
 
     @Override

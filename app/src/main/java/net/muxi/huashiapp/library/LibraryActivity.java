@@ -31,24 +31,24 @@ import net.muxi.huashiapp.common.util.AlarmUtil;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.widget.ShadowView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * Created by ybao on 16/5/1.
  */
 public class LibraryActivity extends AppCompatActivity implements BookDetailView.OnScrollListener {
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.searchview)
+    MySearchView mSearchview;
+    @BindView(R.id.root_layout)
+    FrameLayout mRootLayout;
 
     // TODO: 16/5/3 material searchView has bug ...
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
-    @Bind(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.searchview)
-    MySearchView mSearchview;
-    @Bind(R.id.root_layout)
-    FrameLayout mRootLayout;
 
     private FrameLayout contentLayout;
 

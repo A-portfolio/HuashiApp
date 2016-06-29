@@ -16,7 +16,7 @@ import android.webkit.WebView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -26,13 +26,13 @@ public class WebViewActivity extends ToolbarActivity {
 
     private static final String WEB_URL = "url";
     private static final String WEB_TITLE = "title";
-
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.appbar_layout)
+    @BindView(R.id.appbar_layout)
     AppBarLayout mAppbarLayout;
-    @Bind(R.id.webview)
+    @BindView(R.id.webview)
     WebView mWebview;
+
     private String url;
     private String title;
 
@@ -53,17 +53,17 @@ public class WebViewActivity extends ToolbarActivity {
     }
 
 
-    public static Intent newIntent(Context context,String url,String title){
-        Intent intent = new Intent(context,WebViewActivity.class);
-        intent.putExtra(WEB_URL,url);
-        intent.putExtra(WEB_TITLE,title);
+    public static Intent newIntent(Context context, String url, String title) {
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra(WEB_URL, url);
+        intent.putExtra(WEB_TITLE, title);
         return intent;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        switch (itemId){
+        switch (itemId) {
             case R.id.action_refresh:
                 mWebview.reload();
                 break;
@@ -83,12 +83,12 @@ public class WebViewActivity extends ToolbarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_webview,menu);
+        getMenuInflater().inflate(R.menu.menu_webview, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
 
-    private class BrowserClient extends WebChromeClient{
+    private class BrowserClient extends WebChromeClient {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);

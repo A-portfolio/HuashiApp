@@ -21,7 +21,7 @@ import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.main.MainActivity;
 import net.muxi.huashiapp.schedule.ScheduleActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
@@ -40,18 +40,19 @@ public class LoginActivity extends AppCompatActivity {
 
     //此处方便登录调试,到时候要删除
     public static final boolean DEBUG_VALUE = true;
-    @Bind(R.id.edit_userName)
+    @BindView(R.id.edit_userName)
     LoginEditText mEditUserName;
-    @Bind(R.id.edit_password)
+    @BindView(R.id.edit_password)
     LoginEditText mEditPassword;
-    @Bind(R.id.tv_tips)
+    @BindView(R.id.tv_tips)
     TextView mTvTips;
-    @Bind(R.id.login_center_layout)
+    @BindView(R.id.login_center_layout)
     RelativeLayout mLoginCenterLayout;
-    @Bind(R.id.btn_login)
+    @BindView(R.id.btn_login)
     Button mBtnLogin;
-    @Bind(R.id.login_bottom_layout)
+    @BindView(R.id.login_bottom_layout)
     RelativeLayout mLoginBottomLayout;
+
 
     private User mUser = new User();
 
@@ -85,9 +86,10 @@ public class LoginActivity extends AppCompatActivity {
         mBtnLogin.setEnabled(DEBUG_VALUE);
     }
 
+
     @OnClick(R.id.btn_login)
     public void onClick() {
-//        JSONObject eventObject = new JSONObject();
+        //        JSONObject eventObject = new JSONObject();
 //        try {
 //            eventObject.put("主界面登录","true");
 //            ZhugeSDK.getInstance().track(App.getContext(),"主界面登录",eventObject);
@@ -102,8 +104,8 @@ public class LoginActivity extends AppCompatActivity {
 //            ToastUtil.showLong(NETCONNECT_FAILED);
 //        }
 //        checkAccount();
-
     }
+
 
     private void updateButton() {
         if (mEditUserName.length() != 0
@@ -175,4 +177,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onDestroy();
 //        ZhugeSDK.getInstance().flush(App.getContext());
     }
+
+
 }

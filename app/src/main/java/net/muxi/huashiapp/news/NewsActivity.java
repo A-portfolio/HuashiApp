@@ -14,7 +14,7 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -22,13 +22,13 @@ import butterknife.ButterKnife;
  */
 public class NewsActivity extends ToolbarActivity {
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
-    @Bind(R.id.appbar_layout)
-    AppBarLayout mAppbarLayout;
-    @Bind(R.id.news_recycler_view)
-    RecyclerView mNewsRecyclerView;
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.appbar_layout)
+    AppBarLayout mAppbarLayout;
+    @BindView(R.id.news_recycler_view)
+    RecyclerView mNewsRecyclerView;
     private List<String> mDatas;
     MyNewsAdapter mMyNewsAdapter;
 
@@ -41,22 +41,22 @@ public class NewsActivity extends ToolbarActivity {
 
 
         setSupportActionBar(mToolbar);
-        mToolbar.setTitle("消息公告");
+
+        initToolbar("消息公告");
         initData();
         initRecyclerView();
 
 
     }
 
-    public void initData(){
+    public void initData() {
         mDatas = new ArrayList<String>();
-        for (int i = 'A'; i < 'z'; i++)
-        {
+        for (int i = 'A'; i < 'z'; i++) {
             mDatas.add("" + (char) i);
         }
     }
 
-    public void initRecyclerView(){
+    public void initRecyclerView() {
         mMyNewsAdapter = new MyNewsAdapter(mDatas);
         mNewsRecyclerView.setAdapter(mMyNewsAdapter);
         mNewsRecyclerView.setLayoutManager(new LinearLayoutManager(this));

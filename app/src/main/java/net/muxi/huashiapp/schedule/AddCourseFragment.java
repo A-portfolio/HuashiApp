@@ -14,7 +14,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.util.ToastUtil;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -22,19 +22,19 @@ import butterknife.ButterKnife;
  */
 public class AddCourseFragment extends BaseFragment implements View.OnClickListener {
 
-    @Bind(R.id.edit_course_name)
-    EditText mEditCourseName;
-    @Bind(R.id.edit_teacher_name)
-    EditText mEditTeacherName;
-    @Bind(R.id.tv_week_select)
-    TextView mTvWeekSelect;
-    @Bind(R.id.tv_course_time)
-    TextView mTvCourseTime;
-    @Bind(R.id.edit_course_place)
-    EditText mEditCoursePlace;
-    @Bind(R.id.btn)
-    Button mBtn;
 
+    @BindView(R.id.edit_course_name)
+    EditText mEditCourseName;
+    @BindView(R.id.edit_teacher_name)
+    EditText mEditTeacherName;
+    @BindView(R.id.tv_week_select)
+    TextView mTvWeekSelect;
+    @BindView(R.id.tv_course_time)
+    TextView mTvCourseTime;
+    @BindView(R.id.edit_course_place)
+    EditText mEditCoursePlace;
+    @BindView(R.id.btn)
+    Button mBtn;
 
     @Nullable
     @Override
@@ -93,7 +93,6 @@ public class AddCourseFragment extends BaseFragment implements View.OnClickListe
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
 }

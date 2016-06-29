@@ -23,7 +23,7 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.widget.TimeTable;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -34,22 +34,23 @@ public class ScheduleActivity extends ToolbarActivity {
 
 
     public static int n = 0;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.appbar_layout)
+    @BindView(R.id.appbar_layout)
     AppBarLayout mAppbarLayout;
-    @Bind(R.id.schedule_ll)
-    LinearLayout mScheduleLl;
-    @Bind(R.id.tv_schedule_week_number)
-    TextView mTvScheduleWeekNumber;
-    @Bind(R.id.week_number_layout)
-    RelativeLayout mWeekNumberLayout;
-    @Bind(R.id.schedule_framelayout)
-    FrameLayout mScheduleFramelayout;
-    @Bind(R.id.root_layout)
-    RelativeLayout mRootLayout;
-    @Bind(R.id.schedule_hscrollview)
+    @BindView(R.id.schedule_hscrollview)
     WeekHScrollView mScheduleHscrollview;
+    @BindView(R.id.schedule_ll)
+    LinearLayout mScheduleLl;
+    @BindView(R.id.tv_schedule_week_number)
+    TextView mTvScheduleWeekNumber;
+    @BindView(R.id.week_number_layout)
+    RelativeLayout mWeekNumberLayout;
+    @BindView(R.id.schedule_framelayout)
+    FrameLayout mScheduleFramelayout;
+    @BindView(R.id.root_layout)
+    RelativeLayout mRootLayout;
+
 
     private String weekFormat = "第%d周";
 

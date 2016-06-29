@@ -3,6 +3,8 @@ package net.muxi.huashiapp.library;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -12,7 +14,7 @@ import android.widget.Space;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -21,11 +23,16 @@ import butterknife.OnClick;
  */
 public class LibrarySearchActivity extends ToolbarActivity {
 
-    @Bind(R.id.center_space)
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.appbar_layout)
+    AppBarLayout mAppbarLayout;
+    @BindView(R.id.center_space)
     Space mCenterSpace;
-    @Bind(R.id.search_view)
+    @BindView(R.id.search_view)
     EditText mSearchView;
-    @Bind(R.id.btn_search)
+    @BindView(R.id.btn_search)
     Button mBtnSearch;
 
     @Override
@@ -53,7 +60,7 @@ public class LibrarySearchActivity extends ToolbarActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_login:
-                Intent intent = new Intent(this,MineActivity.class);
+                Intent intent = new Intent(this, MineActivity.class);
                 startActivity(intent);
 
         }

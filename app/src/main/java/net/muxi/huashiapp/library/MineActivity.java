@@ -14,7 +14,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -22,11 +22,12 @@ import butterknife.ButterKnife;
  */
 public class MineActivity extends BaseActivity {
 
-    @Bind(R.id.toolbar)
+
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.search_view)
+    @BindView(R.id.search_view)
     MySearchView mSearchView;
-    @Bind(R.id.toolbar_container)
+    @BindView(R.id.toolbar_container)
     FrameLayout mToolbarContainer;
     private HuaShiDao dao;
     String[] suggestions;
@@ -47,9 +48,9 @@ public class MineActivity extends BaseActivity {
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         setSupportActionBar(mToolbar);
         suggestions = dao.loadSearchHistory().toArray(new String[0]);
-        Log.d("length",suggestions.length + "");
-        for (int i = 0;i < suggestions.length; i ++){
-            Log.d("dao",suggestions[i]);
+        Log.d("length", suggestions.length + "");
+        for (int i = 0; i < suggestions.length; i++) {
+            Log.d("dao", suggestions[i]);
         }
         mSearchView.setSuggestions(suggestions);
         mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
