@@ -33,8 +33,10 @@
             android:name="ZHUGE_CHANNEL" android:value="校园通"/>
 
 
-        <activity android:name=".electricity.ElectricityActivity"
-                  android:launchMode="singleTask">
+        <activity android:name=".login.LoginActivity"
+                  android:launchMode="singleTask"
+                  android:windowSoftInputMode="adjustResize">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -47,6 +49,8 @@
         <activity
             android:name=".schedule.ScheduleActivity"
             android:launchMode="singleTask"/>
+
+        <activity android:name=".schedule.AddCourseActivity"/>
 
         <activity android:name=".score.ScoreActivity"/>
 
@@ -66,7 +70,7 @@
 
         <activity android:name=".webview.WebViewActivity"/>
 
-        <!--<activity android:name=".electricity.ElectricityActivity"/>-->
+        <activity android:name=".electricity.ElectricityActivity"/>
 
         <receiver android:name=".common.service.AlarmLiveReceiver">
             <intent-filter>

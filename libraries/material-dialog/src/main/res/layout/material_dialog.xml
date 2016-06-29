@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dialog_margin_horizational"
+                android:layout_marginLeft="@dimen/dialog_margin_horizational"
+                android:elevation="@dimen/dialog_elevation"
+                android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dialog_content_padding"
+        android:layout_marginRight="@dimen/dialog_content_padding"
+        android:layout_marginTop="@dimen/dialog_content_padding"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/dialog_title_size"
+        tools:text="title"/>
+
+
+    <RelativeLayout android:id="@+id/layout_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_title"
+                    android:layout_marginBottom="@dimen/dialog_content_padding"
+                    android:layout_marginLeft="@dimen/dialog_content_padding"
+                    android:layout_marginRight="@dimen/dialog_content_padding"
+                    android:layout_marginTop="@dimen/padding_between_title_and_body">
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/dialog_content_size"
+            tools:text="content"/>
+
+    </RelativeLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="@dimen/action_area_height"
+                  android:layout_below="@+id/layout_content"
+                  android:gravity="right"
+                  android:paddingBottom="@dimen/padding_button"
+                  android:paddingTop="@dimen/padding_button">
+
+        <Button
+            android:id="@+id/btn_negative"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/padding_button"
+            android:background="@null"
+            android:text="@string/action_negative"
+            android:textSize="@dimen/dialog_action_size"/>
+
+        <Button
+            android:id="@+id/btn_positive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="@string/action_positive"
+            android:textSize="@dimen/dialog_action_size"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

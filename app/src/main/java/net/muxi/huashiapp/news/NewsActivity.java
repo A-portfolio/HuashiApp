@@ -41,8 +41,7 @@ public class NewsActivity extends ToolbarActivity {
 
 
         setSupportActionBar(mToolbar);
-
-        initToolbar("消息公告");
+        mToolbar.setTitle("消息公告");
         initData();
         initRecyclerView();
 

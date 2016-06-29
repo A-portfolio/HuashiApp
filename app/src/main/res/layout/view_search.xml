@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:id="@+id/search_layout" android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical"
+             android:visibility="invisible">
+
+    <View
+        android:id="@+id/tint_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/shadow_bg"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/white">
+
+            <EditText
+                android:id="@+id/edit_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/btn_clear"
+                android:layout_toRightOf="@+id/btn_back"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="查找图书"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:textSize="@dimen/medium_size"
+                tools:text="search"/>
+
+            <ImageView
+                android:id="@+id/btn_back"
+                style="@style/searchview_style"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_action_navigation_arrow_back"/>
+
+            <ImageView
+                android:id="@+id/btn_clear"
+                style="@style/searchview_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_action_navigation_close"/>
+
+
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/search_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+
+
+        </ListView>
+
+    </LinearLayout>
+
+</FrameLayout>

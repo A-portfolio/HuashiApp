@@ -3,18 +3,24 @@ package net.muxi.huashiapp.webview;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import com.daimajia.numberprogressbar.NumberProgressBar;
+
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.common.util.AppUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +39,8 @@ public class WebViewActivity extends ToolbarActivity {
     @BindView(R.id.webview)
     WebView mWebview;
 
+    NumberProgressBar mCustomProgressBar;
+
     private String url;
     private String title;
 
@@ -44,11 +52,12 @@ public class WebViewActivity extends ToolbarActivity {
 
         title = getIntent().getStringExtra(WEB_TITLE);
         url = getIntent().getStringExtra(WEB_URL);
-        initToolbar(title);
+        setTitle(title);
 
         WebSettings webSettings = mWebview.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAppCacheEnabled(true);
+        mWebview.setWebChromeClient(new BrowserClient());
         mWebview.loadUrl(url);
     }
 
@@ -66,6 +75,13 @@ public class WebViewActivity extends ToolbarActivity {
         switch (itemId) {
             case R.id.action_refresh:
                 mWebview.reload();
+                return true;
+            case R.id.action_copy_url:
+                AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
+                break;
+            case R.id.action_open_browser:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mWebview.getUrl()));
+                startActivity(browserIntent);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -92,6 +108,13 @@ public class WebViewActivity extends ToolbarActivity {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
+
+            mCustomProgressBar.setProgress(newProgress);
+            if (newProgress == 100){
+                mCustomProgressBar.setVisibility(View.GONE);
+            }else {
+                mCustomProgressBar.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
@@ -100,6 +123,18 @@ public class WebViewActivity extends ToolbarActivity {
         }
     }
 
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            if (mWebview.canGoBack()){
+                mWebview.goBack();
+                return true;
+            }
+            onBackPressed();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     @Override
     public void onBackPressed() {

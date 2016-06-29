@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.squareup.leakcanary.LeakCanary;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import net.muxi.huashiapp.common.data.LibrarayUser;
@@ -24,13 +25,15 @@ public class App extends Application {
 
     //获取上次的已经登录的用户账号信息
     public static User sUser = new User();
-    public static LibrarayUser sLibrarayUser= new LibrarayUser();
+    public static LibrarayUser sLibrarayUser = new LibrarayUser();
 
     private PreferenceUtil sp;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        LeakCanary.install(this);
+
         ZhugeSDK.getInstance().openDebug();
         //必须在init之前调用
 //禁止收集用户手机号码默认为收集
@@ -41,13 +44,13 @@ public class App extends Application {
         sContext = getApplicationContext();
         sp = new PreferenceUtil();
         //delete after
-        Log.d("app","oncreate");
-        sp.saveString(PreferenceUtil.STUDENT_ID,"0");
+        Log.d("app", "oncreate");
+        sp.saveString(PreferenceUtil.STUDENT_ID, "0");
         sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, "0"));
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
 
         //delete after
-        sp.saveString(PreferenceUtil.LIBRARY_ID,"0");
+        sp.saveString(PreferenceUtil.LIBRARY_ID, "0");
         sLibrarayUser.setLibraryId(sp.getString(PreferenceUtil.LIBRARY_ID, "0"));
         sLibrarayUser.setLibraryPwd(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
 
@@ -72,6 +75,10 @@ public class App extends Application {
 
     public static void setCurrentActivity(AppCompatActivity activity) {
         sActivity = activity;
+    }
+
+    public static void releaseCurActivty(){
+        sActivity = null;
     }
 
     public static AppCompatActivity getCurrentActivity() {

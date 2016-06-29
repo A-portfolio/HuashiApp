@@ -14,11 +14,16 @@ public class PreferenceUtil {
 
     private SharedPreferences mSharedPreferences;
 
-    //常用的用户账号,密码
+
+
+    //上次登录的用户账号,密码
     public static final String STUDENT_ID = "sId";
     public static final String STUDENT_PWD = "sPwd";
     public static final String LIBRARY_ID = "libraryId";
     public static final String LIBRARY_PWD = "libraryPwd";
+    public static final String COURSE_ID = "course_id";
+    //课程表中的当前周
+    public static final String CUR_WEEK = "curWeek";
 
 
     public PreferenceUtil() {
@@ -50,6 +55,7 @@ public class PreferenceUtil {
         return mSharedPreferences.getString(key, "");
     }
 
+
     public String getString(String key,String def){
         return mSharedPreferences.getString(key,def);
     }
@@ -60,6 +66,24 @@ public class PreferenceUtil {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.remove(key);
         editor.apply();
+    }
+
+
+    public void saveInt(String key,int value){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putInt(key,value);
+        editor.apply();
+    }
+
+
+
+    public int getInt(String key){
+        return mSharedPreferences.getInt(key,-1);
+    }
+
+
+    public int getInt(String key,int def){
+        return mSharedPreferences.getInt(key,def);
     }
 
 

@@ -6,24 +6,26 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.MainLoginResponse;
 import net.muxi.huashiapp.common.data.User;
+import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.util.AlarmUtil;
+import net.muxi.huashiapp.common.util.Base64Util;
+import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.main.MainActivity;
-import net.muxi.huashiapp.schedule.ScheduleActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Response;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -44,18 +46,15 @@ public class LoginActivity extends AppCompatActivity {
     LoginEditText mEditUserName;
     @BindView(R.id.edit_password)
     LoginEditText mEditPassword;
-    @BindView(R.id.tv_tips)
-    TextView mTvTips;
     @BindView(R.id.login_center_layout)
+
     RelativeLayout mLoginCenterLayout;
     @BindView(R.id.btn_login)
     Button mBtnLogin;
-    @BindView(R.id.login_bottom_layout)
-    RelativeLayout mLoginBottomLayout;
 
 
-    private User mUser = new User();
 
+    private User mUser;
 
     private TextWatcher mTextWatcher = new SimpleTextWatcher() {
         @Override
@@ -73,17 +72,34 @@ public class LoginActivity extends AppCompatActivity {
 
 //        ZhugeSDK.getInstance().openDebug();
 //        ZhugeSDK.getInstance().openLog();
+        initViews();
+//        mBtnLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
-        init();
-
-        AlarmUtil.register(this);
 
     }
 
-    private void init() {
+
+    private void initViews() {
         mEditUserName.addTextChangedListener(mTextWatcher);
         mEditPassword.addTextChangedListener(mTextWatcher);
         mBtnLogin.setEnabled(DEBUG_VALUE);
+
+        mEditPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                checkAccount();
+                mBtnLogin.callOnClick();
+                return true;
+            }
+        });
     }
 
 
@@ -96,14 +112,13 @@ public class LoginActivity extends AppCompatActivity {
 //        } catch (JSONException e) {
 //            e.printStackTrace();
 //        }
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
 
+        if (!NetStatus.isConnected()) {
+            ToastUtil.showLong(NETCONNECT_FAILED);
+        }
+//        startMainActivity();
+        checkAccount();
 
-//        if (!checkNetwork()) {
-//            ToastUtil.showLong(NETCONNECT_FAILED);
-//        }
-//        checkAccount();
     }
 
 
@@ -114,19 +129,21 @@ public class LoginActivity extends AppCompatActivity {
         } else mBtnLogin.setEnabled(DEBUG_VALUE);
     }
 
-    private boolean checkAccount() {
-        boolean b = false;
+    private void checkAccount() {
+        mUser = new User();
         if (mEditUserName != null) {
             mUser.setSid(mEditUserName.getText().toString());
         }
         if (mEditPassword != null) {
             mUser.setPassword(mEditPassword.getText().toString());
         }
-
-        CampusFactory.getRetrofitService().mainLogin(mUser)
+        mUser.setSid("2014214629");
+        mUser.setPassword("fmc2014214629");
+        CampusFactory.getRetrofitService()
+                .mainLogin(Base64Util.createBaseStr(mUser))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<MainLoginResponse>() {
+                .subscribe(new Observer<Response<VerifyResponse>>() {
                     @Override
                     public void onCompleted() {
 
@@ -134,34 +151,42 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Logger.d("403 ");
+                        e.printStackTrace();
+                        hintToCheck();
                     }
 
                     @Override
-                    public void onNext(MainLoginResponse mainLoginResponse) {
-                        if (mainLoginResponse.getStatus() == 200) {
+                    public void onNext(Response<VerifyResponse> response) {
+//                        if (response.code() == 200) {
 
-                            PreferenceUtil loader = new PreferenceUtil();
-                            loader.saveString("lastUserId", mUser.getSid());
-                            loader.saveString("lastUserMainPwd", mUser.getPassword());
+                        if (response.code() == 200){
+                            Logger.d("200");
+                        }
+                        if(response.code() == 403){
+                            Logger.d("403");
+                        }
+                        PreferenceUtil loader = new PreferenceUtil();
+                        loader.saveString(PreferenceUtil.STUDENT_ID, mUser.getSid());
+                        loader.saveString(PreferenceUtil.STUDENT_PWD, mUser.getPassword());
 
-                            Intent intent = new Intent(LoginActivity.this, ScheduleActivity.class);
-                            startActivity(intent);
-
-                            ToastUtil.showShort(LOGIN_SUCCESS);
-
-                        } else if (mainLoginResponse.getStatus() == 403) {
-                            ToastUtil.showLong(VERIFY_FAILED);
-
-                        } else ToastUtil.showLong(SERVICE_PROBLEM);
+                        ToastUtil.showShort(LOGIN_SUCCESS);
+                        startMainActivity();
+//                        }
                     }
                 });
-        return true;
+
     }
 
-    private boolean checkNetwork() {
-        return NetStatus.isConnected();
+    //验证通过后登入主界面
+    private void startMainActivity() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
 
+    //提示重新核对账号密码
+    private void hintToCheck() {
+        ToastUtil.showLong(VERIFY_FAILED);
     }
 
 

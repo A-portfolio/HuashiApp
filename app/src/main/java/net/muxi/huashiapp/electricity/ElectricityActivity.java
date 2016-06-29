@@ -38,7 +38,7 @@ public class ElectricityActivity extends ToolbarActivity {
         setContentView(R.layout.activity_electricity);
         ButterKnife.bind(this);
         init();
-        initToolbar("电费查询");
+        mToolbar.setTitle("电费查询");
 
     }
 

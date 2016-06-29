@@ -1,7 +1,5 @@
 package net.muxi.huashiapp.common.net;
 
-import net.muxi.huashiapp.common.Api;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -17,17 +15,18 @@ public class CampusRetrofit{
     private final RetrofitService mRetrofitService;
 
     public CampusRetrofit() {
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
+                .addInterceptor(interceptor)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(Api.BASE_URL)
+                .baseUrl("http://123.56.41.13:5000/api/")
                 .build();
         mRetrofitService = retrofit.create(RetrofitService.class);
     }

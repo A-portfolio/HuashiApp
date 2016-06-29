@@ -20,7 +20,7 @@ public class LoginEditText extends EditText {
     public LoginEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mDrawable = getResources().getDrawable(R.drawable.delete_edit_login_black);
+        mDrawable = getResources().getDrawable(R.drawable.ic_clear_purple_18dp);
         mDrawable.setBounds(0,0,mDrawable.getIntrinsicWidth(),mDrawable.getIntrinsicHeight());
 
         addTextChangedListener(new TextWatcher() {

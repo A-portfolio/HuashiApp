@@ -23,9 +23,11 @@
 
 
     <string name="tip_id_text">学号</string>
-    <string name="tip_pwd_text">密码</string>
+    <string name="tip_pwd_text">信息门户密码</string>
     <string name="tip_login">(请输入信息门户的密码)</string>
     <string name="tip_library_login">(图书馆初始密码为123456)</string>
+    <string name="tip_select_weeks">请选择要上课的周</string>
+    <string name="tip_complete_course">请完善课程信息</string>
 
     <string name="library_search_tip">请输入要搜索的图书或作者</string>
 
@@ -36,4 +38,18 @@
     <string name="pre_score">pre_score</string>
     <string name="pre_all">pre_all</string>
 
+    <string name="course_single_week">单周</string>
+    <string name="course_double_week">双周</string>
+    <string name="course_all_week">全选</string>
+    <string name="course_week_format">第%d周</string>
+
+    <string name="btn_negative">取消</string>
+    <string name="btn_positive">确认</string>
+    
+    <!--成绩查询-->
+    <string name="tip_none_more">没有更多的成绩信息</string>
+    <string name="title_course_name">课程名称</string>
+    <string name="title_score">成绩:</string>
+    <string name="title_category">类别</string>
+    <string name="title_credit">学分:  </string>
 </resources>

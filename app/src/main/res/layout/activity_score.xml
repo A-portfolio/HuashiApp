@@ -1,11 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".score.ScoreActivity">
 
-    <include layout="@layout/view_toolbar"/>
+    <include
+        android:id="@+id/layout_appbar"
+        layout="@layout/view_toolbar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+
+
+        <Spinner
+            android:id="@+id/spinner_year"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spinner_height"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:spinnerMode="dropdown"/>
+
+        <Spinner
+            android:id="@+id/spinner_term"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/spinner_height"
+            android:layout_below="@+id/spinner_year"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/spinner_marigin"
+            android:spinnerMode="dropdown"/>
+
+        <Button
+            android:id="@+id/btn_enter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="48dp"
+            android:text="search"/>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"/>
+
+</FrameLayout>
 
 
 
-</LinearLayout>
+

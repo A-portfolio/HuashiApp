@@ -3,49 +3,48 @@ package net.muxi.huashiapp.common.widget;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
-import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.data.Course;
+import net.muxi.huashiapp.common.util.DateUtil;
 import net.muxi.huashiapp.common.util.DimensUtil;
+import net.muxi.huashiapp.schedule.ScheduleActivity;
 import net.muxi.huashiapp.schedule.ScheduleTimeLayout;
 
 import java.util.List;
 
 /**
  * Created by ybao on 16/4/19.
+ * 显示课表,星期,节数的类
  */
 public class TimeTable extends FrameLayout {
 
-    public static final int FIXED_WIDTH = DimensUtil.getScreenWidth();
     public static final int WEEK_DAY_WIDTH = DimensUtil.dp2px(70);
     public static final int COURSE_TIME_HEIGHT = DimensUtil.dp2px(105);
     public static final int LITTLE_VIEW_WIDTH = DimensUtil.dp2px(40);
     public static final int LITTLE_VIEW_HEIGHT = DimensUtil.dp2px(40);
 
-    public static final int TOUCH_FLAG_EXTEND = 2;
-    public static final int TOUCH_FLAG_BACK = 1;
-    private int mTouchFlag = 1;
-
-    public static final String TAG = "touch";
-    public static boolean sIsTouchable = true;
-
-    public static final int MIN_SPEED = 200;
-
-    private List<String> weekDate;
+    public static final int TOUCH_FLAG_EXTEND = 1;
+    public static final int TOUCH_FLAG_BACK = 0;
+    //初始的时候是查看其他周的 View 没有显示
+    private int mTouchFlag = TOUCH_FLAG_BACK;
 
     private ScheduleTimeLayout mScheduleLayout;
-    private RelativeLayout[] mRelativeLayout;
+    private FrameLayout[] dayCourseLayout;
+
+    private Context mContext;
+
+    List<String> weekDates;
+
+    private String[] weekdays;
 
     private View view;
     private ScheduleTimeLayout mCourseLayout;
@@ -56,9 +55,12 @@ public class TimeTable extends FrameLayout {
 
     private float mx, my;
     private float curX, curY;
-    private int dx = 0;
-    private int dy = 0;
-    private VelocityTracker mVelocityTracker;
+
+    private OnScrollBottomListener mScrollBottomListener;
+
+    public interface OnScrollBottomListener {
+        public void onScrollBottom(boolean b);
+    }
 
     public TimeTable(Context context) {
         this(context, null);
@@ -66,13 +68,12 @@ public class TimeTable extends FrameLayout {
 
     public TimeTable(Context context, AttributeSet attrs) {
         super(context, attrs);
-
+        mContext = context;
         initLayout(context);
     }
 
     public void initLayout(Context context) {
-        Log.d("ss", App.getContext().toString());
-        setupScrollerView(context);
+        setupScrollView(context);
         setupWeekDayLayout(context);
         setupCourseTimeLayout(context);
 
@@ -93,11 +94,10 @@ public class TimeTable extends FrameLayout {
         mCourseLayout = new ScheduleTimeLayout(context);
         FrameLayout.LayoutParams courseLayoutParams = new
                 FrameLayout.LayoutParams(LITTLE_VIEW_WIDTH, COURSE_TIME_HEIGHT * 7);
-//        courseLayoutParams.setMargins(0, LITTLE_VIEW_HEIGHT, WEEK_DAY_WIDTH * 7, 0);
-        courseLayoutParams.setMargins(0,LITTLE_VIEW_HEIGHT,0,0);
+        courseLayoutParams.setMargins(0, LITTLE_VIEW_HEIGHT, 0, 0);
         mCourseLayout.setOrientation(LinearLayout.VERTICAL);
         mCourseLayout.setBackgroundColor(Color.WHITE);
-        addView(mCourseLayout,courseLayoutParams);
+        addView(mCourseLayout, courseLayoutParams);
 
         mCourseTextView = new TextView[14];
 
@@ -113,7 +113,7 @@ public class TimeTable extends FrameLayout {
             mCourseTextView[i] = new TextView(context);
             mCourseTextView[i].setGravity(Gravity.CENTER);
             mCourseTextView[i].setWidth(LITTLE_VIEW_WIDTH);
-            mCourseTextView[i].setHeight(COURSE_TIME_HEIGHT / 2  - 1);
+            mCourseTextView[i].setHeight(COURSE_TIME_HEIGHT / 2 - 1);
             mCourseTextView[i].setBackgroundColor(Color.RED);
             String hour = "" + (i / 2 * 2 + 8);
             String minute;
@@ -136,32 +136,12 @@ public class TimeTable extends FrameLayout {
         mWeekDayLayout.setPadding(LITTLE_VIEW_WIDTH, 0, 0, 0);
         mWeekDayLayout.setOrientation(LinearLayout.HORIZONTAL);
         mWeekDayLayout.setBackgroundColor(Color.GREEN);
-        addView(mWeekDayLayout,weekDayParams);
+        addView(mWeekDayLayout, weekDayParams);
 
         mWeekDayTextView = new TextView[7];
 
-//        Observable.just(0)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.computation())
-//                .subscribe(new Observer<Integer>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(Integer integer) {
-//                        weekDate = DateUtil.getTheWeekDate(integer);
-//                    }
-//                });
-
         ImageView[] divider = new ImageView[7];
-        String[] weekdays;
+        weekDates = DateUtil.getTheWeekDate(0);
         weekdays = getResources().getStringArray(R.array.week_day);
         for (int i = 0; i < 7; i++) {
 
@@ -178,26 +158,33 @@ public class TimeTable extends FrameLayout {
             mWeekDayTextView[i].setLayoutParams(new
                     ViewGroup.LayoutParams(WEEK_DAY_WIDTH - 1, ViewGroup.LayoutParams.MATCH_PARENT));
             mWeekDayTextView[i].setGravity(Gravity.CENTER);
-            mWeekDayTextView[i].setText(weekdays[i] + "\n"  );
+            mWeekDayTextView[i].setText(weekdays[i] + "\n" + weekDates.get(i));
             mWeekDayLayout.addView(mWeekDayTextView[i]);
         }
-
     }
 
 
-    public void setupScrollerView(Context context) {
+    //更改对应周的日期,传入的distance为选择周距当前周的周数
+    public void changeTheDate(int distance) {
+        weekDates = DateUtil.getTheWeekDate(distance);
+        for (int i = 0; i < 7; i++) {
+            mWeekDayTextView[i].setText(weekdays[i] + "\n" + weekDates.get(i));
+        }
+    }
+
+
+    public void setupScrollView(Context context) {
 
         mScheduleLayout = new ScheduleTimeLayout(context);
 
-
         FrameLayout.LayoutParams scheduleLayoutParams = new
-                FrameLayout.LayoutParams(WEEK_DAY_WIDTH * 7, COURSE_TIME_HEIGHT * 7 );
-        scheduleLayoutParams.setMargins(LITTLE_VIEW_WIDTH,LITTLE_VIEW_HEIGHT,0,0);
+                FrameLayout.LayoutParams(WEEK_DAY_WIDTH * 7, COURSE_TIME_HEIGHT * 7);
+        scheduleLayoutParams.setMargins(LITTLE_VIEW_WIDTH, LITTLE_VIEW_HEIGHT, 0, 0);
         mScheduleLayout.setLayoutParams(scheduleLayoutParams);
 
-        addView(mScheduleLayout,scheduleLayoutParams);
+        addView(mScheduleLayout, scheduleLayoutParams);
 
-        mRelativeLayout = new RelativeLayout[7];
+        dayCourseLayout = new FrameLayout[7];
 
         for (int i = 0; i < 7; i++) {
 
@@ -205,25 +192,18 @@ public class TimeTable extends FrameLayout {
                     WEEK_DAY_WIDTH,
                     COURSE_TIME_HEIGHT * 7
             );
-            mRelativeLayout[i] = new RelativeLayout(context);
-            mRelativeLayout[i].setBackgroundColor(Color.YELLOW);
-            mRelativeLayout[i].setLayoutParams(relativeParams);
-            mScheduleLayout.addView(mRelativeLayout[i]);
+            dayCourseLayout[i] = new FrameLayout(context);
+            dayCourseLayout[i].setBackgroundColor(Color.YELLOW);
+            dayCourseLayout[i].setLayoutParams(relativeParams);
+            mScheduleLayout.addView(dayCourseLayout[i]);
 
-//            for (int j = 0; j < 7; j++) {
-//                mContentTextViews[i][j] = new TextView(context);
-//                mContentTextViews[i][j].setBackgroundColor(Color.YELLOW);
-//                mContentTextViews[i][j].setWidth(WEEK_DAY_WIDTH);
-//                mContentTextViews[i][j].setGravity(Gravity.TOP);
-//                mContentTextViews[i][j].setHeight(COURSE_TIME_HEIGHT);
-//                mContentTextViews[i][j].setText("数据结构\n@7109\n 熊回香 ");
-//                mTableRows[i].addView(mContentTextViews[i][j]);
-//            }
         }
 
-        mRelativeLayout[4].setBackgroundColor(Color.RED);
-        mRelativeLayout[3].setBackgroundColor(Color.alpha(Color.WHITE));
+    }
 
+
+    public void setOnScrollBottomListener(OnScrollBottomListener onScrollBottomListener) {
+        mScrollBottomListener = onScrollBottomListener;
     }
 
     @Override
@@ -233,80 +213,79 @@ public class TimeTable extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int dx, dy;
-        if (mVelocityTracker == null) {
-            mVelocityTracker = VelocityTracker.obtain();
-        }
-        mVelocityTracker.addMovement(event);
-
         switch (event.getAction()) {
 
             case MotionEvent.ACTION_DOWN:
                 mx = event.getX();
                 my = event.getY();
-//                if (!mWeekDayLayout.mScroller.isFinished()){
-//                    mWeekDayLayout.mScroller.abortAnimation();
-//                    mCourseLayout.mScroller.abortAnimation();
-//                    mTableLayout.mScroller.abortAnimation();
-//                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 curX = event.getX();
                 curY = event.getY();
-                mWeekDayLayout.scrollBy((int) (mx - curX), 0,mTouchFlag);
-                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY),mTouchFlag);
-                mCourseLayout.scrollBy(0, (int) (my - curY),mTouchFlag);
+
+                //当课程表滑至底部时直接收回已展开的选择第几周,
+                if ((mScheduleLayout.getScrollY() + my - curY) >
+                        (TimeTable.COURSE_TIME_HEIGHT * 7 - DimensUtil.getScreenHeight() + ScheduleActivity.SELECT_WEEK_LAYOUT_HEIGHT
+                                + DimensUtil.getActionbarHeight() + DimensUtil.getStatusBarHeight() + TimeTable.LITTLE_VIEW_HEIGHT) && mTouchFlag == TOUCH_FLAG_EXTEND) {
+                    mScrollBottomListener.onScrollBottom(true);
+                    return false;
+                }
+                mWeekDayLayout.scrollBy((int) (mx - curX), 0, mTouchFlag);
+                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY), mTouchFlag);
+                mCourseLayout.scrollBy(0, (int) (my - curY), mTouchFlag);
                 mx = curX;
                 my = curY;
                 break;
             case MotionEvent.ACTION_UP:
                 curX = event.getX();
                 curY = event.getY();
-//                mVelocityTracker.computeCurrentVelocity(1000);
-                final VelocityTracker velocityTracker = mVelocityTracker;
-                velocityTracker.computeCurrentVelocity(1000);
-                int velocityX = (int) velocityTracker.getXVelocity();
-                int velocityY = (int) velocityTracker.getYVelocity();
-                if (isLowerMinSpeed(velocityX)){
-                    velocityX = 0;
-                }
-                if (isLowerMinSpeed(velocityY)){
-                    velocityY = 0;
-                }
-//                mCourseLayout.smoothScrollBy(0, -velocityY / 2);
-//                mWeekDayLayout.smoothScrollBy(-velocityX / 2, 0);
-//                mTableLayout.smoothScrollBy(-velocityX / 2, -velocityY / 2);
-
-                if (mVelocityTracker != null) {
-                    mVelocityTracker.recycle();
-                    mVelocityTracker = null;
-                }
-
                 break;
         }
 
         return true;
     }
 
-    public boolean isLowerMinSpeed(int speed){
-        if (speed < MIN_SPEED){
-            return true;
-        }
-        return false;
-    }
 
-    public void setTouchFlag(int touchFlag){
+    //设置是在那种情况下的滑动
+    public void setTouchFlag(int touchFlag) {
         mTouchFlag = touchFlag;
     }
 
     //设置本周的日期
-    public void setDate(int weekDistance){
+    public void setDate(int weekDistance) {
 
     }
 
-    //设置课程的具体内容
-    public void setCourse(int weekday,int time,String info){
 
+    //添加每节课程的TextView
+    public void setCourse(List<Course> courses) {
+        for (int i = 0; i < courses.size(); i++) {
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    courses.get(i).getDuring() * COURSE_TIME_HEIGHT / 2
+            );
+            params.setMargins(0, COURSE_TIME_HEIGHT / 2 * courses.get(i).getStart(), 0, 0);
+            TextView courseTv = new TextView(mContext);
+            courseTv.setBackgroundColor(Color.BLUE);
+            courseTv.setText(courses.get(i).getCourseName() + "\n@" +
+                    courses.get(i).getPlace() + "\n" +
+                    courses.get(i).getTeacher());
+
+            int j = 0;
+            j = courses.get(i).getDay() - 1;
+            dayCourseLayout[j].addView(courseTv, params);
+        }
     }
+
+
+    //删除所有课,在更新课程表视图时开始调
+    public void removeCourse() {
+        for (int i = 0; i < 7; i++) {
+            if (dayCourseLayout[i].getChildCount() > 0) {
+                dayCourseLayout[i].removeAllViews();
+            }
+        }
+    }
+
 
 }

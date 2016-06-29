@@ -6,4 +6,5 @@
 >
     <include android:id="@+id/content_layout"
              layout="@layout/view_login"/>
+
 </RelativeLayout>

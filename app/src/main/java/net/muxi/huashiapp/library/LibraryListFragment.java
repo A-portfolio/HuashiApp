@@ -57,8 +57,8 @@ public class LibraryListFragment extends Fragment {
         for (int i = 0; i < 7; i++) {
             s[i] = "it is the " + i;
         }
-        mLibraryAdapter = new LibraryAdapter(s);
-        mFragmentRecyclerview.setHasFixedSize(true);
+//        mLibraryAdapter = new LibraryAdapter(s);
+//        mFragmentRecyclerview.setHasFixedSize(true);
         mFragmentRecyclerview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

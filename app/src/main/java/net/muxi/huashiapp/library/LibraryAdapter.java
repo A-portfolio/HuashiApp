@@ -1,63 +1,52 @@
 package net.muxi.huashiapp.library;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.OnItemClickListener;
 import net.muxi.huashiapp.common.data.Book;
+import net.muxi.huashiapp.common.data.BookSearchResult;
+
+import butterknife.BindView;
 
 /**
  * Created by ybao on 16/5/3.
+ * 图书列表Adapter
  */
 public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHolder> {
 
-    private String[] mTitles;
+
+    private BookSearchResult mBookSearchResult;
 
     private OnItemClickListener mOnItemClickListener;
     private Book book;
 
-
-    public LibraryAdapter(String[] titles) {
+    public LibraryAdapter(BookSearchResult bookSearchResult) {
         super();
-        mTitles = titles;
+        mBookSearchResult = bookSearchResult;
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d("length", mTitles.length + "");
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_book, parent, false);
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-        ViewHolder viewHolder = new ViewHolder(v);
 
-        return viewHolder;
+        return new ViewHolder(v);
     }
-
 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTvTitle.setText(mTitles[position]);
-
-        if (mOnItemClickListener != null) {
-            holder.mTvTitle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-        }
+        holder.mTvTitle.setText(mBookSearchResult.getResults().get(position).getBook());
+        holder.mTvAuthor.setText(mBookSearchResult.getResults().get(position).getAuthor());
+        holder.mTvEncoding.setText(mBookSearchResult.getResults().get(position).getId());
     }
 
     @Override
@@ -65,15 +54,10 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         return super.getItemId(position);
     }
 
-    @Override
-    public void onViewRecycled(ViewHolder holder) {
-        super.onViewRecycled(holder);
-    }
-
 
     @Override
     public int getItemCount() {
-        return mTitles.length;
+        return mBookSearchResult.getResults().size();
     }
 
 
@@ -84,19 +68,23 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView mTvTitle;
-        private RelativeLayout mBookLayout;
-        private TextView mTvAuthor;
-        private TextView mTvInfo;
-        private TextView mTvEncoding;
+        @BindView(R.id.tv_title)
+        TextView mTvTitle;
+        @BindView(R.id.tv_author)
+        TextView mTvAuthor;
+        @BindView(R.id.tv_info)
+        TextView mTvInfo;
+        @BindView(R.id.tv_encoding)
+        TextView mTvEncoding;
+        @BindView(R.id.book_layout)
+        RelativeLayout mBookLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mTvTitle = (TextView) itemView.findViewById(R.id.tv_title);
-            mBookLayout = (RelativeLayout) itemView.findViewById(R.id.book_layout);
             mTvAuthor = (TextView) itemView.findViewById(R.id.tv_author);
-            mTvInfo = (TextView) itemView.findViewById(R.id.tv_info);
             mTvEncoding = (TextView) itemView.findViewById(R.id.tv_encoding);
+            mBookLayout = (RelativeLayout) itemView.findViewById(R.id.book_layout);
             mBookLayout.setOnClickListener(this);
         }
 
@@ -104,20 +92,23 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.book_layout:
-
                     book = new Book();
-
                     book.setAuthor(mTvTitle.getText().toString());
                     book.setAuthor(mTvAuthor.getText().toString());
-                    book.setInfo(mTvInfo.getText().toString());
                     book.setEncode(mTvEncoding.getText().toString());
                     mOnItemClickListener.onItemClick(v, book);
+                    fadeOutAnim();
             }
         }
 
-        private void beginAnim(View v) {
-        }
 
+        public void fadeOutAnim() {
+            AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
+//            alphaAnimation.setDuring(LibraryActivity.DURATION_ALPH);
+            mTvTitle.startAnimation(alphaAnimation);
+            mTvAuthor.startAnimation(alphaAnimation);
+            mTvEncoding.startAnimation(alphaAnimation);
+        }
 
     }
 }
