@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Space;
+import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
@@ -19,7 +20,7 @@ import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.login.LoginEditText;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Response;
@@ -32,20 +33,22 @@ import rx.schedulers.Schedulers;
  */
 public class LibraryLoginActivity extends BaseActivity {
 
-    @Bind(R.id.edit_userName)
-    LoginEditText mEditUserName;
-    @Bind(R.id.edit_password)
-    LoginEditText mEditPassword;
-    @Bind(R.id.login_center_layout)
-    RelativeLayout mLoginCenterLayout;
-    @Bind(R.id.btn_login)
-    Button mBtnLogin;
-    @Bind(R.id.toolbar)
+
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.appbar_layout)
+    @BindView(R.id.appbar_layout)
     AppBarLayout mAppbarLayout;
-    @Bind(R.id.space_divider)
+    @BindView(R.id.edit_userName)
+    LoginEditText mEditUserName;
+    @BindView(R.id.edit_password)
+    LoginEditText mEditPassword;
+    @BindView(R.id.login_center_layout)
+    RelativeLayout mLoginCenterLayout;
+    @BindView(R.id.btn_login)
+    Button mBtnLogin;
+    @BindView(R.id.space_divider)
     Space mSpaceDivider;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

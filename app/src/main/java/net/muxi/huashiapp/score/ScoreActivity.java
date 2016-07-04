@@ -23,7 +23,7 @@ import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -32,15 +32,15 @@ import butterknife.OnClick;
  */
 public class ScoreActivity extends ToolbarActivity {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.spinner_year)
+    @BindView(R.id.spinner_year)
     Spinner mSpinnerYear;
-    @Bind(R.id.spinner_term)
+    @BindView(R.id.spinner_term)
     Spinner mSpinnerTerm;
-    @Bind(R.id.btn_enter)
+    @BindView(R.id.btn_enter)
     Button mBtnEnter;
-    @Bind(R.id.fragment_layout)
+    @BindView(R.id.fragment_layout)
     FrameLayout mFragmentLayout;
 
     private User mUser;

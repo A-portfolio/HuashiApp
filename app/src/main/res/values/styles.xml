@@ -28,6 +28,8 @@
     </style>
 
 
+
+=======
     <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
@@ -64,4 +66,5 @@
         <item name="android:paddingTop">@dimen/item_vertical_margin</item>
     </style>
 
+>>>>>>> 00a33d3c296cc256992ed6a8649974fbf08c99d9
 </resources>

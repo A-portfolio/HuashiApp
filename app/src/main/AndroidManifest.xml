@@ -36,6 +36,7 @@
         <activity android:name=".login.LoginActivity"
                   android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -69,6 +70,8 @@
         <activity android:name=".library.MineActivity"/>
 
         <activity android:name=".webview.WebViewActivity"/>
+
+        <activity android:name=".electricity.ElectricityActivity"/>
 
         <receiver android:name=".common.service.AlarmLiveReceiver">
             <intent-filter>

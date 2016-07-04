@@ -9,7 +9,7 @@ public class Course {
         private String courseName;
         private String teacher;
         private String weeks;
-        private String day;
+        private int day;
         private int start;
         private int during;
         private String place;
@@ -55,11 +55,11 @@ public class Course {
             this.weeks = weeks;
         }
 
-        public String getDay() {
+        public int getDay() {
             return day;
         }
 
-        public void setDay(String day) {
+        public void setDay(int day) {
             this.day = day;
         }
 

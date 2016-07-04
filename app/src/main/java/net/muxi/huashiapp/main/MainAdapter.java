@@ -12,8 +12,10 @@ import net.muxi.huashiapp.R;
 /**
  * Created by december on 16/4/19.
  */
-public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder>  {
+public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
 
+    private static final int ITEM_VIEW_TYPE_HEADER = 0;
+    private static final int ITEM_VIEW_TYPE_ITEM = 1;
 
 
     /**
@@ -25,6 +27,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     private String[] mdesc;
     private ItemClickListener mItemClickListener;
 
+    public boolean isHeader(int position) {
+        return position == 0;
+    }
+
 
     public interface ItemClickListener {
         void OnItemClick(View view,int position);
@@ -34,9 +40,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     public MainAdapter(String[] mdesc, int[] mpics){
         this.mdesc = mdesc;
         this.mpics = mpics;
-
-
     }
+
     /**
      * 这里是加载item，并且创建ViewHolder对象，把加载的item(view)传给ViewHolder
      * 第二个参数就是View的类型，根据这个类型去创建不同item的ViewHolder
@@ -50,23 +55,16 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
         return holder;
     }
 
-    public void setItemClickListener(ItemClickListener mItemClickListener) {
-        this.mItemClickListener = mItemClickListener;
-    }
-
-
-    /**
-     * 这里是给item中的子view绑定数据
-     * @param holder
-     * @param position
-     */
     @Override
-    public void onBindViewHolder(MainViewHolder holder, final int position) {
+    public void onBindViewHolder(MainViewHolder holder, int position) {
         holder.mImageView.setImageResource(mpics[position]);
         holder.mTextView.setText(mdesc[position]);
         holder.itemView.setTag(position);
+    }
 
-}
+    public void setItemClickListener(ItemClickListener mItemClickListener) {
+        this.mItemClickListener = mItemClickListener;
+    }
 
 
     /**
@@ -81,12 +79,21 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
     @Override
     public int getItemViewType(int position) {
-        return super.getItemViewType(position);
+        return isHeader(position)?ITEM_VIEW_TYPE_HEADER:ITEM_VIEW_TYPE_ITEM;
     }
 
     /**
      * ViewHolder类，继承RecyclerView.ViewHolder
      */
+
+    public class HeaderViewHolder extends RecyclerView.ViewHolder{
+        private TextView mTextView;
+        public HeaderViewHolder(View itemview){
+            super(itemview);
+        }
+
+    }
+
 
     public class MainViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView mTextView;
@@ -97,6 +104,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
             mImageView = (ImageView) itemview.findViewById(R.id.main_pic);
             itemview.setOnClickListener(this);
         }
+
 
         @Override
         public void onClick(View v) {

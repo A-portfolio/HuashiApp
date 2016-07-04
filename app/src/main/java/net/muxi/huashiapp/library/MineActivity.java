@@ -16,7 +16,7 @@ import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -24,11 +24,12 @@ import butterknife.ButterKnife;
  */
 public class MineActivity extends BaseActivity {
 
-    @Bind(R.id.toolbar)
+
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.search_view)
+    @BindView(R.id.search_view)
     MySearchView mSearchView;
-    @Bind(R.id.toolbar_container)
+    @BindView(R.id.toolbar_container)
     FrameLayout mToolbarContainer;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;

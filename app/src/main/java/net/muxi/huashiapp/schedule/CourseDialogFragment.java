@@ -15,8 +15,6 @@ import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.util.Logger;
 
-import butterknife.ButterKnife;
-
 /**
  * Created by ybao on 16/5/28.
  */
@@ -54,7 +52,6 @@ public class CourseDialogFragment extends DialogFragment implements NumberPicker
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     public interface NoticeDialogListener {

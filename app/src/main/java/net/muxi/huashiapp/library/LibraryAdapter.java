@@ -15,7 +15,7 @@ import net.muxi.huashiapp.common.data.BookSearchResult;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by ybao on 16/5/3.
@@ -83,15 +83,15 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.tv_title)
+        @BindView(R.id.tv_title)
         TextView mTvTitle;
-        @Bind(R.id.tv_author)
+        @BindView(R.id.tv_author)
         TextView mTvAuthor;
-        @Bind(R.id.tv_info)
+        @BindView(R.id.tv_info)
         TextView mTvInfo;
-        @Bind(R.id.tv_encoding)
+        @BindView(R.id.tv_encoding)
         TextView mTvEncoding;
-        @Bind(R.id.book_layout)
+        @BindView(R.id.book_layout)
         RelativeLayout mBookLayout;
 
         public ViewHolder(View itemView) {

@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.news;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,7 +14,7 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -22,9 +23,11 @@ import butterknife.ButterKnife;
 public class NewsActivity extends ToolbarActivity {
 
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.news_recycler_view)
+    @BindView(R.id.appbar_layout)
+    AppBarLayout mAppbarLayout;
+    @BindView(R.id.news_recycler_view)
     RecyclerView mNewsRecyclerView;
     private List<String> mDatas;
     MyNewsAdapter mMyNewsAdapter;

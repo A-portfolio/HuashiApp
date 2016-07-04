@@ -22,18 +22,18 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.util.DimensUtil;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by ybao on 16/5/20.
  */
 public class BaseDetailLayout extends FrameLayout {
 
-    @Bind(R.id.bg_layout)
+    @BindView(R.id.bg_layout)
     RelativeLayout mBgLayout;
-    @Bind(R.id.scroll_view)
+    @BindView(R.id.scroll_view)
     ScrollView mScrollView;
-    @Bind(R.id.detail_content_layout)
+    @BindView(R.id.detail_content_layout)
     ContentLayout mDetailContentLayout;
 
     private BaseActivity mContext;

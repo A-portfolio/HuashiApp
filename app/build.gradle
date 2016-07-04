@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 23
@@ -28,7 +29,8 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.android.support:design:23.4.0'
     compile 'io.reactivex:rxjava:1.1.0'
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.1.0'
+    apt 'com.jakewharton:butterknife-compiler:8.1.0'
     compile 'com.android.support:cardview-v7:23.4.0'
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
@@ -38,9 +40,9 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
     compile 'com.zhuge.analysis:visual:latest.integration'
+    compile 'com.miguelcatalan:materialsearchview:1.4.0'
+    compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
-    compile 'com.bigkoo:convenientbanner:2.0.5'
-//    compile 'com.miguelcatalan:materialsearchview:1.4.0'
     compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
     compile files('libs/universal-image-loader-1.9.5.jar')
 

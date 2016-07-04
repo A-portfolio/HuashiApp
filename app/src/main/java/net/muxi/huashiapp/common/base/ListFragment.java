@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import net.muxi.huashiapp.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 public class ListFragment extends Fragment {
 
 
-    @Bind(R.id.fragment_recyclerview)
+    @BindView(R.id.fragment_recyclerview)
     RecyclerView mFragmentRecyclerview;
 
     public static Fragment newInstance() {
@@ -38,6 +38,5 @@ public class ListFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

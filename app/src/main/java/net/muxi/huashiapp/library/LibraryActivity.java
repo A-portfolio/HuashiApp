@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Observer;
@@ -46,15 +47,13 @@ import rx.schedulers.Schedulers;
  */
 public class LibraryActivity extends BaseActivity {
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
-    @Bind(R.id.recycler_view)
+    @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.searchview)
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.searchview)
     MySearchView mSearchview;
-    @Bind(R.id.root_layout)
-    FrameLayout mRootLayout;
-    @Bind(R.id.content_layout)
+    @BindView(R.id.root_layout)
     FrameLayout mContentLayout;
 
 //    private List<BookSearchResult.ResultsBean> bookList;

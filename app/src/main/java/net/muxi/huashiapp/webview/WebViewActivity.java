@@ -22,7 +22,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.util.AppUtil;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -32,15 +32,15 @@ public class WebViewActivity extends ToolbarActivity {
 
     private static final String WEB_URL = "url";
     private static final String WEB_TITLE = "title";
-
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.appbar_layout)
+    @BindView(R.id.appbar_layout)
     AppBarLayout mAppbarLayout;
-    @Bind(R.id.webview)
+    @BindView(R.id.webview)
     WebView mWebview;
-    @Bind(R.id.custom_progress_bar)
+
     NumberProgressBar mCustomProgressBar;
+
     private String url;
     private String title;
 

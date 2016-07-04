@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -66,9 +66,9 @@ public class MySearchAdapter extends BaseAdapter {
 
 
     public class SuggestionViewHolder {
-        @Bind(R.id.suggestion_icon)
+        @BindView(R.id.suggestion_icon)
         ImageView mSuggestionIcon;
-        @Bind(R.id.suggestion_text)
+        @BindView(R.id.suggestion_text)
         TextView mSuggestionText;
 
         public SuggestionViewHolder(View view) {

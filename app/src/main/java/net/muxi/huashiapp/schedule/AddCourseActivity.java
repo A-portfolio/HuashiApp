@@ -2,6 +2,7 @@ package net.muxi.huashiapp.schedule;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +27,7 @@ import net.muxi.huashiapp.common.util.ToastUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Response;
 import rx.Observer;
@@ -40,25 +41,26 @@ public class AddCourseActivity extends ToolbarActivity
         implements View.OnClickListener, CourseDialogFragment.NoticeDialogListener {
 
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.edit_course_name)
+    @BindView(R.id.appbar_layout)
+    AppBarLayout mAppbarLayout;
+    @BindView(R.id.edit_course_name)
     EditText mEditCourseName;
-    @Bind(R.id.edit_teacher_name)
+    @BindView(R.id.edit_teacher_name)
     EditText mEditTeacherName;
-    @Bind(R.id.tv_week_select)
+    @BindView(R.id.tv_week_select)
     TextView mTvWeekSelect;
-    @Bind(R.id.tv_course_time)
+    @BindView(R.id.tv_course_time)
     TextView mTvCourseTime;
-    @Bind(R.id.edit_course_place)
+    @BindView(R.id.edit_course_place)
     EditText mEditCoursePlace;
-    @Bind(R.id.tv_course_remind)
+    @BindView(R.id.tv_course_remind)
     TextView mTvCourseRemind;
-    @Bind(R.id.layout_course_add)
+    @BindView(R.id.layout_course_add)
     LinearLayout mLayoutCourseAdd;
-    @Bind(R.id.btn_add)
+    @BindView(R.id.btn_add)
     Button mBtnAdd;
-
     private HuaShiDao dao;
     private PreferenceUtil sp;
     //上课的周 存储形式为 1,3,4,5,
@@ -151,6 +153,10 @@ public class AddCourseActivity extends ToolbarActivity
                                 });
                     } else {
                         ToastUtil.showLong(getResources().getString(R.string.tip_check_net));
+                        int id = sp.getInt(PreferenceUtil.COURSE_ID, 0);
+                        Course course = new Course();
+//                        course.set
+//                        CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(user),)
                     }
                     this.finish();
                 } else {
@@ -196,7 +202,7 @@ public class AddCourseActivity extends ToolbarActivity
 
     private Course setCourse() {
         Course course = new Course();
-        course.setCourse(mEditCourseName.getText().toString());
+        course.setCourseName(mEditCourseName.getText().toString());
         course.setTeacher(mEditTeacherName.getText().toString());
         course.setWeeks(transToSimpleStr(mWeeks));
         course.setDay(days[mDay - 1]);
