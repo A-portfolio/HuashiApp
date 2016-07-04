@@ -85,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void initViews() {
+        mEditPassword.setHint(getResources().getString(R.string.tip_pwd_text));
         mEditUserName.addTextChangedListener(mTextWatcher);
         mEditPassword.addTextChangedListener(mTextWatcher);
         mBtnLogin.setEnabled(DEBUG_VALUE);

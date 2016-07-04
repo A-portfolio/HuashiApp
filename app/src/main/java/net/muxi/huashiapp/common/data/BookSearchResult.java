@@ -4,10 +4,23 @@ import java.util.List;
 
 /**
  * Created by ybao on 16/6/21.
+ * 搜索关键字返回的图书列表
  */
 public class BookSearchResult {
 
+    /**
+     * max : 5
+     * per_page : 20
+     */
+
     private MetaBean meta;
+    /**
+     * bid : TP312/GJ 7
+     * book : 1.Java语言规范:基于Java SE 8:Java SE 8 edition
+     * intro : 机械工业出版社
+     * id : 0001315657
+     * author : (美) 詹姆斯·高斯林 ... [等] 著
+     */
 
     private List<ResultsBean> results;
 
@@ -28,24 +41,15 @@ public class BookSearchResult {
     }
 
     public static class MetaBean {
-        private String last;
-        private String next;
+        private int max;
         private int per_page;
 
-        public String getLast() {
-            return last;
+        public int getMax() {
+            return max;
         }
 
-        public void setLast(String last) {
-            this.last = last;
-        }
-
-        public String getNext() {
-            return next;
-        }
-
-        public void setNext(String next) {
-            this.next = next;
+        public void setMax(int max) {
+            this.max = max;
         }
 
         public int getPer_page() {
@@ -58,19 +62,11 @@ public class BookSearchResult {
     }
 
     public static class ResultsBean {
-        private String author;
         private String bid;
         private String book;
-        private String id;
         private String intro;
-
-        public String getAuthor() {
-            return author;
-        }
-
-        public void setAuthor(String author) {
-            this.author = author;
-        }
+        private String id;
+        private String author;
 
         public String getBid() {
             return bid;
@@ -88,6 +84,14 @@ public class BookSearchResult {
             this.book = book;
         }
 
+        public String getIntro() {
+            return intro;
+        }
+
+        public void setIntro(String intro) {
+            this.intro = intro;
+        }
+
         public String getId() {
             return id;
         }
@@ -96,12 +100,12 @@ public class BookSearchResult {
             this.id = id;
         }
 
-        public String getIntro() {
-            return intro;
+        public String getAuthor() {
+            return author;
         }
 
-        public void setIntro(String intro) {
-            this.intro = intro;
+        public void setAuthor(String author) {
+            this.author = author;
         }
     }
 }

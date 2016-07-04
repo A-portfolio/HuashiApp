@@ -57,6 +57,11 @@
         <item name="android:textColor">@color/colorBlack</item>
     </style>
 
-
+    <style name="ItemStyle">
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingBottom">@dimen/item_vertical_margin</item>
+        <item name="android:paddingTop">@dimen/item_vertical_margin</item>
+    </style>
 
 </resources>

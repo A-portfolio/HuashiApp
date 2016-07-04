@@ -6,14 +6,14 @@ package net.muxi.huashiapp.common.data;
 public class Course {
 
     private int id;
-    private String courseName;
+    private String course;
     private String teacher;
     private String weeks;
-    private int day;
+    private String day;
     private int start;
     private int during;
     private String place;
-    private String remind;
+    private boolean remind;
 
     public int getId() {
         return id;
@@ -31,12 +31,12 @@ public class Course {
         this.during = during;
     }
 
-    public String getCourseName() {
-        return courseName;
+    public String getCourse() {
+        return course;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
+    public void setCourse(String course) {
+        this.course = course;
     }
 
     public String getTeacher() {
@@ -55,11 +55,11 @@ public class Course {
         this.weeks = weeks;
     }
 
-    public int getDay() {
+    public String getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    public void setDay(String day) {
         this.day = day;
     }
 
@@ -79,11 +79,11 @@ public class Course {
         this.place = place;
     }
 
-    public String getRemind() {
+    public Boolean getRemind() {
         return remind;
     }
 
-    public void setRemind(String remind) {
+    public void setRemind(Boolean remind) {
         this.remind = remind;
     }
 }

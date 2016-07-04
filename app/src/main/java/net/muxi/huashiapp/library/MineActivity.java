@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.db.HuaShiDao;
+import net.muxi.huashiapp.common.util.PreferenceUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,6 +30,8 @@ public class MineActivity extends BaseActivity {
     MySearchView mSearchView;
     @Bind(R.id.toolbar_container)
     FrameLayout mToolbarContainer;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
     private HuaShiDao dao;
     String[] suggestions;
 
@@ -39,8 +43,6 @@ public class MineActivity extends BaseActivity {
         ButterKnife.bind(this);
         dao = new HuaShiDao();
         initView();
-
-
     }
 
 
@@ -57,8 +59,8 @@ public class MineActivity extends BaseActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 dao.insertSearchHistory(query);
-                Intent intent = new Intent(MineActivity.this,LibraryActivity.class);
-                intent.putExtra(AppConstants.LIBRARY_QUERY_TEXT,query);
+                Intent intent = new Intent(MineActivity.this, LibraryActivity.class);
+                intent.putExtra(AppConstants.LIBRARY_QUERY_TEXT, query);
                 startActivity(intent);
                 return true;
             }
@@ -74,15 +76,34 @@ public class MineActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_library, menu);
+        getMenuInflater().inflate(R.menu.menu_lib_mine, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         mSearchView.setMenuItem(item);
         return true;
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_logout){
+            clearLibUser();
+            Intent intent = new Intent(MineActivity.this,LibraryLoginActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    //清楚本地数据缓存
+    private void clearLibUser() {
+        PreferenceUtil sp = new PreferenceUtil();
+        sp.removeString(PreferenceUtil.LIBRARY_ID);
+        sp.removeString(PreferenceUtil.LIBRARY_PWD);
+    }
+
+    @Override
     public void onBackPressed() {
-        if (mSearchView.isSearchOpen()){
+        if (mSearchView.isSearchOpen()) {
             mSearchView.closeSearchView();
             return;
         }

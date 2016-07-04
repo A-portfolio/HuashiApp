@@ -39,7 +39,6 @@
             android:layout_below="@+id/edit_userName"
             android:layout_centerInParent="true"
             android:focusable="true"
-            android:hint="@string/tip_pwd_text"
             android:inputType="textPassword"
             android:maxLines="1"
             android:imeOptions="actionDone"

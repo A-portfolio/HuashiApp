@@ -3,34 +3,40 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/book_layout"
+    style="@style/ItemStyle"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/library_book_item_height"
-    android:layout_marginBottom="1px"
+    android:layout_height="@dimen/library_item_search_height"
     android:background="#ffffff"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_book"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        tools:text="RxJava"/>
 
     <TextView
-        android:layout_width="wrap_content"
         android:id="@+id/tv_author"
-        android:layout_below="@+id/tv_title"
-        android:layout_height="wrap_content"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_book"
+        android:layout_centerVertical="true"
+        tools:text="xxx"/>
 
     <TextView
         android:id="@+id/tv_info"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_below="@+id/tv_author"
-        android:layout_height="wrap_content"/>
+        tools:text="infofff"/>
 
     <TextView
-        android:layout_width="wrap_content"
         android:id="@+id/tv_encoding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:layout_above="@+id/tv_info"
-        android:layout_height="wrap_content"/>
+        tools:text="FYTKE300000"/>
 
 </RelativeLayout>

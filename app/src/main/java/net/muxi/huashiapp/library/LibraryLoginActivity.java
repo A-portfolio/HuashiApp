@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.library;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -10,11 +11,21 @@ import android.widget.Space;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
+import net.muxi.huashiapp.common.data.User;
+import net.muxi.huashiapp.common.data.VerifyResponse;
+import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.common.util.Base64Util;
+import net.muxi.huashiapp.common.util.NetStatus;
+import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.login.LoginEditText;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Response;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by ybao on 16/5/15.
@@ -45,6 +56,7 @@ public class LibraryLoginActivity extends BaseActivity {
     }
 
     private void initView() {
+        mEditPassword.setHint(getResources().getString(R.string.tip_lib_pwd));
         mToolbar.setTitle("图书馆");
     }
 
@@ -60,6 +72,36 @@ public class LibraryLoginActivity extends BaseActivity {
 
     @OnClick(R.id.btn_login)
     public void onClick() {
+        User user = new User();
+        user.setSid(mEditUserName.getText().toString());
+        user.setPassword(mEditPassword.getText().toString());
+        if (NetStatus.isConnected()){
+            CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Response<VerifyResponse>>() {
+                        @Override
+                        public void onCompleted() {
 
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onNext(Response<VerifyResponse> verifyResponseResponse) {
+                            if (verifyResponseResponse.code() == 200){
+                                Intent intent = new Intent(LibraryLoginActivity.this,MineActivity.class);
+                                startActivity(intent);
+                            }else if (verifyResponseResponse.code() == 403){
+                                ToastUtil.showLong(getResources().getString(R.string.tip_err_account));
+                            }else {
+                                ToastUtil.showLong(getResources().getString(R.string.tip_err_server));
+                            }
+                        }
+                    });
+        }
     }
 }

@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.common.base;
+package net.muxi.huashiapp.common.widget;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -19,8 +19,8 @@ import android.widget.ScrollView;
 import android.widget.Scroller;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.util.DimensUtil;
-import net.muxi.huashiapp.library.ContentLayout;
 
 import butterknife.Bind;
 

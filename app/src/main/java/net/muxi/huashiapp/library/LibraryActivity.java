@@ -13,21 +13,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.OnItemClickListener;
 import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.common.base.BaseDetailLayout;
 import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.DimensUtil;
+import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.common.widget.BaseDetailLayout;
+import net.muxi.huashiapp.common.widget.DividerItemDecoration;
 import net.muxi.huashiapp.common.widget.ShadowView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
@@ -53,8 +57,10 @@ public class LibraryActivity extends BaseActivity {
     @Bind(R.id.content_layout)
     FrameLayout mContentLayout;
 
-    private FrameLayout contentLayout;
+//    private List<BookSearchResult.ResultsBean> bookList;
 
+    private List<BookSearchResult.ResultsBean> mBookList;
+    private FrameLayout contentLayout;
     //设置fragment 的高度
     public static final int FRAGMENT_HEIGHT =
             DimensUtil.getScreenHeight() - DimensUtil.getStatusBarHeight() - DimensUtil.dp2px(48);
@@ -66,8 +72,6 @@ public class LibraryActivity extends BaseActivity {
     public static final int DURATION_ALPH = 180;
 
     //点击后详情页布局
-    private RelativeLayout detailLayout;
-    private Toolbar detailToolbar;
 
     private LibraryAdapter mLibraryAdapter;
     private View animView;
@@ -78,6 +82,13 @@ public class LibraryActivity extends BaseActivity {
 
     private String[] suggestions;
 
+    //关键字
+    private String mKeyword;
+    //页数
+    private int mPage = 1;
+    //最大页数
+    private int mMax = 0;
+
     private BaseDetailLayout mBaseDetailLayout;
 
     @Override
@@ -86,13 +97,13 @@ public class LibraryActivity extends BaseActivity {
         setContentView(R.layout.activity_library);
         ButterKnife.bind(this);
 
+        mBookList = new ArrayList<>();
         String query = getIntent().getStringExtra(AppConstants.LIBRARY_QUERY_TEXT);
+        mKeyword = query;
         searchBook(query);
-
         contentLayout = (FrameLayout) findViewById(android.R.id.content);
 
         initVariables();
-
         initViews();
 
     }
@@ -103,8 +114,13 @@ public class LibraryActivity extends BaseActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 dao.insertSearchHistory(query);
-
-                searchBook(query);
+                mSearchview.closeSearchView();
+                mSearchview.hideKeyboard(mSearchview);
+                mPage = 1;
+                mKeyword = query;
+//                searchBook(query);
+                mRecyclerView.scrollToPosition(0);
+                loadData(true);
                 return true;
             }
 
@@ -119,8 +135,7 @@ public class LibraryActivity extends BaseActivity {
         setSupportActionBar(mToolbar);
 
         //init RecyclerView
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setHasFixedSize(true);
+
     }
 
     private void initVariables() {
@@ -129,8 +144,8 @@ public class LibraryActivity extends BaseActivity {
 
     }
 
-    private void searchBook(String query){
-        CampusFactory.getRetrofitService().searchBook(query,"1")
+    private void searchBook(String query) {
+        CampusFactory.getRetrofitService().searchBook(query, mPage)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BookSearchResult>() {
@@ -147,19 +162,49 @@ public class LibraryActivity extends BaseActivity {
 
                     @Override
                     public void onNext(BookSearchResult bookSearchResult) {
-                        setupRecyclerview(bookSearchResult);
+                        if (bookSearchResult != null) {
+                            mBookList.addAll(bookSearchResult.getResults());
+                            setupRecyclerview();
+                            mMax = bookSearchResult.getMeta().getMax();
+                        } else {
+                            ToastUtil.showLong("无相关符合图书");
+
+                        }
                     }
                 });
     }
 
-    private void setupRecyclerview(BookSearchResult bookSearchResult) {
-
-        mLibraryAdapter = new LibraryAdapter(bookSearchResult);
+    private void setupRecyclerview() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setHasFixedSize(true);
+        mLibraryAdapter = new LibraryAdapter(mBookList);
         mRecyclerView.setAdapter(mLibraryAdapter);
-
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        mRecyclerView.addOnScrollListener(getOnBottomListener());
         mLibraryAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(View view, Book book) {
+            public void onItemClick(View view, BookSearchResult.ResultsBean resultsBean) {
+                Logger.d("id:" + resultsBean.getId() + " book:" + resultsBean.getBook() + " author" + resultsBean.getAuthor());
+                CampusFactory.getRetrofitService().getBookDetail(resultsBean.getId(), resultsBean.getBook(), resultsBean.getAuthor())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.newThread())
+                        .subscribe(new Observer<Book>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                e.printStackTrace();
+                            }
+
+                            @Override
+                            public void onNext(Book book) {
+                                Logger.d(book.getBook());
+                                setupDetailLayout(book);
+                            }
+                        });
 
                 final View itemView = view;
 
@@ -170,30 +215,87 @@ public class LibraryActivity extends BaseActivity {
                         startScale(itemView);
                     }
                 }, DURATION_ALPH);
-
-                Observable.timer(DURATION_ALPH + DURATION_SCALE, TimeUnit.MILLISECONDS)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<Long>() {
-                            @Override
-                            public void onCompleted() {
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                e.printStackTrace();
-
-                            }
-
-                            @Override
-                            public void onNext(Long aLong) {
-                                mBaseDetailLayout = new BaseDetailLayout(LibraryActivity.this);
-                                mContentLayout.addView(mBaseDetailLayout);
-                            }
-                        });
-
             }
 
         });
+    }
+
+    private RecyclerView.OnScrollListener getOnBottomListener() {
+        return new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                View lastChildView = recyclerView.getLayoutManager().getChildAt(
+                        recyclerView.getChildCount() - 1
+                );
+                int lastViewBottom = lastChildView.getBottom();
+                int recyclerviewBottom = recyclerView.getBottom();
+                int positon = recyclerView.getLayoutManager().getPosition(lastChildView);
+                Logger.d(positon + "  " + lastViewBottom + "  "  + recyclerView.getTop());
+                Logger.d(recyclerView.getLayoutManager().getItemCount() + "  " + recyclerviewBottom + "");
+                if (lastViewBottom + recyclerView.getTop() + 5 >= recyclerviewBottom && positon == recyclerView.getLayoutManager().getItemCount() - 1){
+                    Logger.d(mPage + "");
+                    if (mPage <= mMax - 1 && mPage <= mBookList.size() / 20) {
+                        mPage ++;
+                        loadData(false);
+                        ToastUtil.showShort("load more");
+                    }else {
+                        ToastUtil.showShort("no more to load");
+                    }
+                }
+            }
+        };
+    }
+
+    private void loadData(final boolean clean){
+        CampusFactory.getRetrofitService().searchBook(mKeyword,mPage)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BookSearchResult>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(BookSearchResult bookSearchResult) {
+                        mMax = bookSearchResult.getMeta().getMax();
+                        if (clean){
+                            mBookList.clear();
+                        }
+                        mBookList.addAll(bookSearchResult.getResults());
+                        mLibraryAdapter.swap(mBookList);
+                    }
+                });
+    }
+
+    private void setupDetailLayout(final Book book) {
+        Logger.d(book.getBook());
+        Observable.timer(DURATION_ALPH + DURATION_SCALE, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+
+                    }
+
+                    @Override
+                    public void onNext(Long aLong) {
+                        mBaseDetailLayout = new BaseDetailLayout(LibraryActivity.this);
+                        mContentLayout.addView(mBaseDetailLayout);
+                        BookDetailView bookDetailView = new BookDetailView(LibraryActivity.this, book);
+                        mBaseDetailLayout.setContent(bookDetailView);
+                    }
+                });
     }
 
     private void addShadowView() {
