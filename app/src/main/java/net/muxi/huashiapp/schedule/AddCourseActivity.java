@@ -202,7 +202,7 @@ public class AddCourseActivity extends ToolbarActivity
 
     private Course setCourse() {
         Course course = new Course();
-        course.setCourseName(mEditCourseName.getText().toString());
+        course.setCourse(mEditCourseName.getText().toString());
         course.setTeacher(mEditTeacherName.getText().toString());
         course.setWeeks(transToSimpleStr(mWeeks));
         course.setDay(days[mDay - 1]);

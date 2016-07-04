@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -358,7 +357,9 @@ public class LibraryActivity extends BaseActivity {
     public void onBackPressed() {
 
         if (mContentLayout.getChildCount() > 0) {
-            mBaseDetailLayout.slideContentView();
+            if (mBaseDetailLayout != null) {
+                mBaseDetailLayout.slideContentView();
+            }
 
             new Handler().postDelayed(new Runnable() {
                 @Override

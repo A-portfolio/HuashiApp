@@ -3,7 +3,6 @@ package net.muxi.huashiapp.library;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +13,7 @@ import android.widget.Space;
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.common.util.PreferenceUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,16 +27,12 @@ public class LibrarySearchActivity extends ToolbarActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.appbar_layout)
-    AppBarLayout mAppbarLayout;
     @BindView(R.id.center_space)
     Space mCenterSpace;
-    @BindView(R.id.search_view)
-    EditText mSearchView;
-    @BindView(R.id.btn_search)
-    Button mBtnSearch;
     @BindView(R.id.edit_search_view)
     EditText mEditSearchView;
+    @BindView(R.id.btn_search)
+    Button mBtnSearch;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,11 +58,24 @@ public class LibrarySearchActivity extends ToolbarActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_login:
-                Intent intent = new Intent(this, MineActivity.class);
-                startActivity(intent);
-
+                PreferenceUtil sp = new PreferenceUtil();
+                if (sp.getString(PreferenceUtil.LIBRARY_ID) != null && sp.getString(PreferenceUtil.LIBRARY_ID) != "") {
+                    startMineActivity();
+                } else {
+                    startLibLoginActivity();
+                }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startMineActivity() {
+        Intent intent = new Intent(this, MineActivity.class);
+        startActivity(intent);
+    }
+
+    private void startLibLoginActivity() {
+        Intent intent = new Intent(this, LibraryLoginActivity.class);
+        startActivity(intent);
     }
 
     private String getQueryText() {

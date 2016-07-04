@@ -6,7 +6,7 @@ package net.muxi.huashiapp.common.data;
 public class Course {
 
         private int id;
-        private String courseName;
+        private String course;
         private String teacher;
         private String weeks;
         private String day;
@@ -31,12 +31,12 @@ public class Course {
             this.during = during;
         }
 
-        public String getCourseName() {
-            return courseName;
+        public String getCourse() {
+            return course;
         }
 
-        public void setCourseName(String courseName) {
-            this.courseName = courseName;
+        public void setCourse(String course) {
+            this.course = course;
         }
 
         public String getTeacher() {

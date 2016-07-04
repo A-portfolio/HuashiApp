@@ -92,7 +92,7 @@ public class HuaShiDao {
                     course.setStart(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_TIME)));
                     course.setDuring(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_DURATION)));
                     course.setPlace(cursor.getString(cursor.getColumnIndex(DataBase.KEY_PLACE)));
-                    course.setRemind(Boolean.valueOf(cursor.getString(cursor.getColumnIndex(DataBase.KEY_REMIND))));
+                    course.setRemind(cursor.getString(cursor.getColumnIndex(DataBase.KEY_REMIND)));
                     courses.add(course);
                 }
             }

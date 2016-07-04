@@ -31,7 +31,7 @@ public class MineActivity extends BaseActivity {
     MySearchView mSearchView;
     @BindView(R.id.toolbar_container)
     FrameLayout mToolbarContainer;
-    @Bind(R.id.recycler_view)
+    @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     private HuaShiDao dao;
     String[] suggestions;
@@ -90,6 +90,7 @@ public class MineActivity extends BaseActivity {
             clearLibUser();
             Intent intent = new Intent(MineActivity.this,LibraryLoginActivity.class);
             startActivity(intent);
+            MineActivity.this.finish();
         }
         return super.onOptionsItemSelected(item);
 

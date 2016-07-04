@@ -3,12 +3,12 @@ package net.muxi.huashiapp.library;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Space;
-import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
@@ -17,8 +17,10 @@ import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.Base64Util;
 import net.muxi.huashiapp.common.util.NetStatus;
+import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.login.LoginEditText;
+import net.muxi.huashiapp.login.SimpleTextWatcher;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,8 +38,6 @@ public class LibraryLoginActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.appbar_layout)
-    AppBarLayout mAppbarLayout;
     @BindView(R.id.edit_userName)
     LoginEditText mEditUserName;
     @BindView(R.id.edit_password)
@@ -48,6 +48,13 @@ public class LibraryLoginActivity extends BaseActivity {
     Button mBtnLogin;
     @BindView(R.id.space_divider)
     Space mSpaceDivider;
+
+    private TextWatcher mTextWatcher = new SimpleTextWatcher() {
+        @Override
+        public void afterTextChanged(Editable s) {
+            updateBtn();
+        }
+    };
 
 
     @Override
@@ -61,6 +68,8 @@ public class LibraryLoginActivity extends BaseActivity {
     private void initView() {
         mEditPassword.setHint(getResources().getString(R.string.tip_lib_pwd));
         mToolbar.setTitle("图书馆");
+        mEditUserName.addTextChangedListener(mTextWatcher);
+        mEditPassword.addTextChangedListener(mTextWatcher);
     }
 
     @Override
@@ -73,13 +82,24 @@ public class LibraryLoginActivity extends BaseActivity {
         super.onDestroy();
     }
 
+    public void updateBtn() {
+        if (mEditUserName.length() != 0 && mEditPassword.length() != 0) {
+            mBtnLogin.setEnabled(true);
+        } else {
+            mBtnLogin.setEnabled(false);
+        }
+    }
+
+
+
+
     @OnClick(R.id.btn_login)
     public void onClick() {
-        User user = new User();
-        user.setSid(mEditUserName.getText().toString());
-        user.setPassword(mEditPassword.getText().toString());
-        if (NetStatus.isConnected()){
-            CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))
+        final User libUser = new User();
+        libUser.setSid(mEditUserName.getText().toString());
+        libUser.setPassword(mEditPassword.getText().toString());
+        if (NetStatus.isConnected()) {
+            CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(libUser))
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<Response<VerifyResponse>>() {
@@ -95,12 +115,16 @@ public class LibraryLoginActivity extends BaseActivity {
 
                         @Override
                         public void onNext(Response<VerifyResponse> verifyResponseResponse) {
-                            if (verifyResponseResponse.code() == 200){
-                                Intent intent = new Intent(LibraryLoginActivity.this,MineActivity.class);
+                            if (verifyResponseResponse.code() == 200) {
+                                PreferenceUtil sp = new PreferenceUtil();
+                                sp.saveString(PreferenceUtil.LIBRARY_ID,libUser.getSid());
+                                sp.saveString(PreferenceUtil.LIBRARY_PWD,libUser.getPassword());
+                                Intent intent = new Intent(LibraryLoginActivity.this, MineActivity.class);
                                 startActivity(intent);
-                            }else if (verifyResponseResponse.code() == 403){
+                                LibraryLoginActivity.this.finish();
+                            } else if (verifyResponseResponse.code() == 403) {
                                 ToastUtil.showLong(getResources().getString(R.string.tip_err_account));
-                            }else {
+                            } else {
                                 ToastUtil.showLong(getResources().getString(R.string.tip_err_server));
                             }
                         }
