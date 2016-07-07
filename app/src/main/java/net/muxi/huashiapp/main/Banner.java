@@ -97,7 +97,7 @@ public class Banner extends AppCompatActivity {
             view = new View(Banner.this);
             params = new LinearLayout.LayoutParams(5, 5);
             params.leftMargin = 10;
-            view.setBackgroundResource(R.drawable.point_background);
+//            view.setBackgroundResource(R.drawable.point_background);
             view.setLayoutParams(params);
             view.setEnabled(false);
 

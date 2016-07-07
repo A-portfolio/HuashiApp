@@ -1,9 +1,11 @@
 package net.muxi.huashiapp.electricity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
@@ -12,6 +14,7 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by december on 16/6/27.
@@ -30,6 +33,8 @@ public class ElectricityActivity extends ToolbarActivity {
     Toolbar mToolbar;
     @BindView(R.id.expand_list)
     ExpandableListView mExpandList;
+    @BindView(R.id.expand_select_button)
+    Button mExpandSelectButton;
 
 
     @Override
@@ -52,12 +57,13 @@ public class ElectricityActivity extends ToolbarActivity {
                 return true;
             }
         });
-        mExpandList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int i, long id) {
-                Toast.makeText(getApplicationContext(), groupStrings[i], Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
+
+    }
+
+    @OnClick(R.id.expand_select_button)
+    public void onClick() {
+        Intent intent = new Intent(ElectricityActivity.this,ElectricityDetailActivity.class);
+        startActivity(intent);
+
     }
 }

@@ -40,7 +40,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER"/>®
             </intent-filter>
         </activity>
 
@@ -71,6 +71,8 @@
         <activity android:name=".webview.WebViewActivity"/>
 
         <activity android:name=".electricity.ElectricityActivity"/>
+
+        <activity android:name=".electricity.ElectricityDetailActivity"/>
 
         <receiver android:name=".common.service.AlarmLiveReceiver">
             <intent-filter>

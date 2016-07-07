@@ -5,11 +5,32 @@
     <include
         android:id="@+id/view_toolbar"
         layout="@layout/view_toolbar"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout">
 
     <ExpandableListView
         android:id="@+id/expand_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:groupIndicator="@drawable/indicator_selector"
         android:clipToPadding="false"
+        android:indicatorLeft="350dp"
+        android:indicatorRight="0dp"
         android:paddingTop="?attr/actionBarSize"/>
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/expand_select_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"/>
 </RelativeLayout>
