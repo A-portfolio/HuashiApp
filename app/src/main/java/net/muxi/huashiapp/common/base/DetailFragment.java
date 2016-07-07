@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import net.muxi.huashiapp.common.widget.BaseDetailLayout;
+
 /**
  * Created by ybao on 16/5/2.
  */

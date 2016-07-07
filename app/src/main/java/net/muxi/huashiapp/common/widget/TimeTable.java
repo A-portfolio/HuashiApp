@@ -57,9 +57,14 @@ public class TimeTable extends FrameLayout {
     private float curX, curY;
 
     private OnScrollBottomListener mScrollBottomListener;
+    private OnLongPressedListenr mOnLongPressedListener;
 
     public interface OnScrollBottomListener {
-        public void onScrollBottom(boolean b);
+        void onScrollBottom(boolean b);
+    }
+
+    public interface OnLongPressedListenr {
+        void onLongPressed(Course course);
     }
 
     public TimeTable(Context context) {
@@ -206,6 +211,11 @@ public class TimeTable extends FrameLayout {
         mScrollBottomListener = onScrollBottomListener;
     }
 
+    //监听某些课程是否被长按,用户可能要删课
+    public void setOnLongPressedListener(OnLongPressedListenr longPressedListner){
+        this.mOnLongPressedListener = longPressedListner;
+    }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         return super.dispatchTouchEvent(ev);
@@ -256,10 +266,10 @@ public class TimeTable extends FrameLayout {
 
     }
 
-
     //添加每节课程的TextView
-    public void setCourse(List<Course> courses) {
+    public void setCourse(final List<Course> courses) {
         for (int i = 0; i < courses.size(); i++) {
+            final int curCourse = i;
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     courses.get(i).getDuring() * COURSE_TIME_HEIGHT / 2
@@ -267,16 +277,56 @@ public class TimeTable extends FrameLayout {
             params.setMargins(0, COURSE_TIME_HEIGHT / 2 * courses.get(i).getStart(), 0, 0);
             TextView courseTv = new TextView(mContext);
             courseTv.setBackgroundColor(Color.BLUE);
-            courseTv.setText(courses.get(i).getCourseName() + "\n@" +
+            courseTv.setText(courses.get(i).getCourse() + "\n@" +
                     courses.get(i).getPlace() + "\n" +
                     courses.get(i).getTeacher());
 
-            int j = 0;
-            j = courses.get(i).getDay() - 1;
+            courseTv.setOnLongClickListener(new OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mOnLongPressedListener.onLongPressed(courses.get(curCourse));
+                    return true;
+                }
+            });
+
+            int j;
+            j = transDaysToInt(courses.get(i).getDay());
             dayCourseLayout[j].addView(courseTv, params);
         }
     }
 
+
+    //将星期转换为 int类型`
+    private int transDaysToInt(String s) {
+        int i;
+        switch (s) {
+            case "星期一":
+                i = 0;
+                break;
+            case "星期二":
+                i = 1;
+                break;
+            case "星期三":
+                i = 2;
+                break;
+            case "星期四":
+                i = 3;
+                break;
+            case "星期五":
+                i = 4;
+                break;
+            case "星期六":
+                i = 5;
+                break;
+            case "星期日":
+                i = 6;
+                break;
+            default:
+                i = 6;
+                break;
+        }
+        return i;
+    }
 
     //删除所有课,在更新课程表视图时开始调
     public void removeCourse() {

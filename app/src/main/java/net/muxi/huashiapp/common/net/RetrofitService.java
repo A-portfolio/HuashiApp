@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.common.net;
 
+import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.PersonalBook;
@@ -26,15 +27,21 @@ public interface RetrofitService {
     @GET("info/login/")
     Observable<Response<VerifyResponse>> mainLogin(@Header("Authorization") String authorization);
 
-    @GET("lib/login")
+    @GET("lib/login/")
     Observable<Response<VerifyResponse>> libLogin(@Header("Authorization") String verification);
 
     @GET("lib/search/")
-    Observable<BookSearchResult> searchBook(@Query("keyword")String keyword,
-                                            @Query("page") String page);
+    Observable<BookSearchResult> searchBook(@Query("keyword") String keyword,
+                                            @Query("page") int page);
+
+    @GET("lib/")
+    Observable<Book> getBookDetail(@Query("id") String id,
+                                   @Query("book") String book,
+                                   @Query("author") String author);
 
     @GET("lib/me/")
     Observable<PersonalBook> getPersonalBook(@Header("Authorizaiton") String verification);
+
 
     //URL: /api/table/?xnm='2015'&xqm='3'&sid='2016210761'
     @GET("table/")
@@ -45,19 +52,19 @@ public interface RetrofitService {
 
     //添加课程
     @POST("table/")
-    Observable<Response> addCourse(@Header("Authorization") String authorization,
-                                   @Body Course course);
+    Observable<Response<VerifyResponse>> addCourse(@Header("Authorization") String authorization,
+                                                   @Body Course course);
 
     //删除课程
     @DELETE("table/{id}/")
-    Observable<Response> deleteCourse(@Header("Authorization") String authorization,
-                                      @Path("id") String id);
+    Observable<Response<VerifyResponse>> deleteCourse(@Header("Authorization") String authorization,
+                                                      @Path("id") String id);
 
     //URL: /api/grade/search/?sid=2014210761&xnm=2015&xqm=3
     @GET("grade/search/")
     Observable<List<Scores>> getScores(@Header("Authorization") String verification,
-                                 @Query("xnm") String year,
-                                 @Query("xqm") String term,
-                                 @Query("sid") String sid);
+                                       @Query("xnm") String year,
+                                       @Query("xqm") String term,
+                                       @Query("sid") String sid);
 
 }

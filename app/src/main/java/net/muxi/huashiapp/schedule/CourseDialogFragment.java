@@ -38,7 +38,7 @@ public class CourseDialogFragment extends DialogFragment implements NumberPicker
             "星期四",
             "星期五",
             "星期六",
-            "星期天"
+            "星期日"
     };
     private String[] startTimes = new String[14];
     private String[] endTimes = new String[14];
@@ -55,9 +55,9 @@ public class CourseDialogFragment extends DialogFragment implements NumberPicker
     }
 
     public interface NoticeDialogListener {
-        public void onDialogPositiveClick(String weekday, int startTime, int endTime);
+        void onDialogPositiveClick(String weekday, int startTime, int endTime);
 
-        public void onDialogNegativeClick();
+        void onDialogNegativeClick();
     }
 
     public CourseDialogFragment() {

@@ -15,7 +15,11 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.User;
+import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.db.HuaShiDao;
+import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.common.util.Base64Util;
+import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
@@ -25,6 +29,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Response;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by ybao on 16/5/1.
@@ -55,14 +63,15 @@ public class AddCourseActivity extends ToolbarActivity
     Button mBtnAdd;
     private HuaShiDao dao;
     private PreferenceUtil sp;
-    private List<Integer> mWeeks;
     //上课的周 存储形式为 1,3,4,5,
     private int mDay;
+    private List<Integer> mWeeks;
     private int courseTime;
     private int duration;
     // TODO: 16/6/21 change the mRemind
     private boolean mRemind = false;
 
+    private String[] days = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,14 +121,43 @@ public class AddCourseActivity extends ToolbarActivity
                         User user = new User();
                         user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
                         user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
+                        final Course course = setCourse();
+                        final int id = sp.getInt(PreferenceUtil.COURSE_ID, 1);
+                        Logger.d(course.getId() + "");
+                        course.setId(id);
+                        CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(user), course)
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribeOn(Schedulers.newThread())
+                                .subscribe(new Observer<Response<VerifyResponse>>() {
+                                    @Override
+                                    public void onCompleted() {
+
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(Response<VerifyResponse> verifyResponseResponse) {
+                                        if (verifyResponseResponse.code() == 201) {
+                                            int newId = id;
+                                            dao.insertCourse(course);
+                                            Logger.d("add course success");
+                                            Intent intent = new Intent();
+                                            AddCourseActivity.this.setResult(RESULT_OK, intent);
+                                            sp.saveInt(PreferenceUtil.COURSE_ID, ++ newId );
+                                        }
+                                    }
+                                });
+                    } else {
+                        ToastUtil.showLong(getResources().getString(R.string.tip_check_net));
                         int id = sp.getInt(PreferenceUtil.COURSE_ID, 0);
                         Course course = new Course();
 //                        course.set
 //                        CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(user),)
                     }
-                    inserCourse();
-                    Intent intent = new Intent();
-                    AddCourseActivity.this.setResult(RESULT_OK, intent);
                     this.finish();
                 } else {
                     ToastUtil.showLong(App.getContext().getString(R.string.tip_complete_course));
@@ -162,16 +200,16 @@ public class AddCourseActivity extends ToolbarActivity
 
     }
 
-    private void inserCourse() {
+    private Course setCourse() {
         Course course = new Course();
-        course.setCourseName(mEditCourseName.getText().toString());
+        course.setCourse(mEditCourseName.getText().toString());
         course.setTeacher(mEditTeacherName.getText().toString());
         course.setWeeks(transToSimpleStr(mWeeks));
-        course.setDay(mDay);
+        course.setDay(days[mDay - 1]);
         course.setStart(courseTime);
         course.setDuring(duration);
         course.setPlace(mEditCoursePlace.getText().toString());
-        dao.insertCourse(course);
+        return course;
     }
 
     //判断是否有未填充的数据
@@ -209,7 +247,10 @@ public class AddCourseActivity extends ToolbarActivity
             case "星期六":
                 mDay = 6;
                 break;
-            case "星期天":
+            case "星期日":
+                mDay = 7;
+                break;
+            default:
                 mDay = 7;
                 break;
         }
@@ -240,7 +281,7 @@ public class AddCourseActivity extends ToolbarActivity
                 "四",
                 "五",
                 "六",
-                "天"
+                "日"
         };
         for (int i = 0; i < 7; i++) {
             if (s.equals(weekdays[i])) {

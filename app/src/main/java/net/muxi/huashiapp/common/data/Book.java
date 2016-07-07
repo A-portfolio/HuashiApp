@@ -1,22 +1,43 @@
 package net.muxi.huashiapp.common.data;
 
+import java.util.List;
+
 /**
  * Created by ybao on 16/5/5.
+ * 某本图书的详情
  */
 public class Book {
 
-    private String title;
+    private String bid;
+    private String tid;
+    private String book;
     private String author;
-    private String introduction;
-    private String encode;
-    private String info;
+    private String intro;
 
-    public String getTitle() {
-        return title;
+    private List<BooksBean> books;
+
+    public String getBid() {
+        return bid;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setBid(String bid) {
+        this.bid = bid;
+    }
+
+    public String getTid() {
+        return tid;
+    }
+
+    public void setTid(String tid) {
+        this.tid = tid;
+    }
+
+    public String getBook() {
+        return book;
+    }
+
+    public void setBook(String book) {
+        this.book = book;
     }
 
     public String getAuthor() {
@@ -27,27 +48,49 @@ public class Book {
         this.author = author;
     }
 
-    public String getIntroduction() {
-        return introduction;
+    public String getIntro() {
+        return intro;
     }
 
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
+    public void setIntro(String intro) {
+        this.intro = intro;
     }
 
-    public String getEncode() {
-        return encode;
+    public List<BooksBean> getBooks() {
+        return books;
     }
 
-    public void setEncode(String encode) {
-        this.encode = encode;
+    public void setBooks(List<BooksBean> books) {
+        this.books = books;
     }
 
-    public String getInfo() {
-        return info;
-    }
+    public static class BooksBean {
+        private String status;
+        private String room;
+        private String date;
 
-    public void setInfo(String info) {
-        this.info = info;
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getRoom() {
+            return room;
+        }
+
+        public void setRoom(String room) {
+            this.room = room;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
     }
 }

@@ -34,6 +34,7 @@ public class MySearchAdapter extends BaseAdapter {
         this.suggestionIcon = suggestionIcon;
     }
 
+
     @Override
     public Object getItem(int position) {
         return suggestions[position];
@@ -50,7 +51,6 @@ public class MySearchAdapter extends BaseAdapter {
             viewHolder = (SuggestionViewHolder) convertView.getTag();
         }
         viewHolder.mSuggestionText.setText((String) getItem(position));
-
         return convertView;
     }
 
@@ -76,4 +76,6 @@ public class MySearchAdapter extends BaseAdapter {
             mSuggestionIcon.setImageDrawable(suggestionIcon);
         }
     }
+
+
 }

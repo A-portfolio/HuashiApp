@@ -16,7 +16,7 @@ import net.muxi.huashiapp.R;
 /**
  * Created by ybao on 16/4/19.
  */
-public class BaseFragment extends Fragment {
+public class BaseFragment extends android.app.Fragment {
 
 
     public static Fragment newInstance(){

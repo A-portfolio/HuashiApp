@@ -19,12 +19,15 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.User;
+import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.Base64Util;
 import net.muxi.huashiapp.common.util.DimensUtil;
+import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.widget.TimeTable;
 
 import butterknife.BindView;
@@ -34,6 +37,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Response;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -66,6 +70,7 @@ public class ScheduleActivity extends ToolbarActivity {
 
 
     private PreferenceUtil sp;
+    private User mUser;
     private HuaShiDao dao;
 
     //选择周数的 view 滑动时间
@@ -92,6 +97,9 @@ public class ScheduleActivity extends ToolbarActivity {
 
         dao = new HuaShiDao();
         sp = new PreferenceUtil();
+        mUser = new User();
+        mUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
+        mUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
         //获取当前周和当前用户的所有课程
         getCurWeek();
         getCurCourses();
@@ -109,10 +117,7 @@ public class ScheduleActivity extends ToolbarActivity {
         if (!NetStatus.isConnected()){
             return;
         }
-        User user = new User();
-        user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
-        user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
-        CampusFactory.getRetrofitService().getSchedule(Base64Util.createBaseStr(user),"2015","12","2014214629")
+        CampusFactory.getRetrofitService().getSchedule(Base64Util.createBaseStr(mUser),"2015","12","2014214629")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<Course>>() {
@@ -123,11 +128,12 @@ public class ScheduleActivity extends ToolbarActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
 
                     @Override
                     public void onNext(List<Course> courses) {
+                        Logger.d(courses.size() + "");
                         //因为每次增删服务器与本地数据库都同时进行,所以就直接比较课程数有无差别
                         if (mCourses.size() != courses.size()) {
                             dao.deleteAllCourse();
@@ -136,6 +142,7 @@ public class ScheduleActivity extends ToolbarActivity {
                                 mCourses.addAll(courses);
                             }
                         }
+                        mCourses.addAll(courses);
                         mTimeTable.setCourse(mCourses);
                     }
                 });
@@ -175,6 +182,43 @@ public class ScheduleActivity extends ToolbarActivity {
                 }
             }
         });
+        mTimeTable.setOnLongPressedListener(new TimeTable.OnLongPressedListenr() {
+            @Override
+            public void onLongPressed(final Course course) {
+                Logger.d(course.getId() + "");
+                CampusFactory.getRetrofitService().deleteCourse(Base64Util.createBaseStr(mUser), String.valueOf(course.getId()))
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Response<VerifyResponse>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                e.printStackTrace();
+                            }
+
+                            @Override
+                            public void onNext(Response<VerifyResponse> verifyResponseResponse) {
+                                if (verifyResponseResponse.code() == 200){
+                                    ToastUtil.showShort("delete success");
+                                    dao.deleteCourse(course.getId());
+                                    updateTimetable();
+                                }
+
+                            }
+                        });
+
+            }
+        });
+    }
+
+    private void updateTimetable(){
+        mTimeTable.removeCourse();
+        mTimeTable.setCourse(dao.loadCourse(getTheWeek(mTvScheduleWeekNumber.getText().toString())));
+        Logger.d("schedule has update");
     }
 
 
@@ -201,7 +245,7 @@ public class ScheduleActivity extends ToolbarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            mTimeTable.setCourse(dao.loadCourse(getTheWeek(mTvScheduleWeekNumber.getText().toString())));
+            updateTimetable();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

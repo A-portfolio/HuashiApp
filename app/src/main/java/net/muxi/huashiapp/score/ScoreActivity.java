@@ -162,7 +162,7 @@ public class ScoreActivity extends ToolbarActivity {
             ScoreDetailFragment scoreDetailFragment = ScoreDetailFragment.newInstance(year, term);
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-//            ft.add(R.id.fragment_layout, scoreDetailFragment);
+            ft.add(R.id.fragment_layout, scoreDetailFragment);
             ft.addToBackStack(null);
             ft.commit();
             mFragmentLayout.setClickable(true);

@@ -18,4 +18,6 @@ public class Base64Util{
     public static String createBaseStr(User user){
         return "Basic " + decrypt(user);
     }
+
+
 }

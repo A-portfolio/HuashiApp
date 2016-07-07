@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                style="@style/ItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/library_item_borrow_height"
+                android:orientation="vertical">
+
+    <TextView android:id="@+id/tv_book"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              tools:text="RxJava Essential"/>
+
+    <TextView android:id="@+id/tv_author"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/tv_book"
+              tools:text="Morgillo"/>
+
+    <TextView android:id="@+id/tv_time_borrow"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_above="@+id/tv_time_return"
+              tools:text="借书时间:2016-06-06"/>
+
+    <TextView
+        android:id="@+id/tv_time_return"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        tools:text="还书时间:2016-08-08"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="离期限还有"
+        android:textSize="@dimen/medium_size"/>
+
+    <TextView
+        android:id="@+id/tv_remain_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp"
+        android:textSize="60sp"
+        tools:text="34"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="天"
+        android:textSize="@dimen/medium_size"/>
+
+</RelativeLayout>

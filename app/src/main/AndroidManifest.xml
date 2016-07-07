@@ -4,14 +4,11 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission
-        android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <!--获取设备唯一标识-->
-    <uses-permission
-        android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <!--获取访问用户账户名的权限用以精准匹配标签(可选)-->
-    <uses-permission
-        android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 
     <application
         android:name=".App"
@@ -44,31 +41,40 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".main.MainActivity"/>
+        <activity android:name=".main.MainActivity"
+                  android:launchMode="singleTask"/>
 
-        <activity
-            android:name=".schedule.ScheduleActivity"
-            android:launchMode="singleTask"/>
+        <activity android:name=".schedule.ScheduleActivity"
+                  android:launchMode="singleTask"/>
 
-        <activity android:name=".schedule.AddCourseActivity"/>
+        <activity android:name=".schedule.AddCourseActivity"
+                  android:launchMode="singleTask"/>
 
-        <activity android:name=".score.ScoreActivity"/>
+        <activity android:name=".score.ScoreActivity"
+                  android:launchMode="singleTask"/>
 
-        <activity android:name=".common.ui.SettingActivity"/>
+        <activity android:name=".common.ui.SettingActivity"
+                  android:launchMode="singleTask"/>
 
 
-        <activity android:name=".news.DetailActivity"/>
+        <activity android:name=".news.DetailActivity"
+                  android:launchMode="singleTask"/>
 
         <!--<android:parentActivityName=".common.ui.NewsActivity"/>-->
-        <activity android:name=".library.LibraryActivity"/>
+        <activity android:name=".library.LibraryActivity"
+                  android:launchMode="singleTask"/>
 
-        <activity android:name=".library.LibrarySearchActivity"/>
+        <activity android:name=".library.LibrarySearchActivity"
+                  android:launchMode="singleTask"/>
 
-        <activity android:name=".library.LibraryLoginActivity"/>
+        <activity android:name=".library.LibraryLoginActivity"
+                  android:launchMode="singleTask"/>
 
-        <activity android:name=".library.MineActivity"/>
+        <activity android:name=".library.MineActivity"
+                  android:launchMode="singleTask"/>
 
-        <activity android:name=".webview.WebViewActivity"/>
+        <activity android:name=".webview.WebViewActivity"
+                  android:launchMode="singleTask"/>
 
         <activity android:name=".electricity.ElectricityActivity"/>
 

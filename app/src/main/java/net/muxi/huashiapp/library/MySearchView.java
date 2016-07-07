@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -26,7 +27,7 @@ import net.muxi.huashiapp.common.util.AnimationUtil;
 /**
  * Created by ybao on 16/5/16.
  */
-public class MySearchView extends FrameLayout implements View.OnClickListener{
+public class MySearchView extends FrameLayout implements View.OnClickListener {
 
     private ImageView mBtnBack;
     private ImageView mBtnClear;
@@ -43,7 +44,6 @@ public class MySearchView extends FrameLayout implements View.OnClickListener{
 
     private Context mContext;
     private String[] suggestions;
-    private MySearchAdapter mSearchAdapter;
 
     private OnQueryTextListener mOnQueryTextListener;
     private OnSearchViewListener mOnSearchViewListener;
@@ -75,7 +75,6 @@ public class MySearchView extends FrameLayout implements View.OnClickListener{
     }
 
 
-
     private void initSearchView() {
         mBtnBack = (ImageView) findViewById(R.id.btn_back);
         mBtnClear = (ImageView) findViewById(R.id.btn_clear);
@@ -83,7 +82,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener{
         mSearchListview = (ListView) findViewById(R.id.search_listview);
         mSearchLayout = (FrameLayout) findViewById(R.id.search_layout);
         mEditSearch = (EditText) findViewById(R.id.edit_search);
-        mTintView = (View) findViewById(R.id.tint_view);
+        mTintView = findViewById(R.id.tint_view);
 
         mBtnBack.setOnClickListener(this);
         mBtnClear.setOnClickListener(this);
@@ -134,7 +133,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener{
 
     public void onQueryTextChanged(String newText) {
         if (mOnQueryTextListener != null) {
-            mOnQueryTextListener.onQueryTextSubmit(newText);
+            mOnQueryTextListener.onQueryTextChange(newText);
         }
     }
 
@@ -203,11 +202,22 @@ public class MySearchView extends FrameLayout implements View.OnClickListener{
         mEditSearch.setTextColor(color);
     }
 
+    public void setOnItemClickListener(AdapterView.OnItemClickListener itemClickListener){
+        mSearchListview.setOnItemClickListener(itemClickListener);
+    }
 
     public void setSuggestions(String[] suggestions) {
-        mSearchAdapter = new MySearchAdapter(mContext, suggestions, suggestionIcon);
-        mSearchListview.setAdapter(mSearchAdapter);
-        mSearchListview.setVisibility(VISIBLE);
+        if (suggestions != null & suggestions.length > 0) {
+            final MySearchAdapter mSearchAdapter = new MySearchAdapter(mContext, suggestions, suggestionIcon);
+            mSearchListview.setAdapter(mSearchAdapter);
+            mSearchListview.setVisibility(VISIBLE);
+            setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    onSubmitQuery(mSearchAdapter.getItem(position).toString());
+                }
+            });
+        }
     }
 
 
@@ -224,7 +234,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener{
     }
 
     public void showSearchView() {
-        if (mIsSearchOpen){
+        if (mIsSearchOpen) {
             return;
         }
         mSearchLayout.setVisibility(VISIBLE);
@@ -232,7 +242,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener{
         mEditSearch.requestFocus();
 
         setVisibleWithAnimation();
-        if (mOnSearchViewListener != null){
+        if (mOnSearchViewListener != null) {
             mOnSearchViewListener.onSearchShown();
         }
         mSearchListview.setVisibility(VISIBLE);
@@ -260,11 +270,11 @@ public class MySearchView extends FrameLayout implements View.OnClickListener{
                 return false;
             }
         };
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             this.setVisibility(VISIBLE);
-            AnimationUtil.reveal(mSearchBar,animationListener);
-        }else {
-            AnimationUtil.fadeInView(this,AnimationUtil.ANIMATION_DURATION_SHORT,animationListener);
+            AnimationUtil.reveal(mSearchBar, animationListener);
+        } else {
+            AnimationUtil.fadeInView(this, AnimationUtil.ANIMATION_DURATION_SHORT, animationListener);
         }
     }
 
@@ -280,7 +290,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_clear:
                 mEditSearch.setText(null);
                 break;
@@ -317,7 +327,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener{
 
     }
 
-    public boolean isSearchOpen(){
+    public boolean isSearchOpen() {
         return mIsSearchOpen;
     }
 

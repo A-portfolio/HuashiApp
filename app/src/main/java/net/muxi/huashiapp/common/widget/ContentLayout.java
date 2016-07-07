@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.library;
+package net.muxi.huashiapp.common.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

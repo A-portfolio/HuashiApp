@@ -10,8 +10,10 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.OnItemClickListener;
-import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookSearchResult;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -22,14 +24,14 @@ import butterknife.BindView;
 public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHolder> {
 
 
-    private BookSearchResult mBookSearchResult;
+    private List<BookSearchResult.ResultsBean> mBookList;
 
     private OnItemClickListener mOnItemClickListener;
-    private Book book;
 
-    public LibraryAdapter(BookSearchResult bookSearchResult) {
+    public LibraryAdapter(List<BookSearchResult.ResultsBean> bookList) {
         super();
-        mBookSearchResult = bookSearchResult;
+        mBookList = new ArrayList<>();
+        mBookList.addAll(bookList);
     }
 
 
@@ -42,11 +44,24 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
     }
 
 
+    public void swap(List<BookSearchResult.ResultsBean> list){
+        mBookList.clear();
+        mBookList.addAll(list);
+        notifyDataSetChanged();
+    }
+
+
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTvTitle.setText(mBookSearchResult.getResults().get(position).getBook());
-        holder.mTvAuthor.setText(mBookSearchResult.getResults().get(position).getAuthor());
-        holder.mTvEncoding.setText(mBookSearchResult.getResults().get(position).getId());
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        holder.mTvTitle.setText(mBookList.get(position).getBook());
+        holder.mTvAuthor.setText(mBookList.get(position).getAuthor());
+        holder.mTvEncoding.setText(mBookList.get(position).getBid());
+        holder.mBookLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemClickListener.onItemClick(v,mBookList.get(position));
+            }
+        });
     }
 
     @Override
@@ -57,7 +72,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return mBookSearchResult.getResults().size();
+        return mBookList.size();
     }
 
 
@@ -66,7 +81,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_title)
         TextView mTvTitle;
@@ -81,25 +96,12 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mTvTitle = (TextView) itemView.findViewById(R.id.tv_title);
+            mTvTitle = (TextView) itemView.findViewById(R.id.tv_book);
             mTvAuthor = (TextView) itemView.findViewById(R.id.tv_author);
             mTvEncoding = (TextView) itemView.findViewById(R.id.tv_encoding);
             mBookLayout = (RelativeLayout) itemView.findViewById(R.id.book_layout);
-            mBookLayout.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.book_layout:
-                    book = new Book();
-                    book.setAuthor(mTvTitle.getText().toString());
-                    book.setAuthor(mTvAuthor.getText().toString());
-                    book.setEncode(mTvEncoding.getText().toString());
-                    mOnItemClickListener.onItemClick(v, book);
-                    fadeOutAnim();
-            }
-        }
 
 
         public void fadeOutAnim() {

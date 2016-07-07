@@ -88,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void initViews() {
+        mEditPassword.setHint(getResources().getString(R.string.tip_pwd_text));
         mEditUserName.addTextChangedListener(mTextWatcher);
         mEditPassword.addTextChangedListener(mTextWatcher);
         mBtnLogin.setEnabled(DEBUG_VALUE);
@@ -162,16 +163,17 @@ public class LoginActivity extends AppCompatActivity {
 
                         if (response.code() == 200){
                             Logger.d("200");
+                            PreferenceUtil loader = new PreferenceUtil();
+                            loader.saveString(PreferenceUtil.STUDENT_ID, mUser.getSid());
+                            loader.saveString(PreferenceUtil.STUDENT_PWD, mUser.getPassword());
+
+                            ToastUtil.showShort(LOGIN_SUCCESS);
+                            startMainActivity();
                         }
                         if(response.code() == 403){
                             Logger.d("403");
                         }
-                        PreferenceUtil loader = new PreferenceUtil();
-                        loader.saveString(PreferenceUtil.STUDENT_ID, mUser.getSid());
-                        loader.saveString(PreferenceUtil.STUDENT_PWD, mUser.getPassword());
 
-                        ToastUtil.showShort(LOGIN_SUCCESS);
-                        startMainActivity();
 //                        }
                     }
                 });
