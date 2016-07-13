@@ -1,93 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ffffff">
+                android:background="#ffffff"
+                tools:context=".schedule.AddCourseActivity">
 
     <include android:id="@+id/view_toolbar"
              layout="@layout/view_toolbar"/>
 
-    <LinearLayout android:id="@+id/layout_course_add"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_below="@+id/view_toolbar"
-                  android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                  android:layout_marginRight="@dimen/activity_horizontal_margin"
-                  android:layout_marginTop="@dimen/activity_vertical_margin"
-                  android:background="#ffffff"
-                  android:elevation="8dp"
-                  android:orientation="vertical">
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="?attr/actionBarSize"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin">
 
         <EditText android:id="@+id/edit_course_name"
                   android:layout_width="match_parent"
-                  android:layout_height="60dp"
-                  android:background="@null"
+                  android:layout_height="@dimen/course_edit_height"
+                  android:layout_marginTop="@dimen/course_top_margin"
                   android:drawableLeft="@drawable/ic_date_range_black_24dp"
-                  android:hint="课程名称"
+                  android:hint="输入课程名称"
                   android:textSize="@dimen/schedule_add_course_size"/>
 
-        <ImageView android:layout_width="match_parent" android:layout_height="1dp"
-                   android:background="@color/dividerGrey"/>
 
         <EditText android:id="@+id/edit_teacher_name" android:layout_width="match_parent"
-                  android:layout_height="60dp"
-                  android:background="@null"
+                  android:layout_height="@dimen/course_edit_height"
+                  android:layout_below="@+id/edit_course_name"
+                  android:layout_marginTop="@dimen/course_edit_text_margin"
                   android:drawableLeft="@drawable/ic_person_black_24dp"
-                  android:hint="老师名称"
+                  android:hint="输入老师名称"
                   android:textSize="@dimen/schedule_add_course_size"/>
 
-        <ImageView android:layout_width="match_parent" android:layout_height="1dp"
-                   android:background="@color/dividerGrey"/>
-
-        <TextView android:id="@+id/tv_week_select" android:layout_width="match_parent"
-                  android:layout_height="60dp"
-                  android:drawableLeft="@drawable/ic_event_black_24dp"
-                  android:gravity="center_vertical"
-                  android:text="1-18周"
-                  android:textSize="@dimen/schedule_add_course_size"/>
-
-        <ImageView android:layout_width="match_parent" android:layout_height="1dp"
-                   android:background="@color/dividerGrey"/>
-
-        <TextView android:id="@+id/tv_course_time" android:layout_width="match_parent"
-                  android:layout_height="60dp"
-                  android:drawableLeft="@drawable/ic_access_time_black_24dp"
-                  android:gravity="center_vertical"
-                  android:text="请添加上课时间"
-                  android:textSize="@dimen/schedule_add_course_size"/>
-
-        <ImageView android:layout_width="match_parent" android:layout_height="1dp"
-                   android:background="@color/dividerGrey"/>
-
-
-        <EditText android:id="@+id/edit_course_place" android:layout_width="match_parent"
-                  android:layout_height="60dp"
-                  android:background="@null"
+        <EditText android:id="@+id/edit_course_place"
+                  android:layout_width="match_parent"
+                  android:layout_height="@dimen/course_edit_height"
+                  android:layout_below="@+id/edit_teacher_name"
+                  android:layout_marginTop="@dimen/course_edit_text_margin"
                   android:drawableLeft="@drawable/ic_place_black_24dp"
                   android:hint="输入上课地点"
                   android:textSize="@dimen/schedule_add_course_size"/>
 
-        <ImageView android:layout_width="match_parent" android:layout_height="1dp"
-                   android:background="@color/dividerGrey"/>
+        <Button android:id="@+id/btn_course_week"
+                android:layout_width="156dp"
+                android:layout_height="@dimen/course_button_height"
+                android:layout_below="@+id/edit_course_place"
+                android:layout_marginTop="@dimen/course_button_margin"
+                android:background="@null"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:drawableLeft="@drawable/ic_access_time_black_24dp"
+                android:gravity="center_vertical"
+                android:text="选择上课周"
+                android:textSize="@dimen/schedule_add_course_size"/>
 
-        <TextView android:id="@+id/tv_course_remind" android:layout_width="match_parent"
-                  android:layout_height="60dp"
-                  android:drawableLeft="@drawable/ic_mode_comment_black_24dp"
-                  android:drawableRight="@drawable/ic_check_box_outline_blank_black_24dp"
-                  android:gravity="center_vertical"
-                  android:text="添加课程提醒"
-                  android:textSize="@dimen/schedule_add_course_size"/>
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/btn_course_time"
+            android:layout_width="156dp"
+            android:layout_height="@dimen/course_button_height"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/edit_course_place"
+            android:maxLines="1"
+            android:layout_marginTop="@dimen/course_button_margin"
+            android:ellipsize="end"
+            android:background="@null"
+            android:text="添加上课时间"
+            android:textSize="@dimen/schedule_add_course_size"/>
 
 
-    <Button android:id="@+id/btn_add" android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
-            android:text="确定"/>
+        <RelativeLayout
+            android:id="@+id/layout_course_remind"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/course_button_height"
+            android:layout_below="@+id/btn_course_time"
+            android:layout_marginTop="@dimen/course_button_margin"
+            android:gravity="center_vertical">
 
+            <TextView
+                android:id="@+id/tv_course_remind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="勾选课程提醒"
+                android:textSize="@dimen/schedule_add_course_size"/>
+
+
+        </RelativeLayout>
+
+
+        <Button android:id="@+id/btn_enter"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_below="@+id/layout_course_remind"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:background="@color/colorPrimary"
+                android:text="完成"
+                android:textColor="@color/colorWhite"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>
 

@@ -76,6 +76,9 @@
         <activity android:name=".webview.WebViewActivity"
                   android:launchMode="singleTask"/>
 
+        <activity android:name=".common.ui.AboutActivity"
+                  android:launchMode="singleTask"/>
+
         <activity android:name=".electricity.ElectricityActivity"/>
 
         <receiver android:name=".common.service.AlarmLiveReceiver">

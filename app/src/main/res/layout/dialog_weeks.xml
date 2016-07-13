@@ -1,55 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent" android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical">
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingTop="8dp">
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="自定义"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/large_size"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="单周"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/large_size"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="双周"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/large_size"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="全选"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/large_size"/>
+
+        </LinearLayout>
+
+        <RadioGroup android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/radio_custom"
+                android:checked="true"
+                app:buttonTint="@color/colorWhite"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools"
-                android:padding="@dimen/activity_horizontal_margin"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tip_select_weeks"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/medium_size"/>
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/radio_single_week"
+                android:layout_width="match_parent"
+                app:buttonTint="@color/colorWhite"
+                android:layout_height="wrap_content"/>
 
-    <LinearLayout android:id="@+id/ll"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_centerHorizontal="true"
-                  android:layout_marginTop="40dp">
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/radio_double_week"
+                android:layout_width="match_parent"
+                app:buttonTint="@color/colorWhite"
+                android:layout_height="wrap_content"/>
 
-        <CheckBox
-            android:id="@+id/checkbox_single_week"
-            android:layout_width="@dimen/course_convenient_select_width"
-            android:layout_height="@dimen/course_convenient_select_height"
-            android:button="@null"
-            android:checked="false"
-            android:gravity="center"
-            android:text="@string/course_single_week"
-            android:textSize="@dimen/medium_size"/>
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/radio_all_week"
+                app:buttonTint="@color/colorWhite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <CheckBox
-            android:id="@+id/checkbox_double_week"
-            android:layout_width="@dimen/course_convenient_select_width"
-            android:layout_height="@dimen/course_convenient_select_height"
-            android:checked="false"
-            android:button="@null"
-            android:gravity="center"
-            android:text="@string/course_double_week"
-            android:textSize="@dimen/medium_size"/>
+        </RadioGroup>
 
-        <CheckBox
-            android:id="@+id/checkbox_all_week"
-            android:layout_width="@dimen/course_convenient_select_width"
-            android:layout_height="@dimen/course_convenient_select_height"
-            android:button="@null"
-            android:checked="false"
-            android:gravity="center"
-            android:text="@string/course_all_week"
-            android:textSize="@dimen/medium_size"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <GridLayout
         android:id="@+id/weeks_layout"
@@ -57,8 +91,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ll"
         android:layout_centerHorizontal="true"
-        android:columnCount="6"
-        android:rowCount="4">
+        android:columnCount="3"
+        android:rowCount="6">
 
     </GridLayout>
 
@@ -67,26 +101,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/weeks_layout">
+        android:layout_below="@+id/weeks_layout"
+        android:layout_gravity="right">
 
-        <TextView
+        <Button
             android:id="@+id/btn_negative"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:padding="@dimen/course_dialog_btn_padding"
             android:text="@string/btn_negative"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/medium_size"/>
+            android:textColor="@color/colorPrimary"/>
 
-        <TextView
+        <Button
             android:id="@+id/btn_positive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="-8dp"
             android:background="@null"
-            android:padding="@dimen/course_dialog_btn_padding"
             android:text="@string/btn_positive"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/medium_size"/>
+            android:textColor="@color/colorPrimary"/>
+
     </LinearLayout>
-</RelativeLayout>
+
+</LinearLayout>

@@ -63,7 +63,7 @@ public class DataBase extends SQLiteOpenHelper{
         db.execSQL(createSearchHistory);
 
         String createCourseTable = "CREATE TABLE IF NOT EXISTS " + TABLE_COURSE +
-                 " ( " + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                 " ( " + KEY_ID + " TEXT, " +
                 KEY_COURSE_NAME + " TEXT, " +
                 KEY_TEACHER + " TEXT, " +
                 KEY_WEEKS + " TEXT, " +

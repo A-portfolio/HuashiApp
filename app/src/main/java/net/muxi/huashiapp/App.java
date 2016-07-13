@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.leakcanary.LeakCanary;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
@@ -34,6 +35,7 @@ public class App extends Application {
         super.onCreate();
         LeakCanary.install(this);
 
+        Fresco.initialize(this);
         ZhugeSDK.getInstance().openDebug();
         //必须在init之前调用
 //禁止收集用户手机号码默认为收集

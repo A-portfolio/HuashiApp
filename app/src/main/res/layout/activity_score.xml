@@ -12,36 +12,158 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_marginTop="?attr/actionBarSize"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="8dp">
 
-
-        <Spinner
-            android:id="@+id/spinner_year"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/spinner_height"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:spinnerMode="dropdown"/>
-
-        <Spinner
-            android:id="@+id/spinner_term"
+        <TextView
+            android:id="@+id/title_year"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/spinner_height"
-            android:layout_below="@+id/spinner_year"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/spinner_marigin"
-            android:spinnerMode="dropdown"/>
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/title_year"/>
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_below="@+id/title_year"
+                      android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_year1"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/score_select_item_height"
+                android:gravity="center"
+                android:textSize="@dimen/score_select_item_size"
+                tools:text="2014"/>
+
+            <TextView
+                android:id="@+id/tv_year2"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/score_select_item_height"
+                android:gravity="center"
+                android:textSize="@dimen/score_select_item_size"/>
+
+            <TextView
+                android:id="@+id/tv_year3"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/score_select_item_height"
+                android:gravity="center"
+                android:textSize="@dimen/score_select_item_size"/>
+
+            <TextView
+                android:id="@+id/tv_year4"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/score_select_item_height"
+                android:gravity="center"
+                android:textSize="@dimen/score_select_item_size"/>
+
+        </LinearLayout>
+
+        <RadioGroup android:id="@+id/rb_group_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/title_year">
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/rb_year1"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/score_select_item_height"
+                android:checked="true"
+                android:buttonTint="@color/colorPrimary"/>
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/rb_year2"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/score_select_item_height"
+                android:buttonTint="@color/colorPrimary"/>
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/rb_year3"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/score_select_item_height"
+                android:buttonTint="@color/colorPrimary"/>
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/rb_year4"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/score_select_item_height"
+                android:buttonTint="@color/colorPrimary"/>
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/title_term"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rb_group_year"
+            android:layout_centerHorizontal="true"
+            android:text="@string/title_term"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/title_term">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/score_select_item_height"
+                android:gravity="center"
+                android:text="第一学期"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/score_select_item_height"
+                android:gravity="center"
+                android:text="第二学期"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/score_select_item_height"
+                android:gravity="center"
+                android:text="第三学期"/>
+
+        </LinearLayout>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/title_term">
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/rb_term1"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/score_select_item_height"
+                android:checked="true"
+                android:buttonTint="@color/colorPrimary"/>
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/rb_term2"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/score_select_item_height"
+                android:buttonTint="@color/colorPrimary"/>
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/rb_term3"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/score_select_item_height"
+                android:buttonTint="@color/colorPrimary"/>
+
+        </RadioGroup>
 
         <Button
             android:id="@+id/btn_enter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:textColor="@color/colorWhite"
             android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="48dp"
-            android:text="search"/>
+            android:text="完成"/>
     </RelativeLayout>
 
     <FrameLayout

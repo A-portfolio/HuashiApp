@@ -2,18 +2,20 @@ package net.muxi.huashiapp.schedule;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.util.DimensUtil;
 
@@ -26,28 +28,28 @@ import java.util.List;
  */
 public class WeeksDialog extends Dialog implements View.OnClickListener {
 
-    private TextView mTvTitle;
-    private LinearLayout mLl;
     private GridLayout mWeeksLayout;
-    private TextView mBtnNegative;
-    private TextView mBtnPositive;
+    private Button mBtnNegative;
+    private Button mBtnPositive;
     private LinearLayout mBtnLayout;
-    private CheckBox mCheckboxSingleWeek;
-    private CheckBox mCheckboxDoubleWeek;
-    private CheckBox mCheckboxAllWeek;
+    private AppCompatRadioButton mRadioCustom;
+    private AppCompatRadioButton mRadioSingle;
+    private AppCompatRadioButton mRadioDouble;
+    private AppCompatRadioButton mRadioAllWeek;
 
-    private CheckBox[] mCBWeeks;
+    //各周的布局
+    private LinearLayout[] mLayouts;
+    private TextView[] mTvWeeks;
+    private AppCompatCheckBox[] mCBWeeks;
 
     private Context mContext;
     private String mWeek;
     private List<Integer> mLists;
 
-    private static final int TV_WEEK_WIDTH = DimensUtil.dp2px(30);
-    private static final int TV_WEEK_HEIGHT = DimensUtil.dp2px(20);
-
     private static final int TYPE_ALL = 0;
     private static final int TYPE_SINGLE = 1;
     private static final int TYPE_DOUBLE = 2;
+    private static final int TYPE_CUSTOM = 3;
 
     private OnDialogClickListener mOnDialogClickListener;
 
@@ -72,11 +74,12 @@ public class WeeksDialog extends Dialog implements View.OnClickListener {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.dialog_weeks, null);
         mWeeksLayout = (GridLayout) view.findViewById(R.id.weeks_layout);
-        mCheckboxSingleWeek = (CheckBox) view.findViewById(R.id.checkbox_single_week);
-        mCheckboxAllWeek = (CheckBox) view.findViewById(R.id.checkbox_all_week);
-        mCheckboxDoubleWeek = (CheckBox) view.findViewById(R.id.checkbox_double_week);
-        mBtnNegative = (TextView) view.findViewById(R.id.btn_negative);
-        mBtnPositive = (TextView) view.findViewById(R.id.btn_positive);
+        mRadioSingle = (AppCompatRadioButton) view.findViewById(R.id.radio_single_week);
+        mRadioAllWeek = (AppCompatRadioButton) view.findViewById(R.id.radio_all_week);
+        mRadioDouble = (AppCompatRadioButton) view.findViewById(R.id.radio_double_week);
+        mRadioCustom = (AppCompatRadioButton) view.findViewById(R.id.radio_custom);
+        mBtnNegative = (Button) view.findViewById(R.id.btn_negative);
+        mBtnPositive = (Button) view.findViewById(R.id.btn_positive);
 
         mBtnPositive.setOnClickListener(this);
         mBtnNegative.setOnClickListener(this);
@@ -91,61 +94,31 @@ public class WeeksDialog extends Dialog implements View.OnClickListener {
 
     private void initSelectWeeks() {
         //设置快捷选择按钮的监听事件
-        mCheckboxSingleWeek.setOnClickListener(this);
-        mCheckboxDoubleWeek.setOnClickListener(this);
-        mCheckboxAllWeek.setOnClickListener(this);
+        mRadioSingle.setOnClickListener(this);
+        mRadioDouble.setOnClickListener(this);
+        mRadioAllWeek.setOnClickListener(this);
+        mRadioCustom.setOnClickListener(this);
 
         //根据原选的课程设置mCBWeeks的选中状态
         for (int i = 0; i < mLists.size(); i++) {
             mCBWeeks[mLists.get(i) - 1].setChecked(true);
-            mCBWeeks[mLists.get(i) - 1].setBackgroundColor(App.getContext().getResources().getColor(R.color.colorPrimary));
         }
     }
 
 
     @Override
     public void onClick(View v) {
-        if (v == mCheckboxAllWeek) {
-            if (mCheckboxAllWeek.isChecked()) {
-                mCheckboxSingleWeek.setChecked(false);
-                mCheckboxDoubleWeek.setChecked(false);
-                switchCB(mCheckboxSingleWeek);
-                switchCB(mCheckboxDoubleWeek);
-
-                mCheckboxAllWeek.setBackgroundColor(App.getContext().getResources().getColor(R.color.colorPrimary));
-                handleCBWeeks(TYPE_ALL, true);
-            } else {
-                mCheckboxAllWeek.setBackgroundColor(Color.WHITE);
-                handleCBWeeks(TYPE_ALL, false);
-            }
+        if (v == mRadioAllWeek) {
+            handleCBWeeks(TYPE_ALL);
         }
-        if (v == mCheckboxSingleWeek) {
-            if (mCheckboxSingleWeek.isChecked()) {
-                mCheckboxAllWeek.setChecked(false);
-                mCheckboxDoubleWeek.setChecked(false);
-                switchCB(mCheckboxDoubleWeek);
-                switchCB(mCheckboxAllWeek);
-
-                mCheckboxSingleWeek.setBackgroundColor(App.getContext().getResources().getColor(R.color.colorPrimary));
-                handleCBWeeks(TYPE_SINGLE, true);
-            } else {
-                mCheckboxSingleWeek.setBackgroundColor(Color.WHITE);
-                handleCBWeeks(TYPE_SINGLE, false);
-            }
+        if (v == mRadioSingle) {
+            handleCBWeeks(TYPE_SINGLE);
         }
-        if (v == mCheckboxDoubleWeek) {
-            if (mCheckboxDoubleWeek.isChecked()) {
-                mCheckboxSingleWeek.setChecked(false);
-                mCheckboxAllWeek.setChecked(false);
-                switchCB(mCheckboxSingleWeek);
-                switchCB(mCheckboxAllWeek);
-
-                mCheckboxDoubleWeek.setBackgroundColor(App.getContext().getResources().getColor(R.color.colorPrimary));
-                handleCBWeeks(TYPE_DOUBLE, true);
-            } else {
-                mCheckboxDoubleWeek.setBackgroundColor(Color.WHITE);
-                handleCBWeeks(TYPE_DOUBLE, false);
-            }
+        if (v == mRadioDouble) {
+            handleCBWeeks(TYPE_DOUBLE);
+        }
+        if (v == mRadioCustom) {
+            handleCBWeeks(TYPE_CUSTOM);
         }
         if (v == mBtnNegative) {
             dismiss();
@@ -167,59 +140,86 @@ public class WeeksDialog extends Dialog implements View.OnClickListener {
         return list;
     }
 
-    //对24个周进行批量操作,type 为0是全部,1是单周,2是双周
-    private void handleCBWeeks(int type, boolean value) {
+    //对18个周进行批量操作,type 为0是全部,1是单周,2是双周
+    private void handleCBWeeks(int type) {
         if (type == TYPE_ALL) {
-            for (int i = 0; i < 24; i++) {
-                mCBWeeks[i].setChecked(value);
-                switchCB(mCBWeeks[i]);
+            for (int i = 0; i < 18; i++) {
+                mCBWeeks[i].setChecked(true);
             }
         } else if (type == TYPE_SINGLE) {
-            handleCBWeeks(TYPE_ALL, false);
-            for (int i = 0; i < 24; i += 2) {
-                mCBWeeks[i].setChecked(value);
-                switchCB(mCBWeeks[i]);
+            for (int i = 0; i < 18; i++) {
+                mCBWeeks[i].setChecked(i % 2 == 0 ? true : false);
             }
         } else if (type == TYPE_DOUBLE) {
-            handleCBWeeks(TYPE_ALL, false);
-            for (int i = 1; i < 24; i += 2) {
-                mCBWeeks[i].setChecked(value);
-                switchCB(mCBWeeks[i]);
+            for (int i = 0; i < 18; i++) {
+                mCBWeeks[i].setChecked(i % 2 == 1 ? true : false);
+            }
+        } else if (type == TYPE_CUSTOM) {
+            for (int i = 0; i < 18; i++) {
+                mCBWeeks[i].setChecked(false);
             }
         }
     }
 
 
-    //更换 checkbox 背景颜色,始终保持背景颜色和选中的状态一致
-    private void switchCB(CheckBox checkBox) {
-        if (checkBox.isChecked()) {
-            checkBox.setBackgroundColor(App.getContext().getResources().getColor(R.color.colorPrimary));
-        } else {
-            checkBox.setBackgroundColor(Color.WHITE);
-        }
-    }
+//    //更换 checkbox 背景颜色,始终保持背景颜色和选中的状态一致
+//    private void switchCB(CheckBox checkBox) {
+//        if (checkBox.isChecked()) {
+//            checkBox.setBackgroundColor(App.getContext().getResources().getColor(R.color.colorPrimary));
+//        } else {
+//            checkBox.setBackgroundColor(Color.WHITE);
+//        }
+//    }
 
     private void setUpGridLayout() {
-        mCBWeeks = new CheckBox[24];
-        ViewGroup.LayoutParams tvParams = new ViewGroup.LayoutParams(
-                TV_WEEK_WIDTH,
-                TV_WEEK_HEIGHT
+        mLayouts = new LinearLayout[18];
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                DimensUtil.dp2px(106),
+                DimensUtil.dp2px(56)
         );
-        for (int i = 0; i < 24; i++) {
-            mCBWeeks[i] = new CheckBox(mContext);
-            mCBWeeks[i].setLayoutParams(tvParams);
-            mCBWeeks[i].setButtonDrawable(android.R.color.transparent);
-            mCBWeeks[i].setGravity(Gravity.CENTER);
-            mCBWeeks[i].setText(i + 1 + "");
-            mWeeksLayout.addView(mCBWeeks[i]);
+        mTvWeeks = new TextView[18];
+        ViewGroup.LayoutParams tvParams = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        );
+        ViewGroup.LayoutParams boxParams = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        mCBWeeks = new AppCompatCheckBox[18];
+
+        for (int i = 0; i < 18; i++) {
+            mLayouts[i] = new LinearLayout(mContext);
+            mLayouts[i].setPadding(DimensUtil.dp2px(16), 0, 0, 0);
+            mLayouts[i].setLayoutParams(layoutParams);
+            mWeeksLayout.addView(mLayouts[i]);
+
+            mTvWeeks[i] = new TextView(mContext);
+            mTvWeeks[i].setGravity(Gravity.CENTER);
+            mTvWeeks[i].setLayoutParams(tvParams);
+            String s;
+            if ((i + 1) / 10 < 1) {
+                s = "第0" + (i + 1) + "周";
+            } else {
+                s = "第" + (i + 1) + "周";
+            }
+            mTvWeeks[i].setText(s);
+            mLayouts[i].addView(mTvWeeks[i]);
+
+            mCBWeeks[i] = new AppCompatCheckBox(mContext);
+            mCBWeeks[i].setLayoutParams(boxParams);
+            mCBWeeks[i].setSupportButtonTintList(new ColorStateList(
+                    new int[][]{
+                            new int[]{android.R.attr.state_checkable}
+                    },new int[]{
+                    getContext().getResources().getColor(R.color.colorPrimary)
+            }));
+            mLayouts[i].addView(mCBWeeks[i]);
             mCBWeeks[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    for (int j = 0; j < 24; j++) {
-                        if (v == mCBWeeks[j]) {
-                            switchCB(mCBWeeks[j]);
-                        }
-                    }
+                    //凡是用户自己选择就是自定义
+                    mRadioCustom.setChecked(true);
                 }
 
             });
@@ -231,14 +231,14 @@ public class WeeksDialog extends Dialog implements View.OnClickListener {
     public List<Integer> parseWeeks(String s) {
         List<Integer> weeks = new ArrayList<>();
         String str = "";
-        if (s == "请选择上课的周数") {
+        if (s.equals(mContext.getString(R.string.tip_select_weeks))) {
             return weeks;
         }
-        if (s.contains("单") || s.contains("双")){
+        if (s.contains("单") || s.contains("双")) {
             int position = s.indexOf('-');
-            int start = Integer.valueOf(s.substring(0,position));
-            int end = Integer.valueOf(s.substring(position + 1,s.length() - 4));
-            for (int i = start;i <= end;i += 2){
+            int start = Integer.valueOf(s.substring(0, position));
+            int end = Integer.valueOf(s.substring(position + 1, s.length() - 4));
+            for (int i = start; i <= end; i += 2) {
                 weeks.add(i);
             }
             return weeks;
@@ -272,10 +272,7 @@ public class WeeksDialog extends Dialog implements View.OnClickListener {
     }
 
 
-
     //transfrom list to string把 存有选择了周数的 list 转化为 string
-
-
 
 
 }

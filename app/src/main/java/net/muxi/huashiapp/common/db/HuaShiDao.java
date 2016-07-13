@@ -101,10 +101,10 @@ public class HuaShiDao {
     }
 
     //删除指定的课程
-    public void deleteCourse(int id) {
+    public void deleteCourse(String id) {
         db.execSQL("DELETE FROM " + DataBase.TABLE_COURSE +
                         " WHERE " + DataBase.KEY_ID + " = ? ",
-                new Integer[]{
+                new String[]{
                         id
                 });
     }

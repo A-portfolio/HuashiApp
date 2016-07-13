@@ -2,7 +2,6 @@ package net.muxi.huashiapp.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,10 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.muxi.material_dialog.MaterialDialog;
-
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.ui.AboutActivity;
 import net.muxi.huashiapp.common.ui.SettingActivity;
+import net.muxi.huashiapp.common.util.AlarmUtil;
 import net.muxi.huashiapp.electricity.ElectricityActivity;
 import net.muxi.huashiapp.library.LibrarySearchActivity;
 import net.muxi.huashiapp.news.NewsActivity;
@@ -52,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         initRecyclerView();
 
+        AlarmUtil.register(this);
     }
 
     public void initRecyclerView() {
@@ -129,10 +129,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_about:
-                MaterialDialog materialDialog = new MaterialDialog(MainActivity.this);
-                materialDialog.setTitle("about")
-                        .setContent("fskafsfdsakm")
-                        .show();
+                intent = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(intent);
                 break;
 
         }

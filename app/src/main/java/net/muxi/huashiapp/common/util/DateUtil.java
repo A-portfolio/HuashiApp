@@ -2,6 +2,7 @@ package net.muxi.huashiapp.common.util;
 
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,6 +20,10 @@ public class DateUtil {
         return dateFormat.format(date);
     }
 
+    public static String toDateInYear(Date date){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(date);
+    }
 
     public static String toWeek(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("E");
@@ -32,7 +37,28 @@ public class DateUtil {
         return toWeek(calendar.getTime());
     }
 
+    //获取两个日期相隔的周,用于课程表
+    public static long getDistanceWeek(String date1,String date2){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            Date d1 = format.parse(date1);
+            Date d2 = format.parse(date2);
+            long week = (d2.getTime() - d1.getTime())/(24 * 60 * 60 * 1000 * 7);
+            return week;
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     //获取指定的日期
+    public static String getTheDateInYear(Date date, int distance) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, distance);
+        return toDateInYear(calendar.getTime());
+    }
+
     public static String getTheDate(Date date, int distance) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -41,7 +67,6 @@ public class DateUtil {
     }
 
 
-    //获取本周的所有日期,用在课程表里面,这边的 weekDistance 指代 距离本周的周数,例如本周为0,上周为-1
 //    public static List<String> getTheWeekDate(int weekDistance) {
 //        List<String> dateInWeek = new ArrayList<String>();
 //
@@ -59,7 +84,18 @@ public class DateUtil {
 //        return dateInWeek;
 //    }
 
+    //获取今天是一周的第几天
+    public static int getDayInWeek(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int w = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w < 1){
+            w = 7;
+        }
+        return w;
+    }
 
+    //获取本周的所有日期,用在课程表里面,这边的 weekDistance 指代 距离本周的周数,例如本周为0,上周为-1
     public static List<String> getTheWeekDate(int weekDistance){
         List<String> dateInWeek = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
@@ -68,7 +104,7 @@ public class DateUtil {
         //求今天是一周的第几天
         int w = calendar.get(Calendar.DAY_OF_WEEK) - 1;
         if (w < 1){
-            w = 1;
+            w = 7;
         }
         for (int j = 0;j < 7;j ++){
             dateInWeek.add(getTheDate(date,j - w + 1 + weekDistance * 7));
