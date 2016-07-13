@@ -1,9 +1,10 @@
 package net.muxi.huashiapp.common.base;
 
-import android.app.Fragment;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +16,7 @@ import net.muxi.huashiapp.R;
 /**
  * Created by ybao on 16/4/19.
  */
-public class BaseFragment extends Fragment {
+public class BaseFragment extends android.app.Fragment {
 
 
     public static Fragment newInstance(){

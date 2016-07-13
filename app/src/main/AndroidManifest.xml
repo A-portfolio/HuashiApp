@@ -37,7 +37,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER"/>®
             </intent-filter>
         </activity>
 
@@ -80,6 +80,8 @@
                   android:launchMode="singleTask"/>
 
         <activity android:name=".electricity.ElectricityActivity"/>
+
+        <activity android:name=".electricity.ElectricityDetailActivity"/>
 
         <receiver android:name=".common.service.AlarmLiveReceiver">
             <intent-filter>
