@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/root_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-    <LinearLayout android:layout_width="50dp"
-                  android:orientation="vertical"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/root_layout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
                   android:gravity="center"
-                  android:layout_height="50dp">
+                  android:orientation="vertical">
 
-        <TextView android:layout_width="wrap_content"
-                  android:layout_weight="1"
-                  android:gravity="bottom"
-                  android:text="8:00"
-                  android:layout_height="0dp"/>
-
-        <TextView
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/cb_text"
             android:layout_width="wrap_content"
-            android:text="1"
-            android:layout_weight="1"
-            android:textSize="18sp"
-                  android:layout_height="0dp"/>
+            android:checked="true"
+            android:layout_height="wrap_content"
+            android:text="sdsdlakfksdal"/>
 
-        <ImageButton android:layout_width="match_parent"
-                     android:background="@color/colorBlack"
-                     android:layout_height="2dp"/>
+        <android.support.v7.widget.SwitchCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 </LinearLayout>

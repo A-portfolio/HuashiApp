@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.library;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +19,7 @@ import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.OnItemClickListener;
-import net.muxi.huashiapp.common.base.BaseActivity;
+import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.db.HuaShiDao;
@@ -44,7 +45,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by ybao on 16/5/1.
  */
-public class LibraryActivity extends BaseActivity {
+public class LibraryActivity extends ToolbarActivity {
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -52,7 +53,7 @@ public class LibraryActivity extends BaseActivity {
     Toolbar mToolbar;
     @BindView(R.id.searchview)
     MySearchView mSearchview;
-    @BindView(R.id.root_layout)
+    @BindView(R.id.content_layout)
     FrameLayout mContentLayout;
 
 //    private List<BookSearchResult.ResultsBean> bookList;
@@ -129,10 +130,8 @@ public class LibraryActivity extends BaseActivity {
         });
 
         mToolbar.setTitle("图书馆");
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         setSupportActionBar(mToolbar);
 
-        //init RecyclerView
 
     }
 
@@ -183,7 +182,9 @@ public class LibraryActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, BookSearchResult.ResultsBean resultsBean) {
                 Logger.d("id:" + resultsBean.getId() + " book:" + resultsBean.getBook() + " author" + resultsBean.getAuthor());
-                CampusFactory.getRetrofitService().getBookDetail(resultsBean.getId(), resultsBean.getBook(), resultsBean.getAuthor())
+                String bookTitle = interceptTitle(resultsBean.getBook());
+                final String published = resultsBean.getIntro();
+                CampusFactory.getRetrofitService().getBookDetail(resultsBean.getId(), bookTitle, resultsBean.getAuthor())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.newThread())
                         .subscribe(new Observer<Book>() {
@@ -200,7 +201,7 @@ public class LibraryActivity extends BaseActivity {
                             @Override
                             public void onNext(Book book) {
                                 Logger.d(book.getBook());
-                                setupDetailLayout(book);
+                                setupDetailLayout(book, published);
                             }
                         });
 
@@ -218,6 +219,12 @@ public class LibraryActivity extends BaseActivity {
         });
     }
 
+    //截取数字后面的书名
+    private String interceptTitle(String book) {
+        int index = book.indexOf(".");
+        return book.substring(index + 1, book.length());
+    }
+
     private RecyclerView.OnScrollListener getOnBottomListener() {
         return new RecyclerView.OnScrollListener() {
             @Override
@@ -228,24 +235,23 @@ public class LibraryActivity extends BaseActivity {
                 int lastViewBottom = lastChildView.getBottom();
                 int recyclerviewBottom = recyclerView.getBottom();
                 int positon = recyclerView.getLayoutManager().getPosition(lastChildView);
-                Logger.d(positon + "  " + lastViewBottom + "  "  + recyclerView.getTop());
+                Logger.d(positon + "  " + lastViewBottom + "  " + recyclerView.getTop());
                 Logger.d(recyclerView.getLayoutManager().getItemCount() + "  " + recyclerviewBottom + "");
-                if (lastViewBottom + recyclerView.getTop() + 5 >= recyclerviewBottom && positon == recyclerView.getLayoutManager().getItemCount() - 1){
+                if (lastViewBottom + recyclerView.getTop() + 5 >= recyclerviewBottom && positon == recyclerView.getLayoutManager().getItemCount() - 1) {
                     Logger.d(mPage + "");
                     if (mPage <= mMax - 1 && mPage <= mBookList.size() / 20) {
-                        mPage ++;
+                        mPage++;
                         loadData(false);
-                        ToastUtil.showShort("load more");
-                    }else {
-                        ToastUtil.showShort("no more to load");
+                    } else {
+
                     }
                 }
             }
         };
     }
 
-    private void loadData(final boolean clean){
-        CampusFactory.getRetrofitService().searchBook(mKeyword,mPage)
+    private void loadData(final boolean clean) {
+        CampusFactory.getRetrofitService().searchBook(mKeyword, mPage)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BookSearchResult>() {
@@ -262,7 +268,7 @@ public class LibraryActivity extends BaseActivity {
                     @Override
                     public void onNext(BookSearchResult bookSearchResult) {
                         mMax = bookSearchResult.getMeta().getMax();
-                        if (clean){
+                        if (clean) {
                             mBookList.clear();
                         }
                         mBookList.addAll(bookSearchResult.getResults());
@@ -271,7 +277,7 @@ public class LibraryActivity extends BaseActivity {
                 });
     }
 
-    private void setupDetailLayout(final Book book) {
+    private void setupDetailLayout(final Book book, final String published) {
         Logger.d(book.getBook());
         Observable.timer(DURATION_ALPH + DURATION_SCALE, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -290,7 +296,7 @@ public class LibraryActivity extends BaseActivity {
                     public void onNext(Long aLong) {
                         mBaseDetailLayout = new BaseDetailLayout(LibraryActivity.this);
                         mContentLayout.addView(mBaseDetailLayout);
-                        BookDetailView bookDetailView = new BookDetailView(LibraryActivity.this, book);
+                        BookDetailView bookDetailView = new BookDetailView(LibraryActivity.this, book, published);
                         mBaseDetailLayout.setContent(bookDetailView);
                     }
                 });
@@ -345,7 +351,11 @@ public class LibraryActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_library, menu);
+        if (App.sLibrarayUser.getSid().equals("0")) {
+            getMenuInflater().inflate(R.menu.menu_library_logout, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_library_login, menu);
+        }
         MenuItem item = menu.findItem(R.id.action_search);
         mSearchview.setMenuItem(item);
         return true;
@@ -356,29 +366,25 @@ public class LibraryActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
-        if (mContentLayout.getChildCount() > 0) {
-            if (mBaseDetailLayout != null) {
-                mBaseDetailLayout.slideContentView();
-            }
-
+        if (mBaseDetailLayout != null) {
+            mBaseDetailLayout.slideContentView();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     mContentLayout.removeView(mBaseDetailLayout);
-                    if (mShadowView != null) {
-                        mContentLayout.removeView(mShadowView);
-                        mShadowView = null;
-                    }
+                    mContentLayout.removeView(mShadowView);
+                    mShadowView = null;
+                    mBaseDetailLayout = null;
                 }
             }, 250);
             return;
         }
+
         if (mSearchview.isSearchOpen()) {
             mSearchview.closeSearchView();
             return;
         }
         super.onBackPressed();
-        App.releaseCurActivty();
     }
 
 
@@ -390,6 +396,13 @@ public class LibraryActivity extends BaseActivity {
                 return true;
             case android.R.id.home:
                 onBackPressed();
+                break;
+            case R.id.action_logout:
+                App.clearLibUser();
+            case R.id.action_login:
+                Intent intent = new Intent(LibraryActivity.this, LibraryLoginActivity.class);
+                startActivity(intent);
+                LibraryActivity.this.finish();
                 break;
         }
         return super.onOptionsItemSelected(item);

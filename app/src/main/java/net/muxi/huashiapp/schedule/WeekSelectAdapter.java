@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by ybao on 16/7/11.
+ * 选择周数的Adapter
  */
 public class WeekSelectAdapter extends RecyclerView.Adapter<WeekSelectAdapter.ViewHolder> {
 
@@ -38,6 +39,7 @@ public class WeekSelectAdapter extends RecyclerView.Adapter<WeekSelectAdapter.Vi
             holder.mTvNumber.setText("" + (position + 1));
         }
         setTvNumberBg(position,holder.mTvNumber);
+        holder.mTvCurweek.setVisibility(View.GONE);
 
         holder.mTvWeek.setText(AppConstants.WEEKS[position]);
         if ((position + 1) == curWeek) {
@@ -50,6 +52,15 @@ public class WeekSelectAdapter extends RecyclerView.Adapter<WeekSelectAdapter.Vi
                 mOnItemClickListener.onItemClick(position);
             }
         });
+    }
+
+    /**
+     * 更新RecycelrView 的数据
+     * @param curWeek 当前周
+     */
+    public void swap(int curWeek){
+        this.curWeek = curWeek;
+        notifyDataSetChanged();
     }
 
     private void setTvNumberBg(int position,TextView tv) {
@@ -84,6 +95,7 @@ public class WeekSelectAdapter extends RecyclerView.Adapter<WeekSelectAdapter.Vi
         mOnItemClickListener = onItemClickListener;
     }
 
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_number)
@@ -104,4 +116,5 @@ public class WeekSelectAdapter extends RecyclerView.Adapter<WeekSelectAdapter.Vi
     public interface OnItemClickListener{
         void onItemClick(int position);
     }
+
 }

@@ -2,12 +2,15 @@ package net.muxi.huashiapp.schedule;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.muxi.material_dialog.MaterialDialog;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
@@ -58,6 +61,8 @@ public class AddCourseActivity extends ToolbarActivity
     RelativeLayout mLayoutCourseRemind;
     @BindView(R.id.btn_enter)
     Button mBtnEnter;
+    @BindView(R.id.switch_remind)
+    SwitchCompat mSwitchRemind;
 
     private HuaShiDao dao;
     private PreferenceUtil sp;
@@ -115,48 +120,65 @@ public class AddCourseActivity extends ToolbarActivity
 
             case R.id.btn_enter:
                 if (!isEmpty()) {
-                    if (NetStatus.isConnected() == true) {
-                        User user = new User();
-                        user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
-                        user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
-                        final Course course = setCourse();
-                        final int id = sp.getInt(PreferenceUtil.COURSE_ID, 1);
-                        Logger.d(course.getId() + "");
-                        course.setId(id + "");
-                        CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(user), course)
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribeOn(Schedulers.newThread())
-                                .subscribe(new Observer<Response<VerifyResponse>>() {
+                    final Course course = setCourse();
+                    final int id = sp.getInt(PreferenceUtil.COURSE_ID, 1);
+                    course.setId(id + "");
+                    if (isConflict(course)) {
+                        final MaterialDialog dialog = new MaterialDialog(AddCourseActivity.this);
+                        dialog.setTitle(getResources().getString(R.string.course_conflict_title))
+                                .setButtonColor(getResources().getColor(R.color.colorPrimary))
+                                .setPositiveButton("添加", new View.OnClickListener() {
                                     @Override
-                                    public void onCompleted() {
+                                    public void onClick(View v) {
+                                        dialog.dismiss();
+                                        if (NetStatus.isConnected() == true) {
+                                            User user = new User();
+                                            user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
+                                            user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
+                                            Logger.d(course.getId() + "");
+                                            CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(user), course)
+                                                    .observeOn(AndroidSchedulers.mainThread())
+                                                    .subscribeOn(Schedulers.newThread())
+                                                    .subscribe(new Observer<Response<VerifyResponse>>() {
+                                                        @Override
+                                                        public void onCompleted() {
 
-                                    }
+                                                        }
 
-                                    @Override
-                                    public void onError(Throwable e) {
+                                                        @Override
+                                                        public void onError(Throwable e) {
 
-                                    }
+                                                        }
 
-                                    @Override
-                                    public void onNext(Response<VerifyResponse> verifyResponseResponse) {
-                                        if (verifyResponseResponse.code() == 201) {
-                                            int newId = id;
-                                            dao.insertCourse(course);
-                                            Logger.d("add course success");
-                                            Intent intent = new Intent();
-                                            AddCourseActivity.this.setResult(RESULT_OK, intent);
-                                            sp.saveInt(PreferenceUtil.COURSE_ID, ++newId);
+                                                        @Override
+                                                        public void onNext(Response<VerifyResponse> verifyResponseResponse) {
+                                                            if (verifyResponseResponse.code() == 201) {
+                                                                int newId = id;
+                                                                dao.insertCourse(course);
+                                                                Logger.d("add course success");
+                                                                Intent intent = new Intent();
+                                                                AddCourseActivity.this.setResult(RESULT_OK, intent);
+                                                                //添加的课程 id 自增
+                                                                sp.saveInt(PreferenceUtil.COURSE_ID, ++newId);
+                                                                AddCourseActivity.this.finish();
+                                                            }
+                                                        }
+                                                    });
+                                        } else {
+                                            ToastUtil.showLong(getResources().getString(R.string.tip_check_net));
                                         }
                                     }
+                                })
+                                .setNegativeButton(getResources().getString(R.string.btn_negative), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog.dismiss();
+                                    }
                                 });
-                    } else {
-                        ToastUtil.showLong(getResources().getString(R.string.tip_check_net));
-                        int id = sp.getInt(PreferenceUtil.COURSE_ID, 0);
-                        Course course = new Course();
-//                        course.set
-//                        CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(user),)
+                        dialog.setCanceledOnTouchOutside(true);
+                        dialog.show();
                     }
-                    this.finish();
+
                 } else {
                     ToastUtil.showLong(App.getContext().getString(R.string.tip_complete_course));
                 }
@@ -198,6 +220,30 @@ public class AddCourseActivity extends ToolbarActivity
 
     }
 
+    /**
+     * 判断是否和已存在的课程冲突
+     *
+     * @param newCourse 新添加的课程
+     * @return
+     */
+    private boolean isConflict(Course newCourse) {
+        List<Course> courses = dao.loadCourse(newCourse.getDay());
+        for (int i = 0, size = courses.size(); i < size; i++) {
+            Course course = courses.get(i);
+            if (course.getStart() <= newCourse.getStart() &&
+                    (course.getStart() + course.getDuring()) >= (newCourse.getStart() + newCourse.getDuring())) {
+                for (int j = 0; j < mWeeks.size(); j++) {
+                    if (course.getWeeks().contains(String.valueOf(mWeeks.get(i)))) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+    //插入的课程赋值
     private Course setCourse() {
         Course course = new Course();
         course.setCourse(mEditCourseName.getText().toString());
@@ -207,6 +253,7 @@ public class AddCourseActivity extends ToolbarActivity
         course.setStart(courseTime);
         course.setDuring(duration);
         course.setPlace(mEditCoursePlace.getText().toString());
+        course.setRemind(String.valueOf(mSwitchRemind.isChecked()));
         return course;
     }
 

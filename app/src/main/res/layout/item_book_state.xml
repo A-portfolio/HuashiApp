@@ -1,21 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--图书所在地和可借状态-->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:orientation="horizontal"
+    android:paddingTop="8dp">
 
-    <TextView android:id="@+id/tv_state"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              tools:text="可借"/>
+    <LinearLayout
+        android:id="@+id/state_layout"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="书刊状态"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="@dimen/large_size"
+            tools:text="保留本"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_barcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:textSize="@dimen/library_state_size"
+        android:layout_toRightOf="@+id/state_layout"
+        android:text="条码号:"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv_tid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/library_state_size"
+        android:layout_toRightOf="@+id/tv_barcode"
+        tools:text="T11111"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_barcode"
+        android:textSize="@dimen/library_state_size"
+        android:layout_toRightOf="@+id/state_layout"
+        android:text="索书号:"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv_bid"
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/library_state_size"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_barcode"
+        android:layout_toRightOf="@+id/tv_barcode"
+        tools:text="1232222"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/library_state_size"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_bid"
+        android:layout_toRightOf="@+id/state_layout"
+        android:text="年卷期:"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv_period"
+        android:textSize="@dimen/library_state_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_bid"
+        android:layout_toRightOf="@+id/tv_barcode"
+        tools:text="9"/>
+
+    <TextView
+        android:id="@+id/tv_place_title"
+        android:textSize="@dimen/library_state_size"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_period"
+        android:layout_toRightOf="@+id/state_layout"
+        android:text="校区-馆藏地:"/>
 
     <TextView
         android:id="@+id/tv_place"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        tools:text="6F 中文图书馆"/>
+        tools:text="           fff "
+        android:lines="2"
+        android:layout_toRightOf="@+id/state_layout"
+        android:textSize="@dimen/library_state_size"
+        android:layout_below="@+id/tv_period"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

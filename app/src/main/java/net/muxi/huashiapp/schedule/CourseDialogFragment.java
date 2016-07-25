@@ -111,10 +111,6 @@ public class CourseDialogFragment extends DialogFragment implements NumberPicker
         mNumPickerEnd = (NumberPicker) view.findViewById(R.id.num_picker_end);
         setupNumberPicker();
 
-//        int textViewId = App.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
-//        TextView tv = (TextView) view.findViewById(textViewId);
-//        tv.setTextColor(App.getContext().getResources().getColor(R.color.colorAccent));
-
         builder.setView(view)
                 .setMessage("请选择上课时间")
                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {

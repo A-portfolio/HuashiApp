@@ -47,10 +47,10 @@
                 android:layout_below="@+id/edit_course_place"
                 android:layout_marginTop="@dimen/course_button_margin"
                 android:background="@null"
-                android:maxLines="1"
-                android:ellipsize="end"
                 android:drawableLeft="@drawable/ic_access_time_black_24dp"
+                android:ellipsize="end"
                 android:gravity="center_vertical"
+                android:maxLines="1"
                 android:text="选择上课周"
                 android:textSize="@dimen/schedule_add_course_size"/>
 
@@ -61,10 +61,10 @@
             android:layout_height="@dimen/course_button_height"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/edit_course_place"
-            android:maxLines="1"
             android:layout_marginTop="@dimen/course_button_margin"
-            android:ellipsize="end"
             android:background="@null"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="添加上课时间"
             android:textSize="@dimen/schedule_add_course_size"/>
 
@@ -83,6 +83,14 @@
                 android:layout_height="wrap_content"
                 android:text="勾选课程提醒"
                 android:textSize="@dimen/schedule_add_course_size"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switch_remind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:checked="true"
+                android:layout_alignParentRight="true"/>
 
 
         </RelativeLayout>

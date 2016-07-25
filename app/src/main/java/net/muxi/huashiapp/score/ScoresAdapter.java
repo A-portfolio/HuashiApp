@@ -38,9 +38,21 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
         holder.mTvCourseName.setText(mScoresList.get(position).getCourse());
         holder.mTvCourseCategory.setText(mScoresList.get(position).getCategory());
         holder.mTvCourseProperty.setText(mScoresList.get(position).getType());
-        holder.mTvScoreUsual.setText(mScoresList.get(position).getGrade().getUsual());
-        holder.mTvScoreEnding.setText(mScoresList.get(position).getGrade().getEnding());
-        holder.mTvScoreTotal.setText(mScoresList.get(position).getGrade().getTotal());
+        if (mScoresList.get(position).getGrade().getUsual().equals("")) {
+            holder.mTvScoreUsual.setText("无");
+        }else {
+            holder.mTvScoreUsual.setText(mScoresList.get(position).getGrade().getUsual());
+        }
+        if (mScoresList.get(position).getGrade().getEnding().equals("")){
+            holder.mTvScoreEnding.setText("无");
+        }else {
+            holder.mTvScoreEnding.setText(mScoresList.get(position).getGrade().getEnding());
+        }
+        if (mScoresList.get(position).getGrade().getTotal().equals("")){
+            holder.mTvScoreTotal.setText("无");
+        }else {
+            holder.mTvScoreTotal.setText(mScoresList.get(position).getGrade().getTotal());
+        }
         holder.mTvCredit.setText("学分:" + mScoresList.get(position).getCredit());
     }
 

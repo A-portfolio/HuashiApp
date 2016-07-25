@@ -10,11 +10,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.common.util.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,7 +78,7 @@ public class MineActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_lib_mine, menu);
+        getMenuInflater().inflate(R.menu.menu_library_login, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         mSearchView.setMenuItem(item);
         return true;
@@ -87,20 +88,14 @@ public class MineActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_logout){
-            clearLibUser();
+            App.clearLibUser();
+            Logger.d(App.sLibrarayUser.getSid());
             Intent intent = new Intent(MineActivity.this,LibraryLoginActivity.class);
             startActivity(intent);
             MineActivity.this.finish();
         }
         return super.onOptionsItemSelected(item);
 
-    }
-
-    //清楚本地数据缓存
-    private void clearLibUser() {
-        PreferenceUtil sp = new PreferenceUtil();
-        sp.removeString(PreferenceUtil.LIBRARY_ID);
-        sp.removeString(PreferenceUtil.LIBRARY_PWD);
     }
 
     @Override

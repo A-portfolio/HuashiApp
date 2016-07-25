@@ -41,6 +41,8 @@ public class DataBase extends SQLiteOpenHelper{
     public static final String KEY_REMIND = "remind";
     public static final String KEY_USER_ID = "user_id";
 
+    //banner的属性
+
 
     public DataBase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);

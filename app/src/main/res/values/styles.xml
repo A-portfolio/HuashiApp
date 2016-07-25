@@ -30,7 +30,6 @@
     <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
-        <item name="android:windowTitleStyle">@color/colorAccent</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
 

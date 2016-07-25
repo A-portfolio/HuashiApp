@@ -2,6 +2,7 @@ package net.muxi.huashiapp.common.net;
 
 import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookSearchResult;
+import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.PersonalBook;
@@ -66,6 +67,9 @@ public interface RetrofitService {
     Observable<List<Scores>> getScores(@Header("Authorization") String verification,
                                        @Query("xnm") String year,
                                        @Query("xqm") String term);
+
+    @GET("calendar/")
+    Observable<List<CalendarData>> getCalendar();
 
     //查询余额  除了学号其他传固定值 http://console.ccnu.edu.cn/ecard/getTrans?userId=2013211389&days=90&startNum=0&num=200
     @GET("http://console.ccnu.edu.cn/ecard/getTrans")

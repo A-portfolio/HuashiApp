@@ -9,10 +9,9 @@ import java.util.List;
 public class Book {
 
     private String bid;
-    private String tid;
     private String book;
-    private String author;
     private String intro;
+    private String author;
 
     private List<BooksBean> books;
 
@@ -24,14 +23,6 @@ public class Book {
         this.bid = bid;
     }
 
-    public String getTid() {
-        return tid;
-    }
-
-    public void setTid(String tid) {
-        this.tid = tid;
-    }
-
     public String getBook() {
         return book;
     }
@@ -40,20 +31,20 @@ public class Book {
         this.book = book;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public String getIntro() {
         return intro;
     }
 
     public void setIntro(String intro) {
         this.intro = intro;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public List<BooksBean> getBooks() {
@@ -66,8 +57,8 @@ public class Book {
 
     public static class BooksBean {
         private String status;
+        private String tid;
         private String room;
-        private String date;
 
         public String getStatus() {
             return status;
@@ -77,20 +68,20 @@ public class Book {
             this.status = status;
         }
 
+        public String getTid() {
+            return tid;
+        }
+
+        public void setTid(String tid) {
+            this.tid = tid;
+        }
+
         public String getRoom() {
             return room;
         }
 
         public void setRoom(String room) {
             this.room = room;
-        }
-
-        public String getDate() {
-            return date;
-        }
-
-        public void setDate(String date) {
-            this.date = date;
         }
     }
 }

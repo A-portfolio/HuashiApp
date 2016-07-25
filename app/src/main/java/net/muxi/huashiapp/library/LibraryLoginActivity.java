@@ -6,20 +6,24 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.Space;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.BaseActivity;
+import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.data.VerifyResponse;
+import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.Base64Util;
 import net.muxi.huashiapp.common.util.NetStatus;
-import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
-import net.muxi.huashiapp.login.LoginEditText;
+import net.muxi.huashiapp.common.widget.LoginEditText;
 import net.muxi.huashiapp.login.SimpleTextWatcher;
 
 import butterknife.BindView;
@@ -33,21 +37,25 @@ import rx.schedulers.Schedulers;
 /**
  * Created by ybao on 16/5/15.
  */
-public class LibraryLoginActivity extends BaseActivity {
-
+public class LibraryLoginActivity extends ToolbarActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.edit_userName)
+    @BindView(R.id.edit_user_name)
     LoginEditText mEditUserName;
     @BindView(R.id.edit_password)
     LoginEditText mEditPassword;
-    @BindView(R.id.login_center_layout)
-    RelativeLayout mLoginCenterLayout;
     @BindView(R.id.btn_login)
     Button mBtnLogin;
-    @BindView(R.id.space_divider)
-    Space mSpaceDivider;
+    @BindView(R.id.tv_search)
+    TextView mTvSearch;
+    @BindView(R.id.search_view)
+    MySearchView mSearchView;
+    @BindView(R.id.accout_layout)
+    LinearLayout mAccoutLayout;
+
+    private String[] mSuggestions;
+    private HuaShiDao dao;
 
     private TextWatcher mTextWatcher = new SimpleTextWatcher() {
         @Override
@@ -56,12 +64,13 @@ public class LibraryLoginActivity extends BaseActivity {
         }
     };
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library_login);
         ButterKnife.bind(this);
+        dao = new HuaShiDao();
+        mSuggestions = dao.loadSearchHistory().toArray(new String[0]);
         initView();
     }
 
@@ -70,6 +79,53 @@ public class LibraryLoginActivity extends BaseActivity {
         mToolbar.setTitle("图书馆");
         mEditUserName.addTextChangedListener(mTextWatcher);
         mEditPassword.addTextChangedListener(mTextWatcher);
+        mSearchView.setSuggestions(mSuggestions);
+        mSearchView.setOnQueryTextListener(new MySearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String queryText) {
+                Intent intent = new Intent(LibraryLoginActivity.this, LibraryActivity.class);
+                intent.putExtra(AppConstants.LIBRARY_QUERY_TEXT, queryText);
+                startActivity(intent);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        mSearchView.setOnSearchViewListener(new MySearchView.OnSearchViewListener() {
+            @Override
+            public void onSearchShown() {
+
+            }
+
+            @Override
+            public void onSeachClose() {
+                mAccoutLayout.setClickable(true);
+//                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            }
+        });
+        mTvSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSearchView.showSearchView();
+                mAccoutLayout.setClickable(false);
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+            }
+        });
+        mEditPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            }
+        });
+        mEditUserName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            }
+        });
     }
 
     @Override
@@ -90,8 +146,14 @@ public class LibraryLoginActivity extends BaseActivity {
         }
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        if (mSearchView.isSearchOpen()) {
+            mSearchView.closeSearchView();
+            return;
+        }
+        super.onBackPressed();
+    }
 
     @OnClick(R.id.btn_login)
     public void onClick() {
@@ -116,9 +178,7 @@ public class LibraryLoginActivity extends BaseActivity {
                         @Override
                         public void onNext(Response<VerifyResponse> verifyResponseResponse) {
                             if (verifyResponseResponse.code() == 200) {
-                                PreferenceUtil sp = new PreferenceUtil();
-                                sp.saveString(PreferenceUtil.LIBRARY_ID,libUser.getSid());
-                                sp.saveString(PreferenceUtil.LIBRARY_PWD,libUser.getPassword());
+                                App.saveLibUser(libUser);
                                 Intent intent = new Intent(LibraryLoginActivity.this, MineActivity.class);
                                 startActivity(intent);
                                 LibraryLoginActivity.this.finish();
@@ -131,4 +191,6 @@ public class LibraryLoginActivity extends BaseActivity {
                     });
         }
     }
+
+
 }

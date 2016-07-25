@@ -12,54 +12,46 @@ import net.muxi.huashiapp.R;
 /**
  * Created by december on 16/4/19.
  */
-public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
+public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int ITEM_VIEW_TYPE_HEADER = 0;
-    private static final int ITEM_VIEW_TYPE_ITEM = 1;
 
+    private enum ITEM_TYPE {
+        ITEM_TYPE_BANNER,
+        ITEM_TYPE_COMMON
+    }
 
     /**
      * 这里创建数组,接收传过来的数据
-     *
      */
 
     private int[] mpics;
     private String[] mdesc;
     private ItemClickListener mItemClickListener;
 
-    public boolean isHeader(int position) {
-        return position == 0;
-    }
-
-
     public interface ItemClickListener {
-        void OnItemClick(View view,int position);
+        void OnItemClick(View view, int position);
     }
 
 
-    public MainAdapter(String[] mdesc, int[] mpics){
+    public MainAdapter(String[] mdesc, int[] mpics) {
         this.mdesc = mdesc;
         this.mpics = mpics;
     }
 
-    /**
-     * 这里是加载item，并且创建ViewHolder对象，把加载的item(view)传给ViewHolder
-     * 第二个参数就是View的类型，根据这个类型去创建不同item的ViewHolder
-     * @param parent
-     * @param viewType
-     */
     @Override
-    public MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemview = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main,parent,false);
-        MainViewHolder holder = new MainViewHolder(itemview);
-        return holder;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == ITEM_TYPE.ITEM_TYPE_BANNER.ordinal()) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_banner,parent,false);
+            return new BannerViewHolder(view);
+        }else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main,parent,false);
+            return new CommonViewHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(MainViewHolder holder, int position) {
-        holder.mImageView.setImageResource(mpics[position]);
-        holder.mTextView.setText(mdesc[position]);
-        holder.itemView.setTag(position);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
     }
 
     public void setItemClickListener(ItemClickListener mItemClickListener) {
@@ -69,6 +61,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
     /**
      * 这里返回item数量
+     *
      * @return
      */
     @Override
@@ -79,38 +72,47 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
     @Override
     public int getItemViewType(int position) {
-        return isHeader(position)?ITEM_VIEW_TYPE_HEADER:ITEM_VIEW_TYPE_ITEM;
+        //第7个 item 为 banner
+        return position == 6 ? ITEM_TYPE.ITEM_TYPE_BANNER.ordinal() : ITEM_TYPE.ITEM_TYPE_COMMON.ordinal();
     }
 
     /**
      * ViewHolder类，继承RecyclerView.ViewHolder
      */
 
-    public class HeaderViewHolder extends RecyclerView.ViewHolder{
+    public class HeaderViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextView;
-        public HeaderViewHolder(View itemview){
+
+        public HeaderViewHolder(View itemview) {
             super(itemview);
         }
 
     }
 
 
-    public class MainViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class CommonViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mTextView;
         private ImageView mImageView;
-        public MainViewHolder(View itemview) {
+
+        public CommonViewHolder(View itemview) {
             super(itemview);
             mTextView = (TextView) itemview.findViewById(R.id.main_text_view);
             mImageView = (ImageView) itemview.findViewById(R.id.main_pic);
             itemview.setOnClickListener(this);
         }
 
-
         @Override
         public void onClick(View v) {
-            if (mItemClickListener != null ){
-                mItemClickListener.OnItemClick(itemView,getPosition());
+            if (mItemClickListener != null) {
+                mItemClickListener.OnItemClick(itemView, getPosition());
             }
+        }
+    }
+
+    public class BannerViewHolder extends RecyclerView.ViewHolder {
+
+        public BannerViewHolder(View itemView) {
+            super(itemView);
         }
     }
 }

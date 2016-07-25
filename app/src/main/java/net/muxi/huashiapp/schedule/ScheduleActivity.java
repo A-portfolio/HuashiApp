@@ -17,7 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.App;
+import com.muxi.material_dialog.MaterialDialog;
+
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
@@ -41,7 +42,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.drakeet.materialdialog.MaterialDialog;
 import retrofit2.Response;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -52,8 +52,6 @@ import rx.schedulers.Schedulers;
  */
 public class ScheduleActivity extends ToolbarActivity {
 
-
-    public static int n = 0;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.tv_schedule_week_number)
@@ -68,7 +66,7 @@ public class ScheduleActivity extends ToolbarActivity {
     LinearLayout mRootLayout;
 
     private RecyclerView mRecyclerView;
-    private WeekSelectAdapter adapter;
+    private WeekSelectAdapter mWeekSelectAdapter;
 
     private PreferenceUtil sp;
     private User mUser;
@@ -114,9 +112,18 @@ public class ScheduleActivity extends ToolbarActivity {
 
     private void getCurWeek() {
         int day = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
-        String defalutDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()),1 - day);
-        mCurWeek = (int) DateUtil.getDistanceWeek(sp.getString(PreferenceUtil.FIRST_WEEK_DATE,defalutDate),DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
+        String defalutDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()), 1 - day);
+        mCurWeek = (int) DateUtil.getDistanceWeek(sp.getString(PreferenceUtil.FIRST_WEEK_DATE, defalutDate), DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
         mSelectWeek = mCurWeek;
+    }
+
+    /**
+     * 存储第一周的第一天日期
+     */
+    private void saveFirstWeekDate() {
+        Date today = new Date(System.currentTimeMillis());
+        String date = DateUtil.getTheDateInYear(today, (1 - mCurWeek) * 7 - DateUtil.getDayInWeek(today) + 1);
+        sp.saveString(PreferenceUtil.FIRST_WEEK_DATE, date);
     }
 
     private void getCurCourses() {
@@ -125,8 +132,6 @@ public class ScheduleActivity extends ToolbarActivity {
         if (!NetStatus.isConnected()) {
             return;
         }
-        Logger.d(mUser.getPassword());
-        Logger.d(mUser.getSid());
         CampusFactory.getRetrofitService().getSchedule(Base64Util.createBaseStr(mUser), "2015", "12", "2014214629")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
@@ -171,37 +176,57 @@ public class ScheduleActivity extends ToolbarActivity {
 
         setTitle("课程表");
         // TODO: 16/5/25 debug
-        mTvScheduleWeekNumber.setText(String.format(App.getContext().getResources().getString(R.string.course_week_format),
-                mSelectWeek));
+        mTvScheduleWeekNumber.setText(AppConstants.WEEKS[mSelectWeek - 1]);
         mTimeTable.setCourse(mCourses);
         mTimeTable.setOnLongPressedListener(new TimeTable.OnLongPressedListenr() {
             @Override
             public void onLongPressed(final Course course) {
                 Logger.d(course.getId() + "");
-                CampusFactory.getRetrofitService().deleteCourse(Base64Util.createBaseStr(mUser), String.valueOf(course.getId()))
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<Response<VerifyResponse>>() {
+                final MaterialDialog dialog = new MaterialDialog(ScheduleActivity.this);
+                dialog.setTitle(getResources().getString(R.string.course_delete_course_title))
+                        .setButtonColor(getResources().getColor(R.color.colorPrimary))
+                        .setTitleColor(getResources().getColor(R.color.course_dialog_light_title_color))
+                        .setTitleSize(16)
+                        .setNegativeButton(getResources().getString(R.string.btn_negative), new View.OnClickListener() {
                             @Override
-                            public void onCompleted() {
-
+                            public void onClick(View v) {
+                                dialog.dismiss();
                             }
-
+                        })
+                        .setPositiveButton(getResources().getString(R.string.btn_positive), new View.OnClickListener() {
                             @Override
-                            public void onError(Throwable e) {
-                                e.printStackTrace();
-                            }
+                            public void onClick(View v) {
 
-                            @Override
-                            public void onNext(Response<VerifyResponse> verifyResponseResponse) {
-                                if (verifyResponseResponse.code() == 200) {
-                                    ToastUtil.showShort("delete success");
-                                    dao.deleteCourse(course.getId());
-                                    updateTimetable();
-                                }
+                                CampusFactory.getRetrofitService().deleteCourse(Base64Util.createBaseStr(mUser), String.valueOf(course.getId()))
+                                        .subscribeOn(Schedulers.newThread())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new Observer<Response<VerifyResponse>>() {
+                                            @Override
+                                            public void onCompleted() {
 
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                e.printStackTrace();
+                                            }
+
+                                            @Override
+                                            public void onNext(Response<VerifyResponse> verifyResponseResponse) {
+                                                if (verifyResponseResponse.code() == 200) {
+                                                    ToastUtil.showShort("delete success");
+                                                    dao.deleteCourse(course.getId());
+                                                    updateTimetable();
+                                                }
+
+                                            }
+                                        });
+
+                                dialog.dismiss();
                             }
                         });
+
+                dialog.show();
 
             }
         });
@@ -217,8 +242,8 @@ public class ScheduleActivity extends ToolbarActivity {
         mRecyclerView.setLayoutParams(layoutParams);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
-        adapter = new WeekSelectAdapter(mSelectWeek);
-        adapter.setOnItemClickListener(new WeekSelectAdapter.OnItemClickListener() {
+        mWeekSelectAdapter = new WeekSelectAdapter(mSelectWeek);
+        mWeekSelectAdapter.setOnItemClickListener(new WeekSelectAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 mSelectWeek = position + 1;
@@ -230,7 +255,7 @@ public class ScheduleActivity extends ToolbarActivity {
 
             }
         });
-        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setAdapter(mWeekSelectAdapter);
         mRecyclerView.setVisibility(View.GONE);
     }
 
@@ -257,30 +282,18 @@ public class ScheduleActivity extends ToolbarActivity {
                 startActivityForResult(intent, 2);
                 break;
             case R.id.action_set_cur_week:
-                final SetCurWeekView view = new SetCurWeekView(ScheduleActivity.this,mCurWeek);
-                ViewGroup.LayoutParams contentParams = new ViewGroup.LayoutParams(
-                        DimensUtil.dp2px(318),
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                view.setLayoutParams(contentParams);
-                final MaterialDialog materialDialog = new MaterialDialog(ScheduleActivity.this);
-                materialDialog.setTitle(getString(R.string.course_set_curweek_title))
-                        .setContentView(view)
-                        .setPositiveButton(R.string.btn_positive, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mSelectWeek = view.getSelectPostion();
-                                materialDialog.dismiss();
-
-                            }
-                        })
-                        .setNegativeButton(R.string.btn_negative, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                materialDialog.dismiss();
-                            }
-                        });
-                materialDialog.show();
+                CurweekSetDialog dialog = new CurweekSetDialog(ScheduleActivity.this, mCurWeek);
+                dialog.setOnDialogPostiveClickListener(new CurweekSetDialog.OnDialogPostiveClickListener() {
+                    @Override
+                    public void onDialogPostiveClick(int curWeek) {
+                        mCurWeek = curWeek;
+                        saveFirstWeekDate();
+                        mWeekSelectAdapter.swap(curWeek);
+                        mSelectWeek = curWeek;
+                        mTvScheduleWeekNumber.setText(AppConstants.WEEKS[mSelectWeek - 1]);
+                    }
+                });
+                dialog.show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -289,10 +302,10 @@ public class ScheduleActivity extends ToolbarActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
-        if (isSelectShown){
-            getMenuInflater().inflate(R.menu.menu_week_select,menu);
-        }else {
-            getMenuInflater().inflate(R.menu.menu_schedule,menu);
+        if (isSelectShown) {
+            getMenuInflater().inflate(R.menu.menu_week_select, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_schedule, menu);
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -341,8 +354,8 @@ public class ScheduleActivity extends ToolbarActivity {
         }
     }
 
-    public void fadeinRecyclerView(){
-        AlphaAnimation animation = new AlphaAnimation(0,1);
+    public void fadeinRecyclerView() {
+        AlphaAnimation animation = new AlphaAnimation(0, 1);
         animation.setDuration(200);
         animation.setFillBefore(true);
         animation.setFillAfter(false);
@@ -365,8 +378,8 @@ public class ScheduleActivity extends ToolbarActivity {
     }
 
 
-    public void fadeoutRecyclerView(){
-        AlphaAnimation animation = new AlphaAnimation(1,0);
+    public void fadeoutRecyclerView() {
+        AlphaAnimation animation = new AlphaAnimation(1, 0);
         animation.setDuration(200);
         animation.setFillBefore(true);
         animation.setFillAfter(false);

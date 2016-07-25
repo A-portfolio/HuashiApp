@@ -20,6 +20,7 @@ import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.common.widget.LoginEditText;
 import net.muxi.huashiapp.main.MainActivity;
 
 import butterknife.BindView;
@@ -42,16 +43,14 @@ public class LoginActivity extends AppCompatActivity {
 
     //此处方便登录调试,到时候要删除
     public static final boolean DEBUG_VALUE = true;
-    @BindView(R.id.edit_userName)
-    LoginEditText mEditUserName;
-    @BindView(R.id.edit_password)
-    LoginEditText mEditPassword;
-    @BindView(R.id.login_center_layout)
 
     RelativeLayout mLoginCenterLayout;
     @BindView(R.id.btn_login)
     Button mBtnLogin;
-
+    @BindView(R.id.edit_user_name)
+    LoginEditText mEditUserName;
+    @BindView(R.id.edit_password)
+    LoginEditText mEditPassword;
 
 
     private User mUser;
@@ -161,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onNext(Response<VerifyResponse> response) {
 //                        if (response.code() == 200) {
 
-                        if (response.code() == 200){
+                        if (response.code() == 200) {
                             Logger.d("200");
                             PreferenceUtil loader = new PreferenceUtil();
                             loader.saveString(PreferenceUtil.STUDENT_ID, mUser.getSid());
@@ -170,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
                             ToastUtil.showShort(LOGIN_SUCCESS);
                             startMainActivity();
                         }
-                        if(response.code() == 403){
+                        if (response.code() == 403) {
                             Logger.d("403");
                         }
 

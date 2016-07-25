@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent" android:layout_height="match_parent"
               xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
               android:orientation="vertical">
 
     <RelativeLayout android:layout_width="match_parent"
@@ -57,28 +58,28 @@
 
             <android.support.v7.widget.AppCompatRadioButton
                 android:id="@+id/radio_custom"
-                android:checked="true"
-                app:buttonTint="@color/colorWhite"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:checked="true"
+                app:buttonTint="@color/colorWhite"/>
 
             <android.support.v7.widget.AppCompatRadioButton
                 android:id="@+id/radio_single_week"
                 android:layout_width="match_parent"
-                app:buttonTint="@color/colorWhite"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                app:buttonTint="@color/colorWhite"/>
 
             <android.support.v7.widget.AppCompatRadioButton
                 android:id="@+id/radio_double_week"
                 android:layout_width="match_parent"
-                app:buttonTint="@color/colorWhite"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                app:buttonTint="@color/colorWhite"/>
 
             <android.support.v7.widget.AppCompatRadioButton
                 android:id="@+id/radio_all_week"
-                app:buttonTint="@color/colorWhite"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                app:buttonTint="@color/colorWhite"/>
 
         </RadioGroup>
 

@@ -21,15 +21,18 @@
 
         <RelativeLayout
             android:id="@+id/search_bar"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="48dp"
             android:background="@android:color/white">
 
             <EditText
                 android:id="@+id/edit_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/btn_clear"
+                android:layout_toLeftOf="@+id/btn_search"
                 android:layout_toRightOf="@+id/btn_back"
                 android:background="@null"
                 android:gravity="center_vertical"
@@ -46,20 +49,30 @@
                 android:src="@drawable/ic_action_navigation_arrow_back"/>
 
             <ImageView
-                android:id="@+id/btn_clear"
+                android:id="@+id/btn_search"
                 style="@style/searchview_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_action_navigation_close"/>
+                android:src="@drawable/ic_search_black_24dp"/>
 
 
         </RelativeLayout>
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_marginRight="28dp"
+            android:layout_marginLeft="28dp"
+            android:background="@color/divider_search_view"
+            android:layout_height="1dp"/>
+
         <ListView
             android:id="@+id/search_listview"
             android:layout_width="match_parent"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_height="wrap_content"
             android:background="@android:color/white">
 

@@ -124,9 +124,6 @@ public class TimeTable extends FrameLayout {
                 COURSE_TIME_DIVIDER);
 
         for (int i = 0; i < 14; i++) {
-            //添加分割线
-
-
             mCourseUnitLayout[i] = new LinearLayout(mContext);
             mCourseUnitLayout[i].setGravity(Gravity.CENTER);
             mCourseUnitLayout[i].setOrientation(LinearLayout.VERTICAL);
@@ -162,7 +159,6 @@ public class TimeTable extends FrameLayout {
 
 
     public void setupWeekDayLayout(Context context) {
-
         mWeekDayLayout = new ScheduleTimeLayout(context);
         FrameLayout.LayoutParams weekDayParams = new
                 FrameLayout.LayoutParams(WEEK_DAY_WIDTH * 7, LITTLE_VIEW_HEIGHT);
@@ -211,7 +207,7 @@ public class TimeTable extends FrameLayout {
     public void changeTheDate(int distance) {
         weekDates = DateUtil.getTheWeekDate(distance);
         for (int i = 0; i < 7; i++) {
-            mWeekdayDateTv[i].setText(weekdays[i]);
+            mWeekdayDateTv[i].setText(weekDates.get(i));
         }
     }
 

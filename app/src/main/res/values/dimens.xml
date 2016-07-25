@@ -6,6 +6,7 @@
     <dimen name="dialog_horizontal_margin">64dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="oval_height">40dp</dimen>
+    <dimen name="dialog_btn_width">64dp</dimen>
 
     <dimen name="most_large_size">28sp</dimen>
     <dimen name="large_size">22sp</dimen>
@@ -15,6 +16,7 @@
     <dimen name="login_btn_text_size">22sp</dimen>
     <dimen name="login_hint_text_size">16sp</dimen>
     <dimen name="schedule_add_course_size">22sp</dimen>
+    <dimen name="library_state_size">16sp</dimen>
 
     <dimen name="login_horizontal_margin">56dp</dimen>
 
@@ -48,6 +50,7 @@
     <dimen name="course_width">50dp</dimen>
     <dimen name="course_select_width">100dp</dimen>
 
+    <dimen name="library_horizontal_margin">8dp</dimen>
     <dimen name="library_searchview_height">48dp</dimen>
     <dimen name="library_searchview_marginright">64dp</dimen>
     <dimen name="library_detail_margin_top">48dp</dimen>
@@ -55,8 +58,11 @@
     <dimen name="library_item_icon_padding">12dp</dimen>
     <dimen name="library_item_text_padding">12dp</dimen>
     <dimen name="library_icon_padding">12dp</dimen>
-    <dimen name="library_item_search_height">64dp</dimen>
+    <dimen name="library_item_search_height">90dp</dimen>
     <dimen name="library_item_borrow_height">84dp</dimen>
+    <dimen name="library_detail_min_height">640dp</dimen>
+    <dimen name="library_search_view_margin">8dp</dimen>
+
 
     <dimen name="score_select_item_height">56dp</dimen>
     <dimen name="score_btn_height">36dp</dimen>
@@ -66,7 +72,6 @@
     <dimen name="spinner_height">36dp</dimen>
     <dimen name="spinner_marigin">170dp</dimen>
 
-
-
+    <dimen name="setting_preference_height">56dp</dimen>
 
 </resources>

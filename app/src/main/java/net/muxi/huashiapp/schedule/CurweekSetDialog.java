@@ -1,39 +1,81 @@
 package net.muxi.huashiapp.schedule;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.util.DimensUtil;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
- * Created by ybao on 16/7/11.
+ * Created by ybao on 16/7/14.
  */
-public class SetCurWeekView extends GridLayout{
+public class CurweekSetDialog extends Dialog {
+
+
+    @BindView(R.id.gl_weeks)
+    GridLayout mGlWeeks;
+    @BindView(R.id.btn_negative)
+    Button mBtnNegative;
+    @BindView(R.id.btn_positive)
+    Button mBtnPositive;
+
+    private LinearLayout[] weeksLayout;
+    private TextView[] mTvWeeks;
+    private AppCompatRadioButton[] mRadioButtons;
+    private int lastPos;
+    private int pos;
+
+    private OnDialogPostiveClickListener mOnDialogPostiveClickListener;
 
     private Context mContext;
-    private int mCurWeek;
-    private TextView[] mTvWeeks;
-    private LinearLayout[] weeksLayout;
-    private AppCompatRadioButton[] mRadioButtons;
 
-    //当前选中的RadioButton
-    private int pos;
-    private int lastPos;
-
-    public SetCurWeekView(Context context,int curWeek) {
-        super(context);
+    public CurweekSetDialog(Context context,int curWeek) {
+        super(context,R.style.DialogStyle);
         mContext = context;
-        mCurWeek = curWeek;
         pos = curWeek - 1;
-        this.setColumnCount(3);
-        this.setRowCount(6);
+    }
+
+    public interface OnDialogPostiveClickListener{
+        void onDialogPostiveClick(int curWeek);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dialog_curweek_set);
+        ButterKnife.bind(this);
         initView();
+        mBtnNegative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        mBtnPositive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnDialogPostiveClickListener != null){
+                    mOnDialogPostiveClickListener.onDialogPostiveClick(pos + 1);
+                }
+                dismiss();
+            }
+        });
+    }
+
+    public void setOnDialogPostiveClickListener(OnDialogPostiveClickListener dialogPostiveClickListener){
+        mOnDialogPostiveClickListener = dialogPostiveClickListener;
     }
 
     private void initView() {
@@ -57,7 +99,7 @@ public class SetCurWeekView extends GridLayout{
             weeksLayout[i] = new LinearLayout(mContext);
             weeksLayout[i].setPadding(DimensUtil.dp2px(16), 0, 0, 0);
             weeksLayout[i].setLayoutParams(layoutParams);
-            this.addView(weeksLayout[i]);
+            mGlWeeks.addView(weeksLayout[i]);
 
             mTvWeeks[i] = new TextView(mContext);
             mTvWeeks[i].setGravity(Gravity.CENTER);
@@ -93,10 +135,4 @@ public class SetCurWeekView extends GridLayout{
         mRadioButtons[pos].setChecked(true);
 
     }
-
-    //获取选择的周次
-    public int getSelectPostion(){
-        return pos;
-    }
-
 }

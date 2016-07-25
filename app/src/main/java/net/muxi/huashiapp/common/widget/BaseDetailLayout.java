@@ -282,9 +282,4 @@ public class BaseDetailLayout extends FrameLayout {
         }
     }
 
-    //在 toolbar 的状态改变的时候回调
-    public interface OnStateChangeListener {
-        public void onStateChange();
-    }
-
 }

@@ -12,12 +12,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.ui.AboutActivity;
+import net.muxi.huashiapp.common.ui.CalendarActivity;
 import net.muxi.huashiapp.common.ui.SettingActivity;
 import net.muxi.huashiapp.common.util.AlarmUtil;
 import net.muxi.huashiapp.electricity.ElectricityActivity;
-import net.muxi.huashiapp.library.LibrarySearchActivity;
+import net.muxi.huashiapp.library.LibraryLoginActivity;
+import net.muxi.huashiapp.library.MineActivity;
 import net.muxi.huashiapp.news.NewsActivity;
 import net.muxi.huashiapp.schedule.ScheduleActivity;
 import net.muxi.huashiapp.score.ScoreActivity;
@@ -72,20 +75,30 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 1:
-                        intent = new Intent(MainActivity.this, LibrarySearchActivity.class);
-                        startActivity(intent);
+                        if (!App.sLibrarayUser.getSid().equals("0")) {
+                            intent = new Intent(MainActivity.this, MineActivity.class);
+                            startActivity(intent);
+                        } else {
+                            intent = new Intent(MainActivity.this, LibraryLoginActivity.class);
+                            startActivity(intent);
+                        }
                         break;
                     case 2:
                         intent = new Intent(MainActivity.this, ScoreActivity.class);
                         startActivity(intent);
                         break;
                     case 3:
+                        Intent intent3 = new Intent(MainActivity.this, ElectricityActivity.class);
+                        startActivity(intent3);
+                        break;
+                    case 4:
+                        intent = new Intent(MainActivity.this, CalendarActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 5:
                         Intent intent2 = WebViewActivity.newIntent(MainActivity.this, "http://xueer.ccnuer.cn", "学而");
                         startActivity(intent2);
                         break;
-                    case 4:
-                        Intent intent3 = new Intent(MainActivity.this, ElectricityActivity.class);
-                        startActivity(intent3);
 
                 }
             }

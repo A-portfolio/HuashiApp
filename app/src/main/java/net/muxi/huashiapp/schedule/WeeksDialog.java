@@ -2,7 +2,6 @@ package net.muxi.huashiapp.schedule;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatRadioButton;
@@ -55,7 +54,7 @@ public class WeeksDialog extends Dialog implements View.OnClickListener {
 
     //设置 dialog 点击的回调接口
     public interface OnDialogClickListener {
-        public void onDialogClick(List<Integer> list);
+        void onDialogClick(List<Integer> list);
     }
 
 
@@ -161,16 +160,6 @@ public class WeeksDialog extends Dialog implements View.OnClickListener {
         }
     }
 
-
-//    //更换 checkbox 背景颜色,始终保持背景颜色和选中的状态一致
-//    private void switchCB(CheckBox checkBox) {
-//        if (checkBox.isChecked()) {
-//            checkBox.setBackgroundColor(App.getContext().getResources().getColor(R.color.colorPrimary));
-//        } else {
-//            checkBox.setBackgroundColor(Color.WHITE);
-//        }
-//    }
-
     private void setUpGridLayout() {
         mLayouts = new LinearLayout[18];
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -208,12 +197,6 @@ public class WeeksDialog extends Dialog implements View.OnClickListener {
 
             mCBWeeks[i] = new AppCompatCheckBox(mContext);
             mCBWeeks[i].setLayoutParams(boxParams);
-            mCBWeeks[i].setSupportButtonTintList(new ColorStateList(
-                    new int[][]{
-                            new int[]{android.R.attr.state_checkable}
-                    },new int[]{
-                    getContext().getResources().getColor(R.color.colorPrimary)
-            }));
             mLayouts[i].addView(mCBWeeks[i]);
             mCBWeeks[i].setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -270,9 +253,6 @@ public class WeeksDialog extends Dialog implements View.OnClickListener {
         }
         return list;
     }
-
-
-    //transfrom list to string把 存有选择了周数的 list 转化为 string
 
 
 }

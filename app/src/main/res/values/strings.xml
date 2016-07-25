@@ -46,6 +46,7 @@
     <string name="tip_select_weeks">选择上课周</string>
     <string name="tip_select_course_time">添加上课时间</string>
     <string name="tip_complete_course">请完善课程信息</string>
+    <string name="tip_lib_write_keyword">输入书名作者</string>
 
     <!--library-->
     <string name="library_search_tip">请输入要搜索的图书或作者</string>
@@ -62,6 +63,8 @@
     <string name="course_all_week">全选</string>
     <string name="course_week_format">第%d周</string>
     <string name="course_set_curweek_title">请设置当前周</string>
+    <string name="course_conflict_title">添加课程与课程表已有课程冲突,是否继续添加</string>
+    <string name="course_delete_course_title">将此课程从课程表中删除</string>
 
     <string name="btn_negative">取消</string>
     <string name="btn_positive">确定</string>

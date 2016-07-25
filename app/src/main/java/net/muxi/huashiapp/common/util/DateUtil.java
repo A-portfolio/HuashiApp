@@ -59,6 +59,7 @@ public class DateUtil {
         return toDateInYear(calendar.getTime());
     }
 
+    //获取指定的日期
     public static String getTheDate(Date date, int distance) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -110,6 +111,24 @@ public class DateUtil {
             dateInWeek.add(getTheDate(date,j - w + 1 + weekDistance * 7));
         }
         return dateInWeek;
+    }
+
+    /**
+     * 比较两个 格式为 "yyyy-MM-dd"的日期的大小 前一个比后一个大 返回 true
+     * @param date1
+     * @param date2
+     * @return
+     */
+    public static boolean isAfter(String date1,String date2){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            Date d1 = format.parse(date1);
+            Date d2 = format.parse(date2);
+            return d1.after(d2);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

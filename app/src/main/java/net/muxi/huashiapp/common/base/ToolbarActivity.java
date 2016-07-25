@@ -2,7 +2,6 @@ package net.muxi.huashiapp.common.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,8 +17,6 @@ import butterknife.ButterKnife;
 public abstract class ToolbarActivity extends BaseActivity {
 
     protected Toolbar mToolbar;
-    protected AppBarLayout mAppBarLayout;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +31,6 @@ public abstract class ToolbarActivity extends BaseActivity {
     }
 
     public void initToolbar() {
-        mAppBarLayout = ButterKnife.findById(this,R.id.appbar_layout);
         mToolbar = ButterKnife.findById(this, R.id.toolbar);
         if (mToolbar != null) {
             mToolbar.setTitle("校园通");

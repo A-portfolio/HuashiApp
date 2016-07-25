@@ -50,7 +50,9 @@ public class HuaShiDao {
                 i++;
             }
         }
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
         return records;
     }
 
@@ -70,20 +72,21 @@ public class HuaShiDao {
                         course.getWeeks(),
                         course.getDay(),
                         course.getPlace(),
-                        course.getRemind().toString()
+                        String.valueOf(course.getRemind())
                 });
     }
 
-    //获取指定周的课程
-    public List<Course> loadCourse(String weeks) {
-        String userId = sp.getString(PreferenceUtil.STUDENT_ID);
+    //获取指定星期的课程
+    public List<Course> loadCourse(String day) {
         Cursor cursor =
-                db.rawQuery("SELECT * FROM " + DataBase.TABLE_COURSE,
-                        null);
+                db.rawQuery("SELECT * FROM " + DataBase.TABLE_COURSE +
+                        " WHERE " + DataBase.KEY_WEEKDAY + " = ? ",
+                        new String[]{
+                                day
+                        });
         List<Course> courses = new ArrayList<>();
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
-                if (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)).contains(weeks)) {
                     Course course = new Course();
                     course.setCourse(cursor.getString(cursor.getColumnIndex(DataBase.KEY_COURSE_NAME)));
                     course.setTeacher(cursor.getString(cursor.getColumnIndex(DataBase.KEY_TEACHER)));
@@ -94,8 +97,33 @@ public class HuaShiDao {
                     course.setPlace(cursor.getString(cursor.getColumnIndex(DataBase.KEY_PLACE)));
                     course.setRemind(cursor.getString(cursor.getColumnIndex(DataBase.KEY_REMIND)));
                     courses.add(course);
-                }
             }
+        }
+        if (cursor != null){
+            cursor.close();
+        }
+        return courses;
+    }
+
+    public List<Course> loadAllCourses(){
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_COURSE,null);
+        List<Course> courses = new ArrayList<>();
+        if (cursor.getCount() > 0){
+            while (cursor.moveToNext()){
+                Course  course = new Course();
+                course.setCourse(cursor.getString(cursor.getColumnIndex(DataBase.KEY_COURSE_NAME)));
+                course.setTeacher(cursor.getString(cursor.getColumnIndex(DataBase.KEY_TEACHER)));
+                course.setWeeks(cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
+                course.setDay(cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKDAY)));
+                course.setStart(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_TIME)));
+                course.setDuring(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_DURATION)));
+                course.setPlace(cursor.getString(cursor.getColumnIndex(DataBase.KEY_PLACE)));
+                course.setRemind(cursor.getString(cursor.getColumnIndex(DataBase.KEY_REMIND)));
+                courses.add(course);
+            }
+        }
+        if (cursor != null){
+            cursor.close();
         }
         return courses;
     }

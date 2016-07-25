@@ -72,7 +72,6 @@ public class ScoreActivity extends ToolbarActivity {
     private String[] itemYears;
     private String[] itemTerms;
 
-
     private static final String[] TERM = {"3", "12", "16"};
 
     @Override

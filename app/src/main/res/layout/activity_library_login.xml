@@ -1,13 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-    <include layout="@layout/view_toolbar"
-             android:id="@+id/view_toolbar"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <include android:id="@+id/content_layout"
-             layout="@layout/view_login"
-    />
+    <TextView
+        android:id="@+id/tv_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginLeft="@dimen/library_horizontal_margin"
+        android:layout_marginRight="@dimen/library_horizontal_margin"
+        android:drawableLeft="@drawable/ic_search_black_24dp"
+        android:hint="@string/tip_lib_write_keyword"/>
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="1px"
+        android:layout_height="1px"
+        android:layout_centerVertical="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/space"
+        android:id="@+id/accout_layout"
+        android:orientation="vertical">
+
+        <net.muxi.huashiapp.common.widget.LoginEditText
+            android:id="@+id/edit_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/library_horizontal_margin"
+            android:layout_marginRight="@dimen/library_horizontal_margin"
+            android:hint="学号"/>
+
+        <net.muxi.huashiapp.common.widget.LoginEditText
+            android:id="@+id/edit_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/library_horizontal_margin"
+            android:layout_marginRight="@dimen/library_horizontal_margin"
+            android:layout_marginTop="8dp"
+            android:hint="密码(初始密码为123456)"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"/>
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorPrimary"
+            android:text="进入我的图书馆"
+            android:textColor="@color/colorWhite"/>
+
+    </LinearLayout>
+
+    <net.muxi.huashiapp.library.MySearchView
+        android:layout_width="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/search_view"
+        android:layout_height="match_parent"/>
+
 </RelativeLayout>
