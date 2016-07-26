@@ -22,6 +22,11 @@
     <color name="course_random_orange">#FF5722</color>
     <color name="course_random_purple">#B195DA</color>
     <color name="course_random_pink">#E85D8B</color>
+
+    <color name="week_random_pink">#96E91E63</color>
+    <color name="week_random_green">#96009688</color>
+    <color name="week_random_purple">#96673AB7</color>
+    <color name="week_random_orange">#96FF5722</color>
     <color name="course_dialog_light_title_color">#80000000</color>
 
     <!--成绩查询-->

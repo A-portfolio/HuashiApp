@@ -5,8 +5,17 @@ package net.muxi.huashiapp.common.data;
  */
 public class BannerData {
 
+    /**
+     * url : http://muxistudio.com
+     * update : 14694718924703788
+     * img : http://oao7x1n3m.bkt.clouddn.com/Banner-Test1
+     * filename : Banner-Test1
+     */
+
     private String url;
-    private String update;
+    private long update;
+    private String img;
+    private String filename;
 
     public String getUrl() {
         return url;
@@ -16,11 +25,27 @@ public class BannerData {
         this.url = url;
     }
 
-    public String getUpdate() {
+    public long getUpdate() {
         return update;
     }
 
-    public void setUpdate(String update) {
+    public void setUpdate(long update) {
         this.update = update;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

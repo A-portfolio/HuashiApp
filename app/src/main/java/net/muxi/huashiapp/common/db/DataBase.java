@@ -20,9 +20,7 @@ public class DataBase extends SQLiteOpenHelper{
     public static final String TABLE_SEARCH_HISTORY = "search_history";
     //课程的本地数据库
     public static final String TABLE_COURSE = "course";
-    //成绩的本地数据库
-    public static final String TABLE_SCORE = "score";
-    public static final String TABLE_INFORMATION = "info";
+    public static final String TABLE_BANNER = "banner";
 
     public static final String KEY_ID = "id";
 
@@ -42,6 +40,10 @@ public class DataBase extends SQLiteOpenHelper{
     public static final String KEY_USER_ID = "user_id";
 
     //banner的属性
+    public static final String KEY_URL = "url";
+    public static final String KEY_UPDATE = "update_time";
+    public static final String KEY_IMG = "img";
+    public static final String KEY_FILENAME = "filename";
 
 
     public DataBase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -76,6 +78,14 @@ public class DataBase extends SQLiteOpenHelper{
                 KEY_REMIND + " TEXT); ";
         db.execSQL(createCourseTable);
 
+        String createBannerTable = "CREATE TABLE IF NOT EXISTS " + TABLE_BANNER +
+                " ( "  + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                KEY_URL + " TEXT, " +
+                KEY_UPDATE + " TEXT, " +
+                KEY_IMG + " TEXT, " +
+                KEY_FILENAME + " TEXT); ";
+        db.execSQL(createBannerTable);
+
     }
 
 
@@ -83,8 +93,10 @@ public class DataBase extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String dropSearchHistory = "DROP TABLE IF EXISTS " + TABLE_SEARCH_HISTORY;
         String dropCourse = " DROP TABLE IF EXISTS " + TABLE_COURSE;
+        String dropBanner = "DROP TABLE IF EXISTS " + TABLE_BANNER;
         db.execSQL(dropSearchHistory);
         db.execSQL(dropCourse);
+        db.execSQL(dropBanner);
     }
 }
 

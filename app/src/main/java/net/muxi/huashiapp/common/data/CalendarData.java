@@ -5,21 +5,22 @@ package net.muxi.huashiapp.common.data;
  */
 public class CalendarData {
 
+
     /**
-     * update : 2016-07-22
+     * update : 14692856810356602
      * img : http://oao7x1n3m.bkt.clouddn.com/Calendar-Test
      * filename : Calendar-Test
      */
 
-    private String update;
+    private long update;
     private String img;
     private String filename;
 
-    public String getUpdate() {
+    public long getUpdate() {
         return update;
     }
 
-    public void setUpdate(String update) {
+    public void setUpdate(long update) {
         this.update = update;
     }
 

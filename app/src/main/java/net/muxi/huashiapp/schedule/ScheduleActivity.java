@@ -79,12 +79,9 @@ public class ScheduleActivity extends ToolbarActivity {
 
     //当前用户所有的课程
     private List<Course> mCourses;
-
     private int mCurWeek;
-
     //选中的周
     private int mSelectWeek;
-
     //标识当前处于是否选择周数显示的状态
     private boolean isSelectShown = false;
     //选择周数layout 的高度

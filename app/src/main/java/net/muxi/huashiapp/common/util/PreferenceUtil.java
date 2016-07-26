@@ -78,12 +78,19 @@ public class PreferenceUtil {
         editor.apply();
     }
 
+    public void saveLong(String key,long value){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putLong(key,value);
+        editor.apply();
+    }
 
+    public long getLong(String key){
+        return mSharedPreferences.getLong(key,-1);
+    }
 
     public int getInt(String key){
         return mSharedPreferences.getInt(key,-1);
     }
-
 
     public int getInt(String key,int def){
         return mSharedPreferences.getInt(key,def);

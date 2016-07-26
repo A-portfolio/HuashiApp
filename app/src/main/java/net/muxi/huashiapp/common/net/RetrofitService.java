@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.common.net;
 
+import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.data.CalendarData;
@@ -70,6 +71,9 @@ public interface RetrofitService {
 
     @GET("calendar/")
     Observable<List<CalendarData>> getCalendar();
+
+    @GET("banner/")
+    Observable<List<BannerData>> getBanner();
 
     //查询余额  除了学号其他传固定值 http://console.ccnu.edu.cn/ecard/getTrans?userId=2013211389&days=90&startNum=0&num=200
     @GET("http://console.ccnu.edu.cn/ecard/getTrans")

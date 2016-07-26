@@ -5,25 +5,11 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
-    <LinearLayout android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:gravity="center"
-                  android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/cb_text"
-            android:layout_width="wrap_content"
-            android:checked="true"
-            android:layout_height="wrap_content"
-            android:text="sdsdlakfksdal"/>
+    <com.bigkoo.convenientbanner.ConvenientBanner
+        android:layout_width="match_parent"
+        android:id="@+id/banner"
+        android:layout_height="80dp"
+        app:canLoop="true"/>
 
-        <android.support.v7.widget.SwitchCompat
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <android.support.v7.widget.AppCompatRadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
 </LinearLayout>

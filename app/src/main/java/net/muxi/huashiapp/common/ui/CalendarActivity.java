@@ -35,10 +35,10 @@ public class CalendarActivity extends ToolbarActivity {
     DraweeView draweeView;
 
     //上次距离最近的时间
-    private String lastTime;
+    private long lastTime;
     private String picUrl;
     private PreferenceUtil sp;
-    private static final String DEFAULT_TIME = "2000-01-01";
+    private static final long DEFAULT_TIME = -1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,21 +47,21 @@ public class CalendarActivity extends ToolbarActivity {
         ButterKnife.bind(this);
 
         sp = new PreferenceUtil();
-        lastTime = sp.getString(PreferenceUtil.CALENDAR_UPDATE, DEFAULT_TIME);
+        lastTime = sp.getLong(PreferenceUtil.CALENDAR_UPDATE);
         setTitle("校历");
 
+        if (lastTime != DEFAULT_TIME){
+            picUrl = sp.getString(PreferenceUtil.CALENDAR_ADDRESS);
+            mDrawee.setImageURI(Uri.parse(picUrl));
+        }
         if (NetStatus.isConnected()) {
             updateImage();
         } else {
-            if (lastTime.equals(DEFAULT_TIME)) {
+            if (lastTime == DEFAULT_TIME) {
                 //当第一次没联网时则显示图片无法显示
                 setImageNotFound();
-            } else {
-                picUrl = sp.getString(PreferenceUtil.CALENDAR_ADDRESS);
-                mDrawee.setImageURI(Uri.parse(picUrl));
             }
         }
-
 
     }
 
@@ -88,7 +88,7 @@ public class CalendarActivity extends ToolbarActivity {
 
                     @Override
                     public void onNext(List<CalendarData> calendarData) {
-                        if (calendarData.get(0).getUpdate().equals(lastTime)) {
+                        if (calendarData.get(0).getUpdate() == lastTime) {
                             mDrawee.setImageURI(Uri.parse(calendarData.get(0).getImg()));
                         } else {
                             saveCalendarData(calendarData.get(0));
@@ -105,7 +105,7 @@ public class CalendarActivity extends ToolbarActivity {
     private void saveCalendarData(CalendarData calendarData) {
         lastTime = calendarData.getUpdate();
         picUrl = calendarData.getImg();
-        sp.saveString(PreferenceUtil.CALENDAR_UPDATE, lastTime);
+        sp.saveLong(PreferenceUtil.CALENDAR_UPDATE, lastTime);
         sp.saveString(PreferenceUtil.CALENDAR_ADDRESS, picUrl);
     }
 }

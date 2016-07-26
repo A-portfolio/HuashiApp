@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.main;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,10 +15,16 @@ import android.widget.Toast;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.data.BannerData;
+import net.muxi.huashiapp.common.db.HuaShiDao;
+import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.ui.AboutActivity;
 import net.muxi.huashiapp.common.ui.CalendarActivity;
 import net.muxi.huashiapp.common.ui.SettingActivity;
 import net.muxi.huashiapp.common.util.AlarmUtil;
+import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.common.util.NetStatus;
+import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.electricity.ElectricityActivity;
 import net.muxi.huashiapp.library.LibraryLoginActivity;
 import net.muxi.huashiapp.library.MineActivity;
@@ -26,8 +33,13 @@ import net.muxi.huashiapp.schedule.ScheduleActivity;
 import net.muxi.huashiapp.score.ScoreActivity;
 import net.muxi.huashiapp.webview.WebViewActivity;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,33 +56,114 @@ public class MainActivity extends AppCompatActivity {
 
     private long exitTime = 0;
 
+    private HuaShiDao dao;
+    private List<BannerData> mBannerDatas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        dao = new HuaShiDao();
+        getBannerDatas();
 
         setSupportActionBar(mToolbar);
         initRecyclerView();
 
+
         AlarmUtil.register(this);
     }
 
+    private void getBannerDatas() {
+        mBannerDatas = dao.loadBannerData();
+        if (mBannerDatas.size() > 0){
+            initRecyclerView();
+            Logger.d("init recyclerview");
+        }else {
+            initRecyclerView();
+            Logger.d("please link the net");
+            ToastUtil.showShort("please link the net");
+        }
+        if (NetStatus.isConnected()){
+            //本地保存的更新时间
+            CampusFactory.getRetrofitService().getBanner()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.newThread())
+                    .subscribe(new Observer<List<BannerData>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onNext(List<BannerData> bannerDatas) {
+                            if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(mBannerDatas)){
+                                mBannerDatas.clear();
+                                mBannerDatas.addAll(bannerDatas);
+                                dao.deleteAllBannerData();
+                                for (int i = 0; i < mBannerDatas.size();i ++){
+                                    dao.insertBannerData(mBannerDatas.get(i));
+                                }
+                                updateRecyclerView(bannerDatas);
+                                Logger.d("update recyclerview");
+                            }
+                            Logger.d("get bannerdatas");
+                        }
+                    });
+        }
+
+    }
+
+
+
+    /**
+     * 在 list 中 获取最近的更新时间
+     * @param bannerDatas
+     * @return
+     */
+    public long getTheLastUpdateTime(List<BannerData> bannerDatas){
+        long lastTime = -1;
+        if (bannerDatas.size() > 0){
+            for (int i = 0;i < bannerDatas.size();i ++){
+                if (lastTime < bannerDatas.get(i).getUpdate()){
+                    lastTime = bannerDatas.get(i).getUpdate();
+                }
+            }
+        }
+        return lastTime;
+    }
+
     public void initRecyclerView() {
-        mAdapter = new MainAdapter(mdesc, mpics);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        final GridLayoutManager layoutManager = new GridLayoutManager(this,3);
+        mAdapter = new MainAdapter(mdesc, mpics,mBannerDatas);
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return mAdapter.isBannerPosition(position) ? layoutManager.getSpanCount() : 1;
+            }
+        });
+        mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new MyItemDecoration());
+        mAdapter.setOnBannerItemClickListener(new MainAdapter.OnBannerItemClickListener() {
+            @Override
+            public void onBannerItemClick(BannerData bannerData) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(bannerData.getUrl()));
+                startActivity(browserIntent);
+            }
+        });
         mAdapter.setItemClickListener(new MainAdapter.ItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
                 Intent intent;
                 switch (position) {
                     case 0:
-
                         intent = new Intent(MainActivity.this, ScheduleActivity.class);
-
                         startActivity(intent);
                         break;
 
@@ -96,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case 5:
-                        Intent intent2 = WebViewActivity.newIntent(MainActivity.this, "http://xueer.ccnuer.cn", "学而");
+                        Intent intent2 = WebViewActivity.newIntent(MainActivity.this, "http://xueer.muxixyz.com", "学而");
                         startActivity(intent2);
                         break;
 
@@ -104,6 +197,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void updateRecyclerView(List<BannerData> bannerDatas){
+        mAdapter.swap(bannerDatas);
+//        mAdapter = new MainAdapter(mdesc,mpics,bannerDatas);
+//        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -145,7 +244,6 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(MainActivity.this, AboutActivity.class);
                 startActivity(intent);
                 break;
-
         }
         return super.onOptionsItemSelected(item);
     }

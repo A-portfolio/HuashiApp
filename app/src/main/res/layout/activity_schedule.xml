@@ -15,7 +15,7 @@
         android:id="@+id/week_number_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/schedule_layout_week_height"
-        android:background="@color/colorWeekLayout"
+        android:background="@color/colorPrimary"
         android:gravity="center">
 
         <TextView

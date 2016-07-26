@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
@@ -76,7 +77,11 @@ public class HuaShiDao {
                 });
     }
 
-    //获取指定星期的课程
+    /**
+     * 获取指定星期的课程
+     * @param day 星期
+     * @return
+     */
     public List<Course> loadCourse(String day) {
         Cursor cursor =
                 db.rawQuery("SELECT * FROM " + DataBase.TABLE_COURSE +
@@ -142,5 +147,37 @@ public class HuaShiDao {
         db.execSQL("DELETE FROM " + DataBase.TABLE_COURSE + ";");
     }
 
+    public List<BannerData> loadBannerData(){
+        List<BannerData> bannerDatas = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_BANNER + " ",null);
+        if (cursor.getCount() > 0){
+            while (cursor.moveToNext()){
+                BannerData bannerData = new BannerData();
+                bannerData.setUrl(cursor.getString(cursor.getColumnIndex(DataBase.KEY_URL)));
+                bannerData.setImg(cursor.getString(cursor.getColumnIndex(DataBase.KEY_IMG)));
+                bannerData.setFilename(cursor.getString(cursor.getColumnIndex(DataBase.KEY_FILENAME)));
+                bannerData.setUpdate(Long.parseLong(cursor.getString(cursor.getColumnIndex(DataBase.KEY_UPDATE))));
+                bannerDatas.add(bannerData);
+            }
+        }
+        if (cursor != null){
+            cursor.close();
+        }
+        return bannerDatas;
+    }
+
+    public void insertBannerData(BannerData bannerData){
+        db.execSQL("INSERT INTO " + DataBase.TABLE_BANNER + " VALUES(null,?,?,?,?)",
+                new String[]{
+                        bannerData.getUrl(),
+                        String.valueOf(bannerData.getUpdate()),
+                        bannerData.getImg(),
+                        bannerData.getFilename()
+                });
+    }
+
+    public void deleteAllBannerData(){
+        db.execSQL("DELETE FROM " + DataBase.TABLE_BANNER + ";");
+    }
 
 }

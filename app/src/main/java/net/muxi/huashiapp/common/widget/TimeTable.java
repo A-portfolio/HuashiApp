@@ -16,7 +16,6 @@ import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.util.DateUtil;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.schedule.ScheduleActivity;
 import net.muxi.huashiapp.schedule.ScheduleTimeLayout;
 
 import java.util.List;
@@ -62,15 +61,17 @@ public class TimeTable extends FrameLayout {
     private float mx, my;
     private float curX, curY;
 
-    private OnScrollBottomListener mScrollBottomListener;
     private OnLongPressedListenr mOnLongPressedListener;
+    private OnCourseClickListener mOnCourseClickListener;
 
-    public interface OnScrollBottomListener {
-        void onScrollBottom(boolean b);
-    }
 
     public interface OnLongPressedListenr {
         void onLongPressed(Course course);
+    }
+
+    //监听点击课程
+    public interface OnCourseClickListener{
+        void onCourseClick(Course course);
     }
 
     public TimeTable(Context context) {
@@ -248,14 +249,13 @@ public class TimeTable extends FrameLayout {
 
     }
 
-
-    public void setOnScrollBottomListener(OnScrollBottomListener onScrollBottomListener) {
-        mScrollBottomListener = onScrollBottomListener;
-    }
-
     //监听某些课程是否被长按,用户可能要删课
     public void setOnLongPressedListener(OnLongPressedListenr longPressedListner) {
         this.mOnLongPressedListener = longPressedListner;
+    }
+
+    public void setOnCourseClickListener(OnCourseClickListener courseClickListener){
+        mOnCourseClickListener = courseClickListener;
     }
 
     @Override
@@ -274,14 +274,6 @@ public class TimeTable extends FrameLayout {
             case MotionEvent.ACTION_MOVE:
                 curX = event.getX();
                 curY = event.getY();
-
-                //当课程表滑至底部时直接收回已展开的选择第几周,
-                if ((mScheduleLayout.getScrollY() + my - curY) >
-                        (TimeTable.COURSE_TIME_HEIGHT * 7 - DimensUtil.getScreenHeight() + ScheduleActivity.SELECT_WEEK_LAYOUT_HEIGHT
-                                + DimensUtil.getActionbarHeight() + DimensUtil.getStatusBarHeight() + TimeTable.LITTLE_VIEW_HEIGHT) && mTouchFlag == TOUCH_FLAG_EXTEND) {
-                    mScrollBottomListener.onScrollBottom(true);
-                    return false;
-                }
                 mWeekDayLayout.scrollBy((int) (mx - curX), 0);
                 mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY));
                 mCourseLayout.scrollBy(0, (int) (my - curY));
