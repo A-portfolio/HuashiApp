@@ -2,7 +2,6 @@ package net.muxi.huashiapp.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +15,7 @@ import android.widget.Toast;
 import com.muxi.material_dialog.MaterialDialog;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.card.CardActivity;
 import net.muxi.huashiapp.common.ui.SettingActivity;
 import net.muxi.huashiapp.electricity.ElectricityActivity;
 import net.muxi.huashiapp.library.LibrarySearchActivity;
@@ -84,9 +84,13 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent2);
                         break;
                     case 4:
-                        Intent intent3 = new Intent(MainActivity.this, ElectricityActivity.class);
+                        Intent intent3 = new Intent(MainActivity.this,ElectricityActivity.class);
                         startActivity(intent3);
-
+                        break;
+                    case 5:
+                        Intent intent5 = new Intent(MainActivity.this, CardActivity.class);
+                        startActivity(intent5);
+                        break;
                 }
             }
         });

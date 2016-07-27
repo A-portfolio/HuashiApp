@@ -9,34 +9,32 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by ybao on 16/4/28.
- * retrofit初始化封装
+ * Created by december on 16/7/27.
+ * 校园卡retrofit封装化
  */
-public class CampusRetrofit{
+public class CampusCardRetrofit {
+    private RetrofitService mRetrofitService;
 
-    private final RetrofitService mRetrofitService;
-
-    public CampusRetrofit() {
-
+    public CampusCardRetrofit() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
-                .readTimeout(25,TimeUnit.SECONDS)
+                .readTimeout(25, TimeUnit.SECONDS)
                 .connectTimeout(25, TimeUnit.SECONDS)
-                .writeTimeout(25,TimeUnit.SECONDS)
+                .writeTimeout(25, TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl("http://mobile.ccnu.edu.cn/service/ ")
+                .baseUrl("http://mobile.ccnu.edu.cn/service/")
                 .build();
         mRetrofitService = retrofit.create(RetrofitService.class);
     }
 
-    public RetrofitService getRetrofitService(){
+    public RetrofitService getRetrofitService() {
         return mRetrofitService;
     }
 }

@@ -5,12 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/view_toolbar"/>
+    <include android:id="@+id/ec_toolbar"
+        layout="@layout/view_toolbar"/>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/ec_toolbar"
+        >
 
     <android.support.design.widget.TabLayout
         android:id="@+id/ec_tabLayout"

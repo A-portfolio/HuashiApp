@@ -19,13 +19,14 @@ import butterknife.OnClick;
 /**
  * Created by december on 16/6/27.
  */
-public class ElectricityActivity extends ToolbarActivity {
+public class  ElectricityActivity extends ToolbarActivity {
+
 
 
     public String[] groupStrings = {"区域", "建筑", "楼层", "房间"};
 
     public String[][] childStrings = {
-            {"西区学生宿舍", "东区学生宿舍", "元宝山学生宿舍", "南湖学生宿舍", "公共教学楼"}
+            {"西区", "东区", "元宝山", "南湖"}
     };
 
     MyExpandableAdapter mAdapter;
@@ -44,17 +45,19 @@ public class ElectricityActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         init();
         mToolbar.setTitle("电费查询");
-
     }
 
     public void init() {
         mAdapter = new MyExpandableAdapter(this);
         mExpandList.setAdapter(mAdapter);
+        int width = getWindowManager().getDefaultDisplay().getWidth();
+        mExpandList.setIndicatorBounds(width-80, width-10);
         mExpandList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Toast.makeText(getApplicationContext(), childStrings[groupPosition][childPosition], Toast.LENGTH_SHORT).show();
                 return true;
+
             }
         });
 

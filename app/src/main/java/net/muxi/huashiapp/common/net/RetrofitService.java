@@ -2,6 +2,7 @@ package net.muxi.huashiapp.common.net;
 
 import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookSearchResult;
+import net.muxi.huashiapp.common.data.Card;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.PersonalBook;
 import net.muxi.huashiapp.common.data.Scores;
@@ -67,4 +68,7 @@ public interface RetrofitService {
                                        @Query("xqm") String term,
                                        @Query("sid") String sid);
 
+    @POST("ecard/getTrans?days=90&startNum=0&num=200")
+    Observable<Response<List<Card>>> getCard(@Header("Authorization") String authorization,
+                                           @Query("sid") String sid);
 }
