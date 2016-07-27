@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.main;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,110 +8,193 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.data.BannerData;
+import net.muxi.huashiapp.common.util.FrescoUtil;
+import net.muxi.huashiapp.common.util.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by december on 16/4/19.
  */
-public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
+public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnItemClickListener {
 
-    private static final int ITEM_VIEW_TYPE_HEADER = 0;
-    private static final int ITEM_VIEW_TYPE_ITEM = 1;
+    private static final int ITEM_TYPE_BANNER = 0;
+    private static final int ITEM_TYPE_COMMON = 1;
 
-
-    /**
-     * 这里创建数组,接收传过来的数据
-     *
-     */
+    private static final long TURNING_TIME = 5000;
 
     private int[] mpics;
     private String[] mdesc;
+    private List<BannerData> mBannerDatas;
+    //图片的地址
+    private List<String> imageUrls;
+
     private ItemClickListener mItemClickListener;
+    private OnBannerItemClickListener mOnBannerItemClickListener;
 
-    public boolean isHeader(int position) {
-        return position == 0;
-    }
+    private Context mContext;
+    private ConvenientBanner mConvenientBanner;
 
+    //banner 所占的 item 数量
+    private static final int ITEM_BANNER = 1;
 
     public interface ItemClickListener {
-        void OnItemClick(View view,int position);
+        void OnItemClick(View view, int position);
     }
 
+    public interface OnBannerItemClickListener {
+        void onBannerItemClick(BannerData bannerData);
+    }
 
-    public MainAdapter(String[] mdesc, int[] mpics){
+    public MainAdapter(String[] mdesc, int[] mpics, List<BannerData> bannerDatas) {
         this.mdesc = mdesc;
         this.mpics = mpics;
+        mBannerDatas = bannerDatas;
+        imageUrls = new ArrayList<>();
+        for (int i = 0; i < bannerDatas.size(); i++) {
+            imageUrls.add(mBannerDatas.get(i).getImg());
+        }
     }
 
-    /**
-     * 这里是加载item，并且创建ViewHolder对象，把加载的item(view)传给ViewHolder
-     * 第二个参数就是View的类型，根据这个类型去创建不同item的ViewHolder
-     * @param parent
-     * @param viewType
-     */
+    public void swap(List<BannerData> bannerDatas) {
+        mBannerDatas.clear();
+        mBannerDatas.addAll(bannerDatas);
+        notifyDataSetChanged();
+        imageUrls.clear();
+        for (int i = 0; i < mBannerDatas.size(); i++) {
+            imageUrls.add(mBannerDatas.get(i).getImg());
+        }
+        Logger.d("swap the data");
+//        notifyItemChanged(6);
+        mConvenientBanner.notifyDataSetChanged();
+        Logger.d(mConvenientBanner.isTurning() + "");
+//        mConvenientBanner.startTurning(3000);
+    }
+
+    public boolean isBannerPosition(int position) {
+        return position == 6 ? true : false;
+    }
+
     @Override
-    public MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemview = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main,parent,false);
-        MainViewHolder holder = new MainViewHolder(itemview);
-        return holder;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        mContext = parent.getContext();
+        if (viewType == ITEM_TYPE_BANNER) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_banner, parent, false);
+            return new BannerViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, parent, false);
+            return new CommonViewHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(MainViewHolder holder, int position) {
-        holder.mImageView.setImageResource(mpics[position]);
-        holder.mTextView.setText(mdesc[position]);
-        holder.itemView.setTag(position);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Logger.d(position + "");
+        if (holder instanceof BannerViewHolder) {
+            Logger.d("set bannerviewholder");
+            setupBanner(holder);
+            Logger.d("banner set end");
+        } else if (holder instanceof CommonViewHolder) {
+            Logger.d("commonviewholder bind");
+            if (position < 6) {
+                ((CommonViewHolder) holder).mImageView.setImageResource(mpics[position]);
+                ((CommonViewHolder) holder).mTextView.setText(mdesc[position]);
+                ((CommonViewHolder) holder).itemView.setTag(position);
+            }else{
+                Logger.d(position + "");
+                ((CommonViewHolder) holder).mImageView.setImageResource(mpics[position - ITEM_BANNER]);
+                ((CommonViewHolder) holder).mTextView.setText(mdesc[position - ITEM_BANNER]);
+                ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
+            }
+        }
     }
 
-    public void setItemClickListener(ItemClickListener mItemClickListener) {
-        this.mItemClickListener = mItemClickListener;
+    private void setupBanner(RecyclerView.ViewHolder holder) {
+        ((BannerViewHolder) holder).mBanner.setPages(new CBViewHolderCreator() {
+            @Override
+            public Object createHolder() {
+                return new FrescoBannerHolder();
+            }
+        }, imageUrls)
+                .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
+                .startTurning(TURNING_TIME)
+                .setOnItemClickListener(this);
+
+        ((BannerViewHolder) holder).mBanner.setManualPageable(true);
+        Logger.d("setup banner");
+        mConvenientBanner = ((BannerViewHolder) holder).mBanner;
+        for (int i = 0; i < mBannerDatas.size(); i++) {
+            FrescoUtil.savePicture(mBannerDatas.get(i).getImg(), mContext, mBannerDatas.get(i).getFilename());
+            Logger.d(mBannerDatas.get(i).getImg());
+        }
     }
 
+    public void setItemClickListener(ItemClickListener itemClickListener) {
+        this.mItemClickListener = itemClickListener;
+    }
 
-    /**
-     * 这里返回item数量
-     * @return
-     */
+    public void setOnBannerItemClickListener(OnBannerItemClickListener bannerItemClickListener) {
+        mOnBannerItemClickListener = bannerItemClickListener;
+    }
+
     @Override
     public int getItemCount() {
-        return mdesc.length;
+        Logger.d(mdesc.length + "");
+        return mdesc.length + 1;
     }
 
+    @Override
+    public void onItemClick(int position) {
+        if (mOnBannerItemClickListener != null) {
+            mOnBannerItemClickListener.onBannerItemClick(mBannerDatas.get(position));
+        }
+    }
 
     @Override
     public int getItemViewType(int position) {
-        return isHeader(position)?ITEM_VIEW_TYPE_HEADER:ITEM_VIEW_TYPE_ITEM;
-    }
-
-    /**
-     * ViewHolder类，继承RecyclerView.ViewHolder
-     */
-
-    public class HeaderViewHolder extends RecyclerView.ViewHolder{
-        private TextView mTextView;
-        public HeaderViewHolder(View itemview){
-            super(itemview);
-        }
-
+        //第7个 item 为 banner
+        Logger.d(position + "");
+        return position == 6 ? ITEM_TYPE_BANNER : ITEM_TYPE_COMMON;
     }
 
 
-    public class MainViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class CommonViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mTextView;
         private ImageView mImageView;
-        public MainViewHolder(View itemview) {
+
+        public CommonViewHolder(View itemview) {
             super(itemview);
             mTextView = (TextView) itemview.findViewById(R.id.main_text_view);
             mImageView = (ImageView) itemview.findViewById(R.id.main_pic);
             itemview.setOnClickListener(this);
         }
 
-
         @Override
         public void onClick(View v) {
-            if (mItemClickListener != null ){
-                mItemClickListener.OnItemClick(itemView,getPosition());
+            if (mItemClickListener != null) {
+                mItemClickListener.OnItemClick(itemView, getPosition());
             }
+        }
+    }
+
+    public class BannerViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.banner)
+        ConvenientBanner mBanner;
+
+        public BannerViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

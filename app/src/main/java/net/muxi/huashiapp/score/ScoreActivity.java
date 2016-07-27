@@ -4,21 +4,18 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.Spinner;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.User;
-import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
@@ -34,14 +31,38 @@ public class ScoreActivity extends ToolbarActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.spinner_year)
-    Spinner mSpinnerYear;
-    @BindView(R.id.spinner_term)
-    Spinner mSpinnerTerm;
     @BindView(R.id.btn_enter)
     Button mBtnEnter;
     @BindView(R.id.fragment_layout)
     FrameLayout mFragmentLayout;
+    @BindView(R.id.title_year)
+    TextView mTitleYear;
+    @BindView(R.id.tv_year1)
+    TextView mTvYear1;
+    @BindView(R.id.tv_year2)
+    TextView mTvYear2;
+    @BindView(R.id.tv_year3)
+    TextView mTvYear3;
+    @BindView(R.id.tv_year4)
+    TextView mTvYear4;
+    @BindView(R.id.rb_year1)
+    AppCompatRadioButton mRbYear1;
+    @BindView(R.id.rb_year2)
+    AppCompatRadioButton mRbYear2;
+    @BindView(R.id.rb_year3)
+    AppCompatRadioButton mRbYear3;
+    @BindView(R.id.rb_year4)
+    AppCompatRadioButton mRbYear4;
+    @BindView(R.id.rb_group_year)
+    RadioGroup mRbGroupYear;
+    @BindView(R.id.title_term)
+    TextView mTitleTerm;
+    @BindView(R.id.rb_term1)
+    AppCompatRadioButton mRbTerm1;
+    @BindView(R.id.rb_term2)
+    AppCompatRadioButton mRbTerm2;
+    @BindView(R.id.rb_term3)
+    AppCompatRadioButton mRbTerm3;
 
     private User mUser;
     private PreferenceUtil sp;
@@ -51,7 +72,6 @@ public class ScoreActivity extends ToolbarActivity {
     private String[] itemYears;
     private String[] itemTerms;
 
-
     private static final String[] TERM = {"3", "12", "16"};
 
     @Override
@@ -59,6 +79,7 @@ public class ScoreActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
         ButterKnife.bind(this);
+
         initVariables();
         initView();
     }
@@ -91,45 +112,10 @@ public class ScoreActivity extends ToolbarActivity {
 
     private void initView() {
         setTitle("成绩查询");
-//        ScoreSearchAdapter adapter = new ScoreSearchAdapter(this,itemYears);
-//        mSpinnerYear.setAdapter(adapter);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, itemYears);
-        mSpinnerYear.setAdapter(adapter);
-        mSpinnerYear.setPrompt("" + startYear);
-        mSpinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSpinnerYear.setPrompt(itemYears[position]);
-                year = itemYears[position].substring(0, 4);
-                Logger.d("year" + position);
-                Logger.d(year);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        itemTerms = App.getContext().getResources().getStringArray(R.array.score_term);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemTerms);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-//        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this,R.array.score_term,R.layout.item_score_search);
-        mSpinnerTerm.setAdapter(arrayAdapter);
-        mSpinnerTerm.setPrompt(itemTerms[0]);
-        mSpinnerTerm.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSpinnerTerm.setPrompt(itemTerms[position]);
-                Logger.d("term" + position);
-                term = TERM[position];
-                Logger.d(term);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        mTvYear1.setText(itemYears[0]);
+        mTvYear2.setText(itemYears[1]);
+        mTvYear3.setText(itemYears[2]);
+        mTvYear4.setText(itemYears[3]);
     }
 
 
@@ -145,7 +131,7 @@ public class ScoreActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0){
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
             mFragmentLayout.setClickable(false);
         }
         super.onBackPressed();
@@ -158,6 +144,8 @@ public class ScoreActivity extends ToolbarActivity {
 
     @OnClick(R.id.btn_enter)
     public void onClick() {
+        year = getCheckedYear();
+        term = getCheckTerm();
         if (NetStatus.isConnected()) {
             ScoreDetailFragment scoreDetailFragment = ScoreDetailFragment.newInstance(year, term);
             FragmentManager fm = getFragmentManager();
@@ -170,5 +158,33 @@ public class ScoreActivity extends ToolbarActivity {
             ToastUtil.showShort(AppConstants.TIP_CHECK_NET);
         }
     }
+
+    private String getCheckTerm() {
+        int pos = 0;
+        if (mRbTerm1.isChecked()){
+            pos = 0;
+        }else if (mRbTerm2.isChecked()){
+            pos = 1;
+        }else if (mRbTerm3.isChecked()){
+            pos = 2;
+        }
+        return TERM[pos];
+    }
+
+    private String getCheckedYear() {
+        int pos = 0;
+        if (mRbYear1.isChecked()){
+            pos = 0;
+        }else if (mRbYear2.isChecked()){
+            pos = 1;
+        }else if (mRbYear3.isChecked()){
+            pos = 2;
+        }else if (mRbYear4.isChecked()){
+            pos = 3;
+        }
+        return String.valueOf(startYear + pos);
+    }
+
+
 }
 

@@ -25,10 +25,6 @@ public class ScheduleTimeLayout extends LinearLayout {
         } else return false;
     }
 
-//    public boolean isYScrollOut(int scrollY){
-//        if (scrollY < 0 )
-//    }
-
     @Override
     public void computeScroll() {
         if (mScroller.computeScrollOffset()) {
@@ -37,9 +33,9 @@ public class ScheduleTimeLayout extends LinearLayout {
         }
     }
 
-    public void scrollBy(int x, int y, int flag) {
+    public void scrollBy(int x, int y) {
         x = checkPositionX(x);
-        y = checkPositionY(y, flag);
+        y = checkPositionY(y);
         super.scrollBy(x, y);
     }
 
@@ -53,24 +49,24 @@ public class ScheduleTimeLayout extends LinearLayout {
         return x;
     }
 
-    public int checkPositionY(int y, int flag) {
+    public int checkPositionY(int y) {
         if (getScrollY() + y < 0) {
             y = -getScrollY();
         } else if ((getScrollY() + y) >
-                (TimeTable.COURSE_TIME_HEIGHT * 7 - DimensUtil.getScreenHeight() + ScheduleActivity.SELECT_WEEK_LAYOUT_HEIGHT * flag + ScheduleActivity.WEEK_LAYOUT_HEIGHT
+                (TimeTable.COURSE_TIME_HEIGHT * 7 - DimensUtil.getScreenHeight() +  ScheduleActivity.WEEK_LAYOUT_HEIGHT
                         + DimensUtil.getActionbarHeight() + DimensUtil.getStatusBarHeight() + TimeTable.LITTLE_VIEW_HEIGHT)) {
-            y = TimeTable.COURSE_TIME_HEIGHT * 7 - getScrollY() - DimensUtil.getScreenHeight() + ScheduleActivity.SELECT_WEEK_LAYOUT_HEIGHT * flag + ScheduleActivity.WEEK_LAYOUT_HEIGHT
+            y = TimeTable.COURSE_TIME_HEIGHT * 7 - getScrollY() - DimensUtil.getScreenHeight() + ScheduleActivity.WEEK_LAYOUT_HEIGHT
                     + DimensUtil.getActionbarHeight() + DimensUtil.getStatusBarHeight() + TimeTable.LITTLE_VIEW_HEIGHT;
         }
         return y;
     }
 
 
-    public void smoothScrollBy(int deltaX, int deltaY, int flag) {
+    public void smoothScrollBy(int deltaX, int deltaY) {
         int scrollX = getScrollX();
         int scrollY = getScrollY();
         deltaX = checkPositionX(deltaX);
-        deltaY = checkPositionY(deltaY, flag);
+        deltaY = checkPositionY(deltaY);
         mScroller.startScroll(scrollX, scrollY, deltaX, deltaY, 250);
         invalidate();
     }

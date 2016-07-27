@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -28,7 +29,7 @@ public class MaterialDialog extends Dialog {
     }
 
     public MaterialDialog(Context context, int themeResId) {
-        super(context, themeResId);
+        super(context, R.style.DialogStyle);
         mContext = context;
         View view = LayoutInflater.from(mContext).inflate(R.layout.material_dialog, null);
         mTvTitle = (TextView) view.findViewById(R.id.tv_title);
@@ -50,8 +51,13 @@ public class MaterialDialog extends Dialog {
         return this;
     }
 
+    public MaterialDialog setTitleSize(int size){
+        mTvTitle.setTextSize(size);
+        return this;
+    }
 
     public MaterialDialog setContent(String content){
+        mLayoutContent.setVisibility(View.VISIBLE);
         if (mTvContent.getVisibility() == View.GONE){
             mTvContent.setVisibility(View.VISIBLE);
         }
@@ -60,6 +66,7 @@ public class MaterialDialog extends Dialog {
     }
 
     public MaterialDialog setView(View view){
+        mLayoutContent.setVisibility(View.VISIBLE);
         if (mTvContent.getVisibility() != View.GONE){
             mTvContent.setVisibility(View.GONE);
         }
@@ -90,18 +97,35 @@ public class MaterialDialog extends Dialog {
     }
 
     public MaterialDialog setButtonColor(int color){
+        Log.d("dialogcolor","dialogcolor");
         mBtnPositive.setTextColor(color);
         mBtnNegative.setTextColor(color);
         return this;
     }
 
+    public MaterialDialog setPositiveButtonColor(int color){
+        mBtnPositive.setTextColor(color);
+        return this;
+    }
+
+    public MaterialDialog setNegativeButtonColor(int color){
+        mBtnNegative.setTextColor(color);
+        return this;
+    }
     public MaterialDialog setBackground(Drawable drawable){
         this.setBackground(drawable);
         return this;
     }
 
-    public void show(){
-        this.show();
+
+    @Override
+    public boolean isShowing() {
+        return super.isShowing();
+    }
+
+    @Override
+    public void show() {
+        super.show();
     }
 
     private class Builder{

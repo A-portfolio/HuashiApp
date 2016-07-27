@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,12 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by ybao on 16/5/3.
  * 图书列表Adapter
  */
 public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHolder> {
+
 
 
     private List<BookSearchResult.ResultsBean> mBookList;
@@ -44,7 +46,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
     }
 
 
-    public void swap(List<BookSearchResult.ResultsBean> list){
+    public void swap(List<BookSearchResult.ResultsBean> list) {
         mBookList.clear();
         mBookList.addAll(list);
         notifyDataSetChanged();
@@ -53,15 +55,22 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.mTvTitle.setText(mBookList.get(position).getBook());
+        String bookTitle = interceptTitle(mBookList.get(position).getBook());
+        holder.mTvBook.setText(bookTitle);
         holder.mTvAuthor.setText(mBookList.get(position).getAuthor());
-        holder.mTvEncoding.setText(mBookList.get(position).getBid());
+        holder.mTvInfo.setText(mBookList.get(position).getIntro());
         holder.mBookLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnItemClickListener.onItemClick(v,mBookList.get(position));
+                mOnItemClickListener.onItemClick(v, mBookList.get(position));
             }
         });
+    }
+
+    //截取数字后的书名
+    private String interceptTitle(String book) {
+        int index = book.indexOf(".");
+        return book.substring(index + 1,book.length());
     }
 
     @Override
@@ -83,34 +92,22 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_title)
-        TextView mTvTitle;
+        @BindView(R.id.tv_book)
+        TextView mTvBook;
         @BindView(R.id.tv_author)
         TextView mTvAuthor;
         @BindView(R.id.tv_info)
         TextView mTvInfo;
         @BindView(R.id.tv_encoding)
-        TextView mTvEncoding;
+        ImageView mTvEncoding;
         @BindView(R.id.book_layout)
         RelativeLayout mBookLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mTvTitle = (TextView) itemView.findViewById(R.id.tv_book);
-            mTvAuthor = (TextView) itemView.findViewById(R.id.tv_author);
-            mTvEncoding = (TextView) itemView.findViewById(R.id.tv_encoding);
-            mBookLayout = (RelativeLayout) itemView.findViewById(R.id.book_layout);
+            ButterKnife.bind(this, itemView);
         }
 
-
-
-        public void fadeOutAnim() {
-            AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
-//            alphaAnimation.setDuring(LibraryActivity.DURATION_ALPH);
-            mTvTitle.startAnimation(alphaAnimation);
-            mTvAuthor.startAnimation(alphaAnimation);
-            mTvEncoding.startAnimation(alphaAnimation);
-        }
 
     }
 }

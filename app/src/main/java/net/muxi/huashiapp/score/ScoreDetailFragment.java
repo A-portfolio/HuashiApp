@@ -18,9 +18,11 @@ import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.Base64Util;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.common.widget.DividerItemDecoration;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -31,9 +33,12 @@ import rx.schedulers.Schedulers;
  */
 public class ScoreDetailFragment extends BaseFragment {
 
-    private ImageView mImageNone;
-    private RecyclerView mRecyclerView;
-    private TextView mTvLast;
+    @BindView(R.id.image_none)
+    ImageView mImageNone;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.tv_last)
+    TextView mTvLast;
 
     private String mYear;
     private String mTerm;
@@ -57,21 +62,20 @@ public class ScoreDetailFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_score_detail, container, false);
-        ButterKnife.bind(this, super.onCreateView(inflater, container, savedInstanceState));
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        mTvLast = (TextView) view.findViewById(R.id.tv_last);
-        mImageNone = (ImageView) view.findViewById(R.id.image_none);
+        ButterKnife.bind(this, view);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(App.getContext()));
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(container.getContext(),DividerItemDecoration.VERTICAL_LIST));
         mYear = getArguments().getString(SCHOOL_YEAR);
         mTerm = getArguments().getString(SCHOOL_TERM);
 
         User user = new User();
-        PreferenceUtil sp = new PreferenceUtil();
+        final PreferenceUtil sp = new PreferenceUtil();
         user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
         user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
         CampusFactory.getRetrofitService()
-                .getScores(Base64Util.createBaseStr(user), mYear, mTerm, user.getSid())
+                .getScores(Base64Util.createBaseStr(user), mYear, mTerm)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<Scores>>() {
@@ -88,6 +92,7 @@ public class ScoreDetailFragment extends BaseFragment {
                     @Override
                     public void onNext(List<Scores> scoresList) {
                         setupRecyclerview(scoresList);
+                        sp.saveInt(PreferenceUtil.SCORES_NUM, scoresList.size());
                     }
                 });
         return view;

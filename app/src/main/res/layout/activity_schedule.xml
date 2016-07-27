@@ -1,66 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <include android:id="@+id/appbar_layout"
-             layout="@layout/view_toolbar"/>
+    <include
+        android:id="@+id/appbar_layout"
+        layout="@layout/view_toolbar"/>
+
+    <LinearLayout
+        android:id="@+id/week_number_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/schedule_layout_week_height"
+        android:background="@color/colorPrimary"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_schedule_week_number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            tools:text="第六周"/>
+
+        <ImageView
+            android:id="@+id/img_pull"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/schedule_framelayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/appbar_layout">
-
-        <LinearLayout
-            android:id="@+id/schedule_ll"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <net.muxi.huashiapp.schedule.WeekHScrollView
-                android:id="@+id/schedule_hscrollview"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/schedule_layout_select_week_height"
-                android:background="@drawable/shape_weeks_selector"
-                android:layout_marginTop="-4dp"
-                android:scrollbars="none"
-            ></net.muxi.huashiapp.schedule.WeekHScrollView>
-
-
-        </LinearLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/week_number_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/schedule_layout_week_height"
-            android:background="@color/colorWeekLayout">
-
-            <TextView
-                android:id="@+id/tv_schedule_week_number"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:layout_toLeftOf="@+id/img_pull"
-                android:textColor="#FFFFFF"
-                tools:text="第8周"/>
-
-            <ImageView android:id="@+id/img_pull" android:layout_width="wrap_content"
-                       android:layout_alignParentRight="true"
-                       android:layout_centerVertical="true"
-                       android:layout_height="wrap_content"/>
-
-        </RelativeLayout>
+        android:layout_height="wrap_content">
 
     </FrameLayout>
 
-</RelativeLayout>
+</LinearLayout>
 
 
 

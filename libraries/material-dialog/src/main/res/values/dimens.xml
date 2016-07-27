@@ -8,7 +8,7 @@
     <dimen name="padding_button">8dp</dimen>
 
     <dimen name="dialog_title_size">22sp</dimen>
-    <dimen name="dialog_content_size">18sp</dimen>
+    <dimen name="dialog_content_size">16sp</dimen>
     <dimen name="dialog_action_size">18sp</dimen>
     <dimen name="dialog_elevation">24dp</dimen>
 

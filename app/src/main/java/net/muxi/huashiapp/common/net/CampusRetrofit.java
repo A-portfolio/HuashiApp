@@ -31,7 +31,7 @@ public class CampusRetrofit{
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl("http://mobile.ccnu.edu.cn/service/ ")
+                .baseUrl("http://123.56.41.13:5000/api")
                 .build();
         mRetrofitService = retrofit.create(RetrofitService.class);
     }

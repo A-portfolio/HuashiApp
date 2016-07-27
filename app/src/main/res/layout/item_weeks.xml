@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/root_layout"
+              android:layout_width="match_parent"
+              android:layout_height="56dp"
+              android:paddingLeft="16dp"
+>
+
+    <TextView
+        android:id="@+id/tv_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        tools:background="@drawable/shape_round_orange"
+        tools:text="01"/>
+
+    <TextView
+        android:id="@+id/tv_week"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="4dp"
+        android:gravity="center"
+        android:textSize="@dimen/medium_size"
+        tools:text="第一周"/>
+
+    <TextView
+        android:id="@+id/tv_curweek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/textColorGrey"
+        android:visibility="gone"
+        tools:text="(当前周)"/>
+
+</LinearLayout>

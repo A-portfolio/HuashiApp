@@ -56,7 +56,6 @@
         <activity android:name=".common.ui.SettingActivity"
                   android:launchMode="singleTask"/>
 
-
         <activity android:name=".news.DetailActivity"
                   android:launchMode="singleTask"/>
 
@@ -68,6 +67,7 @@
                   android:launchMode="singleTask"/>
 
         <activity android:name=".library.LibraryLoginActivity"
+                  android:windowSoftInputMode="adjustNothing"
                   android:launchMode="singleTask"/>
 
         <activity android:name=".library.MineActivity"
@@ -78,6 +78,11 @@
 
         <activity android:name=".webview.WebViewActivity"
                   android:launchMode="singleTask"/>
+
+        <activity android:name=".common.ui.AboutActivity"
+                  android:launchMode="singleTask"/>
+
+        <activity android:name=".common.ui.CalendarActivity"/>
 
         <activity android:name=".electricity.ElectricityActivity"/>
 

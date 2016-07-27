@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.login;
+package net.muxi.huashiapp.common.widget;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

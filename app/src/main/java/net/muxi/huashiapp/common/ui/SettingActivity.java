@@ -1,50 +1,58 @@
 package net.muxi.huashiapp.common.ui;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.CompoundButton;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.login.LoginActivity;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by ybao on 16/5/17.
  */
-public class SettingActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
+public class SettingActivity extends ToolbarActivity {
+
+    @BindView(R.id.switch_course_remind)
+    SwitchCompat mSwitchCourseRemind;
+    @BindView(R.id.switch_library_remind)
+    SwitchCompat mSwitchLibraryRemind;
+    @BindView(R.id.switch_card_remind)
+    SwitchCompat mSwitchCardRemind;
+    @BindView(R.id.switch_score_remind)
+    SwitchCompat mSwitchScoreRemind;
+    @BindView(R.id.switch_all)
+    SwitchCompat mSwitchAll;
+    @BindView(R.id.btn_logout)
+    Button mBtnLogout;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     private PreferenceUtil sp;
-    private Toolbar mToolbar;
     private AppBarLayout mAppBarLayout;
 
-    private CheckBoxPreference mSchedulePreference;
-    private CheckBoxPreference mLibraryPreference;
-    private CheckBoxPreference mCardPreference;
-    private CheckBoxPreference mScorePreference;
-    private CheckBoxPreference mAllPreference;
     private String preSchedule;
     private String preLibrary;
     private String preCard;
     private String preScore;
     private String preAll;
 
-    private Button mBtnLogout;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.view_preference_btn);
-        addPreferencesFromResource(R.xml.preference);
-        initActionBar();
+        setContentView(R.layout.activity_setting);
+        ButterKnife.bind(this);
+        setTitle("设置");
         sp = new PreferenceUtil();
 
         preSchedule = getResources().getString(R.string.pre_schedule);
@@ -53,85 +61,59 @@ public class SettingActivity extends PreferenceActivity implements Preference.On
         preScore = getResources().getString(R.string.pre_score);
         preAll = getResources().getString(R.string.pre_all);
 
-        initView();
         loadAllValue();
 
-        mSchedulePreference.setOnPreferenceChangeListener(this);
-        mLibraryPreference.setOnPreferenceChangeListener(this);
-        mCardPreference.setOnPreferenceChangeListener(this);
-        mScorePreference.setOnPreferenceChangeListener(this);
-        mAllPreference.setOnPreferenceChangeListener(this);
-    }
-
-    private void initView() {
-        mSchedulePreference = (CheckBoxPreference) findPreference(preSchedule);
-        mLibraryPreference = (CheckBoxPreference) findPreference(preLibrary);
-        mCardPreference = (CheckBoxPreference) findPreference(preCard);
-        mScorePreference = (CheckBoxPreference) findPreference(preScore);
-        mAllPreference = (CheckBoxPreference) findPreference(preAll);
-
-    }
-
-    private void initActionBar() {
-        LinearLayout root = (LinearLayout) findViewById(android.R.id.list).getParent().getParent().getParent();
-        mAppBarLayout = (AppBarLayout) LayoutInflater.from(this).inflate(R.layout.view_toolbar, root, false);
-        mToolbar = (Toolbar) mAppBarLayout.findViewById(R.id.toolbar);
-        mToolbar.setTitle("设置");
-        mToolbar.setTitleTextColor(Color.WHITE);
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mSwitchAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                saveAllValue();
-                onBackPressed();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    setAllValue(true);
+                }else {
+                    setAllValue(false);
+                }
             }
         });
-        root.addView(mAppBarLayout, 0);
 
+        mBtnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
+                App.clearLibUser();
+                App.clearUser();
+                startActivity(intent);
+                SettingActivity.this.finish();
+            }
+        });
     }
 
     @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                saveAllValue();
-                onBackPressed();
-                break;
-        }
-        return super.onMenuItemSelected(featureId, item);
-    }
-
-
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (preference.getKey().equals(preAll)) {
-            setAllValue((boolean) newValue);
-        }
-        return true;
+    public void onBackPressed() {
+        saveAllValue();
+        super.onBackPressed();
     }
 
     private void setAllValue(boolean value) {
-        mSchedulePreference.setChecked(value);
-        mLibraryPreference.setChecked(value);
-        mCardPreference.setChecked(value);
-        mScorePreference.setChecked(value);
-        mAllPreference.setChecked(value);
+        mSwitchCourseRemind.setChecked(value);
+        mSwitchLibraryRemind.setChecked(value);
+        mSwitchCardRemind.setChecked(value);
+        mSwitchScoreRemind.setChecked(value);
+        mSwitchAll.setChecked(value);
     }
 
     private void saveAllValue() {
-        sp.saveBoolean(preSchedule, mSchedulePreference.isChecked());
-        sp.saveBoolean(preLibrary, mLibraryPreference.isChecked());
-        sp.saveBoolean(preCard, mCardPreference.isChecked());
-        sp.saveBoolean(preScore, mScorePreference.isChecked());
-        sp.saveBoolean(preAll, mAllPreference.isChecked());
+        sp.saveBoolean(preSchedule, mSwitchCourseRemind.isChecked());
+        sp.saveBoolean(preLibrary, mSwitchLibraryRemind.isChecked());
+        sp.saveBoolean(preCard, mSwitchCardRemind.isChecked());
+        sp.saveBoolean(preScore, mSwitchScoreRemind.isChecked());
+        sp.saveBoolean(preAll, mSwitchAll.isChecked());
     }
-
 
     private void loadAllValue() {
-        mSchedulePreference.setDefaultValue(sp.getBoolean(preSchedule, true));
-        mLibraryPreference.setDefaultValue(sp.getBoolean(preLibrary));
-        mCardPreference.setDefaultValue(sp.getBoolean(preCard));
-        mScorePreference.setDefaultValue(sp.getBoolean(preScore));
-        mAllPreference.setDefaultValue(sp.getBoolean(preAll));
+        mSwitchCourseRemind.setChecked(sp.getBoolean(preSchedule, true));
+        mSwitchLibraryRemind.setChecked(sp.getBoolean(preLibrary,true));
+        mSwitchCardRemind.setChecked(sp.getBoolean(preCard,true));
+        mSwitchScoreRemind.setChecked(sp.getBoolean(preScore,true));
+        mSwitchAll.setChecked(sp.getBoolean(preAll,true));
     }
+
 }

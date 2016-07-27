@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
@@ -50,7 +51,9 @@ public class HuaShiDao {
                 i++;
             }
         }
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
         return records;
     }
 
@@ -70,20 +73,25 @@ public class HuaShiDao {
                         course.getWeeks(),
                         course.getDay(),
                         course.getPlace(),
-                        course.getRemind().toString()
+                        String.valueOf(course.getRemind())
                 });
     }
 
-    //获取指定周的课程
-    public List<Course> loadCourse(String weeks) {
-        String userId = sp.getString(PreferenceUtil.STUDENT_ID);
+    /**
+     * 获取指定星期的课程
+     * @param day 星期
+     * @return
+     */
+    public List<Course> loadCourse(String day) {
         Cursor cursor =
-                db.rawQuery("SELECT * FROM " + DataBase.TABLE_COURSE,
-                        null);
+                db.rawQuery("SELECT * FROM " + DataBase.TABLE_COURSE +
+                        " WHERE " + DataBase.KEY_WEEKDAY + " = ? ",
+                        new String[]{
+                                day
+                        });
         List<Course> courses = new ArrayList<>();
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
-                if (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)).contains(weeks)) {
                     Course course = new Course();
                     course.setCourse(cursor.getString(cursor.getColumnIndex(DataBase.KEY_COURSE_NAME)));
                     course.setTeacher(cursor.getString(cursor.getColumnIndex(DataBase.KEY_TEACHER)));
@@ -94,17 +102,42 @@ public class HuaShiDao {
                     course.setPlace(cursor.getString(cursor.getColumnIndex(DataBase.KEY_PLACE)));
                     course.setRemind(cursor.getString(cursor.getColumnIndex(DataBase.KEY_REMIND)));
                     courses.add(course);
-                }
             }
+        }
+        if (cursor != null){
+            cursor.close();
+        }
+        return courses;
+    }
+
+    public List<Course> loadAllCourses(){
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_COURSE,null);
+        List<Course> courses = new ArrayList<>();
+        if (cursor.getCount() > 0){
+            while (cursor.moveToNext()){
+                Course  course = new Course();
+                course.setCourse(cursor.getString(cursor.getColumnIndex(DataBase.KEY_COURSE_NAME)));
+                course.setTeacher(cursor.getString(cursor.getColumnIndex(DataBase.KEY_TEACHER)));
+                course.setWeeks(cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
+                course.setDay(cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKDAY)));
+                course.setStart(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_TIME)));
+                course.setDuring(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_DURATION)));
+                course.setPlace(cursor.getString(cursor.getColumnIndex(DataBase.KEY_PLACE)));
+                course.setRemind(cursor.getString(cursor.getColumnIndex(DataBase.KEY_REMIND)));
+                courses.add(course);
+            }
+        }
+        if (cursor != null){
+            cursor.close();
         }
         return courses;
     }
 
     //删除指定的课程
-    public void deleteCourse(int id) {
+    public void deleteCourse(String id) {
         db.execSQL("DELETE FROM " + DataBase.TABLE_COURSE +
                         " WHERE " + DataBase.KEY_ID + " = ? ",
-                new Integer[]{
+                new String[]{
                         id
                 });
     }
@@ -114,5 +147,37 @@ public class HuaShiDao {
         db.execSQL("DELETE FROM " + DataBase.TABLE_COURSE + ";");
     }
 
+    public List<BannerData> loadBannerData(){
+        List<BannerData> bannerDatas = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_BANNER + " ",null);
+        if (cursor.getCount() > 0){
+            while (cursor.moveToNext()){
+                BannerData bannerData = new BannerData();
+                bannerData.setUrl(cursor.getString(cursor.getColumnIndex(DataBase.KEY_URL)));
+                bannerData.setImg(cursor.getString(cursor.getColumnIndex(DataBase.KEY_IMG)));
+                bannerData.setFilename(cursor.getString(cursor.getColumnIndex(DataBase.KEY_FILENAME)));
+                bannerData.setUpdate(Long.parseLong(cursor.getString(cursor.getColumnIndex(DataBase.KEY_UPDATE))));
+                bannerDatas.add(bannerData);
+            }
+        }
+        if (cursor != null){
+            cursor.close();
+        }
+        return bannerDatas;
+    }
+
+    public void insertBannerData(BannerData bannerData){
+        db.execSQL("INSERT INTO " + DataBase.TABLE_BANNER + " VALUES(null,?,?,?,?)",
+                new String[]{
+                        bannerData.getUrl(),
+                        String.valueOf(bannerData.getUpdate()),
+                        bannerData.getImg(),
+                        bannerData.getFilename()
+                });
+    }
+
+    public void deleteAllBannerData(){
+        db.execSQL("DELETE FROM " + DataBase.TABLE_BANNER + ";");
+    }
 
 }

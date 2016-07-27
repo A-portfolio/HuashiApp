@@ -16,6 +16,7 @@
         android:layout_marginRight="@dimen/dialog_content_padding"
         android:layout_marginTop="@dimen/dialog_content_padding"
         android:textColor="@color/colorBlack"
+        android:layout_marginBottom="@dimen/padding_between_title_and_body"
         android:textSize="@dimen/dialog_title_size"
         tools:text="title"/>
 
@@ -23,11 +24,11 @@
     <RelativeLayout android:id="@+id/layout_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_below="@+id/tv_title"
                     android:layout_marginBottom="@dimen/dialog_content_padding"
                     android:layout_marginLeft="@dimen/dialog_content_padding"
-                    android:layout_marginRight="@dimen/dialog_content_padding"
-                    android:layout_marginTop="@dimen/padding_between_title_and_body">
+                    android:layout_marginRight="@dimen/dialog_content_padding">
 
         <TextView
             android:id="@+id/tv_content"
@@ -49,18 +50,15 @@
             android:id="@+id/btn_negative"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/padding_button"
             android:background="@null"
-            android:text="@string/action_negative"
-            android:textSize="@dimen/dialog_action_size"/>
+            android:text="@string/action_negative"/>
 
         <Button
             android:id="@+id/btn_positive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:text="@string/action_positive"
-            android:textSize="@dimen/dialog_action_size"/>
+            android:text="@string/action_positive"/>
 
     </LinearLayout>
 

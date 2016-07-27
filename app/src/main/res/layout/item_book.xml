@@ -11,32 +11,45 @@
 
     <TextView
         android:id="@+id/tv_book"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="RxJava"/>
+        android:ellipsize="end"
+        android:maxEms="12"
+        android:singleLine="true"
+        android:text="我我我我我我我我我我我我我我我我我我我"
+        android:textSize="20sp"
+        />
 
     <TextView
         android:id="@+id/tv_author"
         android:layout_width="wrap_content"
+        android:textSize="18sp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_book"
+        android:textColor="@color/textColorGrey"
+        android:layout_above="@+id/tv_info"
         android:layout_centerVertical="true"
-        tools:text="xxx"/>
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxEms="16"
+        tools:text="content"/>
 
     <TextView
         android:id="@+id/tv_info"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="18sp"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/tv_author"
-        tools:text="infofff"/>
+        android:textColor="@color/textColorGrey"
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxEms="16"
+        tools:text="info"/>
 
-    <TextView
+    <ImageView
         android:id="@+id/tv_encoding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        tools:text="FYTKE300000"/>
+        android:layout_centerVertical="true"/>
 
 </RelativeLayout>

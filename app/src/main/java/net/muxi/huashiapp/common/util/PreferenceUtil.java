@@ -13,9 +13,6 @@ import net.muxi.huashiapp.App;
 public class PreferenceUtil {
 
     private SharedPreferences mSharedPreferences;
-
-
-
     //上次登录的用户账号,密码
     public static final String STUDENT_ID = "sId";
     public static final String STUDENT_PWD = "sPwd";
@@ -23,8 +20,14 @@ public class PreferenceUtil {
     public static final String LIBRARY_PWD = "libraryPwd";
     public static final String COURSE_ID = "course_id";
     //课程表中的当前周
-    public static final String CUR_WEEK = "curWeek";
-
+    public static final String FIRST_WEEK_DATE = "first_date";
+    //当前出了成绩的科目数
+    public static final String SCORES_NUM = "score_num";
+    public static final String IS_STOP_REMIND_CARD = "is_stop_remind_card";
+    //校历的最近更新时间
+    public static final String CALENDAR_UPDATE = "calendar_update";
+    //校历的图片地址
+    public static final String CALENDAR_ADDRESS = "calendar_address";
 
     public PreferenceUtil() {
         Context context = App.getContext();
@@ -62,7 +65,7 @@ public class PreferenceUtil {
 
 
     //可用于用户上次使用后注销账号时移除账号
-    public void removeString(String key){
+    public void clearString(String key){
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.remove(key);
         editor.apply();
@@ -75,12 +78,19 @@ public class PreferenceUtil {
         editor.apply();
     }
 
+    public void saveLong(String key,long value){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putLong(key,value);
+        editor.apply();
+    }
 
+    public long getLong(String key){
+        return mSharedPreferences.getLong(key,-1);
+    }
 
     public int getInt(String key){
         return mSharedPreferences.getInt(key,-1);
     }
-
 
     public int getInt(String key,int def){
         return mSharedPreferences.getInt(key,def);

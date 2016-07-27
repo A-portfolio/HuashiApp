@@ -14,6 +14,17 @@
     <string name="action_copy_url">复制链接</string>
     <string name="action_open_browser">在浏览器中打开</string>
     <string name="action_refresh">刷新本页面</string>
+    <string name="action_set_cur_week">设置当前周</string>
+
+=
+    <string name="notify_title_score">出了门成绩</string>
+    <string name="notify_content_score">详情请点击</string>
+    <string name="notify_title_course">明天记得上这些课</string>
+    <string name="notify_content_course">点击查看课程</string>
+    <string name="notify_title_card">你的学生卡余额不足</string>
+    <string name="notify_content_card">点击查看余额</string>
+    <string name="notify_title_lib">你有图书快到期</string>
+    <string name="notify_content_lib">点击查看详情</string>
 
 
 
@@ -27,8 +38,10 @@
     <string name="tip_check_net">请检查网络后重试</string>
     <string name="tip_library_login">(图书馆初始密码为123456)</string>
     <string name="tip_no_more_borrow_book">无更多借书信息</string>
-    <string name="tip_select_weeks">请选择要上课的周</string>
+    <string name="tip_select_weeks">选择上课周</string>
+    <string name="tip_select_course_time">添加上课时间</string>
     <string name="tip_complete_course">请完善课程信息</string>
+    <string name="tip_lib_write_keyword">输入书名作者</string>
 
     <!--library-->
     <string name="library_search_tip">请输入要搜索的图书或作者</string>
@@ -44,9 +57,12 @@
     <string name="course_double_week">双周</string>
     <string name="course_all_week">全选</string>
     <string name="course_week_format">第%d周</string>
+    <string name="course_set_curweek_title">请设置当前周</string>
+    <string name="course_conflict_title">添加课程与课程表已有课程冲突,是否继续添加</string>
+    <string name="course_delete_course_title">将此课程从课程表中删除</string>
 
     <string name="btn_negative">取消</string>
-    <string name="btn_positive">确认</string>
+    <string name="btn_positive">确定</string>
     
     <!--成绩查询-->
     <string name="tip_none_more">没有更多的成绩信息</string>
@@ -54,4 +70,7 @@
     <string name="title_score">成绩:</string>
     <string name="title_category">类别</string>
     <string name="title_credit">学分:  </string>
+    <string name="title_year">学年信息</string>
+    <string name="title_term">学期信息</string>
+    
 </resources>

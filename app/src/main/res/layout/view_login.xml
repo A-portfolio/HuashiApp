@@ -19,8 +19,9 @@
         android:paddingLeft="@dimen/login_horizontal_margin"
         android:paddingRight="@dimen/login_horizontal_margin">
 
-        <net.muxi.huashiapp.login.LoginEditText
-            android:id="@+id/edit_userName"
+
+        <net.muxi.huashiapp.common.widget.LoginEditText
+            android:id="@+id/edit_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -32,11 +33,11 @@
             android:textColorHint="@color/hintColor"
             android:textSize="@dimen/login_edit_text_size"/>
 
-        <net.muxi.huashiapp.login.LoginEditText
+        <net.muxi.huashiapp.common.widget.LoginEditText
             android:id="@+id/edit_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edit_userName"
+            android:layout_below="@+id/edit_user_name"
             android:layout_centerInParent="true"
             android:focusable="true"
             android:inputType="textPassword"
@@ -46,6 +47,7 @@
             android:singleLine="true"
             android:textColorHint="@color/hintColor"
             android:textSize="@dimen/login_edit_text_size"/>
+
     </RelativeLayout>
 
     <Button

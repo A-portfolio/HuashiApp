@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="318dp"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/colorBlack"
+        android:layout_marginLeft="16dp"
+        android:text="请设置当前周"
+        android:textSize="@dimen/medium_size"/>
+
+    <GridLayout
+        android:id="@+id/gl_weeks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="6">
+
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end">
+
+        <Button
+            android:layout_width="@dimen/dialog_btn_width"
+            android:id="@+id/btn_negative"
+            android:text="@string/btn_negative"
+            android:background="@null"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:layout_width="@dimen/dialog_btn_width"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/btn_positive"
+            android:text="@string/btn_positive"
+            android:layout_marginRight="8dp"
+            android:background="@null"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</LinearLayout>

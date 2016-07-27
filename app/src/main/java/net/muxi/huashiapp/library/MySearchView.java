@@ -30,7 +30,7 @@ import net.muxi.huashiapp.common.util.AnimationUtil;
 public class MySearchView extends FrameLayout implements View.OnClickListener {
 
     private ImageView mBtnBack;
-    private ImageView mBtnClear;
+    private ImageView mBtnSearch;
     private RelativeLayout mSearchBar;
     private ListView mSearchListview;
     private FrameLayout mSearchLayout;
@@ -50,6 +50,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
 
 
     private Drawable suggestionIcon = App.getContext().getResources().getDrawable(R.drawable.ic_suggestion);
+    private boolean isAnimation = true;
 
     public MySearchView(Context context) {
         this(context, null);
@@ -63,9 +64,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
         super(context, attrs);
 
         mContext = context;
-
         initView();
-
         initStyle(attrs, defStyleAttr);
     }
 
@@ -77,7 +76,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
 
     private void initSearchView() {
         mBtnBack = (ImageView) findViewById(R.id.btn_back);
-        mBtnClear = (ImageView) findViewById(R.id.btn_clear);
+        mBtnSearch = (ImageView) findViewById(R.id.btn_search);
         mSearchBar = (RelativeLayout) findViewById(R.id.search_bar);
         mSearchListview = (ListView) findViewById(R.id.search_listview);
         mSearchLayout = (FrameLayout) findViewById(R.id.search_layout);
@@ -85,7 +84,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
         mTintView = findViewById(R.id.tint_view);
 
         mBtnBack.setOnClickListener(this);
-        mBtnClear.setOnClickListener(this);
+        mBtnSearch.setOnClickListener(this);
         mTintView.setOnClickListener(this);
 
         mEditSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -175,7 +174,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
     }
 
     public void setSearchClearIcon(Drawable drawable) {
-        mBtnClear.setImageDrawable(drawable);
+        mBtnSearch.setImageDrawable(drawable);
     }
 
     public void setSearchBackIcon(Drawable drawable) {
@@ -215,6 +214,9 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     onSubmitQuery(mSearchAdapter.getItem(position).toString());
+                    if (isSearchOpen()){
+                        closeSearchView();
+                    }
                 }
             });
         }
@@ -241,7 +243,9 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
         mEditSearch.setText(null);
         mEditSearch.requestFocus();
 
-        setVisibleWithAnimation();
+        if (isAnimation) {
+            setVisibleWithAnimation();
+        }
         if (mOnSearchViewListener != null) {
             mOnSearchViewListener.onSearchShown();
         }
@@ -278,6 +282,14 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
         }
     }
 
+    /**
+     * 设置SearchView是否以动画展现,默认为是
+     * @param b
+     */
+    public void setIsVisibleWithAnimation(boolean b){
+        isAnimation = b;
+    }
+
 
     public void showSuggestions() {
         mSearchListview.setVisibility(VISIBLE);
@@ -291,8 +303,11 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_clear:
-                mEditSearch.setText(null);
+            case R.id.btn_search:
+                onSubmitQuery(mEditSearch.getText().toString());
+                if (isSearchOpen()){
+                    closeSearchView();
+                }
                 break;
             case R.id.btn_back:
                 closeSearchView();
