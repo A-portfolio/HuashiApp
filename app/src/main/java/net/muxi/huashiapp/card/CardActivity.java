@@ -9,17 +9,16 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.Card;
+import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.util.Base64Util;
+import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Response;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -41,8 +40,6 @@ public class CardActivity extends ToolbarActivity {
     @BindView(R.id.coordinator_layout)
     RelativeLayout mCoordinatorLayout;
 
-    List<Card> mCards;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +51,10 @@ public class CardActivity extends ToolbarActivity {
         user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
         user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
         CampusFactory.getRetrofitService()
-                .getCard(Base64Util.createBaseStr(user),user.getSid())
+                .getCardBalance(user.getSid(),"90","0","20")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<Response<List<Card>>>() {
+                .subscribe(new Observer<List<CardData>>() {
                     @Override
                     public void onCompleted() {
 
@@ -69,10 +66,11 @@ public class CardActivity extends ToolbarActivity {
                     }
 
                     @Override
-                    public void onNext(Response<List<Card>> listResponse) {
-                        mCards = listResponse.body();
-                        mDate.setText(mCards.get(0).getDealDateTime());
-                        mMoney.setText(mCards.get(0).getOutMoney());
+                    public void onNext(List<CardData> cardDatas) {
+                        Logger.d("id card");
+                        mDate.setText(cardDatas.get(0).getDealDateTime());
+                        mMoney.setText(cardDatas.get(0).getOutMoney());
+
                     }
                 });
 

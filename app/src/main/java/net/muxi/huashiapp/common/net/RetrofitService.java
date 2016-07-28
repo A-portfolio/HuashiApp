@@ -4,7 +4,6 @@ import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.data.CalendarData;
-import net.muxi.huashiapp.common.data.Card;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.PersonalBook;
@@ -79,12 +78,9 @@ public interface RetrofitService {
 
     //查询余额  除了学号其他传固定值 http://console.ccnu.edu.cn/ecard/getTrans?userId=2013211389&days=90&startNum=0&num=200
     @GET("http://console.ccnu.edu.cn/ecard/getTrans")
-    Observable<CardData> getCardBalance(@Query("userId") String sid,
+    Observable<List<CardData>>  getCardBalance(@Query("userId") String sid,
                                         @Query("days") String day,
                                         @Query("startNum") String start,
                                         @Query("num") String num);
 
-    @POST("ecard/getTrans?days=90&startNum=0&num=200")
-    Observable<Response<List<Card>>> getCard(@Header("Authorization") String authorization,
-                                           @Query("sid") String sid);
 }

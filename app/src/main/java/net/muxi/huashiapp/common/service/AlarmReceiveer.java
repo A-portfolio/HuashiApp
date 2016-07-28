@@ -86,7 +86,7 @@ public class AlarmReceiveer extends BroadcastReceiver {
         CampusFactory.getRetrofitService().getCardBalance(mUser.getSid(), "10", "0", "1")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<CardData>() {
+                .subscribe(new Observer<List<CardData>>() {
                     @Override
                     public void onCompleted() {
 
@@ -98,9 +98,9 @@ public class AlarmReceiveer extends BroadcastReceiver {
                     }
 
                     @Override
-                    public void onNext(CardData cardData) {
+                    public void onNext(List<CardData> cardData) {
                         // TODO: 16/7/4  待添加检测是否已经充值,不然每天都会提醒
-                        if (Integer.valueOf(cardData.getOutMoney()) < 10) {
+                        if (Integer.valueOf(cardData.get(0).getOutMoney()) < 10) {
                             if (sp.getBoolean(PreferenceUtil.IS_STOP_REMIND_CARD,false)) {
 //                                NotifyUtil.show(mContext,);
                             }
