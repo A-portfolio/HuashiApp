@@ -181,22 +181,28 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(MainActivity.this, ScoreActivity.class);
                         startActivity(intent);
                         break;
-                    case 6:
-                        Intent intent3 = new Intent(MainActivity.this,ElectricityActivity.class);
-                        startActivity(intent3);
+
+                    case 3:
+                        intent = new Intent(MainActivity.this,ElectricityActivity.class);
+                        startActivity(intent);
                         break;
-                    case 7:
-                        Intent intent5 = new Intent(MainActivity.this, CardActivity.class);
-                        startActivity(intent5);
-                        break;
+
                     case 4:
                         intent = new Intent(MainActivity.this, CalendarActivity.class);
                         startActivity(intent);
                         break;
+
                     case 5:
-                        Intent intent2 = WebViewActivity.newIntent(MainActivity.this, "http://xueer.muxixyz.com", "学而");
-                        startActivity(intent2);
+                        intent = WebViewActivity.newIntent(MainActivity.this, "http://xueer.muxixyz.com", "学而");
+                        startActivity(intent);
                         break;
+
+                    case 7:
+                        intent = new Intent(MainActivity.this, CardActivity.class);
+                        startActivity(intent);
+                        break;
+
+
 
                 }
             }

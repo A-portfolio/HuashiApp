@@ -7,49 +7,58 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.data.News;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by december on 16/5/18.
  */
 public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsViewHolder> {
 
-    private List<String> mDatas;
 
-    public MyNewsAdapter(List<String> mDatas){
-        this.mDatas = mDatas;
+    private List<News> mNewsList;
+
+    public MyNewsAdapter(List<News> newsList) {
+        super();
+        mNewsList = newsList;
     }
 
     @Override
     public MyNewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news,parent,false);
-        MyNewsViewHolder holder = new MyNewsViewHolder(itemView);
-        return holder;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false);
+        return new MyNewsViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(MyNewsViewHolder holder, int position) {
-        holder.mTextView.setText(mDatas.get(position));
+        holder.mNewsInfoDate.setText(mNewsList.get(position).getDate());
+        holder.mNewsInfoTitle.setText(mNewsList.get(position).getTitle());
+        holder.mNewsInfoIcon.setText(mNewsList.get(position).getTitle());
 
 
     }
 
     @Override
     public int getItemCount() {
-        return mDatas.size();
+        return mNewsList.size();
     }
 
-    public class MyNewsViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView mTextView;
+    static class MyNewsViewHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.news_info_icon)
+        TextView mNewsInfoIcon;
+        @BindView(R.id.news_info_title)
+        TextView mNewsInfoTitle;
+        @BindView(R.id.news_info_date)
+        TextView mNewsInfoDate;
 
-        public MyNewsViewHolder(View itemView){
-            super(itemView);
-            mTextView = (TextView) itemView.findViewById(R.id.news_text_view);
+        public MyNewsViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
         }
-
-
-
     }
 }

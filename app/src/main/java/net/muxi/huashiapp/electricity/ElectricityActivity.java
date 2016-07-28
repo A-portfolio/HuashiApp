@@ -26,7 +26,8 @@ public class  ElectricityActivity extends ToolbarActivity {
     public String[] groupStrings = {"区域", "建筑", "楼层", "房间"};
 
     public String[][] childStrings = {
-            {"西区", "东区", "元宝山", "南湖"}
+            {"西区", "东区", "元宝山", "南湖"},
+            {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"}
     };
 
     MyExpandableAdapter mAdapter;

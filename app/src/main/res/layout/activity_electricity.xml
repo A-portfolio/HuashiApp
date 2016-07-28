@@ -8,6 +8,9 @@
     <include
         android:id="@+id/view_toolbar"
         layout="@layout/view_toolbar"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <ExpandableListView
         android:background="@color/colorWhite"
@@ -36,7 +39,10 @@
             android:layout_height="36dp"
             android:background="@color/colorPrimary"
             android:layout_below="@+id/edit_ec_room"
+            android:layout_marginBottom="80dp"
             android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
 
 
 

@@ -6,6 +6,7 @@ import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.Course;
+import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.data.PersonalBook;
 import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.data.VerifyResponse;
@@ -69,6 +70,8 @@ public interface RetrofitService {
     Observable<List<Scores>> getScores(@Header("Authorization") String verification,
                                        @Query("xnm") String year,
                                        @Query("xqm") String term);
+    @GET("info/")
+    Observable<List<News>> getNews();
 
     @GET("calendar/")
     Observable<List<CalendarData>> getCalendar();

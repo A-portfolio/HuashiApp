@@ -1,14 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:background="#44ff0000"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="72dp">
 
     <TextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:width="40dp"
         android:gravity="center"
-        android:id="@+id/news_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/news_info_icon"
+        android:background="@drawable/shape_round_pink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+
+    <TextView
+        android:singleLine="true"
+        android:width="360dp"
+        tools:text="关于华中师范大学录取"
+        android:id="@+id/news_info_title"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_alignTop="@+id/news_info_icon"
+        android:layout_toRightOf="@+id/news_info_icon"
+        android:layout_toEndOf="@+id/news_info_icon"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"/>
+    
+    <TextView
+        tools:text="2015-10-24"
+        android:id="@+id/news_info_date"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@+id/news_info_title"
+        android:layout_alignLeft="@+id/news_info_title"
+        android:layout_alignStart="@+id/news_info_title"/>
 
 </RelativeLayout>
