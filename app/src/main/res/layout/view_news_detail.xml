@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/background_layout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:minHeight="@dimen/library_detail_min_height"
+              android:orientation="vertical"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <ImageButton
+        android:id="@+id/news_float_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="26dp"/>
+    
+    <TextView
+        android:id="@+id/news_title"
+        tools:text="关于华中师范大学录取"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        tools:text="为维护全校选课秩序，保护同学们的选课利益，提高课程效率"
+        android:id="@+id/news_content"
+        android:textSize="14sp"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/news_date"
+        tools:text="2016-6-30 8:47"
+        android:textColor="@color/dividerGrey"
+        android:textSize="12sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"/>
+
+</LinearLayout>

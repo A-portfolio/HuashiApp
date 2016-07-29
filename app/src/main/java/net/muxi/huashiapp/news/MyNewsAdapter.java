@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
@@ -20,7 +21,16 @@ import butterknife.ButterKnife;
 public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsViewHolder> {
 
 
+
     private List<News> mNewsList;
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public interface OnItemClickListener {
+        void OnItemClick(View view, List<News> newsList);
+    }
+
+//    List<News> newsList
 
     public MyNewsAdapter(List<News> newsList) {
         super();
@@ -34,11 +44,16 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsView
     }
 
     @Override
-    public void onBindViewHolder(MyNewsViewHolder holder, int position) {
+    public void onBindViewHolder(MyNewsViewHolder holder, final int position) {
         holder.mNewsInfoDate.setText(mNewsList.get(position).getDate());
         holder.mNewsInfoTitle.setText(mNewsList.get(position).getTitle());
-        holder.mNewsInfoIcon.setText(mNewsList.get(position).getTitle());
-
+        holder.mNewsInfoIcon.setText(mNewsList.get(position).getTitle().substring(0, 1));
+        holder.mNewsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemClickListener.OnItemClick(v,mNewsList);
+            }
+        });
 
     }
 
@@ -47,8 +62,13 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsView
         return mNewsList.size();
     }
 
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
 
-    static class MyNewsViewHolder extends RecyclerView.ViewHolder{
+    static class MyNewsViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.news_layout)
+        RelativeLayout mNewsLayout;
         @BindView(R.id.news_info_icon)
         TextView mNewsInfoIcon;
         @BindView(R.id.news_info_title)
@@ -60,5 +80,6 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsView
             super(view);
             ButterKnife.bind(this, view);
         }
+
     }
 }
