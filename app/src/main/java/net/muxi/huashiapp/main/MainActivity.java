@@ -68,9 +68,6 @@ public class MainActivity extends AppCompatActivity {
         getBannerDatas();
 
         setSupportActionBar(mToolbar);
-        initRecyclerView();
-
-
         AlarmUtil.register(this);
     }
 
@@ -189,10 +186,12 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case 5:
-                        Intent intent2 = WebViewActivity.newIntent(MainActivity.this, "http://xueer.muxixyz.com", "学而");
-                        startActivity(intent2);
-                        break;
 
+                        break;
+                    case 7:
+                        intent = WebViewActivity.newIntent(MainActivity.this, "http://xueer.muxixyz.com/", "学而");
+                        startActivity(intent);
+                        break;
                 }
             }
         });

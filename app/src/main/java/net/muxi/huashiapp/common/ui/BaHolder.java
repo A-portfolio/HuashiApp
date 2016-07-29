@@ -3,6 +3,7 @@ package net.muxi.huashiapp.common.ui;
 import android.content.Context;
 import android.net.Uri;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -19,6 +20,11 @@ public class BaHolder implements Holder<String>{
     @Override
     public View createView(Context context) {
         mDraweeView = new SimpleDraweeView(context);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        );
+        mDraweeView.setLayoutParams(params);
         mDraweeView.setScaleType(SimpleDraweeView.ScaleType.FIT_XY);
         Logger.d("create BaHolder");
         return mDraweeView;

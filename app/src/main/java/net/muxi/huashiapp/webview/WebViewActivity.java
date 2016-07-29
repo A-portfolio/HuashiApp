@@ -38,8 +38,9 @@ public class WebViewActivity extends ToolbarActivity {
     AppBarLayout mAppbarLayout;
     @BindView(R.id.webview)
     WebView mWebview;
-
+    @BindView(R.id.custom_progress_bar)
     NumberProgressBar mCustomProgressBar;
+
 
     private String url;
     private String title;
@@ -110,9 +111,9 @@ public class WebViewActivity extends ToolbarActivity {
             super.onProgressChanged(view, newProgress);
 
             mCustomProgressBar.setProgress(newProgress);
-            if (newProgress == 100){
+            if (newProgress == 100) {
                 mCustomProgressBar.setVisibility(View.GONE);
-            }else {
+            } else {
                 mCustomProgressBar.setVisibility(View.VISIBLE);
             }
         }
@@ -126,8 +127,8 @@ public class WebViewActivity extends ToolbarActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK){
-            if (mWebview.canGoBack()){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (mWebview.canGoBack()) {
                 mWebview.goBack();
                 return true;
             }

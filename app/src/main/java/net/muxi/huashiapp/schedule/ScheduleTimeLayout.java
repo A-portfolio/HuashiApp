@@ -14,6 +14,10 @@ public class ScheduleTimeLayout extends LinearLayout {
 
     public Scroller mScroller;
 
+    public static final int TYPE_CURWEEK = 0;
+    public static final int TYPE_OTHER_WEEK = 1;
+
+
     public ScheduleTimeLayout(Context context) {
         super(context);
         mScroller = new Scroller(context);
@@ -33,18 +37,27 @@ public class ScheduleTimeLayout extends LinearLayout {
         }
     }
 
-    public void scrollBy(int x, int y) {
-        x = checkPositionX(x);
+    public void scrollBy(int x, int y,int type) {
+        x = checkPositionX(x,type);
         y = checkPositionY(y);
         super.scrollBy(x, y);
     }
 
-    public int checkPositionX(int x) {
-        if (getScrollX() + x < 0) {
-            x = -getScrollX();
-        } else if ((getScrollX() + x) >
-                (TimeTable.WEEK_DAY_WIDTH * 7 - DimensUtil.getScreenWidth() + TimeTable.LITTLE_VIEW_WIDTH)) {
-            x = TimeTable.WEEK_DAY_WIDTH * 7 - getScrollX() - DimensUtil.getScreenWidth() + TimeTable.LITTLE_VIEW_WIDTH;
+    public int checkPositionX(int x,int type) {
+        if (type == TYPE_OTHER_WEEK) {
+            if (getScrollX() + x < 0) {
+                x = -getScrollX();
+            } else if ((getScrollX() + x) >
+                    (TimeTable.WEEK_DAY_WIDTH * 7 - DimensUtil.getScreenWidth() + TimeTable.LITTLE_VIEW_WIDTH)) {
+                x = TimeTable.WEEK_DAY_WIDTH * 7 - getScrollX() - DimensUtil.getScreenWidth() + TimeTable.LITTLE_VIEW_WIDTH;
+            }
+        }else {
+            if (getScrollX() + x < 0) {
+                x = -getScrollX();
+            } else if ((getScrollX() + x) >
+                    (TimeTable.WEEK_DAY_WIDTH * 8 - DimensUtil.getScreenWidth() + TimeTable.LITTLE_VIEW_WIDTH)) {
+                x = TimeTable.WEEK_DAY_WIDTH * 8 - getScrollX() - DimensUtil.getScreenWidth() + TimeTable.LITTLE_VIEW_WIDTH;
+            }
         }
         return x;
     }
@@ -65,7 +78,7 @@ public class ScheduleTimeLayout extends LinearLayout {
     public void smoothScrollBy(int deltaX, int deltaY) {
         int scrollX = getScrollX();
         int scrollY = getScrollY();
-        deltaX = checkPositionX(deltaX);
+//        deltaX = checkPositionX(deltaX);
         deltaY = checkPositionY(deltaY);
         mScroller.startScroll(scrollX, scrollY, deltaX, deltaY, 250);
         invalidate();

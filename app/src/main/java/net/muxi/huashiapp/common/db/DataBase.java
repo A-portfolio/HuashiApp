@@ -38,6 +38,7 @@ public class DataBase extends SQLiteOpenHelper{
     public static final String KEY_PLACE = "place";
     public static final String KEY_REMIND = "remind";
     public static final String KEY_USER_ID = "user_id";
+    public static final String KEY_COLOR = "color";
 
     //banner的属性
     public static final String KEY_URL = "url";
@@ -75,7 +76,8 @@ public class DataBase extends SQLiteOpenHelper{
                 KEY_TIME + " INTEGER, " +
                 KEY_DURATION + " INTEGER, " +
                 KEY_PLACE + " TEXT, " +
-                KEY_REMIND + " TEXT); ";
+                KEY_REMIND + " TEXT, " +
+                KEY_COLOR + " INTEGER); ";
         db.execSQL(createCourseTable);
 
         String createBannerTable = "CREATE TABLE IF NOT EXISTS " + TABLE_BANNER +

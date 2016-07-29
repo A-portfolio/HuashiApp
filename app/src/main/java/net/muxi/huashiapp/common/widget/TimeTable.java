@@ -2,6 +2,7 @@ package net.muxi.huashiapp.common.widget;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -16,10 +17,12 @@ import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.util.DateUtil;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.common.util.TimeTableUtil;
 import net.muxi.huashiapp.schedule.ScheduleTimeLayout;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by ybao on 16/4/19.
@@ -32,11 +35,6 @@ public class TimeTable extends FrameLayout {
     public static final int LITTLE_VIEW_WIDTH = DimensUtil.dp2px(50);
     public static final int LITTLE_VIEW_HEIGHT = DimensUtil.dp2px(40);
     public static final int COURSE_TIME_DIVIDER = DimensUtil.dp2px(2);
-
-    public static final int TOUCH_FLAG_EXTEND = 1;
-    public static final int TOUCH_FLAG_BACK = 0;
-    //初始的时候是查看其他周的 View 没有显示
-    private int mTouchFlag = TOUCH_FLAG_BACK;
 
     private ScheduleTimeLayout mScheduleLayout;
     private FrameLayout[] dayCourseLayout;
@@ -60,6 +58,11 @@ public class TimeTable extends FrameLayout {
 
     private float mx, my;
     private float curX, curY;
+    private float startX, startY;
+    private Date date1;
+    private boolean isTouchCancel = true;
+
+    private int type = 0;
 
     private OnLongPressedListenr mOnLongPressedListener;
     private OnCourseClickListener mOnCourseClickListener;
@@ -70,7 +73,7 @@ public class TimeTable extends FrameLayout {
     }
 
     //监听点击课程
-    public interface OnCourseClickListener{
+    public interface OnCourseClickListener {
         void onCourseClick(Course course);
     }
 
@@ -97,6 +100,7 @@ public class TimeTable extends FrameLayout {
         view = new View(context);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(LITTLE_VIEW_WIDTH, LITTLE_VIEW_HEIGHT);
         view.setLayoutParams(params);
+        view.setBackgroundColor(getResources().getColor(R.color.course_week_layout_bg));
         addView(view);
     }
 
@@ -129,6 +133,7 @@ public class TimeTable extends FrameLayout {
             mCourseUnitLayout[i].setGravity(Gravity.CENTER);
             mCourseUnitLayout[i].setOrientation(LinearLayout.VERTICAL);
             mCourseUnitLayout[i].setLayoutParams(unitLayoutParams);
+            mCourseUnitLayout[i].setBackgroundColor(getResources().getColor(R.color.colorCourseTimeLayout));
             mCourseLayout.addView(mCourseUnitLayout[i]);
 
             String hour = "" + (i / 2 * 2 + 8);
@@ -147,7 +152,7 @@ public class TimeTable extends FrameLayout {
             mCourseUnitLayout[i].addView(mCourseNumTv[i], tvParams);
 
             View divider = new View(context);
-            divider.setBackgroundColor(mContext.getResources().getColor(R.color.divider_course_time));
+            divider.setBackgroundColor(mContext.getResources().getColor(R.color.divider_course));
             divider.setLayoutParams(dividerParams);
             mCourseUnitLayout[i].addView(divider);
             Logger.d(mCourseUnitLayout[i].getMeasuredHeight() + "");
@@ -162,9 +167,10 @@ public class TimeTable extends FrameLayout {
     public void setupWeekDayLayout(Context context) {
         mWeekDayLayout = new ScheduleTimeLayout(context);
         FrameLayout.LayoutParams weekDayParams = new
-                FrameLayout.LayoutParams(WEEK_DAY_WIDTH * 7, LITTLE_VIEW_HEIGHT);
+                FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LITTLE_VIEW_HEIGHT);
         mWeekDayLayout.setLayoutParams(weekDayParams);
         mWeekDayLayout.setPadding(LITTLE_VIEW_WIDTH, 0, 0, 0);
+        mWeekDayLayout.setBackgroundColor(getResources().getColor(R.color.course_week_layout_bg));
         mWeekDayLayout.setOrientation(LinearLayout.HORIZONTAL);
         addView(mWeekDayLayout, weekDayParams);
 
@@ -218,7 +224,7 @@ public class TimeTable extends FrameLayout {
         mScheduleLayout = new ScheduleTimeLayout(context);
 
         FrameLayout.LayoutParams scheduleLayoutParams = new
-                FrameLayout.LayoutParams(WEEK_DAY_WIDTH * 7, COURSE_TIME_HEIGHT * 7);
+                FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, COURSE_TIME_HEIGHT * 7);
         scheduleLayoutParams.setMargins(LITTLE_VIEW_WIDTH, LITTLE_VIEW_HEIGHT, 0, 0);
         mScheduleLayout.setLayoutParams(scheduleLayoutParams);
 
@@ -228,10 +234,7 @@ public class TimeTable extends FrameLayout {
                 WEEK_DAY_WIDTH,
                 COURSE_TIME_HEIGHT * 7
         );
-        FrameLayout.LayoutParams dividerParams = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                DimensUtil.dp2px(2)
-        );
+
         View[] views = new View[14];
 
         for (int i = 0; i < 7; i++) {
@@ -239,22 +242,54 @@ public class TimeTable extends FrameLayout {
             dayCourseLayout[i].setLayoutParams(relativeParams);
             mScheduleLayout.addView(dayCourseLayout[i]);
 
+            FrameLayout.LayoutParams[] dividerParams = new LayoutParams[14];
+
             for (int j = 0; j < 14; j++) {
-                dividerParams.setMargins(0, COURSE_TIME_HEIGHT / 2 * (j + 1), 0, 0);
+                dividerParams[j] = new FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        DimensUtil.dp2px(2)
+                );
+                dividerParams[j].setMargins(0, COURSE_TIME_HEIGHT / 2 * (j + 1)  - DimensUtil.dp2px(2), 0, 0);
                 views[j] = new View(mContext);
-                dayCourseLayout[i].addView(views[j], dividerParams);
+                views[j].setBackgroundColor(getResources().getColor(R.color.divider_course));
+                dayCourseLayout[i].addView(views[j], dividerParams[j]);
             }
 
         }
 
     }
 
-    //监听某些课程是否被长按,用户可能要删课
+    /**
+     * 今天的那一列宽度增大
+     *
+     * @param today 今天是一周的第几天
+     */
+    public void setTodayLayout(int today) {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                WEEK_DAY_WIDTH * 2,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        );
+        mWeekdayUnitLayout[today - 1].setLayoutParams(layoutParams);
+        dayCourseLayout[today - 1].setLayoutParams(layoutParams);
+        this.invalidate();
+    }
+
+    public void resetTodayLayout(int today) {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                WEEK_DAY_WIDTH,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        );
+        mWeekdayUnitLayout[today - 1].setLayoutParams(layoutParams);
+        dayCourseLayout[today - 1].setLayoutParams(layoutParams);
+        this.invalidate();
+    }
+
+    //监听某些课程是否被长按,要删课
     public void setOnLongPressedListener(OnLongPressedListenr longPressedListner) {
         this.mOnLongPressedListener = longPressedListner;
     }
 
-    public void setOnCourseClickListener(OnCourseClickListener courseClickListener){
+    public void setOnCourseClickListener(OnCourseClickListener courseClickListener) {
         mOnCourseClickListener = courseClickListener;
     }
 
@@ -264,9 +299,16 @@ public class TimeTable extends FrameLayout {
     }
 
     @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+
+        return super.onInterceptTouchEvent(ev);
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
 
+//            this.addTouchables();
             case MotionEvent.ACTION_DOWN:
                 mx = event.getX();
                 my = event.getY();
@@ -274,9 +316,9 @@ public class TimeTable extends FrameLayout {
             case MotionEvent.ACTION_MOVE:
                 curX = event.getX();
                 curY = event.getY();
-                mWeekDayLayout.scrollBy((int) (mx - curX), 0);
-                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY));
-                mCourseLayout.scrollBy(0, (int) (my - curY));
+                mWeekDayLayout.scrollBy((int) (mx - curX), 0, type);
+                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY), type);
+                mCourseLayout.scrollBy(0, (int) (my - curY), type);
                 mx = curX;
                 my = curY;
                 break;
@@ -289,41 +331,106 @@ public class TimeTable extends FrameLayout {
         return true;
     }
 
-
-    //设置是在那种情况下的滑动
-    public void setTouchFlag(int touchFlag) {
-        mTouchFlag = touchFlag;
-    }
-
-    //设置本周的日期
-    public void setDate(int weekDistance) {
-
+    /**
+     * 设置在那种类型下的滑动
+     *
+     * @param type curweek : 0,  otherweek : 1
+     */
+    public void setType(int type) {
+        this.type = type;
     }
 
     //添加每节课程的TextView
-    public void setCourse(final List<Course> courses) {
+    public void setCourse(final List<Course> courses, int week) {
+        Logger.d(courses.size() + "   week");
+        List<Course> priorityCourses = getPriorityCourses(courses, week);
+        List<Course> curCourses = findCurWeekCourses(courses, week);
+        List<Course> otherCourses = getOtherCourses(courses, week);
         for (int i = 0; i < courses.size(); i++) {
-            if (courses.get(i).getId() != null && courses.get(i).getId().equals("0")) {
-
+            if (courses.get(i).getCourse() != null && courses.get(i).getCourse().equals("re:从零开始的异世界生活")) {
+                Logger.d(courses.get(i).getCourse());
+                continue;
             } else {
                 final int curCourse = i;
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         courses.get(i).getDuring() * COURSE_TIME_HEIGHT / 2 - 2
                 );
+
                 params.setMargins(0, COURSE_TIME_HEIGHT / 2 * (courses.get(i).getStart() - 1), 0, 0);
-                TextView courseTv = new TextView(mContext);
-                courseTv.setBackground(getResources().getDrawable(getRandomBg()));
+                final TextView courseTv = new TextView(mContext);
+                if (curCourses.contains(courses.get(i))) {
+                    courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(courses.get(i).getColor())));
+                } else if (priorityCourses.contains(courses.get(i))) {
+                    courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(courses.get(i).getColor())));
+                } else if (otherCourses.contains(courses.get(i))) {
+                    courseTv.setBackground(getResources().getDrawable(R.drawable.shape_rectangle_grey));
+                }
                 courseTv.setTextColor(Color.WHITE);
                 String courseName = simplifyCourse(courses.get(i).getCourse());
-                courseTv.setText(courseName + "\n@" +
-                        courses.get(i).getPlace() + "\n" +
-                        courses.get(i).getTeacher());
+                courseTv.setGravity(Gravity.CENTER_HORIZONTAL);
+                if (priorityCourses.contains(courses.get(i)) || curCourses.contains(courses.get(i))) {
+                    courseTv.setText(courseName + "\n@" +
+                            courses.get(i).getPlace() + "\n" +
+                            courses.get(i).getTeacher());
+                } else if (otherCourses.contains(courses.get(i))) {
+                    courseTv.setText(courseName + "\n@" +
+                            courses.get(i).getPlace() + "\n" +
+                            courses.get(i).getTeacher() + "\n[非本周]");
+                }
 
-                courseTv.setOnLongClickListener(new OnLongClickListener() {
+                courseTv.setOnTouchListener(new OnTouchListener() {
                     @Override
-                    public boolean onLongClick(View v) {
-                        mOnLongPressedListener.onLongPressed(courses.get(curCourse));
+                    public boolean onTouch(View v, final MotionEvent event) {
+                        int action = event.getAction();
+                        switch (action) {
+                            case MotionEvent.ACTION_DOWN:
+                                isTouchCancel = false;
+                                mx = event.getRawX();
+                                my = event.getRawY();
+                                startX = mx;
+                                startY = my;
+                                date1 = new Date(System.currentTimeMillis());
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Logger.d("runnable run " + !isTouchCancel);
+                                        if ((Math.abs(startX - mx) < 4) && (Math.abs(startY - my) < 4) && (!isTouchCancel)) {
+                                            Logger.d("childview long click");
+                                            if (mOnLongPressedListener != null) {
+                                                Logger.d("childview long click");
+                                                mOnLongPressedListener.onLongPressed(courses.get(curCourse));
+                                            }
+                                        }
+                                    }
+                                }, 1000);
+                                Logger.d("child view down");
+                                break;
+                            case MotionEvent.ACTION_MOVE:
+                                curX = event.getRawX();
+                                curY = event.getRawY();
+                                mWeekDayLayout.scrollBy((int) (mx - curX), 0, type);
+                                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY), type);
+                                mCourseLayout.scrollBy(0, (int) (my - curY), type);
+                                mx = curX;
+                                my = curY;
+                                break;
+                            case MotionEvent.ACTION_UP:
+                                curX = event.getRawX();
+                                curY = event.getRawY();
+                                Date date2 = new Date(System.currentTimeMillis());
+                                if (DateUtil.getSecondSpace(date1, date2) < 1000 &&
+                                        (Math.abs(startX - curX) < 4) && (Math.abs(startY - curY) < 4)) {
+                                    if (mOnCourseClickListener != null) {
+                                        Logger.d("child view click");
+                                        mOnCourseClickListener.onCourseClick(courses.get(curCourse));
+
+                                    }
+                                }
+                                isTouchCancel = true;
+                                break;
+
+                        }
                         return true;
                     }
                 });
@@ -334,6 +441,94 @@ public class TimeTable extends FrameLayout {
             }
         }
     }
+
+    private List<Course> getOtherCourses(List<Course> courses, int week) {
+        List<Course> otherCourses = new ArrayList<>();
+        for (int i = 0; i < courses.size(); i++) {
+            Course course = courses.get(i);
+            if (!TimeTableUtil.isThisWeek(week, course.getWeeks())) {
+                boolean isConflict = false;
+                for (int j = 0; j < courses.size(); j++) {
+                    if (j == i) {
+                        continue;
+                    }
+                    if (course.getDay().equals(courses.get(j).getDay()) && course.getStart() == courses.get(j).getStart() && course.getDuring() == courses.get(j).getDuring()) {
+                        isConflict = true;
+                    }
+                }
+                if (!isConflict) {
+                    otherCourses.add(course);
+                    Logger.d(course.getCourse());
+                }
+            }
+        }
+        return otherCourses;
+    }
+
+    //获取当前周的课程,不包括优先显示的课程
+    private List<Course> findCurWeekCourses(List<Course> courses, int week) {
+        List<Course> curWeekCourses = new ArrayList<>();
+        for (int i = 0; i < courses.size(); i++) {
+            Course course = courses.get(i);
+            if (TimeTableUtil.isThisWeek(week, course.getWeeks())) {
+                boolean isConflict = false;
+                for (int j = 0; j < courses.size(); j++) {
+                    if (j == i) {
+                        continue;
+                    }
+                    if (course.getDay().equals(courses.get(j).getDay()) && course.getStart() == courses.get(j).getStart() && course.getDuring() == courses.get(j).getDuring()) {
+                        isConflict = true;
+                    }
+                }
+                if (!isConflict) {
+                    curWeekCourses.add(course);
+                    Logger.d(course.getCourse());
+                }
+            }
+        }
+        return curWeekCourses;
+    }
+
+    //获取优先显示的课程,只包括冲突的课程
+    private List<Course> getPriorityCourses(List<Course> courses, int week) {
+
+        List<Course> priorityCourses = new ArrayList<>();
+        for (int i = 0; i < courses.size(); i++) {
+            Course course = courses.get(i);
+            boolean isConflict = false;
+            for (int j = i + 1; j < courses.size(); j++) {
+                if (course.getDay().equals(courses.get(j).getDay()) && course.getStart() == courses.get(j).getStart() && course.getDuring() == courses.get(j).getDuring()) {
+                    isConflict = true;
+                    if (TimeTableUtil.isThisWeek(week, courses.get(j).getWeeks())) {
+                        course = courses.get(j);
+                    }
+                }
+            }
+            if (isConflict) {
+                priorityCourses.add(course);
+                Logger.d(course.getCourse());
+            }
+        }
+        return priorityCourses;
+    }
+
+    /**
+     * 移动 中间的timetable
+     * @param x
+     * @param y
+     */
+    public void scrollScheduleLayout(int x,int y){
+        mScheduleLayout.scrollTo(x,y);
+        mWeekDayLayout.scrollTo(x,y);
+        mCourseLayout.scrollTo(x,y);
+    }
+//    private List<Course> removeRepeatedCourses(List<Course> courses) {
+//        for (int i = 0,j = courses.size();i < j;i ++){
+//            Course course = courses.get(i);
+//            courses.indexOf()
+//        }
+//    }
+
 
     private String simplifyCourse(String course) {
         if (course.length() > 12) {
@@ -379,26 +574,27 @@ public class TimeTable extends FrameLayout {
     //删除所有课,在更新课程表视图时开始调
     public void removeCourse() {
         for (int i = 0; i < 7; i++) {
-            if (dayCourseLayout[i].getChildCount() > 0) {
+            if (dayCourseLayout[i].getChildCount() > 0){
                 dayCourseLayout[i].removeAllViews();
             }
+
+            View[] views = new View[14];
+            FrameLayout.LayoutParams[] dividerParams = new LayoutParams[14];
+
+            for (int j = 0; j < 14; j++) {
+                if (dividerParams[j] == null) {
+                    dividerParams[j] = new LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            DimensUtil.dp2px(2)
+                    );
+                    dividerParams[j].setMargins(0, COURSE_TIME_HEIGHT / 2 * (j + 1) - DimensUtil.dp2px(2), 0, 0);
+                }
+                views[j] = new View(mContext);
+                views[j].setBackgroundColor(getResources().getColor(R.color.divider_course));
+                dayCourseLayout[i].addView(views[j], dividerParams[j]);
+            }
+
         }
     }
-
-    //获取随机的课程背景色
-    public int getRandomBg() {
-        Random random = new Random();
-        int r = random.nextInt(4);
-        if (r == 1) {
-            return R.drawable.shape_rectangle_green;
-        } else if (r == 2) {
-            return R.drawable.shape_rectangle_orange;
-        } else if (r == 3) {
-            return R.drawable.shape_rectangle_pink;
-        } else {
-            return R.drawable.shape_rectangle_purple;
-        }
-    }
-
 
 }

@@ -105,6 +105,7 @@
                 android:id="@+id/tv_course_remind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:text="勾选课程提醒"
                 android:textSize="@dimen/schedule_add_course_size"/>
 
