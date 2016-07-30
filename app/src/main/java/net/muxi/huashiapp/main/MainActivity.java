@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.apartment.ApartmentActivity;
 import net.muxi.huashiapp.card.CardActivity;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
@@ -190,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 5:
+                        intent = new Intent(MainActivity.this, ApartmentActivity.class);
+                        startActivity(intent);
 
                         break;
                     case 7:

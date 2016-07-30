@@ -8,6 +8,7 @@
 
 
     <TextView
+        android:layout_marginBottom="5dp"
         android:paddingLeft="20dp"
         android:textSize="16sp"
         tools:text="学生事务大厅"
@@ -15,16 +16,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+     />
 
     <TextView
+        android:textColor="@color/dividerGrey"
         android:textSize="14sp"
-        tools:text="值班时间:"
+        android:text="办公电话:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:id="@+id/textView2"
+        android:layout_marginBottom="20dp"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
@@ -32,7 +34,8 @@
     <TextView
         tools:text="8:00-9:00"
         android:textSize="14sp"
-        android:id="@+id/tv_time"
+        android:id="@+id/tv_phone"
+        android:textColor="@color/dividerGrey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textView2"
@@ -40,18 +43,21 @@
         android:layout_toEndOf="@+id/textView2"/>
 
     <TextView
-        tools:text="办公地点"
+        android:paddingBottom="15dp"
+        android:textColor="@color/dividerGrey"
+        android:text="办公地点:"
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_toLeftOf="@+id/tv_time"
-        android:layout_toStartOf="@+id/tv_time"
-        android:id="@+id/textView3"/>
+        android:id="@+id/textView3"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/tv_place"
+        android:layout_toStartOf="@+id/tv_place"/>
 
     <TextView
+        android:textColor="@color/dividerGrey"
         android:textSize="14sp"
-        tools:text="文华公书林二楼:"
+        tools:text="文华公书林二楼"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_place"
@@ -59,27 +65,6 @@
         android:layout_toRightOf="@+id/textView2"
         android:layout_toEndOf="@+id/textView2"/>
 
-    <TextView
-        tools:text="办公电话:"
-        android:textSize="14sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_apartment"
-        android:layout_toRightOf="@+id/tv_place"
-        android:layout_toEndOf="@+id/tv_place"
-        android:layout_marginLeft="60dp"
-        android:layout_marginStart="60dp"
-        android:id="@+id/textView"/>
-
-    <TextView
-        tools:text="67867177"
-        android:id="@+id/tv_phone"
-        android:textSize="14sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tv_place"
-        android:layout_toRightOf="@+id/textView"
-        android:layout_toEndOf="@+id/textView"/>
 
 
 
