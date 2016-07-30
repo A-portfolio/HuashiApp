@@ -31,23 +31,29 @@ public class NewsDetailView extends RelativeLayout {
     TextView mNewsDate;
     @BindView(R.id.background_layout)
     LinearLayout mBackgroundLayout;
+    @BindView(R.id.news_link)
+    TextView mNewsLink;
     private Context mContext;
     private List<News> mNewsList;
+    int mPosition;
 
 
-    public NewsDetailView(Context context, List<News> news) {
+    public NewsDetailView(Context context, List<News> news,int position) {
         super(context);
         mContext = context;
         mNewsList = news;
+        mPosition = position;
         initView();
     }
 
     private void initView() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.view_news_detail, this, true);
         ButterKnife.bind(this);
-        mNewsTitle.setText(mNewsList.get(0).getTitle());
-        mNewsContent.setText(mNewsList.get(0).getContent());
-        mNewsDate.setText(mNewsList.get(0).getDate());
+        mNewsTitle.setText(mNewsList.get(mPosition).getTitle());
+        mNewsContent.setText(mNewsList.get(mPosition).getContent());
+        mNewsDate.setText(mNewsList.get(mPosition).getDate());
+        mNewsLink.setText(mNewsList.get(mPosition).getAppendix_list().toString());
+
 
     }
 }

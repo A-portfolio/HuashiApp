@@ -107,9 +107,9 @@ public class NewsActivity extends ToolbarActivity {
         mNewsRecyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new MyNewsAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(View view, List<News> newsList) {
+            public void OnItemClick(View view, List<News> newsList, int position) {
                 Logger.d("balalala");
-                setupDetailLayout(newsList);
+                setupDetailLayout(newsList,position);
 
                 final View itemView = view;
 
@@ -132,7 +132,7 @@ public class NewsActivity extends ToolbarActivity {
         mContentLayout.addView(mShadowView);
     }
 
-    private void setupDetailLayout(final List<News> newsList) {
+    private void setupDetailLayout(final List<News> newsList, final int position) {
         Observable.timer(DURATION_ALPH + DURATION_SCALE, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Long>() {
@@ -150,7 +150,7 @@ public class NewsActivity extends ToolbarActivity {
                     public void onNext(Long aLong) {
                         mBaseDetailLayout = new BaseDetailLayout(NewsActivity.this);
                         mContentLayout.addView(mBaseDetailLayout);
-                        NewsDetailView newsDetailView = new NewsDetailView(NewsActivity.this, newsList);
+                        NewsDetailView newsDetailView = new NewsDetailView(NewsActivity.this, newsList,position);
                         mBaseDetailLayout.setContent(newsDetailView);
 
                     }
