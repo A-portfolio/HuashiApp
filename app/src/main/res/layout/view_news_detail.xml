@@ -43,4 +43,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"/>
 
+    <TextView
+        tools:text="http://zizhu.ccnu.edu.cn/uploadfile/2016/0607/20160607055202856.doc"
+        android:id="@+id/news_link"
+        android:textSize="12sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>

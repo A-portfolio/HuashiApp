@@ -27,7 +27,7 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsView
     private OnItemClickListener mOnItemClickListener;
 
     public interface OnItemClickListener {
-        void OnItemClick(View view, List<News> newsList);
+        void OnItemClick(View view, List<News> newsList,int position);
     }
 
 //    List<News> newsList
@@ -51,7 +51,7 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsView
         holder.mNewsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnItemClickListener.OnItemClick(v,mNewsList);
+                mOnItemClickListener.OnItemClick(v,mNewsList,position);
             }
         });
 
