@@ -1,7 +1,6 @@
 package net.muxi.huashiapp.common.util;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.Course;
 
 import java.util.ArrayList;
 import java.util.List;

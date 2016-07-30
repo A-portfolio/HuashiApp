@@ -15,7 +15,6 @@ import com.muxi.material_dialog.MaterialDialog;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.db.HuaShiDao;

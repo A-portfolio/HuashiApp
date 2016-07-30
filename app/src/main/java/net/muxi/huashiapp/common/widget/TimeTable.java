@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.util.DateUtil;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.Logger;

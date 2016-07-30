@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import net.muxi.huashiapp.common.data.BannerData;
-import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
 import java.util.ArrayList;

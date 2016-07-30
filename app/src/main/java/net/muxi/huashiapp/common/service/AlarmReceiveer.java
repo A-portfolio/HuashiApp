@@ -8,7 +8,6 @@ import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.CardData;
-import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.PersonalBook;
 import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.data.User;
