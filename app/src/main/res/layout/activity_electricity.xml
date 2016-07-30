@@ -1,36 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
     <include
         android:id="@+id/view_toolbar"
         layout="@layout/view_toolbar"/>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/relativeLayout">
+        android:layout_height="wrap_content">
 
     <ExpandableListView
+        android:background="@color/colorWhite"
         android:id="@+id/expand_list"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:groupIndicator="@drawable/indicator_selector"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:indicatorLeft="350dp"
-        android:indicatorRight="0dp"
-        android:paddingTop="?attr/actionBarSize"/>
+        android:paddingTop="?attr/actionBarSize"
+        android:childDivider="@android:color/transparent"/>
 
+
+
+        <EditText
+            android:id="@+id/edit_ec_room"
+            android:layout_below="@id/expand_list"
+            android:hint="请输入房间号如304"
+            android:drawableLeft="@drawable/indicator_selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/expand_select_button"
+            android:text="查询"
+            android:textColor="@color/colorWhite"
+            android:layout_width="328dp"
+            android:layout_height="36dp"
+            android:background="@color/colorPrimary"
+            android:layout_below="@+id/edit_ec_room"
+            android:layout_marginBottom="80dp"
+            android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/expand_select_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="60dp"/>
+
+
+
 </RelativeLayout>

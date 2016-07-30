@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.leakcanary.LeakCanary;
-import com.zhuge.analysis.stat.ZhugeSDK;
 
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.util.Logger;
@@ -35,12 +34,12 @@ public class App extends Application {
         LeakCanary.install(this);
 
         Fresco.initialize(this);
-        ZhugeSDK.getInstance().openDebug();
-        //必须在init之前调用
-        //禁止收集用户手机号码默认为收集
-        ZhugeSDK.getInstance().disablePhoneNumber();
-        //禁止收集用户个人账户信息默认为收集
-        ZhugeSDK.getInstance().disableAccounts();
+//        ZhugeSDK.getInstance().openDebug();
+//        //必须在init之前调用
+//        //禁止收集用户手机号码默认为收集
+//        ZhugeSDK.getInstance().disablePhoneNumber();
+//        //禁止收集用户个人账户信息默认为收集
+//        ZhugeSDK.getInstance().disableAccounts();
 
         sContext = getApplicationContext();
         sp = new PreferenceUtil();

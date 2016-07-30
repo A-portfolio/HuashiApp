@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:id="@+id/item_layout"
+                android:orientation="horizontal"
+                >
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/label_expand_child"
@@ -9,3 +16,11 @@
     android:textSize="20sp"
     />
 
+    <android.support.v7.widget.AppCompatRadioButton
+        android:id="@+id/ec_radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
+
+</RelativeLayout>

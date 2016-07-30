@@ -8,6 +8,7 @@ import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.CardData;
+import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.PersonalBook;
 import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.data.User;
@@ -100,7 +101,7 @@ public class AlarmReceiveer extends BroadcastReceiver {
                     public void onNext(List<CardData> cardDatas) {
                         // TODO: 16/7/4  待添加检测是否已经充值,不然每天都会提醒
                         if (Integer.valueOf(cardDatas.get(0).getOutMoney()) < 10) {
-                            if (sp.getBoolean(PreferenceUtil.IS_STOP_REMIND_CARD,false)) {
+                            if (sp.getBoolean(PreferenceUtil.IS_STOP_REMIND_CARD, false)) {
 //                                NotifyUtil.show(mContext,);
                             }
                         }
@@ -137,14 +138,14 @@ public class AlarmReceiveer extends BroadcastReceiver {
     private void checkCourses() {
         HuaShiDao dao = new HuaShiDao();
         String startDate = sp.getString(PreferenceUtil.FIRST_WEEK_DATE);
-        int curWeek = (int) DateUtil.getDistanceWeek(startDate,DateUtil.toDateInYear(new Date(System.currentTimeMillis())));
+        int curWeek = (int) DateUtil.getDistanceWeek(startDate, DateUtil.toDateInYear(new Date(System.currentTimeMillis())));
         List<Course> courses = dao.loadCourse((curWeek + 1) + "");
         Course course;
         int today = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
-        for (int i = 0,j = courses.size();i < j;i ++){
+        for (int i = 0, j = courses.size(); i < j; i++) {
             course = courses.get(i);
-            if (course.getRemind().equals("true") && (AppConstants.WEEKDAYS[today + 1]).equals(course.getDay())){
-                NotifyUtil.show(mContext, ScheduleActivity.class,mContext.getString(R.string.notify_title_course),
+            if (course.getRemind().equals("true") && (AppConstants.WEEKDAYS[today + 1]).equals(course.getDay())) {
+                NotifyUtil.show(mContext, ScheduleActivity.class, mContext.getString(R.string.notify_title_course),
                         mContext.getString(R.string.notify_content_course));
                 break;
             }

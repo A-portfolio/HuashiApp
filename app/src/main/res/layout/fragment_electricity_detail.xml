@@ -5,94 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout_left"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        >
-
-        <TextView
-            android:id="@+id/title_ec_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/medium_size"
-            tools:text="剩余电量(度)"
-            tools:textSize="20sp"
-            android:layout_marginLeft="10dp"
-            android:layout_above="@+id/ec_left"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="20dp"/>
-
-        <TextView
-            android:id="@+id/ec_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorScore"
-            android:textSize="70sp"
-            tools:text="336.54"
-            android:gravity="center_horizontal"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
-
-    </RelativeLayout>
+    <include android:id="@+id/content_layout"
+             layout="@layout/view_electricity_detail"/>
 
 
-    <RelativeLayout
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_below="@+id/relativeLayout_left"
-        android:layout_width="match_parent"
-        android:layout_height="60dp">
+    <Button
+        android:id="@+id/room_change_button"
+        android:text="更换寝室"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorWhite"
+        android:layout_width="328dp"
+        android:layout_height="36dp"
+        android:layout_below="@+id/line4"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"/>
 
 
-        <TextView
-            android:id="@+id/title__last_month_ec_use"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:paddingLeft="40dp"
-            android:text="上月用电"
-            android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/last_month_ec_use"
-            android:layout_alignEnd="@+id/last_month_ec_use"/>
-
-        <TextView
-            android:id="@+id/last_month_ec_use"
-            android:textSize="30sp"
-            android:text="91.96"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="82dp"
-            android:layout_marginStart="82dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
-
-        <TextView
-            android:id="@+id/title_month_ec_use"
-            android:textSize="20sp"
-            android:text="当月已用"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/month_ec_use"
-            android:layout_alignRight="@+id/month_ec_use"
-            android:layout_alignEnd="@+id/month_ec_use"/>
-
-        <TextView
-            android:id="@+id/month_ec_use"
-            android:textSize="30sp"
-            android:text="22.67"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="68dp"
-            android:layout_marginEnd="68dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
-
-
-    </RelativeLayout>
 
 
 

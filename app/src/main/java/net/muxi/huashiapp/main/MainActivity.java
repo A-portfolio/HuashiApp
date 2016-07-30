@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.card.CardActivity;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
@@ -177,14 +178,17 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(MainActivity.this, ScoreActivity.class);
                         startActivity(intent);
                         break;
+
                     case 3:
-                        Intent intent3 = new Intent(MainActivity.this, ElectricityActivity.class);
-                        startActivity(intent3);
+                        intent = new Intent(MainActivity.this,ElectricityActivity.class);
+                        startActivity(intent);
                         break;
+
                     case 4:
                         intent = new Intent(MainActivity.this, CalendarActivity.class);
                         startActivity(intent);
                         break;
+
                     case 5:
 
                         break;
@@ -192,6 +196,12 @@ public class MainActivity extends AppCompatActivity {
                         intent = WebViewActivity.newIntent(MainActivity.this, "http://xueer.muxixyz.com/", "学而");
                         startActivity(intent);
                         break;
+                    case 8:
+                        intent = new Intent(MainActivity.this,CardActivity.class);
+                        startActivity(intent);
+                        break;
+
+
                 }
             }
         });

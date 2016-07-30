@@ -30,7 +30,7 @@
             android:name="ZHUGE_CHANNEL" android:value="校园通"/>
 
 
-        <activity android:name=".login.LoginActivity"
+        <activity android:name=".main.MainActivity"
                   android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize">
 
@@ -41,7 +41,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".main.MainActivity"
+        <!--<activity android:name=".main.MainActivity"-->
                   android:launchMode="singleTask"/>
 
         <activity android:name=".schedule.ScheduleActivity"
@@ -56,10 +56,12 @@
         <activity android:name=".common.ui.SettingActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".news.DetailActivity"
+        <activity android:name=".news.NewsDetailActivity"
                   android:launchMode="singleTask"/>
 
-        <!--<android:parentActivityName=".common.ui.NewsActivity"/>-->
+        <activity android:name=".news.NewsActivity"
+                  android:launchMode="singleTask"/>
+
         <activity android:name=".library.LibraryActivity"
                   android:launchMode="singleTask"/>
 
@@ -71,6 +73,9 @@
                   android:launchMode="singleTask"/>
 
         <activity android:name=".library.MineActivity"
+                  android:launchMode="singleTask"/>
+
+        <activity android:name=".card.CardActivity"
                   android:launchMode="singleTask"/>
 
         <activity android:name=".webview.WebViewActivity"
@@ -85,6 +90,7 @@
 
         <activity android:name=".electricity.ElectricityDetailActivity"/>
 
+
         <receiver android:name=".common.service.AlarmLiveReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT"/>
@@ -97,7 +103,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".news.NewsActivity"/>
 
 
     </application>

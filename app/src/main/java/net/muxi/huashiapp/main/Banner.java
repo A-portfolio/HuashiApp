@@ -31,8 +31,7 @@ public class Banner extends AppCompatActivity {
     LinearLayout mLinearLayout;
     private List<ImageView> mList;
 
-    private int[] bannerImages = {R.drawable.image1_banner, R.drawable.image2_banner, R.drawable.image3_banner,
-            R.drawable.image4_banner};
+    private int[] bannerImages = {R.drawable.image1_banner, R.drawable.image1_banner};
 
 
     //ViewPager适配器和监听器

@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.common.util;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.data.Course;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class TimeTableUtil {
      * @param allCourses 所有课程的列表
      * @return
      */
-    public static List<Course> getAllCoursesInPosition(Course course,List<Course> allCourses ){
+    public static List<Course> getAllCoursesInPosition(Course course, List<Course> allCourses ){
         List<Course> curPosCourses = new ArrayList<>();
         for (Course oneCourse : allCourses){
             if (oneCourse.getDay().equals(course.getDay()) && oneCourse.getStart() == course.getStart() && oneCourse.getDuring() == course.getDuring()){

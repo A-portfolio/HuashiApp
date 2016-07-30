@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.util.DateUtil;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.Logger;
@@ -248,7 +249,7 @@ public class TimeTable extends FrameLayout {
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         DimensUtil.dp2px(2)
                 );
-                dividerParams[j].setMargins(0, COURSE_TIME_HEIGHT / 2 * (j + 1)  - DimensUtil.dp2px(2), 0, 0);
+                dividerParams[j].setMargins(0, COURSE_TIME_HEIGHT / 2 * (j + 1) - DimensUtil.dp2px(2), 0, 0);
                 views[j] = new View(mContext);
                 views[j].setBackgroundColor(getResources().getColor(R.color.divider_course));
                 dayCourseLayout[i].addView(views[j], dividerParams[j]);
@@ -513,13 +514,15 @@ public class TimeTable extends FrameLayout {
 
     /**
      * 移动 中间的timetable
+     *
      * @param x
      * @param y
      */
-    public void scrollScheduleLayout(int x,int y){
-        mScheduleLayout.scrollTo(x,y);
-        mWeekDayLayout.scrollTo(x,y);
-        mCourseLayout.scrollTo(x,y);
+
+    public void scrollScheduleLayout(int x, int y) {
+        mScheduleLayout.scrollTo(x, y);
+        mWeekDayLayout.scrollTo(x, y);
+        mCourseLayout.scrollTo(x, y);
     }
 //    private List<Course> removeRepeatedCourses(List<Course> courses) {
 //        for (int i = 0,j = courses.size();i < j;i ++){
@@ -573,7 +576,7 @@ public class TimeTable extends FrameLayout {
     //删除所有课,在更新课程表视图时开始调
     public void removeCourse() {
         for (int i = 0; i < 7; i++) {
-            if (dayCourseLayout[i].getChildCount() > 0){
+            if (dayCourseLayout[i].getChildCount() > 0) {
                 dayCourseLayout[i].removeAllViews();
             }
 

@@ -11,3 +11,4 @@ import net.muxi.huashiapp.common.data.BookSearchResult;
 public interface OnItemClickListener {
     public void onItemClick(View view, BookSearchResult.ResultsBean resultsBean);
 }
+

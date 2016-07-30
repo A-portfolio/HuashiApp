@@ -22,12 +22,12 @@ public class MyDetailAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return ElectricityDetailFragment.newInstance("","");
+       return ElectricityDetailFragment.newInstance(position+6);
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return COUNT;
     }
 
     @Override

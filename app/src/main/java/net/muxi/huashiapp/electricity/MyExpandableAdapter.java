@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
@@ -16,11 +17,11 @@ import net.muxi.huashiapp.R;
  */
 public class MyExpandableAdapter extends BaseExpandableListAdapter{
 
-    public String[] groupStrings = {"区域","建筑","楼层","房间"};
+    public String[] groupStrings = {"区域","建筑"};
 
     public String[][] childStrings ={
-            {"西区学生宿舍","东区学生宿舍","元宝山学生宿舍","南湖学生宿舍","公共教学楼"},
-            {"东11","东3","东2","东1",}
+            {"西区","东区","元宝山","南湖"},
+            {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"}
     };
 
     private Context mContext;
@@ -100,11 +101,13 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter{
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_expand_child, parent, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.tvTitle = (TextView) convertView.findViewById(R.id.label_expand_child);
+            childViewHolder.mRadioButton = (RadioButton) convertView.findViewById(R.id.ec_radio);
             convertView.setTag(childViewHolder);
         } else {
             childViewHolder = (ChildViewHolder)convertView.getTag();
         }
         childViewHolder.tvTitle.setText(childStrings[groupPosition][childPosition]);
+//        childViewHolder.mCheckBox.setText(childStrings[groupPosition][childPosition]);
         return convertView;
     }
 
@@ -119,6 +122,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter{
     }
     class ChildViewHolder {
         TextView tvTitle;
+        RadioButton mRadioButton;
     }
 
 }

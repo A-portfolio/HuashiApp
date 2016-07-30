@@ -15,6 +15,7 @@ import com.muxi.material_dialog.MaterialDialog;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.db.HuaShiDao;
@@ -121,7 +122,7 @@ public class AddCourseActivity extends ToolbarActivity
                 if (!isEmpty()) {
                     final Course course = setCourse();
                     final int id = sp.getInt(PreferenceUtil.COURSE_ID, 1);
-                    course.setId(id + "");
+                    course.setId(id +"");
                     if (isConflict(course)) {
                         final MaterialDialog dialog = new MaterialDialog(AddCourseActivity.this);
                         dialog.setTitle(getResources().getString(R.string.course_conflict_title))

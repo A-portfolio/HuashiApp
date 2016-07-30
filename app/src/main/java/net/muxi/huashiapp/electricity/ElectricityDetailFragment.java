@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
@@ -15,41 +16,40 @@ import net.muxi.huashiapp.R;
  */
 public class ElectricityDetailFragment extends Fragment {
 
-    private String mArea;
-    private String mRoom;
 
-    private static final String SCHOOL_AREA = "area";
-    private static final String SCHOOL_ROOM = "room";
+    public static final String ARGS_PAGE = "args_page";
+    private int mPage;
 
-
-    public static ElectricityDetailFragment newInstance(String area,String room){
+    public static ElectricityDetailFragment newInstance(int page) {
         Bundle args = new Bundle();
-        args.putString(SCHOOL_AREA,area);
-        args.putString(SCHOOL_ROOM,room);
-        ElectricityDetailFragment detailFragment = new ElectricityDetailFragment();
-        detailFragment.setArguments(args);
-        return detailFragment;
+        args.putInt(ARGS_PAGE, page);
+        ElectricityDetailFragment fragment = new ElectricityDetailFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
+
+
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mArea = getArguments().getString(SCHOOL_AREA);
-        mRoom = getArguments().getString(SCHOOL_ROOM);
+        mPage = getArguments().getInt(ARGS_PAGE);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_electricity_detail,container,false);
-        TextView textView1= (TextView)view.findViewById(R.id.title_ec_left);
-        TextView textView2= (TextView)view.findViewById(R.id.ec_left);
-        TextView textView3= (TextView)view.findViewById(R.id.title__last_month_ec_use);
-        TextView textView4= (TextView)view.findViewById(R.id.last_month_ec_use);
-        TextView textView5= (TextView)view.findViewById(R.id.title_month_ec_use);
-        TextView textView6= (TextView)view.findViewById(R.id.month_ec_use);
+        TextView tv1= (TextView)view.findViewById(R.id.ec_left);
+        TextView tv2= (TextView)view.findViewById(R.id.last_month_ec_use);
+        TextView tv3= (TextView)view.findViewById(R.id.month_ec_use);
+        TextView tv4= (TextView)view.findViewById(R.id.money_left);
+        TextView tv5= (TextView)view.findViewById(R.id.month_money_use);
+        TextView tv6= (TextView)view.findViewById(R.id.last_month_money_use);
+        Button mchange = (Button)view.findViewById(R.id.room_change_button);
         return view;
 
     }
+
 }
