@@ -4,6 +4,7 @@
               android:id="@+id/background_layout"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@color/colorWhite"
               android:minHeight="@dimen/library_detail_min_height"
               android:orientation="vertical"
               android:paddingLeft="@dimen/activity_horizontal_margin"

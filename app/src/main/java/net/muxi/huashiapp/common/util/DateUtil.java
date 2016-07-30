@@ -131,4 +131,20 @@ public class DateUtil {
         return false;
     }
 
+    /**
+     * 获取两个时间的秒差数
+     * @param date1
+     * @param date2
+     * @return
+     */
+    public static long getSecondSpace(Date date1,Date date2){
+        long nd = 1000 * 24 * 60 * 60;
+        long nh = 1000 * 60 * 60;
+        long nm = 1000 * 60;
+        long ns = 1000;
+        long diff = date2.getTime() - date1.getTime();
+        return (diff % nd % nh % nm );
+    }
+
+
 }

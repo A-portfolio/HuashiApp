@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.muxi.material_dialog.MaterialDialog;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
@@ -33,7 +34,8 @@ import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
-import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.common.util.TimeTableUtil;
+import net.muxi.huashiapp.common.widget.ShadowView;
 import net.muxi.huashiapp.common.widget.TimeTable;
 
 import java.util.Date;
@@ -63,7 +65,7 @@ public class ScheduleActivity extends ToolbarActivity {
     @BindView(R.id.schedule_framelayout)
     FrameLayout mScheduleFramelayout;
     @BindView(R.id.root_layout)
-    LinearLayout mRootLayout;
+    FrameLayout mRootLayout;
 
     private RecyclerView mRecyclerView;
     private WeekSelectAdapter mWeekSelectAdapter;
@@ -124,12 +126,12 @@ public class ScheduleActivity extends ToolbarActivity {
     }
 
     private void getCurCourses() {
-        mCourses = dao.loadCourse(new String("" + mSelectWeek));
+        mCourses = dao.loadAllCourses();
         //如果当前未连接网络则不从服务器获取课表,使用本地课表
         if (!NetStatus.isConnected()) {
             return;
         }
-        CampusFactory.getRetrofitService().getSchedule(Base64Util.createBaseStr(mUser), "2015", "12", "2014214629")
+        CampusFactory.getRetrofitService().getSchedule(Base64Util.createBaseStr(mUser), "2015", "12", App.sUser.getSid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<Course>>() {
@@ -149,22 +151,23 @@ public class ScheduleActivity extends ToolbarActivity {
                         //因为每次增删服务器与本地数据库都同时进行,所以就直接比较课程数有无差别
                         if (mCourses.size() != courses.size()) {
                             dao.deleteAllCourse();
+                            mCourses.clear();
                             for (int i = 0, max = courses.size(); i < max; i++) {
                                 dao.insertCourse(courses.get(i));
-                                mCourses.addAll(courses);
                             }
+                            mCourses.addAll(courses);
+                            updateTimetable();
                         }
-                        mCourses.addAll(courses);
-                        mTimeTable.setCourse(mCourses);
+
                     }
                 });
     }
 
     private void initView() {
         mTimeTable = new TimeTable(this);
-
+        mTimeTable.setTodayLayout(DateUtil.getDayInWeek(new Date(System.currentTimeMillis())));
         LinearLayout.LayoutParams timeTableParams = new
-                LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mTimeTable.setLayoutParams(timeTableParams);
         mScheduleFramelayout.addView(mTimeTable);
 
@@ -174,7 +177,8 @@ public class ScheduleActivity extends ToolbarActivity {
         setTitle("课程表");
         // TODO: 16/5/25 debug
         mTvScheduleWeekNumber.setText(AppConstants.WEEKS[mSelectWeek - 1]);
-        mTimeTable.setCourse(mCourses);
+        mTimeTable.setCourse(mCourses,mSelectWeek);
+        Logger.d("timetable set course" + mCourses.size());
         mTimeTable.setOnLongPressedListener(new TimeTable.OnLongPressedListenr() {
             @Override
             public void onLongPressed(final Course course) {
@@ -211,8 +215,8 @@ public class ScheduleActivity extends ToolbarActivity {
                                             @Override
                                             public void onNext(Response<VerifyResponse> verifyResponseResponse) {
                                                 if (verifyResponseResponse.code() == 200) {
-                                                    ToastUtil.showShort("delete success");
                                                     dao.deleteCourse(course.getId());
+                                                    mCourses = dao.loadAllCourses();
                                                     updateTimetable();
                                                 }
 
@@ -225,6 +229,30 @@ public class ScheduleActivity extends ToolbarActivity {
 
                 dialog.show();
 
+            }
+        });
+
+        mTimeTable.setOnCourseClickListener(new TimeTable.OnCourseClickListener() {
+            @Override
+            public void onCourseClick(Course course) {
+                List<Course> displayCourse = TimeTableUtil.getAllCoursesInPosition(course,mCourses);
+                CoursesView coursesView = new CoursesView(ScheduleActivity.this,displayCourse,mSelectWeek);
+                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                );
+                ShadowView shadowView = new ShadowView(ScheduleActivity.this);
+                shadowView.setLayoutParams(layoutParams);
+                shadowView.setTag("shadow_view");
+                coursesView.setTag("course_view");
+                mRootLayout.addView(shadowView);
+                mRootLayout.addView(coursesView,layoutParams);
+                coursesView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+                    }
+                });
             }
         });
     }
@@ -249,6 +277,16 @@ public class ScheduleActivity extends ToolbarActivity {
                 invalidateOptionsMenu();
                 mTvScheduleWeekNumber.setText(AppConstants.WEEKS[mSelectWeek - 1]);
                 mTimeTable.changeTheDate(position + 1 - mCurWeek);
+                if (mSelectWeek == mCurWeek){
+                    mTimeTable.setTodayLayout(DateUtil.getDayInWeek(new Date(System.currentTimeMillis())));
+                    mTimeTable.setType(0);
+                }else {
+                    mTimeTable.resetTodayLayout(DateUtil.getDayInWeek(new Date(System.currentTimeMillis())));
+                    mTimeTable.setType(1);
+                    mTimeTable.scrollScheduleLayout(0,0);
+                }
+                updateTimetable();
+                mTimeTable.invalidate();
 
             }
         });
@@ -258,7 +296,7 @@ public class ScheduleActivity extends ToolbarActivity {
 
     private void updateTimetable() {
         mTimeTable.removeCourse();
-        mTimeTable.setCourse(dao.loadCourse(getTheWeek(mTvScheduleWeekNumber.getText().toString())));
+        mTimeTable.setCourse(mCourses,mSelectWeek);
         Logger.d("schedule has update");
     }
 
@@ -310,7 +348,9 @@ public class ScheduleActivity extends ToolbarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+            mCourses = dao.loadAllCourses();
             updateTimetable();
+            mTimeTable.invalidate();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -324,9 +364,32 @@ public class ScheduleActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
+        if (isSelectShown){
+            fadeoutRecyclerView();
+            isSelectShown = false;
+            invalidateOptionsMenu();
+            return;
+        }
+        if (isCourseViewShown()){
+            removeCourseView();
+            return;
+        }
         super.onBackPressed();
     }
 
+    public boolean isCourseViewShown(){
+        if (mRootLayout.findViewWithTag("shadow_view") != null){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    //移除展示课程以及阴影部分的 view
+    public void removeCourseView(){
+        mRootLayout.removeView(mRootLayout.findViewWithTag("shadow_view"));
+        mRootLayout.removeView(mRootLayout.findViewWithTag("course_view"));
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

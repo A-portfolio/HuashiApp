@@ -40,7 +40,7 @@ import rx.schedulers.Schedulers;
  * Created by ybao on 16/5/1.
  */
 public class AddCourseActivity extends ToolbarActivity
-        implements View.OnClickListener, CourseDialogFragment.NoticeDialogListener {
+        implements View.OnClickListener, CourseTimeDialog.NoticeDialogListener {
 
 
     @BindView(R.id.toolbar)
@@ -131,14 +131,13 @@ public class AddCourseActivity extends ToolbarActivity
                                     @Override
                                     public void onClick(View v) {
                                         dialog.dismiss();
-
+                                        addCourse(course, id);
                                     }
                                 })
                                 .setNegativeButton(getResources().getString(R.string.btn_negative), new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         dialog.dismiss();
-                                        addCourse(course, id);
                                     }
                                 });
                         dialog.setCanceledOnTouchOutside(true);
@@ -180,10 +179,9 @@ public class AddCourseActivity extends ToolbarActivity
                     startTime = getStartTime(str) - 1;
                     endTime = getEndTime(str) - 1;
                 }
-                CourseDialogFragment dialogFragment = CourseDialogFragment.newInstance(weekday, startTime, endTime);
-                dialogFragment.show(getFragmentManager(), "CourseDialogFragment");
-                break;
-
+                final CourseTimeDialog courseTimeDialog = new CourseTimeDialog(this,weekday,startTime,endTime);
+                courseTimeDialog.setNoticeDialogListener(this);
+                courseTimeDialog.show();
         }
 
     }
@@ -240,9 +238,9 @@ public class AddCourseActivity extends ToolbarActivity
         for (int i = 0, size = courses.size(); i < size; i++) {
             Course course = courses.get(i);
             if ((course.getStart() <= newCourse.getStart() &&
-                    (course.getStart() + course.getDuring()) >= (newCourse.getStart() + newCourse.getDuring()))
+                    (course.getStart() + course.getDuring()) > newCourse.getStart())
                     || (course.getStart() >= newCourse.getStart() &&
-                    (course.getStart() + course.getDuring()) <= (newCourse.getStart() + newCourse.getDuring()))) {
+                    course.getStart() < (newCourse.getStart() + newCourse.getDuring()))) {
                 for (int j = 0; j < mWeeks.size(); j++) {
                     if (course.getWeeks().contains(String.valueOf(mWeeks.get(i)))) {
                         return true;

@@ -10,15 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <include android:id="@+id/view_toolbar"
-             layout="@layout/view_toolbar"/>
+        <include android:id="@+id/view_toolbar"
+                 layout="@layout/view_toolbar"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/news_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/view_toolbar"
-        android:clipToPadding="false"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/news_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/view_toolbar"
+            android:clipToPadding="false"/>
 
     </RelativeLayout>
 

@@ -2,7 +2,7 @@ package net.muxi.huashiapp.common.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -26,11 +26,11 @@ import rx.schedulers.Schedulers;
  */
 public class AboutActivity extends ToolbarActivity {
 
-    @BindView(R.id.root_layout)
-    LinearLayout mRootLayout;
+
     @BindView(R.id.banner)
     ConvenientBanner mBanner;
-
+    @BindView(R.id.root_layout)
+    FrameLayout mRootLayout;
     private List<BannerData> mBannerDatas;
     private List<String> imgUrls;
 
@@ -38,9 +38,9 @@ public class AboutActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        ButterKnife.bind(this);
         mBannerDatas = new ArrayList<>();
         imgUrls = new ArrayList<>();
-        ButterKnife.bind(this);
         CampusFactory.getRetrofitService().getBanner()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
@@ -58,8 +58,7 @@ public class AboutActivity extends ToolbarActivity {
                     @Override
                     public void onNext(List<BannerData> bannerDatas) {
                         mBannerDatas.addAll(bannerDatas);
-                        for (int i = 0;i < mBannerDatas.size();i ++){
-                            imgUrls.clear();
+                        for (int i = 0; i < mBannerDatas.size(); i++) {
                             imgUrls.add(mBannerDatas.get(i).getImg());
                         }
                         setupBanner(mBannerDatas);
@@ -75,11 +74,14 @@ public class AboutActivity extends ToolbarActivity {
             public Object createHolder() {
                 return new BaHolder();
             }
-        },imgUrls)
+        }, imgUrls)
                 .setPageIndicator(new int[]{
                         R.drawable.ic_page_indicator,
                         R.drawable.ic_page_indicator_focused
                 });
         mBanner.setManualPageable(true);
+        mBanner.startTurning(3000);
+
     }
+
 }

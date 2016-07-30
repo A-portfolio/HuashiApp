@@ -1,31 +1,28 @@
 package net.muxi.huashiapp.common.data;
 
 /**
- * Created by december on 16/6/29.
+ * Created by ybao on 16/7/30.
  */
 public class Course {
 
-        private String id;
-        private String course;
-        private String teacher;
-        private String weeks;
-        private String day;
-        private int start;
-        private int during;
-        private String place;
-        private String remind;
+    private String id;
+    private String course;
+    private String teacher;
+    private String weeks;
+    private String day;
+    private int start;
+    private int during;
+    private String place;
+    private String remind;
+    private int color;
 
-        public String getId() {
-            return id;
-        }
+    public String getId() {
+        return id;
+    }
 
-        public void setId(String id) {
-            this.id = id;
-        }
-
-
-
-
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public int getDuring() {
         return during;
@@ -90,4 +87,13 @@ public class Course {
     public void setRemind(String remind) {
         this.remind = remind;
     }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
 }

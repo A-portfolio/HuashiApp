@@ -81,7 +81,7 @@ public class NewsActivity extends ToolbarActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
 
                     @Override
@@ -90,8 +90,6 @@ public class NewsActivity extends ToolbarActivity {
 
                     }
                 });
-
-
     }
 
     public void init() {
@@ -111,27 +109,7 @@ public class NewsActivity extends ToolbarActivity {
             @Override
             public void OnItemClick(View view, List<News> newsList) {
                 Logger.d("balalala");
-                CampusFactory.getRetrofitService().getNews()
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .observeOn(Schedulers.newThread())
-                        .subscribe(new Observer<List<News>>() {
-                            @Override
-                            public void onCompleted() {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onNext(List<News> newsList) {
-                                setupDetailLayout(newsList);
-                            }
-
-
-                        });
+                setupDetailLayout(newsList);
 
                 final View itemView = view;
 

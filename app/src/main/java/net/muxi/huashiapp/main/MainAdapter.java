@@ -31,7 +31,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private static final int ITEM_TYPE_BANNER = 0;
     private static final int ITEM_TYPE_COMMON = 1;
 
-    private static final long TURNING_TIME = 5000;
+    private static final long TURNING_TIME = 4000;
 
     private int[] mpics;
     private String[] mdesc;
@@ -69,15 +69,15 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void swap(List<BannerData> bannerDatas) {
         mBannerDatas.clear();
         mBannerDatas.addAll(bannerDatas);
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
         imageUrls.clear();
         for (int i = 0; i < mBannerDatas.size(); i++) {
             imageUrls.add(mBannerDatas.get(i).getImg());
         }
-        Logger.d("swap the data");
 //        notifyItemChanged(6);
         mConvenientBanner.notifyDataSetChanged();
         Logger.d(mConvenientBanner.isTurning() + "");
+        mConvenientBanner.startTurning(TURNING_TIME);
 //        mConvenientBanner.startTurning(3000);
     }
 
@@ -101,11 +101,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Logger.d(position + "");
         if (holder instanceof BannerViewHolder) {
-            Logger.d("set bannerviewholder");
             setupBanner(holder);
-            Logger.d("banner set end");
         } else if (holder instanceof CommonViewHolder) {
-            Logger.d("commonviewholder bind");
             if (position < 6) {
                 ((CommonViewHolder) holder).mImageView.setImageResource(mpics[position]);
                 ((CommonViewHolder) holder).mTextView.setText(mdesc[position]);

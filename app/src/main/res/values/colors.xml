@@ -10,18 +10,22 @@
     <color name="hintColor">#C4C4C4</color>
     <color name="dividerGrey">#B6B6B6</color>
     <color name="colorWeekLayout">#8865C7</color>
+    <color name="colorCourseTimeLayout">#96F7F3FF</color>
     <color name="shadow_bg">#50000000</color>
     <color name="colorCheckBox">#6934B6</color>
 
     <!--课程表-->
-    <color name="colorScheduleStart">#FF673ABA</color>
-    <color name="colorScheduleEnd">#C0673ABA</color>
+    <color name="course_time_layout_bg">#96F7F3FF</color>
+    <color name="course_week_layout_bg">#96F7F2FF</color>
     <color name="colorUnchecked">#010101</color>
     <color name="divider_course_time">#F7F2FF</color>
-    <color name="course_random_green">#52CCC0</color>
-    <color name="course_random_orange">#FF5722</color>
-    <color name="course_random_purple">#B195DA</color>
-    <color name="course_random_pink">#E85D8B</color>
+    <color name="divider_course">#96C5C5C5</color>
+
+    <color name="course_random_green">#9652CCC0</color>
+    <color name="course_random_orange">#96FF5722</color>
+    <color name="course_random_purple">#96673AB7</color>
+    <color name="course_random_pink">#96E91E63</color>
+    <color name="course_not_cur_week">#96C5C5C5</color>
 
     <color name="week_random_pink">#96E91E63</color>
     <color name="week_random_green">#96009688</color>

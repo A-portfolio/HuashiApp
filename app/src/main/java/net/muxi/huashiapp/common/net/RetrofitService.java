@@ -81,7 +81,7 @@ public interface RetrofitService {
 
     //查询余额  除了学号其他传固定值 http://console.ccnu.edu.cn/ecard/getTrans?userId=2013211389&days=90&startNum=0&num=200
     @GET("http://console.ccnu.edu.cn/ecard/getTrans")
-    Observable<List<CardData>>  getCardBalance(@Query("userId") String sid,
+    Observable<List<CardData>> getCardBalance(@Query("userId") String sid,
                                         @Query("days") String day,
                                         @Query("startNum") String start,
                                         @Query("num") String num);
