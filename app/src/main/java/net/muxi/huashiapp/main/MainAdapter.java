@@ -77,7 +77,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 //        notifyItemChanged(6);
         mConvenientBanner.notifyDataSetChanged();
         Logger.d(mConvenientBanner.isTurning() + "");
-        mConvenientBanner.startTurning(TURNING_TIME);
 //        mConvenientBanner.startTurning(3000);
     }
 
@@ -124,9 +123,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             }
         }, imageUrls)
                 .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
-                .startTurning(TURNING_TIME)
                 .setOnItemClickListener(this);
 
+        ((BannerViewHolder) holder).mBanner.startTurning(TURNING_TIME);
+        Logger.d("start turn ");
         ((BannerViewHolder) holder).mBanner.setManualPageable(true);
         Logger.d("setup banner");
         mConvenientBanner = ((BannerViewHolder) holder).mBanner;

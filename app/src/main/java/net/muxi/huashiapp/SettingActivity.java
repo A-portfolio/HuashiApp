@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.common.ui;
+package net.muxi.huashiapp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 
-import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.login.LoginActivity;

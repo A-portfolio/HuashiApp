@@ -20,7 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/schedule_layout_week_height"
         android:layout_marginTop="?attr/actionBarSize"
-        android:elevation="8dp"
         android:background="@color/colorPrimary"
         android:gravity="center">
 

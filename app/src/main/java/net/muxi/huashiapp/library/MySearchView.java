@@ -201,7 +201,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
         mEditSearch.setTextColor(color);
     }
 
-    public void setOnItemClickListener(AdapterView.OnItemClickListener itemClickListener){
+    public void setOnItemClickListener(AdapterView.OnItemClickListener itemClickListener) {
         mSearchListview.setOnItemClickListener(itemClickListener);
     }
 
@@ -214,9 +214,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     onSubmitQuery(mSearchAdapter.getItem(position).toString());
-                    if (isSearchOpen()){
-                        closeSearchView();
-                    }
+                    closeSearchView();
                 }
             });
         }
@@ -284,9 +282,10 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
 
     /**
      * 设置SearchView是否以动画展现,默认为是
+     *
      * @param b
      */
-    public void setIsVisibleWithAnimation(boolean b){
+    public void setIsVisibleWithAnimation(boolean b) {
         isAnimation = b;
     }
 
@@ -305,7 +304,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_search:
                 onSubmitQuery(mEditSearch.getText().toString());
-                if (isSearchOpen()){
+                if (isSearchOpen()) {
                     closeSearchView();
                 }
                 break;
@@ -318,6 +317,9 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
         }
     }
 
+    /**
+     * 关闭 searchview
+     */
     public void closeSearchView() {
         if (!mIsSearchOpen) {
             return;

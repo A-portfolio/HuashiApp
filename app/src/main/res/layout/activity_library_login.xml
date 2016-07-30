@@ -16,11 +16,13 @@
     <TextView
         android:id="@+id/tv_search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_below="@+id/toolbar"
         android:layout_marginLeft="@dimen/library_horizontal_margin"
         android:layout_marginRight="@dimen/library_horizontal_margin"
         android:drawableLeft="@drawable/ic_search_black_24dp"
+        android:gravity="center_vertical"
+        android:drawablePadding="16dp"
         android:hint="@string/tip_lib_write_keyword"/>
 
     <Space
@@ -61,7 +63,7 @@
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"

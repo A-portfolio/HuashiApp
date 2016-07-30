@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/space_divider"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="36dp"
+        android:text="华师匣子"
+        android:textColor="@color/colorPrimary"
+        android:textSize="36dp"/>
 
     <Space
         android:id="@+id/space_divider"
@@ -30,8 +39,7 @@
             android:inputType="number"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColorHint="@color/hintColor"
-            android:textSize="@dimen/login_edit_text_size"/>
+            android:textColorHint="@color/hintColor"/>
 
         <net.muxi.huashiapp.common.widget.LoginEditText
             android:id="@+id/edit_password"
@@ -39,26 +47,30 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/edit_user_name"
             android:layout_centerInParent="true"
+            android:layout_marginTop="16dp"
             android:focusable="true"
+            android:hint="密码"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:imeOptions="actionDone"
-            android:layout_marginTop="32dp"
             android:singleLine="true"
-            android:textColorHint="@color/hintColor"
-            android:textSize="@dimen/login_edit_text_size"/>
+            android:textColorHint="@color/hintColor"/>
 
     </RelativeLayout>
 
     <Button
         android:id="@+id/btn_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
         android:layout_below="@+id/login_center_layout"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="56dp"
+        android:layout_marginRight="56dp"
         android:layout_marginTop="32dp"
+        android:background="@color/colorPrimary"
         android:enabled="false"
         android:text="登录"
+        android:textColor="@color/colorWhite"
         android:textSize="@dimen/login_btn_text_size"/>
 
 </RelativeLayout>

@@ -17,20 +17,13 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-        <!--<provider-->
-        <!--android:name="br.com.mauker.materialsearchview.db.HistoryProvider"-->
-        <!--android:authorities="br.com.mauker.materialsearchview.searchhistorydatabase"-->
-        <!--android:exported="false"-->
-        <!--android:protectionLevel="signature"-->
-        <!--android:syncable="true"/>-->
-
         <meta-data
             android:name="ZHUGE_APPKEY" android:value="9197e7dd1e5c40cab4556a8b7c3145d3"/>
         <meta-data
             android:name="ZHUGE_CHANNEL" android:value="校园通"/>
 
 
-        <activity android:name=".login.LoginActivity"
+        <activity android:name=".EnteranceActivity"
                   android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize">
 
@@ -41,7 +34,16 @@
             </intent-filter>
         </activity>
 
+
+        <activity android:name=".login.LoginActivity"
+                  android:windowSoftInputMode="adjustResize"
+                  android:launchMode="singleTask"/>
+
+
         <activity android:name=".main.MainActivity"
+                  android:launchMode="singleTask"/>
+
+        <activity android:name=".SettingActivity"
                   android:launchMode="singleTask"/>
 
         <activity android:name=".schedule.ScheduleActivity"
@@ -50,11 +52,10 @@
         <activity android:name=".schedule.AddCourseActivity"
                   android:launchMode="singleTask"/>
 
+
         <activity android:name=".score.ScoreActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".common.ui.SettingActivity"
-                  android:launchMode="singleTask"/>
 
 
         <activity android:name=".news.NewsActivity"
@@ -67,8 +68,8 @@
                   android:launchMode="singleTask"/>
 
         <activity android:name=".library.LibraryLoginActivity"
-                  android:windowSoftInputMode="adjustNothing"
-                  android:launchMode="singleTask"/>
+                  android:launchMode="singleTask"
+                  android:windowSoftInputMode="adjustNothing"/>
 
         <activity android:name=".library.MineActivity"
                   android:launchMode="singleTask"/>
@@ -85,7 +86,9 @@
         <activity android:name=".apartment.ApartmentActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".common.ui.CalendarActivity"/>
+
+        <activity android:name=".CalendarActivity"/>
+
 
         <activity android:name=".electricity.ElectricityActivity"/>
 
@@ -103,7 +106,6 @@
                 <action android:name="net.muxi.huashiapp.alarm"/>
             </intent-filter>
         </receiver>
-
 
 
     </application>

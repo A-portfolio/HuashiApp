@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">校园通</string>
+    <string name="app_name">华师匣子</string>
 
     <!--菜单项-->
     <string name="action_logout">注销</string>

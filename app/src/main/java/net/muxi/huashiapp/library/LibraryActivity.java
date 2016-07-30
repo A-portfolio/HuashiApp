@@ -56,6 +56,8 @@ public class LibraryActivity extends ToolbarActivity {
     @BindView(R.id.content_layout)
     FrameLayout mContentLayout;
 
+    private BookDetailView mBookDetailView;
+
 //    private List<BookSearchResult.ResultsBean> bookList;
 
     private List<BookSearchResult.ResultsBean> mBookList;
@@ -153,7 +155,6 @@ public class LibraryActivity extends ToolbarActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
                         e.printStackTrace();
                     }
 
@@ -201,7 +202,7 @@ public class LibraryActivity extends ToolbarActivity {
                             @Override
                             public void onNext(Book book) {
                                 Logger.d(book.getBook());
-                                setupDetailLayout(book, published);
+                                setDetailData(book,published);
                             }
                         });
 
@@ -214,6 +215,8 @@ public class LibraryActivity extends ToolbarActivity {
                         startScale(itemView);
                     }
                 }, DURATION_ALPH);
+
+                setupDetailLayout();
             }
 
         });
@@ -277,8 +280,7 @@ public class LibraryActivity extends ToolbarActivity {
                 });
     }
 
-    private void setupDetailLayout(final Book book, final String published) {
-        Logger.d(book.getBook());
+    private void setupDetailLayout() {
         Observable.timer(DURATION_ALPH + DURATION_SCALE, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Long>() {
@@ -296,10 +298,22 @@ public class LibraryActivity extends ToolbarActivity {
                     public void onNext(Long aLong) {
                         mBaseDetailLayout = new BaseDetailLayout(LibraryActivity.this);
                         mContentLayout.addView(mBaseDetailLayout);
-                        BookDetailView bookDetailView = new BookDetailView(LibraryActivity.this, book, published);
-                        mBaseDetailLayout.setContent(bookDetailView);
+                        mBookDetailView = new BookDetailView(LibraryActivity.this);
+                        mBaseDetailLayout.setContent(mBookDetailView);
+                        mBookDetailView.setOnCloseClickListener(new BookDetailView.OnCloseClickListener() {
+                            @Override
+                            public void onCloseClick() {
+                                onBackPressed();
+                            }
+                        });
                     }
                 });
+    }
+
+    private void setDetailData(Book book,String published){
+//        BookDetailView bookDetailView = new BookDetailView(LibraryActivity.this,book,published);
+//        mBaseDetailLayout.setContent(bookDetailView);
+      mBookDetailView.setBookData(book,published);
     }
 
     private void addShadowView() {
@@ -399,10 +413,12 @@ public class LibraryActivity extends ToolbarActivity {
                 break;
             case R.id.action_logout:
                 App.clearLibUser();
-            case R.id.action_login:
                 Intent intent = new Intent(LibraryActivity.this, LibraryLoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                LibraryActivity.this.finish();
+                break;
+            case R.id.action_login:
+                this.finish();
                 break;
         }
         return super.onOptionsItemSelected(item);

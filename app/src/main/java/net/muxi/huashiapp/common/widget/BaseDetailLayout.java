@@ -3,6 +3,7 @@ package net.muxi.huashiapp.common.widget;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.Toolbar;
@@ -146,12 +147,16 @@ public class BaseDetailLayout extends FrameLayout {
         toolbarState = TOOLBAR_APPEAR;
     }
 
+    public void setContentBackground(Drawable drawable){
+        mDetailContentLayout.setBackground(drawable);
+    }
+
 
     private void initToolbar(final Context context) {
         mToolbar = new Toolbar(context);
         mToolbar.setTitle("详情");
         mToolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        mToolbar.setNavigationIcon(R.drawable.ic_clear_white_24dp);
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setMinimumHeight(DimensUtil.getActionbarHeight());
         mToolbar.setNavigationOnClickListener(new OnClickListener() {
@@ -173,6 +178,12 @@ public class BaseDetailLayout extends FrameLayout {
         );
         layoutParams.setMargins(0, -DimensUtil.getActionbarHeight(), 0, 0);
 
+    }
+
+    public void setToolbarNavIcon(Drawable icon){
+        if (mToolbar != null){
+            mToolbar.setNavigationIcon(icon);
+        }
     }
 
     @Override
