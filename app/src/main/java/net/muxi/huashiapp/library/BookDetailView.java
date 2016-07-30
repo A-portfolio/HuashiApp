@@ -38,10 +38,21 @@ public class BookDetailView extends RelativeLayout {
 
     private Context mContext;
     private Book mBook;
+    private OnCloseClickListener mCloseClickListener;
     /**
      * 出版社
      */
     private String published;
+
+    public interface OnCloseClickListener{
+        void onCloseClick();
+    }
+
+    public BookDetailView(Context context) {
+        super(context);
+        mContext = context;
+        initView();
+    }
 
     public BookDetailView(Context context, Book book, String published) {
         super(context);
@@ -49,18 +60,35 @@ public class BookDetailView extends RelativeLayout {
         mBook = book;
         this.published = published;
         initView();
+        setInfo();
+        setupRecyclerview();
     }
 
     private void initView() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.view_book_detail, this, true);
         ButterKnife.bind(this);
+        mImgbtnClose.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCloseClickListener.onCloseClick();
+            }
+        });
+//        setupStateLayout();
 
+    }
+
+    public void setBookData(Book book,String published){
+        mBook = book;
+        this.published = published;
+        setInfo();
+        setupRecyclerview();
+    }
+
+    private void setInfo() {
         mTvTitle.setText(mBook.getBook());
         mTvAuthor.setText(mBook.getAuthor());
         mTvInfo.setText(mBook.getIntro());
         mTvPublished.setText(published);
-//        setupStateLayout();
-        setupRecyclerview();
     }
 
 //    private void setupStateLayout() {
@@ -92,6 +120,10 @@ public class BookDetailView extends RelativeLayout {
 //        }
 //    }
 
+    public void setOnCloseClickListener(OnCloseClickListener listener){
+        mCloseClickListener = listener;
+    }
+
     private void setupRecyclerview() {
         mRecyclerview.setHasFixedSize(true);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
@@ -99,6 +131,7 @@ public class BookDetailView extends RelativeLayout {
         mRecyclerview.setAdapter(bookListAdapter);
         mRecyclerview.setNestedScrollingEnabled(false);
     }
+
 
 
 }

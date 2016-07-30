@@ -3,13 +3,6 @@
              xmlns:app="http://schemas.android.com/apk/res-auto"
              android:id="@+id/root_layout"
              android:layout_width="match_parent"
-             android:layout_height="match_parent"
->
-
-    <com.bigkoo.convenientbanner.ConvenientBanner
-        android:layout_width="match_parent"
-        app:canLoop="true"
-        android:id="@+id/banner"
-        android:layout_height="80dp"></com.bigkoo.convenientbanner.ConvenientBanner>
+             android:layout_height="match_parent">
 
 </FrameLayout>

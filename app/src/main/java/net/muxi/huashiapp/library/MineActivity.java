@@ -16,6 +16,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +26,7 @@ import butterknife.ButterKnife;
  */
 public class MineActivity extends BaseActivity {
 
+    // TODO: 16/7/30 recyclerview have to complete 
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -61,6 +63,7 @@ public class MineActivity extends BaseActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 dao.insertSearchHistory(query);
+                mSearchView.closeSearchView();
                 Intent intent = new Intent(MineActivity.this, LibraryActivity.class);
                 intent.putExtra(AppConstants.LIBRARY_QUERY_TEXT, query);
                 startActivity(intent);
@@ -103,6 +106,11 @@ public class MineActivity extends BaseActivity {
         if (mSearchView.isSearchOpen()) {
             mSearchView.closeSearchView();
             return;
+        }
+        if (App.sLibrarayUser.getSid() != null && App.sLibrarayUser.getSid().equals("0") ){
+            Intent intent = new Intent(MineActivity.this,MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
         super.onBackPressed();
     }

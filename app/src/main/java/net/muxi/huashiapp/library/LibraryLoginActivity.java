@@ -85,6 +85,7 @@ public class LibraryLoginActivity extends ToolbarActivity {
             public boolean onQueryTextSubmit(String queryText) {
                 Intent intent = new Intent(LibraryLoginActivity.this, LibraryActivity.class);
                 intent.putExtra(AppConstants.LIBRARY_QUERY_TEXT, queryText);
+                mSearchView.closeSearchView();
                 startActivity(intent);
                 return true;
             }
@@ -181,7 +182,6 @@ public class LibraryLoginActivity extends ToolbarActivity {
                                 App.saveLibUser(libUser);
                                 Intent intent = new Intent(LibraryLoginActivity.this, MineActivity.class);
                                 startActivity(intent);
-                                LibraryLoginActivity.this.finish();
                             } else if (verifyResponseResponse.code() == 403) {
                                 ToastUtil.showLong(getResources().getString(R.string.tip_err_account));
                             } else {

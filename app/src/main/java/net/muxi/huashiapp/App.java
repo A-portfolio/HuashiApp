@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.squareup.leakcanary.LeakCanary;
 
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.util.Logger;
@@ -31,7 +30,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        LeakCanary.install(this);
+//        LeakCanary.install(this);
 
         Fresco.initialize(this);
 //        ZhugeSDK.getInstance().openDebug();

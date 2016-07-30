@@ -14,18 +14,17 @@ import android.view.View;
 import android.widget.Toast;
 
 import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.CalendarActivity;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.SettingActivity;
 import net.muxi.huashiapp.card.CardActivity;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.ui.AboutActivity;
-import net.muxi.huashiapp.common.ui.CalendarActivity;
-import net.muxi.huashiapp.common.ui.SettingActivity;
 import net.muxi.huashiapp.common.util.AlarmUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
-import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.electricity.ElectricityActivity;
 import net.muxi.huashiapp.library.LibraryLoginActivity;
 import net.muxi.huashiapp.library.MineActivity;
@@ -80,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             initRecyclerView();
             Logger.d("please link the net");
-            ToastUtil.showShort("please link the net");
         }
         if (NetStatus.isConnected()) {
             //本地保存的更新时间

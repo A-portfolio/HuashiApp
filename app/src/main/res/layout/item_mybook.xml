@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--图书所在地和可借状态-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:orientation="horizontal"
+    android:paddingTop="8dp">
+
+    <LinearLayout
+        android:id="@+id/state_layout"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:maxEms="4"
+            android:gravity="center"
+            android:text="距离归还日期还有:"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="@dimen/large_size"
+            tools:text="03"/>
+
+        <TextView
+            android:id="@+id/tv_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="天"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_book_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_toRightOf="@+id/state_layout"
+        android:text="书名:"
+        android:textSize="@dimen/library_state_size"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv_book"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tv_book_title"
+        android:textSize="@dimen/library_state_size"
+        tools:text="Java 从入门到精通"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_book_title"
+        android:layout_toRightOf="@+id/state_layout"
+        android:text="作者:"
+        android:textSize="@dimen/library_state_size"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv_bid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_book_title"
+        android:layout_toRightOf="@+id/tv_book_title"
+        android:textSize="@dimen/library_state_size"
+        tools:text="Jake Warthon"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_bid"
+        android:id="@+id/tv_title_borrow"
+        android:layout_toRightOf="@+id/state_layout"
+        android:text="借阅日期:"
+        android:textSize="@dimen/library_state_size"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv_borrow_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_bid"
+        android:layout_toRightOf="@+id/tv_title_borrow"
+        android:textSize="@dimen/library_state_size"
+        tools:text="9"/>
+
+    <TextView
+        android:id="@+id/tv_place_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_title_borrow"
+        android:layout_toRightOf="@+id/state_layout"
+        android:text="应还日期"
+        android:textSize="@dimen/library_state_size"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv_place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_period"
+        android:layout_toRightOf="@+id/state_layout"
+        android:lines="2"
+        android:textSize="@dimen/library_state_size"
+        tools:text="           fff "/>
+
+</RelativeLayout>

@@ -23,7 +23,7 @@ public class EnteranceActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enterance);
 
-        Observable.timer(1000, TimeUnit.SECONDS)
+        Observable.timer(1, TimeUnit.SECONDS)
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onCompleted() {
@@ -38,7 +38,7 @@ public class EnteranceActivity extends BaseActivity{
                     @Override
                     public void onNext(Long aLong) {
                         Intent intent;
-                        if (App.sUser.getSid() != null && App.sUser.getSid() != ""){
+                        if (App.sUser.getSid() != null && App.sUser.getSid() != "0"){
                             intent = new Intent(EnteranceActivity.this, MainActivity.class);
                             startActivity(intent);
                         }else {
