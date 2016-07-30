@@ -14,6 +14,7 @@ import net.muxi.huashiapp.common.data.News;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by december on 16/7/29.
@@ -43,6 +44,7 @@ public class NewsDetailView extends RelativeLayout {
 
     private void initView() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.view_news_detail, this, true);
+        ButterKnife.bind(this);
         mNewsTitle.setText(mNewsList.get(0).getTitle());
         mNewsContent.setText(mNewsList.get(0).getContent());
         mNewsDate.setText(mNewsList.get(0).getDate());
