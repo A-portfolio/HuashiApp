@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.t, R.drawable.t,
             R.drawable.t, R.drawable.t, R.drawable.t, R.drawable.t};
 
-    private String[] mdesc = {"课程表", "图书查询", "成绩查询", "电费查询", "校历查询", "部门信息", "学而", "学生卡查询"};
+    private String[] mdesc = {"课程表", "学生卡", "成绩查询", "电费查询", "校历查询", "部门信息", "图书馆", "学而",};
     private MainAdapter mAdapter;
 
     private long exitTime = 0;
@@ -74,15 +74,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void getBannerDatas() {
         mBannerDatas = dao.loadBannerData();
-        if (mBannerDatas.size() > 0){
+        if (mBannerDatas.size() > 0) {
             initRecyclerView();
             Logger.d("init recyclerview");
-        }else {
+        } else {
             initRecyclerView();
             Logger.d("please link the net");
             ToastUtil.showShort("please link the net");
         }
-        if (NetStatus.isConnected()){
+        if (NetStatus.isConnected()) {
             //本地保存的更新时间
             CampusFactory.getRetrofitService().getBanner()
                     .observeOn(AndroidSchedulers.mainThread())
@@ -100,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onNext(List<BannerData> bannerDatas) {
-                            if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(mBannerDatas)){
+                            if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(mBannerDatas)) {
                                 mBannerDatas.clear();
                                 mBannerDatas.addAll(bannerDatas);
                                 dao.deleteAllBannerData();
-                                for (int i = 0; i < mBannerDatas.size();i ++){
+                                for (int i = 0; i < mBannerDatas.size(); i++) {
                                     dao.insertBannerData(mBannerDatas.get(i));
                                 }
                                 updateRecyclerView(bannerDatas);
@@ -118,17 +118,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * 在 list 中 获取最近的更新时间
+     *
      * @param bannerDatas
      * @return
      */
-    public long getTheLastUpdateTime(List<BannerData> bannerDatas){
+    public long getTheLastUpdateTime(List<BannerData> bannerDatas) {
         long lastTime = -1;
-        if (bannerDatas.size() > 0){
-            for (int i = 0;i < bannerDatas.size();i ++){
-                if (lastTime < bannerDatas.get(i).getUpdate()){
+        if (bannerDatas.size() > 0) {
+            for (int i = 0; i < bannerDatas.size(); i++) {
+                if (lastTime < bannerDatas.get(i).getUpdate()) {
                     lastTime = bannerDatas.get(i).getUpdate();
                 }
             }
@@ -137,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initRecyclerView() {
-        final GridLayoutManager layoutManager = new GridLayoutManager(this,3);
-        mAdapter = new MainAdapter(mdesc, mpics,mBannerDatas);
+        final GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+        mAdapter = new MainAdapter(mdesc, mpics, mBannerDatas);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -164,8 +164,26 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(MainActivity.this, ScheduleActivity.class);
                         startActivity(intent);
                         break;
-
                     case 1:
+                        intent = new Intent(MainActivity.this, CardActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        intent = new Intent(MainActivity.this, ScoreActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 3:
+                        intent = new Intent(MainActivity.this, ElectricityActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 4:
+                        intent = new Intent(MainActivity.this, CalendarActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 5:
+
+                        break;
+                    case 7:
                         if (!App.sLibrarayUser.getSid().equals("0")) {
                             intent = new Intent(MainActivity.this, MineActivity.class);
                             startActivity(intent);
@@ -174,30 +192,9 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                         break;
-                    case 2:
-                        intent = new Intent(MainActivity.this, ScoreActivity.class);
-                        startActivity(intent);
-                        break;
 
-                    case 3:
-                        intent = new Intent(MainActivity.this,ElectricityActivity.class);
-                        startActivity(intent);
-                        break;
-
-                    case 4:
-                        intent = new Intent(MainActivity.this, CalendarActivity.class);
-                        startActivity(intent);
-                        break;
-
-                    case 5:
-
-                        break;
-                    case 7:
-                        intent = WebViewActivity.newIntent(MainActivity.this, "http://xueer.muxixyz.com/", "学而");
-                        startActivity(intent);
-                        break;
                     case 8:
-                        intent = new Intent(MainActivity.this,CardActivity.class);
+                        intent = WebViewActivity.newIntent(MainActivity.this, "http://xueer.muxixyz.com/", "学而");
                         startActivity(intent);
                         break;
 
@@ -208,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void updateRecyclerView(List<BannerData> bannerDatas){
+    public void updateRecyclerView(List<BannerData> bannerDatas) {
         mAdapter.swap(bannerDatas);
 //        mAdapter = new MainAdapter(mdesc,mpics,bannerDatas);
 //        mRecyclerView.setAdapter(mAdapter);

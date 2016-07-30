@@ -11,6 +11,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.common.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,7 @@ public class AboutActivity extends ToolbarActivity {
                 });
         mBanner.setManualPageable(true);
         mBanner.startTurning(3000);
+        Logger.d("setup banner");
 
     }
 

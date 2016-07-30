@@ -29,8 +29,10 @@
         <meta-data
             android:name="ZHUGE_CHANNEL" android:value="校园通"/>
 
+        <activity android:name=".EnteranceActivity"/>
 
-        <activity android:name=".main.MainActivity"
+
+        <activity android:name=".login.LoginActivity"
                   android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize">
 
@@ -41,7 +43,7 @@
             </intent-filter>
         </activity>
 
-        <!--<activity android:name=".main.MainActivity"-->
+        <activity android:name=".main.MainActivity"
                   android:launchMode="singleTask"/>
 
         <activity android:name=".schedule.ScheduleActivity"
@@ -53,11 +55,9 @@
         <activity android:name=".score.ScoreActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".common.ui.SettingActivity"
+        <activity android:name=".SettingActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".news.NewsDetailActivity"
-                  android:launchMode="singleTask"/>
 
         <activity android:name=".news.NewsActivity"
                   android:launchMode="singleTask"/>
@@ -84,7 +84,7 @@
         <activity android:name=".common.ui.AboutActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".common.ui.CalendarActivity"/>
+        <activity android:name=".CalendarActivity"/>
 
         <activity android:name=".electricity.ElectricityActivity"/>
 

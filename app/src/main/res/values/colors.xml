@@ -7,6 +7,10 @@
     <color name="colorBlack">#000000</color>
     <color name="textColorGrey">#7F000000</color>
 
+    <!--闪屏-->
+    <color name="entrance_color_start">#CC673AB7</color>
+    <color name="entrance_color_end">#673AB7</color>
+
     <color name="hintColor">#C4C4C4</color>
     <color name="dividerGrey">#B6B6B6</color>
     <color name="colorWeekLayout">#8865C7</color>
