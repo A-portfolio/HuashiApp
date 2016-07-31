@@ -20,9 +20,15 @@ public class MyDetailAdapter extends FragmentPagerAdapter {
         this.context = context;
     }
 
+//    @Override
+//    public Fragment getItem(int position) {
+//       return ElectricityDetailFragment.newInstance(position+6);
+//    }
+
+
     @Override
     public Fragment getItem(int position) {
-       return ElectricityDetailFragment.newInstance(position+6);
+        return null;
     }
 
     @Override

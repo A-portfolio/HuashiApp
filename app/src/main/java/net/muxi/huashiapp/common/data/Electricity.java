@@ -6,14 +6,13 @@ package net.muxi.huashiapp.common.data;
 public class Electricity {
 
 
-  //照明用电light
     private String dor;
-
 
     private DegreeEntity degree;
 
-
     private EleEntity ele;
+
+    private String type;
 
     public String getDor() {
         return dor;
@@ -37,6 +36,14 @@ public class Electricity {
 
     public void setEle(EleEntity ele) {
         this.ele = ele;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public static class DegreeEntity {
@@ -107,6 +114,7 @@ public class Electricity {
             this.before = before;
         }
     }
+
 
 
 }

@@ -16,11 +16,15 @@
     android:textSize="20sp"
     />
 
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <android.support.v7.widget.AppCompatRadioButton
         android:id="@+id/ec_radio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"/>
+    </RadioGroup>
 
 </RelativeLayout>

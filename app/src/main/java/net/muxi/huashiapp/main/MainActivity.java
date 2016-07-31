@@ -13,16 +13,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import net.muxi.huashiapp.AboutActivity;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.CalendarActivity;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.apartment.ApartmentActivity;
 import net.muxi.huashiapp.SettingActivity;
+import net.muxi.huashiapp.apartment.ApartmentActivity;
 import net.muxi.huashiapp.card.CardActivity;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.ui.AboutActivity;
 import net.muxi.huashiapp.common.util.AlarmUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
