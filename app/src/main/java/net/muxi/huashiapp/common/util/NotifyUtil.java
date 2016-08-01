@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import net.muxi.huashiapp.R;
 
@@ -22,9 +21,8 @@ public class NotifyUtil {
         builder.setContentTitle(title)
                 .setContentText(content)
                 .setContentIntent(pendingIntent)
-                .setSmallIcon(R.drawable.ic_action_navigation_arrow_back)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(true);
-        Log.d("notify","it's time");
 
         notificationManager.notify(2,builder.build());
     }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.card.CardActivity;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.PersonalBook;
@@ -19,6 +20,7 @@ import net.muxi.huashiapp.common.util.DateUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NotifyUtil;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.common.util.TimeTableUtil;
 import net.muxi.huashiapp.library.MineActivity;
 import net.muxi.huashiapp.schedule.ScheduleActivity;
 import net.muxi.huashiapp.score.ScoreActivity;
@@ -39,6 +41,8 @@ public class AlarmReceiveer extends BroadcastReceiver {
     private User mLibUser;
     private PreferenceUtil sp;
     private Context mContext;
+    //设置学生卡提醒的额度
+    private static final int CARD_LEAVE_MONEY = 10;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -55,17 +59,17 @@ public class AlarmReceiveer extends BroadcastReceiver {
 
         //判断对应的登录状态以及当前时间,还有用户是否设置提醒
         if (mUser.getSid() != "") {
-            if (intent.getStringExtra(AppConstants.ALARMTIME).equals("thirdTime")) {
+            if (intent.getIntExtra(AppConstants.ALARMTIME, 0) == 2) {
                 if (sp.getBoolean(App.getContext().getString(R.string.pre_schedule))) {
                     checkCourses();
                 }
             }
-            if (intent.getStringExtra(AppConstants.ALARMTIME).equals("secondTime")) {
+            if (intent.getIntExtra(AppConstants.ALARMTIME, 0) == 1) {
                 if (sp.getBoolean(App.getContext().getString(R.string.pre_score))) {
                     checkScores();
                 }
             }
-            if (intent.getStringExtra(AppConstants.ALARMTIME).equals("firstTime")) {
+            if (intent.getIntExtra(AppConstants.ALARMTIME, 0) == 0) {
                 if (sp.getBoolean(App.getContext().getString(R.string.pre_score))) {
                     checkScores();
                 }
@@ -99,11 +103,10 @@ public class AlarmReceiveer extends BroadcastReceiver {
 
                     @Override
                     public void onNext(List<CardData> cardDatas) {
-                        // TODO: 16/7/4  待添加检测是否已经充值,不然每天都会提醒
-                        if (Integer.valueOf(cardDatas.get(0).getOutMoney()) < 10) {
-                            if (sp.getBoolean(PreferenceUtil.IS_STOP_REMIND_CARD, false)) {
-//                                NotifyUtil.show(mContext,);
-                            }
+                        if (Integer.valueOf(cardDatas.get(0).getOutMoney()) < CARD_LEAVE_MONEY) {
+                            NotifyUtil.show(mContext, CardActivity.class,
+                                    mContext.getResources().getString(R.string.notify_title_card),
+                                    mContext.getResources().getString(R.string.notify_content_card));
                         }
                     }
                 });
@@ -113,7 +116,7 @@ public class AlarmReceiveer extends BroadcastReceiver {
         CampusFactory.getRetrofitService().getPersonalBook(Base64Util.createBaseStr(mUser))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<PersonalBook>() {
+                .subscribe(new Observer<List<PersonalBook>>() {
                     @Override
                     public void onCompleted() {
 
@@ -125,11 +128,18 @@ public class AlarmReceiveer extends BroadcastReceiver {
                     }
 
                     @Override
-                    public void onNext(PersonalBook personalBook) {
-                        if (Integer.valueOf(personalBook.getTime()) <= 3) {
+                    public void onNext(List<PersonalBook> personalBooks) {
+                        boolean isRemind = false;
+                        for (int i = 0, j = personalBooks.size(); i < j; i++) {
+                            if (Integer.valueOf(personalBooks.get(i).getTime()) < 4) {
+                                isRemind = true;
+                                break;
+                            }
+                        }
+                        if (isRemind) {
                             NotifyUtil.show(mContext, MineActivity.class,
-                                    mContext.getString(R.string.notify_title_lib),
-                                    mContext.getString(R.string.notify_content_lib));
+                                    mContext.getResources().getString(R.string.notify_title_lib),
+                                    mContext.getResources().getString(R.string.notify_content_lib));
                         }
                     }
                 });
@@ -137,15 +147,17 @@ public class AlarmReceiveer extends BroadcastReceiver {
 
     private void checkCourses() {
         HuaShiDao dao = new HuaShiDao();
+        List<Course> courses = dao.loadCustomCourse();
         String startDate = sp.getString(PreferenceUtil.FIRST_WEEK_DATE);
         int curWeek = (int) DateUtil.getDistanceWeek(startDate, DateUtil.toDateInYear(new Date(System.currentTimeMillis())));
-        List<Course> courses = dao.loadCourse((curWeek + 1) + "");
-        Course course;
         int today = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
         for (int i = 0, j = courses.size(); i < j; i++) {
-            course = courses.get(i);
-            if (course.getRemind().equals("true") && (AppConstants.WEEKDAYS[today + 1]).equals(course.getDay())) {
-                NotifyUtil.show(mContext, ScheduleActivity.class, mContext.getString(R.string.notify_title_course),
+            Course course = courses.get(i);
+            if (course.getRemind().equals("true") &&
+                    (AppConstants.WEEKDAYS[today]).equals(course.getDay()) &&
+                    TimeTableUtil.isThisWeek(curWeek, course.getWeeks())) {
+                NotifyUtil.show(mContext, ScheduleActivity.class,
+                        mContext.getString(R.string.notify_title_course),
                         mContext.getString(R.string.notify_content_course));
                 break;
             }
@@ -170,7 +182,8 @@ public class AlarmReceiveer extends BroadcastReceiver {
                     @Override
                     public void onNext(List<Scores> scoresList) {
                         if (scoresList.size() > sp.getInt(PreferenceUtil.SCORES_NUM)) {
-                            NotifyUtil.show(mContext, ScoreActivity.class, mContext.getString(R.string.notify_title_score),
+                            NotifyUtil.show(mContext, ScoreActivity.class,
+                                    mContext.getString(R.string.notify_title_score),
                                     mContext.getString(R.string.notify_content_score));
                         }
                     }

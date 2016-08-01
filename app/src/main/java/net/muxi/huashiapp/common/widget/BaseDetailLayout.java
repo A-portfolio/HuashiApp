@@ -180,11 +180,36 @@ public class BaseDetailLayout extends FrameLayout {
 
     }
 
+    public void setCustomToolbar(Toolbar toolbar){
+        mToolbar = toolbar;
+        if (mToolbar != null){
+            mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+            mToolbar.setNavigationOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    slideContentView();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            BaseDetailLayout.this.removeView(mToolbar);
+                        }
+                    },DURATION_ANIMATION);
+                    mContext.onBackPressed();
+                }
+            });
+        }
+    }
+
+    public void setToolbarTitle(String title){
+        mToolbar.setTitle(title);
+    }
+
     public void setToolbarNavIcon(Drawable icon){
         if (mToolbar != null){
             mToolbar.setNavigationIcon(icon);
         }
     }
+
 
     @Override
     public void computeScroll() {

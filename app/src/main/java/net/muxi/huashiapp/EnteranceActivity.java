@@ -23,6 +23,12 @@ public class EnteranceActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enterance);
 
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         Observable.timer(1, TimeUnit.SECONDS)
                 .subscribe(new Observer<Long>() {
                     @Override
@@ -41,9 +47,11 @@ public class EnteranceActivity extends BaseActivity{
                         if (App.sUser.getSid() != null && App.sUser.getSid() != "0"){
                             intent = new Intent(EnteranceActivity.this, MainActivity.class);
                             startActivity(intent);
+                            EnteranceActivity.this.finish();
                         }else {
                             intent = new Intent(EnteranceActivity.this, LoginActivity.class);
                             startActivity(intent);
+                            EnteranceActivity.this.finish();
                         }
                     }
                 });

@@ -23,7 +23,6 @@ public class PreferenceUtil {
     public static final String FIRST_WEEK_DATE = "first_date";
     //当前出了成绩的科目数
     public static final String SCORES_NUM = "score_num";
-    public static final String IS_STOP_REMIND_CARD = "is_stop_remind_card";
     //校历的最近更新时间
     public static final String CALENDAR_UPDATE = "calendar_update";
     //校历的图片地址

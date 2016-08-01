@@ -16,7 +16,6 @@
     <string name="action_refresh">刷新本页面</string>
     <string name="action_set_cur_week">设置当前周</string>
 
-=
     <string name="notify_title_score">出了门成绩</string>
     <string name="notify_content_score">详情请点击</string>
     <string name="notify_title_course">明天记得上这些课</string>
@@ -25,9 +24,6 @@
     <string name="notify_content_card">点击查看余额</string>
     <string name="notify_title_lib">你有图书快到期</string>
     <string name="notify_content_lib">点击查看详情</string>
-
-
-
 
     <string name="tip_id_text">学号</string>
     <string name="tip_pwd_text">信息门户密码</string>
@@ -45,6 +41,7 @@
 
     <!--library-->
     <string name="library_search_tip">请输入要搜索的图书或作者</string>
+    <string name="library_mybook_overdue">过期</string>
 
     <!--setting activity key-->
     <string name="pre_schedule">pre_schedule</string>

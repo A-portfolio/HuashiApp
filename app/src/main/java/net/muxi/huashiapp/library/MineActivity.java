@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,12 +15,20 @@ import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
+import net.muxi.huashiapp.common.data.PersonalBook;
 import net.muxi.huashiapp.common.db.HuaShiDao;
+import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.common.util.Base64Util;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.main.MainActivity;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by ybao on 16/5/15.
@@ -36,8 +45,10 @@ public class MineActivity extends BaseActivity {
     FrameLayout mToolbarContainer;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+
     private HuaShiDao dao;
     String[] suggestions;
+
 
 
     @Override
@@ -46,7 +57,33 @@ public class MineActivity extends BaseActivity {
         setContentView(R.layout.activity_library_mine);
         ButterKnife.bind(this);
         dao = new HuaShiDao();
+        CampusFactory.getRetrofitService().getPersonalBook(Base64Util.createBaseStr(App.sLibrarayUser))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Observer<List<PersonalBook>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(List<PersonalBook> personalBooks) {
+                        setupRecyclerview(personalBooks);
+                    }
+                });
         initView();
+    }
+
+    private void setupRecyclerview(List<PersonalBook> personalBooks) {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setHasFixedSize(true);
+        MyBookAdapter bookAdapter = new MyBookAdapter(personalBooks);
+        mRecyclerView.setAdapter(bookAdapter);
     }
 
 

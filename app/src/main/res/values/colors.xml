@@ -44,5 +44,7 @@
     <color name="state_available">#52CCC0</color>
     <color name="state_unavailable">#E91E63</color>
     <color name="divider_search_view">#99C5C5C5</color>
+    <color name="state_normal">#52CCC0</color>
+    <color name="state_warn">#E91E63</color>
 
 </resources>

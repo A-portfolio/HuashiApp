@@ -82,15 +82,15 @@ public class HuaShiDao {
     /**
      * 获取指定星期的课程
      *
-     * @param day 星期
+     * @param weekday 星期
      * @return
      */
-    public List<Course> loadCourse(String day) {
+    public List<Course> loadCourse(String weekday) {
         Cursor cursor =
                 db.rawQuery("SELECT * FROM " + DataBase.TABLE_COURSE +
                                 " WHERE " + DataBase.KEY_WEEKDAY + " = ? ",
                         new String[]{
-                                day
+                                weekday
                         });
         List<Course> courses = new ArrayList<>();
         if (cursor.getCount() > 0) {
@@ -111,6 +111,29 @@ public class HuaShiDao {
         }
         if (cursor != null) {
             cursor.close();
+        }
+        return courses;
+    }
+
+    public List<Course> loadCustomCourse(){
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_COURSE +
+         " where " + DataBase.KEY_ID + " is not null",null);
+        List<Course> courses = new ArrayList<>();
+        if (cursor.getCount() > 0){
+            while (cursor.moveToNext()){
+                Course course = new Course();
+                course.setId(cursor.getString(cursor.getColumnIndex(DataBase.KEY_ID)));
+                course.setCourse(cursor.getString(cursor.getColumnIndex(DataBase.KEY_COURSE_NAME)));
+                course.setTeacher(cursor.getString(cursor.getColumnIndex(DataBase.KEY_TEACHER)));
+                course.setWeeks(cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
+                course.setDay(cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKDAY)));
+                course.setStart(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_TIME)));
+                course.setDuring(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_DURATION)));
+                course.setPlace(cursor.getString(cursor.getColumnIndex(DataBase.KEY_PLACE)));
+                course.setRemind(cursor.getString(cursor.getColumnIndex(DataBase.KEY_REMIND)));
+                course.setColor(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_COLOR)));
+                courses.add(course);
+            }
         }
         return courses;
     }
