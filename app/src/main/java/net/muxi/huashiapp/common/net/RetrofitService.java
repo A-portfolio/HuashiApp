@@ -1,11 +1,13 @@
 package net.muxi.huashiapp.common.net;
 
+import net.muxi.huashiapp.common.data.ApartmentData;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.Course;
+import net.muxi.huashiapp.common.data.Electricity;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.data.PersonalBook;
 import net.muxi.huashiapp.common.data.Scores;
@@ -78,6 +80,14 @@ public interface RetrofitService {
 
     @GET("banner/")
     Observable<List<BannerData>> getBanner();
+
+    @GET("apartment/")
+    Observable<List<ApartmentData>> getApartment();
+
+
+    @POST("ele/")
+    Observable<List<Electricity>> getElectricity(@Body Electricity electricity);
+
 
     //查询余额  除了学号其他传固定值 http://console.ccnu.edu.cn/ecard/getTrans?userId=2013211389&days=90&startNum=0&num=200
     @GET("http://console.ccnu.edu.cn/ecard/getTrans")

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    
+    <include layout="@layout/view_toolbar"
+             android:id="@+id/include2"/>
+    
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="90dp">
+
+        <EditText
+            android:id="@+id/tv_suggestion"
+            android:hint="在这里输入您的意见"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </android.support.design.widget.TextInputLayout>
+    
+    
+    <Button
+        android:id="@+id/btn_put"
+        android:text="提交"
+        android:background="@color/colorPrimary"
+        android:layout_width="328dp"
+        android:layout_height="36dp"
+        android:layout_below="@+id/textInput"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

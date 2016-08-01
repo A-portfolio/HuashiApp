@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_expanded="true" android:drawable="@drawable/ic_date_range_black_18dp" />
-    <item android:drawable="@drawable/ic_date_range_black_18dp" />
+    <item android:state_expanded="true"  />
+
 
 </selector>

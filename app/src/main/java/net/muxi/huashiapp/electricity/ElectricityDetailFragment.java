@@ -17,12 +17,19 @@ import net.muxi.huashiapp.R;
 public class ElectricityDetailFragment extends Fragment {
 
 
-    public static final String ARGS_PAGE = "args_page";
-    private int mPage;
 
-    public static ElectricityDetailFragment newInstance(int page) {
+
+    private String marea;
+    private String mroom;
+
+    private static final String SCHOOL_AREA = "area";
+    private static final String SCHOOL_ROOM = "room";
+
+    public static ElectricityDetailFragment newInstance(String area,String romm) {
         Bundle args = new Bundle();
-        args.putInt(ARGS_PAGE, page);
+        args.putString(SCHOOL_AREA,"area");
+        args.putString(SCHOOL_ROOM,"room");
+
         ElectricityDetailFragment fragment = new ElectricityDetailFragment();
         fragment.setArguments(args);
         return fragment;
@@ -34,7 +41,8 @@ public class ElectricityDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARGS_PAGE);
+        marea = getArguments().getString(SCHOOL_AREA);
+        mroom = getArguments().getString(SCHOOL_ROOM);
     }
 
     @Nullable
