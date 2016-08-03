@@ -26,7 +26,9 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.AlarmUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
+import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.electricity.ElectricityActivity;
+import net.muxi.huashiapp.electricity.ElectricityDetailActivity;
 import net.muxi.huashiapp.library.LibraryLoginActivity;
 import net.muxi.huashiapp.library.MineActivity;
 import net.muxi.huashiapp.news.NewsActivity;
@@ -172,8 +174,16 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case 3:
-                        intent = new Intent(MainActivity.this, ElectricityActivity.class);
-                        startActivity(intent);
+                        PreferenceUtil sp = new PreferenceUtil();
+                        String eleQuery = sp.getString(PreferenceUtil.ELE_QUERY_STRING);
+                        if (eleQuery != null) {
+                            intent = new Intent(MainActivity.this, ElectricityActivity.class);
+                            startActivity(intent);
+                        } else {
+                            intent = new Intent(MainActivity.this, ElectricityDetailActivity.class);
+                            intent.putExtra("query", eleQuery);
+                            startActivity(intent);
+                        }
                         break;
                     case 4:
                         intent = new Intent(MainActivity.this, CalendarActivity.class);
@@ -198,7 +208,6 @@ public class MainActivity extends AppCompatActivity {
                         intent = WebViewActivity.newIntent(MainActivity.this, "http://xueer.muxixyz.com/", "学而");
                         startActivity(intent);
                         break;
-
 
 
                 }

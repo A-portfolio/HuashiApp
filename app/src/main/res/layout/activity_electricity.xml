@@ -1,51 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    android:id="@+id/fragment_layout"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <include
         android:id="@+id/view_toolbar"
         layout="@layout/view_toolbar"/>
-    <RelativeLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:paddingBottom="32dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:scrollbars="none">
 
-    <ExpandableListView
-        android:background="@color/colorWhite"
-        android:id="@+id/expand_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:paddingTop="?attr/actionBarSize"
-        android:childDivider="@android:color/transparent"/>
-
-
-
-        <EditText
-            android:id="@+id/edit_ec_room"
-            android:layout_below="@id/expand_list"
-            android:hint="请输入房间号如304"
-            android:drawableLeft="@drawable/indicator_selector"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:layout_marginBottom="32dp"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/expand_select_button"
-            android:text="查询"
-            android:textColor="@color/colorWhite"
-            android:layout_width="328dp"
-            android:layout_height="36dp"
-            android:background="@color/colorPrimary"
-            android:layout_below="@+id/edit_ec_room"
-            android:layout_marginBottom="80dp"
-            android:layout_centerHorizontal="true"/>
-
-    </RelativeLayout>
+            <net.muxi.huashiapp.electricity.NonScrollExpandLv
+                android:id="@+id/lv_expand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:childDivider="@android:color/transparent"/>
 
 
+            <EditText
+                android:id="@+id/et_romm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="请输入房间号如304"/>
 
+            <Button
+                android:id="@+id/btn_search"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginTop="36dp"
+                android:background="@drawable/shape_btn"
+                android:text="查询"
+                android:textColor="@color/colorWhite"/>
 
-</FrameLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

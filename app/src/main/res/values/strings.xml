@@ -69,5 +69,8 @@
     <string name="title_credit">学分:  </string>
     <string name="title_year">学年信息</string>
     <string name="title_term">学期信息</string>
-    
+
+    <!--关于-->
+    <string name="title_input_suggeston">在这里输入您的反馈意见</string>
+    <string name="btn_submit">提交</string>
 </resources>

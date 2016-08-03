@@ -98,7 +98,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Logger.d(position + "");
         if (holder instanceof BannerViewHolder) {
             setupBanner(holder);
         } else if (holder instanceof CommonViewHolder) {
@@ -107,7 +106,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 ((CommonViewHolder) holder).mTextView.setText(mdesc[position]);
                 ((CommonViewHolder) holder).itemView.setTag(position);
             }else{
-                Logger.d(position + "");
                 ((CommonViewHolder) holder).mImageView.setImageResource(mpics[position - ITEM_BANNER]);
                 ((CommonViewHolder) holder).mTextView.setText(mdesc[position - ITEM_BANNER]);
                 ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
@@ -126,13 +124,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 .setOnItemClickListener(this);
 
         ((BannerViewHolder) holder).mBanner.startTurning(TURNING_TIME);
-        Logger.d("start turn ");
         ((BannerViewHolder) holder).mBanner.setManualPageable(true);
-        Logger.d("setup banner");
         mConvenientBanner = ((BannerViewHolder) holder).mBanner;
         for (int i = 0; i < mBannerDatas.size(); i++) {
             FrescoUtil.savePicture(mBannerDatas.get(i).getImg(), mContext, mBannerDatas.get(i).getFilename());
-            Logger.d(mBannerDatas.get(i).getImg());
         }
     }
 
@@ -146,7 +141,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public int getItemCount() {
-        Logger.d(mdesc.length + "");
         return mdesc.length + 1;
     }
 
@@ -160,7 +154,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public int getItemViewType(int position) {
         //第7个 item 为 banner
-        Logger.d(position + "");
         return position == 6 ? ITEM_TYPE_BANNER : ITEM_TYPE_COMMON;
     }
 

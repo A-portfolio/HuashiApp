@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <!--获取访问用户账户名的权限用以精准匹配标签(可选)-->
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application
         android:name=".App"

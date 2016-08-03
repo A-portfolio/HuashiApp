@@ -27,6 +27,8 @@ public class PreferenceUtil {
     public static final String CALENDAR_UPDATE = "calendar_update";
     //校历的图片地址
     public static final String CALENDAR_ADDRESS = "calendar_address";
+    //电费的查询参数
+    public static final String ELE_QUERY_STRING = "ele_query";
 
     public PreferenceUtil() {
         Context context = App.getContext();

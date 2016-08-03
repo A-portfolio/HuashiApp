@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.util.Logger;
@@ -33,6 +34,8 @@ public class App extends Application {
 //        LeakCanary.install(this);
 
         Fresco.initialize(this);
+
+        CrashReport.initCrashReport(getApplicationContext(), "900043675", true);
 //        ZhugeSDK.getInstance().openDebug();
 //        //必须在init之前调用
 //        //禁止收集用户手机号码默认为收集

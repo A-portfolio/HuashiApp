@@ -7,6 +7,7 @@ import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.Course;
+import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.common.data.Electricity;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.data.PersonalBook;
@@ -86,7 +87,7 @@ public interface RetrofitService {
 
 
     @POST("ele/")
-    Observable<List<Electricity>> getElectricity(@Body Electricity electricity);
+    Observable<Electricity> getElectricity(@Body EleRequestData requestData);
 
 
     //查询余额  除了学号其他传固定值 http://console.ccnu.edu.cn/ecard/getTrans?userId=2013211389&days=90&startNum=0&num=200

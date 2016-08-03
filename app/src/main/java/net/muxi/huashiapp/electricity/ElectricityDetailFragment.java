@@ -2,7 +2,6 @@ package net.muxi.huashiapp.electricity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,54 +9,75 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.base.BaseFragment;
+import net.muxi.huashiapp.common.data.Electricity;
 
 /**
  * Created by december on 16/7/6.
  */
-public class ElectricityDetailFragment extends Fragment {
+public class ElectricityDetailFragment extends BaseFragment{
 
+    private TextView mTvDegreeLeft;
+    private TextView mTvDegreeLastMonth;
+    private TextView mTvDegreeCurMonth;
+    private TextView mTvMoneyLeft;
+    private TextView mTvMoneyLastMonth;
+    private TextView mTvMoneyCurMonth;
+    private Button mBtnChangeRoom;
 
+    private OnChangeBtnClickListener mOnChangeBtnClickListener;
 
-
-    private String marea;
-    private String mroom;
-
-    private static final String SCHOOL_AREA = "area";
-    private static final String SCHOOL_ROOM = "room";
-
-    public static ElectricityDetailFragment newInstance(String area,String romm) {
-        Bundle args = new Bundle();
-        args.putString(SCHOOL_AREA,"area");
-        args.putString(SCHOOL_ROOM,"room");
-
-        ElectricityDetailFragment fragment = new ElectricityDetailFragment();
-        fragment.setArguments(args);
-        return fragment;
+    public interface OnChangeBtnClickListener{
+        void onChangeBtnClick();
     }
-
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        marea = getArguments().getString(SCHOOL_AREA);
-        mroom = getArguments().getString(SCHOOL_ROOM);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_electricity_detail,container,false);
-        TextView tv1= (TextView)view.findViewById(R.id.ec_left);
-        TextView tv2= (TextView)view.findViewById(R.id.last_month_ec_use);
-        TextView tv3= (TextView)view.findViewById(R.id.month_ec_use);
-        TextView tv4= (TextView)view.findViewById(R.id.money_left);
-        TextView tv5= (TextView)view.findViewById(R.id.month_money_use);
-        TextView tv6= (TextView)view.findViewById(R.id.last_month_money_use);
-        Button mchange = (Button)view.findViewById(R.id.room_change_button);
+        mTvDegreeLeft = (TextView) view.findViewById(R.id.tv_degree_left);
+        mTvDegreeLastMonth = (TextView) view.findViewById(R.id.tv_degree_last_month);
+        mTvDegreeCurMonth = (TextView) view.findViewById(R.id.tv_degree_cur_month);
+        mTvMoneyLeft = (TextView) view.findViewById(R.id.tv_money_left);
+        mTvMoneyLastMonth= (TextView) view.findViewById(R.id.tv_money_last_month);
+        mTvMoneyCurMonth= (TextView) view.findViewById(R.id.tv_money_cur_month);
+        mBtnChangeRoom = (Button) view.findViewById(R.id.btn_change_room);
+        mBtnChangeRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnChangeBtnClickListener != null){
+                    mOnChangeBtnClickListener.onChangeBtnClick();
+                }
+            }
+        });
         return view;
+    }
 
+    public void setOnChangeBtnClickListener(OnChangeBtnClickListener listener){
+        mOnChangeBtnClickListener = listener;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    /**
+     * set the detail info of the electricity
+     * @param eleData
+     */
+    public void setEleDetail(Electricity eleData){
+        mTvDegreeLeft.setText(eleData.getDegree().getRemain() + "");
+        mTvDegreeLastMonth.setText(eleData.getDegree().getBefore());
+        mTvDegreeCurMonth.setText(eleData.getDegree().getCurrent());
+        mTvMoneyLeft.setText(eleData.getEle().getRemain());
+        mTvMoneyLastMonth.setText(eleData.getEle().getBefore());
+        mTvMoneyCurMonth.setText(eleData.getEle().getCurrent());
     }
 
 }

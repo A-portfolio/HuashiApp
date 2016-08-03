@@ -1,19 +1,20 @@
 package net.muxi.huashiapp.electricity;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
-import android.widget.RadioButton;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.common.util.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,77 +25,139 @@ import butterknife.OnClick;
  */
 public class ElectricityActivity extends ToolbarActivity {
 
-
-    public String[] groupStrings = {"区域", "建筑", "楼层", "房间"};
-
-    public String[][] childStrings = {
-            {"西区", "东区", "元宝山", "南湖"},
-            {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"}
-    };
-
-    MyExpandableAdapter mAdapter;
+    @BindView(R.id.btn_search)
+    Button mBtnSearch;
+    @BindView(R.id.lv_expand)
+    NonScrollExpandLv mLvExpand;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.expand_list)
-    ExpandableListView mExpandList;
-    @BindView(R.id.expand_select_button)
-    Button mExpandSelectButton;
-    @BindView(R.id.edit_ec_room)
-    EditText mEditEcRoom;
+    @BindView(R.id.et_romm)
+    EditText mEtRomm;
 
-    RadioButton mRadioButton;
+    private String[] mGroupString;
+    private String[][] mChildString = new String[2][19];
+
+    private static final String[] groupString = {"区域", "建筑"};
+
+    //西区对应的建筑
+    private static final String[][] childStrings1 = {
+            {"西区", "东区", "元宝山", "南湖"},
+            {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋"}
+    };
+
+    //东区对应的建筑
+    private static final String[][] childStrings2 = {
+            {"西区", "东区", "元宝山", "南湖"},
+            {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋", "9栋", "10栋", "11栋", "12栋", "13栋西", "13栋东", "14栋", "15栋西", "15栋东", "16栋", "附1栋"}
+    };
+
+    //元宝山对应的建筑
+    private static final String[][] childStrings3 = {
+            {"西区", "东区", "元宝山", "南湖"},
+            {"1栋", "2栋", "3栋", "4栋", "5栋"}
+    };
+
+    //南湖对应的建筑
+    private static final String[][] childStrings4 = {
+            {"西区", "东区", "元宝山", "南湖"},
+            {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋", "9栋", "10栋", "11栋", "12栋", "13栋"}
+    };
+
+    //查询参数
+    private String mQuery;
 
 
-    @BindView(R.id.fragment_layout)
-    FrameLayout mFragmentLayout;
 
-    String area;
-    String room;
-
+    private MyExpandableAdapter mAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_electricity);
         ButterKnife.bind(this);
-        init();
         mToolbar.setTitle("电费查询");
-        mRadioButton = (RadioButton) findViewById(R.id.ec_radio);
+        Logger.d("ele oncreate");
 
+        mGroupString = new String[]{"区域", "建筑"};
+        mChildString = childStrings1;
+        initView();
     }
 
-    public void init() {
-        mAdapter = new MyExpandableAdapter(this);
-        mExpandList.setAdapter(mAdapter);
-        int width = getWindowManager().getDefaultDisplay().getWidth();
-        mExpandList.setIndicatorBounds(width - 80, width - 10);
-        mExpandList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+    public void initView() {
+        mAdapter = new MyExpandableAdapter(this, mGroupString, mChildString);
+        mLvExpand.setAdapter(mAdapter);
+//        int width = getWindowManager().getDefaultDisplay().getWidth();
+//        mLvExpand.setIndicatorBounds(width - 80, width - 10);
+        mLvExpand.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                area = mRadioButton.getText().toString();
-                return true;
-
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                return false;
+            }
+        });
+        mAdapter.setOnRbClickListener(new MyExpandableAdapter.OnRbClickListener() {
+            @Override
+            public void onRbClick(int groupPosition, int rbPosition) {
+                if (groupPosition == 0) {
+                    switch (rbPosition) {
+                        case 0:
+                            mChildString = childStrings1;
+                            break;
+                        case 1:
+                            mChildString = childStrings2;
+                            break;
+                        case 2:
+                            mChildString = childStrings3;
+                            break;
+                        case 3:
+                            mChildString = childStrings4;
+                            break;
+                    }
+                    mGroupString[0] = mChildString[0][rbPosition];
+                    mGroupString[1] = groupString[1];
+                    mAdapter.updateData(mGroupString, mChildString);
+                    mLvExpand.collapseGroup(0);
+                }
+                if (groupPosition == 1) {
+                    mGroupString[1] = mChildString[1][rbPosition];
+                    mAdapter.updateData(mGroupString, mChildString);
+                    mLvExpand.collapseGroup(1);
+                }
+                Log.d("rb","sdakfk");
             }
         });
 
+
     }
 
-    @OnClick(R.id.expand_select_button)
+    @OnClick(R.id.btn_search)
     public void onClick() {
+        if (!isEmpty()) {
+            int index = mGroupString[1].indexOf("栋");
+            mQuery = mGroupString[0].substring(0, 1) + mGroupString[1].substring(0, index) + "-" + mEtRomm.getText().toString();
+            PreferenceUtil sp = new PreferenceUtil();
+            sp.saveString(PreferenceUtil.ELE_QUERY_STRING, mQuery);
+            Intent intent = new Intent(ElectricityActivity.this, ElectricityDetailActivity.class);
+            intent.putExtra("query", mQuery);
+            startActivity(intent);
+            this.finish();
+        } else {
+            ToastUtil.showShort("请先完善信息");
+        }
 
-        room = mEditEcRoom.getText().toString();
+    }
 
-        ElectricityDetailFragment detailFragment = ElectricityDetailFragment.newInstance(area, room);
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-//        ft.add(R.id.fragment_layout,detailFragment);
-        ft.addToBackStack(null);
-        ft.commit();
-        mFragmentLayout.setClickable(true);
-
-
-//        Intent intent = new Intent(ElectricityActivity.this, ElectricityDetailActivity.class);
-//        startActivity(intent);
-
+    /**
+     * 判断 是否有未选项
+     *
+     * @return
+     */
+    public boolean isEmpty() {
+        if (!mGroupString[0].equals(groupString[0])
+                && !mGroupString[1].equals(groupString[1])
+                && !mEtRomm.getText().toString().equals("")) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

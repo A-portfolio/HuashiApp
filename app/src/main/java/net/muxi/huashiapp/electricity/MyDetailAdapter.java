@@ -1,43 +1,37 @@
 package net.muxi.huashiapp.electricity;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import java.util.List;
 
 /**
  * Created by december on 16/7/7.
  */
 public class MyDetailAdapter extends FragmentPagerAdapter {
 
+    private List<Fragment> mFragments;
+    private List<String> mTitles;
 
-    public final int COUNT = 2;
-    private String[] titles = new String[]{"照明", "空调"};
-    private Context context;
-
-    public MyDetailAdapter(FragmentManager fm, Context context) {
+    public MyDetailAdapter(FragmentManager fm, List<Fragment> fragments,List<String> titles) {
         super(fm);
-        this.context = context;
+        mFragments = fragments;
+        mTitles = titles;
     }
-
-//    @Override
-//    public Fragment getItem(int position) {
-//       return ElectricityDetailFragment.newInstance(position+6);
-//    }
-
 
     @Override
     public Fragment getItem(int position) {
-        return null;
+        return mFragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return COUNT;
+        return mTitles.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return  titles[position];
+        return  mTitles.get(position);
     }
 }

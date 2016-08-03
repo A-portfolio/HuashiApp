@@ -1,9 +1,9 @@
 package net.muxi.huashiapp.score;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -148,7 +148,7 @@ public class ScoreActivity extends ToolbarActivity {
         term = getCheckTerm();
         if (NetStatus.isConnected()) {
             ScoreDetailFragment scoreDetailFragment = ScoreDetailFragment.newInstance(year, term);
-            FragmentManager fm = getFragmentManager();
+            FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             ft.add(R.id.fragment_layout, scoreDetailFragment);
             ft.addToBackStack(null);

@@ -1,81 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/root_layout"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/root_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <include layout="@layout/view_toolbar"
-             android:id="@+id/include"/>
-
-
+    <include android:id="@+id/view_toolbar"
+             layout="@layout/view_toolbar"/>
 
 
     <android.support.v7.widget.CardView
-        android:clipToPadding="false"
-        android:layout_width="328dp"
+        android:id="@+id/view"
+        android:layout_width="match_parent"
         android:layout_height="96dp"
-        android:layout_below="@+id/include"
+        android:layout_below="@+id/view_toolbar"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:id="@+id/view">
-
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:clipToPadding="false">
 
         <Button
             android:id="@+id/btn_info"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="10dp"
-            android:drawableLeft="@drawable/ic_info_purple_18dp"
-            android:drawableRight="@drawable/ic_code_purple_18dp"
-            android:text="功能介绍"
-            android:paddingRight="10dp"
-            android:background="@color/colorWhite"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"/>
-
-        <Button
-            android:id="@+id/btn_help"
-            android:layout_marginTop="48dp"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="10dp"
-            android:drawableLeft="@drawable/ic_help_purple_18dp"
-            android:drawableRight="@drawable/ic_code_purple_18dp"
-            android:text="意见反馈"
-            android:paddingRight="10dp"
-            android:background="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            />
+            android:background="@color/colorWhite"
+            android:drawableLeft="@drawable/ic_info_purple_18dp"
+            android:drawablePadding="16dp"
+            android:drawableRight="@drawable/ic_code_purple_18dp"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="24dp"
+            android:text="功能介绍"/>
 
+        <Button
+            android:id="@+id/btn_suggestion"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="48dp"
+            android:background="@color/colorWhite"
+            android:drawableLeft="@drawable/ic_help_purple_18dp"
+            android:drawablePadding="16dp"
+            android:drawableRight="@drawable/ic_code_purple_18dp"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="24dp"
+            android:text="意见反馈"/>
 
     </android.support.v7.widget.CardView>
 
-
-
-    <LinearLayout
+    <ImageView
+        android:id="@+id/img_ccnubox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:src="@drawable/pic_cbox"/>
+
+    <TextView
+        android:id="@+id/tv_versionname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_ccnubox"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/textColorGrey"
+        tools:text="1.0"/>
+
+
+    <TextView
+        android:id="@+id/tv_muxi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="木犀团队"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/tv_muxi_link"
+        android:textColor="@color/textColorGrey"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/tv_muxi_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp">
-    <TextView
-        android:text="木犀团队"
-        android:textSize="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/textView"/>
-
-    <TextView
-        android:id="@+id/muxi_link"
-        android:text="WWW.MUXI.COM"
-        android:layout_width="wrap_content"
-        android:layout_height="14sp"
-        android:layout_gravity="center"
-        android:autoLink="email|map|phone"
-        />
-    </LinearLayout>
-
+        android:textColor="@color/colorPrimary"
+        android:text="muxistudio.com"/>
 
 </RelativeLayout>

@@ -2,34 +2,47 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-    
-    <include layout="@layout/view_toolbar"
-             android:id="@+id/include2"/>
-    
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/textInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/include2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="90dp">
 
-        <EditText
-            android:id="@+id/tv_suggestion"
-            android:hint="在这里输入您的意见"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </android.support.design.widget.TextInputLayout>
-    
-    
+    <include android:id="@+id/view_toolbar"
+             layout="@layout/view_toolbar"/>
+
+    <TextView
+        android:id="@+id/tv_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_toolbar"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/title_input_suggeston"
+        android:textColor="@color/textColorGrey"/>
+
+    <EditText
+        android:id="@+id/et_suggestion"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@+id/tv_tip"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="0 / 400"
+        android:layout_below="@+id/et_suggestion"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:textColor="@color/colorPrimary"
+        android:layout_height="wrap_content"/>
+
     <Button
         android:id="@+id/btn_put"
-        android:text="提交"
-        android:background="@color/colorPrimary"
         android:layout_width="328dp"
         android:layout_height="36dp"
-        android:layout_below="@+id/textInput"
-        android:layout_centerHorizontal="true"/>
+        android:layout_below="@+id/et_suggestion"
+        android:layout_marginTop="24dp"
+        android:textColor="@color/colorWhite"
+        android:elevation="100dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/shape_btn"
+        android:text="@string/btn_submit"/>
 
 </RelativeLayout>

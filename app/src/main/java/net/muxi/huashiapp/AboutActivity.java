@@ -12,7 +12,6 @@ import android.text.TextPaint;
 import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.common.base.ToolbarActivity;
@@ -26,18 +25,19 @@ import butterknife.OnClick;
  */
 public class AboutActivity extends ToolbarActivity {
 
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.btn_info)
     Button mBtnInfo;
-    @BindView(R.id.btn_help)
-    Button mBtnHelp;
+    @BindView(R.id.btn_suggestion)
+    Button mBtnSuggestion;
     @BindView(R.id.view)
     CardView mView;
-    @BindView(R.id.muxi_link)
-    TextView mMuxiLink;
-    @BindView(R.id.root_layout)
-    RelativeLayout mRootLayout;
+    @BindView(R.id.tv_versionname)
+    TextView mTvVersionname;
+    @BindView(R.id.tv_muxi_link)
+    TextView mTvMuxiLink;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,10 +53,10 @@ public class AboutActivity extends ToolbarActivity {
         mToolbar.setTitle("关于我们");
         //设置超链接
         String MUXILink = "WWW.MUXI.COM";
-        mMuxiLink.setText(MUXILink);
+        mTvMuxiLink.setText(MUXILink);
         NoUnderlineSpan mNoUnderlineSpan = new NoUnderlineSpan();
-        if (mMuxiLink.getText() instanceof Spannable) {
-            Spannable s = (Spannable) mMuxiLink.getText();
+        if (mTvMuxiLink.getText() instanceof Spannable) {
+            Spannable s = (Spannable) mTvMuxiLink.getText();
             s.setSpan(mNoUnderlineSpan, 0, s.length(), Spanned.SPAN_MARK_MARK);
 
 
@@ -64,19 +64,18 @@ public class AboutActivity extends ToolbarActivity {
     }
 
 
-
-        @OnClick({R.id.btn_info, R.id.btn_help})
-        public void onClick (View view){
-            Intent intent;
-            switch (view.getId()) {
-                case R.id.btn_info:
-                    break;
-                case R.id.btn_help:
-                    intent = new Intent(AboutActivity.this,SuggestionActivity.class);
-                    startActivity(intent);
-                    break;
-            }
+    @OnClick({R.id.btn_info, R.id.btn_suggestion})
+    public void onClick(View view) {
+        Intent intent;
+        switch (view.getId()) {
+            case R.id.btn_info:
+                break;
+            case R.id.btn_suggestion:
+                intent = new Intent(AboutActivity.this, SuggestionActivity.class);
+                startActivity(intent);
+                break;
         }
+    }
 
 
     public static class NoUnderlineSpan extends UnderlineSpan {
@@ -92,4 +91,4 @@ public class AboutActivity extends ToolbarActivity {
             ds.setUnderlineText(false);
         }
     }
-    }
+}

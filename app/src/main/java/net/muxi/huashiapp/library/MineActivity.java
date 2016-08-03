@@ -58,8 +58,8 @@ public class MineActivity extends BaseActivity {
         ButterKnife.bind(this);
         dao = new HuaShiDao();
         CampusFactory.getRetrofitService().getPersonalBook(Base64Util.createBaseStr(App.sLibrarayUser))
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<PersonalBook>>() {
                     @Override
                     public void onCompleted() {

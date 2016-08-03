@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -39,6 +40,8 @@ public class CardActivity extends ToolbarActivity {
     CardView mCardView;
     @BindView(R.id.coordinator_layout)
     RelativeLayout mCoordinatorLayout;
+    @BindView(R.id.tv_unit)
+    TextView mTvUnit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,11 +50,11 @@ public class CardActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         init();
         User user = new User();
-        PreferenceUtil sp =  new PreferenceUtil();
+        PreferenceUtil sp = new PreferenceUtil();
         user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
         user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
         CampusFactory.getRetrofitService()
-                .getCardBalance(user.getSid(),"90","0","20")
+                .getCardBalance(user.getSid(), "90", "0", "20")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<CardData>>() {
@@ -70,14 +73,13 @@ public class CardActivity extends ToolbarActivity {
                         Logger.d("id card");
                         mDate.setText(cardDatas.get(0).getDealDateTime());
                         mMoney.setText(cardDatas.get(0).getOutMoney());
-
+                        mTvUnit.setVisibility(View.VISIBLE);
                     }
                 });
 
     }
 
-    public void init(){
+    public void init() {
         mToolbar.setTitle("学生卡");
-        mToolbar.getBackground().setAlpha(0);
     }
 }

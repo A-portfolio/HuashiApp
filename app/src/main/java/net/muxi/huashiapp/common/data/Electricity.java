@@ -5,14 +5,11 @@ package net.muxi.huashiapp.common.data;
  */
 public class Electricity {
 
-
     private String dor;
 
-    private DegreeEntity degree;
+    private DegreeBean degree;
 
-    private EleEntity ele;
-
-    private String type;
+    private EleBean ele;
 
     public String getDor() {
         return dor;
@@ -22,65 +19,29 @@ public class Electricity {
         this.dor = dor;
     }
 
-    public DegreeEntity getDegree() {
+    public DegreeBean getDegree() {
         return degree;
     }
 
-    public void setDegree(DegreeEntity degree) {
+    public void setDegree(DegreeBean degree) {
         this.degree = degree;
     }
 
-    public EleEntity getEle() {
+    public EleBean getEle() {
         return ele;
     }
 
-    public void setEle(EleEntity ele) {
+    public void setEle(EleBean ele) {
         this.ele = ele;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public static class DegreeEntity {
-        private String current;  //当月用电
-        private String remain;   //剩余度数
-        private String before;   //上月用电
-
-        public String getCurrent() {
-            return current;
-        }
-
-        public void setCurrent(String current) {
-            this.current = current;
-        }
-
-        public String getRemain() {
-            return remain;
-        }
-
-        public void setRemain(String remain) {
-            this.remain = remain;
-        }
-
-        public String getBefore() {
-            return before;
-        }
-
-        public void setBefore(String before) {
-            this.before = before;
-        }
-    }
-
-    public static class EleEntity {
-        private String current;   //当月电费
+    public static class DegreeBean {
+        //当月
+        private String current;
+        //剩余
         private double remain;
-        private double _ele;
-        private String before;    //上月月电费
+        //上月
+        private String before;
 
         public String getCurrent() {
             return current;
@@ -95,6 +56,37 @@ public class Electricity {
         }
 
         public void setRemain(double remain) {
+            this.remain = remain;
+        }
+
+        public String getBefore() {
+            return before;
+        }
+
+        public void setBefore(String before) {
+            this.before = before;
+        }
+    }
+
+    public static class EleBean {
+        private String current;
+        private String remain;
+        private double _ele;
+        private String before;
+
+        public String getCurrent() {
+            return current;
+        }
+
+        public void setCurrent(String current) {
+            this.current = current;
+        }
+
+        public String getRemain() {
+            return remain;
+        }
+
+        public void setRemain(String remain) {
             this.remain = remain;
         }
 
@@ -114,7 +106,4 @@ public class Electricity {
             this.before = before;
         }
     }
-
-
-
 }
