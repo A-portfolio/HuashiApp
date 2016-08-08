@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
@@ -88,12 +85,6 @@ public class ElectricityActivity extends ToolbarActivity {
         mLvExpand.setAdapter(mAdapter);
 //        int width = getWindowManager().getDefaultDisplay().getWidth();
 //        mLvExpand.setIndicatorBounds(width - 80, width - 10);
-        mLvExpand.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                return false;
-            }
-        });
         mAdapter.setOnRbClickListener(new MyExpandableAdapter.OnRbClickListener() {
             @Override
             public void onRbClick(int groupPosition, int rbPosition) {
@@ -122,7 +113,6 @@ public class ElectricityActivity extends ToolbarActivity {
                     mAdapter.updateData(mGroupString, mChildString);
                     mLvExpand.collapseGroup(1);
                 }
-                Log.d("rb","sdakfk");
             }
         });
 

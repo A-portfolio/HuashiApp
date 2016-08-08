@@ -7,15 +7,18 @@ import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.Course;
+import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.common.data.Electricity;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.data.PersonalBook;
 import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.data.VerifyResponse;
+import net.muxi.huashiapp.common.data.VersionData;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -24,6 +27,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import rx.Observable;
 
 
@@ -73,6 +77,14 @@ public interface RetrofitService {
     Observable<List<Scores>> getScores(@Header("Authorization") String verification,
                                        @Query("xnm") String year,
                                        @Query("xqm") String term);
+
+    @GET("grade/detail/search")
+    Observable<DetailScores> getDetailScores(@Header("Authorization") String verification,
+                                             @Query("xnm") String year,
+                                             @Query("xqm") String term,
+                                             @Query("course") String course,
+                                             @Query("jxb_id") String jxbId);
+
     @GET("info/")
     Observable<List<News>> getNews();
 
@@ -93,8 +105,14 @@ public interface RetrofitService {
     //查询余额  除了学号其他传固定值 http://console.ccnu.edu.cn/ecard/getTrans?userId=2013211389&days=90&startNum=0&num=200
     @GET("http://console.ccnu.edu.cn/ecard/getTrans")
     Observable<List<CardData>> getCardBalance(@Query("userId") String sid,
-                                        @Query("days") String day,
-                                        @Query("startNum") String start,
-                                        @Query("num") String num);
+                                              @Query("days") String day,
+                                              @Query("startNum") String start,
+                                              @Query("num") String num);
+
+    @GET("app/latest/")
+    Observable<VersionData> getLatestVersion();
+
+    @GET
+    Observable<ResponseBody> downloadFile(@Url String url);
 
 }

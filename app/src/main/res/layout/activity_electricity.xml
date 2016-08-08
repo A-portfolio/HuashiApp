@@ -12,15 +12,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="32dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
         android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="32dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:orientation="vertical">
 
             <net.muxi.huashiapp.electricity.NonScrollExpandLv
@@ -43,7 +41,9 @@
                 android:layout_marginTop="36dp"
                 android:background="@drawable/shape_btn"
                 android:text="查询"
+                android:layout_marginBottom="32dp"
                 android:textColor="@color/colorWhite"/>
+
 
         </LinearLayout>
 

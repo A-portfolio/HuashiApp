@@ -50,6 +50,7 @@
     <dimen name="course_height">98dp</dimen>
     <dimen name="course_width">50dp</dimen>
     <dimen name="course_select_width">100dp</dimen>
+    <dimen name="course_add_drawable_padding">8dp</dimen>
 
     <dimen name="library_horizontal_margin">8dp</dimen>
     <dimen name="library_searchview_height">48dp</dimen>

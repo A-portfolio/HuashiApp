@@ -3,7 +3,6 @@ package net.muxi.huashiapp.main;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,18 +14,22 @@ import android.widget.Toast;
 
 import net.muxi.huashiapp.AboutActivity;
 import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.CalendarActivity;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.SettingActivity;
 import net.muxi.huashiapp.apartment.ApartmentActivity;
 import net.muxi.huashiapp.card.CardActivity;
+import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.AlarmUtil;
+import net.muxi.huashiapp.common.util.DownloadUtils;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.electricity.ElectricityActivity;
 import net.muxi.huashiapp.electricity.ElectricityDetailActivity;
 import net.muxi.huashiapp.library.LibraryLoginActivity;
@@ -40,19 +43,20 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ToolbarActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    private int[] mpics = {R.drawable.t, R.drawable.t,
-            R.drawable.t, R.drawable.t,
-            R.drawable.t, R.drawable.t, R.drawable.t, R.drawable.t};
+    private int[] mpics = {R.drawable.ic_main_curschedule, R.drawable.ic_main_idcard,
+            R.drawable.ic_main_mark, R.drawable.ic_main_power_rate,
+            R.drawable.ic_main_school_calendar, R.drawable.ic_main_workschedule, R.drawable.ic_main_library, R.drawable.ic_main_library};
 
     private String[] mdesc = {"课程表", "学生卡", "成绩查询", "电费查询", "校历查询", "部门信息", "图书馆", "学而",};
     private MainAdapter mAdapter;
@@ -67,11 +71,40 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        //检查本地是否有补丁包
+        if (!DownloadUtils.isFileExists(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME)) {
+            downloadPatch();
+            Logger.d("download patch");
+        }
+
         dao = new HuaShiDao();
         getBannerDatas();
 
+
         setSupportActionBar(mToolbar);
         AlarmUtil.register(this);
+    }
+
+    private void downloadPatch() {
+        CampusFactory.getRetrofitService().downloadFile(AppConstants.APATCH_URL)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Observer<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        DownloadUtils.writeResponseBodyToDisk(responseBody, AppConstants.APATCH_NAME);
+                    }
+                });
     }
 
     private void getBannerDatas() {
@@ -97,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
+                            ToastUtil.showShort("该宿舍不存在,请");
                         }
 
                         @Override
@@ -176,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                     case 3:
                         PreferenceUtil sp = new PreferenceUtil();
                         String eleQuery = sp.getString(PreferenceUtil.ELE_QUERY_STRING);
-                        if (eleQuery != null) {
+                        if (eleQuery.equals("")) {
                             intent = new Intent(MainActivity.this, ElectricityActivity.class);
                             startActivity(intent);
                         } else {
@@ -263,5 +297,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected boolean canBack() {
+        return false;
     }
 }

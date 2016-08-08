@@ -22,6 +22,7 @@ import net.muxi.huashiapp.common.util.NotifyUtil;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.TimeTableUtil;
 import net.muxi.huashiapp.library.MineActivity;
+import net.muxi.huashiapp.main.MainActivity;
 import net.muxi.huashiapp.schedule.ScheduleActivity;
 import net.muxi.huashiapp.score.ScoreActivity;
 
@@ -56,6 +57,8 @@ public class AlarmReceiveer extends BroadcastReceiver {
         mUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
         mLibUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID));
         mLibUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD));
+
+        NotifyUtil.show(mContext, MainActivity.class,"dajfslfal","fjsakdfasdlfa");
 
         //判断对应的登录状态以及当前时间,还有用户是否设置提醒
         if (mUser.getSid() != "") {

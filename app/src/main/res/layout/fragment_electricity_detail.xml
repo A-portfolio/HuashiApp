@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:scrollbars="none"
-    android:paddingBottom="32dp"
     android:layout_height="match_parent">
 
     <RelativeLayout
@@ -175,7 +174,6 @@
             android:id="@+id/btn_change_room"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:layout_alignParentBottom="true"
             android:layout_below="@+id/line4"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -183,6 +181,7 @@
             android:layout_marginTop="24dp"
             android:background="@drawable/shape_btn"
             android:text="更换寝室"
+            android:layout_marginBottom="32dp"
             android:textColor="@color/colorWhite"/>
 
     </RelativeLayout>

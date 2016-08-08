@@ -26,11 +26,12 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:text="0 / 400"
         android:layout_below="@+id/et_suggestion"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:id="@+id/tv_word_length"
         android:textColor="@color/colorPrimary"
+        android:text="0/400"
         android:layout_height="wrap_content"/>
 
     <Button

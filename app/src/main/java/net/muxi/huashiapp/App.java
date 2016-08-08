@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
+import com.alipay.euler.andfix.patch.PatchManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -27,12 +28,24 @@ public class App extends Application {
     public static User sLibrarayUser = new User();
 
     private PreferenceUtil sp;
+    private PatchManager mPatchManager;
 
     @Override
     public void onCreate() {
         super.onCreate();
 //        LeakCanary.install(this);
-
+        sContext = getApplicationContext();
+// TODO: 16/8/6 andfix turn on 
+//        mPatchManager = new PatchManager(this);
+//        mPatchManager.init(BuildConfig.VERSION_NAME);
+//        mPatchManager.loadPatch();
+//        try {
+//            mPatchManager.addPatch(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
+//            Logger.d(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        
         Fresco.initialize(this);
 
         CrashReport.initCrashReport(getApplicationContext(), "900043675", true);
@@ -43,7 +56,6 @@ public class App extends Application {
 //        //禁止收集用户个人账户信息默认为收集
 //        ZhugeSDK.getInstance().disableAccounts();
 
-        sContext = getApplicationContext();
         sp = new PreferenceUtil();
 
         sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, "0"));
