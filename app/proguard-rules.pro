@@ -19,3 +19,8 @@
 # bugly
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
+
+# andfix
+-keepclass*extendsjava.lang.annotation.Annotation
+-keepclasseswithmembernamesclass*{native ;}
+-keepclasscom.alipay.euler.andfix.**{ *; }

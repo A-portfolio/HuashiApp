@@ -25,6 +25,8 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
     private AppCompatRadioButton childRb1;
     private AppCompatRadioButton childRb2;
 
+    private int lastPos1 = -1;
+    private int lastPos2 = -1;
 
     private Context mContext;
 
@@ -101,41 +103,40 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, final ViewGroup parent) {
-        final ChildViewHolder childViewHolder;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_expand_child, parent, false);
-            childViewHolder = new ChildViewHolder();
-            childViewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_child);
-            childViewHolder.mRadioButton = (AppCompatRadioButton) convertView.findViewById(R.id.rb_child);
-            convertView.setTag(childViewHolder);
-        } else {
-            childViewHolder = (ChildViewHolder) convertView.getTag();
+        convertView = LayoutInflater.from(mContext).inflate(R.layout.item_expand_child, parent, false);
+        final TextView tvTitle = (TextView) convertView.findViewById(R.id.tv_child);
+        final AppCompatRadioButton mRadioButton = (AppCompatRadioButton) convertView.findViewById(R.id.rb_child);
+        tvTitle.setText(mChildStrings[groupPosition][childPosition]);
+        if (groupPosition == 0){
+            if (childPosition == lastPos1){
+                mRadioButton.setChecked(true);
+            }
         }
-        childViewHolder.tvTitle.setText(mChildStrings[groupPosition][childPosition]);
-        childViewHolder.mRadioButton.setChecked(false);
-        if (childRb1 != null){
-            childRb1.setChecked(true);
+        if (groupPosition == 1){
+            if (childPosition == lastPos2){
+                mRadioButton.setChecked(true);
+            }
         }
-        if (childRb2 != null){
-            childRb2.setChecked(true);
-        }
-        childViewHolder.mRadioButton.setOnClickListener(new View.OnClickListener() {
+        mRadioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Logger.d(groupPosition + "");
                 if (groupPosition == 0) {
-                    if (childRb1 != null && childRb1 != childViewHolder.mRadioButton) {
+                    if (childRb1 != null && childRb1 != mRadioButton) {
                         childRb1.setChecked(false);
                     }
-                    if (childRb2 != null){
+                    if (childRb2 != null) {
                         childRb2.setChecked(false);
+                        lastPos2 = -1;
                     }
-                    childRb1 = childViewHolder.mRadioButton;
+                    childRb1 = mRadioButton;
+                    lastPos1 = childPosition;
                 } else {
-                    if (childRb2 != null && childRb2 != childViewHolder.mRadioButton) {
+                    if (childRb2 != null && childRb2 != mRadioButton) {
                         childRb2.setChecked(false);
                     }
-                    childRb2 = childViewHolder.mRadioButton;
+                    childRb2 = mRadioButton;
+                    lastPos2 = childPosition;
                 }
                 mOnRbClickListener.onRbClick(groupPosition, childPosition);
             }

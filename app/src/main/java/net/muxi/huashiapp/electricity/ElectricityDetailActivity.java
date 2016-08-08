@@ -14,7 +14,9 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.common.data.Electricity;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.common.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,25 +77,33 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
 
                     }
                 });
-        CampusFactory.getRetrofitService().getElectricity(eleAirRequest)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<Electricity>() {
-                    @Override
-                    public void onCompleted() {
+        if (NetStatus.isConnected()) {
+            CampusFactory.getRetrofitService().getElectricity(eleAirRequest)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.newThread())
+                    .subscribe(new Observer<Electricity>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                            ToastUtil.showShort(getString(R.string.ele_room_not_found));
+                            Intent intent = new Intent(ElectricityDetailActivity.this,ElectricityActivity.class);
+                            startActivity(intent);
+                            ElectricityDetailActivity.this.finish();
+                        }
 
-                    @Override
-                    public void onNext(Electricity electricity) {
-                        ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(electricity);
-                    }
-                });
+                        @Override
+                        public void onNext(Electricity electricity) {
+                            ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(electricity);
+                        }
+                    });
+        }else {
+            ToastUtil.showShort(getString(R.string.tip_check_net));
+        }
 
         init();
     }

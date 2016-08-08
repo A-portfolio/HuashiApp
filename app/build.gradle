@@ -47,6 +47,7 @@ dependencies {
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
     compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
     compile files('libs/universal-image-loader-1.9.5.jar')
+    compile 'com.alipay.euler:andfix:0.4.0@aar'
 
     compile 'com.tencent.bugly:crashreport:2.2.0'
     compile 'com.zhuge.analysis:visual:latest.integration'

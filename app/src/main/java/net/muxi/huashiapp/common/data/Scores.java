@@ -6,40 +6,20 @@ package net.muxi.huashiapp.common.data;
 public class Scores {
 
     /**
-     * total : 77.5
-     * ending : 70
-     * usual :
-     */
-
-    private GradeBean grade;
-    /**
-     * grade : {"total":"77.5","ending":"70","usual":""}
-     * course : 管理运筹学
      * category : 专业课
-     * type : 理
-     * credit : 3.0
+     * credit : 1.0
+     * grade : 69.5
+     * jxb_id : 2681122D7EBD18E8E0531E50A8C0CCFD
+     * course : 信息管理与信息系统专业英语
+     * type : 文
      */
 
-    private String course;
     private String category;
-    private String type;
     private String credit;
-
-    public GradeBean getGrade() {
-        return grade;
-    }
-
-    public void setGrade(GradeBean grade) {
-        this.grade = grade;
-    }
-
-    public String getCourse() {
-        return course;
-    }
-
-    public void setCourse(String course) {
-        this.course = course;
-    }
+    private String grade;
+    private String jxb_id;
+    private String course;
+    private String type;
 
     public String getCategory() {
         return category;
@@ -47,14 +27,6 @@ public class Scores {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getCredit() {
@@ -65,33 +37,35 @@ public class Scores {
         this.credit = credit;
     }
 
-    public static class GradeBean {
-        private String total;
-        private String ending;
-        private String usual;
+    public String getGrade() {
+        return grade;
+    }
 
-        public String getTotal() {
-            return total;
-        }
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
 
-        public void setTotal(String total) {
-            this.total = total;
-        }
+    public String getJxb_id() {
+        return jxb_id;
+    }
 
-        public String getEnding() {
-            return ending;
-        }
+    public void setJxb_id(String jxb_id) {
+        this.jxb_id = jxb_id;
+    }
 
-        public void setEnding(String ending) {
-            this.ending = ending;
-        }
+    public String getCourse() {
+        return course;
+    }
 
-        public String getUsual() {
-            return usual;
-        }
+    public void setCourse(String course) {
+        this.course = course;
+    }
 
-        public void setUsual(String usual) {
-            this.usual = usual;
-        }
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -1,53 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="88dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:elevation="4dp"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/item_score_vertical_margin">
 
-    <TextView
-        android:id="@+id/tv_course_name"
+    <RelativeLayout
+        android:id="@+id/normal_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lines="1"
-        android:ellipsize="end"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/medium_size"
-        tools:text="马克思主义原理"/>
+        android:layout_height="60dp">
+        <TextView
+            android:id="@+id/tv_course_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/medium_size"
+            tools:text="马克思主义原理"/>
 
-    <TextView
-        android:id="@+id/tv_course_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_course_name"
-        android:layout_marginRight="4dp"
-        tools:text="公共必修"/>
+        <TextView
+            android:id="@+id/tv_course_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_course_name"
+            android:layout_marginRight="4dp"
+            tools:text="公共必修"/>
 
-    <TextView
-        android:id="@+id/tv_course_property"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_course_name"
+        <TextView
+            android:id="@+id/tv_course_property"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_course_name"
 
-        android:layout_toRightOf="@+id/tv_course_category"
-        tools:text="理"/>
+            android:layout_toRightOf="@+id/tv_course_category"
+            tools:text="理"/>
 
-    <TextView
-        android:id="@+id/tv_credit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/tv_course_name"
-        tools:text="@string/title_credit"/>
+        <TextView
+            android:id="@+id/tv_credit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_course_name"
+            tools:text="@string/title_credit"/>
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_alignParentBottom="true">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_alignParentBottom="true">
 
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="总评分:  "/>
+
+                <TextView
+                    android:id="@+id/tv_score_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/large_size"
+                    tools:text="75分"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/detail_layout"
+        android:layout_width="match_parent"
+        android:layout_height="28dp">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -71,8 +107,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            >
+            android:layout_weight="1">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -88,27 +123,6 @@
                 tools:text="70分"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+    </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="总评分:  "/>
-
-            <TextView
-                android:id="@+id/tv_score_total"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/large_size"
-                tools:text="75分"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-
-</RelativeLayout>
+</LinearLayout>

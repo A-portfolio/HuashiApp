@@ -23,7 +23,8 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/course_top_margin"
-            android:drawableLeft="@drawable/ic_date_range_black_24dp"
+            android:drawableLeft="@drawable/icon_write_classname"
+            android:drawablePadding="@dimen/course_add_drawable_padding"
             android:hint="输入课程名称"
             android:textSize="@dimen/schedule_add_course_size"/>
 
@@ -35,7 +36,8 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/course_edit_text_margin"
-            android:drawableLeft="@drawable/ic_person_black_24dp"
+            android:drawableLeft="@drawable/icon_write_teachername"
+            android:drawablePadding="@dimen/course_add_drawable_padding"
             android:hint="输入老师名称"
             android:textSize="@dimen/schedule_add_course_size"/>
 
@@ -44,10 +46,11 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/course_edit_height"
             android:layout_below="@+id/edit_teacher_name"
+            android:drawablePadding="@dimen/course_add_drawable_padding"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/course_edit_text_margin"
-            android:drawableLeft="@drawable/ic_place_black_24dp"
+            android:drawableLeft="@drawable/icon_write_classroom"
             android:hint="输入上课地点"
             android:textSize="@dimen/schedule_add_course_size"/>
 
@@ -55,14 +58,16 @@
             android:id="@+id/btn_course_week"
             android:layout_width="156dp"
             android:layout_height="@dimen/course_button_height"
+            android:drawablePadding="@dimen/course_add_drawable_padding"
             android:layout_below="@+id/edit_course_place"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/course_button_margin"
             android:background="@color/colorWhite"
-            android:drawableLeft="@drawable/ic_access_time_black_24dp"
+            android:drawableLeft="@drawable/icon_schedule_curweek_select"
             android:elevation="@dimen/elevation_height"
             android:ellipsize="end"
+            android:paddingLeft="8dp"
             android:gravity="center_vertical"
             android:maxLines="1"
             android:text="选择上课周"
@@ -73,7 +78,9 @@
         <Button
             android:id="@+id/btn_course_time"
             android:layout_width="156dp"
+            android:paddingLeft="8dp"
             android:layout_height="@dimen/course_button_height"
+            android:drawableLeft="@drawable/icon_add_classtime"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/edit_course_place"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -81,6 +88,7 @@
             android:layout_marginTop="@dimen/course_button_margin"
             android:background="@color/colorWhite"
             android:elevation="@dimen/elevation_height"
+            android:drawablePadding="@dimen/course_add_drawable_padding"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
@@ -104,9 +112,12 @@
             <TextView
                 android:id="@+id/tv_course_remind"
                 android:layout_width="wrap_content"
+                android:paddingLeft="8dp"
                 android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_remindclass"
                 android:layout_centerVertical="true"
                 android:text="勾选课程提醒"
+                android:drawablePadding="@dimen/course_add_drawable_padding"
                 android:textSize="@dimen/schedule_add_course_size"/>
 
             <android.support.v7.widget.SwitchCompat

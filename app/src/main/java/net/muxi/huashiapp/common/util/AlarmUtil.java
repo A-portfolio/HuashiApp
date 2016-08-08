@@ -8,6 +8,7 @@ import android.content.Intent;
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.common.service.AlarmReceiveer;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -27,7 +28,12 @@ public class AlarmUtil {
 
         for (int i = 0; i < ALARM_NUM; i++) {
             calendars[i] = Calendar.getInstance();
-            setTimeAround(calendars[i], REMIND_TIME[i]);
+//            setTimeAround(calendars[i], REMIND_TIME[i]);
+            calendars[i].set(Calendar.HOUR_OF_DAY,REMIND_TIME[i]);
+            calendars[i].set(Calendar.MINUTE,0);
+            SimpleDateFormat format = new SimpleDateFormat("MM-dd-HH-mm-ss");
+            Logger.d(format.format(calendars[i].getTime()));
+
             Intent intent = new Intent("net.muxi.huashiapp.alarm");
             intent.setClass(context, AlarmReceiveer.class);
             intent.putExtra(AppConstants.ALARMTIME, i);
