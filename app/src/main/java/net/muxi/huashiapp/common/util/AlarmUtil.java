@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import net.muxi.huashiapp.AppConstants;
-import net.muxi.huashiapp.common.service.AlarmReceiveer;
+import net.muxi.huashiapp.common.service.AlarmReceiver;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,23 +25,63 @@ public class AlarmUtil {
         final int[] REMIND_TIME = {9, 15, 20};
 
         Calendar[] calendars = new Calendar[ALARM_NUM];
+        Calendar now = Calendar.getInstance();
 
         for (int i = 0; i < ALARM_NUM; i++) {
             calendars[i] = Calendar.getInstance();
 //            setTimeAround(calendars[i], REMIND_TIME[i]);
             calendars[i].set(Calendar.HOUR_OF_DAY,REMIND_TIME[i]);
             calendars[i].set(Calendar.MINUTE,0);
+            calendars[i].set(Calendar.SECOND,1);
+            if (now.after(calendars[i])){
+                continue;
+            }
             SimpleDateFormat format = new SimpleDateFormat("MM-dd-HH-mm-ss");
             Logger.d(format.format(calendars[i].getTime()));
 
             Intent intent = new Intent("net.muxi.huashiapp.alarm");
-            intent.setClass(context, AlarmReceiveer.class);
+            intent.setClass(context, AlarmReceiver.class);
             intent.putExtra(AppConstants.ALARMTIME, i);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i , intent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendars[i].getTimeInMillis(), pendingIntent);
         }
 
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.HOUR_OF_DAY, 11);
+//        calendar.set(Calendar.MINUTE, 40);
+//        calendar.set(Calendar.SECOND,1);
+//        if (now.after(calendar)) {
+//            return;
+//        }
+//        Intent intent = new Intent("net.muxi.huashiapp.alarm");
+//        intent.setClass(context, AlarmReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+//        Calendar today = Calendar.getInstance();
+//
+//        today.set(Calendar.SECOND, 10);
+//        today.set(Calendar.HOUR_OF_DAY,11);
+//        today.set(Calendar.MINUTE,40);
+//        Logger.d("fdakf");
+//
+//        if (now.after(today)) {
+//            return;
+//        }
+//
+//        ToastUtil.showShort("alarm register");
+//        Log.d("time","set the time");
+//
+//        Intent intent = new Intent("net.muxi.huashiapp.alarm");
+//        intent.setClass(context, AlarmReceiver.class);
+//
+//        PendingIntent broadcast = PendingIntent.getBroadcast(context, 520, intent,
+//                PendingIntent.FLAG_UPDATE_CURRENT);
+//        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//
+//        manager.set(AlarmManager.RTC_WAKEUP, today.getTimeInMillis(), broadcast);
     }
 
     /**

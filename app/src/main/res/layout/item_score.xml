@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="12dp"
     android:layout_marginRight="@dimen/activity_horizontal_margin"
-    android:elevation="4dp"
+    android:elevation="8dp"
     android:orientation="vertical"
+    android:paddingBottom="@dimen/item_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:background="@color/colorWhite"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/item_score_vertical_margin">
 
     <RelativeLayout
         android:id="@+id/normal_layout"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="44dp">
+
         <TextView
             android:id="@+id/tv_course_name"
             android:layout_width="match_parent"
@@ -30,7 +34,7 @@
             android:id="@+id/tv_course_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_course_name"
+            android:layout_alignParentBottom="true"
             android:layout_marginRight="4dp"
             tools:text="公共必修"/>
 
@@ -38,8 +42,7 @@
             android:id="@+id/tv_course_property"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_course_name"
-
+            android:layout_alignParentBottom="true"
             android:layout_toRightOf="@+id/tv_course_category"
             tools:text="理"/>
 
@@ -47,47 +50,62 @@
             android:id="@+id/tv_credit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tv_course_name"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             tools:text="@string/title_credit"/>
 
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_alignParentBottom="true">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="总评分:  "/>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="总评分:  "/>
-
-                <TextView
-                    android:id="@+id/tv_score_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/large_size"
-                    tools:text="75分"/>
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_score_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/large_size"
+                tools:text="75分"/>
 
         </LinearLayout>
 
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/img_load_more"
+        android:layout_width="wrap_content"
+        android:layout_height="8dp"
+        android:layout_below="@+id/normal_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/ic_expand_more_buttom"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/normal_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/tip_load_score"
+        android:visibility="gone"/>
+
     <RelativeLayout
         android:id="@+id/detail_layout"
         android:layout_width="match_parent"
-        android:layout_height="28dp">
+        android:layout_height="32dp"
+        android:visibility="gone"
+        android:layout_below="@+id/normal_layout">
+
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -105,9 +123,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -117,7 +135,7 @@
             <TextView
                 android:id="@+id/tv_score_ending"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/large_size"
                 tools:text="70分"/>
@@ -125,4 +143,9 @@
 
     </RelativeLayout>
 
-</LinearLayout>
+    <Space android:id="@+id/space_anim"
+           android:layout_width="match_parent"
+           android:layout_below="@+id/normal_layout"
+           android:layout_height="12dp"/>
+
+</RelativeLayout>

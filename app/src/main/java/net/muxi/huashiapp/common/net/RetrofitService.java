@@ -52,7 +52,7 @@ public interface RetrofitService {
                                    @Query("author") String author);
 
     @GET("lib/me/")
-    Observable<List<PersonalBook>> getPersonalBook(@Header("Authorizaiton") String verification);
+    Observable<List<PersonalBook>> getPersonalBook(@Header("Authorization") String verification);
 
 
     //URL: /api/table/?xnm='2015'&xqm='3'&sid='2016210761'

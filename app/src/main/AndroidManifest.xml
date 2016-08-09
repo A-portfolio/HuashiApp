@@ -102,7 +102,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".common.service.AlarmReceiveer">
+        <receiver android:name=".common.service.AlarmReceiver">
             <intent-filter>
                 <action android:name="net.muxi.huashiapp.alarm"/>
             </intent-filter>

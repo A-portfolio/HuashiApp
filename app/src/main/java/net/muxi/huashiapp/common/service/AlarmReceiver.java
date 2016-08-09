@@ -36,7 +36,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by ybao on 16/5/16.
  */
-public class AlarmReceiveer extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver {
 
     private User mUser;
     private User mLibUser;
@@ -48,7 +48,6 @@ public class AlarmReceiveer extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         // TODO: 16/5/29 enable after
-        Logger.d("search score");
         mContext = context;
         mUser = new User();
         mLibUser = new User();
@@ -58,34 +57,39 @@ public class AlarmReceiveer extends BroadcastReceiver {
         mLibUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID));
         mLibUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD));
 
-        NotifyUtil.show(mContext, MainActivity.class,"dajfslfal","fjsakdfasdlfa");
-
+        Logger.d(mUser.getSid());
         //判断对应的登录状态以及当前时间,还有用户是否设置提醒
-        if (mUser.getSid() != "") {
+        if (!mUser.getSid().equals("")) {
+            Logger.d("check sid");
             if (intent.getIntExtra(AppConstants.ALARMTIME, 0) == 2) {
-                if (sp.getBoolean(App.getContext().getString(R.string.pre_schedule))) {
+                if (sp.getBoolean(App.getContext().getString(R.string.pre_schedule),true)) {
                     checkCourses();
+                    Logger.d("check course");
                 }
             }
             if (intent.getIntExtra(AppConstants.ALARMTIME, 0) == 1) {
-                if (sp.getBoolean(App.getContext().getString(R.string.pre_score))) {
+                if (sp.getBoolean(App.getContext().getString(R.string.pre_score),true)) {
                     checkScores();
+                    Logger.d("check course");
                 }
             }
             if (intent.getIntExtra(AppConstants.ALARMTIME, 0) == 0) {
-                if (sp.getBoolean(App.getContext().getString(R.string.pre_score))) {
+                if (sp.getBoolean(App.getContext().getString(R.string.pre_card),true)) {
+                    checkCard();
+                    Logger.d("check course");
+                }
+                if (sp.getBoolean(App.getContext().getString(R.string.pre_score),true)) {
                     checkScores();
                 }
-                if (sp.getBoolean(App.getContext().getString(R.string.pre_card))) {
-                    checkCard();
-                }
                 if (mLibUser.getSid() != "") {
-                    if (sp.getBoolean(App.getContext().getString(R.string.pre_library))) {
+                    if (sp.getBoolean(App.getContext().getString(R.string.pre_library),true)) {
                         checkLib();
                     }
                 }
             }
         }
+
+        NotifyUtil.show(mContext, MainActivity.class, "fds", mUser.getSid());
 
     }
 

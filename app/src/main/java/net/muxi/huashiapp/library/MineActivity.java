@@ -73,7 +73,8 @@ public class MineActivity extends BaseActivity {
 
                     @Override
                     public void onNext(List<PersonalBook> personalBooks) {
-                        setupRecyclerview(personalBooks);
+                        Logger.d("get personal");
+//                        setupRecyclerview(personalBooks);
                     }
                 });
         initView();

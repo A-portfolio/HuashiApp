@@ -131,7 +131,7 @@ public class ScoreActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0){
             mFragmentLayout.setClickable(false);
         }
         super.onBackPressed();

@@ -13,12 +13,12 @@ import android.widget.TextView;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseFragment;
+import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.Base64Util;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
-import net.muxi.huashiapp.common.widget.DividerItemDecoration;
 
 import java.util.List;
 
@@ -39,6 +39,8 @@ public class ScoreDetailFragment extends BaseFragment {
     RecyclerView mRecyclerView;
     @BindView(R.id.tv_last)
     TextView mTvLast;
+
+    private ScoresAdapter mScoresAdapter;
 
     private String mYear;
     private String mTerm;
@@ -65,8 +67,7 @@ public class ScoreDetailFragment extends BaseFragment {
         ButterKnife.bind(this, view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(App.getContext()));
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(container.getContext(),DividerItemDecoration.VERTICAL_LIST));
+//        mRecyclerView.addItemDecoration(new DividerItemDecoration(container.getContext(),DividerItemDecoration.VERTICAL_LIST));
         mYear = getArguments().getString(SCHOOL_YEAR);
         mTerm = getArguments().getString(SCHOOL_TERM);
 
@@ -93,14 +94,44 @@ public class ScoreDetailFragment extends BaseFragment {
                     public void onNext(List<Scores> scoresList) {
                         setupRecyclerview(scoresList);
                         sp.saveInt(PreferenceUtil.SCORES_NUM, scoresList.size());
+                        loadDetailScore(scoresList);
                     }
                 });
         return view;
     }
 
+    private void loadDetailScore(List<Scores> scoresList) {
+        int i = 0;
+        for (final Scores scores : scoresList) {
+            final int j = i;
+            CampusFactory.getRetrofitService()
+                    .getDetailScores(Base64Util.createBaseStr(App.sUser),mYear,mTerm,scores.getCourse(),scores.getJxb_id())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.newThread())
+                    .subscribe(new Observer<DetailScores>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onNext(DetailScores detailScores) {
+                            detailScores.setCourse(scores.getCourse());
+                            mScoresAdapter.addDetailScore(detailScores,j);
+                        }
+                    });
+            i ++;
+        }
+    }
+
     private void setupRecyclerview(List<Scores> scoresList) {
-        ScoresAdapter adapter = new ScoresAdapter(scoresList);
-        mRecyclerView.setAdapter(adapter);
+        mScoresAdapter = new ScoresAdapter(scoresList);
+        mRecyclerView.setAdapter(mScoresAdapter);
     }
 
     @Override

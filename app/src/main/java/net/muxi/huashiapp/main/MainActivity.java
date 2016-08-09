@@ -56,7 +56,8 @@ public class MainActivity extends ToolbarActivity {
     RecyclerView mRecyclerView;
     private int[] mpics = {R.drawable.ic_main_curschedule, R.drawable.ic_main_idcard,
             R.drawable.ic_main_mark, R.drawable.ic_main_power_rate,
-            R.drawable.ic_main_school_calendar, R.drawable.ic_main_workschedule, R.drawable.ic_main_library, R.drawable.ic_main_library};
+            R.drawable.ic_main_school_calendar, R.drawable.ic_main_workschedule,
+            R.drawable.ic_main_library, R.drawable.ic_main_library};
 
     private String[] mdesc = {"课程表", "学生卡", "成绩查询", "电费查询", "校历查询", "部门信息", "图书馆", "学而",};
     private MainAdapter mAdapter;
@@ -182,7 +183,7 @@ public class MainActivity extends ToolbarActivity {
         });
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(new MyItemDecoration());
+//        mRecyclerView.addItemDecoration(new MyItemDecoration());
         mAdapter.setOnBannerItemClickListener(new MainAdapter.OnBannerItemClickListener() {
             @Override
             public void onBannerItemClick(BannerData bannerData) {
