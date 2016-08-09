@@ -2,10 +2,8 @@ package net.muxi.huashiapp.card;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
@@ -30,18 +28,14 @@ import rx.schedulers.Schedulers;
 public class CardActivity extends ToolbarActivity {
 
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
     @BindView(R.id.date)
     TextView mDate;
     @BindView(R.id.money)
     TextView mMoney;
-    @BindView(R.id.card_view)
-    CardView mCardView;
-    @BindView(R.id.coordinator_layout)
-    RelativeLayout mCoordinatorLayout;
     @BindView(R.id.tv_unit)
     TextView mTvUnit;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

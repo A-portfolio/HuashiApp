@@ -5,11 +5,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.common.util.MailUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,8 +29,8 @@ public class SuggestionActivity extends ToolbarActivity {
     TextView mTvTip;
     @BindView(R.id.et_suggestion)
     EditText mEtSuggestion;
-    @BindView(R.id.btn_put)
-    Button mBtnPut;
+    @BindView(R.id.btn_submit)
+    Button mBtnSubmit;
     @BindView(R.id.tv_word_length)
     TextView mTvWordLength;
 
@@ -58,6 +60,33 @@ public class SuggestionActivity extends ToolbarActivity {
 
             }
         });
+
+       mBtnSubmit.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               sendEmail("15927448708@163.com","huashiapp",mEtSuggestion.getText().toString());
+           }
+       });
+    }
+
+    public void sendEmail(final String toMail, final String title, final String body){
+        new Thread(new Runnable() {
+            public void run() {
+                MailUtils emailUtil = new MailUtils();
+                try {
+
+                    String account = "360322537@qq.com";
+                    String password = "987654321feng";
+
+                    emailUtil.sendMail(toMail, account, "smtp.mxhichina.com",
+                            account, password, title, body);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     //显示当前的字数

@@ -1,35 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/cv_item">
+    android:layout_height="120dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/main_pic"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_centerInParent="true"
+        tools:src="@drawable/ic_main_library"/>
 
-        <ImageView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/main_pic"
-            android:scaleType="centerCrop"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            />
-
-        <TextView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/main_text_view"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-
-    </LinearLayout>
-
-
+    <TextView
+        android:id="@+id/main_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        tools:text="电费查询"/>
 
 </RelativeLayout>

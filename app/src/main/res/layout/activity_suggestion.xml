@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/btn_put"
+        android:id="@+id/btn_submit"
         android:layout_width="328dp"
         android:layout_height="36dp"
         android:layout_below="@+id/et_suggestion"

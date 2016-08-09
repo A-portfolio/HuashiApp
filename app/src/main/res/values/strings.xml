@@ -71,6 +71,7 @@
     <string name="title_credit">学分:  </string>
     <string name="title_year">学年信息</string>
     <string name="title_term">学期信息</string>
+    <string name="tip_load_score">详细成绩查询中</string>
 
     <!--电费查询-->
     <string name="ele_room_not_found">该宿舍不存在</string>

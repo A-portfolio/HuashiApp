@@ -5,6 +5,7 @@ package net.muxi.huashiapp.common.data;
  */
 public class DetailScores {
 
+    private String course;
     private String usual;
     private String ending;
 
@@ -22,6 +23,14 @@ public class DetailScores {
 
     public void setEnding(String ending) {
         this.ending = ending;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
     }
 }
 
