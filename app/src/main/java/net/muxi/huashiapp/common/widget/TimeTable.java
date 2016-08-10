@@ -360,11 +360,11 @@ public class TimeTable extends FrameLayout {
                 params.setMargins(0, COURSE_TIME_HEIGHT / 2 * (courses.get(i).getStart() - 1), 0, 0);
                 final TextView courseTv = new TextView(mContext);
                 if (curCourses.contains(courses.get(i))) {
-                    courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(courses.get(i).getColor())));
+                    courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(courses.get(i).getColor(),0)));
                 } else if (priorityCourses.contains(courses.get(i))) {
-                    courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(courses.get(i).getColor())));
+                    courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(courses.get(i).getColor(),1)));
                 } else if (otherCourses.contains(courses.get(i))) {
-                    courseTv.setBackground(getResources().getDrawable(R.drawable.shape_rectangle_grey));
+                    courseTv.setBackground(getResources().getDrawable(R.drawable.bg_simple_class_gray));
                 }
                 courseTv.setTextColor(Color.WHITE);
                 String courseName = simplifyCourse(courses.get(i).getCourse());

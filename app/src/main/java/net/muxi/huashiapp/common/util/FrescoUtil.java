@@ -12,6 +12,8 @@ import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.DraweeView;
 import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
@@ -55,11 +57,11 @@ public class FrescoUtil {
     public static File getCacheImageOnDisk(CacheKey cacheKey) {
         File localFile = null;
         if (cacheKey != null) {
-            if (ImagePipelineFactory.getInstance().getMainFileCache().hasKey(cacheKey)) {
-                BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
+            if (ImagePipelineFactory.getInstance().getMainDiskStorageCache().hasKey(cacheKey)) {
+                BinaryResource resource = ImagePipelineFactory.getInstance().getMainDiskStorageCache().getResource(cacheKey);
                 localFile = ((FileBinaryResource) resource).getFile();
-            } else if (ImagePipelineFactory.getInstance().getSmallImageFileCache().hasKey(cacheKey)) {
-                BinaryResource resource = ImagePipelineFactory.getInstance().getSmallImageFileCache().getResource(cacheKey);
+            } else if (ImagePipelineFactory.getInstance().getSmallImageDiskStorageCache().hasKey(cacheKey)) {
+                BinaryResource resource = ImagePipelineFactory.getInstance().getSmallImageDiskStorageCache().getResource(cacheKey);
                 localFile = ((FileBinaryResource) resource).getFile();
             }
         }
@@ -137,6 +139,19 @@ public class FrescoUtil {
 
             }
         }, CallerThreadExecutor.getInstance());
+    }
+
+    public static void setLoading(DraweeView draweeView){
+//        Uri uri = new Uri.Builder()
+//                .scheme("res")
+//                .path(String.valueOf(R.drawable.loading))
+//                .build();
+        Uri uri = Uri.parse("asset://net.muxi.huashiapp/loading.gif");
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setUri(uri)
+                .setAutoPlayAnimations(true)
+                .build();
+        draweeView.setController(controller);
     }
 
 }

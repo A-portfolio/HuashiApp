@@ -161,9 +161,9 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
             if (a.hasValue(R.styleable.MySearchView_android_textColor)) {
                 setTextColor(a.getInt(R.styleable.MySearchView_android_textColor, 0));
             }
-            if (a.hasValue(R.styleable.MySearchView_android_textColorHint)) {
-                setTextColorHint(a.getInt(R.styleable.MySearchView_android_textColorHint, 0));
-            }
+//            if (a.hasValue(R.styleable.MySearchView_android_textColorHint)) {
+//                setTextColorHint(a.getInt(R.styleable.MySearchView_android_textColorHint, 0));
+//            }
 
             a.recycle();
         }

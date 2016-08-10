@@ -22,7 +22,6 @@ import net.muxi.huashiapp.common.util.NotifyUtil;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.TimeTableUtil;
 import net.muxi.huashiapp.library.MineActivity;
-import net.muxi.huashiapp.main.MainActivity;
 import net.muxi.huashiapp.schedule.ScheduleActivity;
 import net.muxi.huashiapp.score.ScoreActivity;
 
@@ -89,7 +88,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             }
         }
 
-        NotifyUtil.show(mContext, MainActivity.class, "fds", mUser.getSid());
 
     }
 

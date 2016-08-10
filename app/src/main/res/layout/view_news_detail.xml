@@ -10,10 +10,11 @@
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin">
 
-    <ImageButton
+    <ImageView
         android:id="@+id/news_float_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/ic_clear_black_24dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="26dp"/>
     

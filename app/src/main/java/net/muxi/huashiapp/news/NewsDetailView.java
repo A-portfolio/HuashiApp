@@ -3,7 +3,7 @@ package net.muxi.huashiapp.news;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 public class NewsDetailView extends RelativeLayout {
 
     @BindView(R.id.news_float_btn)
-    ImageButton mNewsFloatBtn;
+    ImageView mNewsFloatBtn;
     @BindView(R.id.news_title)
     TextView mNewsTitle;
     @BindView(R.id.news_content)

@@ -25,6 +25,7 @@ import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.widget.LoginEditText;
 import net.muxi.huashiapp.login.SimpleTextWatcher;
+import net.muxi.huashiapp.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,7 +38,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by ybao on 16/5/15.
  */
-public class LibraryLoginActivity extends ToolbarActivity {
+public class LibraryLoginActivity extends ToolbarActivity{
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -77,6 +78,11 @@ public class LibraryLoginActivity extends ToolbarActivity {
     private void initView() {
         mEditPassword.setHint(getResources().getString(R.string.tip_lib_pwd));
         mToolbar.setTitle("图书馆");
+//        setSupportActionBar(mToolbar);
+//        ActionBar actionBar = getSupportActionBar();
+//        if (actionBar != null){
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//        }
         mEditUserName.addTextChangedListener(mTextWatcher);
         mEditPassword.addTextChangedListener(mTextWatcher);
         mSearchView.setSuggestions(mSuggestions);
@@ -147,13 +153,17 @@ public class LibraryLoginActivity extends ToolbarActivity {
         }
     }
 
+
     @Override
     public void onBackPressed() {
         if (mSearchView.isSearchOpen()) {
             mSearchView.closeSearchView();
             return;
         }
-        super.onBackPressed();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
     }
 
     @OnClick(R.id.btn_login)

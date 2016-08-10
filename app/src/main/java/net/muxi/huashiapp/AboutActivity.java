@@ -136,6 +136,18 @@ public class AboutActivity extends ToolbarActivity {
                                 }
                             });
 
+                        }else {
+                            final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
+                            materialDialog.setTitle(getString(R.string.title_not_have_to_update));
+                            materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
+                            materialDialog.setNegativeButtonVisible(false);
+                            materialDialog.setPositiveButton(getResources().getString(R.string.btn_positive), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    materialDialog.dismiss();
+                                }
+                            });
+                            materialDialog.show();
                         }
                     }
                 });

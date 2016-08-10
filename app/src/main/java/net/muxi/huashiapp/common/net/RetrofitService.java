@@ -49,7 +49,8 @@ public interface RetrofitService {
     @GET("lib/")
     Observable<Book> getBookDetail(@Query("id") String id,
                                    @Query("book") String book,
-                                   @Query("author") String author);
+                                   @Query("author") String author,
+                                   @Query("bid") String bid);
 
     @GET("lib/me/")
     Observable<List<PersonalBook>> getPersonalBook(@Header("Authorization") String verification);
@@ -114,5 +115,6 @@ public interface RetrofitService {
 
     @GET
     Observable<ResponseBody> downloadFile(@Url String url);
+
 
 }

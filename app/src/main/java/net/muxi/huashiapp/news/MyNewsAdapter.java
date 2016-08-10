@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.news;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,16 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsView
         holder.mNewsInfoDate.setText(mNewsList.get(position).getDate());
         holder.mNewsInfoTitle.setText(mNewsList.get(position).getTitle());
         holder.mNewsInfoIcon.setText(mNewsList.get(position).getTitle().substring(0, 1));
+        holder.mNewsInfoIcon.setTextColor(Color.WHITE);
+        if (position % 4 == 0){
+            holder.mNewsInfoIcon.setBackgroundResource(R.drawable.shape_round_green);
+        }else if (position % 4 == 1){
+            holder.mNewsInfoIcon.setBackgroundResource(R.drawable.shape_round_orange);
+        }else if (position % 4 == 2){
+            holder.mNewsInfoIcon.setBackgroundResource(R.drawable.shape_round_pink);
+        }else {
+            holder.mNewsInfoIcon.setBackgroundResource(R.drawable.shape_round_purple);
+        }
         holder.mNewsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

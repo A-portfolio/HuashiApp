@@ -53,14 +53,14 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_margin="15dp">
+                android:layout_height="match_parent"
+                >
 
                 <TextView
                     android:id="@+id/money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
                     android:textColor="@color/colorPrimary"
                     android:textSize="80sp"
                     tools:text="180.00"/>
@@ -68,11 +68,12 @@
                 <TextView
                     android:id="@+id/tv_unit"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="16dp"
+                    android:layout_height="60dp"
                     android:layout_toRightOf="@+id/money"
+                    android:layout_centerVertical="true"
+                    android:gravity="bottom"
                     android:text="元"
+                    android:visibility="gone"
                     android:textSize="18sp"/>
 
             </RelativeLayout>
