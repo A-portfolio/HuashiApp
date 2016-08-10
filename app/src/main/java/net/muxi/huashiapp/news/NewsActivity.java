@@ -12,11 +12,14 @@ import android.view.ViewGroup;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.DimensUtil;
+import net.muxi.huashiapp.common.util.FrescoUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.widget.BaseDetailLayout;
 import net.muxi.huashiapp.common.widget.ShadowView;
@@ -43,6 +46,8 @@ public class NewsActivity extends ToolbarActivity {
     RecyclerView mNewsRecyclerView;
     @BindView(R.id.root_layout)
     FrameLayout mContentLayout;
+    @BindView(R.id.drawee)
+    SimpleDraweeView mDrawee;
 
 
     private FrameLayout mFrameLayout;
@@ -87,7 +92,7 @@ public class NewsActivity extends ToolbarActivity {
                     @Override
                     public void onNext(List<News> newsList) {
                         setupRecyclerView(newsList);
-
+                        mDrawee.setVisibility(View.GONE);
                     }
                 });
     }
@@ -96,9 +101,9 @@ public class NewsActivity extends ToolbarActivity {
         setSupportActionBar(mToolbar);
         mToolbar.setTitle("消息公告");
         mNewsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        FrescoUtil.setLoading(mDrawee);
 //        mNewsRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
     }
-
 
 
     private void setupRecyclerView(List<News> newsList) {
@@ -109,7 +114,7 @@ public class NewsActivity extends ToolbarActivity {
             @Override
             public void OnItemClick(View view, List<News> newsList, int position) {
                 Logger.d("balalala");
-                setupDetailLayout(newsList,position);
+                setupDetailLayout(newsList, position);
 
                 final View itemView = view;
 
@@ -150,7 +155,7 @@ public class NewsActivity extends ToolbarActivity {
                     public void onNext(Long aLong) {
                         mBaseDetailLayout = new BaseDetailLayout(NewsActivity.this);
                         mContentLayout.addView(mBaseDetailLayout);
-                        NewsDetailView newsDetailView = new NewsDetailView(NewsActivity.this, newsList,position);
+                        NewsDetailView newsDetailView = new NewsDetailView(NewsActivity.this, newsList, position);
                         mBaseDetailLayout.setContent(newsDetailView);
 
                     }

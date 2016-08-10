@@ -61,6 +61,10 @@
 
     <ImageView
         android:layout_width="wrap_content"
+        android:src="@drawable/divider_lib"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         android:layout_height="wrap_content"/>
 
     <!--<LinearLayout-->

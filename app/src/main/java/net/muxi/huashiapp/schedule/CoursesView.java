@@ -56,9 +56,9 @@ public class CoursesView extends LinearLayout{
             }
             textView.setLayoutParams(params);
             if (TimeTableUtil.isThisWeek(mWeek,mCourses.get(i).getWeeks())){
-                textView.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(mCourses.get(i).getColor())));
+                textView.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(mCourses.get(i).getColor(),0)));
             }else {
-                textView.setBackground(getResources().getDrawable(R.drawable.shape_rectangle_grey));
+                textView.setBackground(getResources().getDrawable(R.drawable.bg_simple_class_gray));
             }
             this.addView(textView);
         }

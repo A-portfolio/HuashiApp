@@ -44,25 +44,43 @@ public class TimeTableUtil {
     }
 
     /**
-     * 获取课程的背景色
-     * @param colorNumber 背景色的 int 值
+     * 获取课程背景颜色
+     * @param colorNumber 颜色值
+     * @param type 是否有一起的课程 0为无,1为有
      * @return
      */
-    public static int getCourseBg(int colorNumber) {
+    public static int getCourseBg(int colorNumber,int type) {
         int color = 0;
-        switch (colorNumber) {
-            case 0:
-                color = R.drawable.shape_rectangle_green;
-                break;
-            case 1:
-                color = R.drawable.shape_rectangle_orange;
-                break;
-            case 2:
-                color = R.drawable.shape_rectangle_pink;
-                break;
-            case 3:
-                color = R.drawable.shape_rectangle_purple;
-                break;
+        if (type == 0) {
+            switch (colorNumber) {
+                case 0:
+                    color = R.drawable.bg_simple_class_green;
+                    break;
+                case 1:
+                    color = R.drawable.bg_simple_class_orange;
+                    break;
+                case 2:
+                    color = R.drawable.bg_simple_class_pink;
+                    break;
+                case 3:
+                    color = R.drawable.bg_simple_class_purple;
+                    break;
+            }
+        }else {
+            switch (colorNumber){
+                case 0:
+                    color = R.drawable.bg_class_green;
+                    break;
+                case 1:
+                    color = R.drawable.bg_class_orange;
+                    break;
+                case 2:
+                    color = R.drawable.bg_class_pink;
+                    break;
+                case 3:
+                    color = R.drawable.bg_class_purple;
+                    break;
+            }
         }
         return color;
     }

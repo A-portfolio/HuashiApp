@@ -79,9 +79,27 @@ public class ScoreActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
         ButterKnife.bind(this);
-
         initVariables();
         initView();
+    }
+
+    private void setTitle(String year, String term) {
+        String title = year + "年";
+        switch (term){
+            case "3":
+                title += "秋";
+                break;
+            case "12":
+                title += "春";
+                break;
+            case "16":
+                title += "夏";
+                break;
+            default:
+                title += "秋";
+                break;
+        }
+        setTitle(title);
     }
 
     private void initVariables() {
@@ -133,6 +151,7 @@ public class ScoreActivity extends ToolbarActivity {
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0){
             mFragmentLayout.setClickable(false);
+            setTitle("成绩查询");
         }
         super.onBackPressed();
     }
@@ -154,6 +173,7 @@ public class ScoreActivity extends ToolbarActivity {
             ft.addToBackStack(null);
             ft.commit();
             mFragmentLayout.setClickable(true);
+            setTitle(year,term);
         } else {
             ToastUtil.showShort(AppConstants.TIP_CHECK_NET);
         }

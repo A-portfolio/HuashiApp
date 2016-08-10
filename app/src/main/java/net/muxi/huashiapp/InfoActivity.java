@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.electricity.NonScrollExpandLv;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -14,8 +12,6 @@ import butterknife.ButterKnife;
  */
 public class InfoActivity extends ToolbarActivity {
 
-    @BindView(R.id.expand_lv)
-    NonScrollExpandLv mExpandLv;
 
     private InfoAdapter mAdapter;
     private static final String[] groupString = {"区域", "建筑"};
@@ -31,8 +27,6 @@ public class InfoActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
         ButterKnife.bind(this);
-        mAdapter = new InfoAdapter(this,groupString,childStrings1);
-        mExpandLv.setAdapter(mAdapter);
     }
 
 

@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
@@ -17,6 +18,7 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.common.widget.LoadingView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,8 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
     TabLayout mTabLayout;
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
+    @BindView(R.id.layout_loading)
+    LoadingView mLayoutLoading;
     private Electricity mEleAirData;
     private Electricity mEleLightData;
 
@@ -74,7 +78,7 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
                     @Override
                     public void onNext(Electricity electricity) {
                         ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(electricity);
-
+                        mLayoutLoading.setVisibility(View.GONE);
                     }
                 });
         if (NetStatus.isConnected()) {
@@ -91,7 +95,7 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
                         public void onError(Throwable e) {
                             e.printStackTrace();
                             ToastUtil.showShort(getString(R.string.ele_room_not_found));
-                            Intent intent = new Intent(ElectricityDetailActivity.this,ElectricityActivity.class);
+                            Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);
                             startActivity(intent);
                             ElectricityDetailActivity.this.finish();
                         }
@@ -101,7 +105,7 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
                             ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(electricity);
                         }
                     });
-        }else {
+        } else {
             ToastUtil.showShort(getString(R.string.tip_check_net));
         }
 
@@ -112,7 +116,7 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
         List<String> titles = new ArrayList<>();
         titles.add("照明");
         titles.add("空调");
-        for (int i = 0; i < 2; i ++){
+        for (int i = 0; i < 2; i++) {
             mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(i)));
         }
         detailFragments = new ArrayList<>();
@@ -124,7 +128,7 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
         mViewPager.setAdapter(myDetailAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        mTabLayout.setTabTextColors(getResources().getColor(R.color.color_normal_tab),getResources().getColor(R.color.colorWhite));
+        mTabLayout.setTabTextColors(getResources().getColor(R.color.color_normal_tab), getResources().getColor(R.color.colorWhite));
         mTabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         mTabLayout.setSelectedTabIndicatorColor(Color.WHITE);
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);

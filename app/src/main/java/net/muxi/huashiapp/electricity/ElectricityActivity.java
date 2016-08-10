@@ -63,8 +63,6 @@ public class ElectricityActivity extends ToolbarActivity {
     //查询参数
     private String mQuery;
 
-
-
     private MyExpandableAdapter mAdapter;
 
     @Override
@@ -83,6 +81,8 @@ public class ElectricityActivity extends ToolbarActivity {
     public void initView() {
         mAdapter = new MyExpandableAdapter(this, mGroupString, mChildString);
         mLvExpand.setAdapter(mAdapter);
+        Logger.d(mLvExpand.getWidth() + "");
+//        mLvExpand.setIndicatorBounds(DimensUtil.getScreenWidth() - DimensUtil.dp2px(56),DimensUtil.getScreenWidth() - DimensUtil.dp2px(36));
 //        int width = getWindowManager().getDefaultDisplay().getWidth();
 //        mLvExpand.setIndicatorBounds(width - 80, width - 10);
         mAdapter.setOnRbClickListener(new MyExpandableAdapter.OnRbClickListener() {

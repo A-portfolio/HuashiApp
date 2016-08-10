@@ -185,7 +185,7 @@ public class LibraryActivity extends ToolbarActivity {
                 Logger.d("id:" + resultsBean.getId() + " book:" + resultsBean.getBook() + " author" + resultsBean.getAuthor());
                 String bookTitle = interceptTitle(resultsBean.getBook());
                 final String published = resultsBean.getIntro();
-                CampusFactory.getRetrofitService().getBookDetail(resultsBean.getId(), bookTitle, resultsBean.getAuthor())
+                CampusFactory.getRetrofitService().getBookDetail(resultsBean.getId(), bookTitle, resultsBean.getAuthor(),resultsBean.getBid())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.newThread())
                         .subscribe(new Observer<Book>() {

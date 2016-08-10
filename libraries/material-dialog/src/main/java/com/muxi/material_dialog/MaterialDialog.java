@@ -80,6 +80,24 @@ public class MaterialDialog extends Dialog {
         return this;
     }
 
+    public MaterialDialog setPositiveButtonVisible(boolean b){
+        if (b){
+            mBtnPositive.setVisibility(View.VISIBLE);
+        }else {
+            mBtnPositive.setVisibility(View.GONE);
+        }
+        return this;
+    }
+
+    public MaterialDialog setNegativeButtonVisible(boolean b){
+        if (b){
+            mBtnNegative.setVisibility(View.VISIBLE);
+        }else {
+            mBtnNegative.setVisibility(View.GONE);
+        }
+        return this;
+    }
+
     public MaterialDialog setNegativeButton(String negativeButton, View.OnClickListener listener){
         mBtnNegative.setText(negativeButton);
         mBtnNegative.setOnClickListener(listener);

@@ -35,6 +35,7 @@ public class ApartmentActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apartment);
         ButterKnife.bind(this);
+        setTitle("部门信息");
         CampusFactory.getRetrofitService().getApartment()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
@@ -62,8 +63,6 @@ public class ApartmentActivity extends ToolbarActivity {
         mApartmentRey.setAdapter(adapter);
         mApartmentRey.setLayoutManager(new LinearLayoutManager(this));
         mApartmentRey.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
-        setSupportActionBar(mToolbar);
-        mToolbar.setTitle("部门信息");
 
     }
 }

@@ -17,31 +17,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:orientation="vertical">
 
             <net.muxi.huashiapp.electricity.NonScrollExpandLv
                 android:id="@+id/lv_expand"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:childDivider="@android:color/transparent"/>
+                android:childDivider="@null"
+                android:divider="@null"
+                android:groupIndicator="@null"/>
 
 
             <EditText
                 android:id="@+id/et_romm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:drawableLeft="@drawable/icon_write_classname"
+                android:drawablePadding="32dp"
                 android:hint="请输入房间号如304"/>
 
             <Button
                 android:id="@+id/btn_search"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
+                android:elevation="4dp"
+                android:layout_marginBottom="32dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="36dp"
                 android:background="@drawable/shape_btn"
                 android:text="查询"
-                android:layout_marginBottom="32dp"
                 android:textColor="@color/colorWhite"/>
 
 

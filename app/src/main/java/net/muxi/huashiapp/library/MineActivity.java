@@ -74,7 +74,7 @@ public class MineActivity extends BaseActivity {
                     @Override
                     public void onNext(List<PersonalBook> personalBooks) {
                         Logger.d("get personal");
-//                        setupRecyclerview(personalBooks);
+                        setupRecyclerview(personalBooks);
                     }
                 });
         initView();
@@ -145,7 +145,7 @@ public class MineActivity extends BaseActivity {
             mSearchView.closeSearchView();
             return;
         }
-        if (App.sLibrarayUser.getSid() != null && App.sLibrarayUser.getSid().equals("0") ){
+        if (App.sLibrarayUser.getSid() != null && !App.sLibrarayUser.getSid().equals("0") ){
             Intent intent = new Intent(MineActivity.this,MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:scrollbars="none"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:scrollbars="none">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,58 +39,70 @@
             android:background="@color/dividerGrey"/>
 
         <Space
+            android:id="@+id/space1"
             android:layout_width="1dp"
             android:layout_height="1dp"
-            android:id="@+id/space1"
             android:layout_below="@+id/line1"
             android:layout_centerHorizontal="true"/>
 
-        <TextView
-            android:id="@+id/title__last_month_ec_use"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_degree_last_month"
+        <LinearLayout
+            android:id="@+id/layout_last_ele"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_below="@+id/space1"
             android:layout_toLeftOf="@+id/space1"
-            android:layout_marginRight="36dp"
-            android:text="上月用电"
-            android:textSize="18sp"/>
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_degree_last_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/title__last_month_ec_use"
-            android:layout_below="@+id/line1"
-            android:layout_marginTop="8dp"
-            android:paddingLeft="20dp"
-            android:textSize="24sp"
-            tools:text="91.96"/>
 
-        <TextView
-            android:id="@+id/title_month_ec_use"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/tv_degree_last_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                tools:text="91.96"/>
+
+            <TextView
+                android:id="@+id/title__last_month_ec_use"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上月用电"
+                android:textSize="18sp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_month_ele"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_below="@+id/space1"
             android:layout_toRightOf="@+id/space1"
-            android:layout_marginLeft="36dp"
-            android:layout_below="@+id/tv_degree_cur_month"
-            android:text="当月已用"
-            android:textSize="18sp"/>
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_degree_cur_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/tv_degree_last_month"
-            android:layout_alignLeft="@+id/title_month_ec_use"
-            android:textSize="24sp"
-            tools:text="22.67"/>
+
+            <TextView
+                android:id="@+id/tv_degree_cur_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                tools:text="22.67"/>
+
+            <TextView
+                android:id="@+id/title_month_ec_use"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当月已用"
+                android:textSize="18sp"/>
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/line2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/title__last_month_ec_use"
-            android:layout_marginTop="18dp"
+            android:layout_below="@+id/layout_last_ele"
             android:background="@color/dividerGrey"/>
 
 
@@ -121,52 +133,63 @@
             android:layout_below="@+id/tv_money_left"
             android:background="@color/dividerGrey"/>
 
-        <TextView
-            android:id="@+id/title__last_month_money_use"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_money_last_month"
-            android:layout_toLeftOf="@+id/space1"
-            android:layout_marginRight="36dp"
-            android:text="上月用电"
-            android:textSize="18sp"/>
-
-        <TextView
-            android:id="@+id/tv_money_last_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/title__last_month_ec_use"
+        <LinearLayout
+            android:id="@+id/layout_last_money"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
             android:layout_below="@+id/line3"
-            android:layout_marginTop="8dp"
-            android:paddingLeft="20dp"
-            android:textSize="30sp"
-            tools:text="30.66"/>
+            android:layout_toLeftOf="@+id/space1"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/title_month_money_use"
-            android:layout_marginLeft="36dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_money_cur_month"
+            <TextView
+                android:id="@+id/tv_money_last_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                tools:text="30.66"/>
+
+            <TextView
+                android:id="@+id/title__last_month_money_use"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上月用电"
+                android:textSize="18sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_month_money"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_below="@+id/line3"
             android:layout_toRightOf="@+id/space1"
-            android:text="当月已用"
-            android:textSize="18sp"/>
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_money_cur_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/title_month_ec_use"
-            android:layout_alignTop="@+id/tv_money_last_month"
-            android:textSize="30sp"
-            tools:text="15.66"/>
+            <TextView
+                android:id="@+id/tv_money_cur_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                tools:text="15.66"/>
+
+
+            <TextView
+                android:id="@+id/title_month_money_use"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当月已用"
+                android:textSize="18sp"/>
+
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/line4"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/title__last_month_money_use"
-            android:layout_marginTop="18dp"
+            android:layout_below="@+id/layout_last_money"
             android:background="@color/dividerGrey"/>
 
 
@@ -176,12 +199,12 @@
             android:layout_height="36dp"
             android:layout_below="@+id/line4"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="32dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="24dp"
             android:background="@drawable/shape_btn"
             android:text="更换寝室"
-            android:layout_marginBottom="32dp"
             android:textColor="@color/colorWhite"/>
 
     </RelativeLayout>

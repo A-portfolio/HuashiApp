@@ -49,4 +49,6 @@
 
     <!--电费-->
     <color name="color_normal_tab">#B3FFFFFF</color>
+    
+    <color name="color_white_loading">#96FFFFFF</color>
 </resources>
