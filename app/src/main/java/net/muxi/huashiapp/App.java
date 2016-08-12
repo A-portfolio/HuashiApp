@@ -9,6 +9,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import net.muxi.huashiapp.common.data.User;
+import net.muxi.huashiapp.common.util.FileUtils;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
@@ -36,15 +37,24 @@ public class App extends Application {
 //        LeakCanary.install(this);
         sContext = getApplicationContext();
 // TODO: 16/8/6 andfix turn on 
-//        mPatchManager = new PatchManager(this);
-//        mPatchManager.init(BuildConfig.VERSION_NAME);
-//        mPatchManager.loadPatch();
-//        try {
-//            mPatchManager.addPatch(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
-//            Logger.d(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        mPatchManager = new PatchManager(this);
+        mPatchManager.init(BuildConfig.VERSION_NAME);
+        mPatchManager.loadPatch();
+        Logger.d("andfix load patch");
+        Logger.d(AppConstants.CACHE_DIR);
+        sp = new PreferenceUtil();
+
+        if (!sp.getString(PreferenceUtil.LAST_APP_VERSION,"1.0").equals(BuildConfig.VERSION_NAME)){
+            FileUtils.deleteFile(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
+            sp.saveString(PreferenceUtil.LAST_APP_VERSION,BuildConfig.VERSION_NAME);
+        }
+        try {
+            mPatchManager.addPatch(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
+            Logger.d(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
+        } catch (Exception e) {
+            Logger.d("andfix not load");
+            e.printStackTrace();
+        }
         
         Fresco.initialize(this);
 
@@ -56,7 +66,6 @@ public class App extends Application {
 //        //禁止收集用户个人账户信息默认为收集
 //        ZhugeSDK.getInstance().disableAccounts();
 
-        sp = new PreferenceUtil();
 
         sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, "0"));
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));

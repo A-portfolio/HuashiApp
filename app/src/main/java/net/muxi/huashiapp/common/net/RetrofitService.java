@@ -74,12 +74,12 @@ public interface RetrofitService {
                                                       @Path("id") String id);
 
     //URL: /api/grade/search/?xnm=2015&xqm=3
-    @GET("grade/search/")
+    @GET("https://grade.muxixyz.com/api/grade/search/")
     Observable<List<Scores>> getScores(@Header("Authorization") String verification,
                                        @Query("xnm") String year,
                                        @Query("xqm") String term);
 
-    @GET("grade/detail/search")
+    @GET("https://grade.muxixyz.com/api/grade/detail/search")
     Observable<DetailScores> getDetailScores(@Header("Authorization") String verification,
                                              @Query("xnm") String year,
                                              @Query("xqm") String term,

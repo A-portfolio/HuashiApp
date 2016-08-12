@@ -299,6 +299,7 @@ public class LibraryActivity extends ToolbarActivity {
                         mBaseDetailLayout = new BaseDetailLayout(LibraryActivity.this);
                         mContentLayout.addView(mBaseDetailLayout);
                         mBookDetailView = new BookDetailView(LibraryActivity.this);
+//                        mBookDetailView.setDraweeBg("res://net.muxi.huashiapp/" + R.drawable.img_lib_bookbg);
                         mBaseDetailLayout.setContent(mBookDetailView);
                         mBookDetailView.setOnCloseClickListener(new BookDetailView.OnCloseClickListener() {
                             @Override

@@ -10,6 +10,7 @@
     <!--获取访问用户账户名的权限用以精准匹配标签(可选)-->
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".App"
@@ -107,6 +108,14 @@
                 <action android:name="net.muxi.huashiapp.alarm"/>
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".common.service.ApkInstallReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".common.service.DownloadService"/>
 
 
     </application>

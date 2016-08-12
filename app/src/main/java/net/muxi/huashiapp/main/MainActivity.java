@@ -73,16 +73,20 @@ public class MainActivity extends ToolbarActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         //检查本地是否有补丁包
-        if (!DownloadUtils.isFileExists(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME)) {
-            downloadPatch();
-            Logger.d("download patch");
+        try {
+            if (!DownloadUtils.isFileExists(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME)) {
+                downloadPatch();
+                Logger.d("download patch");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         dao = new HuaShiDao();
         getBannerDatas();
 
+        setTitle("指尖华大");
 
-        setSupportActionBar(mToolbar);
         AlarmUtil.register(this);
     }
 
@@ -240,7 +244,7 @@ public class MainActivity extends ToolbarActivity {
                         break;
 
                     case 8:
-                        intent = WebViewActivity.newIntent(MainActivity.this, "http://xueer.muxixyz.com/", "学而");
+                        intent = WebViewActivity.newIntent(MainActivity.this, "https://xueer.muxixyz.com/", "学而");
                         startActivity(intent);
                         break;
 

@@ -42,7 +42,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     private PreferenceUtil sp;
     private Context mContext;
     //设置学生卡提醒的额度
-    private static final int CARD_LEAVE_MONEY = 10;
+    private static final int CARD_LEAVE_MONEY = 20;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -92,7 +92,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void checkCard() {
-        CampusFactory.getRetrofitService().getCardBalance(mUser.getSid(), "10", "0", "1")
+        CampusFactory.getRetrofitService().getCardBalance(mUser.getSid(), "60", "0", "10")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<CardData>>() {

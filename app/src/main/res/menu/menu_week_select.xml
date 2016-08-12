@@ -4,7 +4,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
    <item android:id="@+id/action_set_cur_week"
-         android:icon="@drawable/ic_event_black_24dp"
+         android:icon="@drawable/ic_change_classweek"
          android:title="@string/action_set_cur_week"
          app:showAsAction="always"/>
 
