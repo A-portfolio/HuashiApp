@@ -33,7 +33,7 @@ public abstract class ToolbarActivity extends BaseActivity {
     public void initToolbar() {
         mToolbar = ButterKnife.findById(this, R.id.toolbar);
         if (mToolbar != null) {
-            mToolbar.setTitle("校园通");
+            mToolbar.setTitle(getString(R.string.app_name));
             Log.d("toolbar",mToolbar.getHeight() + "");
             this.setSupportActionBar(mToolbar);
 

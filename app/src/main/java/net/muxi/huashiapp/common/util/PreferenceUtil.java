@@ -29,6 +29,8 @@ public class PreferenceUtil {
     public static final String CALENDAR_ADDRESS = "calendar_address";
     //电费的查询参数
     public static final String ELE_QUERY_STRING = "ele_query";
+    //更新前的 App 版本
+    public static final String LAST_APP_VERSION = "last_app_version";
 
     public PreferenceUtil() {
         Context context = App.getContext();

@@ -20,12 +20,12 @@ import com.muxi.material_dialog.MaterialDialog;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.VersionData;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.util.DownloadUtils;
+import net.muxi.huashiapp.common.service.DownloadService;
+import net.muxi.huashiapp.common.util.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.ResponseBody;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -118,61 +118,67 @@ public class AboutActivity extends ToolbarActivity {
 
                     @Override
                     public void onNext(final VersionData versionData) {
-                        if (!BuildConfig.VERSION_NAME.equals(versionData.getVersion())){
-                            MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
-                            materialDialog.setTitle(versionData.getName() + versionData.getVersion() + getString(R.string.title_update));
-                            materialDialog.setContent(versionData.getIntro() + "\n" + getString(R.string.tip_update_size ) + versionData.getSize());
-                            materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
-                            materialDialog.setNegativeButton(getString(R.string.btn_update), new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    beginUpdate(versionData.getDownload());
-                                }
-                            });
-                            materialDialog.setPositiveButton(getString(R.string.btn_not_now), new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-                                }
-                            });
-
-                        }else {
-                            final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
-                            materialDialog.setTitle(getString(R.string.title_not_have_to_update));
-                            materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
-                            materialDialog.setNegativeButtonVisible(false);
-                            materialDialog.setPositiveButton(getResources().getString(R.string.btn_positive), new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    materialDialog.dismiss();
-                                }
-                            });
-                            materialDialog.show();
-                        }
+//                        if (!BuildConfig.VERSION_NAME.equals(versionData.getVersion())){
+//                            final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
+//                            materialDialog.setTitle(versionData.getName() + versionData.getVersion() + getString(R.string.title_update));
+//                            materialDialog.setContent(versionData.getIntro() + "\n" + getString(R.string.tip_update_size ) + versionData.getSize());
+//                            materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
+//                            materialDialog.setNegativeButton(getString(R.string.btn_update), new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    beginUpdate(versionData.getDownload());
+//                                }
+//                            });
+//                            materialDialog.setPositiveButton(getString(R.string.btn_not_now), new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    materialDialog.dismiss();
+//                                }
+//                            });
+//                            materialDialog.show();
+//
+//                        }else {
+//                            final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
+//                            materialDialog.setTitle(getString(R.string.title_not_have_to_update));
+//                            materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
+//                            materialDialog.setNegativeButtonVisible(false);
+//                            materialDialog.setPositiveButton(getResources().getString(R.string.btn_positive), new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    materialDialog.dismiss();
+//                                }
+//                            });
+//                            materialDialog.show();
+//                        }
+                        final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
+                        materialDialog.setTitle(versionData.getName() + versionData.getVersion() + getString(R.string.title_update));
+                        materialDialog.setContent(versionData.getIntro() + "\n" + getString(R.string.tip_update_size ) + versionData.getSize());
+                        materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
+                        materialDialog.setNegativeButton(getString(R.string.btn_not_now), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                materialDialog.dismiss();
+                            }
+                        });
+                        materialDialog.setPositiveButton(getString(R.string.btn_update), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+//                                beginUpdate(versionData.getDownload());
+//                                ApkUpdateUtils.download(AboutActivity.this,versionData.getDownload(),"huashiapp.apk");
+                                beginUpdate(versionData.getDownload());
+                                materialDialog.dismiss();
+                            }
+                        });
+                        materialDialog.show();
                     }
                 });
     }
 
     private void beginUpdate(String download) {
-        CampusFactory.getRetrofitService().downloadFile(download)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<ResponseBody>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                        DownloadUtils.writeResponseBodyToDisk(responseBody,getString(R.string.app));
-                    }
-                });
+        Intent intent = new Intent(this, DownloadService.class);
+        intent.putExtra("url",download);
+        startService(intent);
+        Logger.d("download");
     }
 
     public static class NoUnderlineSpan extends UnderlineSpan {

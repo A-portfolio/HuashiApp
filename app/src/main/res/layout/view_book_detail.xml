@@ -1,84 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/background_layout"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/colorPrimary"
-              android:minHeight="@dimen/library_detail_min_height"
-              android:orientation="vertical"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/imgbtn_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_clear_white_24dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="26dp"/>
+    <!--<com.facebook.drawee.view.SimpleDraweeView-->
+    <!--android:id="@+id/drawee"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--fresco:placeholderImageScaleType="fitXY"/>-->
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/large_size"
-        tools:text="三国演义"/>
-
-    <TextView
-        android:id="@+id/tv_author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_title"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:gravity="center"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/medium_size"
-        tools:text="罗贯中"/>
-
-    <TextView
-        android:id="@+id/tv_published"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="4dp"
-        android:textColor="@color/colorWhite"
-        tools:text="工业出版社"/>
-
-    <TextView
-        android:id="@+id/tv_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/medium_size"
-        tools:text="xxxxxxxxxxxxxxxxx"/>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:src="@drawable/divider_lib"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:layout_height="wrap_content"/>
+    android:id="@+id/drawee_bottom"
+    android:layout_width="match_parent"
+    android:src="@drawable/img_lib_bookbg"
+    android:scaleType="fitXY"
+    android:layout_height="match_parent"
+    />
 
-    <!--<LinearLayout-->
-    <!--android:id="@+id/state_layout"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@+id/tv_info"-->
-    <!--android:orientation="vertical">-->
-
-    <!--</LinearLayout>-->
-
-    <android.support.v7.widget.RecyclerView
+    <LinearLayout
+        android:id="@+id/background_layout"
         android:layout_width="match_parent"
-        android:id="@+id/recyclerview"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:minHeight="@dimen/library_detail_min_height"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
-</LinearLayout>
+        <ImageButton
+            android:id="@+id/imgbtn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="26dp"
+            android:background="@drawable/ic_clear_white_24dp"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/large_size"
+            tools:text="三国演义"/>
+
+        <TextView
+            android:id="@+id/tv_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/medium_size"
+            tools:text="罗贯中"/>
+
+        <TextView
+            android:id="@+id/tv_published"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorWhite"
+            tools:text="工业出版社"/>
+
+        <TextView
+            android:id="@+id/tv_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/medium_size"
+            tools:text="xxxxxxxxxxxxxxxxx"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/divider_lib"/>
+
+        <!--<LinearLayout-->
+        <!--android:id="@+id/state_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/tv_info"-->
+        <!--android:orientation="vertical">-->
+
+        <!--</LinearLayout>-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</FrameLayout>

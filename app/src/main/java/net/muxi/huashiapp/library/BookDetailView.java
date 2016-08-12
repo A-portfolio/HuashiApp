@@ -35,6 +35,10 @@ public class BookDetailView extends RelativeLayout {
     LinearLayout mBackgroundLayout;
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerview;
+//    @BindView(R.id.drawee)
+//    SimpleDraweeView mDrawee;
+//    @BindView(R.id.drawee)
+//    SimpleDraweeView mDrawee;
 
     private Context mContext;
     private Book mBook;
@@ -44,7 +48,7 @@ public class BookDetailView extends RelativeLayout {
      */
     private String published;
 
-    public interface OnCloseClickListener{
+    public interface OnCloseClickListener {
         void onCloseClick();
     }
 
@@ -77,7 +81,7 @@ public class BookDetailView extends RelativeLayout {
 
     }
 
-    public void setBookData(Book book,String published){
+    public void setBookData(Book book, String published) {
         mBook = book;
         this.published = published;
         setInfo();
@@ -120,7 +124,7 @@ public class BookDetailView extends RelativeLayout {
 //        }
 //    }
 
-    public void setOnCloseClickListener(OnCloseClickListener listener){
+    public void setOnCloseClickListener(OnCloseClickListener listener) {
         mCloseClickListener = listener;
     }
 
@@ -132,6 +136,9 @@ public class BookDetailView extends RelativeLayout {
         mRecyclerview.setNestedScrollingEnabled(false);
     }
 
-
+//    public void setDraweeBg(String uri) {
+//        mDrawee.setImageURI(Uri.parse(uri));
+//        mDrawee.setScaleType(ImageView.ScaleType.FIT_XY);
+//    }
 
 }
