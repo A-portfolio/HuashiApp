@@ -1,14 +1,17 @@
 package net.muxi.huashiapp.library;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,7 +26,6 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.Base64Util;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.ToastUtil;
-import net.muxi.huashiapp.common.widget.LoginEditText;
 import net.muxi.huashiapp.login.SimpleTextWatcher;
 import net.muxi.huashiapp.main.MainActivity;
 
@@ -43,9 +45,9 @@ public class LibraryLoginActivity extends ToolbarActivity{
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.edit_user_name)
-    LoginEditText mEditUserName;
+    EditText mEditUserName;
     @BindView(R.id.edit_password)
-    LoginEditText mEditPassword;
+    EditText mEditPassword;
     @BindView(R.id.btn_login)
     Button mBtnLogin;
     @BindView(R.id.tv_search)
@@ -76,7 +78,6 @@ public class LibraryLoginActivity extends ToolbarActivity{
     }
 
     private void initView() {
-        mEditPassword.setHint(getResources().getString(R.string.tip_lib_pwd));
         mToolbar.setTitle("图书馆");
 //        setSupportActionBar(mToolbar);
 //        ActionBar actionBar = getSupportActionBar();
@@ -85,7 +86,35 @@ public class LibraryLoginActivity extends ToolbarActivity{
 //        }
         mEditUserName.addTextChangedListener(mTextWatcher);
         mEditPassword.addTextChangedListener(mTextWatcher);
+        mEditUserName.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (mEditUserName.getRight() - mEditUserName.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        mEditUserName.setText("");
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+        mEditPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (mEditPassword.getRight() - mEditPassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        mEditPassword.setText("");
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
         mSearchView.setSuggestions(mSuggestions);
+        mSearchView.setTintViewBackground(Color.TRANSPARENT);
+        mSearchView.setIsVisibleWithAnimation(false);
         mSearchView.setOnQueryTextListener(new MySearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String queryText) {

@@ -20,7 +20,6 @@ import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.FrescoUtil;
-import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.widget.BaseDetailLayout;
 import net.muxi.huashiapp.common.widget.ShadowView;
 
@@ -99,7 +98,7 @@ public class NewsActivity extends ToolbarActivity {
 
     public void init() {
         setSupportActionBar(mToolbar);
-        mToolbar.setTitle("消息公告");
+        mToolbar.setTitle("通知公告");
         mNewsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         FrescoUtil.setLoading(mDrawee);
 //        mNewsRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
@@ -113,18 +112,19 @@ public class NewsActivity extends ToolbarActivity {
         adapter.setOnItemClickListener(new MyNewsAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, List<News> newsList, int position) {
-                Logger.d("balalala");
                 setupDetailLayout(newsList, position);
 
-                final View itemView = view;
+                if (mShadowView == null) {
+                    final View itemView = view;
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        addShadowView();
-                        startScale(itemView);
-                    }
-                }, DURATION_ALPH);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            addShadowView();
+                            startScale(itemView);
+                        }
+                    }, DURATION_ALPH);
+                }
             }
         });
     }

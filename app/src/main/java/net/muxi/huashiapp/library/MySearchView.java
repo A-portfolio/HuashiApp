@@ -201,6 +201,10 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
         mEditSearch.setTextColor(color);
     }
 
+    public void setTintViewBackground(int color){
+        mTintView.setBackgroundColor(color);
+    }
+
     public void setOnItemClickListener(AdapterView.OnItemClickListener itemClickListener) {
         mSearchListview.setOnItemClickListener(itemClickListener);
     }
@@ -243,10 +247,13 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
 
         if (isAnimation) {
             setVisibleWithAnimation();
+        }else {
+            this.setVisibility(VISIBLE);
+            if (mOnSearchViewListener != null) {
+                mOnSearchViewListener.onSearchShown();
+            }
         }
-        if (mOnSearchViewListener != null) {
-            mOnSearchViewListener.onSearchShown();
-        }
+
         mSearchListview.setVisibility(VISIBLE);
         mTintView.setVisibility(VISIBLE);
         mIsSearchOpen = true;

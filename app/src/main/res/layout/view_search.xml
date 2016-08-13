@@ -21,9 +21,6 @@
 
         <RelativeLayout
             android:id="@+id/search_bar"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@android:color/white">
@@ -36,10 +33,9 @@
                 android:layout_toRightOf="@+id/btn_back"
                 android:background="@null"
                 android:gravity="center_vertical"
-                android:hint="查找图书"
+                android:hint="输入书名或作者"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
-                android:textSize="@dimen/medium_size"
                 tools:text="search"/>
 
             <ImageView

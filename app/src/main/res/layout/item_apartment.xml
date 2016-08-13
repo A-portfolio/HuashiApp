@@ -19,8 +19,8 @@
      />
 
     <TextView
-        android:textColor="@color/dividerGrey"
         android:textSize="14sp"
+        android:textColor="@color/textColorGrey"
         android:text="办公电话:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,8 +35,10 @@
         tools:text="8:00-9:00"
         android:textSize="14sp"
         android:id="@+id/tv_phone"
-        android:textColor="@color/dividerGrey"
+        android:textIsSelectable="true"
+        android:textColor="@color/textColorGrey"
         android:layout_width="wrap_content"
+        android:autoLink="phone"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textView2"
         android:layout_toRightOf="@+id/textView2"
@@ -44,7 +46,7 @@
 
     <TextView
         android:paddingBottom="15dp"
-        android:textColor="@color/dividerGrey"
+        android:textColor="@color/textColorGrey"
         android:text="办公地点:"
         android:textSize="14sp"
         android:layout_width="wrap_content"
@@ -55,9 +57,11 @@
         android:layout_toStartOf="@+id/tv_place"/>
 
     <TextView
-        android:textColor="@color/dividerGrey"
+        android:textColor="@color/textColorGrey"
         android:textSize="14sp"
+        android:textIsSelectable="true"
         tools:text="文华公书林二楼"
+        android:autoLink="map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_place"

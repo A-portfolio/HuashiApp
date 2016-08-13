@@ -85,8 +85,6 @@ public class MainActivity extends ToolbarActivity {
         dao = new HuaShiDao();
         getBannerDatas();
 
-        setTitle("指尖华大");
-
         AlarmUtil.register(this);
     }
 

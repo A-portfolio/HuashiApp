@@ -14,17 +14,27 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <TextView
-        android:id="@+id/tv_search"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
         android:layout_marginLeft="@dimen/library_horizontal_margin"
         android:layout_marginRight="@dimen/library_horizontal_margin"
-        android:drawableLeft="@drawable/ic_search_black_24dp"
-        android:gravity="center_vertical"
-        android:drawablePadding="16dp"
-        android:hint="@string/tip_lib_write_keyword"/>
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="4dp">
+
+        <TextView
+            android:id="@+id/tv_search"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:drawableLeft="@drawable/ic_search_black_24dp"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:hint="@string/tip_lib_write_keyword"
+            android:paddingLeft="18dp"/>
+
+    </android.support.v7.widget.CardView>
 
     <Space
         android:id="@+id/space"
@@ -33,36 +43,70 @@
         android:layout_centerVertical="true"/>
 
     <LinearLayout
+        android:id="@+id/accout_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/space"
-        android:id="@+id/accout_layout"
         android:orientation="vertical">
 
-        <net.muxi.huashiapp.common.widget.LoginEditText
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/library_horizontal_margin"
+            android:layout_marginRight="@dimen/library_horizontal_margin"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="4dp">
+
+        <EditText
             android:id="@+id/edit_user_name"
             android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:paddingLeft="16dp"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/icon_write_classname"
+            android:drawablePadding="18dp"
+            android:drawableRight="@drawable/ic_clear_black_24dp"
+            android:paddingRight="16dp"
+            android:hint="学号"
+            />
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginTop="12dp"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar"
             android:layout_marginLeft="@dimen/library_horizontal_margin"
             android:layout_marginRight="@dimen/library_horizontal_margin"
-            android:hint="学号"/>
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="4dp">
 
-        <net.muxi.huashiapp.common.widget.LoginEditText
+        <EditText
             android:id="@+id/edit_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/library_horizontal_margin"
-            android:inputType="textPassword"
-            android:layout_marginRight="@dimen/library_horizontal_margin"
-            android:layout_marginTop="8dp"
-            android:hint="密码(初始密码为123456)"/>
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_password"
+            android:drawablePadding="18dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:imeActionLabel="@string/action_login"
+            android:drawableRight="@drawable/ic_clear_black_24dp"
+            android:hint="密码(初始密码为123456)"
+            android:inputType="textPassword"/>
+
+        </android.support.v7.widget.CardView>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
             android:src="@drawable/divider_lib"
-            android:layout_marginTop="22dp"/>
+        />
 
         <Button
             android:id="@+id/btn_login"
@@ -78,9 +122,12 @@
     </LinearLayout>
 
     <net.muxi.huashiapp.library.MySearchView
-        android:layout_width="match_parent"
-        android:layout_below="@+id/toolbar"
         android:id="@+id/search_view"
-        android:layout_height="match_parent"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:elevation="4dp"
+        android:layout_below="@+id/toolbar"/>
 
 </RelativeLayout>

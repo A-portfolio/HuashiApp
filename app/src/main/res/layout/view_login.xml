@@ -4,15 +4,14 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/space_divider"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="36dp"
-        android:text="华师匣子"
-        android:textColor="@color/colorPrimary"
-        android:textSize="36dp"/>
+        android:layout_marginBottom="60dp"
+        android:src="@drawable/pic_cbox"/>
+
 
     <Space
         android:id="@+id/space_divider"
@@ -35,6 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
+            android:drawableBottom="@drawable/line_login"
             android:hint="@string/tip_id_text"
             android:inputType="number"
             android:maxLines="1"
@@ -48,6 +49,9 @@
             android:layout_below="@+id/edit_user_name"
             android:layout_centerInParent="true"
             android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:drawableBottom="@drawable/line_login"
+            android:imeActionLabel="@string/action_login"
             android:focusable="true"
             android:hint="密码"
             android:imeOptions="actionDone"
@@ -67,9 +71,9 @@
         android:layout_marginLeft="56dp"
         android:layout_marginRight="56dp"
         android:layout_marginTop="32dp"
-        android:enabled="false"
-        android:elevation="4dp"
         android:background="@drawable/shape_btn"
+        android:elevation="4dp"
+        android:enabled="false"
         android:text="登录"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/login_btn_text_size"/>
