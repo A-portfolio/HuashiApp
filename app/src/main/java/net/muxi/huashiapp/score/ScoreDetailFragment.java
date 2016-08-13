@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.Base64Util;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -128,7 +130,35 @@ public class ScoreDetailFragment extends BaseFragment {
 
     private void loadDetailScore(List<Scores> scoresList) {
         int i = 0;
+        final List<Scores> leftScoreList = new ArrayList<>();
         for (final Scores scores : scoresList) {
+            final int j = i;
+            CampusFactory.getRetrofitService()
+                    .getDetailScores(Base64Util.createBaseStr(App.sUser), mYear, mTerm, scores.getCourse(), scores.getJxb_id())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.newThread())
+                    .subscribe(new Observer<DetailScores>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                            leftScoreList.add(scores);
+                        }
+
+                        @Override
+                        public void onNext(DetailScores detailScores) {
+                            Log.d("tag","first success score " + scores.getCourse());
+                            detailScores.setCourse(scores.getCourse());
+                            mScoresAdapter.addDetailScore(detailScores, j);
+                        }
+                    });
+            i++;
+        }
+        for (final Scores scores : leftScoreList){
             final int j = i;
             CampusFactory.getRetrofitService()
                     .getDetailScores(Base64Util.createBaseStr(App.sUser), mYear, mTerm, scores.getCourse(), scores.getJxb_id())
@@ -147,6 +177,7 @@ public class ScoreDetailFragment extends BaseFragment {
 
                         @Override
                         public void onNext(DetailScores detailScores) {
+                            Log.d("tag","second score" + scores.getCourse());
                             detailScores.setCourse(scores.getCourse());
                             mScoresAdapter.addDetailScore(detailScores, j);
                         }

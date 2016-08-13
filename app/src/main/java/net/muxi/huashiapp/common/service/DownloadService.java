@@ -32,31 +32,36 @@ public class DownloadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                intent = new Intent(Intent.ACTION_VIEW);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/Download/huashiapp.apk")),
-                        "application/vnd.android.package-archive");
-                startActivity(intent);
-                stopSelf();
-            }
-        };
+        String fileType = intent.getStringExtra("fileType");
+        final String fileName = intent.getStringExtra("fileName");
+        if (fileType.equals("apk")) {
+            mReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/Download/" + fileName)),
+                            "application/vnd.android.package-archive");
+                    startActivity(intent);
+                    stopSelf();
+                }
+            };
+            registerReceiver(mReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        }
         String url = intent.getStringExtra("url");
-        registerReceiver(mReceiver,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         Logger.d(url);
-        startDownload(url);
+        startDownload(url,fileName,fileType);
         return Service.START_STICKY;
     }
 
-    private void startDownload(String url) {
+    private void startDownload(String url,String fileName,String fileType) {
         mDownloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(
                 Uri.parse(url));
-        request.setMimeType("application/vnd.android.package-archive");
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"" +
-                "huashiapp.apk");
+        if (fileType.equals("apk")) {
+            request.setMimeType("application/vnd.android.package-archive");
+        }
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
         enque = mDownloadManager.enqueue(request);
     }
 

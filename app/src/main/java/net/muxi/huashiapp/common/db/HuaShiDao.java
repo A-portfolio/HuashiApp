@@ -27,7 +27,7 @@ public class HuaShiDao {
 
     //插入当前用户的搜索记录,如果当前用户没有登录则为 null
     public void insertSearchHistory(String book) {
-        String libraryId = sp.getString(PreferenceUtil.LIBRARY_ID);
+        String libraryId = sp.getString(PreferenceUtil.LIBRARY_ID,"0");
         db.execSQL("INSERT INTO " + DataBase.TABLE_SEARCH_HISTORY +
                         " VALUES(NULL,?,? )",
                 new String[]{libraryId, book});
@@ -36,7 +36,7 @@ public class HuaShiDao {
 
 
     public List<String> loadSearchHistory() {
-        String libraryId = sp.getString(PreferenceUtil.LIBRARY_ID);
+        String libraryId = sp.getString(PreferenceUtil.LIBRARY_ID,"0");
         Log.d("tag", libraryId);
         List<String> records = new ArrayList<>();
         Cursor cursor;

@@ -206,17 +206,20 @@ public class LibraryActivity extends ToolbarActivity {
                             }
                         });
 
-                final View itemView = view;
+                //当阴影的 view 为null时创建
+                if (mShadowView == null) {
+                    final View itemView = view;
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        addShadowView();
-                        startScale(itemView);
-                    }
-                }, DURATION_ALPH);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            addShadowView();
+                            startScale(itemView);
+                        }
+                    }, DURATION_ALPH);
 
-                setupDetailLayout();
+                    setupDetailLayout();
+                }
             }
 
         });

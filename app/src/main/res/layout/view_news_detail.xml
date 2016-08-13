@@ -14,41 +14,50 @@
         android:id="@+id/news_float_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_clear_black_24dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="26dp"/>
-    
-    <TextView
-        android:id="@+id/news_title"
-        tools:text="关于华中师范大学录取"
-        android:textSize="16sp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_marginTop="26dp"
+        android:src="@drawable/ic_clear_black_24dp"/>
 
     <TextView
-        tools:text="为维护全校选课秩序，保护同学们的选课利益，提高课程效率"
-        android:id="@+id/news_content"
-        android:textSize="14sp"
-        android:layout_marginTop="30dp"
+        android:id="@+id/news_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:textSize="16sp"
+        tools:text="关于华中师范大学录取"/>
+
+    <me.biubiubiu.justifytext.library.JustifyTextView
+        android:id="@+id/news_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:textSize="14sp"
+        tools:text="为维护全校选课秩序，保护同学们的选课利益，提高课程效率为维护全校选课秩序，保护同学们的选课利益，提高课程效率为维护全校选课秩序，保护同学们的选课利益，提高课程效率为维护全校选课秩序，保护同学们的选课利益，提高课程效率"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/tv_appendix"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="相关链接:"/>
+
+    <LinearLayout
+        android:id="@+id/link_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
 
     <TextView
         android:id="@+id/news_date"
-        tools:text="2016-6-30 8:47"
-        android:textColor="@color/dividerGrey"
-        android:textSize="12sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"/>
-
-    <TextView
-        tools:text="http://zizhu.ccnu.edu.cn/uploadfile/2016/0607/20160607055202856.doc"
-        android:id="@+id/news_link"
+        android:layout_gravity="right"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/dividerGrey"
         android:textSize="12sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_marginBottom="32dp"
+        tools:text="2016-6-30 8:47"/>
+
 
 </LinearLayout>

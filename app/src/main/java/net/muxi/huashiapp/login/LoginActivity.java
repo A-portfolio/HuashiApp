@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.data.VerifyResponse;
@@ -115,9 +116,9 @@ public class LoginActivity extends AppCompatActivity {
 
         if (!NetStatus.isConnected()) {
             ToastUtil.showLong(NETCONNECT_FAILED);
+        } else {
+            checkAccount();
         }
-//        startMainActivity();
-        checkAccount();
 
     }
 
@@ -151,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onError(Throwable e) {
                         Logger.d("403 ");
                         e.printStackTrace();
-                        hintToCheck();
+                        ToastUtil.showShort(SERVICE_PROBLEM);
                     }
 
                     @Override
@@ -163,6 +164,8 @@ public class LoginActivity extends AppCompatActivity {
                             PreferenceUtil loader = new PreferenceUtil();
                             loader.saveString(PreferenceUtil.STUDENT_ID, mUser.getSid());
                             loader.saveString(PreferenceUtil.STUDENT_PWD, mUser.getPassword());
+                            App.sUser.setSid(mUser.getSid());
+                            App.sUser.setPassword(mUser.getPassword());
 
                             ToastUtil.showShort(LOGIN_SUCCESS);
                             startMainActivity();
@@ -191,12 +194,6 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
     }
-
-    //提示重新核对账号密码
-    private void hintToCheck() {
-        ToastUtil.showLong(VERIFY_FAILED);
-    }
-
 
     @Override
     protected void onResume() {

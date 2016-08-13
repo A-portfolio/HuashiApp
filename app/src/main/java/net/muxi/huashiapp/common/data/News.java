@@ -10,7 +10,7 @@ public class News {
     private String content;
     private String date;
     private String title;
-    private List<?> appendix_list;
+    private List<String> appendix_list;
 
     public String getContent() {
         return content;
@@ -36,11 +36,11 @@ public class News {
         this.title = title;
     }
 
-    public List<?> getAppendix_list() {
+    public List<String> getAppendix_list() {
         return appendix_list;
     }
 
-    public void setAppendix_list(List<?> appendix_list) {
+    public void setAppendix_list(List<String> appendix_list) {
         this.appendix_list = appendix_list;
     }
 }

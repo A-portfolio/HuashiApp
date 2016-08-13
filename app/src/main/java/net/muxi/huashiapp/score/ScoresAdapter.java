@@ -3,6 +3,7 @@ package net.muxi.huashiapp.score;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Handler;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,8 +31,9 @@ import butterknife.ButterKnife;
  */
 public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder> {
 
-    private static final int SPACE_START_HEIGHT = DimensUtil.dp2px(12);
-    private static final int SPACE_END_HEIGHT = DimensUtil.dp2px(32);
+    private static final int SPACE_MIN_HEIGHT = DimensUtil.dp2px(12);
+    private static final int SPACE_MAX_HEIGHT = DimensUtil.dp2px(32);
+
     private List<Scores> mScoresList;
     private Context mContext;
     private List<DetailScores> mDetailScores;
@@ -70,8 +72,8 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
         }
         holder.mTvCredit.setText("学分:" + mScoresList.get(position).getCredit());
 
-        if (mList != null){
-            setDetailLayout(holder,position);
+        if (mList != null) {
+            setDetailLayout(holder, position);
         }
         DetailScores detailScores = getDetailScore(mScoresList.get(position).getCourse());
         if (detailScores != null) {
@@ -87,19 +89,36 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
             }
         }
 
-        holder.mImgLoadMore.setOnClickListener(new View.OnClickListener() {
+        holder.mRootLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scaleSpace(holder.mSpaceAnim);
-                Logger.d("load more");
-                holder.mImgLoadMore.setVisibility(View.GONE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        holder.mDetailLayout.setVisibility(View.VISIBLE);
-                    }
-                },250);
-                mList.add(position);
+                if (!mList.contains(position)) {
+                    scaleSpace(holder.mSpaceAnim, SPACE_MIN_HEIGHT, SPACE_MAX_HEIGHT);
+                    Logger.d("load more");
+                    holder.mImgLoadMore.setVisibility(View.GONE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Logger.d("expand");
+                            holder.mDetailLayout.setVisibility(View.VISIBLE);
+                            holder.mImgClose.setVisibility(View.VISIBLE);
+                        }
+                    }, 250);
+                    mList.add(position);
+                } else {
+                    scaleSpace(holder.mSpaceAnim, SPACE_MAX_HEIGHT, SPACE_MIN_HEIGHT);
+                    holder.mDetailLayout.setVisibility(View.GONE);
+                    holder.mImgClose.setVisibility(View.GONE);
+                    Logger.d("close ");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Logger.d("switch");
+                            holder.mImgLoadMore.setVisibility(View.VISIBLE);
+                        }
+                    }, 250);
+                    mList.remove((Integer) position);
+                }
 //                notifyItemChanged(position);
 //                new Handler().postDelayed(new Runnable() {
 //                    @Override
@@ -151,13 +170,15 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
     }
 
     private void setDetailLayout(ViewHolder holder, int position) {
-        if (mList.contains(position)){
+        if (mList.contains(position)) {
             holder.mImgLoadMore.setVisibility(View.GONE);
-            holder.mSpaceAnim.getLayoutParams().height = SPACE_END_HEIGHT;
+            holder.mImgClose.setVisibility(View.VISIBLE);
+            holder.mSpaceAnim.getLayoutParams().height = SPACE_MAX_HEIGHT;
             holder.mDetailLayout.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             holder.mImgLoadMore.setVisibility(View.VISIBLE);
-            holder.mSpaceAnim.getLayoutParams().height = SPACE_START_HEIGHT;
+            holder.mSpaceAnim.getLayoutParams().height = SPACE_MIN_HEIGHT;
+            holder.mImgClose.setVisibility(View.GONE);
             holder.mDetailLayout.setVisibility(View.GONE);
         }
     }
@@ -184,12 +205,12 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
         return null;
     }
 
-    public void addDetailScore(DetailScores score,int position) {
+    public void addDetailScore(DetailScores score, int position) {
         mDetailScores.add(score);
         notifyDataSetChanged();
     }
 
-    private void scaleSpace(final Space spaceAnim) {
+    private void scaleSpace(final Space spaceAnim, int startHeight, int endHeight) {
 //        Animation animation = AnimationUtils.loadAnimation(mContext,R.anim.score_detail_scale);
 //        spaceAnim.setAnimation(animation);
 //        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1, 1, 32, 1, 0);
@@ -197,7 +218,7 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
 //        scaleAnimation.setFillAfter(true);
 //        spaceAnim.startAnimation(scaleAnimation);
         ValueAnimator valueAnimator;
-        valueAnimator = ValueAnimator.ofInt(SPACE_START_HEIGHT,SPACE_END_HEIGHT);
+        valueAnimator = ValueAnimator.ofInt(startHeight, endHeight);
         valueAnimator.setDuration(250);
         valueAnimator.setInterpolator(new LinearInterpolator());
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -233,6 +254,8 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
         RelativeLayout mNormalLayout;
         @BindView(R.id.img_load_more)
         ImageView mImgLoadMore;
+        @BindView(R.id.img_close)
+        ImageView mImgClose;
         @BindView(R.id.tv_score_usual)
         TextView mTvScoreUsual;
         @BindView(R.id.tv_score_ending)
@@ -241,6 +264,8 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
         RelativeLayout mDetailLayout;
         @BindView(R.id.space_anim)
         Space mSpaceAnim;
+        @BindView(R.id.root_layout)
+        CardView mRootLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);

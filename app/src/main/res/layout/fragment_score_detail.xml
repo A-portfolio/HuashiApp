@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
+              android:layout_height="match_parent"
               android:background="@color/colorWhite"
-              android:layout_height="match_parent">
-    
+              android:orientation="vertical">
+
     <com.facebook.drawee.view.SimpleDraweeView
-        android:layout_width="100dp"
         android:id="@+id/drawee"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:layout_height="100dp"/>
+        android:layout_marginTop="16dp"/>
 
-    <ImageView android:layout_width="wrap_content"
-               android:id="@+id/image_none"
-               android:visibility="gone"
-               android:layout_height="wrap_content"/>
-    
+    <ImageView
+        android:id="@+id/image_none"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
     <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
         android:id="@+id/recycler_view"
-        android:visibility="gone"
-        android:layout_height="wrap_content"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
-    <TextView android:layout_width="wrap_content"
-              android:id="@+id/tv_last"
-              android:text="@string/tip_none_more"
-              android:visibility="gone"
+    <TextView android:id="@+id/tv_last"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
               android:layout_gravity="center_horizontal"
+              android:text="@string/tip_none_more"
               android:textSize="@dimen/medium_size"
-              android:layout_height="wrap_content"/>
+              android:visibility="gone"/>
 
 
 </LinearLayout>

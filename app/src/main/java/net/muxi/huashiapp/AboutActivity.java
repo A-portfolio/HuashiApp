@@ -5,14 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextPaint;
 import android.text.style.UnderlineSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.muxi.material_dialog.MaterialDialog;
@@ -38,16 +36,14 @@ public class AboutActivity extends ToolbarActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.btn_info)
-    Button mBtnInfo;
-    @BindView(R.id.btn_suggestion)
-    Button mBtnSuggestion;
-    @BindView(R.id.view)
-    CardView mView;
     @BindView(R.id.tv_versionname)
     TextView mTvVersionname;
     @BindView(R.id.tv_muxi_link)
     TextView mTvMuxiLink;
+    @BindView(R.id.btn_info)
+    TextView mBtnInfo;
+    @BindView(R.id.btn_suggestion)
+    TextView mBtnSuggestion;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +56,8 @@ public class AboutActivity extends ToolbarActivity {
 
     public void init() {
         setSupportActionBar(mToolbar);
-        mToolbar.setTitle("关于我们");
+        mToolbar.setTitle("关于");
+        mTvVersionname.setText(BuildConfig.VERSION_NAME);
         mTvMuxiLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +73,7 @@ public class AboutActivity extends ToolbarActivity {
         Intent intent;
         switch (view.getId()) {
             case R.id.btn_info:
-                intent = new Intent(AboutActivity.this,InfoActivity.class);
+                intent = new Intent(AboutActivity.this, InfoActivity.class);
                 startActivity(intent);
                 break;
             case R.id.btn_suggestion:
@@ -88,14 +85,14 @@ public class AboutActivity extends ToolbarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_about,menu);
+        getMenuInflater().inflate(R.menu.menu_about, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.action_check_update){
+        if (itemId == R.id.action_check_update) {
             checkUpdates();
         }
         return super.onOptionsItemSelected(item);
@@ -118,65 +115,48 @@ public class AboutActivity extends ToolbarActivity {
 
                     @Override
                     public void onNext(final VersionData versionData) {
-//                        if (!BuildConfig.VERSION_NAME.equals(versionData.getVersion())){
-//                            final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
-//                            materialDialog.setTitle(versionData.getName() + versionData.getVersion() + getString(R.string.title_update));
-//                            materialDialog.setContent(versionData.getIntro() + "\n" + getString(R.string.tip_update_size ) + versionData.getSize());
-//                            materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
-//                            materialDialog.setNegativeButton(getString(R.string.btn_update), new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    beginUpdate(versionData.getDownload());
-//                                }
-//                            });
-//                            materialDialog.setPositiveButton(getString(R.string.btn_not_now), new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    materialDialog.dismiss();
-//                                }
-//                            });
-//                            materialDialog.show();
-//
-//                        }else {
-//                            final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
-//                            materialDialog.setTitle(getString(R.string.title_not_have_to_update));
-//                            materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
-//                            materialDialog.setNegativeButtonVisible(false);
-//                            materialDialog.setPositiveButton(getResources().getString(R.string.btn_positive), new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    materialDialog.dismiss();
-//                                }
-//                            });
-//                            materialDialog.show();
-//                        }
-                        final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
-                        materialDialog.setTitle(versionData.getName() + versionData.getVersion() + getString(R.string.title_update));
-                        materialDialog.setContent(versionData.getIntro() + "\n" + getString(R.string.tip_update_size ) + versionData.getSize());
-                        materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
-                        materialDialog.setNegativeButton(getString(R.string.btn_not_now), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                materialDialog.dismiss();
-                            }
-                        });
-                        materialDialog.setPositiveButton(getString(R.string.btn_update), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-//                                beginUpdate(versionData.getDownload());
-//                                ApkUpdateUtils.download(AboutActivity.this,versionData.getDownload(),"huashiapp.apk");
-                                beginUpdate(versionData.getDownload());
-                                materialDialog.dismiss();
-                            }
-                        });
-                        materialDialog.show();
+                        if (!BuildConfig.VERSION_NAME.equals(versionData.getVersion())) {
+                            final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
+                            materialDialog.setTitle(versionData.getName() + versionData.getVersion() + getString(R.string.title_update));
+                            materialDialog.setContent(versionData.getIntro() + "\n" + getString(R.string.tip_update_size) + versionData.getSize());
+                            materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
+                            materialDialog.setPositiveButton(getString(R.string.btn_update), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    beginUpdate(versionData.getDownload());
+                                    materialDialog.dismiss();
+                                }
+                            });
+                            materialDialog.setNegativeButton(getString(R.string.btn_not_now), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    materialDialog.dismiss();
+                                }
+                            });
+                            materialDialog.show();
+
+                        } else {
+                            final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
+                            materialDialog.setTitle(getString(R.string.title_not_have_to_update));
+                            materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
+                            materialDialog.setNegativeButtonVisible(false);
+                            materialDialog.setPositiveButton(getResources().getString(R.string.btn_positive), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    materialDialog.dismiss();
+                                }
+                            });
+                            materialDialog.show();
+                        }
                     }
                 });
     }
 
     private void beginUpdate(String download) {
         Intent intent = new Intent(this, DownloadService.class);
-        intent.putExtra("url",download);
+        intent.putExtra("url", download);
+        intent.putExtra("fileType", "apk");
+        intent.putExtra("fileName", "ccnubox.apk");
         startService(intent);
         Logger.d("download");
     }
