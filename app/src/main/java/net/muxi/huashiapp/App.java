@@ -6,10 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.alipay.euler.andfix.patch.PatchManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.tencent.bugly.crashreport.CrashReport;
 
 import net.muxi.huashiapp.common.data.User;
-import net.muxi.huashiapp.common.util.FileUtils;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
@@ -45,7 +43,7 @@ public class App extends Application {
         sp = new PreferenceUtil();
 
         if (!sp.getString(PreferenceUtil.LAST_APP_VERSION,"1.0").equals(BuildConfig.VERSION_NAME)){
-            FileUtils.deleteFile(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
+            mPatchManager.removeAllPatch();
             sp.saveString(PreferenceUtil.LAST_APP_VERSION,BuildConfig.VERSION_NAME);
         }
         try {
@@ -58,7 +56,7 @@ public class App extends Application {
         
         Fresco.initialize(this);
 
-        CrashReport.initCrashReport(getApplicationContext(), "900043675", true);
+//        CrashReport.initCrashReport(getApplicationContext(), "900043675", true);
 //        ZhugeSDK.getInstance().openDebug();
 //        //必须在init之前调用
 //        //禁止收集用户手机号码默认为收集

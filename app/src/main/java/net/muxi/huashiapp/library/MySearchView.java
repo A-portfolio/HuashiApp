@@ -49,7 +49,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
     private OnSearchViewListener mOnSearchViewListener;
 
 
-    private Drawable suggestionIcon = App.getContext().getResources().getDrawable(R.drawable.ic_suggestion);
+    private Drawable suggestionIcon = App.getContext().getResources().getDrawable(R.drawable.ic_history);
     private boolean isAnimation = true;
 
     public MySearchView(Context context) {
@@ -61,8 +61,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
     }
 
     public MySearchView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs);
-
+        super(context, attrs,defStyleAttr);
         mContext = context;
         initView();
         initStyle(attrs, defStyleAttr);

@@ -1,21 +1,21 @@
 package net.muxi.huashiapp.common.data;
 
+import java.util.List;
+
 /**
  * Created by december on 16/7/30.
  */
 public class ApartmentData {
 
-    private String phone;
+    /**
+     * phone : ["67867510"]
+     * apartment : 学生事务大厅
+     * place : 文华公书林（老图书馆）3楼
+     */
+
     private String apartment;
     private String place;
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+    private List<String> phone;
 
     public String getApartment() {
         return apartment;
@@ -31,5 +31,13 @@ public class ApartmentData {
 
     public void setPlace(String place) {
         this.place = place;
+    }
+
+    public List<String> getPhone() {
+        return phone;
+    }
+
+    public void setPhone(List<String> phone) {
+        this.phone = phone;
     }
 }

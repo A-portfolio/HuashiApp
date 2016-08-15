@@ -8,6 +8,8 @@
     <dimen name="oval_height">40dp</dimen>
     <dimen name="dialog_btn_width">64dp</dimen>
     <dimen name="elevation_height">8dp</dimen>
+    <dimen name="empty_img_marginTop">32dp</dimen>
+    <dimen name="empty_img_height">96dp</dimen>
 
     <dimen name="most_large_size">28sp</dimen>
     <dimen name="large_size">22sp</dimen>
@@ -19,7 +21,7 @@
     <dimen name="schedule_add_course_size">18sp</dimen>
     <dimen name="library_state_size">16sp</dimen>
 
-    <dimen name="login_horizontal_margin">56dp</dimen>
+    <dimen name="login_horizontal_margin">44dp</dimen>
 
 
     <dimen name="schedule_tv_course_number">18sp</dimen>
@@ -62,7 +64,7 @@
     <dimen name="library_icon_padding">12dp</dimen>
     <dimen name="library_item_search_height">90dp</dimen>
     <dimen name="library_item_borrow_height">84dp</dimen>
-    <dimen name="library_detail_min_height">640dp</dimen>
+    <dimen name="library_detail_min_height">600dp</dimen>
     <dimen name="library_search_view_margin">8dp</dimen>
 
 

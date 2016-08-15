@@ -21,10 +21,10 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -38,7 +38,10 @@
     <net.muxi.huashiapp.library.MySearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/library_search_view_margin"
+        android:layout_marginRight="@dimen/library_search_view_margin"
+        android:layout_marginTop="@dimen/library_search_view_margin"/>
 
 </FrameLayout>
 

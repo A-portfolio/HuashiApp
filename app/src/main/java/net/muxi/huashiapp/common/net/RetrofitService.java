@@ -11,6 +11,7 @@ import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.common.data.Electricity;
 import net.muxi.huashiapp.common.data.News;
+import net.muxi.huashiapp.common.data.PatchData;
 import net.muxi.huashiapp.common.data.PersonalBook;
 import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.data.VerifyResponse;
@@ -100,7 +101,7 @@ public interface RetrofitService {
 
 
     @POST("ele/")
-    Observable<Electricity> getElectricity(@Body EleRequestData requestData);
+    Observable<Response<Electricity>> getElectricity(@Body EleRequestData requestData);
 
 
     //查询余额  除了学号其他传固定值 http://console.ccnu.edu.cn/ecard/getTrans?userId=2013211389&days=90&startNum=0&num=200
@@ -115,6 +116,9 @@ public interface RetrofitService {
 
     @GET
     Observable<ResponseBody> downloadFile(@Url String url);
+
+    @GET("patch/")
+    Observable<List<PatchData>> getPatch();
 
 
 }

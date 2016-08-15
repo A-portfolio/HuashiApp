@@ -129,7 +129,7 @@ public class BookDetailView extends RelativeLayout {
     }
 
     private void setupRecyclerview() {
-        mRecyclerview.setHasFixedSize(true);
+        mRecyclerview.setHasFixedSize(false);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(mContext));
         BookListAdapter bookListAdapter = new BookListAdapter(mBook);
         mRecyclerview.setAdapter(bookListAdapter);

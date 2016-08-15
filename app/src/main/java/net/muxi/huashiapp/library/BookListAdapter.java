@@ -64,8 +64,6 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
         TextView mTvTid;
         @BindView(R.id.tv_bid)
         TextView mTvBid;
-        @BindView(R.id.tv_period)
-        TextView mTvPeriod;
         @BindView(R.id.tv_place)
         TextView mTvPlace;
 

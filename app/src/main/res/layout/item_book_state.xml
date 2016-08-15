@@ -4,18 +4,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:background="@drawable/card_library"
-    android:orientation="horizontal"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="20dp"
-    android:paddingTop="8dp">
+    android:background="@drawable/card_library"
+    android:paddingTop="16dp">
 
     <LinearLayout
         android:id="@+id/state_layout"
         android:layout_width="62dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="16dp"
+        android:paddingBottom="12dp"
         android:orientation="vertical">
 
         <TextView
@@ -27,10 +27,10 @@
 
         <TextView
             android:id="@+id/tv_state"
-            android:layout_width="30dp"
-            android:layout_marginTop="4dp"
+            android:layout_width="28dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="6dp"
             android:textSize="@dimen/large_size"
             tools:text="保留本"/>
 
@@ -41,73 +41,54 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
-        android:textSize="@dimen/library_state_size"
         android:layout_toRightOf="@+id/state_layout"
         android:text="条码号:"
+        android:textSize="@dimen/library_state_size"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/tv_tid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/library_state_size"
         android:layout_toRightOf="@+id/tv_barcode"
+        android:textSize="@dimen/library_state_size"
         tools:text="T11111"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_barcode"
-        android:textSize="@dimen/library_state_size"
         android:layout_toRightOf="@+id/state_layout"
         android:text="索书号:"
+        android:textSize="@dimen/library_state_size"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/tv_bid"
         android:layout_width="wrap_content"
-        android:textSize="@dimen/library_state_size"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_barcode"
         android:layout_toRightOf="@+id/tv_barcode"
+        android:textSize="@dimen/library_state_size"
         tools:text="1232222"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:textSize="@dimen/library_state_size"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_bid"
-        android:layout_toRightOf="@+id/state_layout"
-        android:text="年卷期:"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/tv_period"
-        android:textSize="@dimen/library_state_size"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_bid"
-        android:layout_toRightOf="@+id/tv_barcode"
-        tools:text="9"/>
-
-    <TextView
         android:id="@+id/tv_place_title"
-        android:textSize="@dimen/library_state_size"
         android:layout_width="wrap_content"
-        android:textStyle="bold"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_period"
+        android:layout_below="@+id/tv_bid"
         android:layout_toRightOf="@+id/state_layout"
-        android:text="校区-馆藏地:"/>
+        android:text="校区-馆藏地:"
+        android:textSize="@dimen/library_state_size"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/tv_place"
         android:layout_width="wrap_content"
-        tools:text="           fff "
-        android:lines="2"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_bid"
         android:layout_toRightOf="@+id/state_layout"
         android:textSize="@dimen/library_state_size"
-        android:layout_below="@+id/tv_period"
-        android:layout_height="wrap_content"/>
+        tools:text="           fff "/>
 
 </RelativeLayout>

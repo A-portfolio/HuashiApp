@@ -3,7 +3,6 @@ package net.muxi.huashiapp.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.net.CampusFactory;
@@ -35,7 +35,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by ybao on 16/4/18.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     public static final String NETCONNECT_FAILED = "请连接网络再试";
     public static final String VERIFY_FAILED = "你的学号或者密码有误";
@@ -117,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
         if (!NetStatus.isConnected()) {
             ToastUtil.showLong(NETCONNECT_FAILED);
         } else {
+            showProgressBarDialog(true,getString(R.string.tip_logining));
             checkAccount();
         }
 
@@ -153,12 +154,14 @@ public class LoginActivity extends AppCompatActivity {
                         Logger.d("403 ");
                         e.printStackTrace();
                         ToastUtil.showShort(SERVICE_PROBLEM);
+                        showProgressBarDialog(false);
                     }
 
                     @Override
                     public void onNext(Response<VerifyResponse> response) {
 //                        if (response.code() == 200) {
 
+                        showProgressBarDialog(false);
                         if (response.code() == 200) {
                             Logger.d("200");
                             PreferenceUtil loader = new PreferenceUtil();

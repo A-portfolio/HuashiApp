@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+        android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
@@ -20,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/schedule_layout_week_height"
         android:layout_marginTop="?attr/actionBarSize"
+        android:elevation="4dp"
         android:background="@color/colorPrimary"
         android:gravity="center">
 
@@ -33,6 +35,8 @@
 
         <ImageView
             android:id="@+id/img_pull"
+            android:src="@drawable/arrow_drop_down"
+            android:layout_marginLeft="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

@@ -111,6 +111,7 @@ public class LibraryActivity extends ToolbarActivity {
 
     private void initViews() {
         mSearchview.setSuggestions(suggestions);
+        mSearchview.setTintViewBackground(getResources().getColor(android.R.color.transparent));
         mSearchview.setOnQueryTextListener(new MySearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
