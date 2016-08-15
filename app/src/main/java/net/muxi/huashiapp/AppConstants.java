@@ -34,7 +34,7 @@ public class AppConstants {
             "第十七周",
             "第十八周"};
 
-    public static final String CACHE_DIR = App.getContext().getCacheDir().getAbsolutePath();
+    public static final String CACHE_DIR = App.getContext().getExternalCacheDir().getAbsolutePath();
     public static final String APATCH_NAME = "out.apatch";
     public static final String APATCH_URL = "http://7xtask.com2.z0.glb.clouddn.com/out.apatch";
 }

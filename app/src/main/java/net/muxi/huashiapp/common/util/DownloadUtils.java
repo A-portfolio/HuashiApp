@@ -17,8 +17,11 @@ public class DownloadUtils {
 
     public static boolean writeResponseBodyToDisk(ResponseBody body,String fileName) {
         try {
-            File futureStudioIconFile = new File(App.getContext().getExternalCacheDir() + File.separator + fileName);
-
+            File futureStudioIconFileDir = new File(App.getContext().getExternalCacheDir().getAbsolutePath());
+            if (!futureStudioIconFileDir.exists()){
+                futureStudioIconFileDir.mkdir();
+            }
+            File futureStudioIconFile = new File(futureStudioIconFileDir,fileName);
             InputStream inputStream = null;
             OutputStream outputStream = null;
 

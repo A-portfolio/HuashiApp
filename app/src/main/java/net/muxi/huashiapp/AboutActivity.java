@@ -20,6 +20,7 @@ import net.muxi.huashiapp.common.data.VersionData;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.service.DownloadService;
 import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.common.util.NetStatus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,7 +57,7 @@ public class AboutActivity extends ToolbarActivity {
 
     public void init() {
         setSupportActionBar(mToolbar);
-        mToolbar.setTitle("关于");
+        mToolbar.setTitle("关于我们");
         mTvVersionname.setText(BuildConfig.VERSION_NAME);
         mTvMuxiLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,57 +100,71 @@ public class AboutActivity extends ToolbarActivity {
     }
 
     private void checkUpdates() {
-        CampusFactory.getRetrofitService().getLatestVersion()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<VersionData>() {
-                    @Override
-                    public void onCompleted() {
+        if (!NetStatus.isConnected()) {
+            CampusFactory.getRetrofitService().getLatestVersion()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.newThread())
+                    .subscribe(new Observer<VersionData>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(final VersionData versionData) {
-                        if (!BuildConfig.VERSION_NAME.equals(versionData.getVersion())) {
-                            final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
-                            materialDialog.setTitle(versionData.getName() + versionData.getVersion() + getString(R.string.title_update));
-                            materialDialog.setContent(versionData.getIntro() + "\n" + getString(R.string.tip_update_size) + versionData.getSize());
-                            materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
-                            materialDialog.setPositiveButton(getString(R.string.btn_update), new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    beginUpdate(versionData.getDownload());
-                                    materialDialog.dismiss();
-                                }
-                            });
-                            materialDialog.setNegativeButton(getString(R.string.btn_not_now), new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    materialDialog.dismiss();
-                                }
-                            });
-                            materialDialog.show();
-
-                        } else {
-                            final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
-                            materialDialog.setTitle(getString(R.string.title_not_have_to_update));
-                            materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
-                            materialDialog.setNegativeButtonVisible(false);
-                            materialDialog.setPositiveButton(getResources().getString(R.string.btn_positive), new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    materialDialog.dismiss();
-                                }
-                            });
-                            materialDialog.show();
                         }
-                    }
-                });
+
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onNext(final VersionData versionData) {
+                            if (!BuildConfig.VERSION_NAME.equals(versionData.getVersion())) {
+                                final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
+                                materialDialog.setTitle(versionData.getName() + versionData.getVersion() + getString(R.string.title_update));
+                                materialDialog.setContent(versionData.getIntro() + "\n" + getString(R.string.tip_update_size) + versionData.getSize());
+                                materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
+                                materialDialog.setPositiveButton(getString(R.string.btn_update), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        beginUpdate(versionData.getDownload());
+                                        materialDialog.dismiss();
+                                    }
+                                });
+                                materialDialog.setNegativeButton(getString(R.string.btn_not_now), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        materialDialog.dismiss();
+                                    }
+                                });
+                                materialDialog.show();
+
+                            } else {
+                                final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
+                                materialDialog.setTitle(getString(R.string.title_not_have_to_update));
+                                materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
+                                materialDialog.setNegativeButtonVisible(false);
+                                materialDialog.setPositiveButton(getResources().getString(R.string.btn_positive), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        materialDialog.dismiss();
+                                    }
+                                });
+                                materialDialog.show();
+                            }
+                        }
+                    });
+        }else {
+            final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
+            materialDialog.setTitle(getString(R.string.title_not_have_to_update));
+            materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
+            materialDialog.setNegativeButtonVisible(false);
+            materialDialog.setPositiveButton(getResources().getString(R.string.btn_positive), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    materialDialog.dismiss();
+                }
+            });
+            materialDialog.show();
+        }
     }
 
     private void beginUpdate(String download) {

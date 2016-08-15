@@ -1,8 +1,9 @@
 package net.muxi.huashiapp.score;
 
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,10 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.interfaces.DraweeController;
-import com.facebook.drawee.view.SimpleDraweeView;
-
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseFragment;
@@ -24,9 +21,9 @@ import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.Base64Util;
+import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,8 +43,10 @@ public class ScoreDetailFragment extends BaseFragment {
     RecyclerView mRecyclerView;
     @BindView(R.id.tv_last)
     TextView mTvLast;
-    @BindView(R.id.drawee)
-    SimpleDraweeView mDrawee;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.tv_none)
+    TextView mTvNone;
 
     private ScoresAdapter mScoresAdapter;
 
@@ -76,6 +75,14 @@ public class ScoreDetailFragment extends BaseFragment {
         ButterKnife.bind(this, view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(App.getContext()));
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        mSwipeRefreshLayout.setEnabled(false);
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(true);
+            }
+        });
 //        mRecyclerView.addItemDecoration(new DividerItemDecoration(container.getContext(),DividerItemDecoration.VERTICAL_LIST));
         mYear = getArguments().getString(SCHOOL_YEAR);
         mTerm = getArguments().getString(SCHOOL_TERM);
@@ -84,7 +91,6 @@ public class ScoreDetailFragment extends BaseFragment {
         final PreferenceUtil sp = new PreferenceUtil();
         user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
         user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
-        setLoading();
         CampusFactory.getRetrofitService()
                 .getScores(Base64Util.createBaseStr(user), mYear, mTerm)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -98,13 +104,22 @@ public class ScoreDetailFragment extends BaseFragment {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        mImageNone.setVisibility(View.VISIBLE);
-                        mDrawee.setVisibility(View.GONE);
+                        if (mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                        setNoneStatus(getString(R.string.tip_net_error));
                     }
 
                     @Override
                     public void onNext(List<Scores> scoresList) {
-                        mDrawee.setVisibility(View.GONE);
+                        if (mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                        if (scoresList.size() == 0){
+                            setNoneStatus(getString(R.string.no_any_score));
+                            return;
+                        }
+                        mTvLast.setVisibility(View.VISIBLE);
                         mRecyclerView.setVisibility(View.VISIBLE);
 //                        mTvLast.setVisibility(View.VISIBLE);
                         setupRecyclerview(scoresList);
@@ -115,22 +130,20 @@ public class ScoreDetailFragment extends BaseFragment {
         return view;
     }
 
-    private void setLoading() {
-//        Uri uri = Uri.parse("res://net.muxi.huashiapp/R.drawable.loading.gif");
-        Uri uri = new Uri.Builder()
-                .scheme("res")
-                .path(String.valueOf(R.drawable.loading))
-                .build();
-        DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setUri(uri)
-                .setAutoPlayAnimations(true)
-                .build();
-        mDrawee.setController(controller);
+    /**
+     * 设置空状态下
+     *
+     * @param tip 空状态原因提示
+     */
+    public void setNoneStatus(String tip) {
+        mRecyclerView.setVisibility(View.GONE);
+        mTvNone.setVisibility(View.VISIBLE);
+        mTvNone.setText(tip);
+        mImageNone.setVisibility(View.VISIBLE);
     }
 
-    private void loadDetailScore(List<Scores> scoresList) {
+    private void loadDetailScore(final List<Scores> scoresList) {
         int i = 0;
-        final List<Scores> leftScoreList = new ArrayList<>();
         for (final Scores scores : scoresList) {
             final int j = i;
             CampusFactory.getRetrofitService()
@@ -146,44 +159,48 @@ public class ScoreDetailFragment extends BaseFragment {
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
-                            leftScoreList.add(scores);
+                            Logger.d("first error");
+                            //获取失败的重新获取一遍
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    CampusFactory.getRetrofitService()
+                                            .getDetailScores(Base64Util.createBaseStr(App.sUser), mYear, mTerm, scores.getCourse(), scores.getJxb_id())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribeOn(Schedulers.newThread())
+                                            .subscribe(new Observer<DetailScores>() {
+                                                @Override
+                                                public void onCompleted() {
+
+                                                }
+
+                                                @Override
+                                                public void onError(Throwable e) {
+                                                    e.printStackTrace();
+                                                    Logger.d("second error");
+                                                }
+
+                                                @Override
+                                                public void onNext(DetailScores detailScores) {
+                                                    Log.d("tag", "second success score " + scores.getCourse());
+                                                    detailScores.setCourse(scores.getCourse());
+                                                    mScoresAdapter.addDetailScore(detailScores, j);
+                                                }
+                                            });
+                                }
+                            }, 500);
                         }
 
                         @Override
                         public void onNext(DetailScores detailScores) {
-                            Log.d("tag","first success score " + scores.getCourse());
+                            Log.d("tag", "first success score " + scores.getCourse());
                             detailScores.setCourse(scores.getCourse());
                             mScoresAdapter.addDetailScore(detailScores, j);
                         }
                     });
             i++;
         }
-        for (final Scores scores : leftScoreList){
-            final int j = i;
-            CampusFactory.getRetrofitService()
-                    .getDetailScores(Base64Util.createBaseStr(App.sUser), mYear, mTerm, scores.getCourse(), scores.getJxb_id())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.newThread())
-                    .subscribe(new Observer<DetailScores>() {
-                        @Override
-                        public void onCompleted() {
 
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            e.printStackTrace();
-                        }
-
-                        @Override
-                        public void onNext(DetailScores detailScores) {
-                            Log.d("tag","second score" + scores.getCourse());
-                            detailScores.setCourse(scores.getCourse());
-                            mScoresAdapter.addDetailScore(detailScores, j);
-                        }
-                    });
-            i++;
-        }
     }
 
     private void setupRecyclerview(List<Scores> scoresList) {

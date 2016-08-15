@@ -15,6 +15,7 @@ import android.widget.Toast;
 import net.muxi.huashiapp.AboutActivity;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
+import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.CalendarActivity;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.SettingActivity;
@@ -22,6 +23,7 @@ import net.muxi.huashiapp.apartment.ApartmentActivity;
 import net.muxi.huashiapp.card.CardActivity;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.BannerData;
+import net.muxi.huashiapp.common.data.PatchData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.AlarmUtil;
@@ -72,6 +74,8 @@ public class MainActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+
         //检查本地是否有补丁包
         try {
             if (!DownloadUtils.isFileExists(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME)) {
@@ -80,6 +84,7 @@ public class MainActivity extends ToolbarActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Logger.d("cache dir not found");
         }
 
         dao = new HuaShiDao();
@@ -89,10 +94,10 @@ public class MainActivity extends ToolbarActivity {
     }
 
     private void downloadPatch() {
-        CampusFactory.getRetrofitService().downloadFile(AppConstants.APATCH_URL)
+        CampusFactory.getRetrofitService().getPatch()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<ResponseBody>() {
+                .subscribe(new Observer<List<PatchData>>() {
                     @Override
                     public void onCompleted() {
 
@@ -104,10 +109,33 @@ public class MainActivity extends ToolbarActivity {
                     }
 
                     @Override
-                    public void onNext(ResponseBody responseBody) {
-                        DownloadUtils.writeResponseBodyToDisk(responseBody, AppConstants.APATCH_NAME);
+                    public void onNext(List<PatchData> patchDatas) {
+                        for (PatchData patchData : patchDatas){
+                            if (BuildConfig.VERSION_NAME.equals(patchData.getVersion())){
+                                CampusFactory.getRetrofitService().downloadFile(patchData.getDownload())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribeOn(Schedulers.newThread())
+                                        .subscribe(new Observer<ResponseBody>() {
+                                            @Override
+                                            public void onCompleted() {
+
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                e.printStackTrace();
+                                            }
+
+                                            @Override
+                                            public void onNext(ResponseBody responseBody) {
+                                                DownloadUtils.writeResponseBodyToDisk(responseBody, AppConstants.APATCH_NAME);
+                                            }
+                                        });
+                            }
+                        }
                     }
                 });
+
     }
 
     private void getBannerDatas() {
@@ -251,6 +279,14 @@ public class MainActivity extends ToolbarActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!NetStatus.isConnected()){
+            ToastUtil.showLong("请检查网络连接,未联网时仅支持部分功能");
+        }
     }
 
     public void updateRecyclerView(List<BannerData> bannerDatas) {

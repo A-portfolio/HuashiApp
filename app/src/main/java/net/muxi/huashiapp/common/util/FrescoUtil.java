@@ -55,6 +55,7 @@ public class FrescoUtil {
     }
 
     public static File getCacheImageOnDisk(CacheKey cacheKey) {
+        Logger.d(IMAGE_CACHE_DIR);
         File localFile = null;
         if (cacheKey != null) {
             if (ImagePipelineFactory.getInstance().getMainDiskStorageCache().hasKey(cacheKey)) {

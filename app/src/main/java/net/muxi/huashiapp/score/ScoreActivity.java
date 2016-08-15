@@ -84,19 +84,16 @@ public class ScoreActivity extends ToolbarActivity {
     }
 
     private void setTitle(String year, String term) {
-        String title = year + "年";
+        String title = "";
         switch (term){
             case "3":
-                title += "秋";
+                title += year + "年秋";
                 break;
             case "12":
-                title += "春";
+                title += (Integer.valueOf(year) + 1) + "年春";
                 break;
             case "16":
-                title += "夏";
-                break;
-            default:
-                title += "秋";
+                title += (Integer.valueOf(year) + 1) + "年夏";
                 break;
         }
         setTitle(title);

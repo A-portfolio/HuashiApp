@@ -19,7 +19,6 @@ import butterknife.ButterKnife;
  */
 public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.MyApartViewHolder> {
 
-
     private List<ApartmentData> mApartmentDataList;
 
     public ApartmentAdapter(List<ApartmentData> dataList) {
@@ -35,7 +34,11 @@ public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.MyAp
     @Override
     public void onBindViewHolder(MyApartViewHolder holder, int position) {
         holder.mTvApartment.setText(mApartmentDataList.get(position).getApartment());
-        holder.mTvPhone.setText(mApartmentDataList.get(position).getPhone());
+        String phone = new String();
+        for (String phoneStr : mApartmentDataList.get(position).getPhone()){
+            phone = phone + phoneStr + " ";
+        }
+        holder.mTvPhone.setText(phone);
         holder.mTvPlace.setText(mApartmentDataList.get(position).getPlace());
 
     }

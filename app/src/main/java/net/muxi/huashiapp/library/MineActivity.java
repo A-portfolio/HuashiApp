@@ -97,6 +97,7 @@ public class MineActivity extends BaseActivity {
 
         suggestions = dao.loadSearchHistory().toArray(new String[0]);
         mSearchView.setSuggestions(suggestions);
+        mSearchView.setTintViewBackground(getResources().getColor(android.R.color.transparent));
         mSearchView.setOnQueryTextListener(new MySearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

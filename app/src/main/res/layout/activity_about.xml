@@ -84,7 +84,7 @@
         android:layout_above="@+id/tv_muxi_link"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:text="木犀团队"
+        android:text="木犀团队出品"
         android:textColor="@color/textColorGrey"
         android:textSize="20sp"/>
 

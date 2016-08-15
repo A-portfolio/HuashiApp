@@ -7,8 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
@@ -18,13 +18,13 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
-import net.muxi.huashiapp.common.widget.LoadingView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Response;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -34,15 +34,14 @@ import rx.schedulers.Schedulers;
  */
 public class ElectricityDetailActivity extends ToolbarActivity implements ElectricityDetailFragment.OnChangeBtnClickListener {
 
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
-    @BindView(R.id.layout_loading)
-    LoadingView mLayoutLoading;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private Electricity mEleAirData;
     private Electricity mEleLightData;
 
@@ -54,7 +53,16 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_electricity_detail);
         ButterKnife.bind(this);
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(true);
+            }
+        });
+        mSwipeRefreshLayout.setEnabled(false);
         mQuery = getIntent().getStringExtra("query");
+        setTitle(mQuery);
         EleRequestData eleAirRequest = new EleRequestData();
         eleAirRequest.setDor(mQuery);
         eleAirRequest.setType("air");
@@ -64,7 +72,7 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
         CampusFactory.getRetrofitService().getElectricity(eleLightRequest)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<Electricity>() {
+                .subscribe(new Observer<Response<Electricity>>() {
                     @Override
                     public void onCompleted() {
 
@@ -73,19 +81,31 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        if (mSwipeRefreshLayout != null){
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                        ToastUtil.showShort(getString(R.string.tip_err_server));
                     }
 
                     @Override
-                    public void onNext(Electricity electricity) {
-                        ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(electricity);
-                        mLayoutLoading.setVisibility(View.GONE);
+                    public void onNext(Response<Electricity> response) {
+                        if (mSwipeRefreshLayout != null){
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                        if (response.code() == 404){
+                            ToastUtil.showShort(getString(R.string.ele_room_not_found));
+                        }
+                        if (response.code() == 503){
+                            ToastUtil.showShort(getString(R.string.tip_err_server));
+                        }
+                        ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(response.body());
                     }
                 });
         if (NetStatus.isConnected()) {
             CampusFactory.getRetrofitService().getElectricity(eleAirRequest)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.newThread())
-                    .subscribe(new Observer<Electricity>() {
+                    .subscribe(new Observer<Response<Electricity>>() {
                         @Override
                         public void onCompleted() {
 
@@ -93,19 +113,25 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
 
                         @Override
                         public void onError(Throwable e) {
+                            if (mSwipeRefreshLayout != null){
+                                mSwipeRefreshLayout.setRefreshing(false);
+                            }
                             e.printStackTrace();
-                            ToastUtil.showShort(getString(R.string.ele_room_not_found));
                             Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);
                             startActivity(intent);
                             ElectricityDetailActivity.this.finish();
                         }
 
                         @Override
-                        public void onNext(Electricity electricity) {
-                            ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(electricity);
+                        public void onNext(Response<Electricity> response) {
+                            if (mSwipeRefreshLayout != null){
+                                mSwipeRefreshLayout.setRefreshing(false);
+                            }
+                            ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(response.body());
                         }
                     });
         } else {
+            mSwipeRefreshLayout.setRefreshing(false);
             ToastUtil.showShort(getString(R.string.tip_check_net));
         }
 

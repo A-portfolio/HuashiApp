@@ -2,6 +2,7 @@ package net.muxi.huashiapp.schedule;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,6 +35,9 @@ public class CoursesView extends LinearLayout{
         mWeek = week;
         courseTvs = new TextView[courses.size()];
         this.setGravity(Gravity.CENTER);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            this.setElevation(DimensUtil.dp2px(4));
+        }
         initView();
     }
 

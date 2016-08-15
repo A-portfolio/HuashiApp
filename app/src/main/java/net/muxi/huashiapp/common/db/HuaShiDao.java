@@ -4,11 +4,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import net.muxi.huashiapp.common.data.ApartmentData;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -210,4 +212,49 @@ public class HuaShiDao {
         db.execSQL("DELETE FROM " + DataBase.TABLE_BANNER + ";");
     }
 
+    public void insertApart(ApartmentData data){
+        String phone = new String();
+        for (String phoneStr : data.getPhone()){
+            phone = phone + phoneStr + " ";
+        }
+        db.execSQL("insert into " + DataBase.TABLE_APARTMENT + " values(null,?,?,?) ",
+                new String[]{
+                        data.getApartment(),
+                        phone,
+                        data.getPlace()
+                });
+    }
+
+    public List<ApartmentData> loadApart(){
+        List<ApartmentData> apartmentDatas = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_APARTMENT+ " ", null);
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                ApartmentData data = new ApartmentData();
+                data.setApartment(cursor.getString(cursor.getColumnIndex(DataBase.KEY_APART)));
+                List<String> phones = getPhoneList(cursor.getString(cursor.getColumnIndex(DataBase.KEY_TELE)));
+                data.setPhone(phones);
+                data.setPlace(cursor.getString(cursor.getColumnIndex(DataBase.KEY_APART_PLACE)));
+                apartmentDatas.add(data);
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return apartmentDatas;
+    }
+
+    public void deleteApartData(){
+        db.execSQL("delete from " + DataBase.TABLE_APARTMENT + ";");
+    }
+
+    /**
+     * 解析电话字符串
+     * @param phone
+     * @return
+     */
+    public List<String> getPhoneList(String phone){
+        List<String> list = Arrays.asList(phone.split(" "));
+        return list;
+    }
 }

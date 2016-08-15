@@ -119,54 +119,8 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
                     }, 250);
                     mList.remove((Integer) position);
                 }
-//                notifyItemChanged(position);
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        DetailScores detailScore = getDetailScore(holder.mTvCourseName.getText().toString());
-//                        if (detailScore != null) {
-//                            setDetailScore(holder, detailScore);
-//                            holder.mDetailLayout.setVisibility(View.VISIBLE);
-//                        } else {
-//
-//                        }
-//                    }
-//                },250);
-//                Observable.timer(250, TimeUnit.MILLISECONDS)
-//                        .subscribe(new Observer<Long>() {
-//                           @Override
-//                            public void onCompleted() {
-//
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                            @Override
-//                            public void onNext(Long aLong) {
-//                                DetailScores detailScore = getDetailScore(holder.mTvCourseName.getText().toString());
-//                                if (detailScore != null) {
-//                                    setDetailScore(holder, detailScore);
-//                                    holder.mDetailLayout.setVisibility(View.VISIBLE);
-//                                } else {
-//
-//                                }
-//                            }
-//                        });
             }
         });
-//        if (mScoresList.get(position).getGrade().getUsual().equals("")) {
-//            holder.mTvScoreUsual.setText("无");
-//        }else {
-//            holder.mTvScoreUsual.setText(mScoresList.get(position).getGrade().getUsual());
-//        }
-//        if (mScoresList.get(position).getGrade().getEnding().equals("")){
-//            holder.mTvScoreEnding.setText("无");
-//        }else {
-//            holder.mTvScoreEnding.setText(mScoresList.get(position).getGrade().getEnding());
-//        }
     }
 
     private void setDetailLayout(ViewHolder holder, int position) {

@@ -213,6 +213,7 @@ public class AddCourseActivity extends ToolbarActivity
                                 int newId = id;
                                 dao.insertCourse(course);
                                 Logger.d("add course success");
+                                ToastUtil.showShort("添加成功");
                                 Intent intent = new Intent();
                                 AddCourseActivity.this.setResult(RESULT_OK, intent);
                                 //添加的课程 id 自增

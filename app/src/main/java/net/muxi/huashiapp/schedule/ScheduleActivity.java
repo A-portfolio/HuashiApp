@@ -35,6 +35,7 @@ import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.TimeTableUtil;
+import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.widget.ShadowView;
 import net.muxi.huashiapp.common.widget.TimeTable;
 
@@ -177,7 +178,7 @@ public class ScheduleActivity extends ToolbarActivity {
         setTitle("课程表");
         // TODO: 16/5/25 debug
         mTvScheduleWeekNumber.setText(AppConstants.WEEKS[mSelectWeek - 1]);
-        mTimeTable.setCourse(mCourses,mSelectWeek);
+        mTimeTable.setCourse(mCourses, mSelectWeek);
         Logger.d("timetable set course" + mCourses.size());
         mTimeTable.setOnLongPressedListener(new TimeTable.OnLongPressedListenr() {
             @Override
@@ -217,6 +218,7 @@ public class ScheduleActivity extends ToolbarActivity {
                                                 if (verifyResponseResponse.code() == 200) {
                                                     dao.deleteCourse(course.getId());
                                                     mCourses = dao.loadAllCourses();
+                                                    ToastUtil.showShort("删除成功");
                                                     updateTimetable();
                                                 }
 
@@ -235,8 +237,8 @@ public class ScheduleActivity extends ToolbarActivity {
         mTimeTable.setOnCourseClickListener(new TimeTable.OnCourseClickListener() {
             @Override
             public void onCourseClick(Course course) {
-                List<Course> displayCourse = TimeTableUtil.getAllCoursesInPosition(course,mCourses);
-                CoursesView coursesView = new CoursesView(ScheduleActivity.this,displayCourse,mSelectWeek);
+                List<Course> displayCourse = TimeTableUtil.getAllCoursesInPosition(course, mCourses);
+                CoursesView coursesView = new CoursesView(ScheduleActivity.this, displayCourse, mSelectWeek);
                 FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT
@@ -246,7 +248,7 @@ public class ScheduleActivity extends ToolbarActivity {
                 shadowView.setTag("shadow_view");
                 coursesView.setTag("course_view");
                 mRootLayout.addView(shadowView);
-                mRootLayout.addView(coursesView,layoutParams);
+                mRootLayout.addView(coursesView, layoutParams);
                 coursesView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -277,13 +279,13 @@ public class ScheduleActivity extends ToolbarActivity {
                 invalidateOptionsMenu();
                 mTvScheduleWeekNumber.setText(AppConstants.WEEKS[mSelectWeek - 1]);
                 mTimeTable.changeTheDate(position + 1 - mCurWeek);
-                if (mSelectWeek == mCurWeek){
+                if (mSelectWeek == mCurWeek) {
                     mTimeTable.setTodayLayout(DateUtil.getDayInWeek(new Date(System.currentTimeMillis())));
                     mTimeTable.setType(0);
-                }else {
+                } else {
                     mTimeTable.resetTodayLayout(DateUtil.getDayInWeek(new Date(System.currentTimeMillis())));
                     mTimeTable.setType(1);
-                    mTimeTable.scrollScheduleLayout(0,0);
+                    mTimeTable.scrollScheduleLayout(0, 0);
                 }
                 updateTimetable();
                 mTimeTable.invalidate();
@@ -296,7 +298,7 @@ public class ScheduleActivity extends ToolbarActivity {
 
     private void updateTimetable() {
         mTimeTable.removeCourse();
-        mTimeTable.setCourse(mCourses,mSelectWeek);
+        mTimeTable.setCourse(mCourses, mSelectWeek);
         Logger.d("schedule has update");
     }
 
@@ -364,32 +366,33 @@ public class ScheduleActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
-        if (isSelectShown){
+        if (isSelectShown) {
             fadeoutRecyclerView();
             isSelectShown = false;
             invalidateOptionsMenu();
             return;
         }
-        if (isCourseViewShown()){
+        if (isCourseViewShown()) {
             removeCourseView();
             return;
         }
         super.onBackPressed();
     }
 
-    public boolean isCourseViewShown(){
-        if (mRootLayout.findViewWithTag("shadow_view") != null){
+    public boolean isCourseViewShown() {
+        if (mRootLayout.findViewWithTag("shadow_view") != null) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
     //移除展示课程以及阴影部分的 view
-    public void removeCourseView(){
+    public void removeCourseView() {
         mRootLayout.removeView(mRootLayout.findViewWithTag("shadow_view"));
         mRootLayout.removeView(mRootLayout.findViewWithTag("course_view"));
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -405,12 +408,14 @@ public class ScheduleActivity extends ToolbarActivity {
             isSelectShown = false;
 //            getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
             invalidateOptionsMenu();
+            mImgPull.setImageResource(R.drawable.arrow_drop_down);
         } else {
             Logger.d("select");
             fadeinRecyclerView();
             isSelectShown = true;
 //            getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
             invalidateOptionsMenu();
+            mImgPull.setImageResource(R.drawable.arrow_drop_up);
         }
     }
 

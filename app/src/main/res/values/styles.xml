@@ -30,6 +30,7 @@
     <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFrame">@null</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
@@ -60,6 +61,19 @@
         <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
         <item name="android:paddingBottom">@dimen/item_vertical_margin</item>
         <item name="android:paddingTop">@dimen/item_vertical_margin</item>
+    </style>
+
+    <style name="ThemeHoloLightDialogAlert" parent="@style/AlertDialogTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+        <item name="android:windowTitleStyle">@style/DialogWindowTitleHoloLight</item>
+    </style>
+
+    <style name="DialogWindowTitleHoloLight">
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
     </style>
 
 

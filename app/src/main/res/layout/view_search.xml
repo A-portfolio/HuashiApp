@@ -34,9 +34,10 @@
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="输入书名或作者"
+                android:textSize="14sp"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
-                tools:text="search"/>
+                />
 
             <ImageView
                 android:id="@+id/btn_back"
@@ -59,19 +60,17 @@
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_marginRight="28dp"
-            android:layout_marginLeft="28dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
             android:background="@color/divider_search_view"
             android:layout_height="1dp"/>
 
         <ListView
             android:id="@+id/search_listview"
             android:layout_width="match_parent"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"
+            android:divider="@android:color/transparent"
             android:layout_height="wrap_content"
             android:background="@android:color/white">
-
 
         </ListView>
 

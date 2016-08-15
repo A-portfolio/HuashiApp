@@ -39,6 +39,9 @@
     <net.muxi.huashiapp.library.MySearchView
         android:id="@+id/searchview"
         android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/library_search_view_margin"
+        android:layout_marginRight="@dimen/library_search_view_margin"
+        android:layout_marginTop="@dimen/library_search_view_margin"
         android:layout_height="match_parent"/>
 
     <FrameLayout

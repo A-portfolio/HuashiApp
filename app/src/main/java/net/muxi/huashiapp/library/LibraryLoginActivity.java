@@ -198,6 +198,7 @@ public class LibraryLoginActivity extends ToolbarActivity{
     @OnClick(R.id.btn_login)
     public void onClick() {
         final User libUser = new User();
+        showProgressBarDialog(true,"登录中");
         libUser.setSid(mEditUserName.getText().toString());
         libUser.setPassword(mEditPassword.getText().toString());
         if (NetStatus.isConnected()) {
@@ -213,10 +214,12 @@ public class LibraryLoginActivity extends ToolbarActivity{
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
+                            showProgressBarDialog(false);
                         }
 
                         @Override
                         public void onNext(Response<VerifyResponse> verifyResponseResponse) {
+                            showProgressBarDialog(false);
                             if (verifyResponseResponse.code() == 200) {
                                 App.saveLibUser(libUser);
                                 Intent intent = new Intent(LibraryLoginActivity.this, MineActivity.class);
