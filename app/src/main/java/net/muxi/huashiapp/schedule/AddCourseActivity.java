@@ -25,6 +25,7 @@ import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.common.util.ZhugeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -204,12 +205,14 @@ public class AddCourseActivity extends ToolbarActivity
 
                         @Override
                         public void onError(Throwable e) {
-
+                            e.printStackTrace();
                         }
 
                         @Override
                         public void onNext(Response<VerifyResponse> verifyResponseResponse) {
                             if (verifyResponseResponse.code() == 201) {
+                                ZhugeUtils.sendEvent("课程添加","成功添加课程");
+                                ZhugeUtils.sendEvent("课程提醒状态",course.getRemind());
                                 int newId = id;
                                 dao.insertCourse(course);
                                 Logger.d("add course success");

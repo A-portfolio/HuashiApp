@@ -36,7 +36,7 @@ public class CoursesView extends LinearLayout{
         courseTvs = new TextView[courses.size()];
         this.setGravity(Gravity.CENTER);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            this.setElevation(DimensUtil.dp2px(4));
+            this.setElevation(DimensUtil.dp2px(8));
         }
         initView();
     }

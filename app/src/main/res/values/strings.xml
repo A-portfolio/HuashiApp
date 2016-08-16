@@ -43,8 +43,15 @@
     <string name="tip_net_error">网络异常</string>
     <string name="tip_logining">登录中...</string>
     <!--library-->
-    <string name="library_search_tip">请输入要搜索的图书或作者</string>
-    <string name="library_mybook_overdue">过期</string>
+    <string name="lib_search_tip">请输入要搜索的图书或作者</string>
+    <string name="lib_mybook_overdue">过期</string>
+    <string name="lib_bid">索书号:</string>
+    <string name="lib_tid">条码号:</string>
+    <string name="lib_place">校区-馆藏地:</string>
+    <string name="lib_mine_none_book">无任何图书借阅</string>
+    <string name="lib_book_name">书名:</string>
+    <string name="lib_author">作者:</string>
+    <string name="lib_itime">应还日期:</string>
 
     <!--setting activity key-->
     <string name="pre_schedule">pre_schedule</string>
@@ -86,4 +93,6 @@
     <string name="btn_not_now">稍后再说</string>
     <string name="tip_update_size">更新包大小:</string>
     <string name="title_not_have_to_update">已经是最新版本</string>
+
+    <string name="txt_text">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
 </resources>

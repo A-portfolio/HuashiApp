@@ -11,6 +11,8 @@ import android.widget.CompoundButton;
 
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.common.util.ZhugeUtils;
 import net.muxi.huashiapp.login.LoginActivity;
 
 import butterknife.BindView;
@@ -79,14 +81,24 @@ public class SettingActivity extends ToolbarActivity {
                 App.clearLibUser();
                 App.clearUser();
                 startActivity(intent);
+                ToastUtil.showShort("注销成功");
                 SettingActivity.this.finish();
             }
         });
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onBackPressed() {
         saveAllValue();
+        ZhugeUtils.sendEvent("各消息提醒状态","课程提醒" + mSwitchCourseRemind.isChecked() +
+        "图书馆消息提醒" + mSwitchLibraryRemind.isChecked() +
+        "学生卡消息提醒" + mSwitchCardRemind.isChecked() +
+        "成绩消息提醒" + mSwitchScoreRemind.isChecked());
         super.onBackPressed();
     }
 
