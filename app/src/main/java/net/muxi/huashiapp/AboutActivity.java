@@ -11,6 +11,7 @@ import android.text.style.UnderlineSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.muxi.material_dialog.MaterialDialog;
@@ -38,12 +39,17 @@ public class AboutActivity extends ToolbarActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.tv_versionname)
-    TextView mTvVersionname;
-    @BindView(R.id.tv_muxi_link)
-    TextView mTvMuxiLink;
     @BindView(R.id.btn_suggestion)
     TextView mBtnSuggestion;
+    @BindView(R.id.img_ccnubox)
+    ImageView mImgCcnubox;
+
+    @BindView(R.id.tv_muxi)
+    TextView mTvMuxi;
+    @BindView(R.id.tv_muxi_link)
+    TextView mTvMuxiLink;
+    @BindView(R.id.tv_versionname)
+    TextView mTvVersionname;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +59,7 @@ public class AboutActivity extends ToolbarActivity {
         init();
 
     }
+
 
     public void init() {
         setSupportActionBar(mToolbar);
@@ -69,7 +76,7 @@ public class AboutActivity extends ToolbarActivity {
     }
 
 
-    @OnClick({R.id.btn_suggestion})
+    @OnClick(R.id.btn_suggestion)
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -172,6 +179,7 @@ public class AboutActivity extends ToolbarActivity {
         startService(intent);
         Logger.d("download");
     }
+
 
     public static class NoUnderlineSpan extends UnderlineSpan {
 
