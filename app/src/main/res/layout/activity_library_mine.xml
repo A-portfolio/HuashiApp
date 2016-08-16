@@ -6,6 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:src="@drawable/im_my_lib_bg"/>
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -14,7 +21,28 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/img_empty"
+        android:layout_width="@dimen/empty_img_height"
+        android:layout_height="@dimen/empty_img_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="88dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_empty_white"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="192dp"
+        android:text="2333"
+        android:visibility="gone"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize">
@@ -26,22 +54,12 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/recycler_view"
-            android:layout_centerHorizontal="true"
-            android:text="@string/tip_no_more_borrow_book"/>
-
-    </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <net.muxi.huashiapp.library.MySearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/library_search_view_margin"
-        android:layout_marginRight="@dimen/library_search_view_margin"
-        android:layout_marginTop="@dimen/library_search_view_margin"/>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>
 

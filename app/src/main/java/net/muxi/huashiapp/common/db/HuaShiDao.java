@@ -6,6 +6,7 @@ import android.util.Log;
 
 import net.muxi.huashiapp.common.data.ApartmentData;
 import net.muxi.huashiapp.common.data.BannerData;
+import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
@@ -257,4 +258,29 @@ public class HuaShiDao {
         List<String> list = Arrays.asList(phone.split(" "));
         return list;
     }
+
+//    public List<BookSearchResult> loadBooks(String book){
+//        List<BookSearchResult> bookSearchResults = new ArrayList<>();
+//        Cursor cursor = db.rawQuery("select * from " + DataBase.TABLE_LIB + " where " + DataBase.KEY_SEARCH + " = ?",
+//                new String[]{
+//                        book
+//                });
+//        int max = cursor.getInt(cursor.getColumnIndex(DataBase.KEY_MAX));
+//        if (cursor.getCount() > 0){
+//            while (cursor.moveToNext()){
+//                BookSearchResult bookSearchResult = new BookSearchResult();
+//                BookSearchResult.MetaBean metaBean = new BookSearchResult.MetaBean();
+//                metaBean.setMax(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_MAX)));
+//                metaBean.setPer_page(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_PER_PAGE)));
+//                bookSearchResult.setMeta(metaBean);
+//                BookSearchResult.ResultsBean resultsBean = new BookSearchResult.ResultsBean();
+//                resultsBean.setId(cursor.getString(cursor.getColumnIndex(DataBase.KEY_BOOK_ID)));
+//                resultsBean.setBook(cursor.getString(cursor.getColumnIndex(DataBase.KEY_BOOK_NAME)));
+//                resultsBean.setAuthor(cursor.getString(cursor.getColumnIndex(DataBase.KEY_AUTHOR)));
+//                resultsBean.setBid(cursor.getString(cursor.getColumnIndex(DataBase.KEY_BID)));
+//                resultsBean.setIntro(cursor.getString(cursor.getColumnIndex(DataBase.KEY_INTRO)));
+//                bookSearchResult.setResults(resultsBean);
+//            }
+//        }
+//    }
 }

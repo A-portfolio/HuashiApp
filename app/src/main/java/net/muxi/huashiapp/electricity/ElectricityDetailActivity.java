@@ -18,6 +18,7 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.common.util.ZhugeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +95,9 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
                         }
                         if (response.code() == 404){
                             ToastUtil.showShort(getString(R.string.ele_room_not_found));
+                            Intent intent = new Intent(ElectricityDetailActivity.this,ElectricityActivity.class);
+                            startActivity(intent);
+                            ElectricityDetailActivity.this.finish();
                         }
                         if (response.code() == 503){
                             ToastUtil.showShort(getString(R.string.tip_err_server));
@@ -117,9 +121,6 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
                                 mSwipeRefreshLayout.setRefreshing(false);
                             }
                             e.printStackTrace();
-                            Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);
-                            startActivity(intent);
-                            ElectricityDetailActivity.this.finish();
                         }
 
                         @Override
@@ -131,7 +132,12 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
                         }
                     });
         } else {
-            mSwipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            });
             ToastUtil.showShort(getString(R.string.tip_check_net));
         }
 
@@ -162,6 +168,7 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
 
     @Override
     public void onChangeBtnClick() {
+        ZhugeUtils.sendEvent("电费查询更换寝室","更换寝室");
         PreferenceUtil sp = new PreferenceUtil();
         sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
         Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);

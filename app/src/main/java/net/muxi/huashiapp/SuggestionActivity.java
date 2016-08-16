@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.common.util.NetStatus;
+import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.common.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,11 +66,16 @@ public class SuggestionActivity extends ToolbarActivity {
        mBtnSubmit.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-//               sendEmail("15927448708@163.com","huashiapp",mEtSuggestion.getText().toString());
+
+               if (NetStatus.isConnected()) {
+                   ZhugeUtils.sendEvent("意见提交",mEtSuggestion.getText().toString());
+                   ToastUtil.showShort("提交成功");
+               }else {
+                   ToastUtil.showShort(getString(R.string.tip_check_net));
+               }
            }
        });
     }
-
 
 
     //显示当前的字数

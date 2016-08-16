@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -11,15 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
-
-import com.facebook.drawee.view.SimpleDraweeView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.DimensUtil;
-import net.muxi.huashiapp.common.util.FrescoUtil;
+import net.muxi.huashiapp.common.util.NetStatus;
+import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.widget.BaseDetailLayout;
 import net.muxi.huashiapp.common.widget.ShadowView;
 
@@ -43,13 +46,15 @@ public class NewsActivity extends ToolbarActivity {
     Toolbar mToolbar;
     @BindView(R.id.news_recycler_view)
     RecyclerView mNewsRecyclerView;
-    @BindView(R.id.root_layout)
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.content_layout)
     FrameLayout mContentLayout;
-    @BindView(R.id.drawee)
-    SimpleDraweeView mDrawee;
+    @BindView(R.id.img_empty)
+    ImageButton mImgEmpty;
+    @BindView(R.id.tv_error)
+    TextView mTvError;
 
-
-    private FrameLayout mFrameLayout ;
 
     public static final int FRAGMENT_HEIGHT =
             DimensUtil.getScreenHeight() - DimensUtil.getStatusBarHeight() - DimensUtil.dp2px(48);
@@ -59,11 +64,14 @@ public class NewsActivity extends ToolbarActivity {
     public static final int DURATION_SCALE = 250;
     public static final int DURATION_ALPH = 180;
 
+
     private View animView;
 
     private View mShadowView;
 
-    private BaseDetailLayout mBaseDetailLayout ;
+    private BaseDetailLayout mBaseDetailLayout;
+
+    private FrameLayout mFrameLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +80,17 @@ public class NewsActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         init();
 
-        mFrameLayout = (FrameLayout) findViewById(android.R.id.content);
+        if (!NetStatus.isConnected()) {
+            ToastUtil.showShort(getString(R.string.tip_check_net));
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            });
+            setEmptyImg(getString(R.string.tip_net_error));
+            return;
+        }
 
         CampusFactory.getRetrofitService().getNews()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -86,12 +104,14 @@ public class NewsActivity extends ToolbarActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        setEmptyImg(getString(R.string.tip_err_server));
                     }
 
                     @Override
                     public void onNext(List<News> newsList) {
                         setupRecyclerView(newsList);
-                        mDrawee.setVisibility(View.GONE);
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
                 });
     }
@@ -100,8 +120,22 @@ public class NewsActivity extends ToolbarActivity {
         setSupportActionBar(mToolbar);
         mToolbar.setTitle("通知公告");
         mNewsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        FrescoUtil.setLoading(mDrawee);
+        mFrameLayout = (FrameLayout) findViewById(android.R.id.content);
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(true);
+            }
+        });
+        mSwipeRefreshLayout.setEnabled(false);
 //        mNewsRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
+    }
+
+    public void setEmptyImg(String tip) {
+        mImgEmpty.setVisibility(View.VISIBLE);
+        mTvError.setVisibility(View.VISIBLE);
+        mTvError.setText(tip);
     }
 
 
@@ -172,9 +206,11 @@ public class NewsActivity extends ToolbarActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 viewHeight
         );
+
         params.setMargins(0, viewTop + DimensUtil.getActionbarHeight(), 0, 0);
         mFrameLayout.addView(animView, params);
         animView.setBackgroundColor(Color.WHITE);
+
 
         final ScaleAnimation scaleAnimation = new ScaleAnimation(
                 1,

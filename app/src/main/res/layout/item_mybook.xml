@@ -4,17 +4,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/card_library"
     android:orientation="horizontal"
     android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"
+    android:paddingBottom="8dp"
     android:paddingTop="8dp">
 
     <LinearLayout
         android:id="@+id/state_layout"
         android:layout_width="64dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
         android:orientation="vertical">
 
@@ -46,56 +47,28 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_book_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        android:layout_toRightOf="@+id/state_layout"
-        android:text="书名:"
-        android:textSize="@dimen/library_state_size"
-        android:textStyle="bold"/>
-
-    <TextView
         android:id="@+id/tv_book"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/tv_book_title"
+        android:layout_toRightOf="@+id/state_layout"
         android:textSize="@dimen/library_state_size"
         tools:text="Java 从入门到精通"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_book_title"
-        android:layout_toRightOf="@+id/state_layout"
-        android:text="作者:"
-        android:textSize="@dimen/library_state_size"
-        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/tv_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_book_title"
-        android:layout_toRightOf="@+id/tv_book_title"
-        android:textSize="@dimen/library_state_size"/>
-
-    <TextView
-        android:id="@+id/tv_title_borrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_author"
+        android:layout_below="@id/tv_book"
+        tools:text="fas"
         android:layout_toRightOf="@+id/state_layout"
-        android:text="借阅日期:"
-        android:textSize="@dimen/library_state_size"
-        android:textStyle="bold"/>
+        android:textSize="@dimen/library_state_size"/>
 
     <TextView
         android:id="@+id/tv_borrow_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_author"
-        android:layout_toRightOf="@+id/tv_title_borrow"
+        android:layout_toRightOf="@+id/state_layout"
         android:textSize="@dimen/library_state_size"
         tools:text="9"/>
 
@@ -103,7 +76,7 @@
         android:id="@+id/tv_deadline_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_title_borrow"
+        android:layout_below="@+id/tv_borrow_date"
         android:layout_toRightOf="@+id/state_layout"
         android:text="应还日期:"
         android:textSize="@dimen/library_state_size"

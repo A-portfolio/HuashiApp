@@ -36,6 +36,7 @@ import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.TimeTableUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.common.util.ZhugeUtils;
 import net.muxi.huashiapp.common.widget.ShadowView;
 import net.muxi.huashiapp.common.widget.TimeTable;
 
@@ -245,6 +246,7 @@ public class ScheduleActivity extends ToolbarActivity {
                 );
                 ShadowView shadowView = new ShadowView(ScheduleActivity.this);
                 shadowView.setLayoutParams(layoutParams);
+                shadowView.setElevation(DimensUtil.dp2px(8));
                 shadowView.setTag("shadow_view");
                 coursesView.setTag("course_view");
                 mRootLayout.addView(shadowView);
@@ -410,6 +412,7 @@ public class ScheduleActivity extends ToolbarActivity {
             invalidateOptionsMenu();
             mImgPull.setImageResource(R.drawable.arrow_drop_down);
         } else {
+            ZhugeUtils.sendEvent("选择周数","点击周数选择按钮");
             Logger.d("select");
             fadeinRecyclerView();
             isSelectShown = true;

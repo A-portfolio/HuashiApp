@@ -51,18 +51,18 @@ public class ApartmentActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         dao = new HuaShiDao();
         mApartDatas = dao.loadApart();
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         if (mApartDatas.size() > 0) {
             setupRecyclerView(mApartDatas);
         } else {
-            mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
             mSwipeRefreshLayout.post(new Runnable() {
                 @Override
                 public void run() {
                     mSwipeRefreshLayout.setRefreshing(true);
                 }
             });
-            mSwipeRefreshLayout.setEnabled(false);
         }
+        mSwipeRefreshLayout.setEnabled(false);
         setTitle("部门信息");
         CampusFactory.getRetrofitService().getApartment()
                 .observeOn(AndroidSchedulers.mainThread())
