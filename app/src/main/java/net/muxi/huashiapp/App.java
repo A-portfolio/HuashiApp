@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.alipay.euler.andfix.patch.PatchManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.tencent.bugly.crashreport.CrashReport;
+import com.zhuge.analysis.stat.ZhugeSDK;
 
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.util.Logger;
@@ -35,11 +37,14 @@ public class App extends Application {
 //        LeakCanary.install(this);
         sContext = getApplicationContext();
 // TODO: 16/8/6 andfix turn on 
-        mPatchManager = new PatchManager(this);
-        mPatchManager.init(BuildConfig.VERSION_NAME);
-        mPatchManager.loadPatch();
-        Logger.d("andfix load patch");
-        Logger.d(AppConstants.CACHE_DIR);
+        try {
+            mPatchManager = new PatchManager(this);
+            mPatchManager.init(BuildConfig.VERSION_NAME);
+            mPatchManager.loadPatch();
+            Logger.d("andfix load patch");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         sp = new PreferenceUtil();
 
         if (!sp.getString(PreferenceUtil.LAST_APP_VERSION,"1.0").equals(BuildConfig.VERSION_NAME)){
@@ -56,22 +61,21 @@ public class App extends Application {
         
         Fresco.initialize(this);
 
-//        CrashReport.initCrashReport(getApplicationContext(), "900043675", true);
+        CrashReport.initCrashReport(getApplicationContext(), "900043675", true);
 //        ZhugeSDK.getInstance().openDebug();
 //        //必须在init之前调用
 //        //禁止收集用户手机号码默认为收集
-//        ZhugeSDK.getInstance().disablePhoneNumber();
+        ZhugeSDK.getInstance().disablePhoneNumber();
 //        //禁止收集用户个人账户信息默认为收集
-//        ZhugeSDK.getInstance().disableAccounts();
+        ZhugeSDK.getInstance().disableAccounts();
+        ZhugeSDK.getInstance().openLog();
+
 
 
         sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, "0"));
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
         sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, "0"));
         sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
-        Logger.d("id:" + sUser.getSid() + "\tpwd:" + sUser.getPassword());
-        Logger.d("id:" + sLibrarayUser.getSid() + "\tpwd:" + sLibrarayUser.getPassword());
-
     }
 
     public static Context getContext() {

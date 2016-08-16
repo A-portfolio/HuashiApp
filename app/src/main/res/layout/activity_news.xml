@@ -1,32 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <include android:id="@+id/view_toolbar"
+             layout="@layout/view_toolbar"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include android:id="@+id/view_toolbar"
-                 layout="@layout/view_toolbar"/>
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/drawee"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="56dp"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/view_toolbar">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/news_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/view_toolbar"
             android:clipToPadding="false"/>
 
-    </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-</FrameLayout>
+    <ImageButton
+        android:id="@+id/img_empty"
+        android:layout_width="@dimen/empty_img_height"
+        android:layout_height="@dimen/empty_img_height"
+        android:layout_below="@id/view_toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/empty_img_marginTop"
+        android:background="@drawable/img_empty"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_empty"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="@string/tip_net_error"
+        android:visibility="gone"/>
+
+    <FrameLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+</RelativeLayout>

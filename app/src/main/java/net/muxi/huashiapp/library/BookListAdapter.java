@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.library;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,6 @@ import butterknife.ButterKnife;
  */
 public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHolder> {
 
-
     private Book mBook;
 
     public BookListAdapter(Book book) {
@@ -32,16 +32,22 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String bookStatus = mBook.getBooks().get(position).getStatus();
-        if (bookStatus.equals("可借")){
+        if (bookStatus.equals("可借")) {
             holder.mTvState.setTextColor(App.getContext().getResources().getColor(R.color.state_available));
-        }else {
+        } else {
             holder.mTvState.setTextColor(App.getContext().getResources().getColor(R.color.state_unavailable));
         }
         holder.mTvState.setText(bookStatus);
 
-        holder.mTvTid.setText(mBook.getBooks().get(position).getTid());
-        holder.mTvBid.setText(mBook.getBid());
-        holder.mTvPlace.setText("                       " + mBook.getBooks().get(position).getRoom());
+        String tid = getBookStr(App.sContext.getString(R.string.lib_tid),
+                mBook.getBooks().get(position).getTid());
+        holder.mTvTid.setText(Html.fromHtml(tid));
+        String bid = getBookStr(App.sContext.getString(R.string.lib_bid),
+                mBook.getBid());
+        holder.mTvBid.setText(Html.fromHtml(bid));
+        String place = getBookStr(App.sContext.getString(R.string.lib_place),
+                mBook.getBooks().get(position).getRoom());
+        holder.mTvPlace.setText(Html.fromHtml(place));
     }
 
     @Override
@@ -54,7 +60,6 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book_state, parent, false);
         return new ViewHolder(v);
     }
-
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -69,7 +74,13 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
+    }
+
+    //获取标题加粗的字符串
+    public String getBookStr(String s1, String s2) {
+        s1 = "<b>" + s1 + "</b>";
+        return s1 + s2;
     }
 }

@@ -4,28 +4,21 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!--<com.facebook.drawee.view.SimpleDraweeView-->
-    <!--android:id="@+id/drawee"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--fresco:placeholderImageScaleType="fitXY"/>-->
-
+    android:layout_height="match_parent"
+    android:minHeight="600dp">
 
     <ImageView
-    android:id="@+id/drawee_bottom"
-    android:layout_width="match_parent"
-    android:src="@drawable/img_lib_bookbg"
-    android:scaleType="fitXY"
-    android:layout_height="match_parent"
+        android:id="@+id/drawee_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_lib_bookbg"
     />
 
     <LinearLayout
         android:id="@+id/background_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:minHeight="600dp"
         android:orientation="vertical"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">

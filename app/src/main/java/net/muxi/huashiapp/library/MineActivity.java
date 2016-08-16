@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
@@ -20,6 +24,7 @@ import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.Base64Util;
 import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.main.MainActivity;
 
 import java.util.List;
@@ -45,10 +50,15 @@ public class MineActivity extends BaseActivity {
     FrameLayout mToolbarContainer;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.img_empty)
+    ImageView mImgEmpty;
+    @BindView(R.id.tv_empty)
+    TextView mTvEmpty;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private HuaShiDao dao;
     String[] suggestions;
-
 
 
     @Override
@@ -56,27 +66,51 @@ public class MineActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library_mine);
         ButterKnife.bind(this);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setEnabled(false);
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(true);
+            }
+        });
         dao = new HuaShiDao();
-        CampusFactory.getRetrofitService().getPersonalBook(Base64Util.createBaseStr(App.sLibrarayUser))
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<PersonalBook>>() {
-                    @Override
-                    public void onCompleted() {
+        if (NetStatus.isConnected()) {
+            CampusFactory.getRetrofitService().getPersonalBook(Base64Util.createBaseStr(App.sLibrarayUser))
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<List<PersonalBook>>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            setImgEmpty(getString(R.string.tip_err_server));
+                        }
 
-                    @Override
-                    public void onNext(List<PersonalBook> personalBooks) {
-                        Logger.d("get personal");
-                        setupRecyclerview(personalBooks);
-                    }
-                });
+                        @Override
+                        public void onNext(List<PersonalBook> personalBooks) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            Logger.d("get personal");
+                            if (personalBooks.size() > 0 ) {
+                                setupRecyclerview(personalBooks);
+                            }else {
+                                setImgEmpty(getString(R.string.lib_mine_none_book));
+                            }
+                        }
+                    });
+        }else {
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            });
+        }
         initView();
     }
 
@@ -87,6 +121,11 @@ public class MineActivity extends BaseActivity {
         mRecyclerView.setAdapter(bookAdapter);
     }
 
+    public void setImgEmpty(String tip){
+        mImgEmpty.setVisibility(View.VISIBLE);
+        mTvEmpty.setVisibility(View.VISIBLE);
+        mTvEmpty.setText(tip);
+    }
 
     private void initView() {
 
@@ -97,7 +136,18 @@ public class MineActivity extends BaseActivity {
 
         suggestions = dao.loadSearchHistory().toArray(new String[0]);
         mSearchView.setSuggestions(suggestions);
-        mSearchView.setTintViewBackground(getResources().getColor(android.R.color.transparent));
+        mSearchView.setOnSearchViewListener(new MySearchView.OnSearchViewListener() {
+            @Override
+            public void onSearchShown() {
+                suggestions = dao.loadSearchHistory().toArray(new String[0]);
+                mSearchView.setSuggestions(suggestions);
+            }
+
+            @Override
+            public void onSeachClose() {
+
+            }
+        });
         mSearchView.setOnQueryTextListener(new MySearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -129,10 +179,10 @@ public class MineActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.action_logout){
+        if (itemId == R.id.action_logout) {
             App.clearLibUser();
             Logger.d(App.sLibrarayUser.getSid());
-            Intent intent = new Intent(MineActivity.this,LibraryLoginActivity.class);
+            Intent intent = new Intent(MineActivity.this, LibraryLoginActivity.class);
             startActivity(intent);
             MineActivity.this.finish();
         }
@@ -146,8 +196,8 @@ public class MineActivity extends BaseActivity {
             mSearchView.closeSearchView();
             return;
         }
-        if (App.sLibrarayUser.getSid() != null && !App.sLibrarayUser.getSid().equals("0") ){
-            Intent intent = new Intent(MineActivity.this,MainActivity.class);
+        if (App.sLibrarayUser.getSid() != null && !App.sLibrarayUser.getSid().equals("0")) {
+            Intent intent = new Intent(MineActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }

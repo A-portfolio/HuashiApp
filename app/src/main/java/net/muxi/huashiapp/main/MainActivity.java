@@ -32,6 +32,7 @@ import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.common.util.ZhugeUtils;
 import net.muxi.huashiapp.electricity.ElectricityActivity;
 import net.muxi.huashiapp.electricity.ElectricityDetailActivity;
 import net.muxi.huashiapp.library.LibraryLoginActivity;
@@ -217,6 +218,7 @@ public class MainActivity extends ToolbarActivity {
         mAdapter.setOnBannerItemClickListener(new MainAdapter.OnBannerItemClickListener() {
             @Override
             public void onBannerItemClick(BannerData bannerData) {
+                ZhugeUtils.sendEvent("点击 banner","点解 banner");
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(bannerData.getUrl()));
                 startActivity(browserIntent);
             }
@@ -231,6 +233,7 @@ public class MainActivity extends ToolbarActivity {
                         startActivity(intent);
                         break;
                     case 1:
+                        ZhugeUtils.sendEvent("学生卡查询","学生卡查询");
                         intent = new Intent(MainActivity.this, CardActivity.class);
                         startActivity(intent);
                         break;
@@ -251,15 +254,18 @@ public class MainActivity extends ToolbarActivity {
                         }
                         break;
                     case 4:
+                        ZhugeUtils.sendEvent("查询校历","查询校历");
                         intent = new Intent(MainActivity.this, CalendarActivity.class);
                         startActivity(intent);
                         break;
                     case 5:
+                        ZhugeUtils.sendEvent("查看部门信息","查看部门信息");
                         intent = new Intent(MainActivity.this, ApartmentActivity.class);
                         startActivity(intent);
 
                         break;
                     case 7:
+                        ZhugeUtils.sendEvent("进入图书馆","进入图书馆");
                         if (!App.sLibrarayUser.getSid().equals("0")) {
                             intent = new Intent(MainActivity.this, MineActivity.class);
                             startActivity(intent);
@@ -270,6 +276,7 @@ public class MainActivity extends ToolbarActivity {
                         break;
 
                     case 8:
+                        ZhugeUtils.sendEvent("进入学而","进入学而");
                         intent = WebViewActivity.newIntent(MainActivity.this, "https://xueer.muxixyz.com/", "学而");
                         startActivity(intent);
                         break;
@@ -322,6 +329,7 @@ public class MainActivity extends ToolbarActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_news:
+                ZhugeUtils.sendEvent("查看消息公告","查看消息公告");
                 intent = new Intent(MainActivity.this, NewsActivity.class);
                 startActivity(intent);
                 break;

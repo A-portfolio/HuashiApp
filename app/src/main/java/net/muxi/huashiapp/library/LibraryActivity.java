@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
@@ -26,6 +29,7 @@ import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.widget.BaseDetailLayout;
 import net.muxi.huashiapp.common.widget.DividerItemDecoration;
@@ -47,14 +51,23 @@ import rx.schedulers.Schedulers;
  */
 public class LibraryActivity extends ToolbarActivity {
 
+
+    @BindView(R.id.img_empty)
+    ImageView mImgEmpty;
+    @BindView(R.id.tv_empty)
+    TextView mTvEmpty;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.searchview)
     MySearchView mSearchview;
     @BindView(R.id.content_layout)
     FrameLayout mContentLayout;
+    @BindView(R.id.root_layout)
+    FrameLayout mRootLayout;
 
     private BookDetailView mBookDetailView;
 
@@ -101,7 +114,26 @@ public class LibraryActivity extends ToolbarActivity {
         mBookList = new ArrayList<>();
         String query = getIntent().getStringExtra(AppConstants.LIBRARY_QUERY_TEXT);
         mKeyword = query;
-        searchBook(query);
+
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setEnabled(false);
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(true);
+            }
+        });
+        if (NetStatus.isConnected()) {
+            searchBook(query);
+        } else {
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            });
+            setImgEmpty(getString(R.string.tip_check_net));
+        }
         contentLayout = (FrameLayout) findViewById(android.R.id.content);
 
         initVariables();
@@ -111,10 +143,21 @@ public class LibraryActivity extends ToolbarActivity {
 
     private void initViews() {
         mSearchview.setSuggestions(suggestions);
-        mSearchview.setTintViewBackground(getResources().getColor(android.R.color.transparent));
+        mSearchview.setOnSearchViewListener(new MySearchView.OnSearchViewListener() {
+            @Override
+            public void onSearchShown() {
+                suggestions = dao.loadSearchHistory().toArray(new String[0]);
+                mSearchview.setSuggestions(suggestions);
+            }
+
+            @Override
+            public void onSeachClose() {
+            }
+        });
         mSearchview.setOnQueryTextListener(new MySearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                mSwipeRefreshLayout.setRefreshing(true);
                 dao.insertSearchHistory(query);
                 mSearchview.closeSearchView();
                 mSearchview.hideKeyboard(mSearchview);
@@ -157,20 +200,29 @@ public class LibraryActivity extends ToolbarActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        setImgEmpty(getString(R.string.tip_err_server));
                     }
 
                     @Override
                     public void onNext(BookSearchResult bookSearchResult) {
-                        if (bookSearchResult != null) {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        if (bookSearchResult.getResults().size() > 0) {
                             mBookList.addAll(bookSearchResult.getResults());
                             setupRecyclerview();
                             mMax = bookSearchResult.getMeta().getMax();
                         } else {
-                            ToastUtil.showLong("无相关符合图书");
-
+                            ToastUtil.showLong("无相关符合的图书");
+                            setImgEmpty("无相关符合的图书");
                         }
                     }
                 });
+    }
+
+    public void setImgEmpty(String tip) {
+        mImgEmpty.setVisibility(View.VISIBLE);
+        mTvEmpty.setText(tip);
+        mTvEmpty.setVisibility(View.VISIBLE);
     }
 
     private void setupRecyclerview() {
@@ -186,7 +238,7 @@ public class LibraryActivity extends ToolbarActivity {
                 Logger.d("id:" + resultsBean.getId() + " book:" + resultsBean.getBook() + " author" + resultsBean.getAuthor());
                 String bookTitle = interceptTitle(resultsBean.getBook());
                 final String published = resultsBean.getIntro();
-                CampusFactory.getRetrofitService().getBookDetail(resultsBean.getId(), bookTitle, resultsBean.getAuthor(),resultsBean.getBid())
+                CampusFactory.getRetrofitService().getBookDetail(resultsBean.getId(), bookTitle, resultsBean.getAuthor(), resultsBean.getBid())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.newThread())
                         .subscribe(new Observer<Book>() {
@@ -203,7 +255,7 @@ public class LibraryActivity extends ToolbarActivity {
                             @Override
                             public void onNext(Book book) {
                                 Logger.d(book.getBook());
-                                setDetailData(book,published);
+                                setDetailData(book, published);
                             }
                         });
 
@@ -248,6 +300,7 @@ public class LibraryActivity extends ToolbarActivity {
                     Logger.d(mPage + "");
                     if (mPage <= mMax - 1 && mPage <= mBookList.size() / 20) {
                         mPage++;
+                        mSwipeRefreshLayout.setRefreshing(true);
                         loadData(false);
                     } else {
 
@@ -270,10 +323,12 @@ public class LibraryActivity extends ToolbarActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
 
                     @Override
                     public void onNext(BookSearchResult bookSearchResult) {
+                        mSwipeRefreshLayout.setRefreshing(false);
                         mMax = bookSearchResult.getMeta().getMax();
                         if (clean) {
                             mBookList.clear();
@@ -315,10 +370,10 @@ public class LibraryActivity extends ToolbarActivity {
                 });
     }
 
-    private void setDetailData(Book book,String published){
+    private void setDetailData(Book book, String published) {
 //        BookDetailView bookDetailView = new BookDetailView(LibraryActivity.this,book,published);
 //        mBaseDetailLayout.setContent(bookDetailView);
-      mBookDetailView.setBookData(book,published);
+        mBookDetailView.setBookData(book, published);
     }
 
     private void addShadowView() {

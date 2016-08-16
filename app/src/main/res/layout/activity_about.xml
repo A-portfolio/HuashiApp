@@ -23,7 +23,7 @@
     <!--android:clipToPadding="false">-->
 
     <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="118dp"
+                  android:layout_height="70dp"
                   android:layout_below="@+id/view_toolbar"
                   android:layout_marginLeft="@dimen/activity_horizontal_margin"
                   android:layout_marginRight="@dimen/activity_horizontal_margin"
@@ -31,17 +31,17 @@
                   android:background="@drawable/white_frame_normal"
                   android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/btn_info"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:drawableLeft="@drawable/ic_information"
-            android:drawablePadding="16dp"
-            android:drawableRight="@drawable/ic_black_chevron_right"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="24dp"
-            android:text="功能介绍"/>
+        <!--<TextView-->
+            <!--android:id="@+id/btn_info"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="48dp"-->
+            <!--android:drawableLeft="@drawable/ic_information"-->
+            <!--android:drawablePadding="16dp"-->
+            <!--android:drawableRight="@drawable/ic_black_chevron_right"-->
+            <!--android:gravity="left|center_vertical"-->
+            <!--android:paddingLeft="16dp"-->
+            <!--android:paddingRight="24dp"-->
+            <!--android:text="功能介绍"/>-->
 
         <TextView
             android:id="@+id/btn_suggestion"

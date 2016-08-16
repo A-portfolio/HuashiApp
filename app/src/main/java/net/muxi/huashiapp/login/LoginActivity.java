@@ -21,6 +21,7 @@ import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.common.util.ZhugeUtils;
 import net.muxi.huashiapp.common.widget.LoginEditText;
 import net.muxi.huashiapp.main.MainActivity;
 
@@ -53,7 +54,6 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.edit_password)
     LoginEditText mEditPassword;
 
-
     private User mUser;
 
     private TextWatcher mTextWatcher = new SimpleTextWatcher() {
@@ -69,20 +69,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-//        ZhugeSDK.getInstance().openDebug();
-//        ZhugeSDK.getInstance().openLog();
         initViews();
-//        mBtnLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
-
 
     }
 
@@ -106,13 +93,6 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.btn_login)
     public void onClick() {
-        //        JSONObject eventObject = new JSONObject();
-//        try {
-//            eventObject.put("主界面登录","true");
-//            ZhugeSDK.getInstance().track(App.getContext(),"主界面登录",eventObject);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
 
         if (!NetStatus.isConnected()) {
             ToastUtil.showLong(NETCONNECT_FAILED);
@@ -172,6 +152,7 @@ public class LoginActivity extends BaseActivity {
 
                             ToastUtil.showShort(LOGIN_SUCCESS);
                             startMainActivity();
+                            ZhugeUtils.sendEvent("登录","登录成功");
                         }
                         if (response.code() == 403) {
                             ToastUtil.showShort(VERIFY_FAILED);

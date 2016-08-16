@@ -26,6 +26,7 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.Base64Util;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.common.util.ZhugeUtils;
 import net.muxi.huashiapp.login.SimpleTextWatcher;
 import net.muxi.huashiapp.main.MainActivity;
 
@@ -115,9 +116,22 @@ public class LibraryLoginActivity extends ToolbarActivity{
         mSearchView.setSuggestions(mSuggestions);
         mSearchView.setTintViewBackground(Color.TRANSPARENT);
         mSearchView.setIsVisibleWithAnimation(false);
+        mSearchView.setOnSearchViewListener(new MySearchView.OnSearchViewListener() {
+            @Override
+            public void onSearchShown() {
+                mSuggestions = dao.loadSearchHistory().toArray(new String[0]);
+                mSearchView.setSuggestions(mSuggestions);
+            }
+
+            @Override
+            public void onSeachClose() {
+
+            }
+        });
         mSearchView.setOnQueryTextListener(new MySearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String queryText) {
+                dao.insertSearchHistory(queryText);
                 Intent intent = new Intent(LibraryLoginActivity.this, LibraryActivity.class);
                 intent.putExtra(AppConstants.LIBRARY_QUERY_TEXT, queryText);
                 mSearchView.closeSearchView();
@@ -221,6 +235,7 @@ public class LibraryLoginActivity extends ToolbarActivity{
                         public void onNext(Response<VerifyResponse> verifyResponseResponse) {
                             showProgressBarDialog(false);
                             if (verifyResponseResponse.code() == 200) {
+                                ZhugeUtils.sendEvent("图书馆登录","登陆成功");
                                 App.saveLibUser(libUser);
                                 Intent intent = new Intent(LibraryLoginActivity.this, MineActivity.class);
                                 startActivity(intent);

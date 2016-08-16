@@ -19,6 +19,7 @@ import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.common.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -171,6 +172,7 @@ public class ScoreActivity extends ToolbarActivity {
             ft.commit();
             mFragmentLayout.setClickable(true);
             setTitle(year,term);
+            ZhugeUtils.sendEvent("查询成绩","查询成绩");
         } else {
             ToastUtil.showShort(AppConstants.TIP_CHECK_NET);
         }
