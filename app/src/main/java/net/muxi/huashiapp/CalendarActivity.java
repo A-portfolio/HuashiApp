@@ -1,20 +1,26 @@
 package net.muxi.huashiapp;
 
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.facebook.drawee.view.DraweeView;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.squareup.picasso.Picasso;
 
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.util.FrescoUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,10 +34,27 @@ import rx.schedulers.Schedulers;
  */
 public class CalendarActivity extends ToolbarActivity {
 
-    @BindView(R.id.drawee)
-    SimpleDraweeView mDrawee;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.appbar_layout)
+    AppBarLayout mAppbarLayout;
+    @BindView(R.id.img_calendar)
+    ImageView mImgCalendar;
+    @BindView(R.id.img_empty)
+    ImageView mImgEmpty;
+    @BindView(R.id.tv_empty)
+    TextView mTvEmpty;
 
-    DraweeView draweeView;
+//    private PhotoViewAttacher mAttacher;
+
+    private int imgWidth;
+    private int imgHeight = 400;
+
+    private Bitmap bitmap;
+
+    private float x, y;
+
+    private boolean isImageShow = false;
 
     //上次距离最近的时间
     private long lastTime;
@@ -49,9 +72,15 @@ public class CalendarActivity extends ToolbarActivity {
         lastTime = sp.getLong(PreferenceUtil.CALENDAR_UPDATE);
         setTitle("校历");
 
-        if (lastTime != DEFAULT_TIME){
+        if (lastTime != DEFAULT_TIME) {
             picUrl = sp.getString(PreferenceUtil.CALENDAR_ADDRESS);
-            mDrawee.setImageURI(Uri.parse(picUrl));
+            File file = new File(App.sContext.getExternalCacheDir().getAbsolutePath() + "/calendar.jpg");
+            if (file.exists()) {
+                Picasso.with(this).load(file).into(mImgCalendar);
+                isImageShow = true;
+            } else {
+                isImageShow = false;
+            }
         }
         if (NetStatus.isConnected()) {
             updateImage();
@@ -62,11 +91,13 @@ public class CalendarActivity extends ToolbarActivity {
             }
         }
 
+
     }
 
     // TODO: 16/7/24 设置图片无法显示
     private void setImageNotFound() {
-
+        mImgEmpty.setVisibility(View.VISIBLE);
+        mTvEmpty.setVisibility(View.VISIBLE);
     }
 
     //更新图片信息
@@ -86,19 +117,52 @@ public class CalendarActivity extends ToolbarActivity {
                     }
 
                     @Override
-                    public void onNext(List<CalendarData> calendarData) {
+                    public void onNext(final List<CalendarData> calendarData) {
                         if (calendarData.get(0).getUpdate() == lastTime) {
-                            mDrawee.setImageURI(Uri.parse(calendarData.get(0).getImg()));
+                            if (!isImageShow) {
+                                saveCalendarData(calendarData.get(0));
+                                downloadBitmap(picUrl);
+                                Picasso.with(CalendarActivity.this).load(calendarData.get(0).getImg()).into(mImgCalendar);
+                            }
                         } else {
                             saveCalendarData(calendarData.get(0));
-                            Logger.d(calendarData.get(0).getImg());
-                            Logger.d(picUrl);
-                            mDrawee.setImageURI(Uri.parse(picUrl));
-                            FrescoUtil.savePicture(picUrl, CalendarActivity.this, "calendar");
+                            downloadBitmap(picUrl);
+                            Logger.d("download image");
+                            Picasso.with(CalendarActivity.this).load(calendarData.get(0).getImg()).into(mImgCalendar);
                         }
                     }
                 });
     }
+
+    public void downloadBitmap(final String url) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    bitmap = Picasso.with(CalendarActivity.this)
+                            .load(url)
+                            .get();
+                    File dir = new File(App.sContext.getExternalCacheDir().getAbsolutePath());
+                    if (dir.exists()) {
+                        dir.mkdir();
+                    }
+                    File file = new File(App.sContext.getExternalCacheDir().getAbsolutePath() + "/calendar.jpg");
+                    Logger.d(App.sContext.getCacheDir().getAbsolutePath());
+                    if (!file.exists()) {
+                        file.createNewFile();
+                    }
+                    FileOutputStream ostream = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, ostream);
+                    ostream.flush();
+                    ostream.close();
+                    Logger.d("create file" + file.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
 
     //保存 calendar 的相关信息
     private void saveCalendarData(CalendarData calendarData) {
@@ -107,4 +171,13 @@ public class CalendarActivity extends ToolbarActivity {
         sp.saveLong(PreferenceUtil.CALENDAR_UPDATE, lastTime);
         sp.saveString(PreferenceUtil.CALENDAR_ADDRESS, picUrl);
     }
+
+    public void getImgSize(String size) {
+        int index = size.indexOf("x");
+        String widthStr = size.substring(index + 1, size.length());
+        imgWidth = Integer.valueOf(widthStr);
+        String heightStr = size.substring(0, index);
+        imgHeight = Integer.valueOf(heightStr);
+    }
+
 }

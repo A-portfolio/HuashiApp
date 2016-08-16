@@ -1,19 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:fresco="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-    <include layout="@layout/view_toolbar"/>
+    <include android:id="@+id/view_toolbar"
+             layout="@layout/view_toolbar"/>
 
-    <ScrollView android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/view_toolbar">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/drawee"
+        <ImageView
+            android:id="@+id/img_calendar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"/>
 
     </ScrollView>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/img_empty"
+        android:layout_width="@dimen/empty_img_height"
+        android:layout_height="@dimen/empty_img_height"
+        android:layout_below="@+id/view_toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/empty_img_marginTop"
+        android:scaleType="fitXY"
+        android:visibility="gone"
+        android:src="@drawable/img_empty"/>
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_empty"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"
+        android:text="网络异常"/>
+
+</RelativeLayout>
