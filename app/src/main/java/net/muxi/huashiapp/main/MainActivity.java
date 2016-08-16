@@ -31,7 +31,6 @@ import net.muxi.huashiapp.common.util.DownloadUtils;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
-import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.util.ZhugeUtils;
 import net.muxi.huashiapp.electricity.ElectricityActivity;
 import net.muxi.huashiapp.electricity.ElectricityDetailActivity;
@@ -161,7 +160,6 @@ public class MainActivity extends ToolbarActivity {
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
-                            ToastUtil.showShort("该宿舍不存在,请");
                         }
 
                         @Override

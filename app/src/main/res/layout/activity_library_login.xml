@@ -121,7 +121,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
             android:elevation="24dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/shape_btn"
             android:text="进入我的图书馆"
             android:textColor="@color/colorWhite"/>
 

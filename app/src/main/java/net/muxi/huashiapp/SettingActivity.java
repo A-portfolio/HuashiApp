@@ -80,6 +80,7 @@ public class SettingActivity extends ToolbarActivity {
                 Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
                 App.clearLibUser();
                 App.clearUser();
+                sp.clearAllData();
                 startActivity(intent);
                 ToastUtil.showShort("注销成功");
                 SettingActivity.this.finish();

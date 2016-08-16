@@ -70,10 +70,10 @@ public class SuggestionActivity extends ToolbarActivity {
                if (NetStatus.isConnected()) {
                    ZhugeUtils.sendEvent("意见提交",mEtSuggestion.getText().toString());
                    ToastUtil.showShort("提交成功");
+                   SuggestionActivity.this.finish();
                }else {
                    ToastUtil.showShort(getString(R.string.tip_check_net));
                }
-               finish();
            }
        });
     }
