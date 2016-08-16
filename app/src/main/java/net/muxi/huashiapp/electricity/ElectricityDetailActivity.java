@@ -100,7 +100,7 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
                             ElectricityDetailActivity.this.finish();
                         }
                         if (response.code() == 503){
-                            ToastUtil.showShort(getString(R.string.tip_err_server));
+                            ToastUtil.showShort(getString(R.string.tip_school_server_error));
                         }
                         ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(response.body());
                     }

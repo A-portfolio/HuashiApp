@@ -3,7 +3,6 @@ package net.muxi.huashiapp;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,17 +32,15 @@ import rx.schedulers.Schedulers;
  * Created by ybao on 16/7/24.
  */
 public class CalendarActivity extends ToolbarActivity {
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.appbar_layout)
-    AppBarLayout mAppbarLayout;
     @BindView(R.id.img_calendar)
     ImageView mImgCalendar;
     @BindView(R.id.img_empty)
     ImageView mImgEmpty;
     @BindView(R.id.tv_empty)
     TextView mTvEmpty;
+
 
 //    private PhotoViewAttacher mAttacher;
 

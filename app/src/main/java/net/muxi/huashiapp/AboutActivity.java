@@ -44,12 +44,9 @@ public class AboutActivity extends ToolbarActivity {
     @BindView(R.id.img_ccnubox)
     ImageView mImgCcnubox;
 
-    @BindView(R.id.tv_muxi)
-    TextView mTvMuxi;
-    @BindView(R.id.tv_muxi_link)
-    TextView mTvMuxiLink;
-    @BindView(R.id.tv_versionname)
-    TextView mTvVersionname;
+    private TextView mTvMuxi;
+    private TextView mTvMuxiLink;
+    private TextView mTvVersionname;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +59,9 @@ public class AboutActivity extends ToolbarActivity {
 
 
     public void init() {
+        mTvMuxiLink = (TextView) findViewById(R.id.tv_muxi_link);
+        mTvMuxi = (TextView) findViewById(R.id.tv_muxi);
+        mTvVersionname = (TextView) findViewById(R.id.tv_versionname);
         setSupportActionBar(mToolbar);
         mToolbar.setTitle("关于");
         mTvVersionname.setText(BuildConfig.VERSION_NAME);

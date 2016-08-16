@@ -36,32 +36,33 @@ public class App extends Application {
         super.onCreate();
 //        LeakCanary.install(this);
         sContext = getApplicationContext();
-// TODO: 16/8/6 andfix turn on 
-        try {
-            mPatchManager = new PatchManager(this);
-            mPatchManager.init(BuildConfig.VERSION_NAME);
-            mPatchManager.loadPatch();
-            Logger.d("andfix load patch");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        sp = new PreferenceUtil();
-
-        if (!sp.getString(PreferenceUtil.LAST_APP_VERSION,"1.0").equals(BuildConfig.VERSION_NAME)){
-            mPatchManager.removeAllPatch();
-            sp.saveString(PreferenceUtil.LAST_APP_VERSION,BuildConfig.VERSION_NAME);
-        }
-        try {
-            mPatchManager.addPatch(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
-            Logger.d(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
-        } catch (Exception e) {
-            Logger.d("andfix not load");
-            e.printStackTrace();
-        }
-        
-        Fresco.initialize(this);
 
         CrashReport.initCrashReport(getApplicationContext(), "900043675", true);
+        Fresco.initialize(this);
+        sp = new PreferenceUtil();
+// TODO: 16/8/6 andfix turn on
+//        try {
+//            mPatchManager = new PatchManager(this);
+//            mPatchManager.init(BuildConfig.VERSION_NAME);
+//            mPatchManager.loadPatch();
+//            Logger.d("andfix load patch");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        if (!sp.getString(PreferenceUtil.LAST_APP_VERSION,"1.0").equals(BuildConfig.VERSION_NAME)){
+//            mPatchManager.removeAllPatch();
+//            sp.saveString(PreferenceUtil.LAST_APP_VERSION,BuildConfig.VERSION_NAME);
+//        }
+//        try {
+//            mPatchManager.addPatch(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
+//            Logger.d(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
+//        } catch (Exception e) {
+//            Logger.d("andfix not load");
+//            e.printStackTrace();
+//        }
+        
+
 //        ZhugeSDK.getInstance().openDebug();
 //        //必须在init之前调用
 //        //禁止收集用户手机号码默认为收集

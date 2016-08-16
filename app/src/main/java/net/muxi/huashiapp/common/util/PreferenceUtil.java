@@ -101,5 +101,12 @@ public class PreferenceUtil {
         return mSharedPreferences.getInt(key,def);
     }
 
+    /**
+     * 清楚所有的数据,在注销时使用
+     */
+    public void clearAllData(){
+        PreferenceUtil sp = new PreferenceUtil();
+        sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
+    }
 
 }

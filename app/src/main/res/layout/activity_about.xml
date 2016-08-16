@@ -1,47 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/root_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <include android:id="@+id/view_toolbar"
              layout="@layout/view_toolbar"/>
 
-
-    <!--<android.support.v7.widget.CardView-->
-    <!--android:id="@+id/view"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="96dp"-->
-    <!--android:layout_below="@+id/view_toolbar"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:background="@drawable/frame_pressed"-->
-    <!--android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
-    <!--android:layout_marginRight="@dimen/activity_horizontal_margin"-->
-    <!--android:layout_marginTop="@dimen/activity_vertical_margin"-->
-    <!--android:clipToPadding="false">-->
-
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="70dp"
-                  android:layout_below="@+id/view_toolbar"
-                  android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                  android:layout_marginRight="@dimen/activity_horizontal_margin"
-                  android:layout_marginTop="@dimen/activity_vertical_margin"
-                  android:background="@drawable/white_frame_normal"
-                  android:orientation="vertical">
-
-        <!--<TextView-->
-            <!--android:id="@+id/btn_info"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="48dp"-->
-            <!--android:drawableLeft="@drawable/ic_information"-->
-            <!--android:drawablePadding="16dp"-->
-            <!--android:drawableRight="@drawable/ic_black_chevron_right"-->
-            <!--android:gravity="left|center_vertical"-->
-            <!--android:paddingLeft="16dp"-->
-            <!--android:paddingRight="24dp"-->
-            <!--android:text="功能介绍"/>-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@+id/view_toolbar"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@drawable/white_frame_normal"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/btn_suggestion"
@@ -56,8 +33,6 @@
             android:text="意见反馈"/>
 
     </LinearLayout>
-    <!--</android.support.v7.widget.CardView>-->
-
 
     <ImageView
         android:id="@+id/img_ccnubox"
@@ -76,10 +51,6 @@
         android:textColor="@color/textColorGrey"
         android:textSize="@dimen/medium_size"
         tools:text="1.0"/>
-
-
-
-
 
     <TextView
         android:id="@+id/tv_muxi"
@@ -102,8 +73,5 @@
         android:autoLink="web"
         android:text="muxistudio.com"
         android:textColor="@color/colorPrimary"/>
-
-
-
 
 </RelativeLayout>

@@ -42,6 +42,7 @@
     <string name="tip_lib_write_keyword">输入书名作者</string>
     <string name="tip_net_error">网络异常</string>
     <string name="tip_logining">登录中...</string>
+    <string name="tip_school_server_error">学校服务器异常,请稍后再试</string>
     <!--library-->
     <string name="lib_search_tip">请输入要搜索的图书或作者</string>
     <string name="lib_mybook_overdue">过期</string>
