@@ -21,6 +21,7 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.service.DownloadService;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
+import net.muxi.huashiapp.common.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,8 +42,6 @@ public class AboutActivity extends ToolbarActivity {
     TextView mTvVersionname;
     @BindView(R.id.tv_muxi_link)
     TextView mTvMuxiLink;
-    @BindView(R.id.btn_info)
-    TextView mBtnInfo;
     @BindView(R.id.btn_suggestion)
     TextView mBtnSuggestion;
 
@@ -57,27 +56,25 @@ public class AboutActivity extends ToolbarActivity {
 
     public void init() {
         setSupportActionBar(mToolbar);
-        mToolbar.setTitle("关于我们");
+        mToolbar.setTitle("关于");
         mTvVersionname.setText(BuildConfig.VERSION_NAME);
         mTvMuxiLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + mTvMuxiLink.getText().toString()));
+                ZhugeUtils.sendEvent("打开木犀官网", "打开木犀官网");
                 startActivity(browserIntent);
             }
         });
     }
 
 
-    @OnClick({R.id.btn_info, R.id.btn_suggestion})
+    @OnClick({R.id.btn_suggestion})
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
-            case R.id.btn_info:
-                intent = new Intent(AboutActivity.this, InfoActivity.class);
-                startActivity(intent);
-                break;
             case R.id.btn_suggestion:
+                ZhugeUtils.sendEvent("点击意见反馈", "点击意见反馈");
                 intent = new Intent(AboutActivity.this, SuggestionActivity.class);
                 startActivity(intent);
                 break;
@@ -152,7 +149,7 @@ public class AboutActivity extends ToolbarActivity {
                             }
                         }
                     });
-        }else {
+        } else {
             final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
             materialDialog.setTitle(getString(R.string.title_not_have_to_update));
             materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));

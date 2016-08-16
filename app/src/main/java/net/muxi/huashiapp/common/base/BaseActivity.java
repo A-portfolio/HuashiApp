@@ -9,7 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.zhuge.analysis.stat.ZhugeSDK;
+
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.util.Logger;
 
 /**
  * Created by ybao on 16/4/19.
@@ -24,10 +27,11 @@ public class BaseActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             mProgressDialog = new ProgressDialog(this, R.style.ThemeHoloLightDialogAlert);
         }else {
             mProgressDialog = new ProgressDialog(this);
+            Logger.d("lollipop");
         }
         mActionBar = getSupportActionBar();
         if (mActionBar != null) {
@@ -79,14 +83,14 @@ public class BaseActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
         //初始化分析跟踪
-//        ZhugeSDK.getInstance().init(getApplicationContext());
+        ZhugeSDK.getInstance().init(getApplicationContext());
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        ZhugeSDK.getInstance().flush(getApplicationContext());
+        ZhugeSDK.getInstance().flush(getApplicationContext());
     }
 
 

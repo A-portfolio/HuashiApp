@@ -22,6 +22,7 @@ public class DataBase extends SQLiteOpenHelper{
     public static final String TABLE_COURSE = "course";
     public static final String TABLE_BANNER = "banner";
     public static final String TABLE_APARTMENT = "apartment";
+    public static final String TABLE_LIB = "lib";
 
     public static final String KEY_ID = "id";
 
@@ -52,6 +53,13 @@ public class DataBase extends SQLiteOpenHelper{
     public static final String KEY_TELE = "tele";
     public static final String KEY_APART_PLACE = "place";
 
+    //library key
+    public static final String KEY_BOOK_NAME = "book_name";
+    public static final String KEY_AUTHOR = "author";
+    public static final String KEY_BID = "bid";
+    public static final String KEY_INTRO = "book_intro";
+    public static final String KEY_BOOK_ID = "book_id";
+    public static final String KEY_SEARCH = "search";
 
     public DataBase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -101,6 +109,16 @@ public class DataBase extends SQLiteOpenHelper{
                 KEY_APART_PLACE + " TEXT); ";
         db.execSQL(createApartmentTable);
 
+//        String createLibTable = "create table if not exists " + TABLE_LIB +
+//                " ( " + KEY_ID + " integer primary key autoincrement, " +
+//                 KEY_BOOK_NAME + " text, " +
+//                KEY_SEARCH + " text, " +
+//                KEY_AUTHOR + " text, " +
+//                KEY_BID + " text, " +
+//                KEY_INTRO + " text, " +
+//                KEY_BOOK_ID + " text);";
+//        db.execSQL(createLibTable);
+
     }
 
 
@@ -110,10 +128,12 @@ public class DataBase extends SQLiteOpenHelper{
         String dropCourse = " DROP TABLE IF EXISTS " + TABLE_COURSE;
         String dropBanner = "DROP TABLE IF EXISTS " + TABLE_BANNER;
         String dropApart = " DROP TABLE IF EXISTS " + TABLE_APARTMENT;
+//        String dropLib = "DROP TABLE IF EXISTS " + TABLE_LIB;
         db.execSQL(dropSearchHistory);
         db.execSQL(dropCourse);
         db.execSQL(dropBanner);
         db.execSQL(dropApart);
+//        db.execSQL(dropLib);
     }
 }
 

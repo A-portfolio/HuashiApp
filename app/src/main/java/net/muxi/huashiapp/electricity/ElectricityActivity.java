@@ -12,6 +12,7 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.common.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,26 +39,32 @@ public class ElectricityActivity extends ToolbarActivity {
 
     //西区对应的建筑
     private static final String[][] childStrings1 = {
-            {"西区", "东区", "元宝山", "南湖"},
+            {"西区", "东区", "元宝山", "南湖","国交"},
             {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋"}
     };
 
     //东区对应的建筑
     private static final String[][] childStrings2 = {
-            {"西区", "东区", "元宝山", "南湖"},
+            {"西区", "东区", "元宝山", "南湖","国交"},
             {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋", "9栋", "10栋", "11栋", "12栋", "13栋西", "13栋东", "14栋", "15栋西", "15栋东", "16栋", "附1栋"}
     };
 
     //元宝山对应的建筑
     private static final String[][] childStrings3 = {
-            {"西区", "东区", "元宝山", "南湖"},
+            {"西区", "东区", "元宝山", "南湖","国交"},
             {"1栋", "2栋", "3栋", "4栋", "5栋"}
     };
 
     //南湖对应的建筑
     private static final String[][] childStrings4 = {
-            {"西区", "东区", "元宝山", "南湖"},
+            {"西区", "东区", "元宝山", "南湖","国交"},
             {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋", "9栋", "10栋", "11栋", "12栋", "13栋"}
+    };
+
+    //国交对应的建筑
+    private static final String[][] childStrings5 = {
+            {"西区", "东区", "元宝山", "南湖","国交"},
+            {"3栋", "4栋", "5栋", "6栋"}
     };
 
     //查询参数
@@ -102,6 +109,9 @@ public class ElectricityActivity extends ToolbarActivity {
                         case 3:
                             mChildString = childStrings4;
                             break;
+                        case 4:
+                            mChildString = childStrings5;
+                            break;
                     }
                     mGroupString[0] = mChildString[0][rbPosition];
                     mGroupString[1] = groupString[1];
@@ -129,6 +139,7 @@ public class ElectricityActivity extends ToolbarActivity {
             Intent intent = new Intent(ElectricityActivity.this, ElectricityDetailActivity.class);
             intent.putExtra("query", mQuery);
             startActivity(intent);
+            ZhugeUtils.sendEvent("查询电费","查询电费");
             this.finish();
         } else {
             ToastUtil.showShort("请先完善信息");

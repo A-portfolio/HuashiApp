@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="图书馆消息提醒"
+                android:text="图书消息提醒"
                 android:textSize="@dimen/medium_size"/>
 
             <android.support.v7.widget.SwitchCompat
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="成绩提醒"
+                android:text="成绩消息提醒"
                 android:textSize="@dimen/medium_size"/>
 
             <android.support.v7.widget.SwitchCompat

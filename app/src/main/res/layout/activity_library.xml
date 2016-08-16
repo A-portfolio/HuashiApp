@@ -2,31 +2,44 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/img_empty"
+        android:layout_width="@dimen/empty_img_height"
+        android:layout_height="@dimen/empty_img_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="88dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_empty"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="192dp"
+        android:visibility="gone"
+        tools:text="网络异常"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:visibility="visible">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/toolbar_height"
-            android:background="@color/dividerGrey"/>
+            android:nestedScrollingEnabled="false"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:text="没有更多书籍信息"
-            android:textColor="@color/textColorGrey"/>
-
-    </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -36,19 +49,16 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/Theme.AppCompat.Light"/>
 
-    <net.muxi.huashiapp.library.MySearchView
-        android:id="@+id/searchview"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="@dimen/library_search_view_margin"
-        android:layout_marginRight="@dimen/library_search_view_margin"
-        android:layout_marginTop="@dimen/library_search_view_margin"
-        android:layout_height="match_parent"/>
-
     <FrameLayout
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </FrameLayout>
+
+    <net.muxi.huashiapp.library.MySearchView
+        android:id="@+id/searchview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

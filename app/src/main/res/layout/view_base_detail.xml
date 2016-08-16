@@ -15,8 +15,8 @@
         <net.muxi.huashiapp.common.widget.ContentLayout
             android:id="@+id/detail_content_layout"
             android:layout_width="match_parent"
-            android:minHeight="640dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:minHeight="600dp">
 
         </net.muxi.huashiapp.common.widget.ContentLayout>
 

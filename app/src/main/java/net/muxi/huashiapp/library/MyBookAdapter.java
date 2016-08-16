@@ -2,12 +2,14 @@ package net.muxi.huashiapp.library;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.PersonalBook;
 
@@ -34,7 +36,7 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (Integer.valueOf(mPersonalBooks.get(position).getTime()) < 0) {
-            holder.mTvState.setText(mContext.getResources().getString(R.string.library_mybook_overdue));
+            holder.mTvState.setText(mContext.getResources().getString(R.string.lib_mybook_overdue));
             holder.mTvState.setTextColor(mContext.getResources().getColor(R.color.state_warn));
             holder.mTvDay.setVisibility(View.GONE);
             holder.mTvDeadline.setTextColor(mContext.getResources().getColor(R.color.state_warn));
@@ -43,9 +45,12 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
             holder.mTvState.setTextColor(mContext.getResources().getColor(R.color.state_normal));
             holder.mTvDeadline.setTextColor(mContext.getResources().getColor(R.color.state_normal));
         }
-        holder.mTvBook.setText(mPersonalBooks.get(position).getBook());
-        holder.mTvAuthor.setText(mPersonalBooks.get(position).getAuthor());
-        holder.mTvBorrowDate.setText(mPersonalBooks.get(position).getItime());
+        String book = getBookStr(App.sContext.getString(R.string.lib_book_name),mPersonalBooks.get(position).getBook());
+        holder.mTvBook.setText(Html.fromHtml(book));
+        String author = getBookStr(App.sContext.getString(R.string.lib_author),mPersonalBooks.get(position).getAuthor());
+        holder.mTvAuthor.setText(Html.fromHtml(author));
+        String itime = getBookStr(App.sContext.getString(R.string.lib_itime),mPersonalBooks.get(position).getItime());
+        holder.mTvBorrowDate.setText(Html.fromHtml(itime));
         holder.mTvDeadline.setTextSize(18);
         holder.mTvDeadline.setText(mPersonalBooks.get(position).getOtime());
     }
@@ -70,18 +75,12 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
         TextView mTvDay;
         @BindView(R.id.state_layout)
         LinearLayout mStateLayout;
-        @BindView(R.id.tv_book_title)
-        TextView mTvBookTitle;
         @BindView(R.id.tv_book)
         TextView mTvBook;
         @BindView(R.id.tv_author)
         TextView mTvAuthor;
-        @BindView(R.id.tv_title_borrow)
-        TextView mTvTitleBorrow;
         @BindView(R.id.tv_borrow_date)
         TextView mTvBorrowDate;
-        @BindView(R.id.tv_deadline_title)
-        TextView mTvDeadlineTitle;
         @BindView(R.id.tv_deadline)
         TextView mTvDeadline;
 
@@ -89,5 +88,11 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    //获取标题加粗的字符串
+    public String getBookStr(String s1, String s2) {
+        s1 = "<b>" + s1 + "</b>";
+        return s1 + s2;
     }
 }
