@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
@@ -48,15 +48,13 @@ public class NewsActivity extends ToolbarActivity {
     RecyclerView mNewsRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.root_layout)
-    RelativeLayout mRootLayout;
     @BindView(R.id.content_layout)
     FrameLayout mContentLayout;
     @BindView(R.id.img_empty)
     ImageButton mImgEmpty;
     @BindView(R.id.tv_error)
     TextView mTvError;
-    private FrameLayout mFrameLayout;
+
 
     public static final int FRAGMENT_HEIGHT =
             DimensUtil.getScreenHeight() - DimensUtil.getStatusBarHeight() - DimensUtil.dp2px(48);
@@ -66,11 +64,14 @@ public class NewsActivity extends ToolbarActivity {
     public static final int DURATION_SCALE = 250;
     public static final int DURATION_ALPH = 180;
 
+
     private View animView;
 
     private View mShadowView;
 
     private BaseDetailLayout mBaseDetailLayout;
+
+    private FrameLayout mFrameLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,6 +120,7 @@ public class NewsActivity extends ToolbarActivity {
         setSupportActionBar(mToolbar);
         mToolbar.setTitle("通知公告");
         mNewsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mFrameLayout = (FrameLayout) findViewById(android.R.id.content);
         mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
@@ -204,9 +206,11 @@ public class NewsActivity extends ToolbarActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 viewHeight
         );
+
         params.setMargins(0, viewTop + DimensUtil.getActionbarHeight(), 0, 0);
         mFrameLayout.addView(animView, params);
         animView.setBackgroundColor(Color.WHITE);
+
 
         final ScaleAnimation scaleAnimation = new ScaleAnimation(
                 1,

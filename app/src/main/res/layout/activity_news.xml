@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root_layout"
+    android:id="@+id/content_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <include android:id="@+id/view_toolbar"
              layout="@layout/view_toolbar"/>
@@ -43,11 +47,6 @@
         android:text="@string/tip_net_error"
         android:visibility="gone"/>
 
-    <FrameLayout
-        android:id="@+id/content_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    </RelativeLayout>
 
-    </FrameLayout>
-
-</RelativeLayout>
+</FrameLayout>
