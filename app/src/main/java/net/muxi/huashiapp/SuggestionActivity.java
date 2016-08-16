@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.util.MailUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,30 +63,12 @@ public class SuggestionActivity extends ToolbarActivity {
        mBtnSubmit.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               sendEmail("15927448708@163.com","huashiapp",mEtSuggestion.getText().toString());
+//               sendEmail("15927448708@163.com","huashiapp",mEtSuggestion.getText().toString());
            }
        });
     }
 
-    public void sendEmail(final String toMail, final String title, final String body){
-        new Thread(new Runnable() {
-            public void run() {
-                MailUtils emailUtil = new MailUtils();
-                try {
 
-                    String account = "360322537@qq.com";
-                    String password = "987654321feng";
-
-                    emailUtil.sendMail(toMail, account, "smtp.mxhichina.com",
-                            account, password, title, body);
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
 
     //显示当前的字数
     public void setWordNum(TextView tv, String s) {
