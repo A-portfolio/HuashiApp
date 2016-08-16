@@ -7,14 +7,24 @@ public class CalendarData {
 
 
     /**
-     * update : 14692856810356602
-     * img : http://oao7x1n3m.bkt.clouddn.com/Calendar-Test
-     * filename : Calendar-Test
+     * size : 3722x1440
+     * update : 14712725420196685
+     * img : http://oao7x1n3m.bkt.clouddn.com/Calendar-New.jpg
+     * filename : Calendar-New.jpg
      */
 
+    private String size;
     private long update;
     private String img;
     private String filename;
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
 
     public long getUpdate() {
         return update;

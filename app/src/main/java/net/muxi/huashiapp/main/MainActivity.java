@@ -60,7 +60,7 @@ public class MainActivity extends ToolbarActivity {
     private int[] mpics = {R.drawable.ic_main_curschedule, R.drawable.ic_main_idcard,
             R.drawable.ic_main_mark, R.drawable.ic_main_power_rate,
             R.drawable.ic_main_school_calendar, R.drawable.ic_main_workschedule,
-            R.drawable.ic_main_library, R.drawable.ic_main_library};
+            R.drawable.ic_main_library, R.drawable.ic_xueer};
 
     private String[] mdesc = {"课程表", "学生卡", "成绩查询", "电费查询", "校历查询", "部门信息", "图书馆", "学而",};
     private MainAdapter mAdapter;
@@ -75,7 +75,6 @@ public class MainActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
 
         //检查本地是否有补丁包
         try {
@@ -291,9 +290,6 @@ public class MainActivity extends ToolbarActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (!NetStatus.isConnected()){
-            ToastUtil.showLong("请检查网络连接,未联网时仅支持部分功能");
-        }
     }
 
     public void updateRecyclerView(List<BannerData> bannerDatas) {

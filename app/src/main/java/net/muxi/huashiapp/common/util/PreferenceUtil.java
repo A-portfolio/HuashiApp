@@ -31,6 +31,8 @@ public class PreferenceUtil {
     public static final String ELE_QUERY_STRING = "ele_query";
     //更新前的 App 版本
     public static final String LAST_APP_VERSION = "last_app_version";
+    //校历的尺寸
+    public static final String CALENDAR_SIZE = "calendar_size";
 
     public PreferenceUtil() {
         Context context = App.getContext();

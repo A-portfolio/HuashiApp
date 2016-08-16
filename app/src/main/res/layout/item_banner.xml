@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="80dp"
               android:background="@color/colorWhite"
-              android:elevation="6dp"
+              android:elevation="4dp"
               android:orientation="vertical">
 
     <com.bigkoo.convenientbanner.ConvenientBanner

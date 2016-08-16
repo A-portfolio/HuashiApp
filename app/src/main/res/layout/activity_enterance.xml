@@ -6,19 +6,11 @@
     android:background="@drawable/bg_enterance"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textColor="@color/colorWhite"
-            android:textSize="36sp"/>
-
-    </LinearLayout>
+    <ImageView
+        android:layout_width="144dp"
+        android:layout_height="160dp"
+        android:layout_centerInParent="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/pic_cbox_white"/>
 
 </RelativeLayout>
