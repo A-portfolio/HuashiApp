@@ -49,7 +49,7 @@ public class NewsActivity extends ToolbarActivity {
     SimpleDraweeView mDrawee;
 
 
-    private FrameLayout mFrameLayout;
+    private FrameLayout mFrameLayout ;
 
     public static final int FRAGMENT_HEIGHT =
             DimensUtil.getScreenHeight() - DimensUtil.getStatusBarHeight() - DimensUtil.dp2px(48);
@@ -63,7 +63,7 @@ public class NewsActivity extends ToolbarActivity {
 
     private View mShadowView;
 
-    private BaseDetailLayout mBaseDetailLayout;
+    private BaseDetailLayout mBaseDetailLayout ;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
