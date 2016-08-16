@@ -73,6 +73,7 @@ public class SuggestionActivity extends ToolbarActivity {
                }else {
                    ToastUtil.showShort(getString(R.string.tip_check_net));
                }
+               finish();
            }
        });
     }
