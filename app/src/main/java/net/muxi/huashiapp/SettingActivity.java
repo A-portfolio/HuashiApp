@@ -78,12 +78,12 @@ public class SettingActivity extends ToolbarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 App.clearLibUser();
                 App.clearUser();
                 sp.clearAllData();
                 startActivity(intent);
                 ToastUtil.showShort("注销成功");
-                SettingActivity.this.finish();
             }
         });
     }

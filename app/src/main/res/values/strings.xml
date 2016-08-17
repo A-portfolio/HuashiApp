@@ -18,13 +18,13 @@
     <string name="action_set_cur_week">设置当前周</string>
     <string name="action_check_update">检查更新</string>
 
-    <string name="notify_title_score">出了门成绩</string>
-    <string name="notify_content_score">详情请点击</string>
-    <string name="notify_title_course">明天记得上这些课</string>
+    <string name="notify_title_score">有新的课程成绩</string>
+    <string name="notify_content_score">点击查看详情</string>
+    <string name="notify_title_course">明天有添加的课程要上</string>
     <string name="notify_content_course">点击查看课程</string>
-    <string name="notify_title_card">你的学生卡余额不足</string>
+    <string name="notify_title_card">您的校园卡余额不足</string>
     <string name="notify_content_card">点击查看余额</string>
-    <string name="notify_title_lib">你有图书快到期</string>
+    <string name="notify_title_lib">你有图书快到期了</string>
     <string name="notify_content_lib">点击查看详情</string>
 
     <string name="tip_id_text">学号</string>
