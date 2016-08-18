@@ -80,4 +80,7 @@ dependencies {
     compile files('/Users/ybao/AndroidStudioProjects/HuashiApp/libs/jg_filter_sdk_1.1.jar')
     compile files('/Users/ybao/AndroidStudioProjects/HuashiApp/libs/wup-1.0.0.E-SNAPSHOT.jar')
     compile files('/Users/ybao/AndroidStudioProjects/HuashiApp/libs/Xg_sdk_v2.46_20160602_1638.jar')
+    compile files('libs/android-support-v4.jar')
+    compile files('libs/jg_filter_sdk_1.1 上午11.48.50.jar')
+    compile files('libs/tbs_sdk_thirdapp_v2.1.2.1096_36511_withdownload_obfs_20160727_105857.jar')
 }
