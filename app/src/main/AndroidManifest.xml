@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <!--获取访问用户账户名的权限用以精准匹配标签(可选)-->
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_LOGS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
@@ -19,15 +19,10 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-        <meta-data
-            android:name="ZHUGE_APPKEY" android:value="9197e7dd1e5c40cab4556a8b7c3145d3"/>
-        <meta-data
-            android:name="ZHUGE_CHANNEL" android:value="校园通"/>
-
-
-        <activity android:name=".EnteranceActivity"
-                  android:launchMode="singleTask"
-                  android:windowSoftInputMode="adjustResize">
+        <activity
+            android:name=".EnteranceActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -37,8 +32,8 @@
         </activity>
 
         <activity android:name=".login.LoginActivity"
-                  android:windowSoftInputMode="adjustResize"
-                  android:launchMode="singleTask"/>
+                  android:launchMode="singleTask"
+                  android:windowSoftInputMode="adjustResize"/>
 
 
         <activity android:name=".main.MainActivity"
@@ -58,7 +53,6 @@
                   android:launchMode="singleTask"/>
 
 
-
         <activity android:name=".news.NewsActivity"
                   android:launchMode="singleTask"/>
 
@@ -70,7 +64,7 @@
 
         <activity android:name=".library.LibraryLoginActivity"
                   android:launchMode="singleTask"
-                  android:windowSoftInputMode="adjustNothing"/>
+                  android:windowSoftInputMode="adjustPan|stateVisible"/>
 
         <activity android:name=".library.MineActivity"
                   android:launchMode="singleTask"/>
@@ -79,7 +73,11 @@
                   android:launchMode="singleTask"/>
 
         <activity android:name=".webview.WebViewActivity"
-                  android:launchMode="singleTask"/>
+                  android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
+            </intent-filter>
+        </activity>
 
         <activity android:name=".apartment.ApartmentActivity"
                   android:launchMode="singleTask"/>
@@ -117,6 +115,35 @@
 
         <service android:name=".common.service.DownloadService"/>
 
+        //第三方开放平台
+
+        <meta-data
+            android:name="ZHUGE_APPKEY" android:value="9197e7dd1e5c40cab4556a8b7c3145d3"/>
+        <meta-data
+            android:name="ZHUGE_CHANNEL" android:value="校园通"/>
+
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="tencentg4LsthUz7j77LBYQ"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.tencent.connect.common.AssistActivity"
+                  android:configChanges="orientation|keyboardHidden|screenSize"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        />
+
+        <activity
+            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false" android:windowSoftInputMode="adjustResize">
+        </activity>
 
     </application>
 

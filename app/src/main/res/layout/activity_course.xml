@@ -114,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/icon_remindclass"
                 android:layout_centerVertical="true"
-                android:text="勾选课程提醒"
+                android:text="课程提醒"
                 android:drawablePadding="@dimen/course_add_drawable_padding"
                 android:textSize="@dimen/schedule_add_course_size"/>
 

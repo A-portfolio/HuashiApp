@@ -37,4 +37,9 @@ public class AppConstants {
     public static final String CACHE_DIR = App.getContext().getExternalCacheDir().getAbsolutePath();
     public static final String APATCH_NAME = "out.apatch";
     public static final String APATCH_URL = "http://7xtask.com2.z0.glb.clouddn.com/out.apatch";
+
+    public static final String QQ_KEY = "1105548375";
+    public static final String WEIBO_KEY = "4167359117";
+    public static final String WEIBO_INIT_TEXT = "(分享自华师匣子)";
+    public static final String APP_DOWNLOAD_URL = "http://fir.im/3lbx";
 }

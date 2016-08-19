@@ -10,14 +10,15 @@
 
     <ScrollView
         android:layout_width="match_parent"
+        android:id="@+id/scroll_view"
         android:layout_height="match_parent"
         android:layout_below="@+id/view_toolbar">
 
-        <ImageView
-            android:id="@+id/img_calendar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"/>
+        <!--<ImageView-->
+            <!--android:id="@+id/img_calendar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:scaleType="fitXY"/>-->
 
     </ScrollView>
 
