@@ -31,6 +31,8 @@ public class App extends Application {
     private PreferenceUtil sp;
     private PatchManager mPatchManager;
 
+    private Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -78,6 +80,7 @@ public class App extends Application {
         sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, "0"));
         sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
     }
+
 
     public static Context getContext() {
         return sContext;
