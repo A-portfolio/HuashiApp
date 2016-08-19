@@ -22,9 +22,9 @@ public class CampusRetrofit{
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
-                .readTimeout(25,TimeUnit.SECONDS)
-                .connectTimeout(25, TimeUnit.SECONDS)
-                .writeTimeout(25,TimeUnit.SECONDS)
+                .readTimeout(20,TimeUnit.SECONDS)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20,TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()

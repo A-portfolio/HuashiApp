@@ -43,6 +43,8 @@
     <string name="tip_net_error">网络异常</string>
     <string name="tip_logining">登录中...</string>
     <string name="tip_school_server_error">学校服务器异常,请稍后再试</string>
+    <string name="tip_share_success">分享成功</string>
+    <string name="tip_share_fail">分享失败</string>
     <!--library-->
     <string name="lib_search_tip">请输入要搜索的图书或作者</string>
     <string name="lib_mybook_overdue">过期</string>
@@ -53,6 +55,7 @@
     <string name="lib_book_name">书名:</string>
     <string name="lib_author">作者:</string>
     <string name="lib_itime">应还日期:</string>
+    <string name="lib_return_time">归还日期</string>
 
     <!--setting activity key-->
     <string name="pre_schedule">pre_schedule</string>

@@ -1,18 +1,26 @@
 package net.muxi.huashiapp;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.DraweeView;
 import com.squareup.picasso.Picasso;
 
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.common.util.DimensUtil;
+import net.muxi.huashiapp.common.util.FrescoUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
@@ -34,24 +42,23 @@ import rx.schedulers.Schedulers;
 public class CalendarActivity extends ToolbarActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.img_calendar)
-    ImageView mImgCalendar;
+    //    @BindView(R.id.img_calendar)
+//    ImageView mImgCalendar;
     @BindView(R.id.img_empty)
     ImageView mImgEmpty;
     @BindView(R.id.tv_empty)
     TextView mTvEmpty;
+    @BindView(R.id.scroll_view)
+    ScrollView mScrollView;
 
+    RecyclerView
 
-//    private PhotoViewAttacher mAttacher;
+    private DraweeView mDraweeView;
 
     private int imgWidth;
-    private int imgHeight = 400;
+    private int imgHeight;
 
     private Bitmap bitmap;
-
-    private float x, y;
-
-    private boolean isImageShow = false;
 
     //上次距离最近的时间
     private long lastTime;
@@ -69,14 +76,17 @@ public class CalendarActivity extends ToolbarActivity {
         lastTime = sp.getLong(PreferenceUtil.CALENDAR_UPDATE);
         setTitle("校历");
 
+        //如果有本地缓存就从中读取
         if (lastTime != DEFAULT_TIME) {
-            picUrl = sp.getString(PreferenceUtil.CALENDAR_ADDRESS);
-            File file = new File(App.sContext.getExternalCacheDir().getAbsolutePath() + "/calendar.jpg");
-            if (file.exists()) {
-                Picasso.with(this).load(file).into(mImgCalendar);
-                isImageShow = true;
-            } else {
-                isImageShow = false;
+            getImgSize(sp.getString(PreferenceUtil.CALENDAR_SIZE));
+            if (imgWidth != 0) {
+                mDraweeView = new DraweeView(this);
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        (int) ((long) (imgHeight) / (long) (imgWidth) * DimensUtil.getScreenWidth())
+                );
+                mScrollView.addView(mDraweeView, params);
+                mDraweeView.setImageURI(Uri.parse(sp.getString(PreferenceUtil.CALENDAR_ADDRESS)));
             }
         }
         if (NetStatus.isConnected()) {
@@ -115,17 +125,18 @@ public class CalendarActivity extends ToolbarActivity {
 
                     @Override
                     public void onNext(final List<CalendarData> calendarData) {
-                        if (calendarData.get(0).getUpdate() == lastTime) {
-                            if (!isImageShow) {
-                                saveCalendarData(calendarData.get(0));
-                                downloadBitmap(picUrl);
-                                Picasso.with(CalendarActivity.this).load(calendarData.get(0).getImg()).into(mImgCalendar);
-                            }
-                        } else {
+                        if (calendarData.get(0).getUpdate() != lastTime) {
                             saveCalendarData(calendarData.get(0));
-                            downloadBitmap(picUrl);
-                            Logger.d("download image");
-                            Picasso.with(CalendarActivity.this).load(calendarData.get(0).getImg()).into(mImgCalendar);
+                            getImgSize(calendarData.get(0).getSize());
+                            mScrollView.removeAllViews();
+                            mDraweeView = new DraweeView(CalendarActivity.this);
+                            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    (int) ((long) (imgHeight) / (long) (imgWidth) * DimensUtil.getScreenWidth())
+                            );
+                            mScrollView.addView(mDraweeView, params);
+                            mDraweeView.setImageURI(Uri.parse(calendarData.get(0).getImg()));
+                            FrescoUtil.savePicture(picUrl,CalendarActivity.this,"calendar");
                         }
                     }
                 });
@@ -167,6 +178,7 @@ public class CalendarActivity extends ToolbarActivity {
         picUrl = calendarData.getImg();
         sp.saveLong(PreferenceUtil.CALENDAR_UPDATE, lastTime);
         sp.saveString(PreferenceUtil.CALENDAR_ADDRESS, picUrl);
+        sp.saveString(PreferenceUtil.CALENDAR_SIZE, calendarData.getSize());
     }
 
     public void getImgSize(String size) {
