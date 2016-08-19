@@ -76,4 +76,6 @@ dependencies {
     compile files('/Users/ybao/AndroidStudioProjects/HuashiApp/libs/mta-sdk-1.6.2.jar')
     compile files('/Users/ybao/AndroidStudioProjects/HuashiApp/libs/open_sdk_r5756.jar')
     compile files('/Users/ybao/AndroidStudioProjects/HuashiApp/libs/weiboSDKCore_3.1.4.jar')
+    compile files('libs/jg_filter_sdk_1.1 上午11.48.50.jar')
+    compile files('libs/tbs_sdk_thirdapp_v2.1.2.1096_36511_withdownload_obfs_20160727_105857.jar')
 }
