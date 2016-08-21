@@ -3,6 +3,8 @@ package net.muxi.huashiapp.webview;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
@@ -45,6 +52,12 @@ public class WebViewActivity extends ToolbarActivity {
     private String url;
     private String title;
 
+    private static final String APP_ID = "wxf054659decf8f748";
+    private IWXAPI api;
+
+    private String type = "webpage";
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +73,15 @@ public class WebViewActivity extends ToolbarActivity {
         webSettings.setAppCacheEnabled(true);
         mWebview.setWebChromeClient(new BrowserClient());
         mWebview.loadUrl(url);
-    }
+
+        api = WXAPIFactory.createWXAPI(getApplicationContext(), APP_ID, false);
+        api.registerApp(APP_ID);
+            }
+
+
+
+
+
 
 
     public static Intent newIntent(Context context, String url, String title) {
@@ -77,6 +98,26 @@ public class WebViewActivity extends ToolbarActivity {
             case R.id.action_refresh:
                 mWebview.reload();
                 return true;
+
+            case R.id.action_share_wechat:
+                WXWebpageObject webpage = new WXWebpageObject();
+                webpage.webpageUrl = "https://xueer.muxixyz.com/";
+                WXMediaMessage msg = new WXMediaMessage(webpage);
+                msg.title = "学而";
+                msg.description = "就决定是你了";
+                Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
+                Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp,150,150, true);
+                bmp.recycle();
+                msg.setThumbImage(thumbBmp);
+                SendMessageToWX.Req req = new SendMessageToWX.Req();
+                req.transaction = type + System.currentTimeMillis();
+                req.message = msg;
+                req.scene = SendMessageToWX.Req.WXSceneTimeline;
+                api.sendReq(req);
+                break;
+
+
+
             case R.id.action_copy_url:
                 AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
                 break;
