@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.schedule;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -246,7 +247,9 @@ public class ScheduleActivity extends ToolbarActivity {
                 );
                 ShadowView shadowView = new ShadowView(ScheduleActivity.this);
                 shadowView.setLayoutParams(layoutParams);
-                shadowView.setElevation(DimensUtil.dp2px(8));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    shadowView.setElevation(DimensUtil.dp2px(8));
+                }
                 shadowView.setTag("shadow_view");
                 coursesView.setTag("course_view");
                 mRootLayout.addView(shadowView);

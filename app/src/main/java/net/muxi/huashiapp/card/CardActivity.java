@@ -12,7 +12,9 @@ import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.common.util.ToastUtil;
 
 import java.util.List;
 
@@ -47,6 +49,9 @@ public class CardActivity extends ToolbarActivity {
         PreferenceUtil sp = new PreferenceUtil();
         user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
         user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
+        if (!NetStatus.isConnected()){
+            ToastUtil.showShort(getString(R.string.tip_check_net));
+        }
         CampusFactory.getRetrofitService()
                 .getCardBalance(user.getSid(), "90", "0", "20")
                 .observeOn(AndroidSchedulers.mainThread())
@@ -59,7 +64,7 @@ public class CardActivity extends ToolbarActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        ToastUtil.showShort(getString(R.string.tip_school_server_error));
                     }
 
                     @Override

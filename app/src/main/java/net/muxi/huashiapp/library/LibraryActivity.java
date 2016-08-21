@@ -201,7 +201,7 @@ public class LibraryActivity extends ToolbarActivity {
                     public void onError(Throwable e) {
                         e.printStackTrace();
                         mSwipeRefreshLayout.setRefreshing(false);
-                        setImgEmpty(getString(R.string.tip_err_server));
+                        setImgEmpty(getString(R.string.tip_school_server_error));
                     }
 
                     @Override

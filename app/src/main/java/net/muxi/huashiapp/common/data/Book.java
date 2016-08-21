@@ -58,7 +58,16 @@ public class Book {
     public static class BooksBean {
         private String status;
         private String tid;
+        private String date;
         private String room;
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
 
         public String getStatus() {
             return status;

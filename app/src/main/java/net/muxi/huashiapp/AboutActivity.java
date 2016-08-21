@@ -24,9 +24,6 @@ import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.ZhugeUtils;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -36,15 +33,9 @@ import rx.schedulers.Schedulers;
  */
 public class AboutActivity extends ToolbarActivity {
 
-
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.btn_suggestion)
-    TextView mBtnSuggestion;
-    @BindView(R.id.img_ccnubox)
-    ImageView mImgCcnubox;
-
-    private TextView mTvMuxi;
+    private Toolbar mToolbar;
+    private TextView mBtnSuggestion;
+    private ImageView mImgCcnubox;
     private TextView mTvMuxiLink;
     private TextView mTvVersionname;
 
@@ -52,18 +43,18 @@ public class AboutActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        ButterKnife.bind(this);
         init();
 
     }
 
 
     public void init() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mBtnSuggestion = (TextView) findViewById(R.id.btn_suggestion);
+        mImgCcnubox = (ImageView) findViewById(R.id.img_ccnubox);
         mTvMuxiLink = (TextView) findViewById(R.id.tv_muxi_link);
-        mTvMuxi = (TextView) findViewById(R.id.tv_muxi);
         mTvVersionname = (TextView) findViewById(R.id.tv_versionname);
-        setSupportActionBar(mToolbar);
-        mToolbar.setTitle("关于");
+        setTitle("关于");
         mTvVersionname.setText(BuildConfig.VERSION_NAME);
         mTvMuxiLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,20 +64,18 @@ public class AboutActivity extends ToolbarActivity {
                 startActivity(browserIntent);
             }
         });
-    }
 
-
-    @OnClick(R.id.btn_suggestion)
-    public void onClick(View view) {
-        Intent intent;
-        switch (view.getId()) {
-            case R.id.btn_suggestion:
+        mBtnSuggestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 ZhugeUtils.sendEvent("点击意见反馈", "点击意见反馈");
-                intent = new Intent(AboutActivity.this, SuggestionActivity.class);
+                Intent intent = new Intent(AboutActivity.this, SuggestionActivity.class);
                 startActivity(intent);
-                break;
-        }
+            }
+        });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
