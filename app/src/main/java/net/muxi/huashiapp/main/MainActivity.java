@@ -323,7 +323,7 @@ public class MainActivity extends ToolbarActivity {
 
                     case 8:
                         ZhugeUtils.sendEvent("进入学而","进入学而");
-                        intent = WebViewActivity.newIntent(MainActivity.this, "https://xueer.muxixyz.com/", "学而");
+                        intent = WebViewActivity.newIntent(MainActivity.this, "https://xueer.muxixyz.com/", "学而","华师选课经验平台","http://f.hiphotos.baidu.com/image/h%3D200/sign=6f05c5f929738bd4db21b531918a876c/6a600c338744ebf8affdde1bdef9d72a6059a702.jpg");
                         startActivity(intent);
                         break;
 

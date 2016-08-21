@@ -48,6 +48,11 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
         String place = getBookStr(App.sContext.getString(R.string.lib_place),
                 mBook.getBooks().get(position).getRoom());
         holder.mTvPlace.setText(Html.fromHtml(place));
+        if (mBook.getBooks().get(position).getDate() != null){
+            String date = getBookStr(App.sContext.getString(R.string.lib_return_time),
+                    mBook.getBooks().get(position).getDate());
+            holder.mTvDate.setText(Html.fromHtml(date));
+        }
     }
 
     @Override
@@ -61,7 +66,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
         return new ViewHolder(v);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_state)
         TextView mTvState;
@@ -71,6 +76,8 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
         TextView mTvBid;
         @BindView(R.id.tv_place)
         TextView mTvPlace;
+        @BindView(R.id.tv_date)
+        TextView mTvDate;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -83,4 +90,5 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
         s1 = "<b>" + s1 + "</b>";
         return s1 + s2;
     }
+
 }
