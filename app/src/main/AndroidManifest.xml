@@ -15,7 +15,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 
-
+    //微信权限
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 
 
@@ -43,12 +48,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".login.LoginActivity"
+        <activity android:name=".main.MainActivity"
                   android:windowSoftInputMode="adjustResize"
                   android:launchMode="singleTask"/>
 
 
-        <activity android:name=".main.MainActivity"
+        <activity android:name=".login.LoginActivity"
                   android:launchMode="singleTask"/>
 
         <activity android:name=".SettingActivity"
@@ -103,6 +108,10 @@
         <activity android:name=".electricity.ElectricityDetailActivity"/>
 
         <activity android:name=".InfoActivity"/>
+
+        <activity android:name=".wxapi.WXEntryActivity"
+                  android:launchMode="singleInstance"
+                  android:exported="true"/>
 
         <receiver android:name=".common.service.AlarmLiveReceiver">
             <intent-filter>

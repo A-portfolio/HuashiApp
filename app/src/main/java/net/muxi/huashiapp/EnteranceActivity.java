@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.login.LoginActivity;
 import net.muxi.huashiapp.main.MainActivity;
 
 import java.util.concurrent.TimeUnit;
@@ -37,15 +36,9 @@ public class EnteranceActivity extends BaseActivity{
                     @Override
                     public void onNext(Long aLong) {
                         Intent intent;
-                        if (App.sUser.getSid() != null && App.sUser.getSid() != "0"){
                             intent = new Intent(EnteranceActivity.this, MainActivity.class);
                             startActivity(intent);
                             EnteranceActivity.this.finish();
-                        }else {
-                            intent = new Intent(EnteranceActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            EnteranceActivity.this.finish();
-                        }
                     }
                 });
     }

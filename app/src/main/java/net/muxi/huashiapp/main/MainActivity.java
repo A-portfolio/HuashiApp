@@ -78,6 +78,11 @@ public class MainActivity extends ToolbarActivity {
     private Context context;
 
 
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +90,8 @@ public class MainActivity extends ToolbarActivity {
         ButterKnife.bind(this);
 
         initXGPush();
+
+
 
 
 
@@ -111,7 +118,7 @@ public class MainActivity extends ToolbarActivity {
         context = getApplicationContext();
         XGPushConfig.enableDebug(this,true);
         XGPushConfig.getToken(this);
-        XGPushManager.registerPush(context, "mx"
+        XGPushManager.registerPush(context, "users"
                 , new XGIOperateCallback() {
                     @Override
                     public void onSuccess(Object data, int i) {
@@ -126,6 +133,12 @@ public class MainActivity extends ToolbarActivity {
                     }
                 });
     }
+
+
+
+
+
+
 
     private void downloadPatch() {
         CampusFactory.getRetrofitService().getPatch()
