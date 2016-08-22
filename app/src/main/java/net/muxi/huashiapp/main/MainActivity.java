@@ -42,6 +42,7 @@ import net.muxi.huashiapp.electricity.ElectricityActivity;
 import net.muxi.huashiapp.electricity.ElectricityDetailActivity;
 import net.muxi.huashiapp.library.LibraryLoginActivity;
 import net.muxi.huashiapp.library.MineActivity;
+import net.muxi.huashiapp.login.LoginActivity;
 import net.muxi.huashiapp.news.NewsActivity;
 import net.muxi.huashiapp.schedule.ScheduleActivity;
 import net.muxi.huashiapp.score.ScoreActivity;
@@ -275,18 +276,36 @@ public class MainActivity extends ToolbarActivity {
                 Intent intent;
                 switch (position) {
                     case 0:
-                        intent = new Intent(MainActivity.this, ScheduleActivity.class);
-                        startActivity(intent);
-                        break;
+                        if (App.sUser.getSid() != "0") {
+                            intent = new Intent(MainActivity.this, ScheduleActivity.class);
+                            startActivity(intent);
+                            break;
+                        }else {
+                            intent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            break;
+                        }
                     case 1:
-                        ZhugeUtils.sendEvent("学生卡查询","学生卡查询");
-                        intent = new Intent(MainActivity.this, CardActivity.class);
-                        startActivity(intent);
-                        break;
+                        if (App.sUser.getSid() != "0") {
+                            ZhugeUtils.sendEvent("学生卡查询", "学生卡查询");
+                            intent = new Intent(MainActivity.this, CardActivity.class);
+                            startActivity(intent);
+                            break;
+                        }else {
+                            intent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            break;
+                        }
                     case 2:
-                        intent = new Intent(MainActivity.this, ScoreActivity.class);
-                        startActivity(intent);
-                        break;
+                        if (App.sUser.getSid() != "0") {
+                            intent = new Intent(MainActivity.this, ScoreActivity.class);
+                            startActivity(intent);
+                            break;
+                        }else {
+                            intent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            break;
+                        }
                     case 3:
                         PreferenceUtil sp = new PreferenceUtil();
                         String eleQuery = sp.getString(PreferenceUtil.ELE_QUERY_STRING);
