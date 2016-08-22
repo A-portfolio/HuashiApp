@@ -53,14 +53,14 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private static final int WEB_POSITON = 8;
 
     public interface ItemClickListener {
-        void OnItemClick(View view, int position);
+        void onItemClick(View view, int position);
     }
 
     public interface OnBannerItemClickListener {
         void onBannerItemClick(BannerData bannerData);
     }
 
-    public MainAdapter(List<String> pics,List<String> desc, List<BannerData> bannerDatas) {
+    public MainAdapter(List<String> pics, List<String> desc, List<BannerData> bannerDatas) {
         this.mdesc = desc;
         this.mpics = pics;
         mBannerDatas = bannerDatas;
@@ -70,21 +70,21 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
     }
 
-    public void swap(List<String> pics,List<String> desc, List<BannerData> bannerDatas) {
-        mpics = pics;
-        mdesc = desc;
+    public void swapBannerData(List<BannerData> bannerDatas) {
         mBannerDatas.clear();
         mBannerDatas.addAll(bannerDatas);
-//        notifyDataSetChanged();
         imageUrls.clear();
         for (int i = 0; i < mBannerDatas.size(); i++) {
             imageUrls.add(mBannerDatas.get(i).getImg());
         }
-//        notifyItemChanged(6);
         mConvenientBanner.notifyDataSetChanged();
         Logger.d(mConvenientBanner.isTurning() + "");
+    }
+
+    public void swapProduct(List<String> pics, List<String> desc) {
+        mpics = pics;
+        mdesc = desc;
         notifyDataSetChanged();
-//        mConvenientBanner.startTurning(3000);
     }
 
     public boolean isBannerPosition(int position) {
@@ -104,23 +104,27 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof BannerViewHolder) {
             setupBanner(holder);
         } else if (holder instanceof CommonViewHolder) {
             if (position < 6) {
-                ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res://net.muxi.huashiapp/" + mpics.get(position)));
+                ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mpics.get(position)));
                 ((CommonViewHolder) holder).mTextView.setText(mdesc.get(position));
                 ((CommonViewHolder) holder).itemView.setTag(position);
-            }else{
-                ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mpics.get(position - ITEM_BANNER)));
+            } else {
+                if (position >= WEB_POSITON) {
+                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mpics.get(position - ITEM_BANNER)));
+                } else {
+                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mpics.get(position - ITEM_BANNER)));
+                }
                 ((CommonViewHolder) holder).mTextView.setText(mdesc.get(position - ITEM_BANNER));
                 ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
-                if (position >= WEB_POSITON){
-                    ((CommonViewHolder) holder).mItemLayout.setOnClickListener(new View.OnClickListener() {
+                if (position >= WEB_POSITON) {
+                    ((CommonViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            mItemClickListener.onItemClick(v,position);
                         }
                     });
                 }
@@ -156,6 +160,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public int getItemCount() {
+        Logger.d(mdesc.size() + "");
         return mdesc.size() + 1;
     }
 
@@ -189,7 +194,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         @Override
         public void onClick(View v) {
             if (mItemClickListener != null) {
-                mItemClickListener.OnItemClick(itemView, getPosition());
+                mItemClickListener.onItemClick(itemView, getPosition());
             }
         }
     }

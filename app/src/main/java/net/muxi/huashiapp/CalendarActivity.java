@@ -16,6 +16,7 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.FrescoUtil;
+import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
@@ -81,8 +82,6 @@ public class CalendarActivity extends ToolbarActivity {
                 setImageNotFound();
             }
         }
-
-
     }
 
     // TODO: 16/7/24 设置图片无法显示
@@ -125,10 +124,10 @@ public class CalendarActivity extends ToolbarActivity {
      */
     public void setCalendarDrawee(String url){
         float ratio = (float) (imgWidth) / (float) (imgHeight);
+        Logger.d(ratio + "");
         mDraweeView.setAspectRatio(ratio);
         mDraweeView.setImageURI(Uri.parse(url));
     }
-
 
 
     //保存 calendar 的相关信息
@@ -142,9 +141,9 @@ public class CalendarActivity extends ToolbarActivity {
 
     public void getImgSize(String size) {
         int index = size.indexOf("x");
-        String widthStr = size.substring(index + 1, size.length());
+        String heightStr = size.substring(index + 1, size.length());
+        String widthStr = size.substring(0, index);
         imgWidth = Integer.valueOf(widthStr);
-        String heightStr = size.substring(0, index);
         imgHeight = Integer.valueOf(heightStr);
     }
 

@@ -14,6 +14,14 @@
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
+
+    //微信权限
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -33,13 +41,14 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".main.MainActivity"
+                  android:windowSoftInputMode="adjustResize"
+                  android:launchMode="singleTask"/>
+
         <activity android:name=".login.LoginActivity"
                   android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize"/>
 
-
-        <activity android:name=".main.MainActivity"
-                  android:launchMode="singleTask"/>
 
         <activity android:name=".SettingActivity"
                   android:launchMode="singleTask"/>
@@ -96,6 +105,10 @@
 
         <activity android:name=".InfoActivity"/>
 
+        <activity android:name=".wxapi.WXEntryActivity"
+                  android:launchMode="singleInstance"
+                  android:exported="true"/>
+
         <receiver android:name=".common.service.AlarmLiveReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT"/>
@@ -132,14 +145,13 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="tencentg4LsthUz7j77LBYQ"/>
+                <data android:scheme="tencent1105548375"/>
             </intent-filter>
         </activity>
 
         <activity android:name="com.tencent.connect.common.AssistActivity"
                   android:configChanges="orientation|keyboardHidden|screenSize"
-                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
-        />
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
@@ -189,7 +201,6 @@
             android:persistent="true"
             android:process=":xg_service_v2" />
 
-
         <!-- 【必须】 通知service，此选项有助于提高抵达率 -->
         <service
             android:name="com.tencent.android.tpush.rpc.XGRemoteService"
@@ -208,9 +219,7 @@
             android:name="XG_V2_ACCESS_KEY"
             android:value="AE3232GC4CVI" />
 
-
     </application>
-
 
     <!-- 【必须】 信鸽SDK所需权限 -->
     <uses-permission android:name="android.permission.INTERNET" />

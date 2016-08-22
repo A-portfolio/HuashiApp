@@ -47,6 +47,7 @@
     <string name="tip_school_server_error">学校服务器异常,请稍后再试</string>
     <string name="tip_share_success">分享成功</string>
     <string name="tip_share_fail">分享失败</string>
+    <string name="tip_login_first">请先登录</string>
     <!--library-->
     <string name="lib_search_tip">请输入要搜索的图书或作者</string>
     <string name="lib_mybook_overdue">过期</string>

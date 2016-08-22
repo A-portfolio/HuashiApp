@@ -47,6 +47,6 @@ public class AppConstants {
     public static final String SPLASH_IMG = "splashImgUrl";
     public static final String SPLASH_UPDATE = "splashUpdate";
 
-    public static final String PRODUCT_JSON = "\"_product\":[{\"name\": \"学而\",\"icon\": \"https://xueer.muxixyz.com\",\"url\": \"https://xueer.muxixyz.com\",\"intro\": \"华师选课经验分享平台\"}],\"update\":0";
+    public static final String PRODUCT_JSON = "{\"_products\": [{\"icon\": \"http://static.muxixyz.com/ic-xueer@3x.png\", \"intro\": \"\\u534e\\u5e08\\u8bfe\\u7a0b\\u7ecf\\u9a8c\\u6316\\u6398\\u673a\", \"name\": \"\\u5b66\\u800c\", \"url\": \"https://xueer.muxixyz.com\"}], \"update\": 1471835245.67399}";
 
 }
