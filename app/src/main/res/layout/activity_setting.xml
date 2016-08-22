@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:orientation="vertical">
 
     <include android:id="@+id/view_toolbar"
@@ -128,6 +129,7 @@
 
     </LinearLayout>
 
+
     <Button
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
@@ -138,8 +140,10 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:background="@drawable/shape_btn"
         android:elevation="8dp"
-        android:text="注销"
         android:textColor="@color/colorWhite"/>
+
+
+
 
 
 </RelativeLayout>

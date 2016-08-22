@@ -14,6 +14,7 @@ import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.util.ZhugeUtils;
 import net.muxi.huashiapp.login.LoginActivity;
+import net.muxi.huashiapp.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +48,7 @@ public class SettingActivity extends ToolbarActivity {
     private String preScore;
     private String preAll;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,24 +68,35 @@ public class SettingActivity extends ToolbarActivity {
         mSwitchAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     setAllValue(true);
-                }else {
+                } else {
                     setAllValue(false);
                 }
             }
         });
 
+        if (App.sUser.getSid() != "0"){
+            mBtnLogout.setText("注销");
+        }else {
+            mBtnLogout.setText("登陆");
+        }
+
         mBtnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                App.clearLibUser();
-                App.clearUser();
-                sp.clearAllData();
-                startActivity(intent);
-                ToastUtil.showShort("注销成功");
+                if (App.sUser.getSid() != "0") {
+                    Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    App.clearLibUser();
+                    App.clearUser();
+                    sp.clearAllData();
+                    startActivity(intent);
+                    ToastUtil.showShort("注销成功");
+                } else {
+                    Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -96,10 +109,10 @@ public class SettingActivity extends ToolbarActivity {
     @Override
     public void onBackPressed() {
         saveAllValue();
-        ZhugeUtils.sendEvent("各消息提醒状态","课程提醒" + mSwitchCourseRemind.isChecked() +
-        "图书馆消息提醒" + mSwitchLibraryRemind.isChecked() +
-        "学生卡消息提醒" + mSwitchCardRemind.isChecked() +
-        "成绩消息提醒" + mSwitchScoreRemind.isChecked());
+        ZhugeUtils.sendEvent("各消息提醒状态", "课程提醒" + mSwitchCourseRemind.isChecked() +
+                "图书馆消息提醒" + mSwitchLibraryRemind.isChecked() +
+                "学生卡消息提醒" + mSwitchCardRemind.isChecked() +
+                "成绩消息提醒" + mSwitchScoreRemind.isChecked());
         super.onBackPressed();
     }
 
@@ -121,10 +134,10 @@ public class SettingActivity extends ToolbarActivity {
 
     private void loadAllValue() {
         mSwitchCourseRemind.setChecked(sp.getBoolean(preSchedule, true));
-        mSwitchLibraryRemind.setChecked(sp.getBoolean(preLibrary,true));
-        mSwitchCardRemind.setChecked(sp.getBoolean(preCard,true));
-        mSwitchScoreRemind.setChecked(sp.getBoolean(preScore,true));
-        mSwitchAll.setChecked(sp.getBoolean(preAll,true));
+        mSwitchLibraryRemind.setChecked(sp.getBoolean(preLibrary, true));
+        mSwitchCardRemind.setChecked(sp.getBoolean(preCard, true));
+        mSwitchScoreRemind.setChecked(sp.getBoolean(preScore, true));
+        mSwitchAll.setChecked(sp.getBoolean(preAll, true));
     }
 
 }

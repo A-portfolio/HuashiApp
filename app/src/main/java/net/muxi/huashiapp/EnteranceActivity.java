@@ -25,10 +25,12 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.http.HEAD;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
 
 /**
  * Created by ybao on 16/7/30.
@@ -78,15 +80,9 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
                     @Override
                     public void onNext(Long aLong) {
                         Intent intent;
-                        if (App.sUser.getSid() != null && App.sUser.getSid() != "0") {
                             intent = new Intent(EnteranceActivity.this, MainActivity.class);
                             startActivity(intent);
                             EnteranceActivity.this.finish();
-                        } else {
-                            intent = new Intent(EnteranceActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            EnteranceActivity.this.finish();
-                        }
                     }
                 });
     }

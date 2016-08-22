@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_layout"
     android:layout_width="match_parent"
     android:layout_height="120dp">
@@ -11,8 +11,8 @@
         android:id="@+id/main_pic"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        fresco:placeholderImageScaleType="center"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        fresco:actualImageScaleType="centerInside"/>
 
     <TextView
         android:id="@+id/main_text_view"

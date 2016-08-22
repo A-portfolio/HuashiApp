@@ -40,11 +40,13 @@ import net.muxi.huashiapp.common.util.FrescoUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.util.ZhugeUtils;
 import net.muxi.huashiapp.electricity.ElectricityActivity;
 import net.muxi.huashiapp.electricity.ElectricityDetailActivity;
 import net.muxi.huashiapp.library.LibraryLoginActivity;
 import net.muxi.huashiapp.library.MineActivity;
+import net.muxi.huashiapp.login.LoginActivity;
 import net.muxi.huashiapp.news.NewsActivity;
 import net.muxi.huashiapp.schedule.ScheduleActivity;
 import net.muxi.huashiapp.score.ScoreActivity;
@@ -68,10 +70,10 @@ public class MainActivity extends ToolbarActivity {
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     //app 原有的功能
-    private String[] pics = {"R.drawable.ic_main_curschedule", "R.drawable.ic_main_idcard",
-            "R.drawable.ic_main_mark", "R.drawable.ic_main_power_rate",
-            "R.drawable.ic_main_school_calendar", "R.drawable.ic_main_workschedule",
-            "R.drawable.ic_main_library"};
+    private String[] pics = {R.drawable.ic_main_curschedule + "", R.drawable.ic_main_idcard + "",
+            R.drawable.ic_main_mark + "", R.drawable.ic_main_power_rate + "",
+            R.drawable.ic_main_school_calendar + "", R.drawable.ic_main_workschedule + "",
+            R.drawable.ic_main_library + ""};
     private String[] desc = {"课程表", "学生卡", "成绩查询", "电费查询", "校历查询", "部门信息", "图书馆"};
 
     private List<String> mpic;
@@ -89,7 +91,6 @@ public class MainActivity extends ToolbarActivity {
     private Context context;
     private static final int WEB_POSITION = 8;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,8 +98,11 @@ public class MainActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         sp = new PreferenceUtil();
 
-        mpic = Arrays.asList(pics);
-        mdesc = Arrays.asList(desc);
+        mpic = new ArrayList<>();
+        mdesc = new ArrayList<>();
+
+        mpic.addAll(Arrays.asList(pics));
+        mdesc.addAll(Arrays.asList(desc));
 
         initXGPush();
 
@@ -131,7 +135,6 @@ public class MainActivity extends ToolbarActivity {
         updateProductDisplay(mProductData);
         getProduct();
 
-
         AlarmUtil.register(this);
     }
 
@@ -141,7 +144,7 @@ public class MainActivity extends ToolbarActivity {
         context = getApplicationContext();
         XGPushConfig.enableDebug(this, true);
         XGPushConfig.getToken(this);
-        XGPushManager.registerPush(context, "mx"
+        XGPushManager.registerPush(context, "users"
                 , new XGIOperateCallback() {
                     @Override
                     public void onSuccess(Object data, int i) {
@@ -212,11 +215,11 @@ public class MainActivity extends ToolbarActivity {
         }
         mpic.clear();
         mdesc.clear();
-        mpic = Arrays.asList(pics);
+        mpic.addAll(Arrays.asList(pics));
         mpic.addAll(picList);
-        mdesc = Arrays.asList(desc);
+        mdesc.addAll(Arrays.asList(desc));
         mdesc.addAll(descList);
-        mAdapter.swap(mpic, mdesc, mBannerDatas);
+        mAdapter.swapProduct(mpic, mdesc);
     }
 
 
@@ -299,22 +302,43 @@ public class MainActivity extends ToolbarActivity {
 
         mAdapter.setItemClickListener(new MainAdapter.ItemClickListener() {
             @Override
-            public void OnItemClick(View view, int position) {
+            public void onItemClick(View view, int position) {
                 Intent intent;
                 switch (position) {
                     case 0:
-                        intent = new Intent(MainActivity.this, ScheduleActivity.class);
-                        startActivity(intent);
-                        break;
+                        if (App.sUser.getSid() != "0") {
+                            intent = new Intent(MainActivity.this, ScheduleActivity.class);
+                            startActivity(intent);
+                            break;
+                        } else {
+                            ToastUtil.showShort(getString(R.string.tip_login_first));
+                            intent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            break;
+                        }
                     case 1:
-                        ZhugeUtils.sendEvent("学生卡查询", "学生卡查询");
-                        intent = new Intent(MainActivity.this, CardActivity.class);
-                        startActivity(intent);
-                        break;
+                        if (App.sUser.getSid() != "0") {
+                            ZhugeUtils.sendEvent("学生卡查询", "学生卡查询");
+                            intent = new Intent(MainActivity.this, CardActivity.class);
+                            startActivity(intent);
+                            break;
+                        } else {
+                            ToastUtil.showShort(getString(R.string.tip_login_first));
+                            intent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            break;
+                        }
                     case 2:
-                        intent = new Intent(MainActivity.this, ScoreActivity.class);
-                        startActivity(intent);
-                        break;
+                        if (App.sUser.getSid() != "0") {
+                            intent = new Intent(MainActivity.this, ScoreActivity.class);
+                            startActivity(intent);
+                            break;
+                        } else {
+                            ToastUtil.showShort(getString(R.string.tip_login_first));
+                            intent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            break;
+                        }
                     case 3:
                         PreferenceUtil sp = new PreferenceUtil();
                         String eleQuery = sp.getString(PreferenceUtil.ELE_QUERY_STRING);
@@ -355,12 +379,14 @@ public class MainActivity extends ToolbarActivity {
 //                        startActivity(intent);
 //                        break;
                 }
+                Logger.d(position + "");
                 if (position >= WEB_POSITION) {
-                    ZhugeUtils.sendEvent(mProductData.get_products().get(position).getName(), mProductData.get_products().get(position).getName());
-                    intent = WebViewActivity.newIntent(MainActivity.this, mProductData.get_products().get(position).getUrl(),
-                            mProductData.get_products().get(position).getName(),
-                            mProductData.get_products().get(position).getIntro(),
-                            mProductData.get_products().get(position).getIcon());
+                    int productPos = position - WEB_POSITION;
+                    ZhugeUtils.sendEvent(mProductData.get_products().get(productPos).getName(), mProductData.get_products().get(productPos).getName());
+                    intent = WebViewActivity.newIntent(MainActivity.this, mProductData.get_products().get(productPos).getUrl(),
+                            mProductData.get_products().get(productPos).getName(),
+                            mProductData.get_products().get(productPos).getIntro(),
+                            mProductData.get_products().get(productPos).getIcon());
                     startActivity(intent);
                 }
             }
@@ -391,7 +417,7 @@ public class MainActivity extends ToolbarActivity {
                             mProductJson = gson.toJson(mProductData);
                             sp.saveString(PreferenceUtil.PRODUCT_DATA, mProductJson);
                             sp.saveFloat(PreferenceUtil.PRODUCT_UPDATE, (float) productData.getUpdate());
-                            for (int i = 0; i < productData.get_products().size(); i++) {
+                            for (int i = WEB_POSITION; i < productData.get_products().size(); i++) {
                                 FrescoUtil.savePicture(productData.get_products().get(i).getIcon(), MainActivity.this, productData.get_products().get(i).getIcon());
                             }
                             updateProductDisplay(productData);
@@ -407,7 +433,7 @@ public class MainActivity extends ToolbarActivity {
     }
 
     public void updateRecyclerView(List<BannerData> bannerDatas) {
-        mAdapter.swap(mpic, mdesc, bannerDatas);
+        mAdapter.swapBannerData(bannerDatas);
 //        mAdapter = new MainAdapter(mdesc,mpics,bannerDatas);
 //        mRecyclerView.setAdapter(mAdapter);
     }
