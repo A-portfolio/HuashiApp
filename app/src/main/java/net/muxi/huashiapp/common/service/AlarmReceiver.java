@@ -3,6 +3,7 @@ package net.muxi.huashiapp.common.service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
@@ -25,6 +26,8 @@ import net.muxi.huashiapp.library.MineActivity;
 import net.muxi.huashiapp.schedule.ScheduleActivity;
 import net.muxi.huashiapp.score.ScoreActivity;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -134,17 +137,19 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                     @Override
                     public void onNext(List<PersonalBook> personalBooks) {
+                        List<String> books = new ArrayList<>();
                         boolean isRemind = false;
                         for (int i = 0, j = personalBooks.size(); i < j; i++) {
                             if (Integer.valueOf(personalBooks.get(i).getTime()) < 4) {
                                 isRemind = true;
-                                break;
+                                books.add(personalBooks.get(i).getBook());
                             }
                         }
                         if (isRemind) {
+                            String content = String.format(App.sContext.getString(R.string.notify_content_lib),connectStrings(books));
                             NotifyUtil.show(mContext, MineActivity.class,
                                     mContext.getResources().getString(R.string.notify_title_lib),
-                                    mContext.getResources().getString(R.string.notify_content_lib));
+                                    content);
                         }
                     }
                 });
@@ -156,21 +161,34 @@ public class AlarmReceiver extends BroadcastReceiver {
         String startDate = sp.getString(PreferenceUtil.FIRST_WEEK_DATE);
         int curWeek = (int) DateUtil.getDistanceWeek(startDate, DateUtil.toDateInYear(new Date(System.currentTimeMillis())));
         int today = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
+        //如果今天是周日则另做判断
+        if (today == 7){
+            today = 1;
+            curWeek ++;
+        }else {
+            today ++;
+        }
+        List<String> courseName = new ArrayList<>();
         for (int i = 0, j = courses.size(); i < j; i++) {
             Course course = courses.get(i);
             if (course.getRemind().equals("true") &&
                     (AppConstants.WEEKDAYS[today]).equals(course.getDay()) &&
                     TimeTableUtil.isThisWeek(curWeek, course.getWeeks())) {
-                NotifyUtil.show(mContext, ScheduleActivity.class,
-                        mContext.getString(R.string.notify_title_course),
-                        mContext.getString(R.string.notify_content_course));
-                break;
+                courseName.add(course.getCourse());
             }
+        }
+        if (courseName.size() > 0){
+            String content = String.format(mContext.getString(R.string.notify_content_course),connectStrings(courseName));
+            NotifyUtil.show(mContext, ScheduleActivity.class,
+                    mContext.getString(R.string.notify_title_course),
+                    content);
         }
     }
 
     private void checkScores() {
-        CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(mUser), "2015", "12")
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(mUser), year + "", judgeTerm() + "")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Scores>>() {
@@ -187,11 +205,34 @@ public class AlarmReceiver extends BroadcastReceiver {
                     @Override
                     public void onNext(List<Scores> scoresList) {
                         if (scoresList.size() > sp.getInt(PreferenceUtil.SCORES_NUM)) {
+                            sp.saveInt(PreferenceUtil.SCORES_NUM,scoresList.size());
                             NotifyUtil.show(mContext, ScoreActivity.class,
                                     mContext.getString(R.string.notify_title_score),
                                     mContext.getString(R.string.notify_content_score));
                         }
                     }
                 });
+    }
+
+    public String connectStrings(List<String> stringList){
+        String s;
+        s = TextUtils.join(",",stringList);
+        return s;
+    }
+
+    /**
+     * 判断当前为第几学期
+     * @return
+     */
+    public int judgeTerm(){
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH);
+        int date = calendar.get(Calendar.DAY_OF_MONTH);
+        if (month < 9 && month > 3){
+            return 12;
+        }else {
+            return 3;
+        }
+
     }
 }

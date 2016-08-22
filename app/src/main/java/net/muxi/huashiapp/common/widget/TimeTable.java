@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * Created by ybao on 16/4/19.
- * 显示课表,星期,节数的类
+ *   课程表显示的类
  */
 public class TimeTable extends FrameLayout {
 
@@ -260,9 +260,9 @@ public class TimeTable extends FrameLayout {
     }
 
     /**
-     * 今天的那一列宽度增大
+     * 今 的 一列 度
      *
-     * @param today 今天是一周的第几天
+     * @param today 今  一周的第几
      */
     public void setTodayLayout(int today) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -332,7 +332,7 @@ public class TimeTable extends FrameLayout {
     }
 
     /**
-     * 设置在那种类型下的滑动
+     *  置  种类 下的滑动
      *
      * @param type curweek : 0,  otherweek : 1
      */
@@ -360,19 +360,27 @@ public class TimeTable extends FrameLayout {
                 params.setMargins(0, COURSE_TIME_HEIGHT / 2 * (courses.get(i).getStart() - 1), 0, 0);
                 final TextView courseTv = new TextView(mContext);
                 if (curCourses.contains(courses.get(i))) {
-                    courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(courses.get(i).getColor(),0)));
-                } else if (priorityCourses.contains(courses.get(i))) {
-                    courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(courses.get(i).getColor(),1)));
+                    courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(courses.get(i).getColor(), 0)));
+                } else if (priorityCourses.contains(courses.get(i)) && TimeTableUtil.isThisWeek(week, courses.get(i).getWeeks())) {
+                    courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(courses.get(i).getColor(), 1)));
+                } else if (priorityCourses.contains(courses.get(i)) && !TimeTableUtil.isThisWeek(week, courses.get(i).getWeeks())) {
+                    courseTv.setBackground(getResources().getDrawable(R.drawable.bg_class_gary));
                 } else if (otherCourses.contains(courses.get(i))) {
                     courseTv.setBackground(getResources().getDrawable(R.drawable.bg_simple_class_gray));
                 }
                 courseTv.setTextColor(Color.WHITE);
-                String courseName = simplifyCourse(courses.get(i).getCourse());
+                String courseName = TimeTableUtil.simplifyCourse(courses.get(i).getCourse());
                 courseTv.setGravity(Gravity.CENTER_HORIZONTAL);
                 if (priorityCourses.contains(courses.get(i)) || curCourses.contains(courses.get(i))) {
-                    courseTv.setText(courseName + "\n@" +
-                            courses.get(i).getPlace() + "\n" +
-                            courses.get(i).getTeacher());
+                    if (TimeTableUtil.isThisWeek(week, courses.get(i).getWeeks())) {
+                        courseTv.setText(courseName + "\n@" +
+                                courses.get(i).getPlace() + "\n" +
+                                courses.get(i).getTeacher());
+                    } else {
+                        courseTv.setText(courseName + "\n@" +
+                                courses.get(i).getPlace() + "\n" +
+                                courses.get(i).getTeacher() + "\n[非本周]");
+                    }
                 } else if (otherCourses.contains(courses.get(i))) {
                     courseTv.setText(courseName + "\n@" +
                             courses.get(i).getPlace() + "\n" +
@@ -501,6 +509,12 @@ public class TimeTable extends FrameLayout {
                     isConflict = true;
                     if (TimeTableUtil.isThisWeek(week, courses.get(j).getWeeks())) {
                         course = courses.get(j);
+                        Logger.d(course.getCourse().toString() + " this week");
+                        break;
+                    } else if (TimeTableUtil.isThisWeek(week, courses.get(i).getWeeks())) {
+                        course = courses.get(i);
+                        Logger.d(course.getCourse().toString() + "this week");
+                        break;
                     }
                 }
             }
@@ -513,7 +527,7 @@ public class TimeTable extends FrameLayout {
     }
 
     /**
-     * 移动 中间的timetable
+     * 移动 中 的timetable
      *
      * @param x
      * @param y
@@ -530,15 +544,6 @@ public class TimeTable extends FrameLayout {
 //            courses.indexOf()
 //        }
 //    }
-
-
-    private String simplifyCourse(String course) {
-        if (course.length() > 12) {
-            return course.substring(0, 11) + "...";
-        } else {
-            return course;
-        }
-    }
 
 
     //将星期转换为 int类型`

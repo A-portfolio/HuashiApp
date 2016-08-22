@@ -42,4 +42,8 @@ public class AppConstants {
     public static final String WEIBO_KEY = "4167359117";
     public static final String WEIBO_INIT_TEXT = "(分享自华师匣子)";
     public static final String APP_DOWNLOAD_URL = "http://fir.im/3lbx";
+
+    public static final String SPLASH_URL = "splashUrl";
+    public static final String SPLASH_IMG = "splashImgUrl";
+    public static final String SPLASH_UPDATE = "splashUpdate";
 }

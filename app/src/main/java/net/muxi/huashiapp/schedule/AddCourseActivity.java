@@ -123,7 +123,8 @@ public class AddCourseActivity extends ToolbarActivity
                 if (!isEmpty()) {
                     final Course course = setCourse();
                     final int id = sp.getInt(PreferenceUtil.COURSE_ID, 1);
-                    course.setId(id +"");
+                    course.setId(id + "");
+
                     if (isConflict(course)) {
                         final MaterialDialog dialog = new MaterialDialog(AddCourseActivity.this);
                         dialog.setTitle(getResources().getString(R.string.course_conflict_title))
@@ -194,6 +195,7 @@ public class AddCourseActivity extends ToolbarActivity
             user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
             user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
             Logger.d(course.getId() + "");
+            showProgressBarDialog(true,getString(R.string.tip_adding_course));
             CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(user), course)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.newThread())
@@ -206,10 +208,13 @@ public class AddCourseActivity extends ToolbarActivity
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
+                            ToastUtil.showShort(getString(R.string.tip_adding_fail));
+                            showProgressBarDialog(false);
                         }
 
                         @Override
                         public void onNext(Response<VerifyResponse> verifyResponseResponse) {
+                            showProgressBarDialog(false);
                             if (verifyResponseResponse.code() == 201) {
                                 ZhugeUtils.sendEvent("课程添加","成功添加课程");
                                 ZhugeUtils.sendEvent("课程提醒状态",course.getRemind());
@@ -220,13 +225,14 @@ public class AddCourseActivity extends ToolbarActivity
                                 Intent intent = new Intent();
                                 AddCourseActivity.this.setResult(RESULT_OK, intent);
                                 //添加的课程 id 自增
-                                sp.saveInt(PreferenceUtil.COURSE_ID, ++newId);
+                                newId ++;
+                                sp.saveInt(PreferenceUtil.COURSE_ID, newId);
                                 AddCourseActivity.this.finish();
                             }
                         }
                     });
         } else {
-            ToastUtil.showLong(getResources().getString(R.string.tip_check_net));
+            ToastUtil.showLong(getString(R.string.tip_check_net));
         }
 
     }
