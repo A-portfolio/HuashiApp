@@ -54,14 +54,6 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_enterance);
         ButterKnife.bind(this);
         sp = new PreferenceUtil();
-//        mProperties = PropertiesUtils.loadProperties("config.properties");
-//        if (Integer.valueOf(mProperties.get(AppConstants.SPLASH_UPDATE).toString()) != 0){
-//            mRootLayout.setBackgroundColor(Color.TRANSPARENT);
-//            mImgIcon.setVisibility(View.GONE);
-//            mDrawee.setImageURI(Uri.parse(mProperties.get(AppConstants.SPLASH_IMG).toString()));
-//            mDrawee.setOnClickListener(this);
-//
-//        }
         Logger.d(sp.getString(AppConstants.SPLASH_IMG));
         if (sp.getLong(AppConstants.SPLASH_UPDATE) != -1){
             mRootLayout.setBackgroundColor(Color.TRANSPARENT);
@@ -69,6 +61,7 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
             mDrawee.setImageURI(Uri.parse(sp.getString(AppConstants.SPLASH_IMG)));
             mDrawee.setOnClickListener(this);
         }
+
         getSplashData();
         Observable.timer(1, TimeUnit.SECONDS)
                 .subscribe(new Observer<Long>() {

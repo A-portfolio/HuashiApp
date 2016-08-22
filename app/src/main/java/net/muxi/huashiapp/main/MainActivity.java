@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -30,10 +31,12 @@ import net.muxi.huashiapp.card.CardActivity;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.PatchData;
+import net.muxi.huashiapp.common.data.ProductData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.AlarmUtil;
 import net.muxi.huashiapp.common.util.DownloadUtils;
+import net.muxi.huashiapp.common.util.FrescoUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
@@ -47,6 +50,8 @@ import net.muxi.huashiapp.schedule.ScheduleActivity;
 import net.muxi.huashiapp.score.ScoreActivity;
 import net.muxi.huashiapp.webview.WebViewActivity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -62,20 +67,27 @@ public class MainActivity extends ToolbarActivity {
     Toolbar mToolbar;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    private int[] mpics = {R.drawable.ic_main_curschedule, R.drawable.ic_main_idcard,
-            R.drawable.ic_main_mark, R.drawable.ic_main_power_rate,
-            R.drawable.ic_main_school_calendar, R.drawable.ic_main_workschedule,
-            R.drawable.ic_main_library, R.drawable.ic_xueer};
+    //app 原有的功能
+    private String[] pics = {"R.drawable.ic_main_curschedule", "R.drawable.ic_main_idcard",
+            "R.drawable.ic_main_mark", "R.drawable.ic_main_power_rate",
+            "R.drawable.ic_main_school_calendar", "R.drawable.ic_main_workschedule",
+            "R.drawable.ic_main_library"};
+    private String[] desc = {"课程表", "学生卡", "成绩查询", "电费查询", "校历查询", "部门信息", "图书馆"};
 
-    private String[] mdesc = {"课程表", "学生卡", "成绩查询", "电费查询", "校历查询", "部门信息", "图书馆", "学而",};
+    private List<String> mpic;
+    private List<String> mdesc;
     private MainAdapter mAdapter;
 
     private long exitTime = 0;
+    private ProductData mProductData;
+    private String mProductJson;
+    private PreferenceUtil sp;
 
     private HuaShiDao dao;
     private List<BannerData> mBannerDatas;
 
     private Context context;
+    private static final int WEB_POSITION = 8;
 
 
     @Override
@@ -83,6 +95,10 @@ public class MainActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        sp = new PreferenceUtil();
+
+        mpic = Arrays.asList(pics);
+        mdesc = Arrays.asList(desc);
 
         initXGPush();
 
@@ -98,16 +114,32 @@ public class MainActivity extends ToolbarActivity {
         }
 
         dao = new HuaShiDao();
+
+        mBannerDatas = dao.loadBannerData();
+        if (mBannerDatas.size() > 0) {
+            initRecyclerView();
+            Logger.d("init recyclerview");
+        } else {
+            initRecyclerView();
+            Logger.d("please link the net");
+        }
+        //获取服务器上的 banner 数据
         getBannerDatas();
+        //获取本地的 product 数据
+        Gson gson = new Gson();
+        mProductData = gson.fromJson(sp.getString(PreferenceUtil.PRODUCT_DATA, AppConstants.PRODUCT_JSON), ProductData.class);
+        updateProductDisplay(mProductData);
+        getProduct();
+
 
         AlarmUtil.register(this);
     }
 
     //信鸽注册和启动
-    private void initXGPush(){
+    private void initXGPush() {
         Logger.d("initXGPush");
         context = getApplicationContext();
-        XGPushConfig.enableDebug(this,true);
+        XGPushConfig.enableDebug(this, true);
         XGPushConfig.getToken(this);
         XGPushManager.registerPush(context, "mx"
                 , new XGIOperateCallback() {
@@ -142,8 +174,8 @@ public class MainActivity extends ToolbarActivity {
 
                     @Override
                     public void onNext(List<PatchData> patchDatas) {
-                        for (PatchData patchData : patchDatas){
-                            if (BuildConfig.VERSION_NAME.equals(patchData.getVersion())){
+                        for (PatchData patchData : patchDatas) {
+                            if (BuildConfig.VERSION_NAME.equals(patchData.getVersion())) {
                                 CampusFactory.getRetrofitService().downloadFile(patchData.getDownload())
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribeOn(Schedulers.newThread())
@@ -170,15 +202,25 @@ public class MainActivity extends ToolbarActivity {
 
     }
 
-    private void getBannerDatas() {
-        mBannerDatas = dao.loadBannerData();
-        if (mBannerDatas.size() > 0) {
-            initRecyclerView();
-            Logger.d("init recyclerview");
-        } else {
-            initRecyclerView();
-            Logger.d("please link the net");
+    //更新首页视图
+    public void updateProductDisplay(ProductData productData) {
+        List<String> picList = new ArrayList<>();
+        List<String> descList = new ArrayList<>();
+        for (int i = 0; i < productData.get_products().size(); i++) {
+            picList.add(productData.get_products().get(i).getIcon());
+            descList.add(productData.get_products().get(i).getName());
         }
+        mpic.clear();
+        mdesc.clear();
+        mpic = Arrays.asList(pics);
+        mpic.addAll(picList);
+        mdesc = Arrays.asList(desc);
+        mdesc.addAll(descList);
+        mAdapter.swap(mpic, mdesc, mBannerDatas);
+    }
+
+
+    private void getBannerDatas() {
         if (NetStatus.isConnected()) {
             //本地保存的更新时间
             CampusFactory.getRetrofitService().getBanner()
@@ -236,7 +278,7 @@ public class MainActivity extends ToolbarActivity {
 
     public void initRecyclerView() {
         final GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
-        mAdapter = new MainAdapter(mdesc, mpics, mBannerDatas);
+        mAdapter = new MainAdapter(mpic, mdesc, mBannerDatas);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -249,11 +291,12 @@ public class MainActivity extends ToolbarActivity {
         mAdapter.setOnBannerItemClickListener(new MainAdapter.OnBannerItemClickListener() {
             @Override
             public void onBannerItemClick(BannerData bannerData) {
-                ZhugeUtils.sendEvent("点击 banner","点解 banner");
+                ZhugeUtils.sendEvent("点击 banner", "点解 banner");
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(bannerData.getUrl()));
                 startActivity(browserIntent);
             }
         });
+
         mAdapter.setItemClickListener(new MainAdapter.ItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
@@ -264,7 +307,7 @@ public class MainActivity extends ToolbarActivity {
                         startActivity(intent);
                         break;
                     case 1:
-                        ZhugeUtils.sendEvent("学生卡查询","学生卡查询");
+                        ZhugeUtils.sendEvent("学生卡查询", "学生卡查询");
                         intent = new Intent(MainActivity.this, CardActivity.class);
                         startActivity(intent);
                         break;
@@ -285,18 +328,18 @@ public class MainActivity extends ToolbarActivity {
                         }
                         break;
                     case 4:
-                        ZhugeUtils.sendEvent("查询校历","查询校历");
+                        ZhugeUtils.sendEvent("查询校历", "查询校历");
                         intent = new Intent(MainActivity.this, CalendarActivity.class);
                         startActivity(intent);
                         break;
                     case 5:
-                        ZhugeUtils.sendEvent("查看部门信息","查看部门信息");
+                        ZhugeUtils.sendEvent("查看部门信息", "查看部门信息");
                         intent = new Intent(MainActivity.this, ApartmentActivity.class);
                         startActivity(intent);
 
                         break;
                     case 7:
-                        ZhugeUtils.sendEvent("进入图书馆","进入图书馆");
+                        ZhugeUtils.sendEvent("进入图书馆", "进入图书馆");
                         if (!App.sLibrarayUser.getSid().equals("0")) {
                             intent = new Intent(MainActivity.this, MineActivity.class);
                             startActivity(intent);
@@ -306,17 +349,56 @@ public class MainActivity extends ToolbarActivity {
                         }
                         break;
 
-                    case 8:
-                        ZhugeUtils.sendEvent("进入学而","进入学而");
-                        intent = WebViewActivity.newIntent(MainActivity.this, "https://xueer.muxixyz.com/", "学而","华师选课经验平台","http://f.hiphotos.baidu.com/image/h%3D200/sign=6f05c5f929738bd4db21b531918a876c/6a600c338744ebf8affdde1bdef9d72a6059a702.jpg");
-                        startActivity(intent);
-                        break;
-
-
+//                    case 8:
+//                        ZhugeUtils.sendEvent("进入学而","进入学而");
+//                        intent = WebViewActivity.newIntent(MainActivity.this, "https://xueer.muxixyz.com/", "学而","华师选课经验平台","http://f.hiphotos.baidu.com/image/h%3D200/sign=6f05c5f929738bd4db21b531918a876c/6a600c338744ebf8affdde1bdef9d72a6059a702.jpg");
+//                        startActivity(intent);
+//                        break;
+                }
+                if (position >= WEB_POSITION) {
+                    ZhugeUtils.sendEvent(mProductData.get_products().get(position).getName(), mProductData.get_products().get(position).getName());
+                    intent = WebViewActivity.newIntent(MainActivity.this, mProductData.get_products().get(position).getUrl(),
+                            mProductData.get_products().get(position).getName(),
+                            mProductData.get_products().get(position).getIntro(),
+                            mProductData.get_products().get(position).getIcon());
+                    startActivity(intent);
                 }
             }
         });
 
+    }
+
+    public void getProduct() {
+        CampusFactory.getRetrofitService().getProduct()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Observer<ProductData>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(ProductData productData) {
+                        if (productData.getUpdate() != mProductData.getUpdate()) {
+                            mProductData = productData;
+                            Gson gson = new Gson();
+                            mProductJson = gson.toJson(mProductData);
+                            sp.saveString(PreferenceUtil.PRODUCT_DATA, mProductJson);
+                            sp.saveFloat(PreferenceUtil.PRODUCT_UPDATE, (float) productData.getUpdate());
+                            for (int i = 0; i < productData.get_products().size(); i++) {
+                                FrescoUtil.savePicture(productData.get_products().get(i).getIcon(), MainActivity.this, productData.get_products().get(i).getIcon());
+                            }
+                            updateProductDisplay(productData);
+                        }
+
+                    }
+                });
     }
 
     @Override
@@ -325,7 +407,7 @@ public class MainActivity extends ToolbarActivity {
     }
 
     public void updateRecyclerView(List<BannerData> bannerDatas) {
-        mAdapter.swap(bannerDatas);
+        mAdapter.swap(mpic, mdesc, bannerDatas);
 //        mAdapter = new MainAdapter(mdesc,mpics,bannerDatas);
 //        mRecyclerView.setAdapter(mAdapter);
     }
@@ -357,7 +439,7 @@ public class MainActivity extends ToolbarActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_news:
-                ZhugeUtils.sendEvent("查看消息公告","查看消息公告");
+                ZhugeUtils.sendEvent("查看消息公告", "查看消息公告");
                 intent = new Intent(MainActivity.this, NewsActivity.class);
                 startActivity(intent);
                 break;
