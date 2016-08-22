@@ -14,11 +14,6 @@
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-
-
-
-
-
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -70,8 +65,7 @@
                   android:launchMode="singleTask"/>
 
         <activity android:name=".library.LibraryLoginActivity"
-                  android:launchMode="singleTask"
-                  android:windowSoftInputMode="adjustPan|stateVisible"/>
+                  android:launchMode="singleTask"/>
 
         <activity android:name=".library.MineActivity"
                   android:launchMode="singleTask"/>
@@ -237,10 +231,6 @@
     <!-- 【可选】 信鸽SDK所需权限 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BATTERY_STATS" />
-
-
-
-
 
 
 </manifest>

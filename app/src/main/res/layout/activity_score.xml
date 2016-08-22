@@ -63,38 +63,47 @@
                     android:gravity="center"
                     android:textSize="@dimen/score_select_item_size"/>
 
+                <TextView
+                    android:id="@+id/tv_year5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/score_select_item_height"
+                    android:gravity="center"
+                    android:textSize="@dimen/score_select_item_size"/>
+
             </LinearLayout>
 
-            <RadioGroup android:id="@+id/rb_group_year"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_below="@+id/title_year">
+            <RadioGroup
+                android:id="@+id/rb_group_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/title_year">
 
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/rb_year1"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/score_select_item_height"
-                    android:checked="true"
-                />
+                    android:checked="true"/>
 
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/rb_year2"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/score_select_item_height"
-                />
+                    android:layout_height="@dimen/score_select_item_height"/>
 
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/rb_year3"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/score_select_item_height"
-                />
+                    android:layout_height="@dimen/score_select_item_height"/>
 
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/rb_year4"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/score_select_item_height"
-                />
+                    android:layout_height="@dimen/score_select_item_height"/>
+
+                <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/rb_year5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/score_select_item_height"/>
 
             </RadioGroup>
 

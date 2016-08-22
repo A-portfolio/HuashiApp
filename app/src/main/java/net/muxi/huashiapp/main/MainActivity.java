@@ -86,8 +86,6 @@ public class MainActivity extends ToolbarActivity {
 
         initXGPush();
 
-
-
         //检查本地是否有补丁包
         try {
             if (!DownloadUtils.isFileExists(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME)) {
