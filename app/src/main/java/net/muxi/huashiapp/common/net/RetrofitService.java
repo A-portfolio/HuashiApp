@@ -13,6 +13,7 @@ import net.muxi.huashiapp.common.data.Electricity;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.data.PatchData;
 import net.muxi.huashiapp.common.data.PersonalBook;
+import net.muxi.huashiapp.common.data.ProductData;
 import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.data.SplashData;
 import net.muxi.huashiapp.common.data.VerifyResponse;
@@ -123,6 +124,9 @@ public interface RetrofitService {
 
     @GET("start/")
     Observable<SplashData> getSplash();
+
+    @GET("product/")
+    Observable<ProductData> getProduct();
 
 
 }

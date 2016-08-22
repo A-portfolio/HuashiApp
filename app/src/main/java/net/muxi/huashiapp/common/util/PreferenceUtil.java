@@ -33,6 +33,10 @@ public class PreferenceUtil {
     public static final String LAST_APP_VERSION = "last_app_version";
     //校历的尺寸
     public static final String CALENDAR_SIZE = "calendar_size";
+    //首页产品更新时间
+    public static final String PRODUCT_UPDATE = "product_update";
+    //首页产品 json 数据
+    public static final String PRODUCT_DATA = "product_data";
 
     public PreferenceUtil() {
         Context context = App.getContext();
@@ -87,6 +91,16 @@ public class PreferenceUtil {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putLong(key,value);
         editor.apply();
+    }
+
+    public void saveFloat(String key,float value){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putFloat(key,value);
+        editor.apply();
+    }
+
+    public float getFloat(String key){
+        return mSharedPreferences.getFloat(key,-1);
     }
 
     public long getLong(String key){

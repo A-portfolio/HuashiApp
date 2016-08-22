@@ -46,4 +46,7 @@ public class AppConstants {
     public static final String SPLASH_URL = "splashUrl";
     public static final String SPLASH_IMG = "splashImgUrl";
     public static final String SPLASH_UPDATE = "splashUpdate";
+
+    public static final String PRODUCT_JSON = "\"_product\":[{\"name\": \"学而\",\"icon\": \"https://xueer.muxixyz.com\",\"url\": \"https://xueer.muxixyz.com\",\"intro\": \"华师选课经验分享平台\"}],\"update\":0";
+
 }
