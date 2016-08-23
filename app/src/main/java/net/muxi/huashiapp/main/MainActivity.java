@@ -82,8 +82,6 @@ public class MainActivity extends ToolbarActivity {
 
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
