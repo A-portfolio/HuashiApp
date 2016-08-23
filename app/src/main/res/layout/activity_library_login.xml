@@ -9,11 +9,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/img_lib_background"/>
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/img_bg"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_lib_background"/>
+
+        </LinearLayout>
 
     </ScrollView>
 
@@ -125,8 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
-                android:src="@drawable/divider_lib"
-            />
+                android:src="@drawable/divider_lib"/>
 
             <Button
                 android:id="@+id/btn_login"

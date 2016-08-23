@@ -9,9 +9,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.Base64Util;
+import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.util.ZhugeUtils;
@@ -57,6 +59,8 @@ public class LibraryLoginActivity extends ToolbarActivity{
     MySearchView mSearchView;
     @BindView(R.id.accout_layout)
     LinearLayout mAccoutLayout;
+    @BindView(R.id.img_bg)
+    ImageView mImgBg;
 
     private String[] mSuggestions;
     private HuaShiDao dao;
@@ -72,6 +76,7 @@ public class LibraryLoginActivity extends ToolbarActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library_login);
+//        getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.img_lib_background));
 //        getWindow().setStatusBarColor(Color.TRANSPARENT);
         ButterKnife.bind(this);
         dao = new HuaShiDao();
@@ -86,6 +91,11 @@ public class LibraryLoginActivity extends ToolbarActivity{
 //        if (actionBar != null){
 //            actionBar.setDisplayHomeAsUpEnabled(true);
 //        }
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                DimensUtil.getScreenHeight()
+        );
+        mImgBg.setLayoutParams(params);
         mEditUserName.addTextChangedListener(mTextWatcher);
         mEditPassword.addTextChangedListener(mTextWatcher);
         mEditUserName.setOnTouchListener(new View.OnTouchListener() {
@@ -162,19 +172,6 @@ public class LibraryLoginActivity extends ToolbarActivity{
             public void onClick(View v) {
                 mSearchView.showSearchView();
                 mAccoutLayout.setClickable(false);
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-            }
-        });
-        mEditPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            }
-        });
-        mEditUserName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             }
         });
     }
