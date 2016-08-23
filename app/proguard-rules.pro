@@ -26,10 +26,17 @@
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.preference.Preference
 -keep public class * extends android.content.ContentProvider
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
 -keep public class com.android.vending.licensing.ILicensingService
+-keep public class * extends android.support.v4.**
+
+-dontwarn android.support.v7.**
+-keep class android.support.v7.** { *; }
+-keep interface android.support.v7.** { *; }
+
 
 
 
@@ -54,9 +61,53 @@
 -keep class com.tencent.mid.**  {* ;}
 
 
+# okhttp3
+-dontwarn com.squareup.okhttp3.**
+-keep class com.squareup.okhttp3.** { *;}
+-dontwarn okio.**
+
+# retrofit2
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
+# butterknife
+-keep class butterknife.** { *; }
+
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
 
 
+# rxjava
+-dontwarn sun.misc.**
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+   long producerIndex;
+   long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
 
+
+# 内嵌类
+-keep class com.null.test.MainActivity$* {
+    *;
+}
+
+
+-keepclassmembers class * {
+    void *(**On*Event);
+}
 
 # 保持 native 方法不被混淆
 -keepclasseswithmembernames class * {
@@ -148,11 +199,8 @@
 
 
 #第三方library
--keep class com.android.support.** { *; }
--keep class com.squareup.retrofit2.**{ *; }
 -keep class io.reactivex.**{ *; }
 -keep class com.jakewharton.**{ *; }
--keep class com.squareup.okhttp3.**{ *; }
 -keep class com.facebook.fresco.**{ *; }
 -keep class com.bigkoo.**{ *; }
 -keep class me.drakeet.materialdialog.**{ *; }
@@ -185,6 +233,8 @@
 
 #忽略警告
 -ignorewarnings
+
+
 
 
 
