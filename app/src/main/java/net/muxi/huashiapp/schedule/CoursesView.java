@@ -51,11 +51,12 @@ public class CoursesView extends LinearLayout{
             params.setMargins(COURSE_MARGIN,0,COURSE_MARGIN,0);
             textView.setTextColor(Color.WHITE);
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
+            String courseName = TimeTableUtil.simplifyCourse(mCourses.get(i).getCourse());
             if (TimeTableUtil.isThisWeek(mWeek,mCourses.get(i).getWeeks())) {
-                textView.setText(mCourses.get(i).getCourse() + "\n@" + mCourses.get(i).getPlace() +
+                textView.setText(courseName + "\n@" + mCourses.get(i).getPlace() +
                 "\n" + mCourses.get(i).getTeacher());
             }else {
-                textView.setText(mCourses.get(i).getCourse() + "\n@" + mCourses.get(i).getPlace() +
+                textView.setText(courseName + "\n@" + mCourses.get(i).getPlace() +
                         "\n" + mCourses.get(i).getTeacher() + "[非本周]");
             }
             textView.setLayoutParams(params);

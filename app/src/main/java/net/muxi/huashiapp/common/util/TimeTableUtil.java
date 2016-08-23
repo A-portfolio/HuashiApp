@@ -84,4 +84,12 @@ public class TimeTableUtil {
         }
         return color;
     }
+
+    public static String simplifyCourse(String course) {
+        if (course.length() > 12) {
+            return course.substring(0, 11) + "...";
+        } else {
+            return course;
+        }
+    }
 }

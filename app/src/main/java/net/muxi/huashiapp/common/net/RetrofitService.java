@@ -13,7 +13,9 @@ import net.muxi.huashiapp.common.data.Electricity;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.data.PatchData;
 import net.muxi.huashiapp.common.data.PersonalBook;
+import net.muxi.huashiapp.common.data.ProductData;
 import net.muxi.huashiapp.common.data.Scores;
+import net.muxi.huashiapp.common.data.SplashData;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.data.VersionData;
 
@@ -119,6 +121,12 @@ public interface RetrofitService {
 
     @GET("patch/")
     Observable<List<PatchData>> getPatch();
+
+    @GET("start/")
+    Observable<SplashData> getSplash();
+
+    @GET("product/")
+    Observable<ProductData> getProduct();
 
 
 }

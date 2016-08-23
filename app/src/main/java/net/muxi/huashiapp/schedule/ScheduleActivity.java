@@ -278,6 +278,7 @@ public class ScheduleActivity extends ToolbarActivity {
         mWeekSelectAdapter.setOnItemClickListener(new WeekSelectAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                mImgPull.setImageResource(R.drawable.ic_arrow_drop_down);
                 mSelectWeek = position + 1;
                 fadeoutRecyclerView();
                 isSelectShown = false;
