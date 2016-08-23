@@ -79,7 +79,7 @@ public class SettingActivity extends ToolbarActivity {
         if (App.sUser.getSid() != "0"){
             mBtnLogout.setText("注销");
         }else {
-            mBtnLogout.setText("登陆");
+            mBtnLogout.setText("登录");
         }
 
         mBtnLogout.setOnClickListener(new View.OnClickListener() {
