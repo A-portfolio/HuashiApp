@@ -66,7 +66,10 @@ public class SuggestionActivity extends ToolbarActivity {
        mBtnSubmit.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-
+               if (mEtSuggestion.getText().length() == 0){
+                   ToastUtil.showShort(getString(R.string.tip_write_suggestion_first));
+                   return;
+               }
                if (NetStatus.isConnected()) {
                    ZhugeUtils.sendEvent("意见提交",mEtSuggestion.getText().toString());
                    ToastUtil.showShort("提交成功");

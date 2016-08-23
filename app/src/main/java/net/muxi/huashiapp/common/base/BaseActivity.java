@@ -33,6 +33,7 @@ public class BaseActivity extends AppCompatActivity{
             mProgressDialog = new ProgressDialog(this);
             Logger.d("lollipop");
         }
+        mProgressDialog.setCancelable(false);
         mActionBar = getSupportActionBar();
         if (mActionBar != null) {
             mActionBar.setDisplayHomeAsUpEnabled(true);

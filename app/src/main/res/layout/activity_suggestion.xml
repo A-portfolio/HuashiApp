@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <include android:id="@+id/view_toolbar"
              layout="@layout/view_toolbar"/>
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_toolbar"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="@string/title_input_suggeston"
         android:textColor="@color/textColorGrey"/>
@@ -25,25 +27,27 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_below="@+id/et_suggestion"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:id="@+id/tv_word_length"
-        android:textColor="@color/colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/et_suggestion"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:text="0/400"
-        android:layout_height="wrap_content"/>
+        android:textColor="@color/colorPrimary"/>
 
     <Button
         android:id="@+id/btn_submit"
-        android:layout_width="328dp"
+        android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_below="@+id/et_suggestion"
-        android:layout_marginTop="24dp"
-        android:textColor="@color/colorWhite"
-        android:elevation="100dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_centerHorizontal="true"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="24dp"
         android:background="@drawable/shape_btn"
-        android:text="@string/btn_submit"/>
+        android:elevation="100dp"
+        android:text="@string/btn_submit"
+        android:textColor="@color/colorWhite"/>
 
 </RelativeLayout>
