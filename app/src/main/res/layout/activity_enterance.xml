@@ -16,10 +16,21 @@
         android:scaleType="fitXY"
         android:src="@drawable/pic_cbox_white"/>
 
+    <TextView
+        android:id="@+id/tv_slogan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/app_slogan"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/medium_size"/>
+
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/drawee"
-        app:placeholderImageScaleType="fitXY"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:placeholderImageScaleType="fitXY"/>
 
 </RelativeLayout>

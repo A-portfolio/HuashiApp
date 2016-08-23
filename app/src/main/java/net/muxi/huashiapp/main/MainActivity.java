@@ -136,6 +136,7 @@ public class MainActivity extends ToolbarActivity {
         getProduct();
 
         AlarmUtil.register(this);
+        Log.d("alarm","register");
     }
 
     //信鸽注册和启动
