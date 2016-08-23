@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
@@ -40,12 +41,16 @@ import rx.schedulers.Schedulers;
  */
 public class AlarmReceiver extends BroadcastReceiver {
 
+    private static final String TAG = "alarm";
+
     private User mUser;
     private User mLibUser;
     private PreferenceUtil sp;
     private Context mContext;
     //设置学生卡提醒的额度
     private static final int CARD_LEAVE_MONEY = 20;
+    private int mCurYear;
+    private int mCurTerm;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -62,23 +67,23 @@ public class AlarmReceiver extends BroadcastReceiver {
         Logger.d(mUser.getSid());
         //判断对应的登录状态以及当前时间,还有用户是否设置提醒
         if (!mUser.getSid().equals("")) {
-            Logger.d("check sid");
+            Log.d(TAG,"check sid");
             if (intent.getIntExtra(AppConstants.ALARMTIME, 0) == 2) {
                 if (sp.getBoolean(App.getContext().getString(R.string.pre_schedule),true)) {
                     checkCourses();
-                    Logger.d("check course");
+                    Log.d(TAG,"check course");
                 }
             }
             if (intent.getIntExtra(AppConstants.ALARMTIME, 0) == 1) {
                 if (sp.getBoolean(App.getContext().getString(R.string.pre_score),true)) {
                     checkScores();
-                    Logger.d("check course");
+                    Log.d(TAG,"check score");
                 }
             }
             if (intent.getIntExtra(AppConstants.ALARMTIME, 0) == 0) {
                 if (sp.getBoolean(App.getContext().getString(R.string.pre_card),true)) {
                     checkCard();
-                    Logger.d("check course");
+                    Log.d(TAG,"check card");
                 }
                 if (sp.getBoolean(App.getContext().getString(R.string.pre_score),true)) {
                     checkScores();
@@ -90,8 +95,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                 }
             }
         }
-
-
     }
 
     private void checkCard() {
@@ -158,8 +161,12 @@ public class AlarmReceiver extends BroadcastReceiver {
     private void checkCourses() {
         HuaShiDao dao = new HuaShiDao();
         List<Course> courses = dao.loadCustomCourse();
-        String startDate = sp.getString(PreferenceUtil.FIRST_WEEK_DATE);
-        int curWeek = (int) DateUtil.getDistanceWeek(startDate, DateUtil.toDateInYear(new Date(System.currentTimeMillis())));
+        Logger.d(courses.size() + "");
+        int day = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
+        String defalutDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()), 1 - day);
+        String startDate = sp.getString(PreferenceUtil.FIRST_WEEK_DATE,defalutDate);
+        int curWeek = (int) DateUtil.getDistanceWeek(startDate, DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
+        Logger.d(curWeek + "");
         int today = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
         //如果今天是周日则另做判断
         if (today == 7){
@@ -172,11 +179,13 @@ public class AlarmReceiver extends BroadcastReceiver {
         for (int i = 0, j = courses.size(); i < j; i++) {
             Course course = courses.get(i);
             if (course.getRemind().equals("true") &&
-                    (AppConstants.WEEKDAYS[today]).equals(course.getDay()) &&
+                    ! course.getCourse().equals(AppConstants.INIT_COURSE) &&
+                    (AppConstants.WEEKDAYS[today - 1]).equals(course.getDay()) &&
                     TimeTableUtil.isThisWeek(curWeek, course.getWeeks())) {
                 courseName.add(course.getCourse());
             }
         }
+        Logger.d("courseName size " + courseName.size());
         if (courseName.size() > 0){
             String content = String.format(mContext.getString(R.string.notify_content_course),connectStrings(courseName));
             NotifyUtil.show(mContext, ScheduleActivity.class,
@@ -186,9 +195,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void checkScores() {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(mUser), year + "", judgeTerm() + "")
+        judgeYearAndTerm();
+        CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(mUser), mCurYear + "", mCurTerm + "")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Scores>>() {
@@ -204,6 +212,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                     @Override
                     public void onNext(List<Scores> scoresList) {
+                        Logger.d(scoresList.size() + "  " + sp.getInt(PreferenceUtil.SCORES_NUM) );
                         if (scoresList.size() > sp.getInt(PreferenceUtil.SCORES_NUM)) {
                             sp.saveInt(PreferenceUtil.SCORES_NUM,scoresList.size());
                             NotifyUtil.show(mContext, ScoreActivity.class,
@@ -214,25 +223,27 @@ public class AlarmReceiver extends BroadcastReceiver {
                 });
     }
 
+    private void judgeYearAndTerm() {
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        int date = calendar.get(Calendar.DAY_OF_MONTH);
+        if (month < 9 && month > 3){
+            mCurTerm = 12;
+        }else {
+            mCurTerm = 3;
+        }
+        if (month < 9){
+            mCurYear = year - 1;
+        }else {
+            mCurYear = year;
+        }
+    }
+
     public String connectStrings(List<String> stringList){
         String s;
         s = TextUtils.join(",",stringList);
         return s;
     }
 
-    /**
-     * 判断当前为第几学期
-     * @return
-     */
-    public int judgeTerm(){
-        Calendar calendar = Calendar.getInstance();
-        int month = calendar.get(Calendar.MONTH);
-        int date = calendar.get(Calendar.DAY_OF_MONTH);
-        if (month < 9 && month > 3){
-            return 12;
-        }else {
-            return 3;
-        }
-
-    }
 }
