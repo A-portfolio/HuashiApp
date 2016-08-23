@@ -6,19 +6,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.DraweeView;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.FrescoUtil;
+import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
@@ -45,8 +43,7 @@ public class CalendarActivity extends ToolbarActivity {
     @BindView(R.id.scroll_view)
     ScrollView mScrollView;
 
-
-    private DraweeView mDraweeView;
+    private SimpleDraweeView mDraweeView;
 
     private int imgWidth;
     private int imgHeight;
@@ -64,6 +61,7 @@ public class CalendarActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         ButterKnife.bind(this);
+        mDraweeView = (SimpleDraweeView) findViewById(R.id.drawee);
 
         sp = new PreferenceUtil();
         lastTime = sp.getLong(PreferenceUtil.CALENDAR_UPDATE);
@@ -73,13 +71,7 @@ public class CalendarActivity extends ToolbarActivity {
         if (lastTime != DEFAULT_TIME) {
             getImgSize(sp.getString(PreferenceUtil.CALENDAR_SIZE));
             if (imgWidth != 0) {
-                mDraweeView = new DraweeView(this);
-                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        (int) ((long) (imgHeight) / (long) (imgWidth) * DimensUtil.getScreenWidth())
-                );
-                mScrollView.addView(mDraweeView, params);
-                mDraweeView.setImageURI(Uri.parse(sp.getString(PreferenceUtil.CALENDAR_ADDRESS)));
+                setCalendarDrawee(sp.getString(PreferenceUtil.CALENDAR_ADDRESS));
             }
         }
         if (NetStatus.isConnected()) {
@@ -90,8 +82,6 @@ public class CalendarActivity extends ToolbarActivity {
                 setImageNotFound();
             }
         }
-
-
     }
 
     // TODO: 16/7/24 设置图片无法显示
@@ -118,23 +108,26 @@ public class CalendarActivity extends ToolbarActivity {
 
                     @Override
                     public void onNext(final List<CalendarData> calendarData) {
-                        if (calendarData.get(0).getUpdate() != lastTime) {
+                        if (lastTime != calendarData.get(0).getUpdate()) {
                             saveCalendarData(calendarData.get(0));
                             getImgSize(calendarData.get(0).getSize());
-                            mScrollView.removeAllViews();
-                            mDraweeView = new DraweeView(CalendarActivity.this);
-                            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                                    ViewGroup.LayoutParams.MATCH_PARENT,
-                                    (int) ((long) (imgHeight) / (long) (imgWidth) * DimensUtil.getScreenWidth())
-                            );
-                            mScrollView.addView(mDraweeView, params);
-                            mDraweeView.setImageURI(Uri.parse(calendarData.get(0).getImg()));
-                            FrescoUtil.savePicture(picUrl,CalendarActivity.this,"calendar");
+                            setCalendarDrawee(calendarData.get(0).getImg());
+                            FrescoUtil.savePicture(picUrl, CalendarActivity.this, calendarData.get(0).getFilename());
                         }
                     }
                 });
     }
 
+    /**
+     * 设置校历的图片
+     * @param url
+     */
+    public void setCalendarDrawee(String url){
+        float ratio = (float) (imgWidth) / (float) (imgHeight);
+        Logger.d(ratio + "");
+        mDraweeView.setAspectRatio(ratio);
+        mDraweeView.setImageURI(Uri.parse(url));
+    }
 
 
     //保存 calendar 的相关信息
@@ -148,9 +141,9 @@ public class CalendarActivity extends ToolbarActivity {
 
     public void getImgSize(String size) {
         int index = size.indexOf("x");
-        String widthStr = size.substring(index + 1, size.length());
+        String heightStr = size.substring(index + 1, size.length());
+        String widthStr = size.substring(0, index);
         imgWidth = Integer.valueOf(widthStr);
-        String heightStr = size.substring(0, index);
         imgHeight = Integer.valueOf(heightStr);
     }
 

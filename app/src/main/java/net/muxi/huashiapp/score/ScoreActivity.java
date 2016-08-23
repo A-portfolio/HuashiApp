@@ -64,6 +64,12 @@ public class ScoreActivity extends ToolbarActivity {
     AppCompatRadioButton mRbTerm2;
     @BindView(R.id.rb_term3)
     AppCompatRadioButton mRbTerm3;
+    @BindView(R.id.tv_year5)
+    TextView mTvYear5;
+    @BindView(R.id.rb_year5)
+    AppCompatRadioButton mRbYear5;
+    @BindView(R.id.rg_term)
+    RadioGroup mRgTerm;
 
     private User mUser;
     private PreferenceUtil sp;
@@ -72,6 +78,9 @@ public class ScoreActivity extends ToolbarActivity {
     private int startYear;
     private String[] itemYears;
     private String[] itemTerms;
+
+    private static final int YEAR_COUNT = 5;
+    private static final int TERM_COUNT = 3;
 
     private static final String[] TERM = {"3", "12", "16"};
 
@@ -86,7 +95,7 @@ public class ScoreActivity extends ToolbarActivity {
 
     private void setTitle(String year, String term) {
         String title = "";
-        switch (term){
+        switch (term) {
             case "3":
                 title += year + "年秋";
                 break;
@@ -112,12 +121,12 @@ public class ScoreActivity extends ToolbarActivity {
     }
 
     private void getYears() {
-        itemYears = new String[4];
-        for (int i = 0; i < 4; i++) {
+        itemYears = new String[YEAR_COUNT];
+        for (int i = 0; i < YEAR_COUNT; i++) {
             itemYears[i] = startYear + "-" + (++startYear) + "学年";
         }
         //初始化
-        startYear -= 4;
+        startYear -= YEAR_COUNT;
     }
 
     //获取当前的学年
@@ -132,6 +141,7 @@ public class ScoreActivity extends ToolbarActivity {
         mTvYear2.setText(itemYears[1]);
         mTvYear3.setText(itemYears[2]);
         mTvYear4.setText(itemYears[3]);
+        mTvYear5.setText(itemYears[4]);
     }
 
 
@@ -147,7 +157,7 @@ public class ScoreActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0){
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             mFragmentLayout.setClickable(false);
             setTitle("成绩查询");
         }
@@ -171,8 +181,8 @@ public class ScoreActivity extends ToolbarActivity {
             ft.addToBackStack(null);
             ft.commit();
             mFragmentLayout.setClickable(true);
-            setTitle(year,term);
-            ZhugeUtils.sendEvent("查询成绩","查询成绩");
+            setTitle(year, term);
+            ZhugeUtils.sendEvent("查询成绩", "查询成绩");
         } else {
             ToastUtil.showShort(AppConstants.TIP_CHECK_NET);
         }
@@ -180,11 +190,11 @@ public class ScoreActivity extends ToolbarActivity {
 
     private String getCheckTerm() {
         int pos = 0;
-        if (mRbTerm1.isChecked()){
+        if (mRbTerm1.isChecked()) {
             pos = 0;
-        }else if (mRbTerm2.isChecked()){
+        } else if (mRbTerm2.isChecked()) {
             pos = 1;
-        }else if (mRbTerm3.isChecked()){
+        } else if (mRbTerm3.isChecked()) {
             pos = 2;
         }
         return TERM[pos];
@@ -192,14 +202,16 @@ public class ScoreActivity extends ToolbarActivity {
 
     private String getCheckedYear() {
         int pos = 0;
-        if (mRbYear1.isChecked()){
+        if (mRbYear1.isChecked()) {
             pos = 0;
-        }else if (mRbYear2.isChecked()){
+        } else if (mRbYear2.isChecked()) {
             pos = 1;
-        }else if (mRbYear3.isChecked()){
+        } else if (mRbYear3.isChecked()) {
             pos = 2;
-        }else if (mRbYear4.isChecked()){
+        } else if (mRbYear4.isChecked()) {
             pos = 3;
+        }else if (mRbYear5.isChecked()){
+            pos = 4;
         }
         return String.valueOf(startYear + pos);
     }

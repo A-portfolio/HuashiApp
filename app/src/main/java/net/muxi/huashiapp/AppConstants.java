@@ -42,4 +42,11 @@ public class AppConstants {
     public static final String WEIBO_KEY = "4167359117";
     public static final String WEIBO_INIT_TEXT = "(分享自华师匣子)";
     public static final String APP_DOWNLOAD_URL = "http://fir.im/3lbx";
+
+    public static final String SPLASH_URL = "splashUrl";
+    public static final String SPLASH_IMG = "splashImgUrl";
+    public static final String SPLASH_UPDATE = "splashUpdate";
+
+    public static final String PRODUCT_JSON = "{\"_products\": [{\"icon\": \"http://static.muxixyz.com/ic-xueer@3x.png\", \"intro\": \"\\u534e\\u5e08\\u8bfe\\u7a0b\\u7ecf\\u9a8c\\u6316\\u6398\\u673a\", \"name\": \"\\u5b66\\u800c\", \"url\": \"https://xueer.muxixyz.com\"}], \"update\": 1471835245.67399}";
+
 }

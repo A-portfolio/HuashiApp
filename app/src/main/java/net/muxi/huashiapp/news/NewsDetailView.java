@@ -13,11 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.common.util.ToastUtil;
 
 import java.util.List;
 
@@ -97,13 +99,18 @@ public class NewsDetailView extends RelativeLayout {
             textViews[i].getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
             textViews[i].setTextColor(Color.BLUE);
 //            textViews[i].setAutoLinkMask(Linkify.WEB_URLS);
-            textViews[i].setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(appendix.get(j).toString()));
-                    mContext.startActivity(browserIntent);
-                }
-            });
+                textViews[i].setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(appendix.get(j).toString()));
+                            mContext.startActivity(browserIntent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            ToastUtil.showShort(App.sContext.getString(R.string.tip_link_unable_open));
+                        }
+                    }
+                });
 //            textViews[i].setOnClickListener(new OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
