@@ -21,11 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/img_icon"
-        android:layout_centerHorizontal="true"
+        android:layout_centerHogrizontal="true"
         android:layout_marginTop="16dp"
         android:text="@string/app_slogan"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/medium_size"/>
+        android:textColor="@color/colorWhite"/>
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/drawee"

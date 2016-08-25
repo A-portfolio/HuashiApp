@@ -115,6 +115,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             } else {
                 if (position >= WEB_POSITON) {
                     ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mpics.get(position - ITEM_BANNER)));
+                    FrescoUtil.savePicture(mpics.get(position - ITEM_BANNER),mContext,mdesc.get(position - ITEM_BANNER));
                 } else {
                     ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mpics.get(position - ITEM_BANNER)));
                 }

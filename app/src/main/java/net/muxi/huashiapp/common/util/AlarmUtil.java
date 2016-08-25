@@ -31,10 +31,9 @@ public class AlarmUtil {
 
         for (int i = 0; i < ALARM_NUM; i++) {
             calendars[i] = Calendar.getInstance();
-//            setTimeAround(calendars[i], REMIND_TIME[i]);
-            calendars[i].set(Calendar.HOUR_OF_DAY,REMIND_TIME[i]);
-            calendars[i].set(Calendar.MINUTE,0);
-            calendars[i].set(Calendar.SECOND,1);
+
+            setTimeAround(calendars[i],REMIND_TIME[i]);
+            Logger.d(calendars[i].get(Calendar.HOUR_OF_DAY) + " " + calendars[i].get(Calendar.MINUTE));
             if (now.after(calendars[i])){
                 continue;
             }
@@ -60,13 +59,14 @@ public class AlarmUtil {
      */
     public static void setTimeAround(Calendar calendar, int hour) {
         Random random = new Random();
-        int minute = random.nextInt() * 60;
+        int minute = random.nextInt(60);
         if (minute >= 30) {
             hour = hour - 1;
         }
-        int second = random.nextInt() * 60;
+        int second = random.nextInt(60);
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, second);
+        Logger.d(calendar.get(Calendar.HOUR_OF_DAY) + "");
     }
 }

@@ -106,7 +106,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         api.registerApp(APP_ID);
 
         mBaseUiListener = new BaseUiListener();
-        mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(this,AppConstants.WEIBO_KEY);
+        mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(this, AppConstants.WEIBO_KEY);
         mWeiboShareAPI.registerApp();
     }
 
@@ -202,10 +202,11 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = title;
         msg.description = intro;
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
-        bmp.recycle();
-        msg.setThumbImage(thumbBmp);
+        Logger.d(getExternalCacheDir() + "/" + title + ".jpg");
+        Bitmap bmp = BitmapFactory.decodeFile(getExternalCacheDir() + "/" + title + ".jpg");
+//        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
+//        bmp.recycle();
+        msg.setThumbImage(bmp);
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = type + System.currentTimeMillis();
         req.message = msg;
@@ -232,7 +233,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 //            public void run() {
 //                 TODO Auto-generated method stub
 //                Logger.d("start share");
-                mTencent.shareToQzone(WebViewActivity.this, params, mBaseUiListener);
+        mTencent.shareToQzone(WebViewActivity.this, params, mBaseUiListener);
 //            }
 //
 //        });
