@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.util.DateUtil;
@@ -347,7 +348,7 @@ public class TimeTable extends FrameLayout {
         List<Course> curCourses = findCurWeekCourses(courses, week);
         List<Course> otherCourses = getOtherCourses(courses, week);
         for (int i = 0; i < courses.size(); i++) {
-            if (courses.get(i).getCourse() != null && courses.get(i).getCourse().equals("re:从零开始的异世界生活")) {
+            if (courses.get(i).getCourse() != null && courses.get(i).getCourse().equals(AppConstants.INIT_COURSE)) {
                 Logger.d(courses.get(i).getCourse());
                 continue;
             } else {

@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.common.service.AlarmReceiver;
@@ -26,6 +27,7 @@ public class AlarmUtil {
 
         Calendar[] calendars = new Calendar[ALARM_NUM];
         Calendar now = Calendar.getInstance();
+        Log.d("alarm","begin register");
 
         for (int i = 0; i < ALARM_NUM; i++) {
             calendars[i] = Calendar.getInstance();
@@ -45,6 +47,7 @@ public class AlarmUtil {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i , intent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendars[i].getTimeInMillis(), pendingIntent);
+            Log.d("alarm","set alarmManager");
         }
 
     }
