@@ -13,37 +13,78 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--optimizationpasses 5
--dontusemixedcaseclassnames
--dontskipnonpubliclibraryclasses
--dontpreverify
--verbose
--optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
 
--keep public class * extends android.app.Fragment
--keep public class * extends android.app.Activity
--keep public class * extends android.app.Application
--keep public class * extends android.app.Service
--keep public class * extends android.content.BroadcastReceiver
--keep public class * extends android.preference.Preference
--keep public class * extends android.content.ContentProvider
--keep public class * extends android.app.backup.BackupAgentHelper
--keep public class * extends android.preference.Preference
--keep public class com.android.vending.licensing.ILicensingService
--keep public class * extends android.support.v4.**
 
--dontwarn android.support.v7.**
--keep class android.support.v7.** { *; }
--keep interface android.support.v7.** { *; }
+#混淆保护自己项目的部分代码以及引用的第三方jar包library（想混淆去掉"#"）
+#-libraryjars libs/jg_filter_sdk_1.1 上午11.48.50.jar
+#-libraryjars libs/libammsdk.jar
+#-libraryjars libs/mta-sdk-1.6.2.jar
+#-libraryjars libs/open_sdk_r5756.jar
+#-libraryjars libs/tbs_sdk_thirdapp_v2.1.2.1096_36511_withdownload_obfs_20160727_105857.jar
+#-libraryjars libs/weiboSDKCore_3.1.4.jar
+#-libraryjars libs/wup-1.0.0.E-SNAPSHOT 上午11.48.50.jar
+#-libraryjars libs/Xg_sdk_v2.46_20160602_1638 上午11.48.50.jar
 
 
+#-------------------------------------------定制化区域----------------------------------------------
+#---------------------------------1.实体类---------------------------------
+
+-keep class net.muxi.huashiapp.common.data.** { *; }
+
+
+#-------------------------------------------------------------------------
+
+#---------------------------------2.第三方包-------------------------------
+
+#第三方library
+-ignorewarnings
+-keep class com.android.support.** { *; }
+-keep class com.jakewharton.**{ *; }
+-keep class com.facebook.fresco.**{ *; }
+-keep class com.bigkoo.**{ *; }
+-keep class me.drakeet.materialdialog.**{ *; }
+-keep class com.yqritc.**{ *; }
+-keep class com.daimajia.numberprogressbar.**{ *; }
+-keep class com.alipay.euler.**{ *; }
+-keep class com.tencent.bugly.**{ *; }
+-keep class com.zhuge.analysis.**{ *;}
+-keep class me.biubiubiu.justifytext.**{ *;}
+
+# rxjava
+-keep class rx.schedulers.Schedulers {
+    public static <methods>;
+}
+-keep class rx.schedulers.ImmediateScheduler {
+    public <methods>;
+}
+-keep class rx.schedulers.TestScheduler {
+    public <methods>;
+}
+-keep class rx.schedulers.Schedulers {
+    public static ** test();
+}
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+    long producerIndex;
+    long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    long producerNode;
+    long consumerNode;
+}
+
+
+
+###-------- Gson 相关的混淆配置--------
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.stream.** { *; }
 
 
 # bugly
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
-
 
 # andfix
 -keep public class * extends java.lang.annotation.Annotation
@@ -60,100 +101,117 @@
 -keep class com.tencent.android.tpush.**  {* ;}
 -keep class com.tencent.mid.**  {* ;}
 
+#xUtils(保持注解，及使用注解的Activity不被混淆，不然会影响Activity中你使用注解相关的代码无法使用)
+-keep class * extends java.lang.annotation.Annotation {*;}
+-keep class com.otb.designerassist.activity.** {*;}
 
-# okhttp3
--dontwarn com.squareup.okhttp3.**
--keep class com.squareup.okhttp3.** { *;}
+
+# retorfit
+# Platform calls Class.forName on types which do not exist on Android to determine platform.
+-dontnote retrofit2.Platform
+# Platform used when running on RoboVM on iOS. Will not be used at runtime.
+-dontnote retrofit2.Platform$IOS$MainThreadExecutor
+# Platform used when running on Java 8 VMs. Will not be used at runtime.
+-dontwarn retrofit2.Platform$Java8
+# Retain generic type information for use by reflection by converters and adapters.
+-keepattributes Signature
+# Retain declared checked exceptions for use by a Proxy instance.
+-keepattributes Exceptionso
+
+# okhttp
+-keepattributes Signature
+-keepattributes Annotation
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
 -dontwarn okio.**
 
-# retrofit2
--dontwarn retrofit2.**
--keep class retrofit2.** { *; }
--keepattributes Signature
--keepattributes Exceptions
+# fresco
+# Keep our interfaces so they can be used by other ProGuard rules.
+# See http://sourceforge.net/p/proguard/bugs/466/
+-keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
 
-# butterknife
--keep class butterknife.** { *; }
-
--dontwarn butterknife.internal.**
--keep class **$$ViewBinder { *; }
--keepclasseswithmembernames class * {
-    @butterknife.* <fields>;
-}
--keepclasseswithmembernames class * {
-    @butterknife.* <methods>;
-}
-
-
-# rxjava
--dontwarn sun.misc.**
--keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
-   long producerIndex;
-   long consumerIndex;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
-}
-
-
-# 内嵌类
--keep class com.null.test.MainActivity$* {
-    *;
-}
-
-
+# Do not strip any method/class that is annotated with @DoNotStrip
+-keep @com.facebook.common.internal.DoNotStrip class *
 -keepclassmembers class * {
-    void *(**On*Event);
+    @com.facebook.common.internal.DoNotStrip *;
 }
 
-# 保持 native 方法不被混淆
--keepclasseswithmembernames class * {
+
+# Keep native methods
+-keepclassmembers class * {
     native <methods>;
 }
 
+-dontwarn okio.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn okhttp3.**
+-dontwarn javax.annotation.**
+-dontwarn com.android.volley.toolbox.**
 
-# 保持自定义控件类不被混淆
--keepclasseswithmembers class * {
-    public <init>(android.content.Context, android.util.AttributeSet);
+# Works around a bug in the animated GIF module which will be fixed in 0.12.0
+-keep class com.facebook.imagepipeline.animated.factory.AnimatedFactoryImpl {
+    public AnimatedFactoryImpl(com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory,com.facebook.imagepipeline.core.ExecutorSupplier);
 }
 
-# 保持自定义控件类不被混淆
--keepclassmembers class * extends android.app.Activity {
-   public void *(android.view.View);
+#-------------------------------------------------------------------------
+
+#---------------------------------3.与js互相调用的类------------------------
+
+
+#---------------------------------4.反射相关的类和方法-----------------------
+
+
+#---------------------------------基本指令区----------------------------------
+-optimizationpasses 5
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-dontskipnonpubliclibraryclassmembers
+-dontpreverify
+-verbose
+-printmapping proguardMapping.txt
+-optimizations !code/simplification/cast,!field/*,!class/merging/*
+-keepattributes *Annotation*,InnerClasses
+-keepattributes Signature
+-keepattributes SourceFile,LineNumberTable
+#----------------------------------------------------------------------------
+
+#---------------------------------默认保留区---------------------------------
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+-keep public class * extends android.view.View
+-keep public class com.android.vending.licensing.ILicensingService
+-keep class android.support.** {*;}
+
+-keepclasseswithmembernames class * {
+    native <methods>;
 }
-
-
- # 保持枚举 enum 类不被混淆
+-keepclassmembers class * extends android.app.Activity{
+    public void *(android.view.View);
+}
 -keepclassmembers enum * {
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
-
-
- # 保持 Parcelable 不被混淆
--keep class * implements android.os.Parcelable {
-  public static final android.os.Parcelable$Creator *;
-}
-
-
-
-
-#保持自定义组件不被混淆
--keep public class * extends android.view.View {
+-keep public class * extends android.view.View{
+    *** get*();
+    void set*(***);
     public <init>(android.content.Context);
     public <init>(android.content.Context, android.util.AttributeSet);
     public <init>(android.content.Context, android.util.AttributeSet, int);
-    public void set*(...);
 }
-
-
-#保持 Serializable 不被混淆
--keepnames class * implements java.io.Serializable
-
-#保持 Serializable 不被混淆并且enum 类也不被混淆
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
 -keepclassmembers class * implements java.io.Serializable {
     static final long serialVersionUID;
     private static final java.io.ObjectStreamField[] serialPersistentFields;
@@ -162,78 +220,25 @@
     java.lang.Object writeReplace();
     java.lang.Object readResolve();
 }
-
-#保持枚举 enum 类不被混淆 如果混淆报错，建议直接使用上面的 -keepclassmembers class * implements java.io.Serializable即可
--keepclassmembers enum * {
-  public static **[] values();
- public static ** valueOf(java.lang.String);
+-keep class **.R$* {
+ *;
 }
-
 -keepclassmembers class * {
-    public void *ButtonClicked(android.view.View);
+    void *(**On*Event);
 }
+#----------------------------------------------------------------------------
 
-#不混淆资源类
--keepclassmembers class **.R$* {
-    public static <fields>;
+#---------------------------------webview------------------------------------
+-keepclassmembers class fqcn.of.javascript.interface.for.Webview {
+   public *;
 }
-
-
-#xUtils(保持注解，及使用注解的Activity不被混淆，不然会影响Activity中你使用注解相关的代码无法使用)
--keep class * extends java.lang.annotation.Annotation {*;}
--keep class com.otb.designerassist.activity.** {*;}
-
-
-
-##混淆保护自己项目的部分代码以及引用的第三方jar包library（想混淆去掉"#"）
-#-libraryjars libs/jg_filter_sdk_1.1 上午11.48.50.jar
-#-libraryjars libs/libammsdk.jar
-#-libraryjars libs/mta-sdk-1.6.2.jar
-#-libraryjars libs/open_sdk_r5756.jar
-#-libraryjars libs/tbs_sdk_thirdapp_v2.1.2.1096_36511_withdownload_obfs_20160727_105857.jar
-#-libraryjars libs/weiboSDKCore_3.1.4.jar
-#-libraryjars libs/wup-1.0.0.E-SNAPSHOT 上午11.48.50.jar
-#-libraryjars libs/Xg_sdk_v2.46_20160602_1638 上午11.48.50.jar
-
-
-
-
-#第三方library
--keep class io.reactivex.**{ *; }
--keep class com.jakewharton.**{ *; }
--keep class com.facebook.fresco.**{ *; }
--keep class com.bigkoo.**{ *; }
--keep class me.drakeet.materialdialog.**{ *; }
--keep class com.yqritc.**{ *; }
--keep class com.daimajia.numberprogressbar.**{ *; }
--keep class com.alipay.euler.**{ *; }
--keep class com.tencent.bugly.**{ *; }
--keep class com.zhuge.analysis.**{ *;}
--keep class me.biubiubiu.justifytext.**{ *;}
-
-
-
-###-------- Gson 相关的混淆配置--------
--keepattributes Signature
--keepattributes *Annotation*
--keep class sun.misc.Unsafe { *; }
-
-
-
-###---------  reservoir 相关的混淆配置-------
--keep class com.anupcowkur.reservoir.** { *;}
-
-
-
-#webview
--keepclassmembers class net.muxi.huashiapp.webview.WebViewActivity {
-       public *;
+-keepclassmembers class * extends android.webkit.WebViewClient {
+    public void *(android.webkit.WebView, java.lang.String, android.graphics.Bitmap);
+    public boolean *(android.webkit.WebView, java.lang.String);
 }
--keepattributes *JavascriptInterface*
-
-#忽略警告
--ignorewarnings
-
+-keepclassmembers class * extends android.webkit.WebViewClient {
+    public void *(android.webkit.WebView,java.lang.String);
+}
 
 
 

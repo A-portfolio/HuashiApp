@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -17,7 +18,6 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.FrescoUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
-import net.muxi.huashiapp.login.LoginActivity;
 import net.muxi.huashiapp.main.MainActivity;
 
 import java.util.Properties;
@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.http.HEAD;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -35,7 +34,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by ybao on 16/7/30.
  */
-public class EnteranceActivity extends BaseActivity implements View.OnClickListener{
+public class EnteranceActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.img_icon)
     ImageView mImgIcon;
@@ -43,6 +42,8 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
     SimpleDraweeView mDrawee;
     @BindView(R.id.root_layout)
     RelativeLayout mRootLayout;
+    @BindView(R.id.tv_slogan)
+    TextView mTvSlogan;
     private Properties mProperties;
     private long mSplashUpdate;
     private String mSplashUrl;
@@ -57,11 +58,12 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
         ButterKnife.bind(this);
         sp = new PreferenceUtil();
         Logger.d(sp.getString(AppConstants.SPLASH_IMG));
-        if (sp.getLong(AppConstants.SPLASH_UPDATE) != -1){
+        if (sp.getLong(AppConstants.SPLASH_UPDATE) != -1) {
             mRootLayout.setBackgroundColor(Color.TRANSPARENT);
             mImgIcon.setVisibility(View.GONE);
             mDrawee.setImageURI(Uri.parse(sp.getString(AppConstants.SPLASH_IMG)));
             mDrawee.setOnClickListener(this);
+            mTvSlogan.setVisibility(View.GONE);
         }
 
         getSplashData();
@@ -80,17 +82,17 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
                     @Override
                     public void onNext(Long aLong) {
                         Intent intent;
-                            intent = new Intent(EnteranceActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            EnteranceActivity.this.finish();
+                        intent = new Intent(EnteranceActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        EnteranceActivity.this.finish();
                     }
                 });
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.drawee){
-            Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(sp.getString(AppConstants.SPLASH_URL).toString()));
+        if (v.getId() == R.id.drawee) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sp.getString(AppConstants.SPLASH_URL).toString()));
             startActivity(intent);
         }
     }
@@ -112,10 +114,10 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
 
                     @Override
                     public void onNext(SplashData splashData) {
-                        if (splashData.getUpdate() != 0 && mSplashUpdate != splashData.getUpdate()){
+                        if (splashData.getUpdate() != 0 && mSplashUpdate != splashData.getUpdate()) {
                             saveSplashData(splashData);
                             Logger.d("save splash data");
-                            FrescoUtil.savePicture(splashData.getImg(),EnteranceActivity.this,"splash.jpg");
+                            FrescoUtil.savePicture(splashData.getImg(), EnteranceActivity.this, "splash.jpg");
                         }
                     }
                 });
@@ -126,8 +128,8 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
         mSplashImg = splashData.getImg();
         mSplashUrl = splashData.getUrl();
         sp.saveLong(AppConstants.SPLASH_UPDATE, mSplashUpdate);
-        sp.saveString(AppConstants.SPLASH_IMG,mSplashImg);
-        sp.saveString(AppConstants.SPLASH_URL,mSplashUrl);
+        sp.saveString(AppConstants.SPLASH_IMG, mSplashImg);
+        sp.saveString(AppConstants.SPLASH_URL, mSplashUrl);
     }
 
     @Override

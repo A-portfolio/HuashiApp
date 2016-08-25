@@ -116,6 +116,10 @@ public class ScheduleActivity extends ToolbarActivity {
         int day = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
         String defalutDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()), 1 - day);
         mCurWeek = (int) DateUtil.getDistanceWeek(sp.getString(PreferenceUtil.FIRST_WEEK_DATE, defalutDate), DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
+        //当第一次进入时保存当前周的第一天为 本学期的第一天
+        if (mCurWeek == 1){
+            saveFirstWeekDate();
+        }
         mSelectWeek = mCurWeek;
     }
 

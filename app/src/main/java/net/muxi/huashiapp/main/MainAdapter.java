@@ -160,7 +160,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public int getItemCount() {
-        Logger.d(mdesc.size() + "");
         return mdesc.size() + 1;
     }
 
