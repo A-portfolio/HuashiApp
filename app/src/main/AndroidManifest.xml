@@ -119,13 +119,6 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".common.service.ApkInstallReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETED"/>
-            </intent-filter>
-        </receiver>
-
-
         <service android:name=".common.service.DownloadService"/>
 
         <!--第三方开放平台-->

@@ -243,7 +243,7 @@ public class MainActivity extends ToolbarActivity {
 
                         @Override
                         public void onNext(List<BannerData> bannerDatas) {
-                            if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(mBannerDatas)) {
+                            if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(mBannerDatas) || bannerDatas.size() != mBannerDatas.size()) {
                                 mBannerDatas.clear();
                                 mBannerDatas.addAll(bannerDatas);
                                 dao.deleteAllBannerData();
@@ -295,9 +295,13 @@ public class MainActivity extends ToolbarActivity {
         mAdapter.setOnBannerItemClickListener(new MainAdapter.OnBannerItemClickListener() {
             @Override
             public void onBannerItemClick(BannerData bannerData) {
-                ZhugeUtils.sendEvent("点击 banner", "点解 banner");
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(bannerData.getUrl()));
-                startActivity(browserIntent);
+                ZhugeUtils.sendEvent("点击 banner", bannerData.getUrl());
+                try {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(bannerData.getUrl()));
+                    startActivity(browserIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 

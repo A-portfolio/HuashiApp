@@ -49,7 +49,9 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
     private String mSplashUrl;
     private String mSplashImg;
 
-    PreferenceUtil sp;
+    private static final int SPLASH_TIME = 2;
+
+    private PreferenceUtil sp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,7 +69,7 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
         }
 
         getSplashData();
-        Observable.timer(1, TimeUnit.SECONDS)
+        Observable.timer(SPLASH_TIME, TimeUnit.SECONDS)
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onCompleted() {
@@ -118,6 +120,8 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
                             saveSplashData(splashData);
                             Logger.d("save splash data");
                             FrescoUtil.savePicture(splashData.getImg(), EnteranceActivity.this, "splash.jpg");
+                        }else{
+                            sp.saveLong(AppConstants.SPLASH_UPDATE,-1);
                         }
                     }
                 });

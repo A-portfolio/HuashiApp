@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
@@ -43,7 +44,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by ybao on 16/5/15.
  */
-public class LibraryLoginActivity extends ToolbarActivity{
+public class LibraryLoginActivity extends ToolbarActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -61,6 +62,8 @@ public class LibraryLoginActivity extends ToolbarActivity{
     LinearLayout mAccoutLayout;
     @BindView(R.id.img_bg)
     ImageView mImgBg;
+    @BindView(R.id.scroll_view)
+    ScrollView mScrollView;
 
     private String[] mSuggestions;
     private HuaShiDao dao;
@@ -91,9 +94,16 @@ public class LibraryLoginActivity extends ToolbarActivity{
 //        if (actionBar != null){
 //            actionBar.setDisplayHomeAsUpEnabled(true);
 //        }
+        //避免键盘弹起时可滑动
+        mScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                DimensUtil.getScreenHeight()
+                DimensUtil.getScreenHeight() - DimensUtil.getStatusBarHeight()
         );
         mImgBg.setLayoutParams(params);
         mEditUserName.addTextChangedListener(mTextWatcher);
@@ -102,8 +112,8 @@ public class LibraryLoginActivity extends ToolbarActivity{
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 final int DRAWABLE_RIGHT = 2;
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (mEditUserName.getRight() - mEditUserName.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (mEditUserName.getRight() - mEditUserName.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         mEditUserName.setText("");
                         return true;
                     }
@@ -115,8 +125,8 @@ public class LibraryLoginActivity extends ToolbarActivity{
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 final int DRAWABLE_RIGHT = 2;
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (mEditPassword.getRight() - mEditPassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (mEditPassword.getRight() - mEditPassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         mEditPassword.setText("");
                         return true;
                     }
@@ -210,10 +220,10 @@ public class LibraryLoginActivity extends ToolbarActivity{
     @OnClick(R.id.btn_login)
     public void onClick() {
         final User libUser = new User();
-        showProgressBarDialog(true,"登录中");
         libUser.setSid(mEditUserName.getText().toString());
         libUser.setPassword(mEditPassword.getText().toString());
         if (NetStatus.isConnected()) {
+            showProgressBarDialog(true, "登录中");
             CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(libUser))
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -233,7 +243,7 @@ public class LibraryLoginActivity extends ToolbarActivity{
                         public void onNext(Response<VerifyResponse> verifyResponseResponse) {
                             showProgressBarDialog(false);
                             if (verifyResponseResponse.code() == 200) {
-                                ZhugeUtils.sendEvent("图书馆登录","登陆成功");
+                                ZhugeUtils.sendEvent("图书馆登录", "登陆成功");
                                 App.saveLibUser(libUser);
                                 Intent intent = new Intent(LibraryLoginActivity.this, MineActivity.class);
                                 startActivity(intent);
@@ -244,6 +254,8 @@ public class LibraryLoginActivity extends ToolbarActivity{
                             }
                         }
                     });
+        } else {
+            ToastUtil.showShort(getString(R.string.tip_check_net));
         }
     }
 

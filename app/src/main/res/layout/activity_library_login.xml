@@ -7,6 +7,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
+        android:id="@+id/scroll_view"
+        android:scrollbars="none"
         android:layout_height="match_parent">
 
         <LinearLayout
@@ -90,6 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="@android:color/transparent"
+                    android:lines="1"
                     android:drawableLeft="@drawable/icon_write_classname"
                     android:drawablePadding="18dp"
                     android:drawableRight="@drawable/ic_clear_black_24dp"
@@ -118,6 +121,7 @@
                     android:drawableLeft="@drawable/ic_password"
                     android:drawablePadding="18dp"
                     android:drawableRight="@drawable/ic_clear_black_24dp"
+                    android:lines="1"
                     android:hint="密码(初始密码为123456)"
                     android:imeActionLabel="@string/action_login"
                     android:inputType="textPassword"
