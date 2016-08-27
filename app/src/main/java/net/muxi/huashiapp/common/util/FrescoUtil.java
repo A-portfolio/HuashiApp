@@ -121,8 +121,7 @@ public class FrescoUtil {
                 if (!appDir.exists()) {
                     appDir.mkdir();
                 }
-                String filename = fileName + ".jpg";
-                File file = new File(appDir, fileName);
+                File file = new File(appDir, fileName + ".jpg");
                 try {
                     FileOutputStream fos = new FileOutputStream(file);
                     assert bitmap != null;

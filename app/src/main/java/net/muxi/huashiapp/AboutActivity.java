@@ -22,6 +22,7 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.service.DownloadService;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
+import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.util.ZhugeUtils;
 
 import rx.Observer;
@@ -93,7 +94,7 @@ public class AboutActivity extends ToolbarActivity {
     }
 
     private void checkUpdates() {
-        if (!NetStatus.isConnected()) {
+        if (NetStatus.isConnected()) {
             CampusFactory.getRetrofitService().getLatestVersion()
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.newThread())
@@ -110,7 +111,7 @@ public class AboutActivity extends ToolbarActivity {
 
                         @Override
                         public void onNext(final VersionData versionData) {
-                            if (!BuildConfig.VERSION_NAME.equals(versionData.getVersion())) {
+                            if (versionData.getVersion() != null && !BuildConfig.VERSION_NAME.equals(versionData.getVersion())) {
                                 final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
                                 materialDialog.setTitle(versionData.getName() + versionData.getVersion() + getString(R.string.title_update));
                                 materialDialog.setContent(versionData.getIntro() + "\n" + getString(R.string.tip_update_size) + versionData.getSize());
@@ -146,17 +147,7 @@ public class AboutActivity extends ToolbarActivity {
                         }
                     });
         } else {
-            final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
-            materialDialog.setTitle(getString(R.string.title_not_have_to_update));
-            materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
-            materialDialog.setNegativeButtonVisible(false);
-            materialDialog.setPositiveButton(getResources().getString(R.string.btn_positive), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    materialDialog.dismiss();
-                }
-            });
-            materialDialog.show();
+            ToastUtil.showShort(getString(R.string.tip_check_net));
         }
     }
 
