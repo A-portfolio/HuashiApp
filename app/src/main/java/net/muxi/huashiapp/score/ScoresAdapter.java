@@ -3,6 +3,7 @@ package net.muxi.huashiapp.score;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.Space;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.util.DimensUtil;
@@ -87,11 +89,16 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
             } else {
                 holder.mTvScoreEnding.setText(detailScores.getEnding());
             }
+        }else {
+            holder.mTvScoreUsual.setText("");
+            holder.mTvScoreEnding.setText("");
         }
 
         holder.mRootLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Fragment curFragment = ((BaseActivity) mContext).getSupportFragmentManager().findFragmentById(R.id.fragment_layout);
+                ((ScoreDetailFragment) curFragment).loadSpecifiedScore(position);
                 if (!mList.contains(position)) {
                     scaleSpace(holder.mSpaceAnim, SPACE_MIN_HEIGHT, SPACE_MAX_HEIGHT);
                     Logger.d("load more");

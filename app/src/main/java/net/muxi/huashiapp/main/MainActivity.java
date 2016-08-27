@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
+import com.tencent.smtt.sdk.QbSdk;
 
 import net.muxi.huashiapp.AboutActivity;
 import net.muxi.huashiapp.App;
@@ -136,7 +137,8 @@ public class MainActivity extends ToolbarActivity {
         getProduct();
 
         AlarmUtil.register(this);
-        Log.d("alarm","register");
+        Log.d("alarm", "register");
+        QbSdk.allowThirdPartyAppDownload(true);
     }
 
     //信鸽注册和启动
@@ -309,6 +311,7 @@ public class MainActivity extends ToolbarActivity {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent;
+                Logger.d(position + "");
                 switch (position) {
                     case 0:
                         if (App.sUser.getSid() != "0") {
@@ -478,7 +481,6 @@ public class MainActivity extends ToolbarActivity {
                 intent = new Intent(MainActivity.this, SettingActivity.class);
                 startActivity(intent);
                 break;
-
             case R.id.action_about:
                 intent = new Intent(MainActivity.this, AboutActivity.class);
                 startActivity(intent);

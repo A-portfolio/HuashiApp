@@ -149,7 +149,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                             }
                         }
                         if (isRemind) {
-                            String content = String.format(App.sContext.getString(R.string.notify_content_lib),connectStrings(books));
+                            String content = String.format(App.sContext.getString(R.string.notify_content_lib),connectBooks(books));
                             NotifyUtil.show(mContext, MineActivity.class,
                                     mContext.getResources().getString(R.string.notify_title_lib),
                                     content);
@@ -243,6 +243,17 @@ public class AlarmReceiver extends BroadcastReceiver {
     public String connectStrings(List<String> stringList){
         String s;
         s = TextUtils.join(",",stringList);
+        return s;
+    }
+
+    public String connectBooks(List<String> books){
+        String s = "";
+        for (int i = 0;i < books.size();i ++){
+            s = s +  "《" + books.get(i) + "》";
+            if (i < books.size() - 1){
+                s += "，";
+            }
+        }
         return s;
     }
 

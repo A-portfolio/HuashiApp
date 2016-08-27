@@ -2,7 +2,6 @@ package net.muxi.huashiapp;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 
 import com.alipay.euler.andfix.patch.PatchManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -22,8 +21,6 @@ public class App extends Application {
 
     public static Context sContext;
 
-    public static AppCompatActivity sActivity = null;
-
     //获取上次的已经登录的用户账号信息
     public static User sUser = new User();
     public static User sLibrarayUser = new User();
@@ -31,12 +28,9 @@ public class App extends Application {
     private PreferenceUtil sp;
     private PatchManager mPatchManager;
 
-    private Context context;
-
     @Override
     public void onCreate() {
         super.onCreate();
-//        LeakCanary.install(this);
         sContext = getApplicationContext();
 
         CrashReport.initCrashReport(getApplicationContext(), "900043675", true);
@@ -72,7 +66,6 @@ public class App extends Application {
 //        //禁止收集用户个人账户信息默认为收集
         ZhugeSDK.getInstance().disableAccounts();
         ZhugeSDK.getInstance().openLog();
-
 
 
         sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, "0"));
