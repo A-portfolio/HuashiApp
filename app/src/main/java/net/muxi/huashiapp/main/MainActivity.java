@@ -141,7 +141,6 @@ public class MainActivity extends ToolbarActivity {
 
     //信鸽注册和启动
     private void initXGPush() {
-        Logger.d("initXGPush");
         context = getApplicationContext();
         XGPushConfig.enableDebug(this, true);
         XGPushConfig.getToken(this);
@@ -243,7 +242,7 @@ public class MainActivity extends ToolbarActivity {
 
                         @Override
                         public void onNext(List<BannerData> bannerDatas) {
-                            if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(mBannerDatas)) {
+                            if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(mBannerDatas) || bannerDatas.size() != mBannerDatas.size()) {
                                 mBannerDatas.clear();
                                 mBannerDatas.addAll(bannerDatas);
                                 dao.deleteAllBannerData();
@@ -295,9 +294,13 @@ public class MainActivity extends ToolbarActivity {
         mAdapter.setOnBannerItemClickListener(new MainAdapter.OnBannerItemClickListener() {
             @Override
             public void onBannerItemClick(BannerData bannerData) {
-                ZhugeUtils.sendEvent("点击 banner", "点解 banner");
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(bannerData.getUrl()));
-                startActivity(browserIntent);
+                ZhugeUtils.sendEvent("点击 banner", bannerData.getUrl());
+                try {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(bannerData.getUrl()));
+                    startActivity(browserIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -305,6 +308,7 @@ public class MainActivity extends ToolbarActivity {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent;
+                Logger.d(position + "");
                 switch (position) {
                     case 0:
                         if (App.sUser.getSid() != "0") {
@@ -383,6 +387,7 @@ public class MainActivity extends ToolbarActivity {
                 Logger.d(position + "");
                 if (position >= WEB_POSITION) {
                     int productPos = position - WEB_POSITION;
+                    Logger.d(productPos + "");
                     ZhugeUtils.sendEvent(mProductData.get_products().get(productPos).getName(), mProductData.get_products().get(productPos).getName());
                     intent = WebViewActivity.newIntent(MainActivity.this, mProductData.get_products().get(productPos).getUrl(),
                             mProductData.get_products().get(productPos).getName(),

@@ -6,7 +6,6 @@ import android.util.Log;
 
 import net.muxi.huashiapp.common.data.ApartmentData;
 import net.muxi.huashiapp.common.data.BannerData;
-import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
@@ -137,6 +136,9 @@ public class HuaShiDao {
                 course.setColor(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_COLOR)));
                 courses.add(course);
             }
+        }
+        if (cursor != null){
+            cursor.close();
         }
         return courses;
     }

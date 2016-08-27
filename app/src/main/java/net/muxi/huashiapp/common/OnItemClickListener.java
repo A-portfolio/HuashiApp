@@ -9,6 +9,6 @@ import net.muxi.huashiapp.common.data.BookSearchResult;
  * RecyclerView 的监听接口
  */
 public interface OnItemClickListener {
-    public void onItemClick(View view, BookSearchResult.ResultsBean resultsBean);
+    void onItemClick(View view, BookSearchResult.ResultsBean resultsBean);
 }
 

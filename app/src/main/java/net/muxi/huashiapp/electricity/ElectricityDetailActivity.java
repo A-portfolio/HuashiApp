@@ -102,7 +102,9 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
                         if (response.code() == 503){
                             ToastUtil.showShort(getString(R.string.tip_school_server_error));
                         }
-                        ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(response.body());
+                        if (response.code() == 200) {
+                            ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(response.body());
+                        }
                     }
                 });
         if (NetStatus.isConnected()) {
@@ -128,7 +130,9 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
                             if (mSwipeRefreshLayout != null){
                                 mSwipeRefreshLayout.setRefreshing(false);
                             }
-                            ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(response.body());
+                            if (response.code() == 200) {
+                                ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(response.body());
+                            }
                         }
                     });
         } else {
