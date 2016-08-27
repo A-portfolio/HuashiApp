@@ -24,8 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:text="@string/app_slogan"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/medium_size"/>
+        android:textColor="@color/colorWhite"/>
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/drawee"

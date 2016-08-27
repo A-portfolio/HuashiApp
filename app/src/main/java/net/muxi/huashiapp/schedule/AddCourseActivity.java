@@ -43,7 +43,6 @@ import rx.schedulers.Schedulers;
 public class AddCourseActivity extends ToolbarActivity
         implements View.OnClickListener, CourseTimeDialog.NoticeDialogListener {
 
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.edit_course_name)
@@ -94,7 +93,6 @@ public class AddCourseActivity extends ToolbarActivity
         mBtnCourseTime.setOnClickListener(this);
     }
 
-
     private void addData() {
         for (int i = 1; i < 19; i++) {
             mWeeks.add(i);
@@ -113,7 +111,6 @@ public class AddCourseActivity extends ToolbarActivity
         }
         return s;
     }
-
 
     @Override
     public void onClick(View v) {
@@ -185,9 +182,7 @@ public class AddCourseActivity extends ToolbarActivity
                 courseTimeDialog.setNoticeDialogListener(this);
                 courseTimeDialog.show();
         }
-
     }
-
 
     public void addCourse(final Course course, final int id) {
         if (NetStatus.isConnected() == true) {
@@ -228,13 +223,14 @@ public class AddCourseActivity extends ToolbarActivity
                                 newId ++;
                                 sp.saveInt(PreferenceUtil.COURSE_ID, newId);
                                 AddCourseActivity.this.finish();
+                            }else {
+                                ToastUtil.showShort(getString(R.string.tip_adding_fail));
                             }
                         }
                     });
         } else {
             ToastUtil.showLong(getString(R.string.tip_check_net));
         }
-
     }
 
     /**
@@ -260,7 +256,6 @@ public class AddCourseActivity extends ToolbarActivity
         }
         return false;
     }
-
 
     //插入的课程赋值
     private Course setCourse() {
