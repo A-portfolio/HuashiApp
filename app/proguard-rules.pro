@@ -151,6 +151,8 @@
     public AnimatedFactoryImpl(com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory,com.facebook.imagepipeline.core.ExecutorSupplier);
 }
 
+-keep class com.facebook.** { *; }
+
 
 # 腾讯 X5内核
 #-optimizationpasses 7

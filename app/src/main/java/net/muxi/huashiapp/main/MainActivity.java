@@ -18,7 +18,6 @@ import com.google.gson.Gson;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
-import com.tencent.smtt.sdk.QbSdk;
 
 import net.muxi.huashiapp.AboutActivity;
 import net.muxi.huashiapp.App;
@@ -138,7 +137,6 @@ public class MainActivity extends ToolbarActivity {
 
         AlarmUtil.register(this);
         Log.d("alarm", "register");
-        QbSdk.allowThirdPartyAppDownload(true);
     }
 
     //信鸽注册和启动
