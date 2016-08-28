@@ -55,7 +55,7 @@ public class AboutActivity extends ToolbarActivity {
         mImgCcnubox = (ImageView) findViewById(R.id.img_ccnubox);
         mTvMuxiLink = (TextView) findViewById(R.id.tv_muxi_link);
         mTvVersionname = (TextView) findViewById(R.id.tv_versionname);
-        setTitle("关于");
+        setTitle("关于我们");
         mTvVersionname.setText(BuildConfig.VERSION_NAME);
         mTvMuxiLink.setOnClickListener(new View.OnClickListener() {
             @Override

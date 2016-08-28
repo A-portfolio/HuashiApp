@@ -12,8 +12,6 @@ import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.interfaces.DraweeController;
-import com.facebook.drawee.view.DraweeView;
 import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
@@ -141,17 +139,5 @@ public class FrescoUtil {
         }, CallerThreadExecutor.getInstance());
     }
 
-    public static void setLoading(DraweeView draweeView){
-//        Uri uri = new Uri.Builder()
-//                .scheme("res")
-//                .path(String.valueOf(R.drawable.loading))
-//                .build();
-        Uri uri = Uri.parse("asset://net.muxi.huashiapp/loading.gif");
-        DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setUri(uri)
-                .setAutoPlayAnimations(true)
-                .build();
-        draweeView.setController(controller);
-    }
 
 }
