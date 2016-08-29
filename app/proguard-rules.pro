@@ -89,6 +89,10 @@
 -keep public class * extends java.lang.annotation.Annotation
 -keepclasseswithmembernames class * {native <methods>;}
 -keep class com.alipay.euler.andfix.**{ *; }
+-keep class * extends java.lang.annotation.Annotation
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
 
 # weixin
 -dontwarn com.tencent.mm.**

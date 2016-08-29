@@ -49,7 +49,7 @@ public class App extends Application {
 
         FLog.setMinimumLoggingLevel(FLog.VERBOSE);
 
-        CrashReport.initCrashReport(getApplicationContext(), "900043675", true);
+        CrashReport.initCrashReport(getApplicationContext(), "900043675", BuildConfig.DEBUG);
         Fresco.initialize(this);
         sp = new PreferenceUtil();
         try {
