@@ -64,7 +64,7 @@
     <dimen name="library_icon_padding">12dp</dimen>
     <dimen name="library_item_search_height">90dp</dimen>
     <dimen name="library_item_borrow_height">84dp</dimen>
-    <dimen name="library_detail_min_height">600dp</dimen>
+    <dimen name="library_detail_min_height">700dp</dimen>
     <dimen name="library_search_view_margin">8dp</dimen>
 
 

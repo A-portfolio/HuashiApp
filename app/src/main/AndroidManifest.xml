@@ -27,7 +27,6 @@
 
         <activity
             android:name=".EnteranceActivity"
-            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
 
             <intent-filter>

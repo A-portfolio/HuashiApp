@@ -27,17 +27,25 @@
         android:textSize="16sp"
         tools:text="关于华中师范大学录取"/>
 
-    <me.biubiubiu.justifytext.library.JustifyTextView
+    <!--<me.biubiubiu.justifytext.library.JustifyTextView-->
+    <!--android:id="@+id/news_content"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="40dp"-->
+    <!--android:textSize="14sp"-->
+    <!--tools:text="为维护全校选课秩序，保护同学们的选课利益，提高课程效率为维护全校选课秩序，保护同学们的选课利益，提高课程效率为维护全校选课秩序，保护同学们的选课利益，提高课程效率为维护全校选课秩序，保护同学们的选课利益，提高课程效率"/>-->
+
+    <TextView
         android:id="@+id/news_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:textSize="14sp"
-        tools:text="为维护全校选课秩序，保护同学们的选课利益，提高课程效率为维护全校选课秩序，保护同学们的选课利益，提高课程效率为维护全校选课秩序，保护同学们的选课利益，提高课程效率为维护全校选课秩序，保护同学们的选课利益，提高课程效率"/>
+        tools:text="为为维护全校选课秩序为维护全校选课秩序为维护全校选课秩序为维护全校选课秩序维护为维护全校选课秩序全校选课秩序"/>
 
     <TextView
-        android:layout_width="wrap_content"
         android:id="@+id/tv_appendix"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="相关链接:"/>
@@ -53,10 +61,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
+        android:layout_marginBottom="32dp"
         android:layout_marginTop="20dp"
         android:textColor="@color/dividerGrey"
         android:textSize="12sp"
-        android:layout_marginBottom="32dp"
         tools:text="2016-6-30 8:47"/>
 
 
