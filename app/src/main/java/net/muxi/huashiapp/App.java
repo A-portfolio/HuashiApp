@@ -4,20 +4,13 @@ import android.app.Application;
 import android.content.Context;
 
 import com.alipay.euler.andfix.patch.PatchManager;
-import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.facebook.imagepipeline.listener.RequestListener;
-import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
-
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**
@@ -39,15 +32,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sContext = getApplicationContext();
-        Set<RequestListener> requestListeners = new HashSet<>();
-        requestListeners.add(new RequestLoggingListener());
-        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
-                // other setters
-                .setRequestListeners(requestListeners)
-                .build();
-        Fresco.initialize(this, config);
-
-        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
+        Fresco.initialize(this);
 
         CrashReport.initCrashReport(getApplicationContext(), "900043675", BuildConfig.DEBUG);
         Fresco.initialize(this);

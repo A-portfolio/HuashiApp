@@ -76,8 +76,7 @@
             android:maxLines="1"
             android:paddingLeft="16dp"
             android:text="选择上课周"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/schedule_add_course_size"/>
+            android:textColor="@color/colorPrimary"/>
 
         <Button
             android:id="@+id/btn_course_time"
@@ -97,8 +96,7 @@
             android:maxLines="1"
             android:paddingLeft="16dp"
             android:text="添加上课时间"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/schedule_add_course_size"/>
+            android:textColor="@color/colorPrimary"/>
 
         <RelativeLayout
             android:id="@+id/layout_course_remind"

@@ -46,7 +46,6 @@ public class LibrarySearchActivity extends ToolbarActivity {
         setTitle("图书馆");
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_login, menu);
