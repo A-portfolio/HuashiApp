@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * Created by ybao on 16/4/19.
- *   课程表显示的类
+ * 课程表显示的类
  */
 public class TimeTable extends FrameLayout {
 
@@ -62,6 +62,18 @@ public class TimeTable extends FrameLayout {
     private float startX, startY;
     private Date date1;
     private boolean isTouchCancel = true;
+
+    private List<Course> curWeekPriorityCourses = new ArrayList<>();
+    private List<Course> curWeekCourses = new ArrayList<>();
+    private List<Course> otherPriorityCourses = new ArrayList<>();
+    private List<Course> otherCourses = new ArrayList<>();
+
+    //不同类型的课程
+    private final int CUR_WEEK_PRIORITY = 1;
+    private final int CUR_WEEK = 2;
+    private final int OTHER_WEEK_PRIORITY = 3;
+    private final int OTHER_WEEK = 4;
+
 
     private int type = 0;
 
@@ -332,61 +344,69 @@ public class TimeTable extends FrameLayout {
         return true;
     }
 
-    /**
-     *  置  种类 下的滑动
-     *
-     * @param type curweek : 0,  otherweek : 1
-     */
     public void setType(int type) {
         this.type = type;
     }
 
     //添加每节课程的TextView
     public void setCourse(final List<Course> courses, int week) {
-        Logger.d(courses.size() + "   week");
-        List<Course> priorityCourses = getPriorityCourses(courses, week);
-        List<Course> curCourses = findCurWeekCourses(courses, week);
-        List<Course> otherCourses = getOtherCourses(courses, week);
-        for (int i = 0; i < courses.size(); i++) {
-            if (courses.get(i).getCourse() != null && courses.get(i).getCourse().equals(AppConstants.INIT_COURSE)) {
-                Logger.d(courses.get(i).getCourse());
+        if (courses.size() > 0) {
+            List<Course> copyCourses = new ArrayList<>();
+            copyCourses.clear();
+            copyCourses.addAll(courses);
+            Logger.d(copyCourses.size() + "   week");
+            clearAllTypeCourses();
+            addTypeCourses(copyCourses, week);
+            setTypeCourses(curWeekPriorityCourses, CUR_WEEK_PRIORITY);
+            setTypeCourses(curWeekCourses, CUR_WEEK);
+            setTypeCourses(otherPriorityCourses, OTHER_WEEK_PRIORITY);
+            setTypeCourses(otherCourses, OTHER_WEEK);
+        }
+    }
+
+    private void setTypeCourses(final List<Course> typeCourses, int type) {
+        for (int i = 0; i < typeCourses.size(); i++) {
+            if (typeCourses.get(i).getCourse() != null && typeCourses.get(i).getCourse().equals(AppConstants.INIT_COURSE)) {
                 continue;
             } else {
                 final int curCourse = i;
-                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                LayoutParams params = new LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
-                        courses.get(i).getDuring() * COURSE_TIME_HEIGHT / 2 - 2
+                        typeCourses.get(i).getDuring() * COURSE_TIME_HEIGHT / 2 - 2
                 );
 
-                params.setMargins(0, COURSE_TIME_HEIGHT / 2 * (courses.get(i).getStart() - 1), 0, 0);
+                params.setMargins(0, COURSE_TIME_HEIGHT / 2 * (typeCourses.get(i).getStart() - 1), 0, 0);
+
                 final TextView courseTv = new TextView(mContext);
-                if (curCourses.contains(courses.get(i))) {
-                    courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(courses.get(i).getColor(), 0)));
-                } else if (priorityCourses.contains(courses.get(i)) && TimeTableUtil.isThisWeek(week, courses.get(i).getWeeks())) {
-                    courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(courses.get(i).getColor(), 1)));
-                } else if (priorityCourses.contains(courses.get(i)) && !TimeTableUtil.isThisWeek(week, courses.get(i).getWeeks())) {
-                    courseTv.setBackground(getResources().getDrawable(R.drawable.bg_class_gary));
-                } else if (otherCourses.contains(courses.get(i))) {
-                    courseTv.setBackground(getResources().getDrawable(R.drawable.bg_simple_class_gray));
+                switch (type) {
+                    case CUR_WEEK_PRIORITY:
+                        courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(typeCourses.get(i).getColor(), 1)));
+                        courseTv.setText(typeCourses.get(i).getCourse() + "\n@" +
+                                typeCourses.get(i).getPlace() + "\n" +
+                                typeCourses.get(i).getTeacher());
+                        break;
+                    case CUR_WEEK:
+                        courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(typeCourses.get(i).getColor(), 0)));
+                        courseTv.setText(typeCourses.get(i).getCourse() + "\n@" +
+                                typeCourses.get(i).getPlace() + "\n" +
+                                typeCourses.get(i).getTeacher());
+                        break;
+                    case OTHER_WEEK_PRIORITY:
+                        courseTv.setBackground(getResources().getDrawable(R.drawable.bg_class_gary));
+                        courseTv.setText(typeCourses.get(i).getCourse() + "\n@" +
+                                typeCourses.get(i).getPlace() + "\n" +
+                                typeCourses.get(i).getTeacher() + "\n[非本周]");
+                        break;
+                    case OTHER_WEEK:
+                        courseTv.setBackground(getResources().getDrawable(R.drawable.bg_simple_class_gray));
+                        courseTv.setText(typeCourses.get(i).getCourse() + "\n@" +
+                                typeCourses.get(i).getPlace() + "\n" +
+                                typeCourses.get(i).getTeacher() + "\n[非本周]");
+                        break;
                 }
+
                 courseTv.setTextColor(Color.WHITE);
-                String courseName = TimeTableUtil.simplifyCourse(courses.get(i).getCourse());
                 courseTv.setGravity(Gravity.CENTER_HORIZONTAL);
-                if (priorityCourses.contains(courses.get(i)) || curCourses.contains(courses.get(i))) {
-                    if (TimeTableUtil.isThisWeek(week, courses.get(i).getWeeks())) {
-                        courseTv.setText(courseName + "\n@" +
-                                courses.get(i).getPlace() + "\n" +
-                                courses.get(i).getTeacher());
-                    } else {
-                        courseTv.setText(courseName + "\n@" +
-                                courses.get(i).getPlace() + "\n" +
-                                courses.get(i).getTeacher() + "\n[非本周]");
-                    }
-                } else if (otherCourses.contains(courses.get(i))) {
-                    courseTv.setText(courseName + "\n@" +
-                            courses.get(i).getPlace() + "\n" +
-                            courses.get(i).getTeacher() + "\n[非本周]");
-                }
 
                 courseTv.setOnTouchListener(new OnTouchListener() {
                     @Override
@@ -408,7 +428,7 @@ public class TimeTable extends FrameLayout {
                                             Logger.d("childview long click");
                                             if (mOnLongPressedListener != null) {
                                                 Logger.d("childview long click");
-                                                mOnLongPressedListener.onLongPressed(courses.get(curCourse));
+                                                mOnLongPressedListener.onLongPressed(typeCourses.get(curCourse));
                                             }
                                         }
                                     }
@@ -418,9 +438,9 @@ public class TimeTable extends FrameLayout {
                             case MotionEvent.ACTION_MOVE:
                                 curX = event.getRawX();
                                 curY = event.getRawY();
-                                mWeekDayLayout.scrollBy((int) (mx - curX), 0, type);
-                                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY), type);
-                                mCourseLayout.scrollBy(0, (int) (my - curY), type);
+                                mWeekDayLayout.scrollBy((int) (mx - curX), 0, 0);
+                                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY), 0);
+                                mCourseLayout.scrollBy(0, (int) (my - curY), 0);
                                 mx = curX;
                                 my = curY;
                                 break;
@@ -432,7 +452,7 @@ public class TimeTable extends FrameLayout {
                                         (Math.abs(startX - curX) < 4) && (Math.abs(startY - curY) < 4)) {
                                     if (mOnCourseClickListener != null) {
                                         Logger.d("child view click");
-                                        mOnCourseClickListener.onCourseClick(courses.get(curCourse));
+                                        mOnCourseClickListener.onCourseClick(typeCourses.get(curCourse));
 
                                     }
                                 }
@@ -445,10 +465,93 @@ public class TimeTable extends FrameLayout {
                 });
 
                 int j;
-                j = transDaysToInt(courses.get(i).getDay());
+                j = transDaysToInt(typeCourses.get(i).getDay());
                 dayCourseLayout[j].addView(courseTv, params);
             }
         }
+    }
+
+    /**
+     * 添加至不同类型的课程 list
+     * @param courses all courses
+     * @param week current week
+     */
+    private void addTypeCourses(List<Course> courses, int week) {
+        List<Course> conflictCourses = new ArrayList<>();
+        int i = 0;
+        while (courses.size() > i && courses.get(i) != null) {
+            Logger.d("course init");
+            conflictCourses.clear();
+            if (TimeTableUtil.isThisWeek(week, courses.get(i).getWeeks())) {
+                for (int j = 0; j < courses.size(); j++) {
+                    if (courses.get(j) != null) {
+                        if (courses.get(i).getStart() == courses.get(j).getStart() &&
+                                courses.get(i).getDuring() == courses.get(j).getDuring() &&
+                                courses.get(i).getDay().equals(courses.get(j).getDay())) {
+                            conflictCourses.add(courses.get(j));
+                            Logger.d("conflictCourses add" + courses.get(j).getCourse().toString() + j + "  " + courses.size());
+                        }
+                    }
+                }
+                if (conflictCourses.size() > 1) {
+                    curWeekPriorityCourses.add(courses.get(i));
+                    Logger.d("curweekpri " + courses.get(i).getCourse());
+                    for (Course course : conflictCourses) {
+                        courses.remove(course);
+                    }
+                } else if (conflictCourses.size() == 1) {
+                    curWeekCourses.add(courses.get(i));
+                    Logger.d("curweek " + courses.get(i).getCourse());
+                    courses.remove(conflictCourses.get(0));
+                }
+            } else {
+                i++;
+            }
+        }
+        while (courses.size() > 0 && courses.get(0) != null) {
+            conflictCourses.clear();
+            for (int j = 0; j < courses.size(); j++) {
+                if (courses.get(j) != null) {
+                    if (courses.get(0).getStart() == courses.get(j).getStart() &&
+                            courses.get(0).getDuring() == courses.get(j).getDuring() &&
+                            courses.get(0).getDay().equals(courses.get(j).getDay())) {
+                        conflictCourses.add(courses.get(j));
+                    }
+                }
+            }
+            if (conflictCourses.size() > 1) {
+                otherPriorityCourses.add(courses.get(0));
+                Logger.d("otherpri " + courses.get(0).getCourse());
+                for (Course course : conflictCourses) {
+                    courses.remove(course);
+                }
+            } else if (conflictCourses.size() == 1) {
+                otherCourses.add(courses.get(0));
+                Logger.d("other " + courses.get(0).getCourse());
+                courses.remove(conflictCourses.get(0));
+            }
+        }
+    }
+
+    /**
+     * 清空所有类型的课程
+     */
+    private void clearAllTypeCourses() {
+        curWeekPriorityCourses.clear();
+        curWeekCourses.clear();
+        otherCourses.clear();
+        otherPriorityCourses.clear();
+    }
+
+
+    private List<Course> getCurWeekCourses(List<Course> courses, int week) {
+        List<Course> curWeekCourses = new ArrayList<>();
+        for (Course course : courses) {
+            if (TimeTableUtil.isThisWeek(week, course.getWeeks())) {
+                curWeekCourses.add(course);
+            }
+        }
+        return curWeekCourses;
     }
 
     private List<Course> getOtherCourses(List<Course> courses, int week) {
@@ -519,6 +622,7 @@ public class TimeTable extends FrameLayout {
                     }
                 }
             }
+            // TODO: 16/9/1 算法待优化 
             if (isConflict) {
                 priorityCourses.add(course);
                 Logger.d(course.getCourse());

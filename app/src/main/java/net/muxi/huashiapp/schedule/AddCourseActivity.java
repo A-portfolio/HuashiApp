@@ -247,9 +247,12 @@ public class AddCourseActivity extends ToolbarActivity
                     (course.getStart() + course.getDuring()) > newCourse.getStart())
                     || (course.getStart() >= newCourse.getStart() &&
                     course.getStart() < (newCourse.getStart() + newCourse.getDuring()))) {
-                for (int j = 0; j < mWeeks.size(); j++) {
-                    if (course.getWeeks().contains(String.valueOf(mWeeks.get(i)))) {
-                        return true;
+                String[] localCourse = course.getWeeks().split(",");
+                for (int j = 0; j < localCourse.length; j++) {
+                    for (int k = 0;k < mWeeks.size();k ++) {
+                        if (localCourse[j].equals(String.valueOf(mWeeks.get(k)))) {
+                            return true;
+                        }
                     }
                 }
             }

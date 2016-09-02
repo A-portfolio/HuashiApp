@@ -39,6 +39,7 @@
         android:id="@+id/news_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:lineSpacingMultiplier="1.2"
         android:layout_marginTop="40dp"
         android:textSize="14sp"
         tools:text="为为维护全校选课秩序为维护全校选课秩序为维护全校选课秩序为维护全校选课秩序维护为维护全校选课秩序全校选课秩序"/>
