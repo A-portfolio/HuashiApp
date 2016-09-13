@@ -3,6 +3,7 @@ package net.muxi.huashiapp.common.service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -67,29 +68,29 @@ public class AlarmReceiver extends BroadcastReceiver {
         Logger.d(mUser.getSid());
         //判断对应的登录状态以及当前时间,还有用户是否设置提醒
         if (!mUser.getSid().equals("")) {
-            Log.d(TAG,"check sid");
+            Log.d(TAG, "check sid");
             if (intent.getIntExtra(AppConstants.ALARMTIME, 0) == 2) {
-                if (sp.getBoolean(App.getContext().getString(R.string.pre_schedule),true)) {
+                if (sp.getBoolean(App.getContext().getString(R.string.pre_schedule), true)) {
                     checkCourses();
-                    Log.d(TAG,"check course");
+                    Log.d(TAG, "check course");
                 }
             }
             if (intent.getIntExtra(AppConstants.ALARMTIME, 0) == 1) {
-                if (sp.getBoolean(App.getContext().getString(R.string.pre_score),true)) {
+                if (sp.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
                     checkScores();
-                    Log.d(TAG,"check score");
+                    Log.d(TAG, "check score");
                 }
             }
             if (intent.getIntExtra(AppConstants.ALARMTIME, 0) == 0) {
-                if (sp.getBoolean(App.getContext().getString(R.string.pre_card),true)) {
+                if (sp.getBoolean(App.getContext().getString(R.string.pre_card), true)) {
                     checkCard();
-                    Log.d(TAG,"check card");
+                    Log.d(TAG, "check card");
                 }
-                if (sp.getBoolean(App.getContext().getString(R.string.pre_score),true)) {
+                if (sp.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
                     checkScores();
                 }
                 if (mLibUser.getSid() != "") {
-                    if (sp.getBoolean(App.getContext().getString(R.string.pre_library),true)) {
+                    if (sp.getBoolean(App.getContext().getString(R.string.pre_library), true)) {
                         checkLib();
                     }
                 }
@@ -114,10 +115,16 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                     @Override
                     public void onNext(List<CardData> cardDatas) {
-                        if (Integer.valueOf(cardDatas.get(0).getOutMoney()) < CARD_LEAVE_MONEY) {
-                            NotifyUtil.show(mContext, CardActivity.class,
-                                    mContext.getResources().getString(R.string.notify_title_card),
-                                    mContext.getResources().getString(R.string.notify_content_card));
+                        try {
+                            if (Integer.valueOf(cardDatas.get(0).getOutMoney()) < CARD_LEAVE_MONEY) {
+                                NotifyUtil.show(mContext, CardActivity.class,
+                                        mContext.getResources().getString(R.string.notify_title_card),
+                                        mContext.getResources().getString(R.string.notify_content_card));
+                            }
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        } catch (Resources.NotFoundException e) {
+                            e.printStackTrace();
                         }
                     }
                 });
@@ -149,7 +156,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                             }
                         }
                         if (isRemind) {
-                            String content = String.format(App.sContext.getString(R.string.notify_content_lib),connectBooks(books));
+                            String content = String.format(App.sContext.getString(R.string.notify_content_lib), connectBooks(books));
                             NotifyUtil.show(mContext, MineActivity.class,
                                     mContext.getResources().getString(R.string.notify_title_lib),
                                     content);
@@ -164,30 +171,30 @@ public class AlarmReceiver extends BroadcastReceiver {
         Logger.d(courses.size() + "");
         int day = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
         String defalutDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()), 1 - day);
-        String startDate = sp.getString(PreferenceUtil.FIRST_WEEK_DATE,defalutDate);
+        String startDate = sp.getString(PreferenceUtil.FIRST_WEEK_DATE, defalutDate);
         int curWeek = (int) DateUtil.getDistanceWeek(startDate, DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
         Logger.d(curWeek + "");
         int today = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
         //如果今天是周日则另做判断
-        if (today == 7){
+        if (today == 7) {
             today = 1;
-            curWeek ++;
-        }else {
-            today ++;
+            curWeek++;
+        } else {
+            today++;
         }
         List<String> courseName = new ArrayList<>();
         for (int i = 0, j = courses.size(); i < j; i++) {
             Course course = courses.get(i);
             if (course.getRemind().equals("true") &&
-                    ! course.getCourse().equals(AppConstants.INIT_COURSE) &&
+                    !course.getCourse().equals(AppConstants.INIT_COURSE) &&
                     (AppConstants.WEEKDAYS[today - 1]).equals(course.getDay()) &&
                     TimeTableUtil.isThisWeek(curWeek, course.getWeeks())) {
                 courseName.add(course.getCourse());
             }
         }
         Logger.d("courseName size " + courseName.size());
-        if (courseName.size() > 0){
-            String content = String.format(mContext.getString(R.string.notify_content_course),connectStrings(courseName));
+        if (courseName.size() > 0) {
+            String content = String.format(mContext.getString(R.string.notify_content_course), connectStrings(courseName));
             NotifyUtil.show(mContext, ScheduleActivity.class,
                     mContext.getString(R.string.notify_title_course),
                     content);
@@ -212,12 +219,15 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                     @Override
                     public void onNext(List<Scores> scoresList) {
-                        Logger.d(scoresList.size() + "  " + sp.getInt(PreferenceUtil.SCORES_NUM) );
-                        if (scoresList.size() > sp.getInt(PreferenceUtil.SCORES_NUM)) {
-                            sp.saveInt(PreferenceUtil.SCORES_NUM,scoresList.size());
+                        Logger.d(scoresList.size() + "  " + sp.getInt(PreferenceUtil.SCORES_NUM));
+                        if (scoresList.size() != sp.getInt(PreferenceUtil.SCORES_NUM) && scoresList.size() != 0) {
+                            sp.saveInt(PreferenceUtil.SCORES_NUM, scoresList.size());
                             NotifyUtil.show(mContext, ScoreActivity.class,
                                     mContext.getString(R.string.notify_title_score),
                                     mContext.getString(R.string.notify_content_score));
+                        }
+                        if (scoresList.size() == 0) {
+                            sp.saveInt(PreferenceUtil.SCORES_NUM, scoresList.size());
                         }
                     }
                 });
@@ -228,29 +238,29 @@ public class AlarmReceiver extends BroadcastReceiver {
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
         int date = calendar.get(Calendar.DAY_OF_MONTH);
-        if (month < 9 && month > 3){
+        if (month < 9 && month > 3) {
             mCurTerm = 12;
-        }else {
+        } else {
             mCurTerm = 3;
         }
-        if (month < 9){
+        if (month < 9) {
             mCurYear = year - 1;
-        }else {
+        } else {
             mCurYear = year;
         }
     }
 
-    public String connectStrings(List<String> stringList){
+    public String connectStrings(List<String> stringList) {
         String s;
-        s = TextUtils.join(",",stringList);
+        s = TextUtils.join(",", stringList);
         return s;
     }
 
-    public String connectBooks(List<String> books){
+    public String connectBooks(List<String> books) {
         String s = "";
-        for (int i = 0;i < books.size();i ++){
-            s = s +  "《" + books.get(i) + "》";
-            if (i < books.size() - 1){
+        for (int i = 0; i < books.size(); i++) {
+            s = s + "《" + books.get(i) + "》";
+            if (i < books.size() - 1) {
                 s += "，";
             }
         }

@@ -74,7 +74,7 @@ public class TimeTable extends FrameLayout {
     private final int OTHER_WEEK_PRIORITY = 3;
     private final int OTHER_WEEK = 4;
 
-
+    // type 等于0时为当前周,1为其他周
     private int type = 0;
 
     private OnLongPressedListenr mOnLongPressedListener;
@@ -364,7 +364,7 @@ public class TimeTable extends FrameLayout {
         }
     }
 
-    private void setTypeCourses(final List<Course> typeCourses, int type) {
+    private void setTypeCourses(final List<Course> typeCourses, int courseType) {
         for (int i = 0; i < typeCourses.size(); i++) {
             if (typeCourses.get(i).getCourse() != null && typeCourses.get(i).getCourse().equals(AppConstants.INIT_COURSE)) {
                 continue;
@@ -378,7 +378,7 @@ public class TimeTable extends FrameLayout {
                 params.setMargins(0, COURSE_TIME_HEIGHT / 2 * (typeCourses.get(i).getStart() - 1), 0, 0);
 
                 final TextView courseTv = new TextView(mContext);
-                switch (type) {
+                switch (courseType) {
                     case CUR_WEEK_PRIORITY:
                         courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(typeCourses.get(i).getColor(), 1)));
                         courseTv.setText(typeCourses.get(i).getCourse() + "\n@" +
@@ -438,9 +438,9 @@ public class TimeTable extends FrameLayout {
                             case MotionEvent.ACTION_MOVE:
                                 curX = event.getRawX();
                                 curY = event.getRawY();
-                                mWeekDayLayout.scrollBy((int) (mx - curX), 0, 0);
-                                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY), 0);
-                                mCourseLayout.scrollBy(0, (int) (my - curY), 0);
+                                mWeekDayLayout.scrollBy((int) (mx - curX), 0, type);
+                                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY), type);
+                                mCourseLayout.scrollBy(0, (int) (my - curY), type);
                                 mx = curX;
                                 my = curY;
                                 break;
@@ -499,6 +499,7 @@ public class TimeTable extends FrameLayout {
                     for (Course course : conflictCourses) {
                         courses.remove(course);
                     }
+                    i = 0;
                 } else if (conflictCourses.size() == 1) {
                     curWeekCourses.add(courses.get(i));
                     Logger.d("curweek " + courses.get(i).getCourse());

@@ -120,7 +120,7 @@ public class ScheduleActivity extends ToolbarActivity {
         if (mCurWeek == 1) {
             saveFirstWeekDate();
         }
-        mSelectWeek = mCurWeek;
+        mSelectWeek = mCurWeek <= AppConstants.WEEKS_LENGTH ? mCurWeek : AppConstants.WEEKS_LENGTH;
     }
 
     /**
@@ -138,7 +138,7 @@ public class ScheduleActivity extends ToolbarActivity {
         if (!NetStatus.isConnected()) {
             return;
         }
-        CampusFactory.getRetrofitService().getSchedule(Base64Util.createBaseStr(mUser), "2015", "12", App.sUser.getSid())
+        CampusFactory.getRetrofitService().getSchedule(Base64Util.createBaseStr(mUser), App.sUser.getSid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<Course>>() {
@@ -157,20 +157,20 @@ public class ScheduleActivity extends ToolbarActivity {
                         Logger.d(courses.size() + "");
                         int maxId = 1;
                         //因为每次增删服务器与本地数据库都同时进行,所以就直接比较课程数有无差别
-                        if (mCourses.size() != courses.size()) {
+                        if (!mCourses.equals(courses)) {
                             dao.deleteAllCourse();
                             mCourses.clear();
                             for (int i = 0, max = courses.size(); i < max; i++) {
                                 dao.insertCourse(courses.get(i));
-                                if (courses.get(i).getId() != null && !courses.get(i).getId().equals("")){
+                                if (courses.get(i).getId() != null && !courses.get(i).getId().equals("")) {
                                     Logger.d("course id is " + courses.get(i).getId());
-                                    if (maxId <= Integer.valueOf(courses.get(i).getId())){
+                                    if (maxId <= Integer.valueOf(courses.get(i).getId())) {
                                         maxId = Integer.valueOf(courses.get(i).getId()) + 1;
                                     }
                                 }
                             }
                             Logger.d(maxId + " max id");
-                            sp.saveInt(PreferenceUtil.COURSE_ID,maxId);
+                            sp.saveInt(PreferenceUtil.COURSE_ID, maxId);
                             mCourses.addAll(courses);
                             updateTimetable();
                         }
@@ -192,6 +192,7 @@ public class ScheduleActivity extends ToolbarActivity {
 
         setTitle("课程表");
         // TODO: 16/5/25 debug
+//        mTvScheduleWeekNumber.setText(String.format(App.sContext.getString(R.string.course_week_format),mSelectWeek));
         mTvScheduleWeekNumber.setText(AppConstants.WEEKS[mSelectWeek - 1]);
         mTimeTable.setCourse(mCourses, mSelectWeek);
         Logger.d("timetable set course" + mCourses.size());
@@ -296,7 +297,9 @@ public class ScheduleActivity extends ToolbarActivity {
                 fadeoutRecyclerView();
                 isSelectShown = false;
                 invalidateOptionsMenu();
+//                mTvScheduleWeekNumber.setText(String.format(App.sContext.getString(R.string.course_week_format),mSelectWeek));
                 mTvScheduleWeekNumber.setText(AppConstants.WEEKS[mSelectWeek - 1]);
+
                 mTimeTable.changeTheDate(position + 1 - mCurWeek);
                 if (mSelectWeek == mCurWeek) {
                     mTimeTable.setTodayLayout(DateUtil.getDayInWeek(new Date(System.currentTimeMillis())));
@@ -338,7 +341,7 @@ public class ScheduleActivity extends ToolbarActivity {
                 startActivityForResult(intent, 2);
                 break;
             case R.id.action_set_cur_week:
-                CurweekSetDialog dialog = new CurweekSetDialog(ScheduleActivity.this, mCurWeek);
+                CurweekSetDialog dialog = new CurweekSetDialog(ScheduleActivity.this, mCurWeek <= 21 ? mCurWeek : 21);
                 dialog.setOnDialogPostiveClickListener(new CurweekSetDialog.OnDialogPostiveClickListener() {
                     @Override
                     public void onDialogPostiveClick(int curWeek) {
@@ -346,6 +349,12 @@ public class ScheduleActivity extends ToolbarActivity {
                         saveFirstWeekDate();
                         mWeekSelectAdapter.swap(curWeek);
                         mSelectWeek = curWeek;
+                        mTimeTable.changeTheDate(0);
+                        mTimeTable.setTodayLayout(DateUtil.getDayInWeek(new Date(System.currentTimeMillis())));
+                        mTimeTable.setType(0);
+                        updateTimetable();
+                        mTimeTable.invalidate();
+//                        mTvScheduleWeekNumber.setText(String.format(App.sContext.getString(R.string.course_week_format),mSelectWeek));
                         mTvScheduleWeekNumber.setText(AppConstants.WEEKS[mSelectWeek - 1]);
                     }
                 });
@@ -389,6 +398,7 @@ public class ScheduleActivity extends ToolbarActivity {
             fadeoutRecyclerView();
             isSelectShown = false;
             invalidateOptionsMenu();
+            mImgPull.setImageResource(R.drawable.arrow_drop_down);
             return;
         }
         if (isCourseViewShown()) {
