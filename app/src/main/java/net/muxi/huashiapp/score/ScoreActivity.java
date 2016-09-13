@@ -12,10 +12,14 @@ import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.User;
+import net.muxi.huashiapp.common.data.VerifyResponse;
+import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.common.util.Base64Util;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
@@ -24,6 +28,10 @@ import net.muxi.huashiapp.common.util.ZhugeUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Response;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by ybao on 16/4/26.
@@ -89,8 +97,36 @@ public class ScoreActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
         ButterKnife.bind(this);
+//        checkUser();
         initVariables();
         initView();
+    }
+
+    /**
+     * 查询成绩前检测用户是否改了密码
+     */
+    private void checkUser() {
+        CampusFactory.getRetrofitService().mainLogin(Base64Util.createBaseStr(App.sUser))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Observer<Response<VerifyResponse>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(Response<VerifyResponse> verifyResponseResponse) {
+//                        if (verifyResponseResponse.code() == 403){
+//                            ToastUtil.showShort(App.sContext.getString(R.string.tip_login_again));
+//                        }
+                    }
+                });
     }
 
     private void setTitle(String year, String term) {

@@ -9,8 +9,8 @@ android {
         applicationId "net.muxi.huashiapp"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.0.1"
     }
     buildTypes {
         release {
@@ -52,7 +52,7 @@ dependencies {
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
     compile 'com.alipay.euler:andfix:0.4.0@aar'
     compile 'com.tencent.bugly:crashreport:2.2.0'
-    compile 'com.zhuge.analysis:visual:latest.integration'
+    //    compile 'com.zhuge.analysis:zhugeio:latest.integration'
     compile 'me.biubiubiu.justifytext:library:1.1'
     compile files('/Users/ybao/AndroidStudioProjects/HuashiApp/libs/tbs_sdk_thirdapp_v2.1.2.1096_36511_shareonly_obfs_20160727_105850.jar')
     compile files('/Users/ybao/AndroidStudioProjects/HuashiApp/libs/tbs_sdk_thirdapp_v2.1.2.1096_36511_withdownload_obfs_20160727_105857.jar')
@@ -66,4 +66,5 @@ dependencies {
     compile files('libs/libammsdk.jar')
     compile files('libs/weiboSDKCore_3.1.4.jar')
     compile files('libs/open_sdk_r5756_lite.jar')
+    compile files('libs/Zhuge_SDK_V2.3.2.jar')
 }

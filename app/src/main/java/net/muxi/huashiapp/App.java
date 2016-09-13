@@ -37,26 +37,26 @@ public class App extends Application {
         CrashReport.initCrashReport(getApplicationContext(), "900043675", BuildConfig.DEBUG);
         Fresco.initialize(this);
         sp = new PreferenceUtil();
-        try {
-            mPatchManager = new PatchManager(this);
-            mPatchManager.init(BuildConfig.VERSION_NAME);
-            mPatchManager.loadPatch();
-            Logger.d("andfix load patch");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            mPatchManager = new PatchManager(this);
+//            mPatchManager.init(BuildConfig.VERSION_NAME);
+//            mPatchManager.loadPatch();
+//            Logger.d("andfix load patch");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
-        if (!sp.getString(PreferenceUtil.LAST_APP_VERSION,"1.0").equals(BuildConfig.VERSION_NAME)){
-            mPatchManager.removeAllPatch();
-            sp.saveString(PreferenceUtil.LAST_APP_VERSION,BuildConfig.VERSION_NAME);
-        }
-        try {
-            mPatchManager.addPatch(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
-            Logger.d(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
-        } catch (Exception e) {
-            Logger.d("andfix not load");
-            e.printStackTrace();
-        }
+//        if (!sp.getString(PreferenceUtil.LAST_APP_VERSION,"1.0").equals(BuildConfig.VERSION_NAME)){
+//            mPatchManager.removeAllPatch();
+//            sp.saveString(PreferenceUtil.LAST_APP_VERSION,BuildConfig.VERSION_NAME);
+//        }
+//        try {
+//            mPatchManager.addPatch(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
+//            Logger.d(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
+//        } catch (Exception e) {
+//            Logger.d("andfix not load");
+//            e.printStackTrace();
+//        }
 
 //        ZhugeSDK.getInstance().openDebug();
 //        //必须在init之前调用
@@ -64,7 +64,9 @@ public class App extends Application {
         ZhugeSDK.getInstance().disablePhoneNumber();
 //        //禁止收集用户个人账户信息默认为收集
         ZhugeSDK.getInstance().disableAccounts();
-        ZhugeSDK.getInstance().openLog();
+        if (BuildConfig.DEBUG) {
+            ZhugeSDK.getInstance().openLog();
+        }
 
 
         sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, "0"));

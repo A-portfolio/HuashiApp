@@ -16,10 +16,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -37,10 +37,10 @@
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="输入书名或作者"
-                android:textSize="14sp"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
-                />
+                android:textSize="14sp"
+            />
 
             <ImageView
                 android:id="@+id/btn_back"
@@ -60,20 +60,23 @@
 
         </RelativeLayout>
 
-        <View
+        <ImageView
             android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:background="@color/divider_search_view"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp"
+            android:paddingLeft="20dp"
+            android:src="@color/divider_search_view"
+            android:paddingRight="20dp"
+            android:background="@color/colorWhite"
+            android:visibility="invisible"/>
 
         <ListView
             android:id="@+id/search_listview"
             android:layout_width="match_parent"
-            android:divider="@android:color/transparent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white">
+            android:background="@android:color/white"
+            android:divider="@android:color/transparent"
+            android:visibility="invisible">
 
         </ListView>
 

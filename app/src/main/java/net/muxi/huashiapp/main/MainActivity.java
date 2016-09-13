@@ -107,15 +107,15 @@ public class MainActivity extends ToolbarActivity {
         initXGPush();
 
         //检查本地是否有补丁包
-        try {
-            if (!DownloadUtils.isFileExists(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME)) {
-                downloadPatch();
-                Logger.d("download patch");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.d("cache dir not found");
-        }
+//        try {
+//            if (!DownloadUtils.isFileExists(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME)) {
+//                downloadPatch();
+//                Logger.d("download patch");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Logger.d("cache dir not found");
+//        }
 
         dao = new HuaShiDao();
 
@@ -313,6 +313,7 @@ public class MainActivity extends ToolbarActivity {
                 switch (position) {
                     case 0:
                         if (App.sUser.getSid() != "0") {
+                            ZhugeUtils.sendEvent("课表查询", "课表查询");
                             intent = new Intent(MainActivity.this, ScheduleActivity.class);
                             startActivity(intent);
                             break;

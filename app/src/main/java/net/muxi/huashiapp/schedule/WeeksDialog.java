@@ -15,6 +15,7 @@ import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.util.DimensUtil;
 
@@ -49,6 +50,7 @@ public class WeeksDialog extends Dialog implements View.OnClickListener {
     private static final int TYPE_SINGLE = 1;
     private static final int TYPE_DOUBLE = 2;
     private static final int TYPE_CUSTOM = 3;
+    
 
     private OnDialogClickListener mOnDialogClickListener;
 
@@ -142,31 +144,31 @@ public class WeeksDialog extends Dialog implements View.OnClickListener {
     //对18个周进行批量操作,type 为0是全部,1是单周,2是双周
     private void handleCBWeeks(int type) {
         if (type == TYPE_ALL) {
-            for (int i = 0; i < 18; i++) {
+            for (int i = 0; i < AppConstants.WEEKS_LENGTH; i++) {
                 mCBWeeks[i].setChecked(true);
             }
         } else if (type == TYPE_SINGLE) {
-            for (int i = 0; i < 18; i++) {
+            for (int i = 0; i < AppConstants.WEEKS_LENGTH; i++) {
                 mCBWeeks[i].setChecked(i % 2 == 0 ? true : false);
             }
         } else if (type == TYPE_DOUBLE) {
-            for (int i = 0; i < 18; i++) {
+            for (int i = 0; i < AppConstants.WEEKS_LENGTH; i++) {
                 mCBWeeks[i].setChecked(i % 2 == 1 ? true : false);
             }
         } else if (type == TYPE_CUSTOM) {
-            for (int i = 0; i < 18; i++) {
+            for (int i = 0; i < AppConstants.WEEKS_LENGTH; i++) {
                 mCBWeeks[i].setChecked(false);
             }
         }
     }
 
     private void setUpGridLayout() {
-        mLayouts = new LinearLayout[18];
+        mLayouts = new LinearLayout[AppConstants.WEEKS_LENGTH];
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 DimensUtil.dp2px(106),
-                DimensUtil.dp2px(56)
+                DimensUtil.dp2px(42)
         );
-        mTvWeeks = new TextView[18];
+        mTvWeeks = new TextView[AppConstants.WEEKS_LENGTH];
         ViewGroup.LayoutParams tvParams = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
@@ -175,9 +177,9 @@ public class WeeksDialog extends Dialog implements View.OnClickListener {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        mCBWeeks = new AppCompatCheckBox[18];
+        mCBWeeks = new AppCompatCheckBox[AppConstants.WEEKS_LENGTH];
 
-        for (int i = 0; i < 18; i++) {
+        for (int i = 0; i < AppConstants.WEEKS_LENGTH; i++) {
             mLayouts[i] = new LinearLayout(mContext);
             mLayouts[i].setPadding(DimensUtil.dp2px(16), 0, 0, 0);
             mLayouts[i].setLayoutParams(layoutParams);
