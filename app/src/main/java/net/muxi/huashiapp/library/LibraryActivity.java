@@ -345,8 +345,10 @@ public class LibraryActivity extends ToolbarActivity {
                         if (bookSearchResult.getResults().size() == 0){
                             ToastUtil.showLong("无相关符合的图书");
                             setImgEmpty("无相关符合的图书");
+                            mRecyclerView.setVisibility(View.INVISIBLE);
                         }else {
                             hideImgEmpty();
+                            mRecyclerView.setVisibility(View.VISIBLE);
                             mMax = bookSearchResult.getMeta().getMax();
                             if (clean) {
                                 mBookList.clear();
@@ -354,6 +356,7 @@ public class LibraryActivity extends ToolbarActivity {
                             mBookList.addAll(bookSearchResult.getResults());
                             if (mLibraryAdapter == null) {
                                 mLibraryAdapter = new LibraryAdapter(mBookList);
+                                mRecyclerView.setAdapter(mLibraryAdapter);
                             } else {
                                 mLibraryAdapter.swap(mBookList);
                             }

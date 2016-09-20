@@ -118,8 +118,8 @@ public class AboutActivity extends ToolbarActivity {
                         public void onNext(final VersionData versionData) {
                             if (versionData.getVersion() != null && !BuildConfig.VERSION_NAME.equals(versionData.getVersion())) {
                                 final MaterialDialog materialDialog = new MaterialDialog(AboutActivity.this);
-                                materialDialog.setTitle(versionData.getName() + versionData.getVersion() + getString(R.string.title_update));
-                                materialDialog.setContent(versionData.getIntro() + "\n" + getString(R.string.tip_update_size) + versionData.getSize());
+                                materialDialog.setTitle(versionData.getName() + versionData.getVersion() + App.sContext.getString(R.string.title_update));
+                                materialDialog.setContent(App.sContext.getString(R.string.tip_update_intro) + versionData.getIntro() + "\n" + App.sContext.getString(R.string.tip_update_size) + versionData.getSize());
                                 materialDialog.setButtonColor(getResources().getColor(R.color.colorPrimary));
                                 materialDialog.setPositiveButton(getString(R.string.btn_update), new View.OnClickListener() {
                                     @Override
@@ -192,6 +192,7 @@ public class AboutActivity extends ToolbarActivity {
         intent.putExtra("fileName", "ccnubox.apk");
         startService(intent);
         Logger.d("download");
+        ToastUtil.showShort(getString(R.string.tip_start_download_apk));
     }
 
 

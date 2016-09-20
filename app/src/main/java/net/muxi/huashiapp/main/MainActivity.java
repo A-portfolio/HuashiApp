@@ -1,9 +1,14 @@
 package net.muxi.huashiapp.main;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +20,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.muxi.material_dialog.MaterialDialog;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -32,8 +38,10 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.PatchData;
 import net.muxi.huashiapp.common.data.ProductData;
+import net.muxi.huashiapp.common.data.VersionData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.common.service.DownloadService;
 import net.muxi.huashiapp.common.util.AlarmUtil;
 import net.muxi.huashiapp.common.util.DownloadUtils;
 import net.muxi.huashiapp.common.util.FrescoUtil;
@@ -42,6 +50,7 @@ import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.util.ZhugeUtils;
+import net.muxi.huashiapp.common.widget.UpdateView;
 import net.muxi.huashiapp.electricity.ElectricityActivity;
 import net.muxi.huashiapp.electricity.ElectricityDetailActivity;
 import net.muxi.huashiapp.library.LibraryLoginActivity;
@@ -90,6 +99,7 @@ public class MainActivity extends ToolbarActivity {
 
     private Context context;
     private static final int WEB_POSITION = 8;
+    private String downloadUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +147,94 @@ public class MainActivity extends ToolbarActivity {
 
         AlarmUtil.register(this);
         Log.d("alarm", "register");
+//        checkNewVersion();
+    }
+
+    private void checkNewVersion() {
+        CampusFactory.getRetrofitService().getLatestVersion()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Observer<VersionData>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(VersionData versionData) {
+                        if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME)){
+                            if (!sp.getString(PreferenceUtil.LAST_NOT_REMIND_VERSION,BuildConfig.VERSION_NAME).equals(versionData.getVersion())
+                                    || sp.getBoolean(PreferenceUtil.REMIND_UPDATE,true)){
+                                downloadUrl = versionData.getDownload();
+                                final MaterialDialog materialDialog = new MaterialDialog(MainActivity.this);
+                                final UpdateView updateView = new UpdateView(MainActivity.this);
+                                updateView.setContentText(App.sContext.getString(R.string.tip_update_intro) + versionData.getIntro() + "\n" + App.sContext.getString(R.string.tip_update_size) + versionData.getSize());
+                                materialDialog.setView(updateView);
+                                materialDialog.setTitle(versionData.getName() + versionData.getVersion() + App.sContext.getString(R.string.title_update));
+                                materialDialog.setNegativeButtonColor(App.sContext.getResources().getColor(R.color.colorPrimary));
+                                materialDialog.setPositiveButtonColor(App.sContext.getResources().getColor(R.color.colorPrimary));
+                                materialDialog.setPositiveButton(App.sContext.getString(R.string.btn_update), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (isStorgePermissionGranted()){
+                                            beginUpdate(downloadUrl);
+                                            materialDialog.dismiss();
+                                        }
+                                    }
+                                });
+                                materialDialog.setNegativeButton(App.sContext.getString(R.string.btn_not_now), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        sp.saveBoolean(PreferenceUtil.REMIND_UPDATE,!updateView.isRemindClose());
+                                        materialDialog.dismiss();
+                                    }
+                                });
+                                materialDialog.show();
+
+                            }
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Logger.d("permission " + permissions[0] + "is" + grantResults[0]);
+            Logger.d(downloadUrl);
+            if (downloadUrl != null && downloadUrl.length() != 0) {
+                beginUpdate(downloadUrl);
+            }
+        }
+    }
+
+    private void beginUpdate(String download) {
+        Intent intent = new Intent(this, DownloadService.class);
+        intent.putExtra("url", download);
+        intent.putExtra("fileType", "apk");
+        intent.putExtra("fileName", "ccnubox.apk");
+        startService(intent);
+        Logger.d("download");
+        ToastUtil.showShort(getString(R.string.tip_start_download_apk));
+    }
+
+    public boolean isStorgePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 
     //信鸽注册和启动
