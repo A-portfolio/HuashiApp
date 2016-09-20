@@ -177,7 +177,7 @@ public class LibraryActivity extends ToolbarActivity {
 
         mToolbar.setTitle("图书馆");
         setSupportActionBar(mToolbar);
-
+        initRecyclerView();
 
     }
 
@@ -209,8 +209,10 @@ public class LibraryActivity extends ToolbarActivity {
                         mSwipeRefreshLayout.setRefreshing(false);
                         if (bookSearchResult.getResults().size() > 0) {
                             mBookList.addAll(bookSearchResult.getResults());
-                            setupRecyclerview();
                             mMax = bookSearchResult.getMeta().getMax();
+                            mLibraryAdapter = new LibraryAdapter(mBookList);
+                            setItemClickListener();
+                            mRecyclerView.setAdapter(mLibraryAdapter);
                         } else {
                             ToastUtil.showLong("无相关符合的图书");
                             setImgEmpty("无相关符合的图书");
@@ -225,13 +227,20 @@ public class LibraryActivity extends ToolbarActivity {
         mTvEmpty.setVisibility(View.VISIBLE);
     }
 
-    private void setupRecyclerview() {
+    public void hideImgEmpty(){
+        mImgEmpty.setVisibility(View.INVISIBLE);
+        mTvEmpty.setVisibility(View.INVISIBLE);
+
+    }
+
+    private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
-        mLibraryAdapter = new LibraryAdapter(mBookList);
-        mRecyclerView.setAdapter(mLibraryAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.addOnScrollListener(getOnBottomListener());
+    }
+
+    private void setItemClickListener() {
         mLibraryAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, BookSearchResult.ResultsBean resultsBean) {
@@ -291,6 +300,9 @@ public class LibraryActivity extends ToolbarActivity {
                 View lastChildView = recyclerView.getLayoutManager().getChildAt(
                         recyclerView.getChildCount() - 1
                 );
+                if(lastChildView == null){
+                    return;
+                }
                 int lastViewBottom = lastChildView.getBottom();
                 int recyclerviewBottom = recyclerView.getBottom();
                 int positon = recyclerView.getLayoutManager().getPosition(lastChildView);
@@ -324,17 +336,29 @@ public class LibraryActivity extends ToolbarActivity {
                     public void onError(Throwable e) {
                         e.printStackTrace();
                         mSwipeRefreshLayout.setRefreshing(false);
+                        setImgEmpty(getString(R.string.tip_school_server_error));
                     }
 
                     @Override
                     public void onNext(BookSearchResult bookSearchResult) {
                         mSwipeRefreshLayout.setRefreshing(false);
-                        mMax = bookSearchResult.getMeta().getMax();
-                        if (clean) {
-                            mBookList.clear();
+                        if (bookSearchResult.getResults().size() == 0){
+                            ToastUtil.showLong("无相关符合的图书");
+                            setImgEmpty("无相关符合的图书");
+                        }else {
+                            hideImgEmpty();
+                            mMax = bookSearchResult.getMeta().getMax();
+                            if (clean) {
+                                mBookList.clear();
+                            }
+                            mBookList.addAll(bookSearchResult.getResults());
+                            if (mLibraryAdapter == null) {
+                                mLibraryAdapter = new LibraryAdapter(mBookList);
+                            } else {
+                                mLibraryAdapter.swap(mBookList);
+                            }
+                            setItemClickListener();
                         }
-                        mBookList.addAll(bookSearchResult.getResults());
-                        mLibraryAdapter.swap(mBookList);
                     }
                 });
     }

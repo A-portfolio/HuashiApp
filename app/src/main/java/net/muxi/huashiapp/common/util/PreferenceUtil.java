@@ -37,6 +37,8 @@ public class PreferenceUtil {
     public static final String PRODUCT_UPDATE = "product_update";
     //首页产品 json 数据
     public static final String PRODUCT_DATA = "product_data";
+    //是否是初次选择周数
+    public static final String FIRST_SELECT_WEEK = "first_select_week";
 
     public PreferenceUtil() {
         Context context = App.getContext();
