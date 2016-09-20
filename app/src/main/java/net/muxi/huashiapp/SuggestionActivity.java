@@ -84,13 +84,17 @@ public class SuggestionActivity extends ToolbarActivity {
                             materialDialog.dismiss();
                         }
                     });
+                    materialDialog.setPositiveButtonColor(App.sContext.getResources().getColor(R.color.colorPrimary));
                     materialDialog.setNegativeButton(App.sContext.getString(R.string.btn_positive), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             sendSuggestion(mEtSuggestion.getText().toString() + mEtContact.getText().toString());
+                            materialDialog.dismiss();
                         }
                     });
-                    materialDialog.dismiss();
+                    materialDialog.setNegativeButtonColor(App.sContext.getResources().getColor(R.color.colorPrimary));
+
+                    materialDialog.show();
                 }else {
                     sendSuggestion(mEtSuggestion.getText().toString() + mEtContact.getText().toString());
                 }

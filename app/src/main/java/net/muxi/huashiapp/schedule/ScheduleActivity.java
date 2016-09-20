@@ -1,7 +1,6 @@
 package net.muxi.huashiapp.schedule;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,10 +16,8 @@ import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.DraweeView;
 import com.muxi.material_dialog.MaterialDialog;
 
 import net.muxi.huashiapp.App;
@@ -97,8 +94,8 @@ public class ScheduleActivity extends ToolbarActivity {
     public static final int SELECT_WEEK_LAYOUT_HEIGHT = DimensUtil.dp2px(40);
     //显示周数的 layout的高度
     public static final int WEEK_LAYOUT_HEIGHT = DimensUtil.dp2px(36);
-    private static final int BTN_KNOW_WIDTH = DimensUtil.dp2px(156);
-    private static final int BTN_KNOW_HEIGHT = DimensUtil.dp2px(88);
+    private static final int BTN_KNOW_WIDTH = DimensUtil.dp2px(256);
+    private static final int BTN_KNOW_HEIGHT = DimensUtil.dp2px(188);
     private static final int BTN_KNOW_MARGIN_TOP = DimensUtil.dp2px(308);
 
     @Override
@@ -157,12 +154,20 @@ public class ScheduleActivity extends ToolbarActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        ToastUtil.showShort(App.sContext.getString(R.string.tip_school_server_error));
                     }
 
                     @Override
                     public void onNext(List<Course> courses) {
                         Logger.d(courses.size() + "");
                         int maxId = 1;
+                        try{
+                            if (courses.size() == 0 && mCourses.size() == 0){
+                                ToastUtil.showShort(App.sContext.getString(R.string.tip_school_server_error));
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                         //因为每次增删服务器与本地数据库都同时进行,所以就直接比较课程数有无差别
                         if (!mCourses.equals(courses)) {
                             dao.deleteAllCourse();
@@ -466,38 +471,56 @@ public class ScheduleActivity extends ToolbarActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
         );
-        if(Build.VERSION.SDK_INT >= 21){
+        if (Build.VERSION.SDK_INT >= 21) {
             bgView.setElevation(DimensUtil.dp2px(8));
         }
         mRootLayout.addView(bgView, bgParams);
-        final DraweeView draweeView = new DraweeView(ScheduleActivity.this);
-        final RelativeLayout.LayoutParams guideImgParmas = new RelativeLayout.LayoutParams(
+        bgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.d("bgView click");
+            }
+        });
+//        final DraweeView draweeView = new DraweeView(ScheduleActivity.this);
+//        final RelativeLayout.LayoutParams guideImgParmas = new RelativeLayout.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT
+//        );
+//        guideImgParmas.setMargins(0, DimensUtil.dp2px(56), 0, 0);
+//        draweeView.setAspectRatio((float) 0.92);
+//        if (Build.VERSION.SDK_INT >=21){
+//            draweeView.setElevation(DimensUtil.dp2px(8));
+//        }
+//        mRootLayout.addView(draweeView, guideImgParmas);
+//        draweeView.setImageURI(Uri.parse("asset://net.muxi.huashiapp/img_guide_setcurweek.png"));
+        final ImageView guideImgView = new ImageView(ScheduleActivity.this);
+        final FrameLayout.LayoutParams guideImgParmas = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        guideImgParmas.setMargins(0, DimensUtil.dp2px(56), 0, 0);
-        draweeView.setAspectRatio((float) 0.92);
-        if (Build.VERSION.SDK_INT >=21){
-            draweeView.setElevation(DimensUtil.dp2px(8));
+        if (Build.VERSION.SDK_INT >= 21) {
+            guideImgView.setElevation(DimensUtil.dp2px(8));
         }
-        mRootLayout.addView(draweeView, guideImgParmas);
-        draweeView.setImageURI(Uri.parse("asset://net.muxi.huashiapp/img_guide_setcurweek.png"));
-        final View btnView = new View(ScheduleActivity.this);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                BTN_KNOW_WIDTH,
-                BTN_KNOW_HEIGHT
+        guideImgView.setPadding(0,DimensUtil.dp2px(56),0,0);
+        guideImgView.setImageResource(R.drawable.img_guide_setcurweek);
+        mRootLayout.addView(guideImgView, guideImgParmas);
+//        guideImgView.setImageURI(Uri.parse("asset://net.muxi.huashiapp/img_guide_setcurweek.png"));
+        View view = new View(this);
+        FrameLayout.LayoutParams params =new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                DimensUtil.dp2px(200)
         );
-        params.setMargins(0, BTN_KNOW_MARGIN_TOP, 0, 0);
-        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-        mRootLayout.addView(btnView, params);
-        btnView.setOnClickListener(new View.OnClickListener() {
+        params.setMargins(DimensUtil.getScreenWidth()/3,BTN_KNOW_MARGIN_TOP,DimensUtil.getScreenWidth()/3,0);
+        mRootLayout.addView(view,params);
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mRootLayout.removeView(bgView);
-                mRootLayout.removeView(draweeView);
-                mRootLayout.removeView(btnView);
+                mRootLayout.removeView(guideImgView);
+                mRootLayout.removeView(v);
             }
         });
+
     }
 
 

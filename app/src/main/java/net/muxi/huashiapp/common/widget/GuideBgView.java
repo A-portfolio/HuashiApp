@@ -16,12 +16,13 @@ import net.muxi.huashiapp.common.util.DimensUtil;
  */
 public class GuideBgView extends View {
 
-    private static final int RADIUS = DimensUtil.dp2px(28);
+    private static final int RADIUS = DimensUtil.dp2px(24);
+    private static final int DISTANCE = DimensUtil.dp2px(28);
 
     public GuideBgView(Context context) {
         super(context);
         setBackgroundColor(Color.BLACK);
-        setAlpha(0.7f);
+        setAlpha(0.5f);
     }
 
     @Override
@@ -31,6 +32,6 @@ public class GuideBgView extends View {
         p.setAntiAlias(true);
         p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         p.setStyle(Paint.Style.FILL_AND_STROKE);
-        canvas.drawCircle(DimensUtil.getScreenWidth() - RADIUS, RADIUS, RADIUS, p);
+        canvas.drawCircle(DimensUtil.getScreenWidth() - DISTANCE, DISTANCE, RADIUS, p);
     }
 }

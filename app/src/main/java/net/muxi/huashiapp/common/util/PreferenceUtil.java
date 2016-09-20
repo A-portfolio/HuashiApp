@@ -39,6 +39,10 @@ public class PreferenceUtil {
     public static final String PRODUCT_DATA = "product_data";
     //是否是初次选择周数
     public static final String FIRST_SELECT_WEEK = "first_select_week";
+    //保存的上一次不再提醒的版本号
+    public static final String LAST_NOT_REMIND_VERSION = "not_remind_version";
+    //提醒更新的状态,在有新版本的时候自动开启
+    public static final String REMIND_UPDATE = "remind_update";
 
     public PreferenceUtil() {
         Context context = App.getContext();
