@@ -1,10 +1,15 @@
 package net.muxi.huashiapp;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextPaint;
 import android.text.style.UnderlineSpan;
@@ -40,6 +45,8 @@ public class AboutActivity extends ToolbarActivity {
     private TextView mTvMuxiLink;
     private TextView mTvVersionname;
 
+    private String downloadUrl;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +54,6 @@ public class AboutActivity extends ToolbarActivity {
         init();
 
     }
-
 
     public void init() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -75,7 +81,6 @@ public class AboutActivity extends ToolbarActivity {
             }
         });
     }
-
 
 
     @Override
@@ -119,8 +124,12 @@ public class AboutActivity extends ToolbarActivity {
                                 materialDialog.setPositiveButton(getString(R.string.btn_update), new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        beginUpdate(versionData.getDownload());
+                                        downloadUrl = versionData.getDownload();
+                                        if (isStorgePermissionGranted()) {
+                                            beginUpdate(versionData.getDownload());
+                                        }
                                         materialDialog.dismiss();
+
                                     }
                                 });
                                 materialDialog.setNegativeButton(getString(R.string.btn_not_now), new View.OnClickListener() {
@@ -148,6 +157,31 @@ public class AboutActivity extends ToolbarActivity {
                     });
         } else {
             ToastUtil.showShort(getString(R.string.tip_check_net));
+        }
+    }
+
+    public boolean isStorgePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(AboutActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Logger.d("permission " + permissions[0] + "is" + grantResults[0]);
+            Logger.d(downloadUrl);
+            if (downloadUrl != null && downloadUrl.length() != 0) {
+                beginUpdate(downloadUrl);
+            }
         }
     }
 

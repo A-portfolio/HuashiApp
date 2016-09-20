@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.schedule;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,8 +17,10 @@ import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.DraweeView;
 import com.muxi.material_dialog.MaterialDialog;
 
 import net.muxi.huashiapp.App;
@@ -38,6 +41,7 @@ import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.TimeTableUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.util.ZhugeUtils;
+import net.muxi.huashiapp.common.widget.GuideBgView;
 import net.muxi.huashiapp.common.widget.ShadowView;
 import net.muxi.huashiapp.common.widget.TimeTable;
 
@@ -93,6 +97,9 @@ public class ScheduleActivity extends ToolbarActivity {
     public static final int SELECT_WEEK_LAYOUT_HEIGHT = DimensUtil.dp2px(40);
     //显示周数的 layout的高度
     public static final int WEEK_LAYOUT_HEIGHT = DimensUtil.dp2px(36);
+    private static final int BTN_KNOW_WIDTH = DimensUtil.dp2px(156);
+    private static final int BTN_KNOW_HEIGHT = DimensUtil.dp2px(88);
+    private static final int BTN_KNOW_MARGIN_TOP = DimensUtil.dp2px(308);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -446,8 +453,53 @@ public class ScheduleActivity extends ToolbarActivity {
 //            getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
             invalidateOptionsMenu();
             mImgPull.setImageResource(R.drawable.arrow_drop_up);
+            if (sp.getBoolean(PreferenceUtil.FIRST_SELECT_WEEK, true)) {
+                showGuideSetCurWeek();
+                sp.saveBoolean(PreferenceUtil.FIRST_SELECT_WEEK, false);
+            }
         }
     }
+
+    private void showGuideSetCurWeek() {
+        final GuideBgView bgView = new GuideBgView(ScheduleActivity.this);
+        ViewGroup.LayoutParams bgParams = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        );
+        if(Build.VERSION.SDK_INT >= 21){
+            bgView.setElevation(DimensUtil.dp2px(8));
+        }
+        mRootLayout.addView(bgView, bgParams);
+        final DraweeView draweeView = new DraweeView(ScheduleActivity.this);
+        final RelativeLayout.LayoutParams guideImgParmas = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        guideImgParmas.setMargins(0, DimensUtil.dp2px(56), 0, 0);
+        draweeView.setAspectRatio((float) 0.92);
+        if (Build.VERSION.SDK_INT >=21){
+            draweeView.setElevation(DimensUtil.dp2px(8));
+        }
+        mRootLayout.addView(draweeView, guideImgParmas);
+        draweeView.setImageURI(Uri.parse("asset://net.muxi.huashiapp/img_guide_setcurweek.png"));
+        final View btnView = new View(ScheduleActivity.this);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                BTN_KNOW_WIDTH,
+                BTN_KNOW_HEIGHT
+        );
+        params.setMargins(0, BTN_KNOW_MARGIN_TOP, 0, 0);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        mRootLayout.addView(btnView, params);
+        btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRootLayout.removeView(bgView);
+                mRootLayout.removeView(draweeView);
+                mRootLayout.removeView(btnView);
+            }
+        });
+    }
+
 
     public void fadeinRecyclerView() {
         AlphaAnimation animation = new AlphaAnimation(0, 1);
