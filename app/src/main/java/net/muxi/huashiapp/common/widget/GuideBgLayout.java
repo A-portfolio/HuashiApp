@@ -6,7 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.view.View;
+import android.widget.RelativeLayout;
 
 import net.muxi.huashiapp.common.util.DimensUtil;
 
@@ -14,12 +14,12 @@ import net.muxi.huashiapp.common.util.DimensUtil;
  * Created by ybao on 16/9/20.
  * 指引的背景 view
  */
-public class GuideBgView extends View {
+public class GuideBgLayout extends RelativeLayout{
 
     private static final int RADIUS = DimensUtil.dp2px(24);
     private static final int DISTANCE = DimensUtil.dp2px(28);
 
-    public GuideBgView(Context context) {
+    public GuideBgLayout(Context context) {
         super(context);
         setBackgroundColor(Color.BLACK);
         setAlpha(0.5f);
