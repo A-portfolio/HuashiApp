@@ -10,17 +10,13 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 
-import butterknife.BindView;
-
 /**
  * Created by ybao on 16/9/20.
  */
 public class UpdateView extends LinearLayout {
 
-    @BindView(R.id.tv_content)
-    TextView mTvContent;
-    @BindView(R.id.checkbox)
-    AppCompatCheckBox mCheckbox;
+    private TextView mTvContent;
+    private AppCompatCheckBox mCheckbox;
 
     public UpdateView(Context context) {
         this(context, null);
@@ -29,6 +25,8 @@ public class UpdateView extends LinearLayout {
     public UpdateView(Context context, AttributeSet attrs) {
         super(context, attrs);
         View view = LayoutInflater.from(context).inflate(R.layout.view_remind_update, this, false);
+        mTvContent = (TextView) view.findViewById(R.id.tv_content);
+        mCheckbox = (AppCompatCheckBox) view.findViewById(R.id.checkbox);
         this.addView(view);
     }
 

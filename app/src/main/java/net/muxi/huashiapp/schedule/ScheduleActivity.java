@@ -16,6 +16,7 @@ import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.muxi.material_dialog.MaterialDialog;
@@ -38,7 +39,7 @@ import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.TimeTableUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.util.ZhugeUtils;
-import net.muxi.huashiapp.common.widget.GuideBgView;
+import net.muxi.huashiapp.common.widget.GuideBgLayout;
 import net.muxi.huashiapp.common.widget.ShadowView;
 import net.muxi.huashiapp.common.widget.TimeTable;
 
@@ -83,6 +84,9 @@ public class ScheduleActivity extends ToolbarActivity {
 
     private TimeTable mTimeTable;
 
+    private GuideBgLayout mGuideBgLayout;
+    private ImageView mGuideImageView;
+
     //当前用户所有的课程
     private List<Course> mCourses;
     private int mCurWeek;
@@ -95,8 +99,8 @@ public class ScheduleActivity extends ToolbarActivity {
     //显示周数的 layout的高度
     public static final int WEEK_LAYOUT_HEIGHT = DimensUtil.dp2px(36);
     private static final int BTN_KNOW_WIDTH = DimensUtil.dp2px(256);
-    private static final int BTN_KNOW_HEIGHT = DimensUtil.dp2px(188);
-    private static final int BTN_KNOW_MARGIN_TOP = DimensUtil.dp2px(308);
+    private static final int BTN_KNOW_HEIGHT = DimensUtil.dp2px(200);
+    private static final int BTN_KNOW_MARGIN_TOP = DimensUtil.dp2px(364);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -154,7 +158,9 @@ public class ScheduleActivity extends ToolbarActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        ToastUtil.showShort(App.sContext.getString(R.string.tip_school_server_error));
+                        if (mCourses.size() == 0) {
+                            ToastUtil.showShort(App.sContext.getString(R.string.tip_school_server_error));
+                        }
                     }
 
                     @Override
@@ -406,6 +412,13 @@ public class ScheduleActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
+        if (mGuideBgLayout != null){
+            mRootLayout.removeView(mGuideBgLayout);
+            mGuideBgLayout = null;
+            mRootLayout.removeView(mGuideImageView);
+            mGuideImageView = null;
+            return;
+        }
         if (isSelectShown) {
             fadeoutRecyclerView();
             isSelectShown = false;
@@ -466,21 +479,22 @@ public class ScheduleActivity extends ToolbarActivity {
     }
 
     private void showGuideSetCurWeek() {
-        final GuideBgView bgView = new GuideBgView(ScheduleActivity.this);
+        mGuideBgLayout = new GuideBgLayout(ScheduleActivity.this);
         ViewGroup.LayoutParams bgParams = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
         );
         if (Build.VERSION.SDK_INT >= 21) {
-            bgView.setElevation(DimensUtil.dp2px(8));
+            mGuideBgLayout.setElevation(DimensUtil.dp2px(8));
         }
-        mRootLayout.addView(bgView, bgParams);
-        bgView.setOnClickListener(new View.OnClickListener() {
+        mRootLayout.addView(mGuideBgLayout, bgParams);
+        mGuideBgLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.d("bgView click");
+                onBackPressed();
             }
         });
+
 //        final DraweeView draweeView = new DraweeView(ScheduleActivity.this);
 //        final RelativeLayout.LayoutParams guideImgParmas = new RelativeLayout.LayoutParams(
 //                ViewGroup.LayoutParams.MATCH_PARENT,
@@ -493,33 +507,33 @@ public class ScheduleActivity extends ToolbarActivity {
 //        }
 //        mRootLayout.addView(draweeView, guideImgParmas);
 //        draweeView.setImageURI(Uri.parse("asset://net.muxi.huashiapp/img_guide_setcurweek.png"));
-        final ImageView guideImgView = new ImageView(ScheduleActivity.this);
-        final FrameLayout.LayoutParams guideImgParmas = new FrameLayout.LayoutParams(
+        mGuideImageView = new ImageView(ScheduleActivity.this);
+        final RelativeLayout.LayoutParams guideImgParmas = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
         if (Build.VERSION.SDK_INT >= 21) {
-            guideImgView.setElevation(DimensUtil.dp2px(8));
+            mGuideImageView.setElevation(DimensUtil.dp2px(8));
         }
-        guideImgView.setPadding(0,DimensUtil.dp2px(56),0,0);
-        guideImgView.setImageResource(R.drawable.img_guide_setcurweek);
-        mRootLayout.addView(guideImgView, guideImgParmas);
+        mGuideImageView.setPadding(0,DimensUtil.dp2px(56),0,0);
+//        guideImgParmas.setMargins(0,DimensUtil.dp2px(56),0,0);
+        mGuideImageView.setImageResource(R.drawable.img_guide_setcurweek);
+        mRootLayout.addView(mGuideImageView, guideImgParmas);
 //        guideImgView.setImageURI(Uri.parse("asset://net.muxi.huashiapp/img_guide_setcurweek.png"));
-        View view = new View(this);
-        FrameLayout.LayoutParams params =new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                DimensUtil.dp2px(200)
-        );
-        params.setMargins(DimensUtil.getScreenWidth()/3,BTN_KNOW_MARGIN_TOP,DimensUtil.getScreenWidth()/3,0);
-        mRootLayout.addView(view,params);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mRootLayout.removeView(bgView);
-                mRootLayout.removeView(guideImgView);
-                mRootLayout.removeView(v);
-            }
-        });
+//        final View view = new View(this);
+//        RelativeLayout.LayoutParams params =new RelativeLayout.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT,
+//                BTN_KNOW_HEIGHT
+//        );
+//        params.setMargins(DimensUtil.getScreenWidth()/3,BTN_KNOW_MARGIN_TOP,DimensUtil.getScreenWidth()/3,0);
+//        mGuideBgLayout.addView(view,params);
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mRootLayout.removeView(mGuideBgLayout);
+//                mGuideBgLayout = null;
+//            }
+//        });
 
     }
 

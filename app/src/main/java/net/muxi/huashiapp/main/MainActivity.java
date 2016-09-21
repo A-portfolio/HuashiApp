@@ -145,12 +145,13 @@ public class MainActivity extends ToolbarActivity {
         updateProductDisplay(mProductData);
         getProduct();
 
+        checkNewVersion();
         AlarmUtil.register(this);
         Log.d("alarm", "register");
-//        checkNewVersion();
     }
 
     private void checkNewVersion() {
+        Logger.d("begin check new version");
         CampusFactory.getRetrofitService().getLatestVersion()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
@@ -168,8 +169,14 @@ public class MainActivity extends ToolbarActivity {
                     @Override
                     public void onNext(VersionData versionData) {
                         if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME)){
+                            Logger.d("has new version!!");
                             if (!sp.getString(PreferenceUtil.LAST_NOT_REMIND_VERSION,BuildConfig.VERSION_NAME).equals(versionData.getVersion())
                                     || sp.getBoolean(PreferenceUtil.REMIND_UPDATE,true)){
+                                if (!sp.getString(PreferenceUtil.LAST_NOT_REMIND_VERSION,BuildConfig.VERSION_NAME).equals(versionData.getVersion())){
+                                    sp.saveBoolean(PreferenceUtil.REMIND_UPDATE,true);
+                                }
+                                Logger.d("init dialog");
+                                sp.saveString(PreferenceUtil.LAST_NOT_REMIND_VERSION,versionData.getVersion());
                                 downloadUrl = versionData.getDownload();
                                 final MaterialDialog materialDialog = new MaterialDialog(MainActivity.this);
                                 final UpdateView updateView = new UpdateView(MainActivity.this);
@@ -183,8 +190,8 @@ public class MainActivity extends ToolbarActivity {
                                     public void onClick(View v) {
                                         if (isStorgePermissionGranted()){
                                             beginUpdate(downloadUrl);
-                                            materialDialog.dismiss();
                                         }
+                                        materialDialog.dismiss();
                                     }
                                 });
                                 materialDialog.setNegativeButton(App.sContext.getString(R.string.btn_not_now), new View.OnClickListener() {
@@ -194,8 +201,8 @@ public class MainActivity extends ToolbarActivity {
                                         materialDialog.dismiss();
                                     }
                                 });
-                                materialDialog.show();
 
+                                materialDialog.show();
                             }
                         }
                     }

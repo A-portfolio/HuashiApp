@@ -26,7 +26,6 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:layout_below="@+id/tv_title"
-                    android:layout_marginBottom="@dimen/dialog_content_padding"
                     android:layout_marginLeft="@dimen/dialog_content_padding"
                     android:layout_marginRight="@dimen/dialog_content_padding">
 
