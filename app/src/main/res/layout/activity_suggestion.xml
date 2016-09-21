@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools">
 
     <include android:id="@+id/view_toolbar"
              layout="@layout/view_toolbar"/>
@@ -50,6 +50,8 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_height="wrap_content"
+        android:lines="1"
+        android:hint="@string/hint_contact"
         android:id="@+id/et_contact"
         android:layout_below="@+id/tv_title_contact"/>
 

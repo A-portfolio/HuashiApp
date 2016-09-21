@@ -99,7 +99,8 @@
 
     <!--关于-->
     <string name="title_input_suggeston">在这里输入您的意见</string>
-    <string name="title_input_contact">在这里输入您的联系方式,</string>
+    <string name="title_input_contact">在这里输入您的联系方式</string>
+    <string name="hint_contact">邮箱/QQ/手机号</string>
     <string name="title_sugg_submit">确定提交信息吗?</string>
     <string name="content_sugg_submit">留下你的联系方式,有机会获得精美礼品一份哦!</string>
     <string name="btn_submit">提交</string>
