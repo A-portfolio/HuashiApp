@@ -88,7 +88,7 @@ public class SuggestionActivity extends ToolbarActivity {
                     materialDialog.setNegativeButton(App.sContext.getString(R.string.btn_positive), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            sendSuggestion(mEtSuggestion.getText().toString() + mEtContact.getText().toString());
+                            sendSuggestion(mEtSuggestion.getText().toString() + "联系方式:" + mEtContact.getText().toString());
                             materialDialog.dismiss();
                         }
                     });
@@ -96,7 +96,7 @@ public class SuggestionActivity extends ToolbarActivity {
 
                     materialDialog.show();
                 }else {
-                    sendSuggestion(mEtSuggestion.getText().toString() + mEtContact.getText().toString());
+                    sendSuggestion(mEtSuggestion.getText().toString() + "联系方式:" + mEtContact.getText().toString());
                 }
             }
         });
