@@ -16,6 +16,7 @@ import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.muxi.material_dialog.MaterialDialog;
@@ -38,6 +39,7 @@ import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.TimeTableUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.util.ZhugeUtils;
+import net.muxi.huashiapp.common.widget.GuideBgLayout;
 import net.muxi.huashiapp.common.widget.ShadowView;
 import net.muxi.huashiapp.common.widget.TimeTable;
 
@@ -82,6 +84,9 @@ public class ScheduleActivity extends ToolbarActivity {
 
     private TimeTable mTimeTable;
 
+    private GuideBgLayout mGuideBgLayout;
+    private ImageView mGuideImageView;
+
     //当前用户所有的课程
     private List<Course> mCourses;
     private int mCurWeek;
@@ -93,6 +98,9 @@ public class ScheduleActivity extends ToolbarActivity {
     public static final int SELECT_WEEK_LAYOUT_HEIGHT = DimensUtil.dp2px(40);
     //显示周数的 layout的高度
     public static final int WEEK_LAYOUT_HEIGHT = DimensUtil.dp2px(36);
+    private static final int BTN_KNOW_WIDTH = DimensUtil.dp2px(256);
+    private static final int BTN_KNOW_HEIGHT = DimensUtil.dp2px(200);
+    private static final int BTN_KNOW_MARGIN_TOP = DimensUtil.dp2px(364);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,7 +128,7 @@ public class ScheduleActivity extends ToolbarActivity {
         if (mCurWeek == 1) {
             saveFirstWeekDate();
         }
-        mSelectWeek = mCurWeek;
+        mSelectWeek = mCurWeek <= AppConstants.WEEKS_LENGTH ? mCurWeek : AppConstants.WEEKS_LENGTH;
     }
 
     /**
@@ -138,7 +146,7 @@ public class ScheduleActivity extends ToolbarActivity {
         if (!NetStatus.isConnected()) {
             return;
         }
-        CampusFactory.getRetrofitService().getSchedule(Base64Util.createBaseStr(mUser), "2015", "12", App.sUser.getSid())
+        CampusFactory.getRetrofitService().getSchedule(Base64Util.createBaseStr(mUser), App.sUser.getSid())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<Course>>() {
@@ -150,27 +158,37 @@ public class ScheduleActivity extends ToolbarActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        if (mCourses.size() == 0) {
+                            ToastUtil.showShort(App.sContext.getString(R.string.tip_school_server_error));
+                        }
                     }
 
                     @Override
                     public void onNext(List<Course> courses) {
                         Logger.d(courses.size() + "");
                         int maxId = 1;
+                        try{
+                            if (courses.size() == 0 && mCourses.size() == 0){
+                                ToastUtil.showShort(App.sContext.getString(R.string.tip_school_server_error));
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                         //因为每次增删服务器与本地数据库都同时进行,所以就直接比较课程数有无差别
-                        if (mCourses.size() != courses.size()) {
+                        if (!mCourses.equals(courses)) {
                             dao.deleteAllCourse();
                             mCourses.clear();
                             for (int i = 0, max = courses.size(); i < max; i++) {
                                 dao.insertCourse(courses.get(i));
-                                if (courses.get(i).getId() != null && !courses.get(i).getId().equals("")){
+                                if (courses.get(i).getId() != null && !courses.get(i).getId().equals("")) {
                                     Logger.d("course id is " + courses.get(i).getId());
-                                    if (maxId <= Integer.valueOf(courses.get(i).getId())){
+                                    if (maxId <= Integer.valueOf(courses.get(i).getId())) {
                                         maxId = Integer.valueOf(courses.get(i).getId()) + 1;
                                     }
                                 }
                             }
                             Logger.d(maxId + " max id");
-                            sp.saveInt(PreferenceUtil.COURSE_ID,maxId);
+                            sp.saveInt(PreferenceUtil.COURSE_ID, maxId);
                             mCourses.addAll(courses);
                             updateTimetable();
                         }
@@ -192,6 +210,7 @@ public class ScheduleActivity extends ToolbarActivity {
 
         setTitle("课程表");
         // TODO: 16/5/25 debug
+//        mTvScheduleWeekNumber.setText(String.format(App.sContext.getString(R.string.course_week_format),mSelectWeek));
         mTvScheduleWeekNumber.setText(AppConstants.WEEKS[mSelectWeek - 1]);
         mTimeTable.setCourse(mCourses, mSelectWeek);
         Logger.d("timetable set course" + mCourses.size());
@@ -296,7 +315,9 @@ public class ScheduleActivity extends ToolbarActivity {
                 fadeoutRecyclerView();
                 isSelectShown = false;
                 invalidateOptionsMenu();
+//                mTvScheduleWeekNumber.setText(String.format(App.sContext.getString(R.string.course_week_format),mSelectWeek));
                 mTvScheduleWeekNumber.setText(AppConstants.WEEKS[mSelectWeek - 1]);
+
                 mTimeTable.changeTheDate(position + 1 - mCurWeek);
                 if (mSelectWeek == mCurWeek) {
                     mTimeTable.setTodayLayout(DateUtil.getDayInWeek(new Date(System.currentTimeMillis())));
@@ -338,7 +359,7 @@ public class ScheduleActivity extends ToolbarActivity {
                 startActivityForResult(intent, 2);
                 break;
             case R.id.action_set_cur_week:
-                CurweekSetDialog dialog = new CurweekSetDialog(ScheduleActivity.this, mCurWeek);
+                CurweekSetDialog dialog = new CurweekSetDialog(ScheduleActivity.this, mCurWeek <= 21 ? mCurWeek : 21);
                 dialog.setOnDialogPostiveClickListener(new CurweekSetDialog.OnDialogPostiveClickListener() {
                     @Override
                     public void onDialogPostiveClick(int curWeek) {
@@ -346,6 +367,12 @@ public class ScheduleActivity extends ToolbarActivity {
                         saveFirstWeekDate();
                         mWeekSelectAdapter.swap(curWeek);
                         mSelectWeek = curWeek;
+                        mTimeTable.changeTheDate(0);
+                        mTimeTable.setTodayLayout(DateUtil.getDayInWeek(new Date(System.currentTimeMillis())));
+                        mTimeTable.setType(0);
+                        updateTimetable();
+                        mTimeTable.invalidate();
+//                        mTvScheduleWeekNumber.setText(String.format(App.sContext.getString(R.string.course_week_format),mSelectWeek));
                         mTvScheduleWeekNumber.setText(AppConstants.WEEKS[mSelectWeek - 1]);
                     }
                 });
@@ -385,10 +412,18 @@ public class ScheduleActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
+        if (mGuideBgLayout != null){
+            mRootLayout.removeView(mGuideBgLayout);
+            mGuideBgLayout = null;
+            mRootLayout.removeView(mGuideImageView);
+            mGuideImageView = null;
+            return;
+        }
         if (isSelectShown) {
             fadeoutRecyclerView();
             isSelectShown = false;
             invalidateOptionsMenu();
+            mImgPull.setImageResource(R.drawable.arrow_drop_down);
             return;
         }
         if (isCourseViewShown()) {
@@ -436,8 +471,72 @@ public class ScheduleActivity extends ToolbarActivity {
 //            getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
             invalidateOptionsMenu();
             mImgPull.setImageResource(R.drawable.arrow_drop_up);
+            if (sp.getBoolean(PreferenceUtil.FIRST_SELECT_WEEK, true)) {
+                showGuideSetCurWeek();
+                sp.saveBoolean(PreferenceUtil.FIRST_SELECT_WEEK, false);
+            }
         }
     }
+
+    private void showGuideSetCurWeek() {
+        mGuideBgLayout = new GuideBgLayout(ScheduleActivity.this);
+        ViewGroup.LayoutParams bgParams = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        );
+        if (Build.VERSION.SDK_INT >= 21) {
+            mGuideBgLayout.setElevation(DimensUtil.dp2px(8));
+        }
+        mRootLayout.addView(mGuideBgLayout, bgParams);
+        mGuideBgLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+//        final DraweeView draweeView = new DraweeView(ScheduleActivity.this);
+//        final RelativeLayout.LayoutParams guideImgParmas = new RelativeLayout.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT
+//        );
+//        guideImgParmas.setMargins(0, DimensUtil.dp2px(56), 0, 0);
+//        draweeView.setAspectRatio((float) 0.92);
+//        if (Build.VERSION.SDK_INT >=21){
+//            draweeView.setElevation(DimensUtil.dp2px(8));
+//        }
+//        mRootLayout.addView(draweeView, guideImgParmas);
+//        draweeView.setImageURI(Uri.parse("asset://net.muxi.huashiapp/img_guide_setcurweek.png"));
+        mGuideImageView = new ImageView(ScheduleActivity.this);
+        final RelativeLayout.LayoutParams guideImgParmas = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        if (Build.VERSION.SDK_INT >= 21) {
+            mGuideImageView.setElevation(DimensUtil.dp2px(8));
+        }
+        mGuideImageView.setPadding(0,DimensUtil.dp2px(56),0,0);
+//        guideImgParmas.setMargins(0,DimensUtil.dp2px(56),0,0);
+        mGuideImageView.setImageResource(R.drawable.img_guide_setcurweek);
+        mRootLayout.addView(mGuideImageView, guideImgParmas);
+//        guideImgView.setImageURI(Uri.parse("asset://net.muxi.huashiapp/img_guide_setcurweek.png"));
+//        final View view = new View(this);
+//        RelativeLayout.LayoutParams params =new RelativeLayout.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT,
+//                BTN_KNOW_HEIGHT
+//        );
+//        params.setMargins(DimensUtil.getScreenWidth()/3,BTN_KNOW_MARGIN_TOP,DimensUtil.getScreenWidth()/3,0);
+//        mGuideBgLayout.addView(view,params);
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mRootLayout.removeView(mGuideBgLayout);
+//                mGuideBgLayout = null;
+//            }
+//        });
+
+    }
+
 
     public void fadeinRecyclerView() {
         AlphaAnimation animation = new AlphaAnimation(0, 1);

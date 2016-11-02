@@ -3,9 +3,9 @@ package net.muxi.huashiapp;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -17,11 +17,6 @@ import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.main.MainActivity;
 
-import java.util.concurrent.TimeUnit;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -32,17 +27,12 @@ import rx.schedulers.Schedulers;
  */
 public class EnteranceActivity extends BaseActivity implements View.OnClickListener {
 
-
-    @BindView(R.id.drawee)
-    SimpleDraweeView mDrawee;
-    @BindView(R.id.root_layout)
-    FrameLayout mRootLayout;
-
+    private SimpleDraweeView mDrawee;
     private long mSplashUpdate;
     private String mSplashUrl;
     private String mSplashImg;
 
-    private static final int SPLASH_TIME = 2;
+    private static final int SPLASH_TIME = 2000;
 
     private PreferenceUtil sp;
 
@@ -50,11 +40,11 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enterance);
-        ButterKnife.bind(this);
+        mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
         sp = new PreferenceUtil();
         Logger.d(sp.getString(AppConstants.SPLASH_IMG));
         if (sp.getLong(AppConstants.SPLASH_UPDATE) == -1) {
-            mDrawee.setImageURI(Uri.parse("asset://net.muxi.huashiapp/bg_enterance"));
+            mDrawee.setImageURI(Uri.parse("asset://net.muxi.huashiapp/bg_enterance.png"));
         } else {
             if (!sp.getString(AppConstants.SPLASH_IMG).equals("")) {
                 mDrawee.setImageURI(Uri.parse(sp.getString(AppConstants.SPLASH_IMG)));
@@ -62,26 +52,14 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
         }
 
         getSplashData();
-        Observable.timer(SPLASH_TIME, TimeUnit.SECONDS)
-                .subscribe(new Observer<Long>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(Long aLong) {
-                        Intent intent;
-                        intent = new Intent(EnteranceActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        EnteranceActivity.this.finish();
-                    }
-                });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(EnteranceActivity.this, MainActivity.class);
+                startActivity(intent);
+                EnteranceActivity.this.finish();
+            }
+        }, SPLASH_TIME);
     }
 
     @Override
@@ -92,10 +70,6 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    private void init(){
-        Intent intent = new Intent();
-
-    }
     private void getSplashData() {
         CampusFactory.getRetrofitService().getSplash()
                 .observeOn(AndroidSchedulers.mainThread())

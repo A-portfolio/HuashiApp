@@ -39,31 +39,31 @@ public class ElectricityActivity extends ToolbarActivity {
 
     //西区对应的建筑
     private static final String[][] childStrings1 = {
-            {"西区", "东区", "元宝山", "南湖","国交"},
+            {"西区", "东区", "元宝山", "南湖", "国交"},
             {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋"}
     };
 
     //东区对应的建筑
     private static final String[][] childStrings2 = {
-            {"西区", "东区", "元宝山", "南湖","国交"},
+            {"西区", "东区", "元宝山", "南湖", "国交"},
             {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋", "9栋", "10栋", "11栋", "12栋", "13栋西", "13栋东", "14栋", "15栋西", "15栋东", "16栋", "附1栋"}
     };
 
     //元宝山对应的建筑
     private static final String[][] childStrings3 = {
-            {"西区", "东区", "元宝山", "南湖","国交"},
+            {"西区", "东区", "元宝山", "南湖", "国交"},
             {"1栋", "2栋", "3栋", "4栋", "5栋"}
     };
 
     //南湖对应的建筑
     private static final String[][] childStrings4 = {
-            {"西区", "东区", "元宝山", "南湖","国交"},
+            {"西区", "东区", "元宝山", "南湖", "国交"},
             {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋", "9栋", "10栋", "11栋", "12栋", "13栋"}
     };
 
     //国交对应的建筑
     private static final String[][] childStrings5 = {
-            {"西区", "东区", "元宝山", "南湖","国交"},
+            {"西区", "东区", "元宝山", "南湖", "国交"},
             {"3栋", "4栋", "5栋", "6栋"}
     };
 
@@ -133,13 +133,17 @@ public class ElectricityActivity extends ToolbarActivity {
     public void onClick() {
         if (!isEmpty()) {
             int index = mGroupString[1].indexOf("栋");
-            mQuery = mGroupString[0].substring(0, 1) + mGroupString[1].substring(0, index) + "-" + mEtRomm.getText().toString();
+            if (mGroupString[1].length() > index + 1) {
+                mQuery = mGroupString[0].substring(0, 1) + mGroupString[1].substring(0, index) + "-" + mGroupString[1].substring(index + 1, mGroupString[1].length()) + mEtRomm.getText().toString();
+            } else {
+                mQuery = mGroupString[0].substring(0, 1) + mGroupString[1].substring(0, index) + "-" + mEtRomm.getText().toString();
+            }
             PreferenceUtil sp = new PreferenceUtil();
             sp.saveString(PreferenceUtil.ELE_QUERY_STRING, mQuery);
             Intent intent = new Intent(ElectricityActivity.this, ElectricityDetailActivity.class);
             intent.putExtra("query", mQuery);
             startActivity(intent);
-            ZhugeUtils.sendEvent("查询电费","查询电费");
+            ZhugeUtils.sendEvent("查询电费", "查询电费");
             this.finish();
         } else {
             ToastUtil.showShort("请先完善信息");

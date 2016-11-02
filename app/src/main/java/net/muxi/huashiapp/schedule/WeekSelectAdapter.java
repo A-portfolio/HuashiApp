@@ -88,7 +88,7 @@ public class WeekSelectAdapter extends RecyclerView.Adapter<WeekSelectAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return 18;
+        return AppConstants.WEEKS_LENGTH;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){

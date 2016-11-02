@@ -1,25 +1,25 @@
 ext {
     android = [compileSdkVersion: 23,
                buildToolsVersion: "24.0.0 rc2",
-               applicationId    :"net.muxi.huashiapp",
-            minSdkVersion:14,
-            targetSdkversion:23,
-            versionCode:355,
-            versionName:"2.5.7"
+               applicationId    : "net.muxi.huashiapp",
+               minSdkVersion    : 14,
+               targetSdkversion : 23,
+               versionCode      : 355,
+               versionName      : "2.5.7"
     ]
 
-    dependencies = [  "appcompat-v7":"com.android.support:appcompat-v7:23.4.0",
-                      "retrofit":"com.squareup.retrofit2:retrofit:2.0.2",
-                      "design":"com.android.support:design:23.4.0",
-                      "rxjava":"io.reactivex:rxjava:1.1.0",
-                      "butterknife":"com.jakewharton:butterknife:7.0.1",
-                      "cardview":"com.android.support:cardview-v7:23.4.0",
-                      "recyclerview-7":"com.android.support:recyclerview-v7:23.4.0",
-                      "converter-gson":"com.squareup.retrofit2:converter-gson:2.0.2",
-                      "okhttp":"com.squareup.okhttp3:okhttp:3.3.1",
-                      "adapter-rxjava":"com.squareup.retrofit2:adapter-rxjava:2.0.2",
-                      "logging-interceptor":"com.squareup.okhttp3:logging-interceptor:3.3.1",
-                      "rxandroid":"io.reactivex:rxandroid:1.1.0",
-                      "recyclerview-flexibledivider":"com.yqritc:recyclerview-flexibledivider:1.2.9",
+    dependencies = ["appcompat-v7"                : "com.android.support:appcompat-v7:23.4.0",
+                    "retrofit"                    : "com.squareup.retrofit2:retrofit:2.0.2",
+                    "design"                      : "com.android.support:design:23.4.0",
+                    "rxjava"                      : "io.reactivex:rxjava:1.1.0",
+                    "butterknife"                 : "com.jakewharton:butterknife:7.0.1",
+                    "cardview"                    : "com.android.support:cardview-v7:23.4.0",
+                    "recyclerview-7"              : "com.android.support:recyclerview-v7:23.4.0",
+                    "converter-gson"              : "com.squareup.retrofit2:converter-gson:2.0.2",
+                    "okhttp"                      : "com.squareup.okhttp3:okhttp:3.3.1",
+                    "adapter-rxjava"              : "com.squareup.retrofit2:adapter-rxjava:2.0.2",
+                    "logging-interceptor"         : "com.squareup.okhttp3:logging-interceptor:3.3.1",
+                    "rxandroid"                   : "io.reactivex:rxandroid:1.1.0",
+                    "recyclerview-flexibledivider": "com.yqritc:recyclerview-flexibledivider:1.2.9",
     ]
 }

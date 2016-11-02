@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -70,7 +71,11 @@ public class MaterialDialog extends Dialog {
         if (mTvContent.getVisibility() != View.GONE){
             mTvContent.setVisibility(View.GONE);
         }
-        mLayoutContent.addView(view);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        mLayoutContent.addView(view,params);
         return this;
     }
 

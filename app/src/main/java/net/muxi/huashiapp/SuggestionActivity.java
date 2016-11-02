@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.muxi.material_dialog.MaterialDialog;
+
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.ToastUtil;
@@ -35,6 +37,8 @@ public class SuggestionActivity extends ToolbarActivity {
     Button mBtnSubmit;
     @BindView(R.id.tv_word_length)
     TextView mTvWordLength;
+    @BindView(R.id.et_contact)
+    EditText mEtContact;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,22 +67,49 @@ public class SuggestionActivity extends ToolbarActivity {
             }
         });
 
-       mBtnSubmit.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               if (mEtSuggestion.getText().length() == 0){
-                   ToastUtil.showShort(getString(R.string.tip_write_suggestion_first));
-                   return;
-               }
-               if (NetStatus.isConnected()) {
-                   ZhugeUtils.sendEvent("意见提交",mEtSuggestion.getText().toString());
-                   ToastUtil.showShort("提交成功");
-                   SuggestionActivity.this.finish();
-               }else {
-                   ToastUtil.showShort(getString(R.string.tip_check_net));
-               }
-           }
-       });
+        mBtnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mEtSuggestion.getText().length() == 0) {
+                    ToastUtil.showShort(getString(R.string.tip_write_suggestion_first));
+                    return;
+                }
+                if (mEtContact.getText().length() == 0){
+                    final MaterialDialog materialDialog = new MaterialDialog(SuggestionActivity.this);
+                    materialDialog.setTitle(App.sContext.getString(R.string.title_sugg_submit));
+                    materialDialog.setContent(App.sContext.getString(R.string.content_sugg_submit));
+                    materialDialog.setPositiveButton(App.sContext.getString(R.string.btn_negative), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            materialDialog.dismiss();
+                        }
+                    });
+                    materialDialog.setPositiveButtonColor(App.sContext.getResources().getColor(R.color.colorPrimary));
+                    materialDialog.setNegativeButton(App.sContext.getString(R.string.btn_positive), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sendSuggestion(mEtSuggestion.getText().toString() + "联系方式:" + mEtContact.getText().toString());
+                            materialDialog.dismiss();
+                        }
+                    });
+                    materialDialog.setNegativeButtonColor(App.sContext.getResources().getColor(R.color.colorPrimary));
+
+                    materialDialog.show();
+                }else {
+                    sendSuggestion(mEtSuggestion.getText().toString() + "联系方式:" + mEtContact.getText().toString());
+                }
+            }
+        });
+    }
+
+    public void sendSuggestion(String str){
+        if (NetStatus.isConnected()){
+            ZhugeUtils.sendEvent("意见提交",str);
+            ToastUtil.showShort("提交成功");
+            SuggestionActivity.this.finish();
+        }else {
+            ToastUtil.showShort(App.sContext.getString(R.string.tip_check_net));
+        }
     }
 
 
