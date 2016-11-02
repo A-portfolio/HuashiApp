@@ -355,17 +355,19 @@ public class LibraryActivity extends ToolbarActivity {
 
                     @Override
                     public void onNext(Long aLong) {
-                        mBaseDetailLayout = new BaseDetailLayout(LibraryActivity.this);
-                        mContentLayout.addView(mBaseDetailLayout);
-                        mBookDetailView = new BookDetailView(LibraryActivity.this);
+                        if (mBaseDetailLayout == null) {
+                            mBaseDetailLayout = new BaseDetailLayout(LibraryActivity.this);
+                            mContentLayout.addView(mBaseDetailLayout);
+                            mBookDetailView = new BookDetailView(LibraryActivity.this);
 //                        mBookDetailView.setDraweeBg("res://net.muxi.huashiapp/" + R.drawable.img_lib_bookbg);
-                        mBaseDetailLayout.setContent(mBookDetailView);
-                        mBookDetailView.setOnCloseClickListener(new BookDetailView.OnCloseClickListener() {
-                            @Override
-                            public void onCloseClick() {
-                                onBackPressed();
-                            }
-                        });
+                            mBaseDetailLayout.setContent(mBookDetailView);
+                            mBookDetailView.setOnCloseClickListener(new BookDetailView.OnCloseClickListener() {
+                                @Override
+                                public void onCloseClick() {
+                                    onBackPressed();
+                                }
+                            });
+                        }
                     }
                 });
     }

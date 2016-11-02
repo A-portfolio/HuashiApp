@@ -108,6 +108,9 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         mBaseUiListener = new BaseUiListener();
         mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(this, AppConstants.WEIBO_KEY);
         mWeiboShareAPI.registerApp();
+        if (savedInstanceState != null){
+            mWeiboShareAPI.handleWeiboResponse(getIntent(),this);
+        }
     }
 
     public static Intent newIntent(Context context, String url, String title, String intro, String iconUrl) {
@@ -246,7 +249,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
     public TextObject getTextObj() {
         TextObject textObject = new TextObject();
-        textObject.text = title + " " + intro + " " + url + " (更多方便的校园应用尽在华师匣子 下载地址: " + AppConstants.APP_DOWNLOAD_URL + ")";
+        textObject.text = title + " " + intro + " " + url ;
         return textObject;
     }
 

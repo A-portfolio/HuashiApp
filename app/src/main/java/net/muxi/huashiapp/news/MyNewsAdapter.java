@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.News;
+import net.muxi.huashiapp.common.util.NoDoubleClickUtil;
 
 import java.util.List;
 
@@ -62,7 +63,9 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsView
         holder.mNewsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnItemClickListener.OnItemClick(v,mNewsList,position);
+                if (!NoDoubleClickUtil.isDoubleClick()) {
+                    mOnItemClickListener.OnItemClick(v,mNewsList,position);
+                }
             }
         });
 

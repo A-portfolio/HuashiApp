@@ -1,35 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_enterance"
     android:orientation="vertical">
-
-    <ImageView
-        android:id="@+id/img_icon"
-        android:layout_width="144dp"
-        android:layout_height="160dp"
-        android:layout_centerInParent="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/pic_cbox_white"/>
-
-    <TextView
-        android:id="@+id/tv_slogan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/img_icon"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="@string/app_slogan"
-        android:textColor="@color/colorWhite"/>
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/drawee"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:placeholderImageScaleType="fitXY"/>
+        app:actualImageScaleType="centerCrop"/>
 
-</RelativeLayout>
+</FrameLayout>

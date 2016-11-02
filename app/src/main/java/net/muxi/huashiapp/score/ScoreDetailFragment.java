@@ -50,6 +50,8 @@ public class ScoreDetailFragment extends BaseFragment {
 
     private ScoresAdapter mScoresAdapter;
 
+    private List<Scores> mScoresList;
+
     private String mYear;
     private String mTerm;
 
@@ -124,7 +126,9 @@ public class ScoreDetailFragment extends BaseFragment {
 //                        mTvLast.setVisibility(View.VISIBLE);
                         setupRecyclerview(scoresList);
                         sp.saveInt(PreferenceUtil.SCORES_NUM, scoresList.size());
-                        loadDetailScore(scoresList);
+//                        loadDetailScore(scoresList);
+
+                        mScoresList = scoresList;
                     }
                 });
         return view;
@@ -201,6 +205,30 @@ public class ScoreDetailFragment extends BaseFragment {
             i++;
         }
 
+    }
+
+    public void loadSpecifiedScore(final int position){
+        CampusFactory.getRetrofitService()
+                .getDetailScores(Base64Util.createBaseStr(App.sUser),mYear,mTerm,mScoresList.get(position).getCourse(),mScoresList.get(position).getJxb_id())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Observer<DetailScores>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(DetailScores detailScores) {
+                        detailScores.setCourse(mScoresList.get(position).getCourse());
+                        mScoresAdapter.addDetailScore(detailScores,position);
+                    }
+                });
     }
 
     private void setupRecyclerview(List<Scores> scoresList) {

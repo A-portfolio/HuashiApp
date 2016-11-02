@@ -117,7 +117,7 @@ public class ScheduleActivity extends ToolbarActivity {
         String defalutDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()), 1 - day);
         mCurWeek = (int) DateUtil.getDistanceWeek(sp.getString(PreferenceUtil.FIRST_WEEK_DATE, defalutDate), DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
         //当第一次进入时保存当前周的第一天为 本学期的第一天
-        if (mCurWeek == 1){
+        if (mCurWeek == 1) {
             saveFirstWeekDate();
         }
         mSelectWeek = mCurWeek;
@@ -155,13 +155,22 @@ public class ScheduleActivity extends ToolbarActivity {
                     @Override
                     public void onNext(List<Course> courses) {
                         Logger.d(courses.size() + "");
+                        int maxId = 1;
                         //因为每次增删服务器与本地数据库都同时进行,所以就直接比较课程数有无差别
                         if (mCourses.size() != courses.size()) {
                             dao.deleteAllCourse();
                             mCourses.clear();
                             for (int i = 0, max = courses.size(); i < max; i++) {
                                 dao.insertCourse(courses.get(i));
+                                if (courses.get(i).getId() != null && !courses.get(i).getId().equals("")){
+                                    Logger.d("course id is " + courses.get(i).getId());
+                                    if (maxId <= Integer.valueOf(courses.get(i).getId())){
+                                        maxId = Integer.valueOf(courses.get(i).getId()) + 1;
+                                    }
+                                }
                             }
+                            Logger.d(maxId + " max id");
+                            sp.saveInt(PreferenceUtil.COURSE_ID,maxId);
                             mCourses.addAll(courses);
                             updateTimetable();
                         }
@@ -420,7 +429,7 @@ public class ScheduleActivity extends ToolbarActivity {
             invalidateOptionsMenu();
             mImgPull.setImageResource(R.drawable.arrow_drop_down);
         } else {
-            ZhugeUtils.sendEvent("选择周数","点击周数选择按钮");
+            ZhugeUtils.sendEvent("选择周数", "点击周数选择按钮");
             Logger.d("select");
             fadeinRecyclerView();
             isSelectShown = true;

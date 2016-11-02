@@ -186,10 +186,12 @@ public class NewsActivity extends ToolbarActivity {
 
                     @Override
                     public void onNext(Long aLong) {
-                        mBaseDetailLayout = new BaseDetailLayout(NewsActivity.this);
-                        mContentLayout.addView(mBaseDetailLayout);
-                        NewsDetailView newsDetailView = new NewsDetailView(NewsActivity.this, newsList, position);
-                        mBaseDetailLayout.setContent(newsDetailView);
+                        if (mBaseDetailLayout == null) {
+                            mBaseDetailLayout = new BaseDetailLayout(NewsActivity.this);
+                            mContentLayout.addView(mBaseDetailLayout);
+                            NewsDetailView newsDetailView = new NewsDetailView(NewsActivity.this, newsList, position);
+                            mBaseDetailLayout.setContent(newsDetailView);
+                        }
 
                     }
                 });

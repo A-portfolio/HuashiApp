@@ -9,10 +9,10 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/main_pic"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_centerInParent="true"
-        fresco:actualImageScaleType="centerInside"/>
+        fresco:actualImageScaleType="fitXY"/>
 
     <TextView
         android:id="@+id/main_text_view"

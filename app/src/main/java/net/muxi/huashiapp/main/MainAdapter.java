@@ -121,14 +121,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 }
                 ((CommonViewHolder) holder).mTextView.setText(mdesc.get(position - ITEM_BANNER));
                 ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
-                if (position >= WEB_POSITON) {
-                    ((CommonViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mItemClickListener.onItemClick(v,position);
-                        }
-                    });
-                }
             }
         }
     }
