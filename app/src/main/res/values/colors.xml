@@ -37,6 +37,10 @@
     <color name="week_random_orange">#96FF5722</color>
     <color name="course_dialog_light_title_color">#80000000</color>
 
+    <color name="course_widget_content">#D9EEEA</color>
+    <color name="course_widget_start">#289AA4</color>
+    <color name="course_widget_end">#52B2A3</color>
+
     <!--成绩查询-->
     <color name="colorScore">#E91E63</color>
     
