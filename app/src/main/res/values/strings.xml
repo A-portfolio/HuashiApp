@@ -20,13 +20,13 @@
     <string name="action_check_update">检查更新</string>
 
     <string name="notify_title_score">华师匣子</string>
-    <string name="notify_content_score">匣客,新成绩已出,赶紧去查看吧</string>
+    <string name="notify_content_score">匣客，新成绩已出，赶紧去查看吧！</string>
     <string name="notify_title_course">华师匣子</string>
-    <string name="notify_content_course">匣客,明天要上%1$s课程了</string>
+    <string name="notify_content_course">匣客，明天要上%1$s课程了！</string>
     <string name="notify_title_card">华师匣子</string>
-    <string name="notify_content_card">匣客,你的学生卡余额低于20元,及时充值啊</string>
+    <string name="notify_content_card">匣客，你的学生卡余额低于20元，及时充值啊！</string>
     <string name="notify_title_lib">华师匣子</string>
-    <string name="notify_content_lib">匣客,%1$s要到归还日期啦</string>
+    <string name="notify_content_lib">匣客，%1$s要到归还日期啦！</string>
 
     <string name="tip_id_text">学号</string>
     <string name="tip_pwd_text">信息门户密码</string>
@@ -115,3 +115,6 @@
 
     <string name="txt_text">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
 </resources>
+
+
+

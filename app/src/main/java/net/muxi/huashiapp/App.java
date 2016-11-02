@@ -18,7 +18,6 @@ import net.muxi.huashiapp.common.util.PreferenceUtil;
  */
 public class App extends Application {
 
-
     public static Context sContext;
 
     //获取上次的已经登录的用户账号信息

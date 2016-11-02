@@ -11,6 +11,8 @@ public class CardData {
     private String outMoney;
     private String userName;
 
+    private String transMoney;
+
     public String getDealDateTime() {
         return dealDateTime;
     }
@@ -33,5 +35,13 @@ public class CardData {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getTransMoney() {
+        return transMoney;
+    }
+
+    public void setTransMoney(String transMoney) {
+        this.transMoney = transMoney;
     }
 }
