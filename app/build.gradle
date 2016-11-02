@@ -52,6 +52,7 @@ dependencies {
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
     compile 'com.alipay.euler:andfix:0.4.0@aar'
     compile 'com.tencent.bugly:crashreport:2.2.0'
+    compile 'joda-time:joda-time:2.9.4'
     //    compile 'com.zhuge.analysis:zhugeio:latest.integration'
     compile 'me.biubiubiu.justifytext:library:1.1'
     compile files('/Users/ybao/AndroidStudioProjects/HuashiApp/libs/tbs_sdk_thirdapp_v2.1.2.1096_36511_shareonly_obfs_20160727_105850.jar')

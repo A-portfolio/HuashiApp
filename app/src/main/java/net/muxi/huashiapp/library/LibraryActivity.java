@@ -30,7 +30,6 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
-import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.widget.BaseDetailLayout;
 import net.muxi.huashiapp.common.widget.DividerItemDecoration;
 import net.muxi.huashiapp.common.widget.ShadowView;
@@ -214,7 +213,6 @@ public class LibraryActivity extends ToolbarActivity {
                             setItemClickListener();
                             mRecyclerView.setAdapter(mLibraryAdapter);
                         } else {
-                            ToastUtil.showLong("无相关符合的图书");
                             setImgEmpty("无相关符合的图书");
                         }
                     }
@@ -343,7 +341,6 @@ public class LibraryActivity extends ToolbarActivity {
                     public void onNext(BookSearchResult bookSearchResult) {
                         mSwipeRefreshLayout.setRefreshing(false);
                         if (bookSearchResult.getResults().size() == 0){
-                            ToastUtil.showLong("无相关符合的图书");
                             setImgEmpty("无相关符合的图书");
                             mRecyclerView.setVisibility(View.INVISIBLE);
                         }else {

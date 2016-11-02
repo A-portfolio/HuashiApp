@@ -14,7 +14,7 @@ import net.muxi.huashiapp.schedule.ScheduleActivity;
  * Created by ybao on 16/11/2.
  */
 
-public class ScheduleWidgetProvider extends AppWidgetProvider{
+public class ScheduleWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -29,4 +29,6 @@ public class ScheduleWidgetProvider extends AppWidgetProvider{
             appWidgetManager.updateAppWidget(appWidgetId,rv);
         }
     }
+
+
 }

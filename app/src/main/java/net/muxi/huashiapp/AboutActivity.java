@@ -29,6 +29,7 @@ import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.util.ZhugeUtils;
+import net.muxi.huashiapp.webview.WebViewActivity;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -66,9 +67,11 @@ public class AboutActivity extends ToolbarActivity {
         mTvMuxiLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + mTvMuxiLink.getText().toString()));
+//                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + mTvMuxiLink.getText().toString()));
                 ZhugeUtils.sendEvent("打开木犀官网", "打开木犀官网");
-                startActivity(browserIntent);
+//                startActivity(browserIntent);
+                Intent intent = WebViewActivity.newIntent(AboutActivity.this,"http://" + mTvMuxiLink.getText().toString());
+                startActivity(intent);
             }
         });
 

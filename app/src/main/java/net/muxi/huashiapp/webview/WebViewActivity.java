@@ -34,6 +34,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import com.tencent.tauth.Tencent;
 
 import net.muxi.huashiapp.App;
@@ -89,16 +90,23 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         setContentView(R.layout.activity_web_view);
         ButterKnife.bind(this);
 
-        title = getIntent().getStringExtra(WEB_TITLE);
-        url = getIntent().getStringExtra(WEB_URL);
-        iconUrl = getIntent().getStringExtra(WEB_ICON_URL);
-        intro = getIntent().getStringExtra(WEB_INTRO);
+        title = getIntent().hasExtra(WEB_TITLE) ? getIntent().getStringExtra(WEB_TITLE) : getIntent().getStringExtra(WEB_URL);
+        url = getIntent().hasExtra(WEB_URL) ? getIntent().getStringExtra(WEB_URL) : "";
+        iconUrl = getIntent().hasExtra(WEB_ICON_URL) ? getIntent().getStringExtra(WEB_ICON_URL) : "";
+        intro = getIntent().hasExtra(WEB_INTRO) ? getIntent().getStringExtra(WEB_INTRO) : "";
         setTitle(title);
 
         WebSettings webSettings = mWebview.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAppCacheEnabled(true);
         mWebview.setWebChromeClient(new BrowserClient());
+        mWebview.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView webView, String s) {
+                super.onPageFinished(webView, s);
+                title = webView.getTitle();
+            }
+        });
         mWebview.loadUrl(url);
 
         api = WXAPIFactory.createWXAPI(getApplicationContext(), APP_ID, false);
@@ -107,8 +115,8 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         mBaseUiListener = new BaseUiListener();
         mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(this, AppConstants.WEIBO_KEY);
         mWeiboShareAPI.registerApp();
-        if (savedInstanceState != null){
-            mWeiboShareAPI.handleWeiboResponse(getIntent(),this);
+        if (savedInstanceState != null) {
+            mWeiboShareAPI.handleWeiboResponse(getIntent(), this);
         }
     }
 
@@ -118,6 +126,12 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         intent.putExtra(WEB_TITLE, title);
         intent.putExtra(WEB_INTRO, intro);
         intent.putExtra(WEB_ICON_URL, iconUrl);
+        return intent;
+    }
+
+    public static Intent newIntent(Context context, String url) {
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra(WEB_URL, url);
         return intent;
     }
 
@@ -179,7 +193,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         }
 
         @Override
-        public void onReceivedTitle(WebView view, String title) {
+        public void onReceivedTitle(com.tencent.smtt.sdk.WebView view, String title) {
             super.onReceivedTitle(view, title);
         }
     }
@@ -248,7 +262,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
     public TextObject getTextObj() {
         TextObject textObject = new TextObject();
-        textObject.text = title + " " + intro + " " + url ;
+        textObject.text = title + " " + intro + " " + url;
         return textObject;
     }
 
