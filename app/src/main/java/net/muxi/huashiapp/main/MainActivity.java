@@ -246,7 +246,6 @@ public class MainActivity extends ToolbarActivity {
 
     //信鸽注册和启动
     private void initXGPush() {
-        Logger.d("initXGPush");
         context = getApplicationContext();
         XGPushConfig.enableDebug(this, true);
         XGPushConfig.getToken(this);
@@ -494,6 +493,7 @@ public class MainActivity extends ToolbarActivity {
                 Logger.d(position + "");
                 if (position >= WEB_POSITION) {
                     int productPos = position - WEB_POSITION;
+                    Logger.d(productPos + "");
                     ZhugeUtils.sendEvent(mProductData.get_products().get(productPos).getName(), mProductData.get_products().get(productPos).getName());
                     intent = WebViewActivity.newIntent(MainActivity.this, mProductData.get_products().get(productPos).getUrl(),
                             mProductData.get_products().get(productPos).getName(),

@@ -95,5 +95,6 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsView
             ButterKnife.bind(this, view);
         }
 
+
     }
 }
