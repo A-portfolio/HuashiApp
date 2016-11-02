@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -32,10 +32,12 @@ import rx.schedulers.Schedulers;
  */
 public class EnteranceActivity extends BaseActivity implements View.OnClickListener {
 
+
     @BindView(R.id.drawee)
     SimpleDraweeView mDrawee;
     @BindView(R.id.root_layout)
-    RelativeLayout mRootLayout;
+    FrameLayout mRootLayout;
+
     private long mSplashUpdate;
     private String mSplashUrl;
     private String mSplashImg;
@@ -52,7 +54,7 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
         sp = new PreferenceUtil();
         Logger.d(sp.getString(AppConstants.SPLASH_IMG));
         if (sp.getLong(AppConstants.SPLASH_UPDATE) == -1) {
-            mDrawee.setImageURI(Uri.parse("res://net.muxi.huashiapp/" + R.drawable.bg_enterance));
+            mDrawee.setImageURI(Uri.parse("asset://net.muxi.huashiapp/bg_enterance"));
         } else {
             if (!sp.getString(AppConstants.SPLASH_IMG).equals("")) {
                 mDrawee.setImageURI(Uri.parse(sp.getString(AppConstants.SPLASH_IMG)));
@@ -90,6 +92,10 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    private void init(){
+        Intent intent = new Intent();
+
+    }
     private void getSplashData() {
         CampusFactory.getRetrofitService().getSplash()
                 .observeOn(AndroidSchedulers.mainThread())

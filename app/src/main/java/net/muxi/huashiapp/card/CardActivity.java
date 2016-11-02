@@ -18,6 +18,10 @@ import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
 
+import org.joda.time.DateTime;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,6 +44,9 @@ public class CardActivity extends ToolbarActivity {
     TextView mTvUnit;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.count_view)
+    CountView mCountView;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,14 +56,16 @@ public class CardActivity extends ToolbarActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
         init();
+        setupCountView();
+
         User user = new User();
         PreferenceUtil sp = new PreferenceUtil();
         user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
         user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
-        if (!NetStatus.isConnected()){
+        if (!NetStatus.isConnected()) {
             ToastUtil.showShort(getString(R.string.tip_check_net));
         }
         CampusFactory.getRetrofitService()
@@ -80,6 +89,7 @@ public class CardActivity extends ToolbarActivity {
                         mDate.setText(cardDatas.get(0).getDealDateTime());
                         mMoney.setText(cardDatas.get(0).getOutMoney());
                         mTvUnit.setVisibility(View.VISIBLE);
+
                     }
                 });
 
@@ -87,5 +97,23 @@ public class CardActivity extends ToolbarActivity {
 
     public void init() {
         mToolbar.setTitle("学生卡");
+    }
+
+    public void setupCountView() {
+        List<DailyData> mDailyDatas = new ArrayList<>();
+        DateTime dateTime = new DateTime(new Date());
+        DateTime time = dateTime.minusDays(6);
+        String day = time.toString("yyyy-MM-dd");
+        DateTime dateTime1 = new DateTime(day);
+        DateTime time7 = dateTime.minusDays(0);
+        String day7 = time7.toString("yyyy-MM-dd");
+        DateTime dateTime7 = new DateTime(day7);
+
+        for (int i = 0; i < 6; i++) {
+            DailyData dataEntity = new DailyData();
+            long millis = (long) (dateTime1.getMillis() + Math.random() * (dateTime7.getMillis() - dateTime1.getMillis()));
+            dataEntity.setTime(millis);
+            mDailyDatas.add(dataEntity);
+        }
     }
 }

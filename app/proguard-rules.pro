@@ -97,8 +97,8 @@
 # 信鸽推送
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
--keep class com.tencent.android.tpush.**  {* ;}
--keep class com.tencent.mid.**  {* ;}
+-keep class com.tencent.android.tpush.**{ *;}
+-keep class com.tencent.mid.**{ *;}
 
 #xUtils(保持注解，及使用注解的Activity不被混淆，不然会影响Activity中你使用注解相关的代码无法使用)
 -keep class * extends java.lang.annotation.Annotation {*;}
@@ -129,6 +129,7 @@
 # Keep our interfaces so they can be used by other ProGuard rules.
 # See http://sourceforge.net/p/proguard/bugs/466/
 -keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
+
 
 # Do not strip any method/class that is annotated with @DoNotStrip
 -keep @com.facebook.common.internal.DoNotStrip class *
