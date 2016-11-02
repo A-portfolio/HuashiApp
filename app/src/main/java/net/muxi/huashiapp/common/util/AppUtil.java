@@ -8,6 +8,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
+import net.muxi.huashiapp.R;
+
 /**
  * Created by ybao on 16/5/19.
  */
@@ -20,13 +22,13 @@ public class AppUtil {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText("huashi",content);
         clipboard.setPrimaryClip(clipData);
+        ToastUtil.showShort(context.getString(R.string.tip_copy_success));
     }
 
     public static void addFragmentToActivity(AppCompatActivity activity, Fragment fragment, int layout){
         fm = activity.getFragmentManager();
         ft = fm.beginTransaction();
         ft.replace(layout,fragment);
-
     }
 
 }

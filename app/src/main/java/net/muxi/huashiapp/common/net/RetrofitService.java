@@ -93,7 +93,7 @@ public interface RetrofitService {
     Observable<List<News>> getNews();
 
     @GET("calendar/")
-    Observable<List<CalendarData>> getCalendar();
+    Observable<CalendarData> getCalendar();
 
     @GET("banner/")
     Observable<List<BannerData>> getBanner();

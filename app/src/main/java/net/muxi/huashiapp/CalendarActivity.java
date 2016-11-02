@@ -20,8 +20,6 @@ import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
@@ -95,7 +93,7 @@ public class CalendarActivity extends ToolbarActivity {
         CampusFactory.getRetrofitService().getCalendar()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<List<CalendarData>>() {
+                .subscribe(new Observer<CalendarData>() {
                     @Override
                     public void onCompleted() {
 
@@ -107,12 +105,12 @@ public class CalendarActivity extends ToolbarActivity {
                     }
 
                     @Override
-                    public void onNext(final List<CalendarData> calendarData) {
-                        if (lastTime != calendarData.get(0).getUpdate()) {
-                            saveCalendarData(calendarData.get(0));
-                            getImgSize(calendarData.get(0).getSize());
-                            setCalendarDrawee(calendarData.get(0).getImg());
-                            FrescoUtil.savePicture(picUrl, CalendarActivity.this, calendarData.get(0).getFilename());
+                    public void onNext(final CalendarData calendarData) {
+                        if (lastTime != calendarData.getUpdate()) {
+                            saveCalendarData(calendarData);
+                            getImgSize(calendarData.getSize());
+                            setCalendarDrawee(calendarData.getImg());
+                            FrescoUtil.savePicture(picUrl, CalendarActivity.this, calendarData.getFilename());
                         }
                     }
                 });

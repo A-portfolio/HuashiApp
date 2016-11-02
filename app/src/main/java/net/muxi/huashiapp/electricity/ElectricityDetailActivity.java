@@ -43,8 +43,7 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
     ViewPager mViewPager;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    private Electricity mEleAirData;
-    private Electricity mEleLightData;
+    private PreferenceUtil sp;
 
     private String mQuery;
     private List<Fragment> detailFragments;
@@ -54,6 +53,7 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_electricity_detail);
         ButterKnife.bind(this);
+        sp = new PreferenceUtil();
         mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
@@ -94,6 +94,7 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
                         if (response.code() == 404){
+                            sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
                             ToastUtil.showShort(getString(R.string.ele_room_not_found));
                             Intent intent = new Intent(ElectricityDetailActivity.this,ElectricityActivity.class);
                             startActivity(intent);

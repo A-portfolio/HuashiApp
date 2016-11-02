@@ -222,6 +222,10 @@ public class LibraryLoginActivity extends ToolbarActivity {
         final User libUser = new User();
         libUser.setSid(mEditUserName.getText().toString());
         libUser.setPassword(mEditPassword.getText().toString());
+        if (libUser.getSid().equals("") || libUser.getPassword().equals("")){
+            ToastUtil.showShort(getString(R.string.tip_err_account));
+            return;
+        }
         if (NetStatus.isConnected()) {
             showProgressBarDialog(true, "登录中");
             CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(libUser))

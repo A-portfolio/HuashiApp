@@ -11,6 +11,7 @@ import android.widget.TextView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.OnItemClickListener;
 import net.muxi.huashiapp.common.data.BookSearchResult;
+import net.muxi.huashiapp.common.util.NoDoubleClickUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         holder.mBookLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!NoDoubleClickUtil.isDoubleClick())
                 mOnItemClickListener.onItemClick(v, mBookList.get(position));
             }
         });

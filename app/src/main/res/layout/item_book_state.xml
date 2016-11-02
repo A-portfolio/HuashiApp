@@ -8,6 +8,7 @@
     android:layout_marginBottom="20dp"
     android:background="@drawable/card_library"
     android:paddingBottom="16dp"
+    android:paddingRight="16dp"
     android:paddingTop="16dp">
 
     <LinearLayout
