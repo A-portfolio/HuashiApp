@@ -62,8 +62,6 @@ public interface RetrofitService {
     //URL: /api/table/?xnm='2015'&xqm='3'&sid='2016210761'
     @GET("table/")
     Observable<List<Course>> getSchedule(@Header("Authorization") String verification,
-                                         @Query("xnm") String year,
-                                         @Query("xqm") String term,
                                          @Query("sid") String sid);
 
     //添加课程

@@ -109,7 +109,7 @@ public class ScoreDetailFragment extends BaseFragment {
                         if (mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
-                        setNoneStatus(getString(R.string.tip_school_server_error));
+                        setNoneStatus(App.sContext.getString(R.string.tip_school_server_error));
                     }
 
                     @Override

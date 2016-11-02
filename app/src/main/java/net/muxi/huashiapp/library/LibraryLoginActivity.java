@@ -165,18 +165,6 @@ public class LibraryLoginActivity extends ToolbarActivity {
                 return false;
             }
         });
-        mSearchView.setOnSearchViewListener(new MySearchView.OnSearchViewListener() {
-            @Override
-            public void onSearchShown() {
-
-            }
-
-            @Override
-            public void onSeachClose() {
-                mAccoutLayout.setClickable(true);
-//                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            }
-        });
         mTvSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

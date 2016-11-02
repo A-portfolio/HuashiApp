@@ -89,6 +89,10 @@
 -keep public class * extends java.lang.annotation.Annotation
 -keepclasseswithmembernames class * {native <methods>;}
 -keep class com.alipay.euler.andfix.**{ *; }
+-keep class * extends java.lang.annotation.Annotation
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
 
 # weixin
 -dontwarn com.tencent.mm.**
@@ -153,6 +157,8 @@
 -keep class com.facebook.imagepipeline.animated.factory.AnimatedFactoryImpl {
     public AnimatedFactoryImpl(com.facebook.imagepipeline.bitmaps.PlatformBitmapFactory,com.facebook.imagepipeline.core.ExecutorSupplier);
 }
+
+-keep class com.facebook.** { *; }
 
 
 # 腾讯 X5内核

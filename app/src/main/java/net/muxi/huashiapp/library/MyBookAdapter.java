@@ -51,7 +51,6 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
         holder.mTvAuthor.setText(Html.fromHtml(author));
         String itime = getBookStr(App.sContext.getString(R.string.lib_itime),mPersonalBooks.get(position).getItime());
         holder.mTvBorrowDate.setText(Html.fromHtml(itime));
-        holder.mTvDeadline.setTextSize(18);
         holder.mTvDeadline.setText(mPersonalBooks.get(position).getOtime());
     }
 

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.util.AnimationUtil;
+import net.muxi.huashiapp.common.util.Logger;
 
 /**
  * Created by ybao on 16/5/16.
@@ -36,6 +37,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
     private FrameLayout mSearchLayout;
     private EditText mEditSearch;
     private View mTintView;
+    private View mDivider;
 
     private MenuItem mMenuItem;
 
@@ -81,6 +83,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
         mSearchLayout = (FrameLayout) findViewById(R.id.search_layout);
         mEditSearch = (EditText) findViewById(R.id.edit_search);
         mTintView = findViewById(R.id.tint_view);
+        mDivider = findViewById(R.id.divider);
 
         mBtnBack.setOnClickListener(this);
         mBtnSearch.setOnClickListener(this);
@@ -116,7 +119,6 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     showKeyboard(mEditSearch);
-                    showSuggestions();
                 }
             }
         });
@@ -212,7 +214,6 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
         if (suggestions != null & suggestions.length > 0) {
             final MySearchAdapter mSearchAdapter = new MySearchAdapter(mContext, suggestions, suggestionIcon);
             mSearchListview.setAdapter(mSearchAdapter);
-            mSearchListview.setVisibility(VISIBLE);
             setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -251,9 +252,10 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
             if (mOnSearchViewListener != null) {
                 mOnSearchViewListener.onSearchShown();
             }
+            showSuggestions();
+            mDivider.setVisibility(VISIBLE);
         }
 
-        mSearchListview.setVisibility(VISIBLE);
         mTintView.setVisibility(VISIBLE);
         mIsSearchOpen = true;
     }
@@ -269,7 +271,11 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
             public boolean onAnimationEnd(View view) {
                 if (mOnSearchViewListener != null) {
                     mOnSearchViewListener.onSearchShown();
+
                 }
+                mDivider.setVisibility(VISIBLE);
+                showSuggestions();
+                Logger.d("search view animation end");
                 return false;
             }
 
@@ -302,7 +308,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
 
 
     public void hideSuggestions() {
-        mSearchListview.setVisibility(GONE);
+        mSearchListview.setVisibility(INVISIBLE);
     }
 
     @Override
@@ -332,6 +338,8 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
         }
         mEditSearch.setText(null);
         hideKeyboard(this);
+        hideSuggestions();
+        mDivider.setVisibility(INVISIBLE);
         mEditSearch.clearFocus();
         this.clearFocus();
         this.setVisibility(GONE);

@@ -26,13 +26,13 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:layout_below="@+id/tv_title"
-                    android:layout_marginBottom="@dimen/dialog_content_padding"
                     android:layout_marginLeft="@dimen/dialog_content_padding"
                     android:layout_marginRight="@dimen/dialog_content_padding">
 
         <TextView
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
+            android:textColor="#7f000000"
             android:layout_height="wrap_content"
             android:textSize="@dimen/dialog_content_size"
             tools:text="content"/>

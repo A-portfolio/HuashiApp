@@ -12,6 +12,7 @@ import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.util.DimensUtil;
 
@@ -40,6 +41,7 @@ public class CurweekSetDialog extends Dialog {
     private OnDialogPostiveClickListener mOnDialogPostiveClickListener;
 
     private Context mContext;
+
 
     public CurweekSetDialog(Context context,int curWeek) {
         super(context,R.style.DialogStyle);
@@ -79,12 +81,12 @@ public class CurweekSetDialog extends Dialog {
     }
 
     private void initView() {
-        weeksLayout = new LinearLayout[18];
+        weeksLayout = new LinearLayout[AppConstants.WEEKS_LENGTH];
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
                 DimensUtil.dp2px(106),
                 DimensUtil.dp2px(56)
         );
-        mTvWeeks = new TextView[18];
+        mTvWeeks = new TextView[AppConstants.WEEKS_LENGTH];
         ViewGroup.LayoutParams tvParams = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
@@ -93,9 +95,9 @@ public class CurweekSetDialog extends Dialog {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        mRadioButtons = new AppCompatRadioButton[18];
+        mRadioButtons = new AppCompatRadioButton[AppConstants.WEEKS_LENGTH];
 
-        for (int i = 0; i < 18; i++) {
+        for (int i = 0; i < AppConstants.WEEKS_LENGTH; i++) {
             weeksLayout[i] = new LinearLayout(mContext);
             weeksLayout[i].setPadding(DimensUtil.dp2px(16), 0, 0, 0);
             weeksLayout[i].setLayoutParams(layoutParams);
