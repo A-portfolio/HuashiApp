@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -401,8 +400,11 @@ public class MainActivity extends ToolbarActivity {
             public void onBannerItemClick(BannerData bannerData) {
                 ZhugeUtils.sendEvent("点击 banner", bannerData.getUrl());
                 try {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(bannerData.getUrl()));
-                    startActivity(browserIntent);
+//                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(bannerData.getUrl()));
+//                    startActivity(browserIntent);
+                    //更改为 app 内部打开
+                    Intent intent = WebViewActivity.newIntent(MainActivity.this, bannerData.getUrl());
+                    startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

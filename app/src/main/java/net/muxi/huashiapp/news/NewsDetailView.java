@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.webview.WebViewActivity;
 
 import java.util.List;
 
@@ -104,8 +104,10 @@ public class NewsDetailView extends RelativeLayout {
                 @Override
                 public void onClick(View v) {
                     try {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(appendix.get(j).toString()));
-                        mContext.startActivity(browserIntent);
+//                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(appendix.get(j).toString()));
+//                        mContext.startActivity(browserIntent);
+                        Intent intent = WebViewActivity.newIntent(mContext, appendix.get(j).toString());
+                        mContext.startActivity(intent);
                     } catch (Exception e) {
                         e.printStackTrace();
                         ToastUtil.showShort(App.sContext.getString(R.string.tip_link_unable_open));
