@@ -80,7 +80,6 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
     private static final String APP_ID = "wxf054659decf8f748";
     private IWXAPI api;
-
     private String type = "webpage";
 
 
