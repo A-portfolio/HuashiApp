@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -285,13 +286,18 @@ public class ScheduleActivity extends ToolbarActivity {
                 shadowView.setTag("shadow_view");
                 coursesView.setTag("course_view");
                 mRootLayout.addView(shadowView);
-                mRootLayout.addView(coursesView, layoutParams);
-                coursesView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onBackPressed();
-                    }
-                });
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                );
+                params.gravity = Gravity.CENTER;
+                mRootLayout.addView(coursesView, params);
+//                coursesView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        onBackPressed();
+//                    }
+//                });
             }
         });
     }
