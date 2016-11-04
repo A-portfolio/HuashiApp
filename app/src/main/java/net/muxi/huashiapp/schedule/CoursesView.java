@@ -6,7 +6,6 @@ import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,7 +34,7 @@ public class CoursesView extends HorizontalScrollView{
     private static final int COURSE_HEIGHT = DimensUtil.dp2px(128);
     private static final int COURSE_MARGIN = DimensUtil.dp2px(8);
 
-    public CoursesView(Context context,List<Course> courses,int week) {
+    public CoursesView(Context context, final List<Course> courses, int week) {
         super(context);
         mContext = context;
         mCourses = courses;
@@ -46,17 +45,23 @@ public class CoursesView extends HorizontalScrollView{
         }
         addLinearLayout();
         initView();
+        this.post(new Runnable() {
+            @Override
+            public void run() {
+                CoursesView.this.scrollTo((int)((2 * COURSE_MARGIN + COURSE_WIDTH) * courses.size()/2.0 - DimensUtil.getScreenWidth() / 2.0),0);
+            }
+        });
     }
 
     private void addLinearLayout() {
         mContentLayout = new LinearLayout(mContext);
         mContentLayout.setGravity(Gravity.CENTER);
-        FrameLayout.LayoutParams params = new LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
         );
-        params.gravity = Gravity.CENTER;
-        this.addView(mContentLayout,params);
+        mContentLayout.setLayoutParams(params);
+        this.addView(mContentLayout);
     }
 
     private void initView() {
@@ -84,13 +89,14 @@ public class CoursesView extends HorizontalScrollView{
                 textView.setBackground(getResources().getDrawable(R.drawable.bg_simple_class_gray));
             }
             mContentLayout.addView(textView);
-            mContentLayout.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((BaseActivity)mContext).onBackPressed();
-                }
-            });
+
         }
+        mContentLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((BaseActivity)mContext).onBackPressed();
+            }
+        });
 
     }
 

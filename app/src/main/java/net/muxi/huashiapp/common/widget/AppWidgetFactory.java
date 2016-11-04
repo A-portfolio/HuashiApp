@@ -7,6 +7,7 @@ import android.widget.RemoteViewsService;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Course;
+import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.TimeTableUtil;
 
@@ -22,11 +23,14 @@ public class AppWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
     //存放当天要显示的课程
     private List<Course> mCourseList;
 
+    private List<Course> mAllCourseList;
     private Context mContext;
 
     public AppWidgetFactory(Context context, Intent intent) {
         mContext = context;
-        mCourseList = intent.getParcelableArrayListExtra("course");
+        mAllCourseList = intent.getParcelableArrayListExtra("course");
+        Logger.d(mAllCourseList.size() + "");
+        mCourseList = TimeTableUtil.getTodayCourse(mAllCourseList);
         Logger.d("app widget factory ");
         Logger.d(mCourseList.size() + "");
     }
@@ -41,8 +45,11 @@ public class AppWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onDataSetChanged() {
-//        mCourseList.clear();
         Logger.d("data set change");
+        HuaShiDao dao = new HuaShiDao();
+        mAllCourseList = dao.loadAllCourses();
+//        mCourseList.clear();
+        mCourseList = TimeTableUtil.getTodayCourse(mAllCourseList);
     }
 
     @Override

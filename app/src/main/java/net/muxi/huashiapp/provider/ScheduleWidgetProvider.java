@@ -24,18 +24,31 @@ import java.util.Date;
 
 public class ScheduleWidgetProvider extends AppWidgetProvider {
 
+    private RemoteViews rv;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         Logger.d(intent.getAction());
-        if (intent.getAction().equals("android.intent.action.WidgetProvider") ||
-                intent.getAction().equals("android.intent.action.ACTION_DATE_CHANGED")) {
+        if (intent.getAction().equals("android.intent.action.TIME_SET") ||
+                intent.getAction().equals("android.intent.action.WidgetProvider")) {
+            Logger.d("begin update list");
             AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = widgetManager.getAppWidgetIds(new ComponentName(context,ScheduleWidgetProvider.class));
-            updateWidget(context,widgetManager,appWidgetIds);
 
+//            Intent serviceIntent = new Intent(context, WidgetService.class);
+            rv = new RemoteViews(context.getPackageName(), R.layout.widget_schedule);
+//
+//            Intent activityIntent = new Intent(context, ScheduleActivity.class);
+//            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
+//            rv.setRemoteAdapter(appWidgetIds[0], R.id.lv, serviceIntent);
+            rv.setTextViewText(R.id.tv_week, AppConstants.WEEKS[TimeTableUtil.getCurWeek() - 1]);
+            rv.setTextViewText(R.id.tv_weekday, AppConstants.WEEKDAYS[DateUtil.getDayInWeek(new Date()) - 1]);
+//            rv.setOnClickPendingIntent(R.id.widget_layout, pendingIntent);
+            widgetManager.updateAppWidget(appWidgetIds, rv);
+            widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv);
+            Logger.d(appWidgetIds[0] + "");
         }
-
     }
 
     @Override
@@ -51,23 +64,23 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
     }
 
     private void updateWidget(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        final int N = appWidgetIds.length;
-        for (int i = 0; i < N; i++) {
-            int appWidgetId = appWidgetIds[i];
-            Intent intent = new Intent(context, WidgetService.class);
+        int appWidgetId = appWidgetIds[0];
+        Logger.d(appWidgetId + "");
+        Intent intent = new Intent(context, WidgetService.class);
 //            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 //            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-            RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_schedule);
+        rv = new RemoteViews(context.getPackageName(), R.layout.widget_schedule);
 
-            Intent activityIntent = new Intent(context, ScheduleActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
-            rv.setRemoteAdapter(appWidgetId, R.id.lv, intent);
-            rv.setTextViewText(R.id.tv_week, AppConstants.WEEKS[TimeTableUtil.getCurWeek() - 1]);
-            rv.setTextViewText(R.id.tv_weekday, AppConstants.WEEKDAYS[DateUtil.getDayInWeek(new Date()) - 1]);
-            rv.setOnClickPendingIntent(R.id.widget_layout, pendingIntent);
-            appWidgetManager.updateAppWidget(appWidgetId, rv);
-            Logger.d("appwidget update");
-        }
+        Intent activityIntent = new Intent(context, ScheduleActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
+        rv.setRemoteAdapter(appWidgetId, R.id.lv, intent);
+        rv.setTextViewText(R.id.tv_week, AppConstants.WEEKS[TimeTableUtil.getCurWeek() - 1]);
+        rv.setTextViewText(R.id.tv_weekday, AppConstants.WEEKDAYS[DateUtil.getDayInWeek(new Date()) - 1]);
+        rv.setOnClickPendingIntent(R.id.widget_layout, pendingIntent);
+        appWidgetManager.updateAppWidget(appWidgetId, rv);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.lv);
+        Logger.d("appwidget update");
     }
+
 
 }
