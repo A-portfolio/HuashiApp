@@ -105,6 +105,8 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
             public void onPageFinished(WebView webView, String s) {
                 super.onPageFinished(webView, s);
                 title = webView.getTitle();
+                setTitle(title);
+                Logger.d(title);
             }
         });
         mWebview.loadUrl(url);
