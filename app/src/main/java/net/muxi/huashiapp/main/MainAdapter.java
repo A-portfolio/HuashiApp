@@ -50,7 +50,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     //banner 所占的 item 数量
     private static final int ITEM_BANNER = 1;
     //webview item 的位置
-    private static final int WEB_POSITON = 8;
+    private static final int WEB_POSITON = 9;
 
     public interface ItemClickListener {
         void onItemClick(View view, int position);

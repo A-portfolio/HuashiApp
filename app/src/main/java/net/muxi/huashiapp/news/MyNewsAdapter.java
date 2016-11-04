@@ -64,7 +64,7 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsView
             @Override
             public void onClick(View v) {
                 if (!NoDoubleClickUtil.isDoubleClick()) {
-                    mOnItemClickListener.OnItemClick(v,mNewsList,position);
+                        mOnItemClickListener.OnItemClick(v,mNewsList,position);
                 }
             }
         });
