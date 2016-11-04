@@ -19,7 +19,7 @@ public class PreferenceUtil {
     public static final String LIBRARY_ID = "libraryId";
     public static final String LIBRARY_PWD = "libraryPwd";
     public static final String COURSE_ID = "course_id";
-    //课程表中的当前周
+    //课表中的第一周的第一天日期
     public static final String FIRST_WEEK_DATE = "first_date";
     //当前出了成绩的科目数
     public static final String SCORES_NUM = "score_num";

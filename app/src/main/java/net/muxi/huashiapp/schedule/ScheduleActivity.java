@@ -380,6 +380,10 @@ public class ScheduleActivity extends ToolbarActivity {
                         mTimeTable.invalidate();
 //                        mTvScheduleWeekNumber.setText(String.format(App.sContext.getString(R.string.course_week_format),mSelectWeek));
                         mTvScheduleWeekNumber.setText(AppConstants.WEEKS[mSelectWeek - 1]);
+
+                        Intent intent1 = new Intent();
+                        intent1.setAction("android.intent.action.WidgetProvider");
+                        sendBroadcast(intent1);
                     }
                 });
                 dialog.show();

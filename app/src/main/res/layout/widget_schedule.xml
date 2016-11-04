@@ -1,44 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/widget_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:layout_width="180dp"
+    tools:layout_height="180dp"
+    android:background="@drawable/bg_desktop_widget"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:id="@+id/img_bg"
-        android:src="@drawable/bg_desktop_widget"/>
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:scaleType="fitXY"-->
+    <!--android:id="@+id/img_bg"-->
+    <!--android:src="@drawable/bg_desktop_widget"/>-->
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:id="@+id/tv_weekday"
-        android:layout_marginTop="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:gravity="bottom"
+        android:layout_centerHorizontal="true"
+        android:layout_weight="3"
         android:textColor="@color/colorWhite"
         android:textSize="16sp"
         tools:text="星期三"/>
 
     <TextView
+        android:id="@+id/tv_week"
         android:layout_width="wrap_content"
-        android:id="@+id/tv_date"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
         android:textColor="@color/colorWhite"
+        android:gravity="top|center_horizontal"
         android:textSize="12sp"
-        tools:text="2016-11-11"/>
+        android:layout_gravity="center_horizontal"
+        tools:text="第三周"/>
 
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp"
         android:id="@+id/lv"
-        android:layout_marginTop="52dp"></ListView>
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="12dp"
+        android:scrollbars="none"
+        android:layout_weight="12"/>
 
-</RelativeLayout>
+</LinearLayout>
