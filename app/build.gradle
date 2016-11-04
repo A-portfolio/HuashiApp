@@ -55,6 +55,7 @@ dependencies {
     compile 'joda-time:joda-time:2.9.4'
     //    compile 'com.zhuge.analysis:zhugeio:latest.integration'
     compile 'me.biubiubiu.justifytext:library:1.1'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.0'
     compile files('/Users/ybao/AndroidStudioProjects/HuashiApp/libs/tbs_sdk_thirdapp_v2.1.2.1096_36511_shareonly_obfs_20160727_105850.jar')
     compile files('/Users/ybao/AndroidStudioProjects/HuashiApp/libs/tbs_sdk_thirdapp_v2.1.2.1096_36511_withdownload_obfs_20160727_105857.jar')
     compile files('/Users/december/portfolio/HuashiApp/libs/tbs_sdk_thirdapp_v2.1.2.1096_36511_withdownload_obfs_20160727_105857.jar')

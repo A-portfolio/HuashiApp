@@ -58,6 +58,7 @@ import net.muxi.huashiapp.login.LoginActivity;
 import net.muxi.huashiapp.news.NewsActivity;
 import net.muxi.huashiapp.schedule.ScheduleActivity;
 import net.muxi.huashiapp.score.ScoreActivity;
+import net.muxi.huashiapp.website.WebsiteActivity;
 import net.muxi.huashiapp.webview.WebViewActivity;
 
 import java.util.ArrayList;
@@ -81,8 +82,8 @@ public class MainActivity extends ToolbarActivity {
     private String[] pics = {R.drawable.ic_main_curschedule + "", R.drawable.ic_main_idcard + "",
             R.drawable.ic_main_mark + "", R.drawable.ic_main_power_rate + "",
             R.drawable.ic_main_school_calendar + "", R.drawable.ic_main_workschedule + "",
-            R.drawable.ic_main_library + ""};
-    private String[] desc = {"课程表", "学生卡", "成绩查询", "电费查询", "校历查询", "部门信息", "图书馆"};
+            R.drawable.ic_main_library + "",R.drawable.ic_main_website+ ""};
+    private String[] desc = {"课程表", "学生卡", "成绩查询", "电费查询", "校历查询", "部门信息", "图书馆","常用网站"};
 
     private List<String> mpic;
     private List<String> mdesc;
@@ -97,7 +98,7 @@ public class MainActivity extends ToolbarActivity {
     private List<BannerData> mBannerDatas;
 
     private Context context;
-    private static final int WEB_POSITION = 8;
+    private static final int WEB_POSITION = 9;
     private String downloadUrl;
 
     @Override
@@ -473,7 +474,6 @@ public class MainActivity extends ToolbarActivity {
                         ZhugeUtils.sendEvent("查看部门信息", "查看部门信息");
                         intent = new Intent(MainActivity.this, ApartmentActivity.class);
                         startActivity(intent);
-
                         break;
                     case 7:
                         ZhugeUtils.sendEvent("进入图书馆", "进入图书馆");
@@ -491,6 +491,11 @@ public class MainActivity extends ToolbarActivity {
 //                        intent = WebViewActivity.newIntent(MainActivity.this, "https://xueer.muxixyz.com/", "学而","华师选课经验平台","http://f.hiphotos.baidu.com/image/h%3D200/sign=6f05c5f929738bd4db21b531918a876c/6a600c338744ebf8affdde1bdef9d72a6059a702.jpg");
 //                        startActivity(intent);
 //                        break;
+                    case 8:
+                        ZhugeUtils.sendEvent("查询常用网站","查询常用网站");
+                        intent = new Intent(MainActivity.this, WebsiteActivity.class);
+                        startActivity(intent);
+                        break;
                 }
                 Logger.d(position + "");
                 if (position >= WEB_POSITION) {
@@ -503,6 +508,7 @@ public class MainActivity extends ToolbarActivity {
                             mProductData.get_products().get(productPos).getIcon());
                     startActivity(intent);
                 }
+
             }
         });
 

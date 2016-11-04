@@ -18,6 +18,7 @@ import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.data.SplashData;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.data.VersionData;
+import net.muxi.huashiapp.common.data.WebsiteData;
 
 import java.util.List;
 
@@ -125,6 +126,9 @@ public interface RetrofitService {
 
     @GET("product/")
     Observable<ProductData> getProduct();
+
+    @GET("site/")
+    Observable<List<WebsiteData>> getWebsite();
 
 
 }
