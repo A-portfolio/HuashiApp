@@ -59,7 +59,6 @@ public class CardActivity extends ToolbarActivity {
     CombinedChart mChart1;
 
 
-
     private CombinedChart mChart;
     private final int itemcount = 7;
 
@@ -73,10 +72,10 @@ public class CardActivity extends ToolbarActivity {
     String day5 = formatter.format(new Date(date.getTime() - (long) 5 * 24 * 60 * 60 * 1000));
     String day6 = formatter.format(new Date(date.getTime() - (long) 6 * 24 * 60 * 60 * 1000));
 
-    private String[] mMonths = new String[]{day6,day5,day4,day3,day2,day1,day};
+    private String[] mWeeks = new String[]{day6, day5, day4, day3, day2, day1, day};
 
 
-    private List<CardData> cardDatas;
+    private List<CardData> mCardDatas;
     private float sum;
 
     @Override
@@ -98,7 +97,7 @@ public class CardActivity extends ToolbarActivity {
             ToastUtil.showShort(getString(R.string.tip_check_net));
         }
         CampusFactory.getRetrofitService()
-                .getCardBalance(user.getSid(), "90", "0", "20")
+                .getCardBalance(user.getSid(), "90", "0", "100")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<CardData>>() {
@@ -109,6 +108,7 @@ public class CardActivity extends ToolbarActivity {
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         ToastUtil.showShort(getString(R.string.tip_school_server_error));
                     }
 
@@ -118,6 +118,7 @@ public class CardActivity extends ToolbarActivity {
                         mDate.setText(cardDatas.get(0).getDealDateTime());
                         mMoney.setText(cardDatas.get(0).getOutMoney());
                         mTvUnit.setVisibility(View.VISIBLE);
+                        mCardDatas = cardDatas;
                         setupCountView();
 
                     }
@@ -152,7 +153,7 @@ public class CardActivity extends ToolbarActivity {
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return mMonths[(int) value % mMonths.length];
+                return mWeeks[(int) value % mWeeks.length];
             }
 
             @Override
@@ -172,12 +173,13 @@ public class CardActivity extends ToolbarActivity {
         mChart.invalidate();
     }
 
-    private float getDailySum(){
-        for (int i=0;i<90;i++){
-            if (cardDatas.get(i).getDealTypeName().equals("消费")){
-                for (int j=0;j<itemcount;j++){
-                    if (mMonths[i].equals(cardDatas.get(i).getDealDateTime().substring(5,10))){
-                        sum = Float.parseFloat(cardDatas.get(i).getTransMoney());
+    private float getDailySum() {
+
+        for (int i = 0; i < 90; i++) {
+            if (mCardDatas.get(i).getDealTypeName().equals("消费")) {
+                for (int j = 0; j < itemcount; j++) {
+                    if (mWeeks[j].equals(mCardDatas.get(i).getDealDateTime().substring(5, 10))) {
+                        sum = Float.parseFloat(mCardDatas.get(i).getTransMoney());
                         sum += sum;
                     }
                 }
@@ -194,17 +196,17 @@ public class CardActivity extends ToolbarActivity {
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         for (int index = 0; index < itemcount; index++)
-            entries.add(new Entry(index + 0.1f,getDailySum()/2));
+            entries.add(new Entry(index + 0.1f, getDailySum() / 2));
 
         LineDataSet set = new LineDataSet(entries, "");
-        set.setColor(Color.rgb(103,58,183));
+        set.setColor(Color.rgb(103, 58, 183));
         set.setLineWidth(1f);
-        set.setFillColor(Color.rgb(103,58,183));
+        set.setFillColor(Color.rgb(103, 58, 183));
         set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        set.setCircleColor(Color.rgb(103,58,183));
+        set.setCircleColor(Color.rgb(103, 58, 183));
         set.setCircleRadius(1f);
         set.setDrawValues(true);
-        set.setValueTextColor(Color.rgb(103,58,183));
+        set.setValueTextColor(Color.rgb(103, 58, 183));
 
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         d.addDataSet(set);
@@ -223,8 +225,8 @@ public class CardActivity extends ToolbarActivity {
         // stacked}
 
         BarDataSet set1 = new BarDataSet(entries1, "");
-        set1.setColor(Color.rgb(103,58,183));
-        set1.setValueTextColor(Color.rgb(103,58,183));
+        set1.setColor(Color.rgb(103, 58, 183));
+        set1.setValueTextColor(Color.rgb(103, 58, 183));
         set1.setValueTextSize(10f);
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
 

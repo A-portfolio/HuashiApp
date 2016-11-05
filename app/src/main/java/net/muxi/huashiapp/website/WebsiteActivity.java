@@ -1,7 +1,6 @@
 package net.muxi.huashiapp.website;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -17,6 +16,7 @@ import net.muxi.huashiapp.common.data.WebsiteData;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.webview.WebViewActivity;
 
 import java.util.List;
 
@@ -94,61 +94,8 @@ public class WebsiteActivity extends ToolbarActivity {
         adapter.setOnItemClickListener(new WebsiteAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, List<WebsiteData> websiteData, int position) {
-                Uri uri = Uri.parse(websiteData.get(position).getUrl());
-                Intent intent;
-                switch (position){
-                    case 0:
-                        intent = new Intent(Intent.ACTION_VIEW,uri);
-                        startActivity(intent);
-                        break;
-
-                    case 1:
-                        intent = new Intent(Intent.ACTION_VIEW,uri);
-                        startActivity(intent);
-                        break;
-
-                    case 2:
-                        intent = new Intent(Intent.ACTION_VIEW,uri);
-                        startActivity(intent);
-                        break;
-
-                    case 3:
-                        intent = new Intent(Intent.ACTION_VIEW,uri);
-                        startActivity(intent);
-                        break;
-
-                    case 4:
-                        intent = new Intent(Intent.ACTION_VIEW,uri);
-                        startActivity(intent);
-                        break;
-
-                    case 5:
-                        intent = new Intent(Intent.ACTION_VIEW,uri);
-                        startActivity(intent);
-                        break;
-
-
-                    case 6:
-                        intent = new Intent(Intent.ACTION_VIEW,uri);
-                        startActivity(intent);
-                        break;
-
-                    case 7:
-                        intent = new Intent(Intent.ACTION_VIEW,uri);
-                        startActivity(intent);
-                        break;
-
-                    case 8:
-                        intent = new Intent(Intent.ACTION_VIEW,uri);
-                        startActivity(intent);
-                        break;
-
-                    case 9:
-                        intent = new Intent(Intent.ACTION_VIEW,uri);
-                        startActivity(intent);
-                        break;
-
-                }
+                Intent intent = WebViewActivity.newIntent(WebsiteActivity.this,websiteData.get(position).getUrl());
+                startActivity(intent);
             }
         });
 
