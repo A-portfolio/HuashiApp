@@ -20,6 +20,7 @@
     <dimen name="login_hint_text_size">16sp</dimen>
     <dimen name="schedule_add_course_size">18sp</dimen>
     <dimen name="library_state_size">16sp</dimen>
+    <dimen name="website_site_size">20sp</dimen>
 
     <dimen name="login_horizontal_margin">44dp</dimen>
 

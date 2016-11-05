@@ -13,6 +13,8 @@ public class CardData {
 
     private String transMoney;
 
+    private String dealTypeName;
+
     public String getDealDateTime() {
         return dealDateTime;
     }
@@ -43,5 +45,13 @@ public class CardData {
 
     public void setTransMoney(String transMoney) {
         this.transMoney = transMoney;
+    }
+
+    public String getDealTypeName() {
+        return dealTypeName;
+    }
+
+    public void setDealTypeName(String dealTypeName) {
+        this.dealTypeName = dealTypeName;
     }
 }

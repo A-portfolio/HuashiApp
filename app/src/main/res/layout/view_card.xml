@@ -54,7 +54,7 @@
 
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/text1"
@@ -98,10 +98,11 @@
 
             </RelativeLayout>
 
-            <net.muxi.huashiapp.card.CountView
-                android:id="@+id/count_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+
+          <com.github.mikephil.charting.charts.CombinedChart
+              android:id="@+id/chart1"
+              android:layout_width="450dp"
+              android:layout_height="200dp"/>
 
         </LinearLayout>
 
