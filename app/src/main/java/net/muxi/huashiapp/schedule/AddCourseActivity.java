@@ -222,6 +222,9 @@ public class AddCourseActivity extends ToolbarActivity
                                 //添加的课程 id 自增
                                 newId ++;
                                 sp.saveInt(PreferenceUtil.COURSE_ID, newId);
+                                Intent intent1 = new Intent();
+                                intent1.setAction("android.intent.action.WidgetProvider");
+                                sendBroadcast(intent1);
                                 AddCourseActivity.this.finish();
                             }else {
                                 ToastUtil.showShort(getString(R.string.tip_adding_fail));

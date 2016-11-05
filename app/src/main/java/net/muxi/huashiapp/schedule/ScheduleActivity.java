@@ -255,6 +255,9 @@ public class ScheduleActivity extends ToolbarActivity {
                                                     mCourses = dao.loadAllCourses();
                                                     ToastUtil.showShort("删除成功");
                                                     updateTimetable();
+                                                    Intent intent1 = new Intent();
+                                                    intent1.setAction("android.intent.action.WidgetProvider");
+                                                    sendBroadcast(intent1);
                                                 }
 
                                             }

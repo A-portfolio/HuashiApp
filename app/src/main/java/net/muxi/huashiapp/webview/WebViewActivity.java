@@ -92,7 +92,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
         title = getIntent().hasExtra(WEB_TITLE) ? getIntent().getStringExtra(WEB_TITLE) : getIntent().getStringExtra(WEB_URL);
         url = getIntent().hasExtra(WEB_URL) ? getIntent().getStringExtra(WEB_URL) : "";
-        iconUrl = getIntent().hasExtra(WEB_ICON_URL) ? getIntent().getStringExtra(WEB_ICON_URL) : "";
+        iconUrl = getIntent().hasExtra(WEB_ICON_URL) ? getIntent().getStringExtra(WEB_ICON_URL) : "http://ww3.sinaimg.cn/large/65e4f1e6gw1f9h8gdxc16j204004074e.jpg";
         intro = getIntent().hasExtra(WEB_INTRO) ? getIntent().getStringExtra(WEB_INTRO) : "";
         setTitle(title);
 

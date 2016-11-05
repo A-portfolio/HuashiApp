@@ -5,11 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.common.util.Logger;
 
 /**
  * Created by ybao on 16/5/12.
  */
-public class DataBase extends SQLiteOpenHelper{
+public class DataBase extends SQLiteOpenHelper {
 
     private static DataBase instance;
 
@@ -66,15 +67,16 @@ public class DataBase extends SQLiteOpenHelper{
     }
 
 
-    public static SQLiteDatabase getInstance(){
-        if (instance == null){
-            instance = new DataBase(App.getContext(),DB_NAME,null,DB_VERSION);
+    public static SQLiteDatabase getInstance() {
+        if (instance == null) {
+            instance = new DataBase(App.getContext(), DB_NAME, null, DB_VERSION);
         }
         return instance.getReadableDatabase();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Logger.d("db onCreate");
         String createSearchHistory = "CREATE TABLE IF NOT EXISTS " + TABLE_SEARCH_HISTORY +
                 "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 KEY_LIBRARY_USER_ID + " TEXT, " +
@@ -82,7 +84,7 @@ public class DataBase extends SQLiteOpenHelper{
         db.execSQL(createSearchHistory);
 
         String createCourseTable = "CREATE TABLE IF NOT EXISTS " + TABLE_COURSE +
-                 " ( " + KEY_ID + " TEXT, " +
+                " ( " + KEY_ID + " TEXT, " +
                 KEY_COURSE_NAME + " TEXT, " +
                 KEY_TEACHER + " TEXT, " +
                 KEY_WEEKS + " TEXT, " +
@@ -95,7 +97,7 @@ public class DataBase extends SQLiteOpenHelper{
         db.execSQL(createCourseTable);
 
         String createBannerTable = "CREATE TABLE IF NOT EXISTS " + TABLE_BANNER +
-                " ( "  + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                " ( " + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 KEY_URL + " TEXT, " +
                 KEY_UPDATE + " TEXT, " +
                 KEY_IMG + " TEXT, " +
@@ -124,16 +126,11 @@ public class DataBase extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String dropSearchHistory = "DROP TABLE IF EXISTS " + TABLE_SEARCH_HISTORY;
-        String dropCourse = " DROP TABLE IF EXISTS " + TABLE_COURSE;
-        String dropBanner = "DROP TABLE IF EXISTS " + TABLE_BANNER;
-        String dropApart = " DROP TABLE IF EXISTS " + TABLE_APARTMENT;
-//        String dropLib = "DROP TABLE IF EXISTS " + TABLE_LIB;
-        db.execSQL(dropSearchHistory);
-        db.execSQL(dropCourse);
-        db.execSQL(dropBanner);
-        db.execSQL(dropApart);
-//        db.execSQL(dropLib);
+        if (newVersion >= 2) {
+            String clearAllCourse = "delete * from course;";
+            db.execSQL(clearAllCourse);
+        }
+        Logger.d("database update");
     }
 }
 
