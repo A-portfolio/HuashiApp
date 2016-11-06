@@ -47,19 +47,19 @@ public class WebsiteAdapter extends RecyclerView.Adapter<WebsiteAdapter.MySiteVi
         holder.mWebsiteSite.setText(mWebsiteDataList.get(position).getSite());
         if (position % 5 == 0) {
             holder.mWebsiteIcon.setBackgroundResource(R.drawable.website_one);
-            holder.mWebsiteLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.website_random_blue));
+            holder.mWebsiteLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.shape_random_blue));
         } else if (position % 5 == 1) {
             holder.mWebsiteIcon.setBackgroundResource(R.drawable.website_two);
-            holder.mWebsiteLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.website_random_cyan));
+            holder.mWebsiteLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.shape_random_cyan));
         } else if (position % 5 == 2) {
             holder.mWebsiteIcon.setBackgroundResource(R.drawable.website_three);
-            holder.mWebsiteLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.website_random_purple));
+            holder.mWebsiteLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.shape_random_red));
         } else if (position % 5 == 3) {
             holder.mWebsiteIcon.setBackgroundResource(R.drawable.website_four);
-            holder.mWebsiteLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.website_random_red));
+            holder.mWebsiteLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.shape_random_purple));
         } else if (position % 5 == 4) {
             holder.mWebsiteIcon.setBackgroundResource(R.drawable.website_five);
-            holder.mWebsiteLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.website_random_yellow));
+            holder.mWebsiteLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.shape_random_yellow));
         }
         holder.mWebsiteLayout.setOnClickListener(new View.OnClickListener() {
             @Override

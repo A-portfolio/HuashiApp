@@ -7,6 +7,7 @@ import android.util.Log;
 import net.muxi.huashiapp.common.data.ApartmentData;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.Course;
+import net.muxi.huashiapp.common.data.WebsiteData;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
 import java.util.ArrayList;
@@ -251,6 +252,7 @@ public class HuaShiDao {
         db.execSQL("delete from " + DataBase.TABLE_APARTMENT + ";");
     }
 
+
     /**
      * 解析电话字符串
      * @param phone
@@ -260,6 +262,27 @@ public class HuaShiDao {
         List<String> list = Arrays.asList(phone.split(" "));
         return list;
     }
+
+    public List<WebsiteData> loadSite(){
+        List<WebsiteData> websiteDatas = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " +DataBase.TABLE_WEBSITE +" ",null);
+        if (cursor.getCount() > 0){
+            while (cursor.moveToNext()){
+                WebsiteData data = new WebsiteData();
+                data.setSite(cursor.getString(cursor.getColumnIndex(DataBase.KEY_SITE)));
+                websiteDatas.add(data);
+            }
+        }
+        if (cursor != null){
+            cursor.close();
+        }
+        return websiteDatas;
+    }
+
+    public void deleteWebsite(){
+        db.execSQL("delete from " + DataBase.TABLE_WEBSITE + ";");
+    }
+
 
 //    public List<BookSearchResult> loadBooks(String book){
 //        List<BookSearchResult> bookSearchResults = new ArrayList<>();
