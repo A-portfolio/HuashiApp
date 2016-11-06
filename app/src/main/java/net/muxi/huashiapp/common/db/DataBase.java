@@ -5,12 +5,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.common.util.Logger;
 
 /**
  * Created by ybao on 16/5/12.
  */
-public class DataBase extends SQLiteOpenHelper {
+public class DataBase extends SQLiteOpenHelper{
 
     private static DataBase instance;
 
@@ -24,6 +23,7 @@ public class DataBase extends SQLiteOpenHelper {
     public static final String TABLE_BANNER = "banner";
     public static final String TABLE_APARTMENT = "apartment";
     public static final String TABLE_LIB = "lib";
+    public static final String TABLE_WEBSITE = "website";
 
     public static final String KEY_ID = "id";
 
@@ -54,6 +54,9 @@ public class DataBase extends SQLiteOpenHelper {
     public static final String KEY_TELE = "tele";
     public static final String KEY_APART_PLACE = "place";
 
+    //website的属性
+    public static final String  KEY_SITE = "site";
+
     //library key
     public static final String KEY_BOOK_NAME = "book_name";
     public static final String KEY_AUTHOR = "author";
@@ -67,16 +70,15 @@ public class DataBase extends SQLiteOpenHelper {
     }
 
 
-    public static SQLiteDatabase getInstance() {
-        if (instance == null) {
-            instance = new DataBase(App.getContext(), DB_NAME, null, DB_VERSION);
+    public static SQLiteDatabase getInstance(){
+        if (instance == null){
+            instance = new DataBase(App.getContext(),DB_NAME,null,DB_VERSION);
         }
         return instance.getReadableDatabase();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Logger.d("db onCreate");
         String createSearchHistory = "CREATE TABLE IF NOT EXISTS " + TABLE_SEARCH_HISTORY +
                 "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 KEY_LIBRARY_USER_ID + " TEXT, " +
@@ -84,7 +86,7 @@ public class DataBase extends SQLiteOpenHelper {
         db.execSQL(createSearchHistory);
 
         String createCourseTable = "CREATE TABLE IF NOT EXISTS " + TABLE_COURSE +
-                " ( " + KEY_ID + " TEXT, " +
+                 " ( " + KEY_ID + " TEXT, " +
                 KEY_COURSE_NAME + " TEXT, " +
                 KEY_TEACHER + " TEXT, " +
                 KEY_WEEKS + " TEXT, " +
@@ -97,7 +99,7 @@ public class DataBase extends SQLiteOpenHelper {
         db.execSQL(createCourseTable);
 
         String createBannerTable = "CREATE TABLE IF NOT EXISTS " + TABLE_BANNER +
-                " ( " + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                " ( "  + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 KEY_URL + " TEXT, " +
                 KEY_UPDATE + " TEXT, " +
                 KEY_IMG + " TEXT, " +
@@ -110,6 +112,12 @@ public class DataBase extends SQLiteOpenHelper {
                 KEY_TELE + " TEXT, " +
                 KEY_APART_PLACE + " TEXT); ";
         db.execSQL(createApartmentTable);
+
+
+        String createWebsiteTable = "CREATE TABLE IF NOT EXISTS " + TABLE_WEBSITE +
+                " ( " + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                KEY_SITE + " TEXT); ";
+        db.execSQL(createWebsiteTable);
 
 //        String createLibTable = "create table if not exists " + TABLE_LIB +
 //                " ( " + KEY_ID + " integer primary key autoincrement, " +
@@ -126,11 +134,18 @@ public class DataBase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (newVersion >= 2) {
-            String clearAllCourse = "delete * from course;";
-            db.execSQL(clearAllCourse);
-        }
-        Logger.d("database update");
+        String dropSearchHistory = "DROP TABLE IF EXISTS " + TABLE_SEARCH_HISTORY;
+        String dropCourse = " DROP TABLE IF EXISTS " + TABLE_COURSE;
+        String dropBanner = "DROP TABLE IF EXISTS " + TABLE_BANNER;
+        String dropApart = " DROP TABLE IF EXISTS " + TABLE_APARTMENT;
+        String dropSite = " DROP TABLE IF EXISTS " + TABLE_WEBSITE;
+//        String dropLib = "DROP TABLE IF EXISTS " + TABLE_LIB;
+        db.execSQL(dropSearchHistory);
+        db.execSQL(dropCourse);
+        db.execSQL(dropBanner);
+        db.execSQL(dropApart);
+        db.execSQL(dropSite);
+//        db.execSQL(dropLib);
     }
 }
 

@@ -4,12 +4,14 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -26,6 +28,7 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.common.util.DateUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
@@ -42,6 +45,8 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static com.tencent.bugly.crashreport.inner.InnerAPI.context;
+
 /**
  * Created by december on 16/7/18.
  */
@@ -51,12 +56,11 @@ public class CardActivity extends ToolbarActivity {
     TextView mDate;
     @BindView(R.id.money)
     TextView mMoney;
-    @BindView(R.id.tv_unit)
-    TextView mTvUnit;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.chart1)
     CombinedChart mChart1;
+
 
 
     private CombinedChart mChart;
@@ -72,7 +76,7 @@ public class CardActivity extends ToolbarActivity {
     String day5 = formatter.format(new Date(date.getTime() - (long) 5 * 24 * 60 * 60 * 1000));
     String day6 = formatter.format(new Date(date.getTime() - (long) 6 * 24 * 60 * 60 * 1000));
 
-    private String[] mWeeks = new String[]{day6, day5, day4, day3, day2, day1, day};
+    private String[] mWeeks = new String[]{day6,day5,day4,day3,day2,day1,day};
 
 
     private List<CardData> mCardDatas;
@@ -97,7 +101,7 @@ public class CardActivity extends ToolbarActivity {
             ToastUtil.showShort(getString(R.string.tip_check_net));
         }
         CampusFactory.getRetrofitService()
-                .getCardBalance(user.getSid(), "90", "0", "100")
+                .getCardBalance(user.getSid(), "90", "0", "20")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<CardData>>() {
@@ -108,7 +112,6 @@ public class CardActivity extends ToolbarActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
                         ToastUtil.showShort(getString(R.string.tip_school_server_error));
                     }
 
@@ -117,7 +120,6 @@ public class CardActivity extends ToolbarActivity {
                         Logger.d("id card");
                         mDate.setText(cardDatas.get(0).getDealDateTime());
                         mMoney.setText(cardDatas.get(0).getOutMoney());
-                        mTvUnit.setVisibility(View.VISIBLE);
                         mCardDatas = cardDatas;
                         setupCountView();
 
@@ -135,21 +137,17 @@ public class CardActivity extends ToolbarActivity {
 
         mChart = (CombinedChart) findViewById(R.id.chart1);
         mChart.getDescription().setEnabled(false);
-        mChart.setBackgroundColor(Color.WHITE);
+        mChart.setDrawGridBackground(false);
+        mChart.setDrawBorders(false);
 
-
-//        Legend l = mChart.getLegend();
-//        l.setWordWrapEnabled(true);
-////        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-//        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-//        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-//        l.setDrawInside(false);
-
+        Legend l = mChart.getLegend();
+        l.setWordWrapEnabled(true);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         xAxis.setAxisMinimum(-0.5f);
         xAxis.setGranularity(1f);
+        xAxis.setTextColor(ContextCompat.getColor(context,R.color.colorPrimary));
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
@@ -166,27 +164,35 @@ public class CardActivity extends ToolbarActivity {
 
         data.setData(generateLineData());
         data.setData(generateBarData());
-
         xAxis.setAxisMaximum(data.getXMax() + 0.5f);
 
         mChart.setData(data);
         mChart.invalidate();
     }
 
-    private float getDailySum() {
-
-        for (int i = 0; i < 90; i++) {
-            if (mCardDatas.get(i).getDealTypeName().equals("消费")) {
-                for (int j = 0; j < itemcount; j++) {
-                    if (mWeeks[j].equals(mCardDatas.get(i).getDealDateTime().substring(5, 10))) {
-                        sum = Float.parseFloat(mCardDatas.get(i).getTransMoney());
-                        sum += sum;
-                    }
-                }
+    /**
+     * 获取指定日的消费总额
+     * @param day 前七天为0，今天为6
+     * @return
+     */
+    private float getDailySum(int day){
+        String date = DateUtil.getTheDateInYear(new Date(),-6 + day);
+        Logger.d(date);
+        float sum = 0;
+        for (int i = 0, size = mCardDatas.size();i < size;i ++){
+            if (mCardDatas.get(i).getDealTypeName().equals("消费"))
+            if (date.equals(mCardDatas.get(i).getDealDateTime().substring(0,10))){
+                sum +=  Float.valueOf(mCardDatas.get(i).getTransMoney());
             }
         }
+        Logger.d(sum + "");
         return sum;
+
     }
+
+//    private float getRandom(float range, float startsfrom) {
+//        return (float) (Math.random() * range) + startsfrom;
+//    }
 
 
     private LineData generateLineData() {
@@ -196,17 +202,18 @@ public class CardActivity extends ToolbarActivity {
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         for (int index = 0; index < itemcount; index++)
-            entries.add(new Entry(index + 0.1f, getDailySum() / 2));
+            entries.add(new Entry(index + 0.1f,getDailySum(index)/2));
 
         LineDataSet set = new LineDataSet(entries, "");
-        set.setColor(Color.rgb(103, 58, 183));
+        set.setColor(Color.rgb(141,139,219));
         set.setLineWidth(1f);
-        set.setFillColor(Color.rgb(103, 58, 183));
+        set.setFillColor(Color.rgb(141,139,219));
         set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        set.setCircleColor(Color.rgb(103, 58, 183));
+        set.setCircleColor(Color.rgb(141,139,219));
         set.setCircleRadius(1f);
         set.setDrawValues(true);
-        set.setValueTextColor(Color.rgb(103, 58, 183));
+        set.setValueTextSize(0.1f);
+        set.setValueTextColor(Color.rgb(141,139,219));
 
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         d.addDataSet(set);
@@ -219,14 +226,14 @@ public class CardActivity extends ToolbarActivity {
         ArrayList<BarEntry> entries1 = new ArrayList<BarEntry>();
 
         for (int index = 0; index < itemcount; index++) {
-            entries1.add(new BarEntry(index + 0.1f, getDailySum()));
+            entries1.add(new BarEntry(index + 0.1f, getDailySum(index)));
         }
 
         // stacked}
 
         BarDataSet set1 = new BarDataSet(entries1, "");
-        set1.setColor(Color.rgb(103, 58, 183));
-        set1.setValueTextColor(Color.rgb(103, 58, 183));
+        set1.setColor(Color.rgb(141,139,219));
+        set1.setValueTextColor(Color.rgb(141,139,219));
         set1.setValueTextSize(10f);
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
 

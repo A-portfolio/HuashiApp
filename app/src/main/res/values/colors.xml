@@ -56,12 +56,11 @@
     <color name="color_normal_tab">#B3FFFFFF</color>
     
     <color name="color_white_loading">#96FFFFFF</color>
-    
-    <!--常用网址-->
-    <color name="website_random_blue">#7DC3F4</color>
-    <color name="website_random_cyan">#E4F47D</color>
-    <color name="website_random_red">#FF6262</color>
-    <color name="website_random_purple">#BD68FF</color>
-    <color name="website_random_yellow">#FBEA9D</color>
+
+
+    <!--学生卡-->
+    <color name="card_text_color">#8d8bdb</color>
+
+
 
 </resources>
