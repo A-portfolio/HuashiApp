@@ -22,6 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import net.muxi.huashiapp.webview.WebViewActivity;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -53,6 +54,7 @@ public class WebsiteActivity extends ToolbarActivity {
         mDao = new HuaShiDao();
         mWebsiteDatas = mDao.loadSite();
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(context,R.color.colorPrimary));
+        mSwipeRefreshLayout.setEnabled(false);
         if (mWebsiteDatas.size() > 0) {
             setupRecyclerView(mWebsiteDatas);
         } else {
@@ -63,7 +65,6 @@ public class WebsiteActivity extends ToolbarActivity {
                 }
             });
         }
-        mSwipeRefreshLayout.setEnabled(false);
 
         setTitle("常用网站");
         CampusFactory.getRetrofitService().getWebsite()
@@ -104,13 +105,19 @@ public class WebsiteActivity extends ToolbarActivity {
         adapter.setOnItemClickListener(new WebsiteAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, List<WebsiteData> websiteData, int position) {
-                Uri uri = Uri.parse(websiteData.get(position).getUrl());
-                Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                //Uri uri = Uri.parse(websiteData.get(position).getUrl());
+                //Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                //startActivity(intent);
+                Intent intent = WebViewActivity.newIntent(WebsiteActivity.this,websiteData.get(position).getUrl());
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
 
     }
 
+    @Override public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
 }
