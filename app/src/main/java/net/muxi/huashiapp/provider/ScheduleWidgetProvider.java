@@ -47,7 +47,6 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
 //            rv.setOnClickPendingIntent(R.id.widget_layout, pendingIntent);
             widgetManager.updateAppWidget(appWidgetIds, rv);
             widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv);
-            Logger.d(appWidgetIds[0] + "");
         }
     }
 

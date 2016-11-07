@@ -183,7 +183,8 @@ public class ScheduleActivity extends ToolbarActivity {
                                 dao.insertCourse(courses.get(i));
                                 if (courses.get(i).getId() != null && !courses.get(i).getId().equals("")) {
                                     Logger.d("course id is " + courses.get(i).getId());
-                                    if (maxId <= Integer.valueOf(courses.get(i).getId())) {
+                                    //如果课程的 id 小于1000的话放入 maxId 里面
+                                    if (maxId <= Integer.valueOf(courses.get(i).getId()) && Integer.valueOf(courses.get(i).getId()) < 1000) {
                                         maxId = Integer.valueOf(courses.get(i).getId()) + 1;
                                     }
                                 }
