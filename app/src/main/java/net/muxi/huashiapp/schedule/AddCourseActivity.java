@@ -120,6 +120,7 @@ public class AddCourseActivity extends ToolbarActivity
                 if (!isEmpty()) {
                     final Course course = setCourse();
                     final int id = sp.getInt(PreferenceUtil.COURSE_ID, 1);
+                    Logger.d(id + "");
                     course.setId(id + "");
 
                     if (isConflict(course)) {
