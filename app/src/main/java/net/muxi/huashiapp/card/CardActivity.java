@@ -143,6 +143,7 @@ public class CardActivity extends ToolbarActivity {
         Legend l = mChart.getLegend();
         l.setWordWrapEnabled(true);
 
+
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         xAxis.setAxisMinimum(-0.5f);
