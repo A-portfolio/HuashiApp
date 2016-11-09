@@ -100,10 +100,8 @@ public interface RetrofitService {
     @GET("apartment/")
     Observable<List<ApartmentData>> getApartment();
 
-
     @POST("ele/")
     Observable<Response<Electricity>> getElectricity(@Body EleRequestData requestData);
-
 
     //查询余额  除了学号其他传固定值 http://console.ccnu.edu.cn/ecard/getTrans?userId=2013211389&days=90&startNum=0&num=200
     @GET("http://console.ccnu.edu.cn/ecard/getTrans")
@@ -129,6 +127,5 @@ public interface RetrofitService {
 
     @GET("site/")
     Observable<List<WebsiteData>> getWebsite();
-
 
 }
