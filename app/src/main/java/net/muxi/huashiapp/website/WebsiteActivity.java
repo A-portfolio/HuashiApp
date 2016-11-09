@@ -1,7 +1,6 @@
 package net.muxi.huashiapp.website;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -17,12 +16,12 @@ import net.muxi.huashiapp.common.data.WebsiteData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.webview.WebViewActivity;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import net.muxi.huashiapp.webview.WebViewActivity;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -54,7 +53,6 @@ public class WebsiteActivity extends ToolbarActivity {
         mDao = new HuaShiDao();
         mWebsiteDatas = mDao.loadSite();
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(context,R.color.colorPrimary));
-        mSwipeRefreshLayout.setEnabled(false);
         if (mWebsiteDatas.size() > 0) {
             setupRecyclerView(mWebsiteDatas);
         } else {
@@ -65,6 +63,7 @@ public class WebsiteActivity extends ToolbarActivity {
                 }
             });
         }
+        mSwipeRefreshLayout.setEnabled(false);
 
         setTitle("常用网站");
         CampusFactory.getRetrofitService().getWebsite()
@@ -91,6 +90,9 @@ public class WebsiteActivity extends ToolbarActivity {
                         if (websiteData.size() != mWebsiteDatas.size()) {
                             setupRecyclerView(websiteData);
                             mDao.deleteWebsite();
+                            for (WebsiteData data : websiteData){
+                                mDao.insertSite(data);
+                            }
                         }
                     }
                 });

@@ -263,6 +263,15 @@ public class HuaShiDao {
         return list;
     }
 
+    public void insertSite(WebsiteData data) {
+        db.execSQL("insert into " + DataBase.TABLE_APARTMENT + " values(null,?,?,?) ",
+                new String[]{
+                        data.getSite(),
+                        data.getUrl()
+                        });
+
+    }
+
     public List<WebsiteData> loadSite(){
         List<WebsiteData> websiteDatas = new ArrayList<>();
         Cursor cursor = db.rawQuery("SELECT * FROM " +DataBase.TABLE_WEBSITE +" ",null);
@@ -270,6 +279,7 @@ public class HuaShiDao {
             while (cursor.moveToNext()){
                 WebsiteData data = new WebsiteData();
                 data.setSite(cursor.getString(cursor.getColumnIndex(DataBase.KEY_SITE)));
+                data.setUrl(cursor.getString(cursor.getColumnIndex(DataBase.KEY_SITE_URL)));
                 websiteDatas.add(data);
             }
         }
