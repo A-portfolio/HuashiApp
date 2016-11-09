@@ -88,7 +88,7 @@
             <com.github.mikephil.charting.charts.CombinedChart
               android:id="@+id/chart1"
               android:layout_width="354dp"
-              android:layout_height="195dp"/>
+              android:layout_height="190dp"/>
 
         </LinearLayout>
 

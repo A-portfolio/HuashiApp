@@ -56,6 +56,7 @@ public class DataBase extends SQLiteOpenHelper{
 
     //website的属性
     public static final String  KEY_SITE = "site";
+    public static final String  KEY_SITE_URL = "url";
 
     //library key
     public static final String KEY_BOOK_NAME = "book_name";
@@ -116,6 +117,7 @@ public class DataBase extends SQLiteOpenHelper{
 
         String createWebsiteTable = "CREATE TABLE IF NOT EXISTS " + TABLE_WEBSITE +
                 " ( " + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                KEY_SITE_URL + "TEXT, " +
                 KEY_SITE + " TEXT); ";
         db.execSQL(createWebsiteTable);
 
