@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.common.util.Logger;
 
 /**
  * Created by ybao on 16/5/12.
@@ -134,20 +135,27 @@ public class DataBase extends SQLiteOpenHelper{
     }
 
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String dropSearchHistory = "DROP TABLE IF EXISTS " + TABLE_SEARCH_HISTORY;
-        String dropCourse = " DROP TABLE IF EXISTS " + TABLE_COURSE;
-        String dropBanner = "DROP TABLE IF EXISTS " + TABLE_BANNER;
-        String dropApart = " DROP TABLE IF EXISTS " + TABLE_APARTMENT;
-        String dropSite = " DROP TABLE IF EXISTS " + TABLE_WEBSITE;
-//        String dropLib = "DROP TABLE IF EXISTS " + TABLE_LIB;
-        db.execSQL(dropSearchHistory);
-        db.execSQL(dropCourse);
-        db.execSQL(dropBanner);
-        db.execSQL(dropApart);
-        db.execSQL(dropSite);
-//        db.execSQL(dropLib);
+    @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        //String dropSearchHistory = "DROP TABLE IF EXISTS " + TABLE_SEARCH_HISTORY;
+        //String dropCourse = " DROP TABLE IF EXISTS " + TABLE_COURSE;
+        //String dropBanner = "DROP TABLE IF EXISTS " + TABLE_BANNER;
+        //String dropApart = " DROP TABLE IF EXISTS " + TABLE_APARTMENT;
+        //String dropSite = " DROP TABLE IF EXISTS " + TABLE_WEBSITE;
+        //        String dropLib = "DROP TABLE IF EXISTS " + TABLE_LIB;
+        //        db.execSQL(dropSearchHistory);
+        //        db.execSQL(dropCourse);
+        //        db.execSQL(dropBanner);
+        //        db.execSQL(dropApart);
+        //        db.execSQL(dropSite);
+        //        db.execSQL(dropLib);
+        if (newVersion >= 2) {
+            String clearAllCourse = "delete from course;";
+            db.execSQL(clearAllCourse);
+
+            String clearSite = "delete from website";
+            db.execSQL(clearSite);
+        }
+        Logger.d("database update");
     }
 }
 
