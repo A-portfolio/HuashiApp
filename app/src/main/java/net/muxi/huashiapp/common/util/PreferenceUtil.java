@@ -43,6 +43,8 @@ public class PreferenceUtil {
     public static final String LAST_NOT_REMIND_VERSION = "not_remind_version";
     //提醒更新的状态,在有新版本的时候自动开启
     public static final String REMIND_UPDATE = "remind_update";
+    //最新的通知公告日期
+    public static final String LATEST_NEWS_DATE = "latest_news_date";
 
     public PreferenceUtil() {
         Context context = App.getContext();

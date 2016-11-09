@@ -35,6 +35,7 @@ import net.muxi.huashiapp.apartment.ApartmentActivity;
 import net.muxi.huashiapp.card.CardActivity;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.BannerData;
+import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.data.PatchData;
 import net.muxi.huashiapp.common.data.ProductData;
 import net.muxi.huashiapp.common.data.VersionData;
@@ -70,6 +71,7 @@ import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends ToolbarActivity {
@@ -100,6 +102,9 @@ public class MainActivity extends ToolbarActivity {
     private Context context;
     private static final int WEB_POSITION = 9;
     private String downloadUrl;
+
+    private boolean hasLatestNews = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +149,7 @@ public class MainActivity extends ToolbarActivity {
         mProductData = gson.fromJson(sp.getString(PreferenceUtil.PRODUCT_DATA, AppConstants.PRODUCT_JSON), ProductData.class);
         updateProductDisplay(mProductData);
         getProduct();
-
+        checkNews();
         checkNewVersion();
         AlarmUtil.register(this);
         Log.d("alarm", "register");
@@ -564,6 +569,40 @@ public class MainActivity extends ToolbarActivity {
         return true;
     }
 
+    public void checkNews(){
+        CampusFactory.getRetrofitService().getNews()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe(new Observer<List<News>>() {
+                @Override public void onCompleted() {
+
+                }
+
+                @Override public void onError(Throwable e) {
+                    e.printStackTrace();
+                }
+
+                @Override public void onNext(List<News> newses) {
+                    if (!sp.getString(PreferenceUtil.LATEST_NEWS_DATE,"2016-11-01").equals(newses.get(0).getDate())){
+                        hasLatestNews = true;
+                        sp.saveString(PreferenceUtil.LATEST_NEWS_DATE,newses.get(0).getDate());
+                       invalidateOptionsMenu();
+                    }
+                }
+            });
+    }
+
+    @Override public boolean onPrepareOptionsMenu(Menu menu) {
+        if (hasLatestNews){
+            MenuItem item = menu.findItem(R.id.action_news);
+            item.setIcon(R.drawable.ic_message_reddot);
+        }else {
+            MenuItem item = menu.findItem(R.id.action_news);
+            item.setIcon(R.drawable.ic_message);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -588,6 +627,8 @@ public class MainActivity extends ToolbarActivity {
                 ZhugeUtils.sendEvent("查看消息公告", "查看消息公告");
                 intent = new Intent(MainActivity.this, NewsActivity.class);
                 startActivity(intent);
+                hasLatestNews = false;
+                invalidateOptionsMenu();
                 break;
             case R.id.action_settings:
                 intent = new Intent(MainActivity.this, SettingActivity.class);

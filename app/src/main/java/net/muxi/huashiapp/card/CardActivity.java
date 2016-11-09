@@ -99,33 +99,29 @@ public class CardActivity extends ToolbarActivity {
         user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
         if (!NetStatus.isConnected()) {
             ToastUtil.showShort(getString(R.string.tip_check_net));
-        }
-        CampusFactory.getRetrofitService()
+        }else {
+            CampusFactory.getRetrofitService()
                 .getCardBalance(user.getSid(), "90", "0", "20")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<CardData>>() {
-                    @Override
-                    public void onCompleted() {
+                    @Override public void onCompleted() {
 
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
+                    @Override public void onError(Throwable e) {
                         ToastUtil.showShort(getString(R.string.tip_school_server_error));
                     }
 
-                    @Override
-                    public void onNext(List<CardData> cardDatas) {
+                    @Override public void onNext(List<CardData> cardDatas) {
                         Logger.d("id card");
                         mDate.setText(cardDatas.get(0).getDealDateTime());
                         mMoney.setText(cardDatas.get(0).getOutMoney());
                         mCardDatas = cardDatas;
                         setupCountView();
-
                     }
                 });
-
+        }
     }
 
     public void init() {
