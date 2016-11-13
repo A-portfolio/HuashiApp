@@ -169,9 +169,15 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         super.onResume();
     }
 
+    @Override protected void onPause() {
+        super.onPause();
+        mWebview.onPause();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mWebview.destroy();
     }
 
     @Override
