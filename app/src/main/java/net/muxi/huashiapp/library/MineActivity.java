@@ -40,8 +40,6 @@ import rx.schedulers.Schedulers;
  */
 public class MineActivity extends BaseActivity {
 
-    // TODO: 16/7/30 recyclerview have to complete 
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.search_view)

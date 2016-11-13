@@ -34,6 +34,7 @@ import java.nio.channels.FileChannel;
  */
 public class FrescoUtil {
 
+    // TODO: 16/11/13 has bug 
     public static final String IMAGE_CACHE_DIR = App.getContext().getExternalCacheDir().getAbsolutePath();
 
     public static void savePicture(String picUrl, Context context, String fileName) {

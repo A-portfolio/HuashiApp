@@ -7,10 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import android.support.v4.content.FileProvider;
+import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.common.util.Logger;
 
 import java.io.File;
@@ -23,6 +27,8 @@ public class DownloadService extends Service {
     private DownloadManager mDownloadManager;
     private long enque;
     private BroadcastReceiver mReceiver;
+
+    private static final String FILE_TYPE = "application/vnd.android.package-archive";
 
     @Nullable
     @Override
@@ -40,8 +46,16 @@ public class DownloadService extends Service {
                 public void onReceive(Context context, Intent intent) {
                     intent = new Intent(Intent.ACTION_VIEW);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/Download/" + fileName)),
-                            "application/vnd.android.package-archive");
+                    File file = new File(Environment.getExternalStorageDirectory() + "/Download/" + fileName);
+                    //if (Build.VERSION.SDK_INT >=24){
+                    //    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    //    Uri apkFileUri = FileProvider.getUriForFile(App.sContext, App.sContext.getPackageName() + ".provider", file);
+                    //    intent.setDataAndType(apkFileUri,FILE_TYPE);
+                    //}else{
+                    intent.setDataAndType(Uri.fromFile(file),
+                            FILE_TYPE);
+                    //}
+
                     startActivity(intent);
                     stopSelf();
                 }

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.muxi.material_dialog.MaterialDialog;
 
+import java.io.File;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.VersionData;
 import net.muxi.huashiapp.common.net.CampusFactory;
@@ -189,6 +191,7 @@ public class AboutActivity extends ToolbarActivity {
     }
 
     private void beginUpdate(String download) {
+        deleteApkBefore();
         Intent intent = new Intent(this, DownloadService.class);
         intent.putExtra("url", download);
         intent.putExtra("fileType", "apk");
@@ -196,6 +199,16 @@ public class AboutActivity extends ToolbarActivity {
         startService(intent);
         Logger.d("download");
         ToastUtil.showShort(getString(R.string.tip_start_download_apk));
+    }
+
+    private void deleteApkBefore() {
+        String path = Environment.getExternalStorageDirectory() + "/Download/" + "ccnubox.apk";
+        File file = new File(path);
+        if (file.exists()){
+            file.delete();
+            Logger.d("apk file delete");
+        }
+        Logger.d("file not exists");
     }
 
 

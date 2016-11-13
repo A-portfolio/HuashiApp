@@ -249,7 +249,6 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 //            @Override
 //
 //            public void run() {
-//                 TODO Auto-generated method stub
 //                Logger.d("start share");
         mTencent.shareToQzone(WebViewActivity.this, params, mBaseUiListener);
 //            }

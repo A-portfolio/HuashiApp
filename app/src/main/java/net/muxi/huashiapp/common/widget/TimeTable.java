@@ -623,7 +623,6 @@ public class TimeTable extends FrameLayout {
                     }
                 }
             }
-            // TODO: 16/9/1 算法待优化 
             if (isConflict) {
                 priorityCourses.add(course);
                 Logger.d(course.getCourse());

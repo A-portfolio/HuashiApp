@@ -155,7 +155,6 @@ public class TimeTableUtil {
             String weeks = allCourseList.get(i).getWeeks();
             String day = allCourseList.get(i).getDay();
             Logger.d(day);
-            Logger.d(AppConstants.WEEKDAYS[DateUtil.getDayInWeek(new Date())]);
             if (isThisWeek(getCurWeek(), weeks) && day.equals(AppConstants.WEEKDAYS[DateUtil.getDayInWeek(new Date(System.currentTimeMillis())) - 1])) {
                 courseList.add(allCourseList.get(i));
             }
