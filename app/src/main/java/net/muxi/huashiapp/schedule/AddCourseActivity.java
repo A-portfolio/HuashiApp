@@ -71,7 +71,6 @@ public class AddCourseActivity extends ToolbarActivity
     private List<Integer> mWeeks;
     private int courseTime;
     private int duration;
-    // TODO: 16/6/21 change the mRemind
     private boolean mRemind = false;
 
     private String[] days = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};

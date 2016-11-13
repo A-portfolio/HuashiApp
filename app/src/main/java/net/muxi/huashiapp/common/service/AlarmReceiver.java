@@ -55,7 +55,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO: 16/5/29 enable after
         mContext = context;
         mUser = new User();
         mLibUser = new User();

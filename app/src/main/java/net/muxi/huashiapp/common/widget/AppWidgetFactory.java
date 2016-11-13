@@ -68,6 +68,9 @@ public class AppWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public RemoteViews getViewAt(int i) {
+        if (i >= mCourseList.size()){
+            return null;
+        }
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.item_widget_course);
         rv.setTextViewText(R.id.tv_course, mCourseList.get(i).getCourse());
         rv.setTextViewText(R.id.tv_place, mCourseList.get(i).getPlace());

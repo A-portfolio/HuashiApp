@@ -82,7 +82,6 @@ public class CalendarActivity extends ToolbarActivity {
         }
     }
 
-    // TODO: 16/7/24 设置图片无法显示
     private void setImageNotFound() {
         mImgEmpty.setVisibility(View.VISIBLE);
         mTvEmpty.setVisibility(View.VISIBLE);

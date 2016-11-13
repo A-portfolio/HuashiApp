@@ -8,6 +8,7 @@ import net.muxi.huashiapp.common.data.ApartmentData;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.WebsiteData;
+import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 
 import java.util.ArrayList;
@@ -264,7 +265,7 @@ public class HuaShiDao {
     }
 
     public void insertSite(WebsiteData data) {
-        db.execSQL("insert into " + DataBase.TABLE_APARTMENT + " values(null,?,?,?) ",
+        db.execSQL("insert into " + DataBase.TABLE_WEBSITE + " values(null,?,?) ",
                 new String[]{
                         data.getSite(),
                         data.getUrl()
@@ -274,7 +275,7 @@ public class HuaShiDao {
 
     public List<WebsiteData> loadSite(){
         List<WebsiteData> websiteDatas = new ArrayList<>();
-        Cursor cursor = db.rawQuery("SELECT * FROM " +DataBase.TABLE_WEBSITE +" ",null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_WEBSITE ,null);
         if (cursor.getCount() > 0){
             while (cursor.moveToNext()){
                 WebsiteData data = new WebsiteData();

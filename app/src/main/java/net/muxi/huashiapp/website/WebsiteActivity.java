@@ -51,9 +51,13 @@ public class WebsiteActivity extends ToolbarActivity {
         ButterKnife.bind(this);
 
         mDao = new HuaShiDao();
-        mWebsiteDatas = mDao.loadSite();
+        try {
+            mWebsiteDatas = mDao.loadSite();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(context,R.color.colorPrimary));
-        if (mWebsiteDatas.size() > 0) {
+        if (mWebsiteDatas != null && mWebsiteDatas.size() > 0) {
             setupRecyclerView(mWebsiteDatas);
         } else {
             mSwipeRefreshLayout.post(new Runnable() {
@@ -78,16 +82,13 @@ public class WebsiteActivity extends ToolbarActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        if (mWebsiteDatas.size() == 0) {
-                            ToastUtil.showShort(getString(R.string.tip_net_error));
-                            mSwipeRefreshLayout.setRefreshing(false);
-                        }
+                        ToastUtil.showShort(getString(R.string.tip_net_error));
                     }
 
                     @Override
                     public void onNext(List<WebsiteData> websiteData) {
                         mSwipeRefreshLayout.setRefreshing(false);
-                        if (websiteData.size() != mWebsiteDatas.size()) {
+                        if (mWebsiteDatas == null || websiteData.size() != mWebsiteDatas.size()) {
                             setupRecyclerView(websiteData);
                             mDao.deleteWebsite();
                             for (WebsiteData data : websiteData){

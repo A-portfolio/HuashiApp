@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,6 +25,7 @@ import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 
+import java.io.File;
 import net.muxi.huashiapp.AboutActivity;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
@@ -227,13 +229,24 @@ public class MainActivity extends ToolbarActivity {
     }
 
     private void beginUpdate(String download) {
+        deleteApkBefore();
         Intent intent = new Intent(this, DownloadService.class);
         intent.putExtra("url", download);
         intent.putExtra("fileType", "apk");
         intent.putExtra("fileName", "ccnubox.apk");
         startService(intent);
-        Logger.d("download");
+        Logger.d("start download");
         ToastUtil.showShort(getString(R.string.tip_start_download_apk));
+    }
+
+    private void deleteApkBefore() {
+        String path = Environment.getExternalStorageDirectory() + "/Download/" + "ccnubox.apk";
+        File file = new File(path);
+        if (file.exists()){
+            file.delete();
+            Logger.d("apk file delete");
+        }
+        Logger.d("file not exists");
     }
 
     public boolean isStorgePermissionGranted() {

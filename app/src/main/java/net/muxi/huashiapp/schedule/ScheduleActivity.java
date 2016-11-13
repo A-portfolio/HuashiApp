@@ -211,7 +211,6 @@ public class ScheduleActivity extends ToolbarActivity {
         mScheduleFramelayout.addView(mRecyclerView);
 
         setTitle("课程表");
-        // TODO: 16/5/25 debug
 //        mTvScheduleWeekNumber.setText(String.format(App.sContext.getString(R.string.course_week_format),mSelectWeek));
         mTvScheduleWeekNumber.setText(AppConstants.WEEKS[mSelectWeek - 1]);
         mTimeTable.setCourse(mCourses, mSelectWeek);
