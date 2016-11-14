@@ -1,5 +1,7 @@
 package net.muxi.huashiapp;
 
+import java.io.File;
+
 /**
  * Created by ybao on 16/6/23.
  */
@@ -43,7 +45,7 @@ public class AppConstants {
     //服务器端mongdb数据库要求初始必须有门课程
     public static final String INIT_COURSE = "re:从零开始的异世界生活";
 
-    public static final String CACHE_DIR = App.getContext().getExternalCacheDir().getAbsolutePath();
+    public static final File CACHE_DIR = App.getContext().getExternalCacheDir();
     public static final String APATCH_NAME = "out.apatch";
     public static final String APATCH_URL = "http://7xtask.com2.z0.glb.clouddn.com/out.apatch";
 

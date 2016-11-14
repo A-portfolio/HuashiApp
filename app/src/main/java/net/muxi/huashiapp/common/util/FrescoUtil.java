@@ -27,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import net.muxi.huashiapp.AppConstants;
 
 /**
  * Created by ybao on 16/7/24.
@@ -34,8 +35,7 @@ import java.nio.channels.FileChannel;
  */
 public class FrescoUtil {
 
-    // TODO: 16/11/13 has bug 
-    public static final String IMAGE_CACHE_DIR = App.getContext().getExternalCacheDir().getAbsolutePath();
+    public static final String IMAGE_CACHE_DIR = AppConstants.CACHE_DIR != null ? AppConstants.CACHE_DIR.getAbsolutePath() : App.getContext().getCacheDir().getAbsolutePath();
 
     public static void savePicture(String picUrl, Context context, String fileName) {
         File picDir = new File(IMAGE_CACHE_DIR);
