@@ -12,6 +12,10 @@ import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.TimeTableUtil;
 
 import java.util.List;
+import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func2;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by ybao on 16/11/2.
@@ -29,10 +33,30 @@ public class AppWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
     public AppWidgetFactory(Context context, Intent intent) {
         mContext = context;
         mAllCourseList = intent.getParcelableArrayListExtra("course");
-        Logger.d(mAllCourseList.size() + "");
-        mCourseList = TimeTableUtil.getTodayCourse(mAllCourseList);
+        setCourseListByStartTime();
+
         Logger.d("app widget factory ");
         Logger.d(mCourseList.size() + "");
+    }
+
+    private void setCourseListByStartTime() {
+        Observable.from(TimeTableUtil.getTodayCourse(mAllCourseList))
+            .toSortedList(new Func2<Course, Course, Integer>() {
+                @Override public Integer call(Course course, Course course2) {
+                    return ((Integer)course.getStart()).compareTo(course2.getStart());
+                }
+            })
+            .observeOn(Schedulers.immediate())
+            .subscribeOn(Schedulers.immediate())
+            .subscribe(new Action1<List<Course>>() {
+                @Override public void call(List<Course> courses) {
+                    mCourseList = courses;
+                }
+            }, new Action1<Throwable>() {
+                @Override public void call(Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            });
     }
 
     @Override
@@ -49,7 +73,7 @@ public class AppWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
         HuaShiDao dao = new HuaShiDao();
         mAllCourseList = dao.loadAllCourses();
 //        mCourseList.clear();
-        mCourseList = TimeTableUtil.getTodayCourse(mAllCourseList);
+      setCourseListByStartTime();
     }
 
     @Override
