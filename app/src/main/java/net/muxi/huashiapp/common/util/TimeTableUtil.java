@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.common.util;
 
+import android.text.TextUtils;
 import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Course;
@@ -21,6 +22,9 @@ public class TimeTableUtil {
      * @return
      */
     public static boolean isThisWeek(int week, String weekStr) {
+        if (TextUtils.isEmpty(weekStr)){
+            return false;
+        }
         String[] weeks = weekStr.split(",");
         for (String s : weeks) {
             if (s.equals(String.valueOf(week))) {

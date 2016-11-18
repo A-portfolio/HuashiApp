@@ -36,17 +36,13 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
             AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = widgetManager.getAppWidgetIds(new ComponentName(context,ScheduleWidgetProvider.class));
 
-//            Intent serviceIntent = new Intent(context, WidgetService.class);
-            rv = new RemoteViews(context.getPackageName(), R.layout.widget_schedule);
-//
-//            Intent activityIntent = new Intent(context, ScheduleActivity.class);
-//            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
-//            rv.setRemoteAdapter(appWidgetIds[0], R.id.lv, serviceIntent);
-            rv.setTextViewText(R.id.tv_week, AppConstants.WEEKS[TimeTableUtil.getCurWeek() - 1]);
-            rv.setTextViewText(R.id.tv_weekday, AppConstants.WEEKDAYS[DateUtil.getDayInWeek(new Date()) - 1]);
-//            rv.setOnClickPendingIntent(R.id.widget_layout, pendingIntent);
-            widgetManager.updateAppWidget(appWidgetIds, rv);
-            widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv);
+            if (appWidgetIds.length > 0) {
+                rv = new RemoteViews(context.getPackageName(), R.layout.widget_schedule);
+                rv.setTextViewText(R.id.tv_week, AppConstants.WEEKS[TimeTableUtil.getCurWeek() - 1]);
+                rv.setTextViewText(R.id.tv_weekday, AppConstants.WEEKDAYS[DateUtil.getDayInWeek(new Date()) - 1]);
+                widgetManager.updateAppWidget(appWidgetIds, rv);
+                widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv);
+            }
         }
     }
 
