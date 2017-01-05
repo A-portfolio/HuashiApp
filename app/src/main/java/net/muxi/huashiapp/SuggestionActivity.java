@@ -2,6 +2,7 @@ package net.muxi.huashiapp;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +20,8 @@ import net.muxi.huashiapp.common.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.tencent.bugly.crashreport.inner.InnerAPI.context;
 
 /**
  * Created by december on 16/8/1.
@@ -78,22 +81,21 @@ public class SuggestionActivity extends ToolbarActivity {
                     final MaterialDialog materialDialog = new MaterialDialog(SuggestionActivity.this);
                     materialDialog.setTitle(App.sContext.getString(R.string.title_sugg_submit));
                     materialDialog.setContent(App.sContext.getString(R.string.content_sugg_submit));
-                    materialDialog.setPositiveButton(App.sContext.getString(R.string.btn_negative), new View.OnClickListener() {
+                    materialDialog.setNegativeButton(App.sContext.getString(R.string.btn_negative), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             materialDialog.dismiss();
                         }
                     });
-                    materialDialog.setPositiveButtonColor(App.sContext.getResources().getColor(R.color.colorPrimary));
-                    materialDialog.setNegativeButton(App.sContext.getString(R.string.btn_positive), new View.OnClickListener() {
+                    materialDialog.setNegativeButtonColor(ContextCompat.getColor(context,R.color.colorPrimary));
+                    materialDialog.setPositiveButtonColor(ContextCompat.getColor(context,R.color.colorPrimary));
+                    materialDialog.setPositiveButton(App.sContext.getString(R.string.btn_positive), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             sendSuggestion(mEtSuggestion.getText().toString() + "联系方式:" + mEtContact.getText().toString());
                             materialDialog.dismiss();
                         }
                     });
-                    materialDialog.setNegativeButtonColor(App.sContext.getResources().getColor(R.color.colorPrimary));
-
                     materialDialog.show();
                 }else {
                     sendSuggestion(mEtSuggestion.getText().toString() + "联系方式:" + mEtContact.getText().toString());
@@ -105,8 +107,21 @@ public class SuggestionActivity extends ToolbarActivity {
     public void sendSuggestion(String str){
         if (NetStatus.isConnected()){
             ZhugeUtils.sendEvent("意见提交",str);
-            ToastUtil.showShort("提交成功");
-            SuggestionActivity.this.finish();
+            final MaterialDialog materialDialog = new MaterialDialog(SuggestionActivity.this);
+            materialDialog.setTitle("匣爸温馨提示");
+            materialDialog.setContent("反馈成功!感谢您对华师匣子的支持!");
+            materialDialog.setNegativeButtonColor(ContextCompat.getColor(context,R.color.colorWhite));
+            materialDialog.setPositiveButtonColor(ContextCompat.getColor(context,R.color.colorPrimary));
+            materialDialog.setPositiveButton("确定", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SuggestionActivity.this.finish();
+                }
+            });
+            materialDialog.setCanceledOnTouchOutside(false);
+            materialDialog.show();
+//            ToastUtil.showShort("提交成功");
+
         }else {
             ToastUtil.showShort(App.sContext.getString(R.string.tip_check_net));
         }
