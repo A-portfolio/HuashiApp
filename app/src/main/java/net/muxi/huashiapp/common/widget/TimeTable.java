@@ -19,7 +19,7 @@ import net.muxi.huashiapp.common.util.DateUtil;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.TimeTableUtil;
-import net.muxi.huashiapp.schedule.ScheduleTimeLayout;
+import net.muxi.huashiapp.ui.schedule.ScheduleTimeLayout;
 
 import java.util.ArrayList;
 import java.util.Date;

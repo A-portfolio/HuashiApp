@@ -154,7 +154,7 @@
 
         </LinearLayout>
 
-        <net.muxi.huashiapp.library.MySearchView
+        <net.muxi.huashiapp.ui.library.MySearchView
             android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

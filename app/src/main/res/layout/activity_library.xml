@@ -56,7 +56,7 @@
 
     </FrameLayout>
 
-    <net.muxi.huashiapp.library.MySearchView
+    <net.muxi.huashiapp.ui.library.MySearchView
         android:id="@+id/searchview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

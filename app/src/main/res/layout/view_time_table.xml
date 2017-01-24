@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<net.muxi.huashiapp.schedule.VScrollView-->
+<!--<net.muxi.huashiapp.ui.schedule.VScrollView-->
     <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
     <!--android:id="@+id/schedule_scroll_view"-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent">-->
 
-    <!--<net.muxi.huashiapp.schedule.HScrollView-->
+    <!--<net.muxi.huashiapp.ui.schedule.HScrollView-->
         <!--android:id="@+id/schedule_hscroll_view"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent">-->
@@ -15,6 +15,6 @@
     android:layout_width="490dp"
     android:layout_height="735dp"
     xmlns:android="http://schemas.android.com/apk/res/android"></TableLayout>
-    <!--</net.muxi.huashiapp.schedule.HScrollView>-->
+    <!--</net.muxi.huashiapp.ui.schedule.HScrollView>-->
 <!---->
-<!--</net.muxi.huashiapp.schedule.VScrollView>-->
+<!--</net.muxi.huashiapp.ui.schedule.VScrollView>-->
