@@ -41,7 +41,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".EnteranceActivity"
+            android:name=".ui.EnteranceActivity"
             android:theme="@style/AppWelcomTheme"
 
             android:windowSoftInputMode="adjustResize">
@@ -52,73 +52,73 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".main.MainActivity"
+        <activity android:name=".ui.main.MainActivity"
                   android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize"/>
 
-        <activity android:name=".login.LoginActivity"
+        <activity android:name=".ui.login.LoginActivity"
                   android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize"/>
 
-        <activity android:name=".SettingActivity"
+        <activity android:name=".ui.SettingActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".schedule.ScheduleActivity"
+        <activity android:name=".ui.schedule.ScheduleActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".schedule.AddCourseActivity"
-                  android:launchMode="singleTask"/>
-
-
-        <activity android:name=".score.ScoreActivity"
+        <activity android:name=".ui.schedule.AddCourseActivity"
                   android:launchMode="singleTask"/>
 
 
-        <activity android:name=".news.NewsActivity"
+        <activity android:name=".ui.score.ScoreActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".library.LibraryActivity"
+
+        <activity android:name=".ui.news.NewsActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".library.LibrarySearchActivity"
+        <activity android:name=".ui.library.LibraryActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".library.LibraryLoginActivity"
+        <activity android:name=".ui.library.LibrarySearchActivity"
+                  android:launchMode="singleTask"/>
+
+        <activity android:name=".ui.library.LibraryLoginActivity"
                   android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize"/>
 
-        <activity android:name=".library.MineActivity"
+        <activity android:name=".ui.library.MineActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".card.CardActivity"
+        <activity android:name=".ui.card.CardActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".webview.WebViewActivity"
+        <activity android:name=".ui.webview.WebViewActivity"
                   android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".website.WebsiteActivity"
+        <activity android:name=".ui.website.WebsiteActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".apartment.ApartmentActivity"
+        <activity android:name=".ui.apartment.ApartmentActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".CalendarActivity"/>
+        <activity android:name=".ui.CalendarActivity"/>
 
-        <activity android:name=".AboutActivity"/>
+        <activity android:name=".ui.AboutActivity"/>
 
-        <activity android:name=".SuggestionActivity"/>
+        <activity android:name=".ui.SuggestionActivity"/>
 
-        <activity android:name=".electricity.ElectricityActivity"/>
+        <activity android:name=".ui.electricity.ElectricityActivity"/>
 
-        <activity android:name=".electricity.ElectricityDetailActivity"/>
+        <activity android:name=".ui.electricity.ElectricityDetailActivity"/>
 
-        <activity android:name=".InfoActivity"/>
+        <activity android:name=".ui.InfoActivity"/>
 
-        <activity android:name=".wxapi.WXEntryActivity"
+        <activity android:name=".ui.wxapi.WXEntryActivity"
                   android:exported="true"
                   android:launchMode="singleInstance"/>
 

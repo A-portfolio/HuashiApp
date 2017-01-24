@@ -14,7 +14,7 @@ import net.muxi.huashiapp.common.service.WidgetService;
 import net.muxi.huashiapp.common.util.DateUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.TimeTableUtil;
-import net.muxi.huashiapp.schedule.ScheduleActivity;
+import net.muxi.huashiapp.ui.schedule.ScheduleActivity;
 
 import java.util.Date;
 

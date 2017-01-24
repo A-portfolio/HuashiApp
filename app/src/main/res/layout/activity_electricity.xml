@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <net.muxi.huashiapp.electricity.NonScrollExpandLv
+            <net.muxi.huashiapp.ui.electricity.NonScrollExpandLv
                 android:id="@+id/lv_expand"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

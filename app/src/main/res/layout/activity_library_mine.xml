@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolbar_container"
     android:layout_width="match_parent"
-    tools:context=".library.MineActivity"
+    tools:context=".ui.library.MineActivity"
     android:layout_height="wrap_content"
     >
 
@@ -59,7 +59,7 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <net.muxi.huashiapp.library.MySearchView
+    <net.muxi.huashiapp.ui.library.MySearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
