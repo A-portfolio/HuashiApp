@@ -39,33 +39,41 @@ public class ElectricityActivity extends ToolbarActivity {
 
     //西区对应的建筑
     private static final String[][] childStrings1 = {
-            {"西区", "东区", "元宝山", "南湖", "国交"},
+            {"西区", "东区", "元宝山", "南湖", "国交","产宿"},
             {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋"}
     };
 
     //东区对应的建筑
     private static final String[][] childStrings2 = {
-            {"西区", "东区", "元宝山", "南湖", "国交"},
+            {"西区", "东区", "元宝山", "南湖", "国交","产宿"},
             {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋", "9栋", "10栋", "11栋", "12栋", "13栋西", "13栋东", "14栋", "15栋西", "15栋东", "16栋", "附1栋"}
     };
 
     //元宝山对应的建筑
     private static final String[][] childStrings3 = {
-            {"西区", "东区", "元宝山", "南湖", "国交"},
+            {"西区", "东区", "元宝山", "南湖", "国交","产宿"},
             {"1栋", "2栋", "3栋", "4栋", "5栋"}
     };
 
     //南湖对应的建筑
     private static final String[][] childStrings4 = {
-            {"西区", "东区", "元宝山", "南湖", "国交"},
+            {"西区", "东区", "元宝山", "南湖", "国交","产宿"},
             {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋", "9栋", "10栋", "11栋", "12栋", "13栋"}
     };
 
     //国交对应的建筑
     private static final String[][] childStrings5 = {
-            {"西区", "东区", "元宝山", "南湖", "国交"},
-            {"3栋", "4栋", "5栋", "6栋"}
+            {"西区", "东区", "元宝山", "南湖", "国交","产宿"},
+            {"3栋", "4栋", "5栋", "6栋","9栋"}
+
     };
+
+    //产宿对应的建筑
+    private static final String[][] childStrings6 = {
+            {"西区", "东区", "元宝山", "南湖", "国交","产宿"},
+            {"8栋","9栋"}
+    };
+
 
     //查询参数
     private String mQuery;
@@ -111,6 +119,9 @@ public class ElectricityActivity extends ToolbarActivity {
                             break;
                         case 4:
                             mChildString = childStrings5;
+                            break;
+                        case 5:
+                            mChildString = childStrings6;
                             break;
                     }
                     mGroupString[0] = mChildString[0][rbPosition];
