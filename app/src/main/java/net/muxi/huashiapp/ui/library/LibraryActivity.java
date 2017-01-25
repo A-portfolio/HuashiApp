@@ -30,9 +30,9 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.Logger;
 import net.muxi.huashiapp.common.util.NetStatus;
-import net.muxi.huashiapp.common.widget.BaseDetailLayout;
-import net.muxi.huashiapp.common.widget.DividerItemDecoration;
-import net.muxi.huashiapp.common.widget.ShadowView;
+import net.muxi.huashiapp.widget.BaseDetailLayout;
+import net.muxi.huashiapp.widget.DividerItemDecoration;
+import net.muxi.huashiapp.widget.ShadowView;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,7 +5,7 @@ import android.widget.LinearLayout;
 import android.widget.Scroller;
 
 import net.muxi.huashiapp.common.util.DimensUtil;
-import net.muxi.huashiapp.common.widget.TimeTable;
+import net.muxi.huashiapp.widget.TimeTable;
 
 /**
  * Created by ybao on 16/4/27.

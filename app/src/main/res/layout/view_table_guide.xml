@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+                android:layout_margin="8dp"
+              android:layout_height="wrap_content">
+
+    <Space android:layout_width="1px"
+           android:layout_centerInParent="true"
+           android:id="@+id/space_center"
+           android:layout_height="1px"/>
+
+    <TextView android:layout_width="140dp"
+              android:textSize="20sp"
+              android:text="使用课程表前，请先设置当前周"
+              android:layout_above="@+id/space_center"
+              android:layout_toRightOf="@+id/space_center"
+              android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:id="@+id/btn_set_curweek"
+        android:background="@drawable/shape_orange"
+        android:layout_below="@+id/space_center"
+        android:layout_toRightOf="@+id/space_center"
+        android:text="马上去设置"
+        android:textColor="#ffffff"
+            android:layout_height="wrap_content"/>
+
+</RelativeLayout>

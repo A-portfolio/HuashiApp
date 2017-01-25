@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,7 +23,7 @@ import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.util.ZhugeUtils;
-import net.muxi.huashiapp.common.widget.LoginEditText;
+import net.muxi.huashiapp.widget.LoginEditText;
 import net.muxi.huashiapp.ui.main.MainActivity;
 
 import butterknife.BindView;
@@ -62,6 +63,11 @@ public class LoginActivity extends BaseActivity {
             updateButton();
         }
     };
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, LoginActivity.class);
+        context.startActivity(starter);
+    }
 
 
     @Override

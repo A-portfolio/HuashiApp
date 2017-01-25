@@ -68,9 +68,9 @@ public class App extends Application {
         }
 
 
-        sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, "0"));
+        sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, ""));
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
-        sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, "0"));
+        sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));
         sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
     }
 

@@ -22,8 +22,8 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.DimensUtil;
 import net.muxi.huashiapp.common.util.NetStatus;
 import net.muxi.huashiapp.common.util.ToastUtil;
-import net.muxi.huashiapp.common.widget.BaseDetailLayout;
-import net.muxi.huashiapp.common.widget.ShadowView;
+import net.muxi.huashiapp.widget.BaseDetailLayout;
+import net.muxi.huashiapp.widget.ShadowView;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;

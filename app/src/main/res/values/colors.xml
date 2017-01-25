@@ -2,10 +2,25 @@
 <resources>
     <color name="colorPrimary">#673AB7</color>
     <color name="colorPrimaryDark">#512DA8</color>
-    <color name="colorAccent">@color/colorPrimary</color>
+    <color name="colorAccent">#7b79ff</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="textColorGrey">#7F000000</color>
+    
+    <color name="green">#3ad49b</color>
+    <color name="orange">#ff9135</color>
+    <color name="blue">#52b6ff</color>
+    <color name="yellow">#ffce00</color>
+    <color name="darkgreen">#6ace81</color>
+    <color name="red">#fa3f40</color>
+    
+    
+    
+    
+    
+    
+    
+    
 
     <!--闪屏-->
     <color name="entrance_color_start">#CC673AB7</color>

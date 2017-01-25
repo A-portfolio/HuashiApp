@@ -18,6 +18,11 @@
     <string name="action_refresh">刷新本页面</string>
     <string name="action_set_cur_week">设置当前周</string>
     <string name="action_check_update">检查更新</string>
+    <string name="action_main">首页</string>
+    <string name="action_timetable">课程表</string>
+    <string name="action_library">图书馆</string>
+    <string name="action_more">更多</string>
+
 
     <string name="notify_title_score">华师匣子</string>
     <string name="notify_content_score">匣客，新成绩已出，赶紧去查看吧！</string>
