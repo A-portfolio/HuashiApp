@@ -12,13 +12,13 @@
         android:background="@android:color/transparent"
         android:paddingTop="@dimen/library_detail_margin_top">
 
-        <net.muxi.huashiapp.common.widget.ContentLayout
+        <net.muxi.huashiapp.widget.ContentLayout
             android:id="@+id/detail_content_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="600dp">
 
-        </net.muxi.huashiapp.common.widget.ContentLayout>
+        </net.muxi.huashiapp.widget.ContentLayout>
 
     </RelativeLayout>
 

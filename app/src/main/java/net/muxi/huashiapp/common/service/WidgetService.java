@@ -6,7 +6,7 @@ import android.widget.RemoteViewsService;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.widget.AppWidgetFactory;
+import net.muxi.huashiapp.widget.AppWidgetFactory;
 
 import java.util.ArrayList;
 

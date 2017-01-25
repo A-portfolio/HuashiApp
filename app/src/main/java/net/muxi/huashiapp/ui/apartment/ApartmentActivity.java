@@ -16,7 +16,7 @@ import net.muxi.huashiapp.common.data.ApartmentData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.ToastUtil;
-import net.muxi.huashiapp.common.widget.DividerItemDecoration;
+import net.muxi.huashiapp.widget.DividerItemDecoration;
 
 import java.util.List;
 

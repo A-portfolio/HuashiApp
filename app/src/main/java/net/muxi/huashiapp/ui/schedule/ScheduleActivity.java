@@ -40,9 +40,9 @@ import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.common.util.TimeTableUtil;
 import net.muxi.huashiapp.common.util.ToastUtil;
 import net.muxi.huashiapp.common.util.ZhugeUtils;
-import net.muxi.huashiapp.common.widget.GuideBgLayout;
-import net.muxi.huashiapp.common.widget.ShadowView;
-import net.muxi.huashiapp.common.widget.TimeTable;
+import net.muxi.huashiapp.widget.GuideBgLayout;
+import net.muxi.huashiapp.widget.ShadowView;
+import net.muxi.huashiapp.widget.TimeTable;
 
 import java.util.Date;
 import java.util.List;
