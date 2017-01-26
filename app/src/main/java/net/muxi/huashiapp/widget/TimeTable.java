@@ -33,9 +33,10 @@ public class TimeTable extends FrameLayout {
 
     public static final int WEEK_DAY_WIDTH = DimensUtil.dp2px(60);
     public static final int COURSE_TIME_HEIGHT = DimensUtil.dp2px(120);
-    public static final int LITTLE_VIEW_WIDTH = DimensUtil.dp2px(50);
-    public static final int LITTLE_VIEW_HEIGHT = DimensUtil.dp2px(40);
+    public static final int LITTLE_VIEW_WIDTH = DimensUtil.dp2px(49);
+    public static final int LITTLE_VIEW_HEIGHT = DimensUtil.dp2px(41);
     public static final int COURSE_TIME_DIVIDER = DimensUtil.dp2px(2);
+    public static final int DIVIDER_WIDTH = DimensUtil.dp2px(1);
 
     private ScheduleTimeLayout mScheduleLayout;
     private FrameLayout[] dayCourseLayout;
@@ -46,7 +47,7 @@ public class TimeTable extends FrameLayout {
 
     private String[] weekdays;
 
-    private View view;
+    private FrameLayout cornerView;
     private ScheduleTimeLayout mCourseLayout;
     private LinearLayout[] mCourseUnitLayout;
     private TextView[] mCourseTimeTv;
@@ -97,24 +98,43 @@ public class TimeTable extends FrameLayout {
     public TimeTable(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        initLayout(context);
+        initLayout();
     }
 
-    public void initLayout(Context context) {
-        setupScrollView(context);
-        setupWeekDayLayout(context);
-        setupCourseTimeLayout(context);
+    public void initLayout() {
+//        setupScrollView();
+//        setupWeekDayLayout();
+//        setupCourseTimeLayout();
 
-        setLittleView(context);
+        setCornerView();
+        setRefreshView();
 
     }
 
-    public void setLittleView(Context context) {
-        view = new View(context);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(LITTLE_VIEW_WIDTH, LITTLE_VIEW_HEIGHT);
-        view.setLayoutParams(params);
-        view.setBackgroundColor(getResources().getColor(R.color.course_week_layout_bg));
-        addView(view);
+    private void setRefreshView() {
+
+    }
+
+    //绘制左上角的 view
+    public void setCornerView() {
+        cornerView = new FrameLayout(mContext);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(LITTLE_VIEW_WIDTH,
+                LITTLE_VIEW_HEIGHT);
+        cornerView.setLayoutParams(params);
+        cornerView.setBackgroundColor(Color.WHITE);
+        View dividerH = new View(mContext);
+        View dividerV = new View(mContext);
+        FrameLayout.LayoutParams hParams = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, DIVIDER_WIDTH);
+        FrameLayout.LayoutParams vParams = new FrameLayout.LayoutParams(DIVIDER_WIDTH,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        hParams.setMargins(0,DimensUtil.dp2px(40),0,0);
+        vParams.setMargins(DimensUtil.dp2px(48),0,0,0);
+        dividerH.setBackgroundColor(getResources().getColor(R.color.divider));
+        dividerV.setBackgroundColor(getResources().getColor(R.color.divider));
+        cornerView.addView(dividerH,hParams);
+        cornerView.addView(dividerV,vParams);
+        addView(cornerView);
     }
 
     public void setupCourseTimeLayout(Context context) {
@@ -146,14 +166,17 @@ public class TimeTable extends FrameLayout {
             mCourseUnitLayout[i].setGravity(Gravity.CENTER);
             mCourseUnitLayout[i].setOrientation(LinearLayout.VERTICAL);
             mCourseUnitLayout[i].setLayoutParams(unitLayoutParams);
-            mCourseUnitLayout[i].setBackgroundColor(getResources().getColor(R.color.colorCourseTimeLayout));
+            mCourseUnitLayout[i].setBackgroundColor(
+                    getResources().getColor(R.color.colorCourseTimeLayout));
             mCourseLayout.addView(mCourseUnitLayout[i]);
 
             String hour = "" + (i / 2 * 2 + 8);
             String minute;
             if (i % 2 == 0) {
                 minute = "00";
-            } else minute = "" + 55;
+            } else {
+                minute = "" + 55;
+            }
             mCourseNumTv[i] = new TextView(context);
             mCourseNumTv[i].setTextSize(18);
             mCourseNumTv[i].setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -177,8 +200,8 @@ public class TimeTable extends FrameLayout {
     }
 
 
-    public void setupWeekDayLayout(Context context) {
-        mWeekDayLayout = new ScheduleTimeLayout(context);
+    public void setupWeekDayLayout() {
+        mWeekDayLayout = new ScheduleTimeLayout(mContext);
         FrameLayout.LayoutParams weekDayParams = new
                 FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LITTLE_VIEW_HEIGHT);
         mWeekDayLayout.setLayoutParams(weekDayParams);
@@ -203,18 +226,18 @@ public class TimeTable extends FrameLayout {
         weekDates = DateUtil.getTheWeekDate(0);
         weekdays = getResources().getStringArray(R.array.week_day);
         for (int i = 0; i < 7; i++) {
-            mWeekdayUnitLayout[i] = new LinearLayout(mContext);
+            mWeekdayUnitLayout[i] = new LinearLayout(this.mContext);
             mWeekdayUnitLayout[i].setLayoutParams(unitParams);
             mWeekdayUnitLayout[i].setOrientation(LinearLayout.VERTICAL);
             mWeekdayUnitLayout[i].setGravity(Gravity.CENTER);
             mWeekDayLayout.addView(mWeekdayUnitLayout[i]);
 
-            mWeekdayDateTv[i] = new TextView(mContext);
+            mWeekdayDateTv[i] = new TextView(this.mContext);
             mWeekdayDateTv[i].setLayoutParams(params);
             mWeekdayDateTv[i].setText(weekDates.get(i));
             mWeekdayDateTv[i].setTextSize(12);
             mWeekdayDateTv[i].setTextColor(getResources().getColor(R.color.colorPrimary));
-            mWeekdayTv[i] = new TextView(context);
+            mWeekdayTv[i] = new TextView(mContext);
             mWeekdayTv[i].setLayoutParams(params);
             mWeekdayTv[i].setGravity(Gravity.CENTER);
             mWeekdayTv[i].setText(weekdays[i]);
@@ -237,7 +260,8 @@ public class TimeTable extends FrameLayout {
         mScheduleLayout = new ScheduleTimeLayout(context);
 
         FrameLayout.LayoutParams scheduleLayoutParams = new
-                FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, COURSE_TIME_HEIGHT * 7);
+                FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                COURSE_TIME_HEIGHT * 7);
         scheduleLayoutParams.setMargins(LITTLE_VIEW_WIDTH, LITTLE_VIEW_HEIGHT, 0, 0);
         mScheduleLayout.setLayoutParams(scheduleLayoutParams);
 
@@ -262,7 +286,8 @@ public class TimeTable extends FrameLayout {
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         DimensUtil.dp2px(2)
                 );
-                dividerParams[j].setMargins(0, COURSE_TIME_HEIGHT / 2 * (j + 1) - DimensUtil.dp2px(2), 0, 0);
+                dividerParams[j].setMargins(0,
+                        COURSE_TIME_HEIGHT / 2 * (j + 1) - DimensUtil.dp2px(2), 0, 0);
                 views[j] = new View(mContext);
                 views[j].setBackgroundColor(getResources().getColor(R.color.divider_course));
                 dayCourseLayout[i].addView(views[j], dividerParams[j]);
@@ -366,7 +391,8 @@ public class TimeTable extends FrameLayout {
 
     private void setTypeCourses(final List<Course> typeCourses, int courseType) {
         for (int i = 0; i < typeCourses.size(); i++) {
-            if (typeCourses.get(i).getCourse() != null && typeCourses.get(i).getCourse().equals(AppConstants.INIT_COURSE)) {
+            if (typeCourses.get(i).getCourse() != null && typeCourses.get(i).getCourse().equals(
+                    AppConstants.INIT_COURSE)) {
                 continue;
             } else {
                 final int curCourse = i;
@@ -375,30 +401,35 @@ public class TimeTable extends FrameLayout {
                         typeCourses.get(i).getDuring() * COURSE_TIME_HEIGHT / 2 - 2
                 );
 
-                params.setMargins(0, COURSE_TIME_HEIGHT / 2 * (typeCourses.get(i).getStart() - 1), 0, 0);
+                params.setMargins(0, COURSE_TIME_HEIGHT / 2 * (typeCourses.get(i).getStart() - 1),
+                        0, 0);
 
                 final TextView courseTv = new TextView(mContext);
                 switch (courseType) {
                     case CUR_WEEK_PRIORITY:
-                        courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(typeCourses.get(i).getColor(), 1)));
+                        courseTv.setBackground(getResources().getDrawable(
+                                TimeTableUtil.getCourseBg(typeCourses.get(i).getColor(), 1)));
                         courseTv.setText(typeCourses.get(i).getCourse() + "\n@" +
                                 typeCourses.get(i).getPlace() + "\n" +
                                 typeCourses.get(i).getTeacher());
                         break;
                     case CUR_WEEK:
-                        courseTv.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(typeCourses.get(i).getColor(), 0)));
+                        courseTv.setBackground(getResources().getDrawable(
+                                TimeTableUtil.getCourseBg(typeCourses.get(i).getColor(), 0)));
                         courseTv.setText(typeCourses.get(i).getCourse() + "\n@" +
                                 typeCourses.get(i).getPlace() + "\n" +
                                 typeCourses.get(i).getTeacher());
                         break;
                     case OTHER_WEEK_PRIORITY:
-                        courseTv.setBackground(getResources().getDrawable(R.drawable.bg_class_gary));
+                        courseTv.setBackground(
+                                getResources().getDrawable(R.drawable.bg_class_gary));
                         courseTv.setText(typeCourses.get(i).getCourse() + "\n@" +
                                 typeCourses.get(i).getPlace() + "\n" +
                                 typeCourses.get(i).getTeacher() + "\n[非本周]");
                         break;
                     case OTHER_WEEK:
-                        courseTv.setBackground(getResources().getDrawable(R.drawable.bg_simple_class_gray));
+                        courseTv.setBackground(
+                                getResources().getDrawable(R.drawable.bg_simple_class_gray));
                         courseTv.setText(typeCourses.get(i).getCourse() + "\n@" +
                                 typeCourses.get(i).getPlace() + "\n" +
                                 typeCourses.get(i).getTeacher() + "\n[非本周]");
@@ -424,22 +455,25 @@ public class TimeTable extends FrameLayout {
                                     @Override
                                     public void run() {
                                         Logger.d("runnable run " + !isTouchCancel);
-                                        if ((Math.abs(startX - mx) < 4) && (Math.abs(startY - my) < 4) && (!isTouchCancel)) {
+                                        if ((Math.abs(startX - mx) < 4) && (Math.abs(startY - my)
+                                                < 4) && (!isTouchCancel)) {
                                             Logger.d("childview long click");
                                             if (mOnLongPressedListener != null) {
                                                 Logger.d("childview long click");
-                                                mOnLongPressedListener.onLongPressed(typeCourses.get(curCourse));
+                                                mOnLongPressedListener.onLongPressed(
+                                                        typeCourses.get(curCourse));
                                             }
                                         }
                                     }
                                 }, 1000);
-                                Logger.d("child view down");
+                                Logger.d("child cornerView down");
                                 break;
                             case MotionEvent.ACTION_MOVE:
                                 curX = event.getRawX();
                                 curY = event.getRawY();
                                 mWeekDayLayout.scrollBy((int) (mx - curX), 0, type);
-                                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY), type);
+                                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY),
+                                        type);
                                 mCourseLayout.scrollBy(0, (int) (my - curY), type);
                                 mx = curX;
                                 my = curY;
@@ -449,10 +483,12 @@ public class TimeTable extends FrameLayout {
                                 curY = event.getRawY();
                                 Date date2 = new Date(System.currentTimeMillis());
                                 if (DateUtil.getSecondSpace(date1, date2) < 1000 &&
-                                        (Math.abs(startX - curX) < 4) && (Math.abs(startY - curY) < 4)) {
+                                        (Math.abs(startX - curX) < 4) && (Math.abs(startY - curY)
+                                        < 4)) {
                                     if (mOnCourseClickListener != null) {
-                                        Logger.d("child view click");
-                                        mOnCourseClickListener.onCourseClick(typeCourses.get(curCourse));
+                                        Logger.d("child cornerView click");
+                                        mOnCourseClickListener.onCourseClick(
+                                                typeCourses.get(curCourse));
 
                                     }
                                 }
@@ -473,8 +509,9 @@ public class TimeTable extends FrameLayout {
 
     /**
      * 添加至不同类型的课程 list
+     *
      * @param courses all courses
-     * @param week current week
+     * @param week    current week
      */
     private void addTypeCourses(List<Course> courses, int week) {
         List<Course> conflictCourses = new ArrayList<>();
@@ -489,7 +526,8 @@ public class TimeTable extends FrameLayout {
                                 courses.get(i).getDuring() == courses.get(j).getDuring() &&
                                 courses.get(i).getDay().equals(courses.get(j).getDay())) {
                             conflictCourses.add(courses.get(j));
-                            Logger.d("conflictCourses add" + courses.get(j).getCourse().toString() + j + "  " + courses.size());
+                            Logger.d("conflictCourses add" + courses.get(j).getCourse().toString()
+                                    + j + "  " + courses.size());
                         }
                     }
                 }
@@ -565,7 +603,9 @@ public class TimeTable extends FrameLayout {
                     if (j == i) {
                         continue;
                     }
-                    if (course.getDay().equals(courses.get(j).getDay()) && course.getStart() == courses.get(j).getStart() && course.getDuring() == courses.get(j).getDuring()) {
+                    if (course.getDay().equals(courses.get(j).getDay())
+                            && course.getStart() == courses.get(j).getStart()
+                            && course.getDuring() == courses.get(j).getDuring()) {
                         isConflict = true;
                     }
                 }
@@ -589,7 +629,9 @@ public class TimeTable extends FrameLayout {
                     if (j == i) {
                         continue;
                     }
-                    if (course.getDay().equals(courses.get(j).getDay()) && course.getStart() == courses.get(j).getStart() && course.getDuring() == courses.get(j).getDuring()) {
+                    if (course.getDay().equals(courses.get(j).getDay())
+                            && course.getStart() == courses.get(j).getStart()
+                            && course.getDuring() == courses.get(j).getDuring()) {
                         isConflict = true;
                     }
                 }
@@ -610,7 +652,9 @@ public class TimeTable extends FrameLayout {
             Course course = courses.get(i);
             boolean isConflict = false;
             for (int j = i + 1; j < courses.size(); j++) {
-                if (course.getDay().equals(courses.get(j).getDay()) && course.getStart() == courses.get(j).getStart() && course.getDuring() == courses.get(j).getDuring()) {
+                if (course.getDay().equals(courses.get(j).getDay())
+                        && course.getStart() == courses.get(j).getStart()
+                        && course.getDuring() == courses.get(j).getDuring()) {
                     isConflict = true;
                     if (TimeTableUtil.isThisWeek(week, courses.get(j).getWeeks())) {
                         course = courses.get(j);
@@ -633,9 +677,6 @@ public class TimeTable extends FrameLayout {
 
     /**
      * 移动 中 的timetable
-     *
-     * @param x
-     * @param y
      */
 
     public void scrollScheduleLayout(int x, int y) {
@@ -699,7 +740,8 @@ public class TimeTable extends FrameLayout {
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             DimensUtil.dp2px(2)
                     );
-                    dividerParams[j].setMargins(0, COURSE_TIME_HEIGHT / 2 * (j + 1) - DimensUtil.dp2px(2), 0, 0);
+                    dividerParams[j].setMargins(0,
+                            COURSE_TIME_HEIGHT / 2 * (j + 1) - DimensUtil.dp2px(2), 0, 0);
                 }
                 views[j] = new View(mContext);
                 views[j].setBackgroundColor(getResources().getColor(R.color.divider_course));

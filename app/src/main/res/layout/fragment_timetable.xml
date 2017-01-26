@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools"
        android:layout_width="match_parent"
        android:layout_height="match_parent">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:textColor="@color/grey_bottom_line"
+        android:layout_marginBottom="22dp"
+        android:text="———别闹，学霸也是要睡觉的———"
+        android:textSize="12sp"/>
+
+
 
     <RelativeLayout
         android:id="@+id/tool_layout"
         android:layout_width="match_parent"
+        android:background="@color/colorWhite"
         android:layout_height="56dp">
 
         <TextView
@@ -15,12 +29,16 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="6dp"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            tools:text="第18周"/>
 
         <ImageView
             android:id="@+id/iv_select_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="14dp"
+            android:layout_toRightOf="@+id/tv_select_week"
             android:src="@drawable/ic_select_week"/>
 
         <TextView
@@ -37,12 +55,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@null"
             android:layout_centerVertical="true"
             android:layout_marginRight="18dp"
-            android:src="@drawable/ic_add_white_24dp"/>
+            android:background="@null"
+            android:src="@drawable/ic_add_black_24dp"/>
 
     </RelativeLayout>
 
-
-</merge>
+</FrameLayout>

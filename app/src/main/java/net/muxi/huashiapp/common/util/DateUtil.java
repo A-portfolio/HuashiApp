@@ -16,7 +16,7 @@ import java.util.List;
 public class DateUtil {
 
     public static String toDate(Date date) {
-        DateFormat dateFormat = new SimpleDateFormat("MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd");
         return dateFormat.format(date);
     }
 
