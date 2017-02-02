@@ -6,7 +6,6 @@
           android:orderInCategory="100"
           app:showAsAction="always"
           android:id="@+id/action_login"
-          android:icon="@drawable/ic_person_outline_white_24dp"
     ></item>
 
 </menu>

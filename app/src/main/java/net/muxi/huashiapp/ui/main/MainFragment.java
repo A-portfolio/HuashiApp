@@ -13,7 +13,7 @@ import net.muxi.huashiapp.common.base.BaseFragment;
  * Created by ybao on 17/1/25.
  */
 
-public class MainFragment extends BaseFragment{
+public class MainFragment extends BaseFragment {
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();

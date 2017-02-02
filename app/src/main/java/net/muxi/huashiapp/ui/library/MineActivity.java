@@ -16,15 +16,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.AppConstants;
+import net.muxi.huashiapp.Constants;
+
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.PersonalBook;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.util.Base64Util;
-import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.util.NetStatus;
+import net.muxi.huashiapp.util.Base64Util;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.ui.main.MainActivity;
 
 import java.util.List;
@@ -129,7 +130,7 @@ public class MineActivity extends BaseActivity {
 
         mToolbar.setTitle("我的图书馆");
         mToolbar.setTitleTextColor(Color.WHITE);
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        mToolbar.setNavigationIcon(R.drawable.ic_add_black_24dp);
         setSupportActionBar(mToolbar);
 
         suggestions = dao.loadSearchHistory().toArray(new String[0]);
@@ -152,7 +153,7 @@ public class MineActivity extends BaseActivity {
                 dao.insertSearchHistory(query);
                 mSearchView.closeSearchView();
                 Intent intent = new Intent(MineActivity.this, LibraryActivity.class);
-                intent.putExtra(AppConstants.LIBRARY_QUERY_TEXT, query);
+                intent.putExtra(Constants.LIBRARY_QUERY_TEXT, query);
                 startActivity(intent);
                 return true;
             }

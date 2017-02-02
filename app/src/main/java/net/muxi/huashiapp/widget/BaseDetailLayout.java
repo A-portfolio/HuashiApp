@@ -21,7 +21,7 @@ import android.widget.Scroller;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.common.util.DimensUtil;
+import net.muxi.huashiapp.util.DimensUtil;
 
 import butterknife.BindView;
 
@@ -156,7 +156,7 @@ public class BaseDetailLayout extends FrameLayout {
         mToolbar = new Toolbar(context);
         mToolbar.setTitle("详情");
         mToolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        mToolbar.setNavigationIcon(R.drawable.ic_add_black_24dp);
         mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setMinimumHeight(DimensUtil.getActionbarHeight());
         mToolbar.setNavigationOnClickListener(new OnClickListener() {
@@ -183,7 +183,7 @@ public class BaseDetailLayout extends FrameLayout {
     public void setCustomToolbar(Toolbar toolbar){
         mToolbar = toolbar;
         if (mToolbar != null){
-            mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+            mToolbar.setNavigationIcon(R.drawable.ic_add_black_24dp);
             mToolbar.setNavigationOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

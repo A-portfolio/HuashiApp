@@ -9,9 +9,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.OnItemClickListener;
+import net.muxi.huashiapp.common.listener.OnItemClickListener;
 import net.muxi.huashiapp.common.data.BookSearchResult;
-import net.muxi.huashiapp.common.util.NoDoubleClickUtil;
+import net.muxi.huashiapp.util.NoDoubleClickUtil;
 
 import java.util.ArrayList;
 import java.util.List;

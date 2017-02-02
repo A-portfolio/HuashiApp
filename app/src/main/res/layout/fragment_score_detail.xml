@@ -22,7 +22,6 @@
                 android:layout_height="@dimen/empty_img_height"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/empty_img_marginTop"
-                android:src="@drawable/img_empty"
                 android:visibility="gone"/>
 
             <TextView

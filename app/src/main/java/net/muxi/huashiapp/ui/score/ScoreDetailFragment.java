@@ -20,9 +20,9 @@ import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.util.Base64Util;
-import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.util.Base64Util;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.List;
 

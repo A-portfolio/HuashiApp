@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.util.DimensUtil;
-import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.util.DimensUtil;
+import net.muxi.huashiapp.util.Logger;
 
 /**
  * Created by december on 16/6/29.
@@ -22,7 +22,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
     private String[][] mChildStrings = new String[2][19];
     private String[] mGroupStrings = new String[2];
 
-    private static final int[] IMG_RES = {R.drawable.ic_area,R.drawable.ic_building};
+    private static final int[] IMG_RES = {R.drawable.ic_add_black_24dp,R.drawable.ic_add_black_24dp};
 
     private OnRbClickListener mOnRbClickListener;
 
@@ -102,9 +102,9 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter {
         groupViewHolder.tvTitle.setCompoundDrawablesWithIntrinsicBounds(IMG_RES[groupPosition],0,0,0);
         groupViewHolder.tvTitle.setCompoundDrawablePadding(DimensUtil.dp2px(32));
         if (isExpanded) {
-            groupViewHolder.imgIndicator.setImageResource(R.drawable.ic_expand_more_top);
+            groupViewHolder.imgIndicator.setImageResource(R.drawable.ic_add_black_24dp);
         }else {
-            groupViewHolder.imgIndicator.setImageResource(R.drawable.ic_expand_more_bottom);
+            groupViewHolder.imgIndicator.setImageResource(R.drawable.ic_add_black_24dp);
         }
         Logger.d(groupPosition + "");
         Logger.d(mGroupStrings[groupPosition]);

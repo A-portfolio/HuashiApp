@@ -8,8 +8,7 @@ import net.muxi.huashiapp.common.data.ApartmentData;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.WebsiteData;
-import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;

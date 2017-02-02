@@ -9,6 +9,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="ActionbarAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">

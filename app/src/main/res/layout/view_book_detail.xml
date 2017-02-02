@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress XmlUnusedNamespaceDeclaration, XmlUnusedNamespaceDeclaration, XmlUnusedNamespaceDeclaration -->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
@@ -29,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="26dp"
-            android:background="@drawable/ic_clear_white_24dp"/>
+            />
 
         <TextView
             android:id="@+id/tv_title"
@@ -79,7 +80,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="15dp"
-            android:src="@drawable/divider_lib"/>
+            />
 
         <!--<LinearLayout-->
         <!--android:id="@+id/state_layout"-->

@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import net.muxi.huashiapp.R;
 
 import butterknife.BindView;

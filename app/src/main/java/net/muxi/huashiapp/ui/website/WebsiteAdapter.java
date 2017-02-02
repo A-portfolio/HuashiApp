@@ -46,19 +46,19 @@ public class WebsiteAdapter extends RecyclerView.Adapter<WebsiteAdapter.MySiteVi
     public void onBindViewHolder(MySiteViewHolder holder, final int position) {
         holder.mWebsiteSite.setText(mWebsiteDataList.get(position).getSite());
         if (position % 5 == 0) {
-            holder.mWebsiteIcon.setBackgroundResource(R.drawable.website_one);
+            holder.mWebsiteIcon.setBackgroundResource(R.drawable.ic_add_black_24dp);
             holder.mWebsiteLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.shape_random_blue));
         } else if (position % 5 == 1) {
-            holder.mWebsiteIcon.setBackgroundResource(R.drawable.website_two);
+            holder.mWebsiteIcon.setBackgroundResource(R.drawable.ic_add_black_24dp);
             holder.mWebsiteLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.shape_random_cyan));
         } else if (position % 5 == 2) {
-            holder.mWebsiteIcon.setBackgroundResource(R.drawable.website_three);
+            holder.mWebsiteIcon.setBackgroundResource(R.drawable.ic_add_black_24dp);
             holder.mWebsiteLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.shape_random_red));
         } else if (position % 5 == 3) {
-            holder.mWebsiteIcon.setBackgroundResource(R.drawable.website_four);
+            holder.mWebsiteIcon.setBackgroundResource(R.drawable.ic_add_black_24dp);
             holder.mWebsiteLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.shape_random_purple));
         } else if (position % 5 == 4) {
-            holder.mWebsiteIcon.setBackgroundResource(R.drawable.website_five);
+            holder.mWebsiteIcon.setBackgroundResource(R.drawable.ic_add_black_24dp);
             holder.mWebsiteLayout.setBackground(ContextCompat.getDrawable(context,R.drawable.shape_random_yellow));
         }
         holder.mWebsiteLayout.setOnClickListener(new View.OnClickListener() {

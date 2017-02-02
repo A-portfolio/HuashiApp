@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:tools="http://schemas.android.com/tools"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
-
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
-        android:textColor="@color/grey_bottom_line"
         android:layout_marginBottom="22dp"
         android:text="———别闹，学霸也是要睡觉的———"
+        android:textColor="@color/grey_bottom_line"
         android:textSize="12sp"/>
 
+    <net.muxi.huashiapp.widget.TimeTable
+        android:id="@+id/timetable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"/>
 
+    <net.muxi.huashiapp.ui.schedule.WeekSelectedView
+        android:id="@+id/week_selected_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <RelativeLayout
         android:id="@+id/tool_layout"
         android:layout_width="match_parent"
-        android:background="@color/colorWhite"
-        android:layout_height="56dp">
+        android:layout_height="56dp"
+        android:background="@color/colorWhite">
 
         <TextView
             android:id="@+id/tv_select_week"

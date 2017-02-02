@@ -19,8 +19,8 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.Scores;
-import net.muxi.huashiapp.common.util.DimensUtil;
-import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.util.DimensUtil;
+import net.muxi.huashiapp.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +97,9 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
         holder.mRootLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment curFragment = ((BaseActivity) mContext).getSupportFragmentManager().findFragmentById(R.id.fragment_layout);
+                Fragment curFragment = ((BaseActivity) mContext).getSupportFragmentManager().findFragmentById(
+
+                        R.id.fragment_layout);
                 ((ScoreDetailFragment) curFragment).loadSpecifiedScore(position);
                 if (!mList.contains(position)) {
                     scaleSpace(holder.mSpaceAnim, SPACE_MIN_HEIGHT, SPACE_MAX_HEIGHT);

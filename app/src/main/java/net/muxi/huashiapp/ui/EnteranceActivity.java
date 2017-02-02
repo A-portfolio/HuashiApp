@@ -11,14 +11,14 @@ import android.view.View;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import net.muxi.huashiapp.AppConstants;
+import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.SplashData;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.util.FrescoUtil;
-import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.util.FrescoUtil;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.ui.main.MainActivity;
 
 import rx.Observer;
@@ -52,12 +52,12 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
 
         mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
         sp = new PreferenceUtil();
-        Logger.d(sp.getString(AppConstants.SPLASH_IMG));
-        if (sp.getLong(AppConstants.SPLASH_UPDATE) == -1) {
+        Logger.d(sp.getString(Constants.SPLASH_IMG));
+        if (sp.getLong(Constants.SPLASH_UPDATE) == -1) {
             mDrawee.setImageURI(Uri.parse("asset://net.muxi.huashiapp/bg_enterance.png"));
         } else {
-            if (!sp.getString(AppConstants.SPLASH_IMG).equals("")) {
-                mDrawee.setImageURI(Uri.parse(sp.getString(AppConstants.SPLASH_IMG)));
+            if (!sp.getString(Constants.SPLASH_IMG).equals("")) {
+                mDrawee.setImageURI(Uri.parse(sp.getString(Constants.SPLASH_IMG)));
             }
         }
 
@@ -75,7 +75,7 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.drawee) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sp.getString(AppConstants.SPLASH_URL).toString()));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sp.getString(Constants.SPLASH_URL).toString()));
             startActivity(intent);
         }
     }
@@ -102,7 +102,7 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
                             Logger.d("save splash data");
                             FrescoUtil.savePicture(splashData.getImg(), EnteranceActivity.this, "splash.jpg");
                         } else {
-                            sp.saveLong(AppConstants.SPLASH_UPDATE, -1);
+                            sp.saveLong(Constants.SPLASH_UPDATE, -1);
                         }
                     }
                 });
@@ -112,9 +112,9 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
         mSplashUpdate = splashData.getUpdate();
         mSplashImg = splashData.getImg();
         mSplashUrl = splashData.getUrl();
-        sp.saveLong(AppConstants.SPLASH_UPDATE, mSplashUpdate);
-        sp.saveString(AppConstants.SPLASH_IMG, mSplashImg);
-        sp.saveString(AppConstants.SPLASH_URL, mSplashUrl);
+        sp.saveLong(Constants.SPLASH_UPDATE, mSplashUpdate);
+        sp.saveString(Constants.SPLASH_IMG, mSplashImg);
+        sp.saveString(Constants.SPLASH_URL, mSplashUrl);
     }
 
     @Override

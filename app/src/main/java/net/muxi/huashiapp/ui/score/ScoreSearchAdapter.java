@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 
+
 /**
  * Created by ybao on 16/6/26.
  */

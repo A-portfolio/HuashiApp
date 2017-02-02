@@ -19,17 +19,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.AppConstants;
+import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.OnItemClickListener;
+import net.muxi.huashiapp.common.listener.OnItemClickListener;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.util.DimensUtil;
-import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.util.NetStatus;
+import net.muxi.huashiapp.util.DimensUtil;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.widget.BaseDetailLayout;
 import net.muxi.huashiapp.widget.DividerItemDecoration;
 import net.muxi.huashiapp.widget.ShadowView;
@@ -111,7 +111,7 @@ public class LibraryActivity extends ToolbarActivity {
         ButterKnife.bind(this);
 
         mBookList = new ArrayList<>();
-        String query = getIntent().getStringExtra(AppConstants.LIBRARY_QUERY_TEXT);
+        String query = getIntent().getStringExtra(Constants.LIBRARY_QUERY_TEXT);
         mKeyword = query;
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);

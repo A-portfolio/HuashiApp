@@ -13,8 +13,8 @@ import android.widget.TextView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.util.DimensUtil;
-import net.muxi.huashiapp.common.util.TimeTableUtil;
+import net.muxi.huashiapp.util.DimensUtil;
+import net.muxi.huashiapp.util.TimeTableUtil;
 
 import java.util.List;
 
@@ -86,7 +86,7 @@ public class CoursesView extends HorizontalScrollView{
             if (TimeTableUtil.isThisWeek(mWeek,mCourses.get(i).getWeeks())){
                 textView.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(mCourses.get(i).getColor(),0)));
             }else {
-                textView.setBackground(getResources().getDrawable(R.drawable.bg_simple_class_gray));
+                textView.setBackground(getResources().getDrawable(R.drawable.ic_add_black_24dp));
             }
             mContentLayout.addView(textView);
 

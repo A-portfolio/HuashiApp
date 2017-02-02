@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress XmlUnusedNamespaceDeclaration, XmlUnusedNamespaceDeclaration, XmlUnusedNamespaceDeclaration -->
 <path xmlns:android="http://schemas.android.com/apk/res/android">
   <external-path path="Android/data/com.muxi.huashiapp/" name="files_root" />
   <external-path name="external_files" path="."/>

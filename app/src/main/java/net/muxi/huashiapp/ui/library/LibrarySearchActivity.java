@@ -10,10 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Space;
 
-import net.muxi.huashiapp.AppConstants;
+import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.util.PreferenceUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,7 +96,7 @@ public class LibrarySearchActivity extends ToolbarActivity {
     public void onClick() {
         Intent intent = new Intent(this, LibraryActivity.class);
         String queryText = getQueryText();
-        intent.putExtra(AppConstants.LIBRARY_QUERY_TEXT, queryText);
+        intent.putExtra(Constants.LIBRARY_QUERY_TEXT, queryText);
         startActivity(intent);
     }
 }

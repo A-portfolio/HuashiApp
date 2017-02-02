@@ -13,17 +13,18 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.AppConstants;
+import net.muxi.huashiapp.Constants;
+
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.util.Base64Util;
-import net.muxi.huashiapp.common.util.NetStatus;
-import net.muxi.huashiapp.common.util.PreferenceUtil;
-import net.muxi.huashiapp.common.util.ToastUtil;
-import net.muxi.huashiapp.common.util.ZhugeUtils;
+import net.muxi.huashiapp.util.Base64Util;
+import net.muxi.huashiapp.util.NetStatus;
+import net.muxi.huashiapp.util.PreferenceUtil;
+import net.muxi.huashiapp.util.ToastUtil;
+import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -220,7 +221,7 @@ public class ScoreActivity extends ToolbarActivity {
             setTitle(year, term);
             ZhugeUtils.sendEvent("查询成绩", "查询成绩");
         } else {
-            ToastUtil.showShort(AppConstants.TIP_CHECK_NET);
+            ToastUtil.showShort(Constants.TIP_CHECK_NET);
         }
     }
 

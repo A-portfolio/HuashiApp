@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.News;
-import net.muxi.huashiapp.common.util.NoDoubleClickUtil;
+import net.muxi.huashiapp.util.NoDoubleClickUtil;
 
 import java.util.List;
 

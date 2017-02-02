@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
 
-import net.muxi.huashiapp.common.util.DimensUtil;
+import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.widget.TimeTable;
 
 /**
@@ -64,11 +64,9 @@ public class ScheduleTimeLayout extends LinearLayout {
             y = -getScrollY();
         } else if ((getScrollY() + y) >
                 (TimeTable.COURSE_TIME_HEIGHT * 7 - DimensUtil.getScreenHeight()
-                        + ScheduleActivity.WEEK_LAYOUT_HEIGHT
                         + DimensUtil.getActionbarHeight() + DimensUtil.getStatusBarHeight()
                         + TimeTable.LITTLE_VIEW_HEIGHT)) {
             y = TimeTable.COURSE_TIME_HEIGHT * 7 - getScrollY() - DimensUtil.getScreenHeight()
-                    + ScheduleActivity.WEEK_LAYOUT_HEIGHT
                     + DimensUtil.getActionbarHeight() + DimensUtil.getStatusBarHeight()
                     + TimeTable.LITTLE_VIEW_HEIGHT;
         }

@@ -10,7 +10,7 @@
         android:layout_above="@+id/space_divider"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="60dp"
-        android:src="@drawable/pic_cbox"/>
+        />
 
 
     <Space

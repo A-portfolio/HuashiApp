@@ -38,13 +38,14 @@ import com.tencent.smtt.sdk.WebViewClient;
 import com.tencent.tauth.Tencent;
 
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.AppConstants;
+import net.muxi.huashiapp.Constants;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.BaseUiListener;
+import net.muxi.huashiapp.common.listener.BaseUiListener;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.util.AppUtil;
-import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.util.AppUtil;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.ToastUtil;
 
 import java.util.ArrayList;
 
@@ -115,7 +116,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         api.registerApp(APP_ID);
 
         mBaseUiListener = new BaseUiListener();
-        mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(this, AppConstants.WEIBO_KEY);
+        mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(this, Constants.WEIBO_KEY);
         mWeiboShareAPI.registerApp();
         if (savedInstanceState != null) {
             mWeiboShareAPI.handleWeiboResponse(getIntent(), this);
@@ -240,7 +241,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
 
     public void shareToQzone(String title, String content, String url, String picUrl) {
-        mTencent = Tencent.createInstance(AppConstants.QQ_KEY, App.sContext);
+        mTencent = Tencent.createInstance(Constants.QQ_KEY, App.sContext);
         final Bundle params = new Bundle();
         params.putString(QzoneShare.SHARE_TO_QQ_TITLE, title);//必填
         if (content != null) {
