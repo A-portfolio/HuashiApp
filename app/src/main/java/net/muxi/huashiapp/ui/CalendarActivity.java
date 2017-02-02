@@ -16,10 +16,10 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.util.FrescoUtil;
-import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.util.NetStatus;
-import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.util.FrescoUtil;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.NetStatus;
+import net.muxi.huashiapp.util.PreferenceUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

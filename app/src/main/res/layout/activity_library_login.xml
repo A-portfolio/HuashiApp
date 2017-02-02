@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_lib_background">
+    >
 
     <ScrollView
         android:id="@+id/scroll_view"
@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                android:src="@drawable/img_lib_background"/>
+                ></ImageView>
 
         </LinearLayout>
 
@@ -57,7 +57,6 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:background="@drawable/shape_white_card"
-            android:drawableLeft="@drawable/ic_search_black_24dp"
             android:drawablePadding="16dp"
             android:elevation="4dp"
             android:gravity="center_vertical"
@@ -93,9 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/icon_write_classname"
                     android:drawablePadding="18dp"
-                    android:drawableRight="@drawable/ic_clear_black_24dp"
                     android:hint="学号"
                     android:inputType="number"
                     android:lines="1"
@@ -120,9 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/ic_password"
                     android:drawablePadding="18dp"
-                    android:drawableRight="@drawable/ic_clear_black_24dp"
                     android:hint="密码(初始密码为123456)"
                     android:imeActionLabel="@string/action_login"
                     android:inputType="textPassword"
@@ -138,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
-                android:src="@drawable/divider_lib"/>
+                />
 
             <Button
                 android:id="@+id/btn_login"

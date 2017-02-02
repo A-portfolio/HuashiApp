@@ -7,9 +7,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.AppConstants;
+import net.muxi.huashiapp.Constants;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.util.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +42,7 @@ public class WeekSelectAdapter extends RecyclerView.Adapter<WeekSelectAdapter.Vi
         setTvNumberBg(position,holder.mTvNumber);
         holder.mTvCurweek.setVisibility(View.GONE);
 
-        holder.mTvWeek.setText(AppConstants.WEEKS[position]);
+        holder.mTvWeek.setText(Constants.WEEKS[position]);
         if ((position + 1) == curWeek) {
             holder.mTvCurweek.setVisibility(View.VISIBLE);
             holder.mTvCurweek.setText("(当前周)");
@@ -88,7 +89,7 @@ public class WeekSelectAdapter extends RecyclerView.Adapter<WeekSelectAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return AppConstants.WEEKS_LENGTH;
+        return Constants.WEEKS_LENGTH;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){

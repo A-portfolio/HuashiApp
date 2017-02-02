@@ -6,11 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.AppConstants;
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.util.DateUtil;
+import net.muxi.huashiapp.Constants;
 
-import java.util.Date;
+import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.util.DateUtil;
+
 import java.util.List;
 
 /**
@@ -38,7 +38,7 @@ public class WeekLayout extends ScheduleTimeLayout {
         List<String> dateList = DateUtil.getTheWeekDate(0);
         for (int i = 0; i < 7; i++) {
             views[i] = LayoutInflater.from(mContext).inflate(R.layout.view_weekday, this, false);
-            ((TextView)views[i].findViewById(R.id.tv_weekday)).setText(AppConstants.WEEKDAYS[i]);
+            ((TextView)views[i].findViewById(R.id.tv_weekday)).setText(Constants.WEEKDAYS[i]);
             ((TextView)views[i].findViewById(R.id.tv_date)).setText(dateList.get(i));
             addView(views[i]);
         }

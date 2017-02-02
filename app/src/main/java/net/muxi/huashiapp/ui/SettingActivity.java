@@ -12,9 +12,9 @@ import android.widget.CompoundButton;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.util.PreferenceUtil;
-import net.muxi.huashiapp.common.util.ToastUtil;
-import net.muxi.huashiapp.common.util.ZhugeUtils;
+import net.muxi.huashiapp.util.PreferenceUtil;
+import net.muxi.huashiapp.util.ToastUtil;
+import net.muxi.huashiapp.util.ZhugeUtils;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.main.MainActivity;
 
@@ -127,11 +127,11 @@ public class SettingActivity extends ToolbarActivity {
     }
 
     private void saveAllValue() {
-        sp.saveBoolean(preSchedule, mSwitchCourseRemind.isChecked());
-        sp.saveBoolean(preLibrary, mSwitchLibraryRemind.isChecked());
-        sp.saveBoolean(preCard, mSwitchCardRemind.isChecked());
-        sp.saveBoolean(preScore, mSwitchScoreRemind.isChecked());
-        sp.saveBoolean(preAll, mSwitchAll.isChecked());
+        sp.putBoolean(preSchedule, mSwitchCourseRemind.isChecked());
+        sp.putBoolean(preLibrary, mSwitchLibraryRemind.isChecked());
+        sp.putBoolean(preCard, mSwitchCardRemind.isChecked());
+        sp.putBoolean(preScore, mSwitchScoreRemind.isChecked());
+        sp.putBoolean(preAll, mSwitchAll.isChecked());
     }
 
     private void loadAllValue() {

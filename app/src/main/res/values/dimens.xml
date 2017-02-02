@@ -49,7 +49,7 @@
     <dimen name="course_button_margin">20dp</dimen>
     <dimen name="course_button_select_height">40dp</dimen>
     <dimen name="course_button_height">64dp</dimen>
-    <dimen name="course_rectangle_radius">4dp</dimen>
+    <dimen name="course_rectangle_radius">2dp</dimen>
     <dimen name="course_height">98dp</dimen>
     <dimen name="course_width">50dp</dimen>
     <dimen name="course_select_width">100dp</dimen>

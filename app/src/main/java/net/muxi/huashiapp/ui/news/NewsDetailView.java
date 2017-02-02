@@ -16,8 +16,8 @@ import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.News;
-import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.ToastUtil;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
 
 import java.util.List;

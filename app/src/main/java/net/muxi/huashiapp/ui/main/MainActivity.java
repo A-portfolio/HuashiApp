@@ -12,9 +12,9 @@ import android.widget.FrameLayout;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.common.util.PreferenceUtil;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.schedule.TimetableFragment;
+import net.muxi.huashiapp.util.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +32,7 @@ public class MainActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mNavView.setOnNavigationItemSelectedListener(this);
         initData();
         initView();
     }
@@ -51,6 +52,8 @@ public class MainActivity extends BaseActivity implements
             case R.id.action_main:
                 break;
             case R.id.action_timetable:
+                Logger.d(TextUtils.isEmpty(App.sUser.sid) + "");
+                Logger.d("navigation");
                 if (TextUtils.isEmpty(App.sUser.sid)) {
                     LoginActivity.start(MainActivity.this);
                 } else {

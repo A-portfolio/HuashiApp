@@ -9,8 +9,8 @@ import com.tencent.bugly.crashreport.CrashReport;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import net.muxi.huashiapp.common.data.User;
-import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.util.PreferenceUtil;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.PreferenceUtil;
 
 
 /**
@@ -50,8 +50,8 @@ public class App extends Application {
 //            sp.saveString(PreferenceUtil.LAST_APP_VERSION,BuildConfig.VERSION_NAME);
 //        }
 //        try {
-//            mPatchManager.addPatch(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
-//            Logger.d(AppConstants.CACHE_DIR + "/" + AppConstants.APATCH_NAME);
+//            mPatchManager.addPatch(Constants.CACHE_DIR + "/" + Constants.APATCH_NAME);
+//            Logger.d(Constants.CACHE_DIR + "/" + Constants.APATCH_NAME);
 //        } catch (Exception e) {
 //            Logger.d("andfix not load");
 //            e.printStackTrace();

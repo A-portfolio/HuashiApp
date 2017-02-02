@@ -18,18 +18,19 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.AppConstants;
+import net.muxi.huashiapp.Constants;
+
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.util.Base64Util;
-import net.muxi.huashiapp.common.util.DimensUtil;
-import net.muxi.huashiapp.common.util.NetStatus;
-import net.muxi.huashiapp.common.util.ToastUtil;
-import net.muxi.huashiapp.common.util.ZhugeUtils;
+import net.muxi.huashiapp.util.Base64Util;
+import net.muxi.huashiapp.util.DimensUtil;
+import net.muxi.huashiapp.util.NetStatus;
+import net.muxi.huashiapp.util.ToastUtil;
+import net.muxi.huashiapp.util.ZhugeUtils;
 import net.muxi.huashiapp.ui.login.SimpleTextWatcher;
 import net.muxi.huashiapp.ui.main.MainActivity;
 
@@ -154,7 +155,7 @@ public class LibraryLoginActivity extends ToolbarActivity {
             public boolean onQueryTextSubmit(String queryText) {
                 dao.insertSearchHistory(queryText);
                 Intent intent = new Intent(LibraryLoginActivity.this, LibraryActivity.class);
-                intent.putExtra(AppConstants.LIBRARY_QUERY_TEXT, queryText);
+                intent.putExtra(Constants.LIBRARY_QUERY_TEXT, queryText);
                 mSearchView.closeSearchView();
                 startActivity(intent);
                 return true;

@@ -8,7 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.widget.RelativeLayout;
 
-import net.muxi.huashiapp.common.util.DimensUtil;
+import net.muxi.huashiapp.util.DimensUtil;
 
 /**
  * Created by ybao on 16/9/20.

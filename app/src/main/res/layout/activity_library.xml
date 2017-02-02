@@ -14,7 +14,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="88dp"
         android:scaleType="fitXY"
-        android:src="@drawable/img_empty"
         android:visibility="gone"/>
 
     <TextView

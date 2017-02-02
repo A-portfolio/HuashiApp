@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +13,13 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.AppConstants;
+import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.util.DateUtil;
-import net.muxi.huashiapp.common.util.DimensUtil;
-import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.util.TimeTableUtil;
+import net.muxi.huashiapp.util.DateUtil;
+import net.muxi.huashiapp.util.DimensUtil;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.TimeTableUtil;
 import net.muxi.huashiapp.ui.schedule.ScheduleTimeLayout;
 
 import java.util.ArrayList;
@@ -31,11 +32,12 @@ import java.util.List;
  */
 public class TimeTable extends FrameLayout {
 
-    public static final int WEEK_DAY_WIDTH = DimensUtil.dp2px(60);
-    public static final int COURSE_TIME_HEIGHT = DimensUtil.dp2px(120);
+    public static final int WEEK_DAY_WIDTH = DimensUtil.dp2px(65);
+    public static final int COURSE_TIME_HEIGHT = DimensUtil.dp2px(57);
     public static final int LITTLE_VIEW_WIDTH = DimensUtil.dp2px(49);
     public static final int LITTLE_VIEW_HEIGHT = DimensUtil.dp2px(41);
-    public static final int COURSE_TIME_DIVIDER = DimensUtil.dp2px(2);
+    public static final int COURSE_WIDTH = DimensUtil.dp2px(62);
+    public static final int COURSE_TIME_DIVIDER = DimensUtil.dp2px(1);
     public static final int DIVIDER_WIDTH = DimensUtil.dp2px(1);
 
     private ScheduleTimeLayout mScheduleLayout;
@@ -105,7 +107,7 @@ public class TimeTable extends FrameLayout {
 //        setupScrollView();
 //        setupWeekDayLayout();
 //        setupCourseTimeLayout();
-
+        LayoutInflater.from(mContext).inflate(R.layout.view_timetable,this,true);
         setCornerView();
         setRefreshView();
 
@@ -354,9 +356,9 @@ public class TimeTable extends FrameLayout {
             case MotionEvent.ACTION_MOVE:
                 curX = event.getX();
                 curY = event.getY();
-                mWeekDayLayout.scrollBy((int) (mx - curX), 0, type);
-                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY), type);
-                mCourseLayout.scrollBy(0, (int) (my - curY), type);
+//                mWeekDayLayout.scrollBy((int) (mx - curX), 0, type);
+//                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY), type);
+//                mCourseLayout.scrollBy(0, (int) (my - curY), type);
                 mx = curX;
                 my = curY;
                 break;
@@ -392,7 +394,7 @@ public class TimeTable extends FrameLayout {
     private void setTypeCourses(final List<Course> typeCourses, int courseType) {
         for (int i = 0; i < typeCourses.size(); i++) {
             if (typeCourses.get(i).getCourse() != null && typeCourses.get(i).getCourse().equals(
-                    AppConstants.INIT_COURSE)) {
+                    Constants.INIT_COURSE)) {
                 continue;
             } else {
                 final int curCourse = i;
@@ -422,14 +424,14 @@ public class TimeTable extends FrameLayout {
                         break;
                     case OTHER_WEEK_PRIORITY:
                         courseTv.setBackground(
-                                getResources().getDrawable(R.drawable.bg_class_gary));
+                                getResources().getDrawable(R.drawable.ic_add_black_24dp));
                         courseTv.setText(typeCourses.get(i).getCourse() + "\n@" +
                                 typeCourses.get(i).getPlace() + "\n" +
                                 typeCourses.get(i).getTeacher() + "\n[非本周]");
                         break;
                     case OTHER_WEEK:
                         courseTv.setBackground(
-                                getResources().getDrawable(R.drawable.bg_simple_class_gray));
+                                getResources().getDrawable(R.drawable.ic_add_black_24dp));
                         courseTv.setText(typeCourses.get(i).getCourse() + "\n@" +
                                 typeCourses.get(i).getPlace() + "\n" +
                                 typeCourses.get(i).getTeacher() + "\n[非本周]");
@@ -471,10 +473,9 @@ public class TimeTable extends FrameLayout {
                             case MotionEvent.ACTION_MOVE:
                                 curX = event.getRawX();
                                 curY = event.getRawY();
-                                mWeekDayLayout.scrollBy((int) (mx - curX), 0, type);
-                                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY),
-                                        type);
-                                mCourseLayout.scrollBy(0, (int) (my - curY), type);
+                                mWeekDayLayout.scrollBy((int) (mx - curX), 0);
+                                mScheduleLayout.scrollBy((int) (mx - curX), (int) (my - curY));
+                                mCourseLayout.scrollBy(0, (int) (my - curY));
                                 mx = curX;
                                 my = curY;
                                 break;

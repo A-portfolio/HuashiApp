@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import net.muxi.huashiapp.R;
 
+
 /**
  * Created by ybao on 16/4/18.
  */
@@ -20,7 +21,7 @@ public class LoginEditText extends EditText {
     public LoginEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mDrawable = getResources().getDrawable(R.drawable.ic_clear_purple_18dp);
+        mDrawable = getResources().getDrawable(R.drawable.ic_add_black_24dp);
         mDrawable.setBounds(0,0,mDrawable.getIntrinsicWidth(),mDrawable.getIntrinsicHeight());
 
         addTextChangedListener(new TextWatcher() {

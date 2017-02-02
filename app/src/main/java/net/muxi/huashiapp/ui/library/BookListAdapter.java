@@ -10,7 +10,7 @@ import android.widget.TextView;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Book;
-import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.util.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

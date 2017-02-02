@@ -4,7 +4,6 @@
 >
 
     <item android:title="@string/action_add"
-          android:icon="@drawable/ic_add_white_48dp"
           android:id="@+id/action_add_course"
           app:showAsAction="always"
     />

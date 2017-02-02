@@ -16,8 +16,8 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.BannerData;
-import net.muxi.huashiapp.common.util.FrescoUtil;
-import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.util.FrescoUtil;
+import net.muxi.huashiapp.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,7 +132,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 return new FrescoBannerHolder();
             }
         }, imageUrls)
-                .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
+                .setPageIndicator(new int[]{R.drawable.ic_add_black_24dp, R.drawable.ic_add_black_24dp})
                 .setOnItemClickListener(this);
 
         ((BannerViewHolder) holder).mBanner.startTurning(TURNING_TIME);

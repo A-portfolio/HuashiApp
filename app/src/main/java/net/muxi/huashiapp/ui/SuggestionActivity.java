@@ -16,9 +16,9 @@ import com.muxi.material_dialog.MaterialDialog;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.util.NetStatus;
-import net.muxi.huashiapp.common.util.ToastUtil;
-import net.muxi.huashiapp.common.util.ZhugeUtils;
+import net.muxi.huashiapp.util.NetStatus;
+import net.muxi.huashiapp.util.ToastUtil;
+import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -9,10 +9,10 @@ import android.widget.EditText;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.util.PreferenceUtil;
-import net.muxi.huashiapp.common.util.ToastUtil;
-import net.muxi.huashiapp.common.util.ZhugeUtils;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.PreferenceUtil;
+import net.muxi.huashiapp.util.ToastUtil;
+import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

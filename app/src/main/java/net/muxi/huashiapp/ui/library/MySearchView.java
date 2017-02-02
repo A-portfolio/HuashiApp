@@ -22,8 +22,8 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.util.AnimationUtil;
-import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.util.AnimationUtil;
+import net.muxi.huashiapp.util.Logger;
 
 /**
  * Created by ybao on 16/5/16.
@@ -51,7 +51,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
     private OnSearchViewListener mOnSearchViewListener;
 
 
-    private Drawable suggestionIcon = App.getContext().getResources().getDrawable(R.drawable.ic_history);
+    private Drawable suggestionIcon = App.getContext().getResources().getDrawable(R.drawable.ic_add_black_24dp);
     private boolean isAnimation = true;
 
     public MySearchView(Context context) {

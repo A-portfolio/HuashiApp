@@ -9,7 +9,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.util.Logger;
 
 /**
  * Created by ybao on 16/8/4.

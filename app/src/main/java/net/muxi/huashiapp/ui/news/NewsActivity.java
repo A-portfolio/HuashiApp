@@ -19,9 +19,9 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.util.DimensUtil;
-import net.muxi.huashiapp.common.util.NetStatus;
-import net.muxi.huashiapp.common.util.ToastUtil;
+import net.muxi.huashiapp.util.DimensUtil;
+import net.muxi.huashiapp.util.NetStatus;
+import net.muxi.huashiapp.util.ToastUtil;
 import net.muxi.huashiapp.widget.BaseDetailLayout;
 import net.muxi.huashiapp.widget.ShadowView;
 

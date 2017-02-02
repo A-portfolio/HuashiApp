@@ -8,8 +8,8 @@ import android.widget.RemoteViewsService;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.util.TimeTableUtil;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.TimeTableUtil;
 
 import java.util.List;
 import rx.Observable;
