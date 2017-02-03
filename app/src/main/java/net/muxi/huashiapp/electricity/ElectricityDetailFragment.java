@@ -58,6 +58,7 @@ public class ElectricityDetailFragment extends BaseFragment{
         return view;
     }
 
+
     public void setOnChangeBtnClickListener(OnChangeBtnClickListener listener){
         mOnChangeBtnClickListener = listener;
     }
