@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical">
+
+    <net.muxi.huashiapp.ui.schedule.TableContent
+        android:id="@+id/timetable_content"
+        android:layout_width="455dp"
+        android:layout_height="798dp"
+        android:layout_marginLeft="49dp"
+        android:layout_marginTop="41dp"
+    />
+
+    <net.muxi.huashiapp.ui.schedule.WeekLayout
+        android:id="@+id/week_layout"
+        android:layout_width="455dp"
+        android:layout_height="41dp"
+        android:layout_marginLeft="49dp"
+    />
+
+    <net.muxi.huashiapp.ui.schedule.CourseTimeLayout
+        android:id="@+id/course_time_layout"
+        android:layout_width="49dp"
+        android:layout_height="798dp"
+        android:layout_marginTop="41dp"
+    />
+
+</merge>

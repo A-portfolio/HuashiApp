@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <net.muxi.huashiapp.electricity.NonScrollExpandLv
+            <net.muxi.huashiapp.ui.electricity.NonScrollExpandLv
                 android:id="@+id/lv_expand"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,7 +35,6 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:inputType="number"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:drawableLeft="@drawable/icon_write_classname"
                 android:drawablePadding="32dp"
                 android:hint="请输入房间号如304"/>
 

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolbar_container"
     android:layout_width="match_parent"
-    tools:context=".library.MineActivity"
+    tools:context="net.muxi.huashiapp.ui.library.MineActivity"
     android:layout_height="wrap_content"
     >
 
@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:layout_marginTop="?attr/actionBarSize"
-        android:src="@drawable/im_my_lib_bg"/>
+        />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -31,7 +31,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="88dp"
         android:scaleType="fitXY"
-        android:src="@drawable/img_empty_white"
         android:visibility="gone"/>
 
     <TextView
@@ -59,7 +58,7 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <net.muxi.huashiapp.library.MySearchView
+    <net.muxi.huashiapp.ui.library.MySearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

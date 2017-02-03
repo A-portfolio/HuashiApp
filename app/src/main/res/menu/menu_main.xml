@@ -7,7 +7,6 @@
     <item android:id="@+id/action_news"
           android:orderInCategory="80"
           android:title="@string/action_news"
-          android:icon="@drawable/ic_message"
           app:showAsAction="ifRoom" />
 
     <item

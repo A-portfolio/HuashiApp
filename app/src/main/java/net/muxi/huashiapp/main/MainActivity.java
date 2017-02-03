@@ -25,15 +25,10 @@ import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 
-import net.muxi.huashiapp.AboutActivity;
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.AppConstants;
 import net.muxi.huashiapp.BuildConfig;
-import net.muxi.huashiapp.CalendarActivity;
+import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.SettingActivity;
-import net.muxi.huashiapp.apartment.ApartmentActivity;
-import net.muxi.huashiapp.card.CardActivity;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.News;
@@ -42,26 +37,32 @@ import net.muxi.huashiapp.common.data.ProductData;
 import net.muxi.huashiapp.common.data.VersionData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.common.service.DownloadService;
-import net.muxi.huashiapp.common.util.AlarmUtil;
-import net.muxi.huashiapp.common.util.DownloadUtils;
-import net.muxi.huashiapp.common.util.FrescoUtil;
-import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.util.NetStatus;
-import net.muxi.huashiapp.common.util.PreferenceUtil;
-import net.muxi.huashiapp.common.util.ToastUtil;
-import net.muxi.huashiapp.common.util.ZhugeUtils;
-import net.muxi.huashiapp.common.widget.UpdateView;
-import net.muxi.huashiapp.electricity.ElectricityActivity;
-import net.muxi.huashiapp.electricity.ElectricityDetailActivity;
-import net.muxi.huashiapp.library.LibraryLoginActivity;
-import net.muxi.huashiapp.library.MineActivity;
-import net.muxi.huashiapp.login.LoginActivity;
-import net.muxi.huashiapp.news.NewsActivity;
-import net.muxi.huashiapp.schedule.ScheduleActivity;
-import net.muxi.huashiapp.score.ScoreActivity;
-import net.muxi.huashiapp.studyroom.StudyRoomActivity;
-import net.muxi.huashiapp.webview.WebViewActivity;
+import net.muxi.huashiapp.service.DownloadService;
+import net.muxi.huashiapp.ui.AboutActivity;
+import net.muxi.huashiapp.ui.CalendarActivity;
+import net.muxi.huashiapp.ui.SettingActivity;
+import net.muxi.huashiapp.ui.apartment.ApartmentActivity;
+import net.muxi.huashiapp.ui.card.CardActivity;
+import net.muxi.huashiapp.ui.electricity.ElectricityActivity;
+import net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity;
+import net.muxi.huashiapp.ui.library.LibraryLoginActivity;
+import net.muxi.huashiapp.ui.library.MineActivity;
+import net.muxi.huashiapp.ui.login.LoginActivity;
+import net.muxi.huashiapp.ui.main.MainAdapter;
+import net.muxi.huashiapp.ui.news.NewsActivity;
+import net.muxi.huashiapp.ui.schedule.CourseEditActivity;
+import net.muxi.huashiapp.ui.score.ScoreActivity;
+import net.muxi.huashiapp.ui.website.WebsiteActivity;
+import net.muxi.huashiapp.ui.webview.WebViewActivity;
+import net.muxi.huashiapp.util.AlarmUtil;
+import net.muxi.huashiapp.util.DownloadUtils;
+import net.muxi.huashiapp.util.FrescoUtil;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.NetStatus;
+import net.muxi.huashiapp.util.PreferenceUtil;
+import net.muxi.huashiapp.util.ToastUtil;
+import net.muxi.huashiapp.util.ZhugeUtils;
+import net.muxi.huashiapp.widget.UpdateView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -147,7 +148,7 @@ public class MainActivity extends ToolbarActivity {
         getBannerDatas();
         //获取本地的 product 数据
         Gson gson = new Gson();
-        mProductData = gson.fromJson(sp.getString(PreferenceUtil.PRODUCT_DATA, AppConstants.PRODUCT_JSON), ProductData.class);
+        mProductData = gson.fromJson(sp.getString(PreferenceUtil.PRODUCT_DATA, Constants.PRODUCT_JSON), ProductData.class);
         updateProductDisplay(mProductData);
         getProduct();
         checkNews();
@@ -179,7 +180,7 @@ public class MainActivity extends ToolbarActivity {
                             if (!sp.getString(PreferenceUtil.LAST_NOT_REMIND_VERSION,BuildConfig.VERSION_NAME).equals(versionData.getVersion())
                                     || sp.getBoolean(PreferenceUtil.REMIND_UPDATE,true)){
                                 if (!sp.getString(PreferenceUtil.LAST_NOT_REMIND_VERSION,BuildConfig.VERSION_NAME).equals(versionData.getVersion())){
-                                    sp.saveBoolean(PreferenceUtil.REMIND_UPDATE,true);
+//                                    sp.saveBoolean(PreferenceUtil.REMIND_UPDATE,true);
                                 }
                                 Logger.d("init dialog");
                                 sp.saveString(PreferenceUtil.LAST_NOT_REMIND_VERSION,versionData.getVersion());
@@ -203,7 +204,7 @@ public class MainActivity extends ToolbarActivity {
                                 materialDialog.setNegativeButton(App.sContext.getString(R.string.btn_not_now), new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        sp.saveBoolean(PreferenceUtil.REMIND_UPDATE,!updateView.isRemindClose());
+//                                        sp.saveBoolean(PreferenceUtil.REMIND_UPDATE,!updateView.isRemindClose());
                                         materialDialog.dismiss();
                                     }
                                 });
@@ -317,7 +318,7 @@ public class MainActivity extends ToolbarActivity {
 
                                             @Override
                                             public void onNext(ResponseBody responseBody) {
-                                                DownloadUtils.writeResponseBodyToDisk(responseBody, AppConstants.APATCH_NAME);
+                                                DownloadUtils.writeResponseBodyToDisk(responseBody, Constants.APATCH_NAME);
                                             }
                                         });
                             }
@@ -438,7 +439,7 @@ public class MainActivity extends ToolbarActivity {
                     case 0:
                         if (App.sUser.getSid() != "0") {
                             ZhugeUtils.sendEvent("课表查询", "课表查询");
-                            intent = new Intent(MainActivity.this, ScheduleActivity.class);
+                            intent = new Intent(MainActivity.this, CourseEditActivity.class);
                             startActivity(intent);
                             break;
                         } else {
@@ -510,7 +511,7 @@ public class MainActivity extends ToolbarActivity {
 //                        break;
                     case 8:
 //                        ZhugeUtils.sendEvent("查询常用网站","查询常用网站");
-                        intent = new Intent(MainActivity.this, StudyRoomActivity.class);
+                        intent = new Intent(MainActivity.this, WebsiteActivity.class);
                         startActivity(intent);
                         break;
                 }

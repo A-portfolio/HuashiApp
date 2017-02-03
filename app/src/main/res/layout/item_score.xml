@@ -92,7 +92,7 @@
             android:layout_below="@+id/normal_layout"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="4dp"
-            android:src="@drawable/arrow_drop_down"/>
+            />
 
         <ImageView
             android:id="@+id/img_close"
@@ -101,7 +101,6 @@
             android:layout_below="@+id/normal_layout"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="24dp"
-            android:src="@drawable/arrow_drop_up"
             android:visibility="gone"/>
 
         <TextView

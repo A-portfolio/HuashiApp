@@ -14,7 +14,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="88dp"
         android:scaleType="fitXY"
-        android:src="@drawable/img_empty"
         android:visibility="gone"/>
 
     <TextView
@@ -56,7 +55,7 @@
 
     </FrameLayout>
 
-    <net.muxi.huashiapp.library.MySearchView
+    <net.muxi.huashiapp.ui.library.MySearchView
         android:id="@+id/searchview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

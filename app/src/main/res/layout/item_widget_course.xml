@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress XmlUnusedNamespaceDeclaration, XmlUnusedNamespaceDeclaration, XmlUnusedNamespaceDeclaration -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="90dp"
-    android:background="@drawable/bg_item_appwidget"
     android:orientation="vertical"
     android:padding="20dp">
 
@@ -71,7 +71,6 @@
         android:layout_marginRight="4dp"
         android:layout_toLeftOf="@+id/tv_end"
         android:layout_toRightOf="@+id/tv_start"
-        android:src="@drawable/line_course"
     />
 
 </RelativeLayout>
