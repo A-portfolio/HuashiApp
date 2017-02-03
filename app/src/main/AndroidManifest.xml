@@ -118,6 +118,10 @@
 
         <activity android:name=".InfoActivity"/>
 
+        <activity android:name=".studyroom.StudyRoomActivity"/>
+
+        <activity android:name=".studyroom.RoomDetailActivity"/>
+
         <activity android:name=".wxapi.WXEntryActivity"
                   android:exported="true"
                   android:launchMode="singleInstance"/>

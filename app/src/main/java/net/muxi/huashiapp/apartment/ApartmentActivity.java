@@ -16,7 +16,6 @@ import net.muxi.huashiapp.common.data.ApartmentData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.common.util.ToastUtil;
-import net.muxi.huashiapp.common.widget.DividerItemDecoration;
 
 import java.util.List;
 
@@ -102,7 +101,6 @@ public class ApartmentActivity extends ToolbarActivity {
         ApartmentAdapter adapter = new ApartmentAdapter(apartmentDataList);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
 
     }
 }

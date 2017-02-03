@@ -25,7 +25,6 @@ import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 
-import java.io.File;
 import net.muxi.huashiapp.AboutActivity;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.AppConstants;
@@ -61,9 +60,10 @@ import net.muxi.huashiapp.login.LoginActivity;
 import net.muxi.huashiapp.news.NewsActivity;
 import net.muxi.huashiapp.schedule.ScheduleActivity;
 import net.muxi.huashiapp.score.ScoreActivity;
-import net.muxi.huashiapp.website.WebsiteActivity;
+import net.muxi.huashiapp.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.webview.WebViewActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -73,7 +73,6 @@ import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends ToolbarActivity {
@@ -86,7 +85,7 @@ public class MainActivity extends ToolbarActivity {
     private String[] pics = {R.drawable.ic_main_curschedule + "", R.drawable.ic_main_idcard + "",
             R.drawable.ic_main_mark + "", R.drawable.ic_main_power_rate + "",
             R.drawable.ic_main_school_calendar + "", R.drawable.ic_main_workschedule + "",
-            R.drawable.ic_main_library + "",R.drawable.ic_main_website+ ""};
+            R.drawable.ic_main_library + "",R.drawable.ic_main_website + ""};
     private String[] desc = {"课程表", "学生卡", "成绩查询", "电费查询", "校历查询", "部门信息", "图书馆","常用网站"};
 
     private List<String> mpic;
@@ -510,8 +509,8 @@ public class MainActivity extends ToolbarActivity {
 //                        startActivity(intent);
 //                        break;
                     case 8:
-                        ZhugeUtils.sendEvent("查询常用网站","查询常用网站");
-                        intent = new Intent(MainActivity.this, WebsiteActivity.class);
+//                        ZhugeUtils.sendEvent("查询常用网站","查询常用网站");
+                        intent = new Intent(MainActivity.this, StudyRoomActivity.class);
                         startActivity(intent);
                         break;
                 }
