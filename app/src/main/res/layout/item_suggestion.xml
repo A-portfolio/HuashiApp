@@ -14,7 +14,7 @@
         android:focusable="false"
         android:paddingLeft="@dimen/library_item_icon_padding"
         android:paddingRight="@dimen/library_item_icon_padding"
-        android:src="@drawable/ic_history"/>
+        />
 
     <TextView
         android:id="@+id/suggestion_text"

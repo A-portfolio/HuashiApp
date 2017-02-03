@@ -4,20 +4,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="bottom"
     android:layout_height="match_parent"
-    tools:context=".main.MainActivity">
+    tools:context="net.muxi.huashiapp.ui.main.MainActivity">
 
 
-    <include android:id="@+id/view_toolbar"
-             layout="@layout/view_toolbar"/>
-
-    <android.support.v7.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/recycler_view"
+    <android.support.design.widget.BottomNavigationView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:layout_below="@+id/view_toolbar"/>
+        app:menu="@menu/main_navigation"
+        android:id="@+id/nav_view"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        app:itemTextColor="@color/colorBlack"
+        android:layout_height="56dp"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:id="@+id/content_layout"
+        android:layout_marginBottom="56dp"
+        android:layout_height="match_parent"></FrameLayout>
 
 
 </RelativeLayout>

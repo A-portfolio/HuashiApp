@@ -1,6 +1,5 @@
 package net.muxi.huashiapp.provider;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -8,13 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import net.muxi.huashiapp.AppConstants;
+import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.service.WidgetService;
-import net.muxi.huashiapp.common.util.DateUtil;
-import net.muxi.huashiapp.common.util.Logger;
-import net.muxi.huashiapp.common.util.TimeTableUtil;
-import net.muxi.huashiapp.schedule.ScheduleActivity;
+import net.muxi.huashiapp.service.WidgetService;
+import net.muxi.huashiapp.util.DateUtil;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.TimeTableUtil;
 
 import java.util.Date;
 
@@ -38,8 +36,8 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
 
             if (appWidgetIds.length > 0) {
                 rv = new RemoteViews(context.getPackageName(), R.layout.widget_schedule);
-                rv.setTextViewText(R.id.tv_week, AppConstants.WEEKS[TimeTableUtil.getCurWeek() - 1]);
-                rv.setTextViewText(R.id.tv_weekday, AppConstants.WEEKDAYS[DateUtil.getDayInWeek(new Date()) - 1]);
+                rv.setTextViewText(R.id.tv_week, Constants.WEEKS[TimeTableUtil.getCurWeek() - 1]);
+                rv.setTextViewText(R.id.tv_weekday, Constants.WEEKDAYS[DateUtil.getDayInWeek(new Date()) - 1]);
                 widgetManager.updateAppWidget(appWidgetIds, rv);
                 widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv);
             }
@@ -66,15 +64,15 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
 //            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
         rv = new RemoteViews(context.getPackageName(), R.layout.widget_schedule);
 
-        Intent activityIntent = new Intent(context, ScheduleActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
-        rv.setRemoteAdapter(appWidgetId, R.id.lv, intent);
-        rv.setTextViewText(R.id.tv_week, AppConstants.WEEKS[TimeTableUtil.getCurWeek() - 1]);
-        rv.setTextViewText(R.id.tv_weekday, AppConstants.WEEKDAYS[DateUtil.getDayInWeek(new Date()) - 1]);
-        rv.setOnClickPendingIntent(R.id.widget_layout, pendingIntent);
-        appWidgetManager.updateAppWidget(appWidgetId, rv);
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.lv);
-        Logger.d("appwidget update");
+//        Intent activityIntent = new Intent(context, ScheduleActivity.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
+//        rv.setRemoteAdapter(appWidgetId, R.id.lv, intent);
+//        rv.setTextViewText(R.id.tv_week, Constants.WEEKS[TimeTableUtil.getCurWeek() - 1]);
+//        rv.setTextViewText(R.id.tv_weekday, Constants.WEEKDAYS[DateUtil.getDayInWeek(new Date()) - 1]);
+//        rv.setOnClickPendingIntent(R.id.widget_layout, pendingIntent);
+//        appWidgetManager.updateAppWidget(appWidgetId, rv);
+//        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.lv);
+//        Logger.d("appwidget update");
     }
 
 

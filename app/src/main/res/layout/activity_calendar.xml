@@ -30,7 +30,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/empty_img_marginTop"
         android:scaleType="fitXY"
-        android:src="@drawable/img_empty"
         android:visibility="gone"/>
 
     <TextView

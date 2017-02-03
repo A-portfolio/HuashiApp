@@ -5,8 +5,8 @@ package net.muxi.huashiapp.common.data;
  */
 public class User {
 
-    private String sid;
-    private String password;
+    public String sid;
+    public String password;
 
     public String getSid() {
         return sid;

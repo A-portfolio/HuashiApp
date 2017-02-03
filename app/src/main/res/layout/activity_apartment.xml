@@ -30,7 +30,6 @@
         android:layout_below="@id/view_toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/empty_img_marginTop"
-        android:background="@drawable/img_empty"
         android:visibility="gone"/>
 
     <TextView

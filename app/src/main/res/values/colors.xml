@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#7B79FF</color>
-    <color name="colorPrimaryDark">#512DA8</color>
-    <color name="colorAccent">@color/colorPrimary</color>
+
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorAccent">#7b79ff</color>
+
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="textColor">#333333</color>
     <color name="textColorGrey">#7F000000</color>
+
+    <color name="divider">#f5f5f5</color>
+    
+    <!--<color name="green">#3ad49b</color>-->
+    <color name="orange">#ff9135</color>
+    <color name="blue">#52b6ff</color>
+    <color name="yellow">#ffce00</color>
+    <color name="green">#6ace81</color>
+    <color name="red">#fa3f40</color>
+    
+    <color name="grey_bottom_line">#c6d2de</color>
+
+    <color name="bg_multi_week">#3AD49B</color>
+    
+    
+    
+    
+    
 
     <!--闪屏-->
     <color name="entrance_color_start">#CC673AB7</color>

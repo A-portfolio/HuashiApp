@@ -34,14 +34,14 @@
     <uses-permission android:name="android.permission.BATTERY_STATS"/>
 
     <application
-        android:name=".App"
+        android:name="net.muxi.huashiapp.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".EnteranceActivity"
+            android:name="net.muxi.huashiapp.ui.EnteranceActivity"
             android:theme="@style/AppWelcomTheme"
 
             android:windowSoftInputMode="adjustResize">
@@ -52,93 +52,93 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".main.MainActivity"
+        <activity android:name="net.muxi.huashiapp.ui.main.MainActivity"
                   android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize"/>
 
-        <activity android:name=".login.LoginActivity"
+        <activity android:name="net.muxi.huashiapp.ui.login.LoginActivity"
                   android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize"/>
 
-        <activity android:name=".SettingActivity"
-                  android:launchMode="singleTask"/>
-
-        <activity android:name=".schedule.ScheduleActivity"
-                  android:launchMode="singleTask"/>
-
-        <activity android:name=".schedule.AddCourseActivity"
+        <activity android:name="net.muxi.huashiapp.ui.SettingActivity"
                   android:launchMode="singleTask"/>
 
 
-        <activity android:name=".score.ScoreActivity"
+        <activity android:name="net.muxi.huashiapp.ui.schedule.CourseEditActivity"
                   android:launchMode="singleTask"/>
 
 
-        <activity android:name=".news.NewsActivity"
+        <activity android:name="net.muxi.huashiapp.ui.score.ScoreActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".library.LibraryActivity"
+
+        <activity android:name="net.muxi.huashiapp.ui.news.NewsActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".library.LibrarySearchActivity"
+        <activity android:name="net.muxi.huashiapp.ui.library.LibraryActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".library.LibraryLoginActivity"
+        <activity android:name="net.muxi.huashiapp.ui.library.LibrarySearchActivity"
+                  android:launchMode="singleTask"/>
+
+        <activity android:name="net.muxi.huashiapp.ui.library.LibraryLoginActivity"
                   android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize"/>
 
-        <activity android:name=".library.MineActivity"
+        <activity android:name="net.muxi.huashiapp.ui.library.MineActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".card.CardActivity"
+        <activity android:name="net.muxi.huashiapp.ui.card.CardActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".webview.WebViewActivity"
+        <activity android:name="net.muxi.huashiapp.ui.webview.WebViewActivity"
                   android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".website.WebsiteActivity"
+        <activity android:name="net.muxi.huashiapp.ui.website.WebsiteActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".apartment.ApartmentActivity"
+        <activity android:name="net.muxi.huashiapp.ui.apartment.ApartmentActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name=".CalendarActivity"/>
+        <activity android:name="net.muxi.huashiapp.ui.CalendarActivity"/>
 
-        <activity android:name=".AboutActivity"/>
+        <activity android:name="net.muxi.huashiapp.ui.AboutActivity"/>
 
-        <activity android:name=".SuggestionActivity"/>
+        <activity android:name="net.muxi.huashiapp.ui.SuggestionActivity"/>
 
-        <activity android:name=".electricity.ElectricityActivity"/>
+        <activity android:name="net.muxi.huashiapp.ui.electricity.ElectricityActivity"/>
 
-        <activity android:name=".electricity.ElectricityDetailActivity"/>
+        <activity android:name="net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity"/>
 
-        <activity android:name=".InfoActivity"/>
+        <activity android:name="net.muxi.huashiapp.ui.InfoActivity"/>
 
-        <activity android:name=".studyroom.StudyRoomActivity"/>
+        <activity android:name=".ui.studyroom.StudyRoomActivity"/>
 
-        <activity android:name=".studyroom.RoomDetailActivity"/>
+        <activity android:name=".ui.studyroom.RoomDetailActivity"/>
 
-        <activity android:name=".wxapi.WXEntryActivity"
+
+        <activity android:name="net.muxi.huashiapp.ui.wxapi.WXEntryActivity"
+
                   android:exported="true"
                   android:launchMode="singleInstance"/>
 
-        <receiver android:name=".common.service.AlarmLiveReceiver">
+        <receiver android:name="net.muxi.huashiapp.service.AlarmLiveReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT"/>
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".common.service.AlarmReceiver">
+        <receiver android:name="net.muxi.huashiapp.service.AlarmReceiver">
             <intent-filter>
                 <action android:name="net.muxi.huashiapp.alarm"/>
             </intent-filter>
         </receiver>
 
-        <service android:name=".common.service.DownloadService"/>
+        <service android:name="net.muxi.huashiapp.service.DownloadService"/>
 
         <!--第三方开放平台-->
 
@@ -182,7 +182,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="net.muxi.huashiapp.provider"
+            android:authorities="provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -190,7 +190,7 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
 
-        <receiver android:name=".provider.ScheduleWidgetProvider">
+        <receiver android:name="net.muxi.huashiapp.provider.ScheduleWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
                 <action android:name="android.intent.action.TIME_SET"/>
@@ -220,7 +220,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".common.service.WidgetService"
+        <service android:name="net.muxi.huashiapp.service.WidgetService"
                  android:exported="false"
                  android:permission="android.permission.BIND_REMOTEVIEWS">
         </service>

@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.common.util.Logger;
+import net.muxi.huashiapp.util.Logger;
 
 /**
  * Created by ybao on 16/5/12.
