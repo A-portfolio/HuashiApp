@@ -74,7 +74,10 @@ public class TimetableFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_timetable, container, false);
         ButterKnife.bind(this, view);
         mWeekSelectedView.setOnWeekSelectedListener(week -> {
-            renderCourseView();
+//            renderCourseView();
+        });
+        mIvMenu.setOnClickListener(v -> {
+
         });
         return view;
     }
@@ -132,6 +135,7 @@ public class TimetableFragment extends BaseFragment {
      */
     private boolean isDiff(List<Course> courseList) {
 
+        return false;
     }
 
     @Override

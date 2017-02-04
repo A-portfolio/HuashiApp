@@ -40,6 +40,7 @@ public class MainActivity extends BaseActivity implements
     private void initView() {
         getSupportFragmentManager().beginTransaction().add(MainFragment.newInstance(),
                 "main").commit();
+        BottomNavigationHelper.disableShiftMode(mNavView);
     }
 
     private void initData() {
@@ -49,8 +50,8 @@ public class MainActivity extends BaseActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_main:
-                break;
+//            case R.id.action_main:
+//                break;
             case R.id.action_timetable:
                 Logger.d(TextUtils.isEmpty(App.sUser.sid) + "");
                 Logger.d("navigation");
@@ -60,10 +61,10 @@ public class MainActivity extends BaseActivity implements
                     showFragment(TimetableFragment.newInstance());
                 }
                 break;
-            case R.id.action_library:
-                break;
-            case R.id.action_more:
-                break;
+//            case R.id.action_library:
+//                break;
+//            case R.id.action_more:
+//                break;
         }
         return true;
     }

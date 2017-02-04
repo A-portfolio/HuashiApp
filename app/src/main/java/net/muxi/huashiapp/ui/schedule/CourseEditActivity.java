@@ -44,7 +44,7 @@ import rx.schedulers.Schedulers;
  * Created by ybao on 16/5/1.
  */
 public class CourseEditActivity extends ToolbarActivity
-        implements View.OnClickListener, CourseTimeDialog.NoticeDialogListener {
+        {
 
 
     @BindView(R.id.toolbar)
@@ -109,9 +109,6 @@ public class CourseEditActivity extends ToolbarActivity
         addData();
         dao = new HuaShiDao();
         sp = new PreferenceUtil();
-        mBtnEnter.setOnClickListener(this);
-        mBtnCourseWeek.setOnClickListener(this);
-        mBtnCourseTime.setOnClickListener(this);
     }
 
     private void addData() {
@@ -132,82 +129,82 @@ public class CourseEditActivity extends ToolbarActivity
         }
         return s;
     }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_enter:
-                Logger.d("btn_enter has clicked");
-                if (!isEmpty()) {
-                    final Course course = setCourse();
-                    final int id = sp.getInt(PreferenceUtil.COURSE_ID, 1);
-                    Logger.d(id + "");
-                    course.setId(id + "");
-
-                    if (isConflict(course)) {
-                        final MaterialDialog dialog = new MaterialDialog(CourseEditActivity.this);
-                        dialog.setTitle(getResources().getString(R.string.course_conflict_title))
-                                .setButtonColor(getResources().getColor(R.color.colorPrimary))
-                                .setPositiveButton("添加", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        dialog.dismiss();
-                                        addCourse(course, id);
-                                    }
-                                })
-                                .setNegativeButton(getResources().getString(R.string.btn_negative),
-                                        new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                        dialog.setCanceledOnTouchOutside(true);
-                        dialog.show();
-                    } else {
-                        addCourse(course, id);
-                    }
-
-                } else {
-                    ToastUtil.showLong(App.getContext().getString(R.string.tip_complete_course));
-                }
-                break;
-
-            case R.id.btn_course_week:
-                WeeksDialog weeksDialog = new WeeksDialog(this,
-                        mBtnCourseWeek.getText().toString(),
-                        new WeeksDialog.OnDialogClickListener() {
-                            @Override
-                            public void onDialogClick(List<Integer> list) {
-                                mBtnCourseWeek.setText(transList(list));
-                                mWeeks.clear();
-                                mWeeks.addAll(list);
-                            }
-                        });
-                weeksDialog.show();
-                break;
-
-            case R.id.btn_course_time:
-                String str = mBtnCourseTime.getText().toString();
-                int weekday = 0;
-                int startTime = 0;
-                int endTime = 0;
-                if (str.equals("添加上课时间")) {
-                } else if (!str.contains("-")) {
-                    weekday = getWeekdayValue(str);
-                    startTime = getOneTime(str) - 1;
-                    endTime = startTime;
-                } else if (str != "添加上课时间") {
-                    weekday = getWeekdayValue(str);
-                    startTime = getStartTime(str) - 1;
-                    endTime = getEndTime(str) - 1;
-                }
-                final CourseTimeDialog courseTimeDialog = new CourseTimeDialog(this, weekday,
-                        startTime, endTime);
-                courseTimeDialog.setNoticeDialogListener(this);
-                courseTimeDialog.show();
-        }
-    }
+//
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.btn_enter:
+//                Logger.d("btn_enter has clicked");
+//                if (!isEmpty()) {
+//                    final Course course = setCourse();
+//                    final int id = sp.getInt(PreferenceUtil.COURSE_ID, 1);
+//                    Logger.d(id + "");
+//                    course.setId(id + "");
+//
+//                    if (isConflict(course)) {
+//                        final MaterialDialog dialog = new MaterialDialog(CourseEditActivity.this);
+//                        dialog.setTitle(getResources().getString(R.string.course_conflict_title))
+//                                .setButtonColor(getResources().getColor(R.color.colorPrimary))
+//                                .setPositiveButton("添加", new View.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(View v) {
+//                                        dialog.dismiss();
+//                                        addCourse(course, id);
+//                                    }
+//                                })
+//                                .setNegativeButton(getResources().getString(R.string.btn_negative),
+//                                        new View.OnClickListener() {
+//                                            @Override
+//                                            public void onClick(View v) {
+//                                                dialog.dismiss();
+//                                            }
+//                                        });
+//                        dialog.setCanceledOnTouchOutside(true);
+//                        dialog.show();
+//                    } else {
+//                        addCourse(course, id);
+//                    }
+//
+//                } else {
+//                    ToastUtil.showLong(App.getContext().getString(R.string.tip_complete_course));
+//                }
+//                break;
+//
+//            case R.id.btn_course_week:
+//                WeeksDialog weeksDialog = new WeeksDialog(this,
+//                        mBtnCourseWeek.getText().toString(),
+//                        new WeeksDialog.OnDialogClickListener() {
+//                            @Override
+//                            public void onDialogClick(List<Integer> list) {
+//                                mBtnCourseWeek.setText(transList(list));
+//                                mWeeks.clear();
+//                                mWeeks.addAll(list);
+//                            }
+//                        });
+//                weeksDialog.show();
+//                break;
+//
+//            case R.id.btn_course_time:
+//                String str = mBtnCourseTime.getText().toString();
+//                int weekday = 0;
+//                int startTime = 0;
+//                int endTime = 0;
+//                if (str.equals("添加上课时间")) {
+//                } else if (!str.contains("-")) {
+//                    weekday = getWeekdayValue(str);
+//                    startTime = getOneTime(str) - 1;
+//                    endTime = startTime;
+//                } else if (str != "添加上课时间") {
+//                    weekday = getWeekdayValue(str);
+//                    startTime = getStartTime(str) - 1;
+//                    endTime = getEndTime(str) - 1;
+//                }
+//                final CourseTimeDialog courseTimeDialog = new CourseTimeDialog(this, weekday,
+//                        startTime, endTime);
+//                courseTimeDialog.setNoticeDialogListener(this);
+//                courseTimeDialog.show();
+//        }
+//    }
 
     public void addCourse(final Course course, final int id) {
         if (NetStatus.isConnected() == true) {
@@ -288,76 +285,76 @@ public class CourseEditActivity extends ToolbarActivity
     }
 
     //插入的课程赋值
-    private Course setCourse() {
-        Course course = new Course();
-        course.setCourse(mEditCourseName.getText().toString());
-        course.setTeacher(mEditTeacherName.getText().toString());
-        course.setWeeks(transToSimpleStr(mWeeks));
-        course.setDay(days[mDay - 1]);
-        course.setStart(courseTime);
-        course.setDuring(duration);
-        course.setPlace(mEditCoursePlace.getText().toString());
-        course.setRemind(String.valueOf(mSwitchRemind.isChecked()));
-        return course;
-    }
+//    private Course setCourse() {
+//        Course course = new Course();
+//        course.setCourse(mEditCourseName.getText().toString());
+//        course.setTeacher(mEditTeacherName.getText().toString());
+//        course.setWeeks(transToSimpleStr(mWeeks));
+//        course.setDay(days[mDay - 1]);
+//        course.setStart(courseTime);
+//        course.setDuring(duration);
+//        course.setPlace(mEditCoursePlace.getText().toString());
+//        course.setRemind(String.valueOf(mSwitchRemind.isChecked()));
+//        return course;
+//    }
+//
+//    //判断是否有未填充的数据
+//    private boolean isEmpty() {
+//        if (mEditCourseName.getText().toString().equals("") ||
+//                mEditTeacherName.getText().toString().equals("") ||
+//                mBtnCourseWeek.getText().toString().equals("选择上课周") ||
+//                mBtnCourseTime.getText().toString().equals("添加上课时间") ||
+//                mEditCoursePlace.getText().toString().equals("")) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
-    //判断是否有未填充的数据
-    private boolean isEmpty() {
-        if (mEditCourseName.getText().toString().equals("") ||
-                mEditTeacherName.getText().toString().equals("") ||
-                mBtnCourseWeek.getText().toString().equals("选择上课周") ||
-                mBtnCourseTime.getText().toString().equals("添加上课时间") ||
-                mEditCoursePlace.getText().toString().equals("")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    @Override
-    public void onDialogPositiveClick(String weekday, int startTime, int endTime) {
-        switch (weekday) {
-            case "星期一":
-                mDay = 1;
-                break;
-            case "星期二":
-                mDay = 2;
-                break;
-            case "星期三":
-                mDay = 3;
-                break;
-            case "星期四":
-                mDay = 4;
-                break;
-            case "星期五":
-                mDay = 5;
-                break;
-            case "星期六":
-                mDay = 6;
-                break;
-            case "星期日":
-                mDay = 7;
-                break;
-            default:
-                mDay = 7;
-                break;
-        }
-        courseTime = startTime + 1;
-        duration = endTime - startTime + 1;
-        String s = weekday;
-        if (startTime == endTime) {
-            s += " 第" + (startTime + 1) + "节";
-        } else {
-            s += "第" + (startTime + 1) + "-" + (endTime + 1) + "节";
-        }
-
-        mBtnCourseTime.setText(s);
-    }
-
-    @Override
-    public void onDialogNegativeClick() {
-    }
+//
+//    @Override
+//    public void onDialogPositiveClick(String weekday, int startTime, int endTime) {
+//        switch (weekday) {
+//            case "星期一":
+//                mDay = 1;
+//                break;
+//            case "星期二":
+//                mDay = 2;
+//                break;
+//            case "星期三":
+//                mDay = 3;
+//                break;
+//            case "星期四":
+//                mDay = 4;
+//                break;
+//            case "星期五":
+//                mDay = 5;
+//                break;
+//            case "星期六":
+//                mDay = 6;
+//                break;
+//            case "星期日":
+//                mDay = 7;
+//                break;
+//            default:
+//                mDay = 7;
+//                break;
+//        }
+//        courseTime = startTime + 1;
+//        duration = endTime - startTime + 1;
+//        String s = weekday;
+//        if (startTime == endTime) {
+//            s += " 第" + (startTime + 1) + "节";
+//        } else {
+//            s += "第" + (startTime + 1) + "-" + (endTime + 1) + "节";
+//        }
+//
+////        mBtnCourseTime.setText(s);
+//    }
+//
+//    @Override
+//    public void onDialogNegativeClick() {
+//    }
 
 
     //获取星期的 value
@@ -487,19 +484,19 @@ public class CourseEditActivity extends ToolbarActivity
     }
 
 
-    @OnClick({R.id.tv_week, R.id.et_week, R.id.tv_time, R.id.et_time, R.id.btn_ensure})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_week:
-                break;
-            case R.id.et_week:
-                break;
-            case R.id.tv_time:
-                break;
-            case R.id.et_time:
-                break;
-            case R.id.btn_ensure:
-                break;
-        }
-    }
+//    @OnClick({R.id.tv_week, R.id.et_week, R.id.tv_time, R.id.et_time, R.id.btn_ensure})
+//    public void onClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.tv_week:
+//                break;
+//            case R.id.et_week:
+//                break;
+//            case R.id.tv_time:
+//                break;
+//            case R.id.et_time:
+//                break;
+//            case R.id.btn_ensure:
+//                break;
+//        }
+//    }
 }
