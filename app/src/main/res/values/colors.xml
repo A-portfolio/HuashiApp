@@ -9,7 +9,6 @@
 
     <color name="divider">#f5f5f5</color>
     
-    <!--<color name="green">#3ad49b</color>-->
     <color name="orange">#ff9135</color>
     <color name="blue">#52b6ff</color>
     <color name="yellow">#ffce00</color>
@@ -20,11 +19,9 @@
 
     <color name="bg_multi_week">#3AD49B</color>
     
+    <color name="bottom_nav_enable">#333333</color>
+    <color name="bottom_nav_disable">#33333333</color>
     
-    
-    
-    
-
     <!--闪屏-->
     <color name="entrance_color_start">#CC673AB7</color>
     <color name="entrance_color_end">#673AB7</color>
@@ -37,6 +34,7 @@
     <color name="colorCheckBox">#6934B6</color>
 
     <!--课程表-->
+    <color name="colorBottomDialogText">#B2B2B2</color>
     <color name="course_time_layout_bg">#96F7F3FF</color>
     <color name="course_week_layout_bg">#96F7F2FF</color>
     <color name="colorUnchecked">#010101</color>

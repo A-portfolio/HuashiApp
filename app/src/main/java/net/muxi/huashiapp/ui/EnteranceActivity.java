@@ -36,7 +36,7 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
     private String mSplashUrl;
     private String mSplashImg;
 
-    private static final int SPLASH_TIME = 2000;
+    private static final int SPLASH_TIME = 200;
 
     private PreferenceUtil sp;
 

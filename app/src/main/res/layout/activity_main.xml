@@ -4,26 +4,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:gravity="bottom"
     android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:orientation="vertical"
     tools:context="net.muxi.huashiapp.ui.main.MainActivity">
 
 
     <android.support.design.widget.BottomNavigationView
-        android:layout_width="match_parent"
-        app:menu="@menu/main_navigation"
         android:id="@+id/nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:background="#ffffff"
-        app:itemTextColor="@color/colorBlack"
-        android:layout_height="56dp"/>
+        android:elevation="2dp"
+        app:itemIconTint="@drawable/selector_bottom_nav"
+        app:itemTextColor="@drawable/selector_bottom_nav"
+        app:menu="@menu/main_navigation"/>
 
     <FrameLayout
-        android:layout_width="match_parent"
         android:id="@+id/content_layout"
-        android:layout_marginBottom="56dp"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="56dp"/>
 
 
 </RelativeLayout>
