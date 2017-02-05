@@ -7,47 +7,24 @@
     android:background="@drawable/bg_card">
 
     <TextView
-    android:gravity="center"
-    android:id="@+id/tv_single_week"
-    android:layout_centerHorizontal="true"
-    android:layout_height="24dp"
-    android:textColor="@color/colorBottomDialogText"
-    android:layout_width="48dp"
-    android:text="单周"/>
-
-    <TextView
-    android:gravity="center"
-    android:id="@+id/tv_double_week"
-    android:layout_height="24dp"
-    android:layout_marginLeft="40dp"
-    android:textColor="@color/colorBottomDialogText"
-    android:layout_toRightOf="@+id/tv_single_week"
-    android:layout_width="48dp"
-    android:text="双周"/>
-
-    <TextView
-    android:gravity="center"
-    android:id="@+id/tv_all_week"
-    android:layout_height="24dp"
-    android:layout_marginRight="40dp"
-    android:textColor="@color/colorBottomDialogText"
-    android:layout_toLeftOf="@+id/tv_single_week"
-    android:layout_width="48dp"
-    android:text="全选"/>
-
-    <GridLayout
-        android:id="@+id/grid_layout"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_all_week"
-        android:layout_centerHorizontal="true"
-        android:columnCount="7"
-        android:rowCount="3"/>
+        android:text="周一第一至第二节"
+        android:layout_centerHorizontal="true"/>
+
+    <net.muxi.huashiapp.ui.schedule.CourseTimePickerView
+        android:id="@+id/course_time_picker_view"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/grid_layout">
+        android:layout_below="@+id/course_time_picker_view">
 
         <Button
             android:id="@+id/btn_cancel"

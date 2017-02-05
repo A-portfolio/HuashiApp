@@ -144,6 +144,13 @@ public class TimeTableUtil {
         return curWeek;
     }
 
+    public static void saveCurWeek(int week){
+        Date date = new Date(System.currentTimeMillis());
+        int day = DateUtil.getDayInWeek(date);
+        int distance = 1 - day - (week - 1) * 7;
+        PreferenceUtil.saveString(PreferenceUtil.FIRST_WEEK_DATE,DateUtil.getTheDateInYear(date,distance));
+    }
+
     /**
      * 获取选择的周期的周次
      * @param date 一周的第一天日期

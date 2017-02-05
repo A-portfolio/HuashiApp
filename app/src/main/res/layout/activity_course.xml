@@ -43,7 +43,7 @@
 
     <TextView
         android:id="@+id/tv_week"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider1"
         android:layout_marginLeft="16dp"
@@ -85,7 +85,7 @@
 
     <TextView
         android:id="@+id/tv_time"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider2"
         android:layout_marginLeft="16dp"
@@ -162,7 +162,6 @@
         android:layout_marginRight="16dp"
         android:layout_toRightOf="@+id/iv_week_select"
         android:background="@null"
-        android:layout_marginTop="6dp"
         android:hint="输入教师"
         android:lines="1"
     />

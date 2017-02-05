@@ -60,7 +60,6 @@ public interface RetrofitService {
     Observable<List<PersonalBook>> getPersonalBook(@Header("Authorization") String verification);
 
 
-    //URL: /api/table/?xnm='2015'&xqm='3'&sid='2016210761'
     @GET("table/")
     Observable<List<Course>> getSchedule(@Header("Authorization") String verification,
                                          @Query("sid") String sid);

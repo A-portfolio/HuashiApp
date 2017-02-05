@@ -127,11 +127,11 @@ public class SettingActivity extends ToolbarActivity {
     }
 
     private void saveAllValue() {
-        sp.putBoolean(preSchedule, mSwitchCourseRemind.isChecked());
-        sp.putBoolean(preLibrary, mSwitchLibraryRemind.isChecked());
-        sp.putBoolean(preCard, mSwitchCardRemind.isChecked());
-        sp.putBoolean(preScore, mSwitchScoreRemind.isChecked());
-        sp.putBoolean(preAll, mSwitchAll.isChecked());
+        sp.saveBoolean(preSchedule, mSwitchCourseRemind.isChecked());
+        sp.saveBoolean(preLibrary, mSwitchLibraryRemind.isChecked());
+        sp.saveBoolean(preCard, mSwitchCardRemind.isChecked());
+        sp.saveBoolean(preScore, mSwitchScoreRemind.isChecked());
+        sp.saveBoolean(preAll, mSwitchAll.isChecked());
     }
 
     private void loadAllValue() {

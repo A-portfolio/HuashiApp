@@ -27,7 +27,6 @@ public class HuaShiDao {
         sp = new PreferenceUtil();
     }
 
-
     //插入当前用户的搜索记录,如果当前用户没有登录则为 null
     public void insertSearchHistory(String book) {
         String libraryId = sp.getString(PreferenceUtil.LIBRARY_ID,"0");
@@ -36,7 +35,6 @@ public class HuaShiDao {
                 new String[]{libraryId, book});
 
     }
-
 
     public List<String> loadSearchHistory() {
         String libraryId = sp.getString(PreferenceUtil.LIBRARY_ID,"0");
@@ -60,7 +58,6 @@ public class HuaShiDao {
         return records;
     }
 
-
     public void deleteAllHistory() {
         String libraryId = sp.getString(PreferenceUtil.LIBRARY_ID);
         db.execSQL("DELETE * FROM " + DataBase.TABLE_SEARCH_HISTORY +
@@ -80,6 +77,11 @@ public class HuaShiDao {
                         String.valueOf(course.getRemind()),
                         String.valueOf(course.getColor())
                 });
+    }
+
+    public void updateCourse(Course course){
+        deleteCourse(course.getId());
+        insertCourse(course);
     }
 
     /**
@@ -293,29 +295,4 @@ public class HuaShiDao {
         db.execSQL("delete from " + DataBase.TABLE_WEBSITE + ";");
     }
 
-
-//    public List<BookSearchResult> loadBooks(String book){
-//        List<BookSearchResult> bookSearchResults = new ArrayList<>();
-//        Cursor cursor = db.rawQuery("select * from " + DataBase.TABLE_LIB + " where " + DataBase.KEY_SEARCH + " = ?",
-//                new String[]{
-//                        book
-//                });
-//        int max = cursor.getInt(cursor.getColumnIndex(DataBase.KEY_MAX));
-//        if (cursor.getCount() > 0){
-//            while (cursor.moveToNext()){
-//                BookSearchResult bookSearchResult = new BookSearchResult();
-//                BookSearchResult.MetaBean metaBean = new BookSearchResult.MetaBean();
-//                metaBean.setMax(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_MAX)));
-//                metaBean.setPer_page(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_PER_PAGE)));
-//                bookSearchResult.setMeta(metaBean);
-//                BookSearchResult.ResultsBean resultsBean = new BookSearchResult.ResultsBean();
-//                resultsBean.setId(cursor.getString(cursor.getColumnIndex(DataBase.KEY_BOOK_ID)));
-//                resultsBean.setBook(cursor.getString(cursor.getColumnIndex(DataBase.KEY_BOOK_NAME)));
-//                resultsBean.setAuthor(cursor.getString(cursor.getColumnIndex(DataBase.KEY_AUTHOR)));
-//                resultsBean.setBid(cursor.getString(cursor.getColumnIndex(DataBase.KEY_BID)));
-//                resultsBean.setIntro(cursor.getString(cursor.getColumnIndex(DataBase.KEY_INTRO)));
-//                bookSearchResult.setResults(resultsBean);
-//            }
-//        }
-//    }
 }
