@@ -1,10 +1,9 @@
 package net.muxi.huashiapp.ui.schedule;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -12,9 +11,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.muxi.material_dialog.MaterialDialog;
-
 import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Course;
@@ -43,9 +41,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by ybao on 16/5/1.
  */
-public class CourseEditActivity extends ToolbarActivity
-        {
-
+public class CourseEditActivity extends ToolbarActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -86,15 +82,27 @@ public class CourseEditActivity extends ToolbarActivity
     @BindView(R.id.btn_ensure)
     Button mBtnEnsure;
 
+    private Course mCourse;
     private HuaShiDao dao;
     private PreferenceUtil sp;
+
+    //是否是新添加课程
+    private boolean isAdd = true;
+
     //上课的周 存储形式为 1,3,4,5,
-    private List<Integer> mWeeks;
-    private int mDay;
-    private int courseTime;
+    private ArrayList<Integer> mWeeks = new ArrayList<>();
+    private int mWeekday;
+    private int start;
     private int duration;
 
     private String[] days = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};
+
+    public static void start(Context context, boolean isAdd, Course course) {
+        Intent starter = new Intent(context, CourseEditActivity.class);
+        starter.putExtra("is_add", isAdd);
+        starter.putExtra("course", course);
+        context.startActivity(starter);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,13 +110,49 @@ public class CourseEditActivity extends ToolbarActivity
         setContentView(R.layout.activity_course);
         ButterKnife.bind(this);
 
-        getIntent().getParcelableExtra("course");
-        mWeeks = new ArrayList<>();
+        isAdd = getIntent().getBooleanExtra("is_add", true);
+        if (!isAdd) {
+            mCourse = getIntent().getParcelableExtra("course");
+            String[] arrays = mCourse.getWeeks().split(",");
+            for (String s : arrays) {
+                mWeeks.add(Integer.parseInt(s));
+            }
+            for (int i = 0; i < 7; i++) {
+                if (mCourse.getDay().equals(Constants.WEEKDAYS_XQ[i])) {
+                    mWeekday = i;
+                }
+            }
+            start = mCourse.getStart();
+            duration = mCourse.getDuring();
+        } else {
+            mCourse = new Course();
+            for (int i = 1; i < 19; i++) {
+                mWeeks.add(i);
+            }
+            mWeekday = 0;
+            start = 1;
+            duration = 2;
+        }
 
+        initView();
         //填入数据,debug
         addData();
         dao = new HuaShiDao();
-        sp = new PreferenceUtil();
+    }
+
+    private void initView() {
+        if (isAdd) {
+            mBtnEnsure.setText("添加课程");
+            mEtWeek.setText("1-18周");
+            mEtTime.setText("周一1-2节");
+        } else {
+            mBtnEnsure.setText("完成编辑");
+            mEtCourse.setText(mCourse.getCourse());
+            mEtWeek.setText(mCourse.getWeeks());
+            mEtTime.setText(String.format("周s%d%-d%节", Constants.WEEKDAYS[mWeekday], start,
+                    start + duration - 1));
+            mEtTeacher.setText(mCourse.getTeacher());
+        }
     }
 
     private void addData() {
@@ -117,103 +161,10 @@ public class CourseEditActivity extends ToolbarActivity
         }
     }
 
-
-    //将上课的周转为1,2,3,4,5的这种形式
-    private String transToSimpleStr(List<Integer> list) {
-        String s = "";
-        for (int i = 0; i < list.size(); i++) {
-            s += list.get(i) + ",";
-        }
-        if (s.length() > 0) {
-            s.substring(0, s.length() - 1);
-        }
-        return s;
-    }
-//
-//    @Override
-//    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.btn_enter:
-//                Logger.d("btn_enter has clicked");
-//                if (!isEmpty()) {
-//                    final Course course = setCourse();
-//                    final int id = sp.getInt(PreferenceUtil.COURSE_ID, 1);
-//                    Logger.d(id + "");
-//                    course.setId(id + "");
-//
-//                    if (isConflict(course)) {
-//                        final MaterialDialog dialog = new MaterialDialog(CourseEditActivity.this);
-//                        dialog.setTitle(getResources().getString(R.string.course_conflict_title))
-//                                .setButtonColor(getResources().getColor(R.color.colorPrimary))
-//                                .setPositiveButton("添加", new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//                                        dialog.dismiss();
-//                                        addCourse(course, id);
-//                                    }
-//                                })
-//                                .setNegativeButton(getResources().getString(R.string.btn_negative),
-//                                        new View.OnClickListener() {
-//                                            @Override
-//                                            public void onClick(View v) {
-//                                                dialog.dismiss();
-//                                            }
-//                                        });
-//                        dialog.setCanceledOnTouchOutside(true);
-//                        dialog.show();
-//                    } else {
-//                        addCourse(course, id);
-//                    }
-//
-//                } else {
-//                    ToastUtil.showLong(App.getContext().getString(R.string.tip_complete_course));
-//                }
-//                break;
-//
-//            case R.id.btn_course_week:
-//                WeeksDialog weeksDialog = new WeeksDialog(this,
-//                        mBtnCourseWeek.getText().toString(),
-//                        new WeeksDialog.OnDialogClickListener() {
-//                            @Override
-//                            public void onDialogClick(List<Integer> list) {
-//                                mBtnCourseWeek.setText(transList(list));
-//                                mWeeks.clear();
-//                                mWeeks.addAll(list);
-//                            }
-//                        });
-//                weeksDialog.show();
-//                break;
-//
-//            case R.id.btn_course_time:
-//                String str = mBtnCourseTime.getText().toString();
-//                int weekday = 0;
-//                int startTime = 0;
-//                int endTime = 0;
-//                if (str.equals("添加上课时间")) {
-//                } else if (!str.contains("-")) {
-//                    weekday = getWeekdayValue(str);
-//                    startTime = getOneTime(str) - 1;
-//                    endTime = startTime;
-//                } else if (str != "添加上课时间") {
-//                    weekday = getWeekdayValue(str);
-//                    startTime = getStartTime(str) - 1;
-//                    endTime = getEndTime(str) - 1;
-//                }
-//                final CourseTimeDialog courseTimeDialog = new CourseTimeDialog(this, weekday,
-//                        startTime, endTime);
-//                courseTimeDialog.setNoticeDialogListener(this);
-//                courseTimeDialog.show();
-//        }
-//    }
-
     public void addCourse(final Course course, final int id) {
         if (NetStatus.isConnected() == true) {
-            User user = new User();
-            user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
-            user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
-            Logger.d(course.getId() + "");
             showProgressBarDialog(true, getString(R.string.tip_adding_course));
-            CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(user), course)
+            CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(App.sUser), course)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.newThread())
                     .subscribe(new Observer<Response<VerifyResponse>>() {
@@ -284,219 +235,38 @@ public class CourseEditActivity extends ToolbarActivity
         return false;
     }
 
-    //插入的课程赋值
-//    private Course setCourse() {
-//        Course course = new Course();
-//        course.setCourse(mEditCourseName.getText().toString());
-//        course.setTeacher(mEditTeacherName.getText().toString());
-//        course.setWeeks(transToSimpleStr(mWeeks));
-//        course.setDay(days[mDay - 1]);
-//        course.setStart(courseTime);
-//        course.setDuring(duration);
-//        course.setPlace(mEditCoursePlace.getText().toString());
-//        course.setRemind(String.valueOf(mSwitchRemind.isChecked()));
-//        return course;
-//    }
-//
-//    //判断是否有未填充的数据
-//    private boolean isEmpty() {
-//        if (mEditCourseName.getText().toString().equals("") ||
-//                mEditTeacherName.getText().toString().equals("") ||
-//                mBtnCourseWeek.getText().toString().equals("选择上课周") ||
-//                mBtnCourseTime.getText().toString().equals("添加上课时间") ||
-//                mEditCoursePlace.getText().toString().equals("")) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
-//
-//    @Override
-//    public void onDialogPositiveClick(String weekday, int startTime, int endTime) {
-//        switch (weekday) {
-//            case "星期一":
-//                mDay = 1;
-//                break;
-//            case "星期二":
-//                mDay = 2;
-//                break;
-//            case "星期三":
-//                mDay = 3;
-//                break;
-//            case "星期四":
-//                mDay = 4;
-//                break;
-//            case "星期五":
-//                mDay = 5;
-//                break;
-//            case "星期六":
-//                mDay = 6;
-//                break;
-//            case "星期日":
-//                mDay = 7;
-//                break;
-//            default:
-//                mDay = 7;
-//                break;
-//        }
-//        courseTime = startTime + 1;
-//        duration = endTime - startTime + 1;
-//        String s = weekday;
-//        if (startTime == endTime) {
-//            s += " 第" + (startTime + 1) + "节";
-//        } else {
-//            s += "第" + (startTime + 1) + "-" + (endTime + 1) + "节";
-//        }
-//
-////        mBtnCourseTime.setText(s);
-//    }
-//
-//    @Override
-//    public void onDialogNegativeClick() {
-//    }
-
-
-    //获取星期的 value
-    private int getWeekdayValue(String str) {
-        String s = str.substring(2, 3);
-        String[] weekdays = new String[]{
-                "一",
-                "二",
-                "三",
-                "四",
-                "五",
-                "六",
-                "日"
-        };
-        for (int i = 0; i < 7; i++) {
-            if (s.equals(weekdays[i])) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-
-    public String transList(List<Integer> list) {
-        if (list.size() == 0) {
-            return new String("选择上课周");
-        }
-        String s = "";
-        if (list.size() == 1) {
-            s = list.get(0) + "周";
-            return s;
-        }
-        if (isSingleWeeks(list) && list.size() > 1) {
-            s = list.get(0) + "-" + list.get(list.size() - 1) + "周(单)";
-            return s;
-        }
-        if (isDoubleWeeks(list) && list.size() > 1) {
-            s = list.get(0) + "-" + list.get(list.size() - 1) + "周(双)";
-            return s;
-        }
-        if (isContinuous(list) && list.size() > 1) {
-            s = list.get(0) + "-" + list.get(list.size() - 1) + "周";
-            return s;
-        }
-        int n = list.get(0);
-        int j = 1;
-        for (int i = 1; i < list.size(); i++) {
-            if (list.get(i) - n == 1) {
-                j++;
-                n++;
-            } else {
-                s += (j > 1) ? (n - j + 1 + "-" + n + ",") : n + ",";
-                n = list.get(i);
-                j = 1;
-            }
-        }
-        if (j != 1) {
-            s += (n - j + 1 + "-" + n + "周");
-        } else if (j == 1) {
-            s += n + "周";
-        }
-        return s;
-    }
-
-
-    private boolean isContinuous(List<Integer> list) {
-        if (list.get(list.size() - 1) - list.get(0) == list.size() - 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    private boolean isDoubleWeeks(List<Integer> list) {
-        boolean b = true;
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) % 2 != 0) {
-                b = false;
+    @OnClick({R.id.tv_week, R.id.et_week, R.id.tv_time, R.id.et_time})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_week:
+            case R.id.et_week:
+                SelectDialogFragment selectDialogFragment = SelectDialogFragment.newInstance(
+                        mWeeks);
+                selectDialogFragment.show(getSupportFragmentManager(), "select_weeks");
+                selectDialogFragment.setOnPositiveButtonClickListener((weeks, displayWeeks) -> {
+                    mEtWeek.setText(displayWeeks);
+                    mWeeks = weeks;
+                });
                 break;
-            }
-        }
-        if (list.get(list.size() - 1) - list.get(0) != 2 * (list.size() - 1)) {
-            b = false;
-        }
-        return b;
-    }
-
-    private boolean isSingleWeeks(List<Integer> list) {
-        boolean b = true;
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) % 2 != 1) {
-                b = false;
+            case R.id.tv_time:
+            case R.id.et_time:
+                CourseTimePickerDialogFragment pickerDialogFragment =
+                        CourseTimePickerDialogFragment.newInstance(mWeekday, start - 1,
+                                start + duration - 2);
+                pickerDialogFragment.show(getSupportFragmentManager(), "picker_time");
+                pickerDialogFragment.setOnPositiveButtonClickListener((weekday, start1, end) -> {
+                    mWeekday = weekday;
+                    start = start1 + 1;
+                    duration = end - start1 + 1;
+                    mEtTime.setText(String.format("周s%d%-d%节", Constants.WEEKDAYS[mWeekday], start,
+                            start + duration - 1));
+                });
                 break;
-            }
         }
-        if (list.get(list.size() - 1) - list.get(0) != 2 * (list.size() - 1)) {
-            b = false;
-        }
-        return b;
     }
 
-
-    //获取只有一小节课程的时间
-    private int getOneTime(String str) {
-        int start = str.indexOf("第");
-        int end = str.indexOf("节");
-        return Integer.valueOf(str.substring(start + 1, end));
+    @OnClick(R.id.btn_ensure)
+    public void onClick() {
+//        addCourse(mCourse,);
     }
-
-
-    //获取开始上课节次的value
-    private int getStartTime(String str) {
-        int start = str.indexOf("第");
-        int end = str.indexOf("-");
-        int startTime = Integer.valueOf(str.substring(start + 1, end));
-        return startTime;
-    }
-
-
-    //获取结束上课的节次 value
-    private int getEndTime(String str) {
-        int start = str.indexOf("-");
-        int end = str.indexOf("节");
-        int endTime = Integer.valueOf(str.substring(start + 1, end));
-        return endTime;
-    }
-
-
-//    @OnClick({R.id.tv_week, R.id.et_week, R.id.tv_time, R.id.et_time, R.id.btn_ensure})
-//    public void onClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.tv_week:
-//                break;
-//            case R.id.et_week:
-//                break;
-//            case R.id.tv_time:
-//                break;
-//            case R.id.et_time:
-//                break;
-//            case R.id.btn_ensure:
-//                break;
-//        }
-//    }
 }

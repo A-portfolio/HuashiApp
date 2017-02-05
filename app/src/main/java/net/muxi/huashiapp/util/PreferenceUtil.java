@@ -45,7 +45,7 @@ public class PreferenceUtil {
     //最新的通知公告日期
     public static final String LATEST_NEWS_DATE = "latest_news_date";
 
-    public static void putBoolean(String key, boolean value) {
+    public static void saveBoolean(String key, boolean value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(App.sContext).edit();
         editor.putBoolean(key, value);
         editor.apply();

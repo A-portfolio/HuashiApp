@@ -17,6 +17,15 @@ public class Constants {
             "五",
             "六",
             "日"};
+    public static final String[] WEEKDAYS_XQ = {
+            "星期一",
+            "星期二",
+            "星期三",
+            "星期四",
+            "星期五",
+            "星期六",
+            "星期日"
+    };
     public static final String[] WEEKS = {"第一周",
             "第二周",
             "第三周",

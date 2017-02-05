@@ -67,6 +67,8 @@
         <activity android:name="net.muxi.huashiapp.ui.schedule.CourseEditActivity"
                   android:launchMode="singleTask"/>
 
+        <activity android:name=".ui.schedule.CurweekSetActivity"/>
+
 
         <activity android:name="net.muxi.huashiapp.ui.score.ScoreActivity"
                   android:launchMode="singleTask"/>
