@@ -51,6 +51,8 @@ public class Constants {
 
     public static final int WEEKS_LENGTH = 21;
 
+    public static final int ANIMATION_DURATION = 100;
+
     //服务器端mongdb数据库要求初始必须有门课程
     public static final String INIT_COURSE = "re:从零开始的异世界生活";
 

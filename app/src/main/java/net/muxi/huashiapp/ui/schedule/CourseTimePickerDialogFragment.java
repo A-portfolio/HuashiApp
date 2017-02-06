@@ -55,7 +55,7 @@ public class CourseTimePickerDialogFragment extends BottomDialogFragment {
 
         mCourseTimePickerView.setOnValueChangeListener((weekday, start, end) -> {
             mTvTitle.setText(
-                    String.format("周s%第d%至第d%节", Constants.WEEKDAYS[weekday], start + 1, end + 1));
+                    String.format("周%s第%d至第%d节", Constants.WEEKDAYS[weekday], start + 1, end + 1));
         });
 
         mBtnEnter.setOnClickListener(v -> {

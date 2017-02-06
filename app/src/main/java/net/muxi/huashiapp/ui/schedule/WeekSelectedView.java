@@ -38,6 +38,8 @@ public class WeekSelectedView extends GridLayout {
         this.setPadding(DimensUtil.dp2px(16),0,DimensUtil.dp2px(16),0);
         this.setBackgroundColor(Color.WHITE);
 
+        this.setVisibility(INVISIBLE);
+
         mTvWeeks = new TextView[21];
 
         for (int i = 0; i < 21; i++) {
@@ -61,6 +63,7 @@ public class WeekSelectedView extends GridLayout {
         }
 
     }
+
 
     public void setSelectedWeek(int week) {
         if (selectedWeekPos != 21){

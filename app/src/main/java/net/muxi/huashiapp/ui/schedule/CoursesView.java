@@ -84,7 +84,7 @@ public class CoursesView extends HorizontalScrollView{
             }
             textView.setLayoutParams(params);
             if (TimeTableUtil.isThisWeek(mWeek,mCourses.get(i).getWeeks())){
-                textView.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(mCourses.get(i).getColor(),0)));
+                textView.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(mCourses.get(i).getColor())));
             }else {
                 textView.setBackground(getResources().getDrawable(R.drawable.ic_add_black_24dp));
             }

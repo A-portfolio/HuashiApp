@@ -19,6 +19,7 @@ import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.TimeTableUtil;
 import net.muxi.huashiapp.widget.TimeTable;
 
@@ -51,6 +52,9 @@ public class TimetableFragment extends BaseFragment {
     ImageButton mIvMenu;
     @BindView(R.id.tool_layout)
     RelativeLayout mToolLayout;
+
+    private TableMenuView mTableMenuView = new TableMenuView(App.sContext);
+
     /**
      * 本学期所有的课程
      */
@@ -58,6 +62,8 @@ public class TimetableFragment extends BaseFragment {
 
     private int selectedWeek;
     private int curWeek;
+
+    private HuaShiDao dao;
 
     public static TimetableFragment newInstance() {
         Bundle args = new Bundle();
@@ -73,13 +79,44 @@ public class TimetableFragment extends BaseFragment {
         Logger.d("createview");
         View view = inflater.inflate(R.layout.fragment_timetable, container, false);
         ButterKnife.bind(this, view);
+        dao = new HuaShiDao();
+
+        initData();
+        initView();
+        initListener();
+
+        return view;
+    }
+
+    private void initData() {
+        curWeek = TimeTableUtil.getCurWeek();
+        selectedWeek = curWeek;
+        mCourses = dao.loadAllCourses();
+    }
+
+    private void initView() {
+        if (mCourses.size() == 0) {
+            loadTable();
+            Logger.d("course size is 0");
+        }else {
+            renderCourseView(mCourses);
+        }
+        renderCurweekView(TimeTableUtil.getCurWeek());
+        renderSelectedWeekView(TimeTableUtil.getCurWeek());
+    }
+
+    private void initListener() {
         mWeekSelectedView.setOnWeekSelectedListener(week -> {
-//            renderCourseView();
+            selectedWeek = week;
+            renderCourseView(mCourses);
+            renderSelectedWeekView(week);
         });
         mIvMenu.setOnClickListener(v -> {
+            mTableMenuView.show();
+        });
+        mTimetable.getTableContent().setOnCourseClickListener(course -> {
 
         });
-        return view;
     }
 
     public void loadTable() {
@@ -88,54 +125,67 @@ public class TimetableFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(courseList -> {
-                    if (isDiff(courseList)) {
-                        updateDB(courseList);
-                        renderCourseView(courseList);
-                    }
+                    courseList.remove(0);
+                    updateDB(courseList);
+                    mCourses = courseList;
+                    renderCourseView(courseList);
                 }, throwable -> throwable.printStackTrace());
     }
 
+    /**
+     * 渲染显示的课程： 更改日期，显示课程
+     */
     private void renderCourseView(List<Course> courseList) {
-
+        mTimetable.getWeekLayout().setWeekDate(0);
+        mTimetable.getTableContent().updateCourses(courseList,selectedWeek);
     }
 
     private void updateDB(List<Course> courseList) {
-
+        dao.deleteAllCourse();
+        for (Course course: courseList){
+            dao.insertCourse(course);
+        }
     }
 
-    private List<Course> getCourseListInSelectedWeek(int week) {
-        List<Course> courseList = new ArrayList<>();
-        for (int i = 0; i < mCourses.size(); i++) {
-            if (TimeTableUtil.isThisWeek(week + 1, mCourses.get(i).getWeeks())) {
-                courseList.add(mCourses.get(i));
-            }
-        }
-        int thisWeekCourseSize = courseList.size();
-        for (int i = 0; i < mCourses.size(); i++) {
-            boolean flag = false;
-            if (!TimeTableUtil.isThisWeek(week + 1, mCourses.get(i).getWeeks())) {
-                for (int j = 0;j < thisWeekCourseSize;j ++){
-                   if (mCourses.get(i).getDay().equals(courseList.get(j).getDay()) &&
-                   mCourses.get(i).getStart() == courseList.get(j).getStart() &&
-                   mCourses.get(i).getDuring() == courseList.get(j).getDuring()){
-                       flag = true;
-                       break;
-                   }
-                }
-                if (!flag){
-                    courseList.add(mCourses.get(i));
-                }
-            }
-        }
-        return courseList;
+//    private List<Course> getCourseListInSelectedWeek(int week) {
+//        List<Course> courseList = new ArrayList<>();
+//        for (int i = 0; i < mCourses.size(); i++) {
+//            if (TimeTableUtil.isThisWeek(week + 1, mCourses.get(i).getWeeks())) {
+//                courseList.add(mCourses.get(i));
+//            }
+//        }
+//        int thisWeekCourseSize = courseList.size();
+//        for (int i = 0; i < mCourses.size(); i++) {
+//            boolean flag = false;
+//            if (!TimeTableUtil.isThisWeek(week + 1, mCourses.get(i).getWeeks())) {
+//                for (int j = 0; j < thisWeekCourseSize; j++) {
+//                    if (mCourses.get(i).getDay().equals(courseList.get(j).getDay()) &&
+//                            mCourses.get(i).getStart() == courseList.get(j).getStart() &&
+//                            mCourses.get(i).getDuring() == courseList.get(j).getDuring()) {
+//                        flag = true;
+//                        break;
+//                    }
+//                }
+//                if (!flag) {
+//                    courseList.add(mCourses.get(i));
+//                }
+//            }
+//        }
+//        return courseList;
+//    }
+
+    /**
+     * @param week 从1开始计数
+     */
+    public void renderSelectedWeekView(int week) {
+        mTvSelectWeek.setText(String.format("第%d周", week));
     }
 
     /**
-     * 比对服务器和本地数据库的课程列表差异
+     * @param week 从1开始计数
      */
-    private boolean isDiff(List<Course> courseList) {
-
-        return false;
+    public void renderCurweekView(int week) {
+        mTvCurrentWeek.setText("当前周设置为" + week);
     }
 
     @Override

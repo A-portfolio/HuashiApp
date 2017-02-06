@@ -58,47 +58,29 @@ public class TimeTableUtil {
      * 获取课程背景颜色
      *
      * @param colorNumber 颜色值
-     * @param type        是否有一起的课程 0为无,1为有
      */
-    public static int getCourseBg(int colorNumber, int type) {
+    public static int getCourseBg(int colorNumber) {
         int color = 0;
-        if (type == 0) {
-            switch (colorNumber) {
-                case 0:
-//                    color = R.drawable.bg_simple_class_green;
-                    break;
-                case 1:
-//                    color = R.drawable.bg_simple_class_orange;
-                    break;
-                case 2:
-//                    color = R.drawable.bg_simple_class_pink;
-                    break;
-                case 3:
-//                    color = R.drawable.bg_simple_class_purple;
-                    break;
-            }
-        } else {
-            switch (colorNumber) {
-                case 0:
-                    color = R.drawable.ic_add_black_24dp;
-                    break;
-                case 1:
-                    color = R.drawable.ic_add_black_24dp;
-                    break;
-                case 2:
-                    color = R.drawable.ic_add_black_24dp;
-                    break;
-                case 3:
-                    color = R.drawable.ic_add_black_24dp;
-                    break;
-            }
+        switch (colorNumber) {
+            case 0:
+                color = R.drawable.shape_orange;
+                break;
+            case 1:
+                color = R.drawable.shape_blue;
+                break;
+            case 2:
+                color = R.drawable.shape_green;
+                break;
+            case 3:
+                color = R.drawable.shape_yellow;
+                break;
         }
         return color;
     }
 
     public static String simplifyCourse(String course) {
-        if (course.length() > 12) {
-            return course.substring(0, 11) + "...";
+        if (course.length() > 8) {
+            return course.substring(0, 7) + "...";
         } else {
             return course;
         }
@@ -144,22 +126,24 @@ public class TimeTableUtil {
         return curWeek;
     }
 
-    public static void saveCurWeek(int week){
+    public static void saveCurWeek(int week) {
         Date date = new Date(System.currentTimeMillis());
         int day = DateUtil.getDayInWeek(date);
         int distance = 1 - day - (week - 1) * 7;
-        PreferenceUtil.saveString(PreferenceUtil.FIRST_WEEK_DATE,DateUtil.getTheDateInYear(date,distance));
+        PreferenceUtil.saveString(PreferenceUtil.FIRST_WEEK_DATE,
+                DateUtil.getTheDateInYear(date, distance));
     }
 
     /**
      * 获取选择的周期的周次
+     *
      * @param date 一周的第一天日期
-     * @return
      */
-    public static int getSelectedWeek(Date date){
+    public static int getSelectedWeek(Date date) {
         String defalutDate = DateUtil.getTheDateInYear(date,
                 1 - DateUtil.getDayInWeek(new Date(System.currentTimeMillis())));
-        int selectWeek = (int) DateUtil.getDistanceWeek(PreferenceUtil.getString(PreferenceUtil.FIRST_WEEK_DATE,defalutDate),
+        int selectWeek = (int) DateUtil.getDistanceWeek(
+                PreferenceUtil.getString(PreferenceUtil.FIRST_WEEK_DATE, defalutDate),
                 DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
         selectWeek = selectWeek <= Constants.WEEKS_LENGTH ? selectWeek : Constants.WEEKS_LENGTH;
         selectWeek = selectWeek >= 1 ? selectWeek : 1;
@@ -184,18 +168,26 @@ public class TimeTableUtil {
             String day = allCourseList.get(i).getDay();
             Logger.d(day);
             if (isThisWeek(getCurWeek(), weeks) && day.equals(
-                    Constants.WEEKDAYS[DateUtil.getDayInWeek(new Date(System.currentTimeMillis()))
-                            - 1])) {
+                    Constants.WEEKDAYS_XQ[
+                            DateUtil.getDayInWeek(new Date(System.currentTimeMillis()))
+                                    - 1])) {
                 courseList.add(allCourseList.get(i));
             }
         }
         return courseList;
     }
 
+    /**
+     * 将 weekday 转换为 int 类型 星期一 -> 0
+     */
     public static int weekday2num(String weekday) {
+        Logger.d(weekday);
         int i = 0;
-        while (!weekday.equals(Constants.WEEKDAYS[i])) {
+        while (!weekday.equals(Constants.WEEKDAYS_XQ[i])) {
             i++;
+            if (i >= 7) {
+                break;
+            }
         }
         return i;
     }
