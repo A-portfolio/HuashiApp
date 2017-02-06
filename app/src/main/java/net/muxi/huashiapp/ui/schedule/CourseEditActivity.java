@@ -149,7 +149,7 @@ public class CourseEditActivity extends ToolbarActivity {
             mBtnEnsure.setText("完成编辑");
             mEtCourse.setText(mCourse.getCourse());
             mEtWeek.setText(mCourse.getWeeks());
-            mEtTime.setText(String.format("周s%d%-d%节", Constants.WEEKDAYS[mWeekday], start,
+            mEtTime.setText(String.format("周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
                     start + duration - 1));
             mEtTeacher.setText(mCourse.getTeacher());
         }
@@ -258,7 +258,7 @@ public class CourseEditActivity extends ToolbarActivity {
                     mWeekday = weekday;
                     start = start1 + 1;
                     duration = end - start1 + 1;
-                    mEtTime.setText(String.format("周s%d%-d%节", Constants.WEEKDAYS[mWeekday], start,
+                    mEtTime.setText(String.format("周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
                             start + duration - 1));
                 });
                 break;

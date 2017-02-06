@@ -205,15 +205,15 @@ public class SelectDialogFragment extends BottomDialogFragment {
         if (isSingleWeeks(weekList)) {
             start = weekList.get(0);
             end = weekList.get(weekList.size() - 1) + 1;
-            s = String.format("d%-d%周单",start,end);
+            s = String.format("%d-%d周单",start,end);
         } else if (isDoubleWeeks(weekList)) {
             start = weekList.get(0) - 1;
             end = weekList.get(weekList.size() - 1);
-            s = String.format("d%-d%周双",start,end);
+            s = String.format("%d-%d周双",start,end);
         } else if (isContinuOusWeeks(weekList)) {
             start = weekList.get(0);
             end = weekList.get(weekList.size() - 1);
-            s = String.format("d%-d%周",start,end);
+            s = String.format("%d-%d周",start,end);
         }else {
             s = TextUtils.join(",",weekList);
         }

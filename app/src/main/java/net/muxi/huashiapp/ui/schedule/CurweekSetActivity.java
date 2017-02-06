@@ -1,5 +1,7 @@
 package net.muxi.huashiapp.ui.schedule;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -31,6 +33,11 @@ public class CurweekSetActivity extends ToolbarActivity {
     @BindView(R.id.lv)
     ListView mLv;
 
+    public static void start(Context context) {
+        Intent starter = new Intent(context, CurweekSetActivity.class);
+        context.startActivity(starter);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +47,9 @@ public class CurweekSetActivity extends ToolbarActivity {
         String[] s = new String[Constants.WEEKS_LENGTH];
         for (int i = 0;i < Constants.WEEKS_LENGTH;i ++){
             if (i < 9){
-                s[i] = String.format("第0d%周",i + 1);
+                s[i] = String.format("第0%d周",i + 1);
             }else {
-                s[i] = String.format("第d%周",i + 1);
+                s[i] = String.format("第%d周",i + 1);
             }
         }
         ArrayAdapter arrayAdapter = new ArrayAdapter(this,R.layout.item_curweek_set,s);

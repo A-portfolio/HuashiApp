@@ -78,25 +78,37 @@ public class TableContent extends FrameLayout {
      *
      * @param courseList 有效显示的课程，本周课程和非本周但与本周课程不冲突的课程
      */
-    public void addCourses(List<Course> courseList) {
+    public void addCourses(List<Course> courseList,int selectWeek) {
         mCourseList.addAll(courseList);
         for (int i = 0; i < courseList.size(); i++) {
-            addCourseView(courseList.get(i));
+            if (!TimeTableUtil.isThisWeek(selectWeek,courseList.get(i).getWeeks())) {
+                addCourseView(courseList.get(i),selectWeek);
+            }
+        }
+        for (int i = 0;i < courseList.size();i ++){
+            if (TimeTableUtil.isThisWeek(selectWeek,courseList.get(i).getWeeks())){
+                addCourseView(courseList.get(i),selectWeek);
+            }
         }
     }
 
-    public void addCourseView(Course course) {
+    public void addCourseView(Course course,int selectWeek) {
         TextView tvCourse = new TextView(mContext);
         LayoutParams courseParams = new LayoutParams(TimeTable.COURSE_WIDTH,
                 course.getDuring() * TimeTable.COURSE_TIME_HEIGHT - 3);
         courseParams.setMargins(
                 DimensUtil.dp2px(65 * TimeTableUtil.weekday2num(course.getDay()) + 1),
                 DimensUtil.dp2px(57 * (course.getStart() - 1) + 1), 0, 0);
-        tvCourse.setBackground(getResources().getDrawable(
-                TimeTableUtil.getCourseBg(course.getColor(), 0)));
-        tvCourse.setText(ellipseCourse(course.getCourse()) + "\n\n@" +
-                course.getPlace() + "\n" +
-                course.getTeacher());
+        if (TimeTableUtil.isThisWeek(selectWeek,course.getWeeks())) {
+            tvCourse.setBackground(getResources().getDrawable(
+                    TimeTableUtil.getCourseBg(course.getColor())));
+            tvCourse.setText(ellipseCourse(course.getCourse()) + "\n\n@" +
+                    course.getPlace() + "\n" +
+                    course.getTeacher());
+        }else {
+            tvCourse.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(course.getColor())));
+            tvCourse.setText(ellipseNotCurCourse(course.getCourse()));
+        }
         this.addView(tvCourse, courseParams);
         tvCourse.setOnClickListener(v -> {
             if (mOnCourseClickListener != null){
@@ -109,9 +121,9 @@ public class TableContent extends FrameLayout {
         mOnCourseClickListener = courseClickListener;
     }
 
-    public void updateCourses(List<Course> courseList) {
+    public void updateCourses(List<Course> courseList,int week) {
         this.removeAllViews();
-        addCourses(courseList);
+        addCourses(courseList,week);
     }
 
     public String ellipseCourse(String course){
@@ -119,5 +131,13 @@ public class TableContent extends FrameLayout {
             return course.substring(0,7) + "...";
         }
         return course;
+    }
+
+    public String ellipseNotCurCourse(String course){
+        String s = "非本周-";
+        if (course.length() > 4){
+            return s + course.substring(0,3);
+        }
+        return s + course;
     }
 }

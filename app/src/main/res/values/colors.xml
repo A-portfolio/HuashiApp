@@ -10,11 +10,13 @@
     <color name="colorRipple">#33FFFFFF</color>
 
     <color name="divider">#f5f5f5</color>
-    
+
+    <!--课程表-->
     <color name="orange">#ff9135</color>
     <color name="blue">#52b6ff</color>
     <color name="yellow">#ffce00</color>
     <color name="green">#6ace81</color>
+    <color name="grey">#C6D2DE</color>
     <color name="red">#fa3f40</color>
     
     <color name="grey_bottom_line">#c6d2de</color>
