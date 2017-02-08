@@ -1,6 +1,5 @@
 package net.muxi.huashiapp.util;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -128,5 +127,6 @@ public class PreferenceUtil {
         // TODO: 17/1/27 clear data 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(App.sContext);
     }
+
 
 }

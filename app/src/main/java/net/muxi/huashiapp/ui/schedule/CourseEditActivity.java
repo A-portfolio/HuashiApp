@@ -263,7 +263,7 @@ public class CourseEditActivity extends ToolbarActivity {
 
     @OnClick(R.id.btn_ensure)
     public void onClick() {
-        // TODO: 17/2/8 update timetable api  
+        // TODO: 17/2/8 update timetable api
 //        addCourse(mCourse,);
     }
 }

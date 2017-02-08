@@ -118,7 +118,13 @@
 
         <activity android:name="net.muxi.huashiapp.ui.InfoActivity"/>
 
+        <activity android:name=".ui.studyroom.StudyRoomActivity"/>
+
+        <activity android:name=".ui.studyroom.RoomDetailActivity"/>
+
+
         <activity android:name="net.muxi.huashiapp.ui.wxapi.WXEntryActivity"
+
                   android:exported="true"
                   android:launchMode="singleInstance"/>
 
