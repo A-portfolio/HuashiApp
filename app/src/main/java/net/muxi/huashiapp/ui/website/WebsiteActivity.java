@@ -69,6 +69,8 @@ public class WebsiteActivity extends ToolbarActivity {
         }
         mSwipeRefreshLayout.setEnabled(false);
 
+
+
         setTitle("常用网站");
         CampusFactory.getRetrofitService().getWebsite()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -119,7 +121,8 @@ public class WebsiteActivity extends ToolbarActivity {
 
     }
 
-    @Override public void onBackPressed() {
+    @Override
+    public void onBackPressed() {
         super.onBackPressed();
         this.finish();
     }

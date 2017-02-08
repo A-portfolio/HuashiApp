@@ -1,75 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/apartment_layout"
     android:layout_width="match_parent"
-    android:layout_height="90dp">
+    android:layout_height="102dp"
+    android:layout_margin="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_apartment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="36dp"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            tools:text="学生事务大厅"/>
+
+        <ImageView
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignLeft="@+id/tv_apartment"
+            android:layout_alignStart="@+id/tv_apartment"
+            android:layout_below="@+id/tv_apartment"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/dividerGrey"/>
+
+        <TextView
+            android:id="@+id/ic_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/ic_apartment_phone"/>
+
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line"
+            android:layout_marginTop="11dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_toRightOf="@id/ic_phone"
+            android:layout_toEndOf="@id/ic_phone"
+            android:autoLink="phone"
+            android:textColor="@color/textColorGrey"
+            android:textIsSelectable="true"
+            android:textSize="14sp"
+            tools:text="123456"/>
+
+        <TextView
+            android:id="@+id/ic_position"
+            android:background="@drawable/ic_apartment_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/ic_phone"
+            android:layout_alignStart="@id/ic_phone"
+            android:layout_below="@id/ic_phone"
+            />
 
 
-    <TextView
-        android:layout_marginBottom="5dp"
-        android:paddingLeft="20dp"
-        android:textSize="16sp"
-        tools:text="学生事务大厅"
-        android:id="@+id/tv_apartment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView2"
-     />
+        <TextView
+            android:id="@+id/tv_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="map"
+            android:textColor="@color/textColorGrey"
+            android:textIsSelectable="true"
+            android:textSize="14sp"
+            tools:text="文华公书林二楼"
+            android:layout_below="@id/tv_phone"
+            android:layout_marginTop="9dp"
+            android:layout_alignLeft="@+id/tv_phone"
+            android:layout_alignStart="@+id/tv_phone"/>
 
-    <TextView
-        android:textSize="14sp"
-        android:textColor="@color/textColorGrey"
-        android:text="办公电话:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:id="@+id/textView2"
-        android:layout_marginBottom="20dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <TextView
-        tools:text="8:00-9:00"
-        android:textSize="14sp"
-        android:id="@+id/tv_phone"
-        android:textIsSelectable="true"
-        android:textColor="@color/textColorGrey"
-        android:layout_width="wrap_content"
-        android:autoLink="phone"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView2"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2"/>
-
-    <TextView
-        android:paddingBottom="15dp"
-        android:textColor="@color/textColorGrey"
-        android:text="办公地点:"
-        android:textSize="14sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/tv_place"
-        android:layout_toStartOf="@+id/tv_place"/>
-
-    <TextView
-        android:textColor="@color/textColorGrey"
-        android:textSize="14sp"
-        android:textIsSelectable="true"
-        tools:text="文华公书林二楼"
-        android:autoLink="map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_place"
-        android:layout_alignTop="@+id/textView3"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2"/>
+    </RelativeLayout>
 
 
-
-
-</RelativeLayout>
+</android.support.v7.widget.CardView>
