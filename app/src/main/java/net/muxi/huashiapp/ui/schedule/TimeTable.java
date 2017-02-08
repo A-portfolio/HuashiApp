@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.widget;
+package net.muxi.huashiapp.ui.schedule;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -158,21 +158,40 @@ public class TimeTable extends FrameLayout {
                 int xDistance;
                 int yDistance;
 
-                if (scrolledX + event.getX() - curX
-                        > WEEK_DAY_WIDTH * 7 + LITTLE_VIEW_WIDTH - DimensUtil.getScreenWidth() ||
-                        scrolledX + event.getX() - curX < 0) {
+//                if (scrolledX + event.getX() - curX
+//                        > WEEK_DAY_WIDTH * 7 + LITTLE_VIEW_WIDTH - DimensUtil.getScreenWidth() ||
+//                        scrolledX + event.getX() - curX < 0) {
+//                    xDistance = (int)(curX - event.getX());
+//                } else {
+//                    xDistance = (int)(event.getX() - curX);
+//                }
+//
+//                if (scrolledY + event.getY() - curY
+//                        > COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56) * 3
+//                        + DimensUtil.getStatusBarHeight() - DimensUtil.getScreenHeight() ||
+//                        scrolledY + event.getY() - curY < 0) {
+//                    yDistance = (int)(curY - event.getY());
+//                } else {
+//                    yDistance = (int)(event.getY() - curY);
+//                }
+
+                if (scrolledX + curX - event.getX() < 0) {
+                    xDistance = - scrolledX;
+                } else if (scrolledX + curX - event.getX() > WEEK_DAY_WIDTH * 7 + LITTLE_VIEW_WIDTH - DimensUtil.getScreenWidth()){
+                    xDistance = WEEK_DAY_WIDTH * 7 + LITTLE_VIEW_WIDTH - DimensUtil.getScreenWidth() - scrolledX;
+                }else {
                     xDistance = (int)(curX - event.getX());
-                } else {
-                    xDistance = (int)(event.getX() - curX);
                 }
 
-                if (scrolledY + event.getY() - curY
+                if (scrolledY + curY - event.getY()
                         > COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56) * 3
                         + DimensUtil.getStatusBarHeight() - DimensUtil.getScreenHeight() ||
-                        scrolledY + event.getY() - curY < 0) {
+                        scrolledY + curY - event.getY()< 0) {
+                    yDistance = -scrolledY;
+                } else if (scrolledY + curY - event.getY() > COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56) * 3 + DimensUtil.getStatusBarHeight() - DimensUtil.getScreenHeight()){
+                    yDistance = COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56) * 3 + DimensUtil.getStatusBarHeight() - DimensUtil.getScreenHeight() - scrolledY;
+                }else {
                     yDistance = (int)(curY - event.getY());
-                } else {
-                    yDistance = (int)(event.getY() - curY);
                 }
 
                 mWeekLayout.scrollBy(xDistance,0);

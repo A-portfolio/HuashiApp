@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
               android:paddingLeft="24dp"
-              android:paddingRight="24dp"
-              android:layout_height="wrap_content">
+              android:paddingRight="24dp">
 
     <NumberPicker
         android:id="@+id/np_weekday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="64dp"/>
+        android:layout_marginRight="64dp"
+        android:theme="@style/AppTheme.Picker"/>
 
     <NumberPicker
         android:id="@+id/np_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="24dp"/>
+        android:layout_marginRight="24dp"
+        android:theme="@style/AppTheme.Picker"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,6 +29,7 @@
     <NumberPicker
         android:id="@+id/np_end"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.Picker"/>
 
 </LinearLayout>

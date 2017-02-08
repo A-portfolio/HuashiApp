@@ -52,7 +52,7 @@ public class TableMenuView extends FrameLayout {
 
     public void setCurweek(int week) {
         String textStr1 = "<font color=\"#000000\">设置当前周</font>";
-        String textStr2 = "<font color=\"#7B79FF\">(当前周为" + week + ")</font>";
+        String textStr2 = "<font color=\"#7B79FF\">(当前周设置为" + week + ")</font>";
         mTvSetcurweek.setText(Html.fromHtml(textStr1 + textStr2));
     }
 

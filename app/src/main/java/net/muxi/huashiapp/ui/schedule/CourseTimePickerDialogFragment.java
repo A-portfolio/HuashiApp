@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.util.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,8 +48,7 @@ public class CourseTimePickerDialogFragment extends BottomDialogFragment {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_select_course_time,
                 null);
         ButterKnife.bind(this, view);
-        Dialog dialog = createBottomDialog();
-        dialog.setContentView(view);
+        Logger.d("view create");
         mCourseTimePickerView.setWeekday(getArguments().getInt("weekday", 0));
         mCourseTimePickerView.setStartTime(getArguments().getInt("start", 0));
         mCourseTimePickerView.setEndTime(getArguments().getInt("end", 1));
@@ -57,6 +57,8 @@ public class CourseTimePickerDialogFragment extends BottomDialogFragment {
             mTvTitle.setText(
                     String.format("周%s第%d至第%d节", Constants.WEEKDAYS[weekday], start + 1, end + 1));
         });
+
+        Dialog dialog = createBottomDialog(view);
 
         mBtnEnter.setOnClickListener(v -> {
             dialog.dismiss();
@@ -77,7 +79,6 @@ public class CourseTimePickerDialogFragment extends BottomDialogFragment {
             OnPositiveButtonClickListener onPositiveButtonClickListener) {
         mOnPositiveButtonClickListener = onPositiveButtonClickListener;
     }
-
 
     public interface OnPositiveButtonClickListener {
         void onPositiveButtonClick(int weekday, int start, int end);

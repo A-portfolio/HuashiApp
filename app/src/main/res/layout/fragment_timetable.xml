@@ -13,7 +13,7 @@
         android:textColor="@color/grey_bottom_line"
         android:textSize="12sp"/>
 
-    <net.muxi.huashiapp.widget.TimeTable
+    <net.muxi.huashiapp.ui.schedule.TimeTable
         android:id="@+id/timetable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,14 +21,16 @@
 
     <net.muxi.huashiapp.ui.schedule.WeekSelectedView
         android:id="@+id/week_selected_view"
-        android:layout_marginTop="56dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:elevation="1dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"/>
 
     <RelativeLayout
         android:id="@+id/tool_layout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:elevation="1dp"
         android:background="@color/colorWhite">
 
         <TextView
@@ -54,10 +56,12 @@
             android:id="@+id/tv_current_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_select_week"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="9dp"
             android:textColor="#333333"
-            android:textSize="10sp"/>
+            android:textSize="10sp"
+            tools:text="当前周设置为"/>
 
         <ImageButton
             android:id="@+id/iv_menu"
@@ -70,5 +74,12 @@
             android:src="@drawable/ic_add_black_24dp"/>
 
     </RelativeLayout>
+
+    <net.muxi.huashiapp.ui.schedule.TableMenuView
+        android:id="@+id/table_menu_view"
+        android:layout_width="match_parent"
+        android:elevation="1dp"
+        android:visibility="invisible"
+        android:layout_height="match_parent"></net.muxi.huashiapp.ui.schedule.TableMenuView>
 
 </FrameLayout>

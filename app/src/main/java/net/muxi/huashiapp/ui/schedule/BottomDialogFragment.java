@@ -47,8 +47,9 @@ public class BottomDialogFragment extends DialogFragment {
         return dialog;
     }
 
-    public Dialog createBottomDialog(){
+    public Dialog createBottomDialog(View view){
         Dialog dialog = new Dialog(getContext(),R.style.BottomDialogStyle);
+        dialog.setContentView(view);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         WindowManager.LayoutParams wmlp = window.getAttributes();

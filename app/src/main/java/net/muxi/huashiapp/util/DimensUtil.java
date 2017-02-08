@@ -86,6 +86,11 @@ public class DimensUtil {
         return (int) (dpValue * scale + 0.5f);
     }
 
+    public static int dp2px(float dpValue){
+        final float scale = App.getContext().getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
     /**
      * 转化为全角
      * @param input

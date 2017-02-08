@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_order"
         tools:text="8:00"
-        android:textSize="@dimen/small_size"
+        android:textSize="8sp"
         android:layout_centerHorizontal="true"/>
 
     <View
