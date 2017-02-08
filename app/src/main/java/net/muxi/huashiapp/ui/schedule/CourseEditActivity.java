@@ -43,10 +43,6 @@ import rx.schedulers.Schedulers;
  */
 public class CourseEditActivity extends ToolbarActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.appbar_layout)
-    AppBarLayout mAppbarLayout;
     @BindView(R.id.et_course)
     EditText mEtCourse;
     @BindView(R.id.divider1)
@@ -109,7 +105,7 @@ public class CourseEditActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
         ButterKnife.bind(this);
-
+        setTitle("");
         isAdd = getIntent().getBooleanExtra("is_add", true);
         if (!isAdd) {
             mCourse = getIntent().getParcelableExtra("course");
@@ -256,7 +252,7 @@ public class CourseEditActivity extends ToolbarActivity {
                 pickerDialogFragment.show(getSupportFragmentManager(), "picker_time");
                 pickerDialogFragment.setOnPositiveButtonClickListener((weekday, start1, end) -> {
                     mWeekday = weekday;
-                    start = start1 + 1;
+                    start = start1;
                     duration = end - start1 + 1;
                     mEtTime.setText(String.format("周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
                             start + duration - 1));
@@ -267,6 +263,7 @@ public class CourseEditActivity extends ToolbarActivity {
 
     @OnClick(R.id.btn_ensure)
     public void onClick() {
+        // TODO: 17/2/8 update timetable api  
 //        addCourse(mCourse,);
     }
 }

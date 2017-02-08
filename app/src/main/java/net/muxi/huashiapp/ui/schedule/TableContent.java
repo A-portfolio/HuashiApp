@@ -6,18 +6,20 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
 
+import com.tencent.smtt.export.external.interfaces.IX5WebSettings;
+
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.util.DimensUtil;
-import net.muxi.huashiapp.util.PreferenceUtil;
+import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.TimeTableUtil;
-import net.muxi.huashiapp.widget.TimeTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,8 @@ public class TableContent extends FrameLayout {
     private OnCourseClickListener mOnCourseClickListener;
 
     private List<Course> mCourseList = new ArrayList<>();
+    
+    private TextView clickEventTarget = null;
 
     public TableContent(Context context) {
         this(context, null);
@@ -44,6 +48,7 @@ public class TableContent extends FrameLayout {
         mScroller = new Scroller(context);
         mContext = context;
         this.setBackgroundColor(Color.WHITE);
+        setWillNotDraw(false);
     }
 
     @Override
@@ -53,16 +58,17 @@ public class TableContent extends FrameLayout {
         //绘制背景分割线
         Path path = new Path();
         for (int i = 0; i < 14; i++) {
-            path.moveTo(0, TimeTable.COURSE_TIME_HEIGHT * (i + 1));
-            path.lineTo(TimeTable.WEEK_DAY_WIDTH * 7, TimeTable.COURSE_TIME_HEIGHT * (i + 1));
+            path.moveTo(0, TimeTable.COURSE_TIME_HEIGHT * (i + 1) - DimensUtil.dp2px(0.5f));
+            path.lineTo(TimeTable.WEEK_DAY_WIDTH * 7, TimeTable.COURSE_TIME_HEIGHT * (i + 1) - DimensUtil.dp2px(0.5f));
         }
         for (int i = 0; i < 7; i++) {
-            path.moveTo(TimeTable.WEEK_DAY_WIDTH * (i + 1), 0);
-            path.moveTo(TimeTable.WEEK_DAY_WIDTH * (i + 1), TimeTable.COURSE_TIME_HEIGHT * 14);
+            path.moveTo(TimeTable.WEEK_DAY_WIDTH * (i + 1) - DimensUtil.dp2px(0.5f) , 0);
+            path.lineTo(TimeTable.WEEK_DAY_WIDTH * (i + 1) - DimensUtil.dp2px(0.5f), TimeTable.COURSE_TIME_HEIGHT * 14);
         }
         Paint p = new Paint();
         p.setColor(getResources().getColor(R.color.divider));
         p.setStrokeWidth(DimensUtil.dp2px(1));
+        p.setStyle(Paint.Style.STROKE);
         p.setAntiAlias(true);
         canvas.drawPath(path, p);
     }
@@ -70,7 +76,10 @@ public class TableContent extends FrameLayout {
     @Override
     public void computeScroll() {
         super.computeScroll();
-
+        if (mScroller.computeScrollOffset()){
+            scrollTo(mScroller.getCurrX(),mScroller.getCurrY());
+            postInvalidate();
+        }
     }
 
     /**
@@ -94,6 +103,9 @@ public class TableContent extends FrameLayout {
 
     public void addCourseView(Course course,int selectWeek) {
         TextView tvCourse = new TextView(mContext);
+        tvCourse.setTextColor(Color.WHITE);
+        tvCourse.setTextSize(TypedValue.COMPLEX_UNIT_SP,10);
+        tvCourse.setPadding(DimensUtil.dp2px(10),DimensUtil.dp2px(8),DimensUtil.dp2px(10),DimensUtil.dp2px(8));
         LayoutParams courseParams = new LayoutParams(TimeTable.COURSE_WIDTH,
                 course.getDuring() * TimeTable.COURSE_TIME_HEIGHT - 3);
         courseParams.setMargins(
@@ -106,16 +118,27 @@ public class TableContent extends FrameLayout {
                     course.getPlace() + "\n" +
                     course.getTeacher());
         }else {
-            tvCourse.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBg(course.getColor())));
-            tvCourse.setText(ellipseNotCurCourse(course.getCourse()));
+            tvCourse.setBackground(getResources().getDrawable(R.drawable.shape_grey));
+            tvCourse.setText(ellipseNotCurCourse(course.getCourse()) + "\n\n@" +
+            course.getPlace() + "\n" +
+            course.getTeacher());
         }
         this.addView(tvCourse, courseParams);
-        tvCourse.setOnClickListener(v -> {
-            if (mOnCourseClickListener != null){
-                mOnCourseClickListener.onCourseClick(course);
+
+        // TODO: 17/2/8 course textview click event
+        tvCourse.setOnTouchListener((view, motionEvent) -> {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
             }
+            return false;
         });
+//        tvCourse.setOnClickListener(v -> {
+//            if (mOnCourseClickListener != null){
+//                mOnCourseClickListener.onCourseClick(course);
+//            }
+//        });
     }
+
+
 
     public void setOnCourseClickListener(OnCourseClickListener courseClickListener){
         mOnCourseClickListener = courseClickListener;
@@ -136,7 +159,7 @@ public class TableContent extends FrameLayout {
     public String ellipseNotCurCourse(String course){
         String s = "非本周-";
         if (course.length() > 4){
-            return s + course.substring(0,3);
+            return s + course.substring(0,3) + "...";
         }
         return s + course;
     }

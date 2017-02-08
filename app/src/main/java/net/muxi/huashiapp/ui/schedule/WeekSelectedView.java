@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
@@ -24,7 +25,8 @@ public class WeekSelectedView extends GridLayout {
     private int selectedWeekPos = 21;
     private OnWeekSelectedListener mOnWeekSelectedListener;
 
-    public static final int SELECTED_VIEW_HEIGHT = (DimensUtil.getScreenWidth() - DimensUtil.dp2px(32)) / 7;
+    public static final int SELECTED_VIEW_HEIGHT = (DimensUtil.getScreenWidth() - DimensUtil.dp2px(32)) / 7 - DimensUtil.dp2px(24);
+    public static final int SELECTED_VIEW_MARGIN = DimensUtil.dp2px(12);
 
     public WeekSelectedView(Context context) {
         this(context, null);
@@ -47,16 +49,17 @@ public class WeekSelectedView extends GridLayout {
             mTvWeeks[i].setText((i + 1) + "");
             mTvWeeks[i].setTextColor(getResources().getColor(android.R.color.primary_text_light));
             mTvWeeks[i].setGravity(Gravity.CENTER);
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(SELECTED_VIEW_HEIGHT,SELECTED_VIEW_HEIGHT);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(SELECTED_VIEW_HEIGHT,SELECTED_VIEW_HEIGHT);
+            params.setMargins(SELECTED_VIEW_MARGIN,SELECTED_VIEW_MARGIN,SELECTED_VIEW_MARGIN,SELECTED_VIEW_MARGIN);
             this.addView(mTvWeeks[i],params);
             final int selectedWeek = i;
             mTvWeeks[i].setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (mOnWeekSelectedListener != null) {
-                        mOnWeekSelectedListener.onWeekSelected(selectedWeek);
+                        mOnWeekSelectedListener.onWeekSelected(selectedWeek + 1);
                     }
-                    setSelectedWeek(selectedWeek);
+                    setSelectedWeek(selectedWeek + 1);
                     slideUp();
                 }
             });
@@ -68,9 +71,11 @@ public class WeekSelectedView extends GridLayout {
     public void setSelectedWeek(int week) {
         if (selectedWeekPos != 21){
             mTvWeeks[selectedWeekPos].setBackground(null);
+            mTvWeeks[selectedWeekPos].setTextColor(Color.BLACK);
         }
-        mTvWeeks[week].setBackgroundResource(R.drawable.bg_selected_week);
-        selectedWeekPos = week;
+        mTvWeeks[week - 1].setBackgroundResource(R.drawable.bg_selected_week);
+        mTvWeeks[week - 1].setTextColor(Color.WHITE);
+        selectedWeekPos = week - 1;
     }
 
     public int getSelectedWeek(){
@@ -78,7 +83,7 @@ public class WeekSelectedView extends GridLayout {
     }
 
     public void slideUp(){
-        slide(DimensUtil.dp2px(SELECTED_VIEW_HEIGHT * 3));
+        slide(-DimensUtil.dp2px(SELECTED_VIEW_HEIGHT * 3));
     }
 
     public void slideDown(){
@@ -90,7 +95,7 @@ public class WeekSelectedView extends GridLayout {
         if (toY < 0){
             animation = new TranslateAnimation(0,0,0,toY);
         }else {
-            animation = new TranslateAnimation(0,0,toY,0);
+            animation = new TranslateAnimation(0,0,-DimensUtil.dp2px((SELECTED_VIEW_HEIGHT + DimensUtil.dp2px(24))* 3),0);
         }
         animation.setDuration(250);
         animation.setFillAfter(true);

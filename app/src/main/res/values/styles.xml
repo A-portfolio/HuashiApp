@@ -86,4 +86,8 @@
         <item name="android:windowExitAnimation">@anim/dialog_dismiss</item>
     </style>
 
+    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar" >
+        <item name="android:textColorPrimary">@color/colorAccent</item>
+    </style>
+
 </resources>

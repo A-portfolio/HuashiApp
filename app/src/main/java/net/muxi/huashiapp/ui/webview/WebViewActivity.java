@@ -63,8 +63,6 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     private static final String WEB_ICON_URL = "icon_url";
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.appbar_layout)
-    AppBarLayout mAppbarLayout;
     @BindView(R.id.webview)
     WebView mWebview;
     @BindView(R.id.custom_progress_bar)

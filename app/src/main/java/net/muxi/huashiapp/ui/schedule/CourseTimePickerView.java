@@ -11,11 +11,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NumberPickerBgHelper;
 
 import java.util.Arrays;
@@ -40,7 +42,7 @@ public class CourseTimePickerView extends LinearLayout {
 
     public static final int START_LINE_WIDTH = 8 * 3;
     public static final String[] WEEKDAYS = {"周一","周二","周三","周四","周五","周六","周日"};
-    public String[] COURSE_TIME;
+    public String[] COURSE_TIME = new String[14];
 
     public CourseTimePickerView(Context context) {
         this(context, null);
@@ -48,8 +50,8 @@ public class CourseTimePickerView extends LinearLayout {
 
     public CourseTimePickerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        LayoutInflater.from(context).inflate(R.layout.view_time_picker, this, true);
-        ButterKnife.bind(this,this);
+        inflate(context,R.layout.view_time_picker, this);
+        ButterKnife.bind(this);
         //invoke onDraw
         setWillNotDraw(false);
         initView();
@@ -79,11 +81,18 @@ public class CourseTimePickerView extends LinearLayout {
             }
         });
         mNpStart.setOnValueChangedListener((numberPicker, i, i1) -> {
+            if (i1 > mNpEnd.getValue()){
+                i1 = mNpEnd.getValue();
+            }
             mOnValueChangeListener.onValueChange(mNpWeekday.getValue(),i1,mNpEnd.getValue());
         });
         mNpEnd.setOnValueChangedListener((numberPicker, i, i1) -> {
+            if (i1 < mNpStart.getValue()){
+                i1 = mNpStart.getValue();
+            }
             mOnValueChangeListener.onValueChange(mNpWeekday.getValue(),mNpStart.getValue(),i1);
         });
+
     }
 
     public int getWeekday(){

@@ -19,11 +19,8 @@ import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.TimeTableUtil;
-import net.muxi.huashiapp.widget.TimeTable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,14 +49,17 @@ public class TimetableFragment extends BaseFragment {
     ImageButton mIvMenu;
     @BindView(R.id.tool_layout)
     RelativeLayout mToolLayout;
+    @BindView(R.id.table_menu_view)
+    TableMenuView mTableMenuView;
 
-    private TableMenuView mTableMenuView = new TableMenuView(App.sContext);
 
     /**
      * 本学期所有的课程
      */
     private List<Course> mCourses;
 
+    //false表示初始状态
+    private boolean selectedIvStatus = false;
     private int selectedWeek;
     private int curWeek;
 
@@ -97,22 +97,25 @@ public class TimetableFragment extends BaseFragment {
     private void initView() {
         if (mCourses.size() == 0) {
             loadTable();
-            Logger.d("course size is 0");
-        }else {
+        } else {
             renderCourseView(mCourses);
         }
+
+        Logger.d(TimeTableUtil.getCurWeek() + "");
         renderCurweekView(TimeTableUtil.getCurWeek());
         renderSelectedWeekView(TimeTableUtil.getCurWeek());
     }
 
     private void initListener() {
         mWeekSelectedView.setOnWeekSelectedListener(week -> {
+            rotateSelectView();
             selectedWeek = week;
             renderCourseView(mCourses);
             renderSelectedWeekView(week);
         });
         mIvMenu.setOnClickListener(v -> {
             mTableMenuView.show();
+            mTableMenuView.setCurweek(curWeek);
         });
         mTimetable.getTableContent().setOnCourseClickListener(course -> {
 
@@ -136,15 +139,24 @@ public class TimetableFragment extends BaseFragment {
      * 渲染显示的课程： 更改日期，显示课程
      */
     private void renderCourseView(List<Course> courseList) {
-        mTimetable.getWeekLayout().setWeekDate(0);
-        mTimetable.getTableContent().updateCourses(courseList,selectedWeek);
+        mTimetable.getWeekLayout().setWeekDate(selectedWeek - curWeek);
+        mTimetable.getTableContent().updateCourses(courseList, selectedWeek);
     }
 
     private void updateDB(List<Course> courseList) {
         dao.deleteAllCourse();
-        for (Course course: courseList){
+        for (Course course : courseList) {
             dao.insertCourse(course);
         }
+    }
+
+    private void rotateSelectView() {
+        if (!selectedIvStatus) {
+            mIvSelectWeek.setRotation(180);
+        }else {
+            mIvSelectWeek.setRotation(0);
+        }
+        selectedIvStatus = !selectedIvStatus;
     }
 
 //    private List<Course> getCourseListInSelectedWeek(int week) {
@@ -198,8 +210,13 @@ public class TimetableFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.tv_select_week:
             case R.id.iv_select_week:
-                mWeekSelectedView.slideDown();
-                mWeekSelectedView.setSelectedWeek(selectedWeek);
+                if (!selectedIvStatus) {
+                    mWeekSelectedView.slideDown();
+                    mWeekSelectedView.setSelectedWeek(selectedWeek);
+                } else {
+                    mWeekSelectedView.slideUp();
+                }
+                rotateSelectView();
                 break;
         }
     }

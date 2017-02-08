@@ -2,6 +2,7 @@ package net.muxi.huashiapp.ui.schedule;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -88,6 +89,7 @@ public class SelectDialogFragment extends BottomDialogFragment {
                     setSingleWeeks();
                     setMultiSelectButtonBg();
                     mTvSingleWeek.setBackgroundResource(R.drawable.bg_multi_select);
+                    mTvSingleWeek.setTextColor(Color.WHITE);
                 } else {
                     setAllWeeks(false);
                     mTvSingleWeek.setBackground(null);
@@ -102,6 +104,7 @@ public class SelectDialogFragment extends BottomDialogFragment {
                     setDoubleWeeks();
                     setMultiSelectButtonBg();
                     mTvDoubleWeek.setBackgroundResource(R.drawable.bg_multi_select);
+                    mTvDoubleWeek.setTextColor(Color.WHITE);
                 } else {
                     setAllWeeks(false);
                     mTvDoubleWeek.setBackground(null);
@@ -115,6 +118,7 @@ public class SelectDialogFragment extends BottomDialogFragment {
                     setAllWeeks(true);
                     setMultiSelectButtonBg();
                     mTvAllWeek.setBackgroundResource(R.drawable.bg_multi_select);
+                    mTvAllWeek.setTextColor(Color.WHITE);
                 } else {
                     setAllWeeks(false);
                     mTvAllWeek.setBackground(null);
@@ -133,6 +137,7 @@ public class SelectDialogFragment extends BottomDialogFragment {
                     WEEK_MARGIN_VERTICAL);
             if (weekList.contains(i + 1)) {
                 mTvWeeks[i].setBackgroundResource(R.drawable.bg_selected_week);
+                mTvWeeks[i].setTextColor(Color.WHITE);
             }
             mGridLayout.addView(mTvWeeks[i], params);
             mTvWeeks[i].setOnClickListener(new View.OnClickListener() {
@@ -140,8 +145,10 @@ public class SelectDialogFragment extends BottomDialogFragment {
                 public void onClick(View view) {
                     if (view.getBackground() == null) {
                         view.setBackgroundResource(R.drawable.bg_selected_week);
+                        ((TextView) view).setTextColor(Color.WHITE);
                     } else {
                         view.setBackground(null);
+                        ((TextView) view).setTextColor(getResources().getColor(R.color.divider));
                     }
                     mTvSingleWeek.setBackground(null);
                     mTvDoubleWeek.setBackground(null);
@@ -159,9 +166,22 @@ public class SelectDialogFragment extends BottomDialogFragment {
         ButterKnife.bind(this, view);
 //        Dialog dialog = super.onCreateDialog(savedInstanceState);
 //        Dialog dialog = new Dialog(getContext(), R.style.BottomDialogStyle);
-        Dialog dialog = createBottomDialog();
+//        Dialog dialog = createBottomDialog();
         initWeekLayout();
-        dialog.setContentView(view);
+        Dialog dialog = createBottomDialog(view);
+//        Dialog dialog = new Dialog(getContext(),R.style.BottomDialogStyle);
+//        //setContentView需要在 window 属性前调用
+//        dialog.setContentView(view);
+//
+//        Window window = dialog.getWindow();
+//        window.setGravity(Gravity.BOTTOM);
+//        WindowManager.LayoutParams wmlp = window.getAttributes();
+//        wmlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+//        wmlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+//        window.setAttributes(wmlp);
+//        window.setBackgroundDrawableResource(R.drawable.bg_bottom_dialog);
+
+
 //        dialog.setContentView(view);
 
 //        Window window = dialog.getWindow();
@@ -320,7 +340,6 @@ public class SelectDialogFragment extends BottomDialogFragment {
             PositiveButtonClickListener positiveButtonClickListener) {
         mPositiveButtonClickListener = positiveButtonClickListener;
     }
-
 
     public interface PositiveButtonClickListener {
         void onPositiveButtonClickListener(ArrayList<Integer> weeks, String displayWeeks);
