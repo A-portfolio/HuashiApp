@@ -63,6 +63,11 @@
         <activity android:name="net.muxi.huashiapp.ui.SettingActivity"
                   android:launchMode="singleTask"/>
 
+        <activity android:name=".ui.credit.SelectCreditActivity"/>
+
+        <activity android:name=".ui.credit.CreditResultActivity"/>
+
+        <activity android:name=".ui.credit.CreditGradeActivity"/>
 
         <activity android:name="net.muxi.huashiapp.ui.schedule.CourseEditActivity"
                   android:launchMode="singleTask"/>

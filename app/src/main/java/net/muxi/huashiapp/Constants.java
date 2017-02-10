@@ -49,6 +49,14 @@ public class Constants {
             "第二十一周"
     };
 
+    public static final String[] CREDIT_CATEGORY = {
+            "专业必修课",
+            "专业选修课",
+            "通识必修课",
+            "通识选修课 ",
+            "通识核心课",
+    };
+
     public static final int WEEKS_LENGTH = 21;
 
     public static final int ANIMATION_DURATION = 100;

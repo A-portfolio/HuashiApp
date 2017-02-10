@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:paddingLeft="24dp"
-              android:paddingRight="24dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp">
 
-    <NumberPicker
+    <net.muxi.huashiapp.ui.schedule.LargeSizeNumberPicker
         android:id="@+id/np_weekday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="64dp"
+        android:descendantFocusability="blocksDescendants"
         android:theme="@style/AppTheme.Picker"/>
 
-    <NumberPicker
+    <net.muxi.huashiapp.ui.schedule.LargeSizeNumberPicker
         android:id="@+id/np_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginRight="24dp"
+        android:descendantFocusability="blocksDescendants"
         android:theme="@style/AppTheme.Picker"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_centerVertical="true"
         android:layout_marginRight="24dp"
+        android:layout_toRightOf="@+id/np_start"
         android:text="至"/>
 
-    <NumberPicker
+    <net.muxi.huashiapp.ui.schedule.LargeSizeNumberPicker
         android:id="@+id/np_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:descendantFocusability="blocksDescendants"
         android:theme="@style/AppTheme.Picker"/>
 
-</LinearLayout>
+</RelativeLayout>

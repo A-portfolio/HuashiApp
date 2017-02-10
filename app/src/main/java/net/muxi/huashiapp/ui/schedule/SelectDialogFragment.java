@@ -5,14 +5,11 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
@@ -20,6 +17,7 @@ import android.widget.TextView;
 
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.widget.BottomDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
