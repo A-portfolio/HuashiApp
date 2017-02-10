@@ -9,7 +9,6 @@
     android:orientation="vertical"
     tools:context="net.muxi.huashiapp.ui.main.MainActivity">
 
-
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="match_parent"

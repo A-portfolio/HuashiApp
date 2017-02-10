@@ -5,13 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.widget.BottomDialogFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +47,6 @@ public class CourseTimePickerDialogFragment extends BottomDialogFragment {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_select_course_time,
                 null);
         ButterKnife.bind(this, view);
-        Logger.d("view create");
         mCourseTimePickerView.setWeekday(getArguments().getInt("weekday", 0));
         mCourseTimePickerView.setStartTime(getArguments().getInt("start", 0));
         mCourseTimePickerView.setEndTime(getArguments().getInt("end", 1));

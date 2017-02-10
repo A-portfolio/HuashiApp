@@ -38,8 +38,8 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void initView() {
-        getSupportFragmentManager().beginTransaction().add(MainFragment.newInstance(),
-                "main").commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.content_layout,
+                MainFragment.newInstance()).commit();
         BottomNavigationHelper.disableShiftMode(mNavView);
     }
 
@@ -50,11 +50,11 @@ public class MainActivity extends BaseActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_main:
-//                break;
+            case R.id.action_main:
+                showFragment(MainFragment.newInstance());
+                break;
             case R.id.action_timetable:
                 Logger.d(TextUtils.isEmpty(App.sUser.sid) + "");
-                Logger.d("navigation");
                 if (TextUtils.isEmpty(App.sUser.sid)) {
                     LoginActivity.start(MainActivity.this);
                 } else {
@@ -70,6 +70,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     public void showFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_layout, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_layout,
+                fragment).commit();
     }
 }

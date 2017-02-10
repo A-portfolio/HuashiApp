@@ -12,6 +12,7 @@ public class Scores {
      * jxb_id : 2681122D7EBD18E8E0531E50A8C0CCFD
      * course : 信息管理与信息系统专业英语
      * type : 文
+     *
      */
 
     private String category;
@@ -20,6 +21,16 @@ public class Scores {
     private String jxb_id;
     private String course;
     private String type;
+    private String kcxzmc;
+
+    public String getKcxzmc() {
+        return kcxzmc;
+    }
+
+    public void setKcxzmc(String kcxzmc) {
+        this.kcxzmc = kcxzmc;
+    }
+
 
     public String getCategory() {
         return category;

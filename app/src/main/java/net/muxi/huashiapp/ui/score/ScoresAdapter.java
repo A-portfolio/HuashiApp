@@ -97,10 +97,10 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
         holder.mRootLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment curFragment = ((BaseActivity) mContext).getSupportFragmentManager().findFragmentById(
-
-                        R.id.fragment_layout);
-                ((ScoreDetailFragment) curFragment).loadSpecifiedScore(position);
+//                Fragment curFragment = ((BaseActivity) mContext).getSupportFragmentManager().findFragmentById(
+//
+//                        R.id.fragment_layout);
+//                ((ScoreDetailFragment) curFragment).loadSpecifiedScore(position);
                 if (!mList.contains(position)) {
                     scaleSpace(holder.mSpaceAnim, SPACE_MIN_HEIGHT, SPACE_MAX_HEIGHT);
                     Logger.d("load more");

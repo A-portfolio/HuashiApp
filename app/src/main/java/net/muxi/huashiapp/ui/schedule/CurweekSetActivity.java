@@ -4,20 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.TimeTableUtil;
 
 import butterknife.BindView;
@@ -46,14 +42,15 @@ public class CurweekSetActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         setTitle("选择当前周");
         String[] s = new String[Constants.WEEKS_LENGTH];
-        for (int i = 0;i < Constants.WEEKS_LENGTH;i ++){
-            if (i < 9){
-                s[i] = String.format("第0%d周",i + 1);
-            }else {
-                s[i] = String.format("第%d周",i + 1);
+        for (int i = 0; i < Constants.WEEKS_LENGTH; i++) {
+            if (i < 9) {
+                s[i] = String.format("第0%d周", i + 1);
+            } else {
+                s[i] = String.format("第%d周", i + 1);
             }
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,R.layout.item_curweek_set,s);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+                R.layout.item_curweek_set, s);
         mLv.setDivider(null);
         mLv.setAdapter(arrayAdapter);
         mLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

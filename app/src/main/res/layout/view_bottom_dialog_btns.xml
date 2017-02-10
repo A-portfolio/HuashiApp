@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="56dp">
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_weight="1"
+        android:background="@null"
+        android:text="取消"
+        android:textColor="@color/colorBottomDialogText"
+    />
+
+    <Button
+        android:id="@+id/btn_enter"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_weight="1"
+        android:background="@null"
+        android:text="确认"
+        android:textColor="@color/colorBottomDialogText"
+    />
+</LinearLayout>
