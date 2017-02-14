@@ -15,6 +15,7 @@ import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.PreferenceUtil;
+import net.muxi.huashiapp.util.ToastUtil;
 
 import java.util.List;
 
@@ -77,25 +78,36 @@ public class CreditResultActivity extends ToolbarActivity {
             if (i % 2 == 1) {
                 term = 12;
             }
-            CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(App.sUser),
-                    String.valueOf(start + i / 2), String.valueOf(term))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(scores -> {
-                        counter++;
-                        addCredit(scores);
-                        if (counter == length) {
-                            float all = zb + zx + tb + tx + th;
-                            mTvZb.setText(String.valueOf(zb));
-                            mTvZx.setText(String.valueOf(zx));
-                            mTvTb.setText(String.valueOf(tb));
-                            mTvTx.setText(String.valueOf(tx));
-                            mTvTh.setText(String.valueOf(th));
-                            mTvCreditAll.setText(String.valueOf(all));
-                        }
-                    });
+            loadCredit(String.valueOf(start + i / 2), String.valueOf(term), 0);
         }
 
+    }
+
+    public void loadCredit(String year, String term, final int reloadNum) {
+        if (reloadNum > 4){
+            ToastUtil.showShort("学校服务器异常");
+            return;
+        }
+        CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(App.sUser),
+                String.valueOf(year), String.valueOf(term))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(scores -> {
+                    counter++;
+                    addCredit(scores);
+                    if (counter == length) {
+                        float all = zb + zx + tb + tx + th;
+                        mTvZb.setText(String.valueOf(zb));
+                        mTvZx.setText(String.valueOf(zx));
+                        mTvTb.setText(String.valueOf(tb));
+                        mTvTx.setText(String.valueOf(tx));
+                        mTvTh.setText(String.valueOf(th));
+                        mTvCreditAll.setText(String.valueOf(all));
+                    }
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    loadCredit(year, term, reloadNum + 1);
+                });
     }
 
     public void addCredit(List<Scores> scores) {

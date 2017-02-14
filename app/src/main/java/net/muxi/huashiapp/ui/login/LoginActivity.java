@@ -103,7 +103,7 @@ public class LoginActivity extends BaseActivity {
         if (!NetStatus.isConnected()) {
             ToastUtil.showLong(NETCONNECT_FAILED);
         } else {
-            showProgressBarDialog(true,getString(R.string.tip_logining));
+//            showLoading(true,getString(R.string.tip_logining));
             checkAccount();
         }
 
@@ -140,14 +140,12 @@ public class LoginActivity extends BaseActivity {
                         Logger.d("403 ");
                         e.printStackTrace();
                         ToastUtil.showShort(SERVICE_PROBLEM);
-                        showProgressBarDialog(false);
                     }
 
                     @Override
                     public void onNext(Response<VerifyResponse> response) {
 //                        if (response.code() == 200) {
 
-                        showProgressBarDialog(false);
                         if (response.code() == 200) {
                             Logger.d("200");
                             PreferenceUtil.saveString(PreferenceUtil.STUDENT_ID,mUser.getSid());

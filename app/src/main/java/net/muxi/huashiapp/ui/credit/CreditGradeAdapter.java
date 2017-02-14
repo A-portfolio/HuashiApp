@@ -23,12 +23,13 @@ import butterknife.ButterKnife;
 
 public class CreditGradeAdapter extends RecyclerView.Adapter<CreditGradeAdapter.ViewHolder> {
 
+
     private List<Scores> mScoresList;
     private List<Integer> checkedList = new ArrayList<>();
 
     public CreditGradeAdapter(List<Scores> scoresList) {
         mScoresList = scoresList;
-        for (int i =0;i < mScoresList.size();i ++){
+        for (int i = 0; i < mScoresList.size(); i++) {
             checkedList.add(i);
         }
     }
@@ -43,19 +44,47 @@ public class CreditGradeAdapter extends RecyclerView.Adapter<CreditGradeAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mTvCourse.setText(mScoresList.get(position).getCourse());
-        holder.mTvCategory.setText(mScoresList.get(position).getKcxzmc());
-        holder.mTvCredit.setText(mScoresList.get(position).getCredit());
+        holder.mTvCategory.setText(ScoreUtil.toCategory(mScoresList.get(position).getKcxzmc()));
+        holder.mTvCredit.setText(String.format("学分：%s",mScoresList.get(position).getCredit()));
         holder.mTvProperty.setText(mScoresList.get(position).getType());
+        holder.mTvScore.setText(String.format("总成绩：%s",mScoresList.get(position).getGrade()));
+        if (checkedList.contains(position)) {
+            holder.mIvChecked.setVisibility(View.VISIBLE);
+            if (Float.parseFloat(mScoresList.get(position).getGrade()) >= 60.0) {
+                holder.mTvProperty.setBackgroundResource(R.drawable.shape_green);
+            }else {
+                holder.mTvProperty.setBackgroundResource(R.drawable.shape_red);
+            }
+        } else {
+            holder.mIvChecked.setVisibility(View.INVISIBLE);
+            holder.mTvProperty.setBackgroundResource(R.drawable.shape_unchecked);
+        }
         holder.mLayoutItem.setOnClickListener(v -> {
-            if (checkedList.contains(position)){
-                checkedList.remove((Object)position);
-//                holder.mtv
+            if (checkedList.contains(position)) {
+                checkedList.remove((Object) position);
+                holder.mIvChecked.setVisibility(View.INVISIBLE);
+                holder.mTvProperty.setBackgroundResource(R.drawable.shape_unchecked);
+            } else {
+                checkedList.add(position);
+                holder.mIvChecked.setVisibility(View.VISIBLE);
+                if (Float.parseFloat(mScoresList.get(position).getGrade()) >= 60.0) {
+                    holder.mTvProperty.setBackgroundResource(R.drawable.shape_green);
+                }else {
+                    holder.mTvProperty.setBackgroundResource(R.drawable.shape_red);
+                }
             }
         });
     }
 
-    public List<Integer> getCheckedList(){
+    public List<Integer> getCheckedList() {
         return checkedList;
+    }
+
+    public void setAllChecked() {
+        checkedList.clear();
+        for (int i = 0; i < mScoresList.size(); i++) {
+            checkedList.add(i);
+        }
     }
 
     @Override
@@ -77,6 +106,8 @@ public class CreditGradeAdapter extends RecyclerView.Adapter<CreditGradeAdapter.
         TextView mTvCredit;
         @BindView(R.id.iv_checked)
         ImageView mIvChecked;
+        @BindView(R.id.tv_score)
+        TextView mTvScore;
 
         public ViewHolder(View itemView) {
             super(itemView);

@@ -80,7 +80,7 @@ public interface RetrofitService {
                                        @Query("xnm") String year,
                                        @Query("xqm") String term);
 
-    @GET("grade/detail/search")
+    @GET("/grade/detail/search")
     Observable<DetailScores> getDetailScores(@Header("Authorization") String verification,
                                              @Query("xnm") String year,
                                              @Query("xqm") String term,

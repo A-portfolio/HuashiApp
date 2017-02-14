@@ -25,6 +25,8 @@
 
     <string name="calculate">计算</string>
 
+    <string name="library">图书馆</string>
+
     <string name="notify_title_score">华师匣子</string>
     <string name="notify_content_score">匣客，新成绩已出，赶紧去查看吧！</string>
     <string name="notify_title_course">华师匣子</string>

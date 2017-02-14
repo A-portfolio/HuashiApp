@@ -4,30 +4,47 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-    <include layout="@layout/view_toolbar"
-             android:id="@+id/view_toolbar"/>
-
-    <Space
-        android:id="@+id/center_space"
-        android:layout_width="1px"
-        android:layout_height="1px"
-        android:layout_centerInParent="true"/>
 
     <EditText
-        android:id="@+id/edit_search_view"
+        android:id="@+id/et_search"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/library_searchview_height"
-        android:layout_above="@+id/center_space"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_toLeftOf="@+id/btn_search"
-        android:hint="@string/lib_search_tip"/>
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/shape_disabled"
+        android:lines="1"
+        android:imeOptions="actionSearch"
+        android:drawableLeft="@drawable/ic_back"
+        android:drawablePadding="36dp"
+        android:drawableRight="@drawable/search_close"
+        android:hint="输入书名或作者"
+        android:paddingLeft="12dp"
+        android:paddingRight="20dp"
+    />
 
-    <Button android:id="@+id/btn_search"
-            android:layout_width="@dimen/library_searchview_height"
-            android:layout_height="@dimen/library_searchview_height"
-            android:layout_above="@+id/center_space"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_search"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="18dp"
+        android:text="最近搜索"/>
+
+    <TextView
+        android:id="@+id/tv_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/et_search"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="18dp"
+        android:text="清除"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_height="match_parent"
+        android:id="@+id/lv"
+        android:layout_below="@+id/tv_clear"/>
 
 </RelativeLayout>

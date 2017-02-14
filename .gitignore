@@ -6,7 +6,10 @@
 .DS_Store
 /build
 /captures
-/freeline
 /projectFilesBackup
 /.idea
 
+# freeline 
+freeline.py
+freeline/
+freeline_project_description.json

@@ -3,7 +3,9 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent" android:layout_height="72dp"
                 android:id="@+id/layout_item"
-                android:padding="16dp">
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                >
 
     <TextView
         android:id="@+id/tv_property"
@@ -21,6 +23,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/tv_property"
+        android:layout_toLeftOf="@+id/iv_checked"
+        android:layout_marginRight="16dp"
+        android:ellipsize="end"
         android:textColor="?android:attr/textColorPrimary"
         tools:text="毛概"/>
 
@@ -35,12 +40,24 @@
         tools:text="专选"/>
 
     <TextView
-        android:id="@+id/tv_credit"
+        android:id="@+id/tv_score"
         android:layout_width="wrap_content"
+        android:textSize="12sp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/tv_property"
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@+id/tv_category"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="总成绩:"/>
+
+    <TextView
+        android:id="@+id/tv_credit"
+        android:layout_width="wrap_content"
+        android:textSize="12sp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tv_property"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/tv_score"
         android:textColor="?android:attr/textColorPrimary"
         tools:text="学分:"/>
 

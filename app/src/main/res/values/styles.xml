@@ -6,11 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">@color/green</item>
     </style>
 
     <style name="ActionbarAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -89,6 +88,13 @@
 
     <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="android:textColorPrimary">@color/colorAccent</item>
+    </style>
+    
+    <style name="LightBackgroundDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/light_dialog_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">false</item>
     </style>
 
 </resources>

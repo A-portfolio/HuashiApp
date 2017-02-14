@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.common.base;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import com.zhuge.analysis.stat.ZhugeSDK;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.widget.LoadingDialog;
 
 /**
  * Created by ybao on 16/4/19.
@@ -23,6 +25,7 @@ public class BaseActivity extends AppCompatActivity{
     protected ActionBar mActionBar;
     private ProgressDialog mProgressDialog;
 
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,27 +48,21 @@ public class BaseActivity extends AppCompatActivity{
 
     public void setContentView(int layoutResId){
         super.setContentView(layoutResId);
+        getWindow().getDecorView().setBackgroundColor(Color.WHITE);
     }
 
-    /**
-     * show the progressBarDialog with message
-     * @param show
-     * @param message
-     */
-    public void showProgressBarDialog(boolean show,String message){
-        if (show){
-            mProgressDialog.setMessage(message);
-            mProgressDialog.show();
-        }else {
-            mProgressDialog.hide();
+    public void showLoading(){
+        Logger.d("showloading");
+        if (mLoadingDialog == null){
+            mLoadingDialog = new LoadingDialog();
         }
+        mLoadingDialog.show(getSupportFragmentManager(),"loading");
     }
 
-    public void showProgressBarDialog(boolean show){
-        if (show){
-            mProgressDialog.show();
-        }else {
-            mProgressDialog.hide();
+    public void hideLoading(){
+        Logger.d("hideloading");
+        if (mLoadingDialog != null){
+            mLoadingDialog.dismiss();
         }
     }
 

@@ -53,8 +53,14 @@ public class Constants {
             "专业必修课",
             "专业选修课",
             "通识必修课",
-            "通识选修课 ",
+            "通识选修课",
             "通识核心课",
+    };
+
+    public static final String[] TERMS = {
+            "3",
+            "12",
+            "16"
     };
 
     public static final int WEEKS_LENGTH = 21;

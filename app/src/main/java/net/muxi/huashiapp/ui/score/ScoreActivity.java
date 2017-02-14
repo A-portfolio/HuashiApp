@@ -1,221 +1,107 @@
 package net.muxi.huashiapp.ui.score;
-//
-//import android.os.Bundle;
-//import android.support.annotation.Nullable;
-//import android.support.v4.app.FragmentManager;
-//import android.support.v4.app.FragmentTransaction;
-//import android.support.v7.widget.AppCompatRadioButton;
-//import android.support.v7.widget.Toolbar;
-//import android.view.MenuItem;
-//import android.widget.Button;
-//import android.widget.FrameLayout;
-//import android.widget.RadioGroup;
-//import android.widget.TextView;
-//
-//import net.muxi.huashiapp.App;
-//import net.muxi.huashiapp.Constants;
-//
-//import net.muxi.huashiapp.R;
-//import net.muxi.huashiapp.common.base.ToolbarActivity;
-//import net.muxi.huashiapp.common.data.User;
-//import net.muxi.huashiapp.common.data.VerifyResponse;
-//import net.muxi.huashiapp.common.net.CampusFactory;
-//import net.muxi.huashiapp.util.Base64Util;
-//import net.muxi.huashiapp.util.NetStatus;
-//import net.muxi.huashiapp.util.PreferenceUtil;
-//import net.muxi.huashiapp.util.ToastUtil;
-//import net.muxi.huashiapp.util.ZhugeUtils;
-//
-//import butterknife.BindView;
-//import butterknife.ButterKnife;
-//import butterknife.OnClick;
-//import retrofit2.Response;
-//import rx.Observer;
-//import rx.android.schedulers.AndroidSchedulers;
-//import rx.schedulers.Schedulers;
-//
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.Constants;
+import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.common.data.DetailScores;
+import net.muxi.huashiapp.common.data.Scores;
+import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.util.Base64Util;
+import net.muxi.huashiapp.util.Logger;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by ybao on 16/4/26.
  */
 public class ScoreActivity extends ToolbarActivity {
-//
-//    private User mUser;
-//    private PreferenceUtil sp;
-//    private String year;
-//    private String term;
-//    private int startYear;
-//    private String[] itemYears;
-//    private String[] itemTerms;
-//
-//    private static final int YEAR_COUNT = 5;
-//    private static final int TERM_COUNT = 3;
-//
-//    private static final String[] TERM = {"3", "12", "16"};
-//
-//    @Override
-//    protected void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_score);
-//        ButterKnife.bind(this);
-////        checkUser();
-//        initVariables();
-//        initView();
-//    }
-//
-//    /**
-//     * 查询成绩前检测用户是否改了密码
-//     */
-//    private void checkUser() {
-//        CampusFactory.getRetrofitService().mainLogin(Base64Util.createBaseStr(App.sUser))
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.newThread())
-//                .subscribe(new Observer<Response<VerifyResponse>>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    @Override
-//                    public void onNext(Response<VerifyResponse> verifyResponseResponse) {
-////                        if (verifyResponseResponse.code() == 403){
-////                            ToastUtil.showShort(App.sContext.getString(R.string.tip_login_again));
-////                        }
-//                    }
-//                });
-//    }
-//
-//    private void setTitle(String year, String term) {
-//        String title = "";
-//        switch (term) {
-//            case "3":
-//                title += year + "年秋";
-//                break;
-//            case "12":
-//                title += (Integer.valueOf(year) + 1) + "年春";
-//                break;
-//            case "16":
-//                title += (Integer.valueOf(year) + 1) + "年夏";
-//                break;
-//        }
-//        setTitle(title);
-//    }
-//
-//    private void initVariables() {
-//        mUser = new User();
-//        sp = new PreferenceUtil();
-//        mUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
-//        mUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
-//        getCurYear();
-//        getYears();
-//        year = itemYears[0].substring(0, 4);
-//        term = TERM[0];
-//    }
-//
-//    private void getYears() {
-//        itemYears = new String[YEAR_COUNT];
-//        for (int i = 0; i < YEAR_COUNT; i++) {
-//            itemYears[i] = startYear + "-" + (++startYear) + "学年";
-//        }
-//        //初始化
-//        startYear -= YEAR_COUNT;
-//    }
-//
-//    //获取当前的学年
-//    private void getCurYear() {
-//        String start = mUser.getSid().substring(0, 4);
-//        startYear = Integer.valueOf(start);
-//    }
-//
-//    private void initView() {
-//        setTitle("成绩查询");
-//        mTvYear1.setText(itemYears[0]);
-//        mTvYear2.setText(itemYears[1]);
-//        mTvYear3.setText(itemYears[2]);
-//        mTvYear4.setText(itemYears[3]);
-//        mTvYear5.setText(itemYears[4]);
-//    }
-//
-//
-//    @Override
-//    public void initToolbar() {
-//        super.initToolbar();
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//    @Override
-//    public void onBackPressed() {
-//        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-//            mFragmentLayout.setClickable(false);
-//            setTitle("成绩查询");
-//        }
-//        super.onBackPressed();
-//    }
-//
-//    @Override
-//    protected boolean canBack() {
-//        return super.canBack();
-//    }
-//
-//    @OnClick(R.id.btn_enter)
-//    public void onClick() {
-//        year = getCheckedYear();
-//        term = getCheckTerm();
-//        if (NetStatus.isConnected()) {
-//            ScoreDetailFragment scoreDetailFragment = ScoreDetailFragment.newInstance(year, term);
-//            FragmentManager fm = getSupportFragmentManager();
-//            FragmentTransaction ft = fm.beginTransaction();
-//            ft.add(R.id.fragment_layout, scoreDetailFragment);
-//            ft.addToBackStack(null);
-//            ft.commit();
-//            mFragmentLayout.setClickable(true);
-//            setTitle(year, term);
-//            ZhugeUtils.sendEvent("查询成绩", "查询成绩");
-//        } else {
-//            ToastUtil.showShort(Constants.TIP_CHECK_NET);
-//        }
-//    }
-//
-//    private String getCheckTerm() {
-//        int pos = 0;
-//        if (mRbTerm1.isChecked()) {
-//            pos = 0;
-//        } else if (mRbTerm2.isChecked()) {
-//            pos = 1;
-//        } else if (mRbTerm3.isChecked()) {
-//            pos = 2;
-//        }
-//        return TERM[pos];
-//    }
-//
-//    private String getCheckedYear() {
-//        int pos = 0;
-//        if (mRbYear1.isChecked()) {
-//            pos = 0;
-//        } else if (mRbYear2.isChecked()) {
-//            pos = 1;
-//        } else if (mRbYear3.isChecked()) {
-//            pos = 2;
-//        } else if (mRbYear4.isChecked()) {
-//            pos = 3;
-//        }else if (mRbYear5.isChecked()){
-//            pos = 4;
-//        }
-//        return String.valueOf(startYear + pos);
-//    }
-//
-//
-//
+
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+
+    private ScoresAdapter mScoresAdapter;
+    private List<Scores> mScoresList = new ArrayList<>();
+    private List<DetailScores> mDetailScores = new ArrayList<>();
+
+    private String year;
+    private String term;
+
+    public static void start(Context context, String year, String term) {
+        Intent starter = new Intent(context, ScoreActivity.class);
+        starter.putExtra("year", year);
+        starter.putExtra("term", term);
+        context.startActivity(starter);
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_score);
+        ButterKnife.bind(this);
+        year = getIntent().getStringExtra("year");
+        term = getIntent().getStringExtra("term");
+        if (!term.equals("0")) {
+            setTitle(String.format("%s-%d第%d学期", year, Integer.parseInt(year) + 1,
+                    Arrays.binarySearch(Constants.TERMS, term)));
+        }else {
+            setTitle(String.format("%s-%d", year, Integer.parseInt(year) + 1));
+        }
+
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mScoresAdapter = new ScoresAdapter(mScoresList, mDetailScores);
+        mRecyclerView.setAdapter(mScoresAdapter);
+
+        showLoading();
+        loadGrade(term);
+    }
+
+    private void loadGrade(String term) {
+        Logger.d("term" + term);
+        if (term.equals("0")) {
+            String[] terms = {"3", "12", "16"};
+            for (String t : terms) {
+                loadGrade(t);
+            }
+            return;
+        }
+        CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(App.sUser), year,
+                term)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(scores -> {
+                    Logger.d("get score");
+                    hideLoading();
+                    mScoresList.addAll(scores);
+                    mScoresAdapter.notifyDataSetChanged();
+                }, throwable -> throwable.printStackTrace());
+
+//        Observable.zip(CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr
+// (App.sUser),year,"3"),
+//                CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(App
+// .sUser),year,"12"),((scores, scores2) -> {
+//                    mScoresList.addAll(scores);
+//                    mScoresList.addAll(scores2);
+//                    return mScoresList;
+//                }))
+    }
+
+//    public Observable<Scores> get
 }
 
