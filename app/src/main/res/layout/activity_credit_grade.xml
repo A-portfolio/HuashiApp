@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
@@ -9,13 +9,19 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
+        android:layout_marginTop="56dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_height="match_parent"
-        android:layout_marginBottom="64dp"
-        android:layout_marginTop="56dp"/>
+        android:layout_above="@+id/layout_btn"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
+        android:id="@+id/layout_btn"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
         android:background="@color/colorWhite">
 
         <Button
@@ -27,8 +33,8 @@
             android:text="@string/calculate"
             android:textColor="@color/colorWhite"
             android:background="@drawable/ripple_accent"
-            android:layout_height="match_parent"/>
+            android:layout_height="48dp"/>
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

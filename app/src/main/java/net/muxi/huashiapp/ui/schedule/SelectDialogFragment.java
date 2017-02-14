@@ -162,34 +162,8 @@ public class SelectDialogFragment extends BottomDialogFragment {
         weekList = getArguments().getIntegerArrayList("weeks");
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_multi_week, null);
         ButterKnife.bind(this, view);
-//        Dialog dialog = super.onCreateDialog(savedInstanceState);
-//        Dialog dialog = new Dialog(getContext(), R.style.BottomDialogStyle);
-//        Dialog dialog = createBottomDialog();
         initWeekLayout();
         Dialog dialog = createBottomDialog(view);
-//        Dialog dialog = new Dialog(getContext(),R.style.BottomDialogStyle);
-//        //setContentView需要在 window 属性前调用
-//        dialog.setContentView(view);
-//
-//        Window window = dialog.getWindow();
-//        window.setGravity(Gravity.BOTTOM);
-//        WindowManager.LayoutParams wmlp = window.getAttributes();
-//        wmlp.width = WindowManager.LayoutParams.MATCH_PARENT;
-//        wmlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-//        window.setAttributes(wmlp);
-//        window.setBackgroundDrawableResource(R.drawable.bg_bottom_dialog);
-
-
-//        dialog.setContentView(view);
-
-//        Window window = dialog.getWindow();
-//        window.setGravity(Gravity.BOTTOM);
-//        WindowManager.LayoutParams wmlp = window.getAttributes();
-//        wmlp.width = WindowManager.LayoutParams.MATCH_PARENT;
-//        wmlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-//        window.setAttributes(wmlp);
-//        window.setBackgroundDrawableResource(R.drawable.bg_bottom_dialog);
-
         return dialog;
     }
 

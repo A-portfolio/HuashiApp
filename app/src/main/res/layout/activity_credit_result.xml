@@ -98,33 +98,33 @@
             android:layout_height="wrap_content" android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"/>
         <TextView
+            android:id="@+id/tv_zx"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" " android:layout_alignBaseline="@+id/tv_zb"
-            android:layout_alignBottom="@+id/tv_zb" android:layout_toRightOf="@+id/center"
-            android:layout_toEndOf="@+id/center" android:layout_marginLeft="32dp"
+            android:layout_height="wrap_content" android:layout_alignBaseline="@+id/tv_zb"
+            android:layout_alignBottom="@+id/tv_zb" android:layout_marginLeft="32dp"
             android:layout_marginStart="36dp" android:layout_marginTop="20dp"
-            android:id="@+id/tv_zx" android:textStyle="normal|italic" android:textSize="32sp"
-            android:textColor="@color/colorWhite"/>
+            android:layout_toEndOf="@+id/center" android:layout_toRightOf="@+id/center"
+            android:text=" " android:textColor="@color/colorWhite" android:textSize="32sp"
+            android:textStyle="normal|italic"/>
         <TextView
-            android:text="专业选修学分"
+            android:id="@+id/zx"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_below="@+id/tv_zx"
-            android:layout_alignLeft="@+id/tv_zx" android:layout_alignStart="@+id/tv_zx"
-            android:id="@+id/zx" android:textColor="@color/colorWhite"/>
+            android:layout_height="wrap_content" android:layout_alignLeft="@+id/tv_zx"
+            android:layout_alignStart="@+id/tv_zx" android:layout_below="@+id/tv_zx"
+            android:text="专业选修学分" android:textColor="@color/colorWhite"/>
         <TextView
-            android:text=" "
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/tv_tb"
-            android:layout_alignLeft="@+id/zx" android:layout_alignStart="@+id/zx"
-            android:textStyle="normal|italic" android:textColor="@color/colorWhite"
-            android:textSize="32sp" android:id="@+id/tv_tx"/>
-        <TextView
+            android:id="@+id/tv_tx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tx" android:layout_below="@+id/tv_tx"
-            android:layout_alignLeft="@+id/tv_tx" android:layout_alignStart="@+id/tv_tx"
+            android:layout_alignLeft="@+id/zx"
+            android:layout_alignStart="@+id/zx" android:layout_alignTop="@+id/tv_tb"
+            android:text=" " android:textColor="@color/colorWhite"
+            android:textSize="32sp" android:textStyle="normal|italic"/>
+        <TextView
+            android:id="@+id/tx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_alignLeft="@+id/tv_tx"
+            android:layout_alignStart="@+id/tv_tx" android:layout_below="@+id/tv_tx"
             android:text="通识选修学分" android:textColor="@color/colorWhite"/>
 
     </RelativeLayout>

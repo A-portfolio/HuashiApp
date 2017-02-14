@@ -3,8 +3,6 @@ package net.muxi.huashiapp.ui.schedule;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +14,6 @@ import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
@@ -159,7 +156,7 @@ public class CourseEditActivity extends ToolbarActivity {
 
     public void addCourse(final Course course, final int id) {
         if (NetStatus.isConnected() == true) {
-            showProgressBarDialog(true, getString(R.string.tip_adding_course));
+//            showLoading(true, getString(R.string.tip_adding_course));
             CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(App.sUser), course)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.newThread())
@@ -173,12 +170,10 @@ public class CourseEditActivity extends ToolbarActivity {
                         public void onError(Throwable e) {
                             e.printStackTrace();
                             ToastUtil.showShort(getString(R.string.tip_adding_fail));
-                            showProgressBarDialog(false);
                         }
 
                         @Override
                         public void onNext(Response<VerifyResponse> verifyResponseResponse) {
-                            showProgressBarDialog(false);
                             if (verifyResponseResponse.code() == 201) {
                                 ZhugeUtils.sendEvent("课程添加", "成功添加课程");
                                 ZhugeUtils.sendEvent("课程提醒状态", course.getRemind());

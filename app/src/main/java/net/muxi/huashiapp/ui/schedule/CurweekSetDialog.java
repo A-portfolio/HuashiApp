@@ -25,7 +25,6 @@ import butterknife.ButterKnife;
  */
 public class CurweekSetDialog extends Dialog {
 
-
     @BindView(R.id.gl_weeks)
     GridLayout mGlWeeks;
     @BindView(R.id.btn_negative)
@@ -42,7 +41,6 @@ public class CurweekSetDialog extends Dialog {
     private OnDialogPostiveClickListener mOnDialogPostiveClickListener;
 
     private Context mContext;
-
 
     public CurweekSetDialog(Context context,int curWeek) {
         super(context,R.style.DialogStyle);

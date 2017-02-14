@@ -17,6 +17,8 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.ui.credit.SelectCreditActivity;
+import net.muxi.huashiapp.ui.library.LibrarySearchResultActivity;
+import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.util.FrescoUtil;
 import net.muxi.huashiapp.util.Logger;
 
@@ -142,6 +144,12 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             switch (position){
                 case 4:
                     SelectCreditActivity.start(mContext);
+                    break;
+                case 0:
+                    ScoreSelectActivity.start(mContext);
+                    break;
+                case 1:
+                    LibrarySearchResultActivity.start(mContext);
                     break;
             }
         });

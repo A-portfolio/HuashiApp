@@ -70,8 +70,6 @@ public class LibraryActivity extends ToolbarActivity {
 
     private BookDetailView mBookDetailView;
 
-//    private List<BookSearchResult.ResultsBean> bookList;
-
     private List<BookSearchResult.ResultsBean> mBookList;
     private FrameLayout contentLayout;
     //设置fragment 的高度

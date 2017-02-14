@@ -36,15 +36,7 @@ public class BottomDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = new Dialog(getContext());
-        Window window = dialog.getWindow();
-        window.setGravity(Gravity.BOTTOM);
-        WindowManager.LayoutParams wmlp = window.getAttributes();
-        wmlp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        wmlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        window.setAttributes(wmlp);
-        window.setBackgroundDrawableResource(R.drawable.bg_bottom_dialog);
-        return dialog;
+        return super.onCreateDialog(savedInstanceState);
     }
 
     public Dialog createBottomDialog(View view){

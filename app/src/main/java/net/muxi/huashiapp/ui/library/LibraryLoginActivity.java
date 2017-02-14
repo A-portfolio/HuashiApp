@@ -216,7 +216,7 @@ public class LibraryLoginActivity extends ToolbarActivity {
             return;
         }
         if (NetStatus.isConnected()) {
-            showProgressBarDialog(true, "登录中");
+//            showLoading(true, "登录中");
             CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(libUser))
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -229,12 +229,10 @@ public class LibraryLoginActivity extends ToolbarActivity {
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
-                            showProgressBarDialog(false);
                         }
 
                         @Override
                         public void onNext(Response<VerifyResponse> verifyResponseResponse) {
-                            showProgressBarDialog(false);
                             if (verifyResponseResponse.code() == 200) {
                                 ZhugeUtils.sendEvent("图书馆登录", "登陆成功");
                                 App.saveLibUser(libUser);
