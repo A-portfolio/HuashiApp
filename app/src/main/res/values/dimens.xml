@@ -67,12 +67,11 @@
     <dimen name="library_item_borrow_height">84dp</dimen>
     <dimen name="library_detail_min_height">700dp</dimen>
     <dimen name="library_search_view_margin">8dp</dimen>
-    
-    <dimen name="study_room_tv_room">14sp</dimen>
-    <dimen name="study_room_tv_time_hint">12sp</dimen>
-    <dimen name="study_room_tv_area_choice">10sp</dimen>
+
+    <dimen name="study_room_tv_hint">12sp</dimen>
     <dimen name="study_room_button_height">48dp</dimen>
     <dimen name="study_room_button_margin_top">60dp</dimen>
+    <dimen name="study_room_iv_vertical_margin">46dp</dimen>
 
 
     <dimen name="score_select_item_height">48dp</dimen>

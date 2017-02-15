@@ -22,6 +22,7 @@
     <string name="action_timetable">课程表</string>
     <string name="action_library">图书馆</string>
     <string name="action_more">更多</string>
+    <string name="action_correct">空闲教室报错</string>
 
     <string name="calculate">计算</string>
 
@@ -103,6 +104,9 @@
     <!--电费查询-->
     <string name="ele_room_not_found">该宿舍不存在</string>
 
+    <!--空闲教室-->
+    <string name="content_correct_studyroom">亲爱的匣客，为了更好的使用空闲教室功能，欢迎积极反馈报错哟！</string>
+
     <!--关于-->
     <string name="title_input_suggeston">在这里输入您的意见</string>
     <string name="title_input_contact">在这里输入您的联系方式</string>
@@ -119,7 +123,7 @@
     <string name="tip_write_suggestion_first">请先输入您的意见</string>
     <string name="tip_start_download_apk">开始下载更新包</string>
 
-    <string name="txt_text">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
+    <string name="txt_text">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
 </resources>
 
 

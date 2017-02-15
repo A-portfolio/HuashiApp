@@ -1,20 +1,14 @@
 package net.muxi.huashiapp.ui.schedule;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 
-import com.sina.weibo.sdk.utils.NetworkHelper;
-
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.util.NumberPickerHelper;
-
-import java.lang.reflect.Field;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -126,5 +120,6 @@ public class CourseTimePickerView extends RelativeLayout{
     public interface OnValueChangeListener {
         void onValueChange(int weekday, int start, int end);
     }
+
 
 }
