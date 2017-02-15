@@ -6,6 +6,7 @@ import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.data.CardData;
+import net.muxi.huashiapp.common.data.ClassRoom;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.EleRequestData;
@@ -126,5 +127,12 @@ public interface RetrofitService {
 
     @GET("site/")
     Observable<List<WebsiteData>> getWebsite();
+
+    @GET("classroom/get_classroom/")
+    Observable<ClassRoom> getClassRoom(@Query("weekno") String week,
+                                             @Query("weekday") String day,
+                                             @Query("building") String area);
+
+
 
 }

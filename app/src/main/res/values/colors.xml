@@ -82,8 +82,11 @@
 
     <!--电费-->
     <color name="color_normal_tab">#B3FFFFFF</color>
-    
     <color name="color_white_loading">#96FFFFFF</color>
+    <color name="color_card_light_one">#FFC635</color>
+    <color name="color_card_light_two">#52B6FF</color>
+    <color name="color_card_air_one">#7B79FF</color>
+    <color name="color_card_air_two">#3AD49B</color>
 
 
     <!--学生卡-->
