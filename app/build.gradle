@@ -54,7 +54,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.facebook.fresco:fresco:0.9.0'
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
-    releaseCompile 'com.tencent.bugly:crashreport:2.2.0'
+    compile 'com.tencent.bugly:crashreport:2.2.0'
     //    compile 'com.zhuge.analysis:zhugeio:latest.integration'
     compile 'me.biubiubiu.justifytext:library:1.1'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0'

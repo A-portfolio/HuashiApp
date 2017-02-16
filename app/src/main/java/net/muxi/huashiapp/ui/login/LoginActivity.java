@@ -6,10 +6,12 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -99,87 +101,53 @@ public class LoginActivity extends ToolbarActivity {
 
     @OnClick(R.id.btn_login)
     public void onClick() {
-        if (mEtSid.getText().toString().equals("")) {
-            setErrorStatus(mLayoutSid);
-//            mLayoutSid.setHint("学号不能为空");
-//            setTheme(R.style.TextError);
-//
-//            Drawable background = mLayoutPwd.getEditText().getBackground();
-//            DrawableCompat.setTint(background, getResources().getColor(R.color.red));
-//            mLayoutPwd.getEditText().setBackground(background);
+        if(!NetStatus.isConnected()){
+            showErrorSnackbarShort(R.string.tip_check_net);
             return;
-        } else {
-            mLayoutSid.setHint("输入学号");
-            setNormalStatus(mLayoutSid);
-//            setTheme(R.style.TextNormal);
         }
-        if (mEtPwd.getText().toString().equals("")) {
-            mLayoutPwd.setHint("密码不能为空");
-            setErrorStatus(mLayoutPwd);
-//            setTheme(R.style.TextError);
-            return;
-        } else {
-            mLayoutPwd.setHint(pwdHint);
-            setNormalStatus(mLayoutPwd);
-//            setTheme(R.style.TextNormal);
-        }
-
         showLoading();
-
         User user = new User();
         user.sid = mEtSid.getText().toString();
         user.password = mEtPwd.getText().toString();
-
         if (type.equals("info")) {
             CampusFactory.getRetrofitService().mainLogin(Base64Util.createBaseStr(user))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(verifyResponseResponse -> {
                                 if (verifyResponseResponse.code() == 403) {
-                                    ToastUtil.showShort(getString(R.string.tip_err_account));
+                                    showErrorSnackbarShort(getString(R.string.tip_err_account));
                                 } else if (verifyResponseResponse.code() == 502) {
-                                    ToastUtil.showShort(getString(R.string.tip_err_server));
+                                    showErrorSnackbarShort(getString(R.string.tip_err_server));
                                 } else {
                                     finish();
                                     App.saveUser(user);
                                 }
-                            }, throwable -> throwable.printStackTrace(),
+                            }, throwable -> {
+                                throwable.printStackTrace();
+                                showErrorSnackbarShort(getString(R.string.tip_check_net));
+                            },
                             () -> {
                                 hideLoading();
                             });
-        }else {
+        } else {
             CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(verifyResponseResponse -> {
-                        if (verifyResponseResponse.code() == 403){
-                            ToastUtil.showShort(getString(R.string.tip_err_account));
-                        }else if (verifyResponseResponse.code() == 502){
-                            ToastUtil.showShort(getString(R.string.tip_err_server));
-                        }else {
-                            finish();
-                            App.saveLibUser(user);
-                        }
-                    },throwable -> throwable.printStackTrace(),
+                                if (verifyResponseResponse.code() == 403) {
+                                    showErrorSnackbarShort(getString(R.string.tip_err_account));
+                                } else if (verifyResponseResponse.code() == 502) {
+                                    showErrorSnackbarShort(getString(R.string.tip_err_server));
+                                } else {
+                                    finish();
+                                    App.saveLibUser(user);
+                                }
+                            }, throwable -> {
+                                throwable.printStackTrace();
+                                showErrorSnackbarShort(getString(R.string.tip_check_net));
+                            },
                             () -> hideLoading());
         }
-
-    }
-
-    public void setErrorStatus(TextInputLayout inputLayout){
-        inputLayout.getEditText().setHighlightColor(getResources().getColor(R.color.red));
-        inputLayout.getEditText().setHintTextColor(getResources().getColor(R.color.red));
-        Drawable background = inputLayout.getEditText().getBackground();
-        DrawableCompat.setTint(background, getResources().getColor(R.color.red));
-        inputLayout.getEditText().setBackground(background);
-    }
-
-    public void setNormalStatus(TextInputLayout inputLayout){
-        inputLayout.getEditText().setHighlightColor(getResources().getColor(R.color.color_selected));
-        inputLayout.getEditText().setHintTextColor(getResources().getColor(R.color.color_selected));
-        Drawable background = inputLayout.getEditText().getBackground();
-        DrawableCompat.setTint(background, getResources().getColor(R.color.color_selected));
-        inputLayout.getEditText().setBackground(background);
     }
 
     @Override
@@ -187,7 +155,6 @@ public class LoginActivity extends ToolbarActivity {
         super.onResume();
 //        ZhugeSDK.getInstance().init(App.getContext());
     }
-
 
     @Override
     protected void onDestroy() {

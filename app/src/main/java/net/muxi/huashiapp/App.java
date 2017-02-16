@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.alipay.euler.andfix.patch.PatchManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.zhuge.analysis.stat.ZhugeSDK;
@@ -26,7 +25,6 @@ public class App extends Application {
     public static User sLibrarayUser = new User();
 
     private PreferenceUtil sp;
-    private PatchManager mPatchManager;
 
     @Override
     public void onCreate() {

@@ -12,20 +12,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:hint="输入学号"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="16dp"
-        app:hintTextAppearance="@style/TextNormal"
+        android:hint="输入学号"
+        android:theme="@style/TextNormal"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true">
 
         <EditText
-            android:layout_width="match_parent"
-            android:textSize="28sp"
-            android:inputType="number"
             android:id="@+id/et_sid"
-            android:lines="1"
-            android:textStyle="bold"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="number"
+            android:lines="1"
+            android:textSize="28sp"
+            android:textStyle="bold"
         />
 
     </android.support.design.widget.TextInputLayout>
@@ -36,19 +37,19 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        app:hintTextAppearance="@style/TextError"
         android:hint="输入您的密码"
+        android:theme="@style/TextNormal"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true">
 
         <EditText
+            android:id="@+id/et_pwd"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:lines="1"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:inputType="textVisiblePassword"
-            android:id="@+id/et_pwd"
-            android:lines="1"
-            android:layout_height="wrap_content"
         />
 
     </android.support.design.widget.TextInputLayout>
@@ -59,11 +60,11 @@
         android:layout_height="48dp"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="64dp"
         android:layout_marginRight="16dp"
-        android:background="@drawable/ripple_accent"
+        android:layout_marginTop="64dp"
+        android::background="@drawable/ripple_accent"
         android:text="登录"
         android:textColor="@color/colorWhite"
-        />
+    />
 
 </LinearLayout>
