@@ -42,8 +42,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="@color/divider"/>
-
-            <android.support.v7.widget.GridLayout
+            <GridLayout
                 android:id="@+id/grid_classroom_eight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,10 +51,10 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
                 android:layout_marginTop="16dp"
-                app:columnCount="4"
-                app:rowCount="30"
+                android:columnCount="4"
+                android:rowCount="30"
                 >
-            </android.support.v7.widget.GridLayout>
+            </GridLayout>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
@@ -96,7 +95,7 @@
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="@color/divider"/>
 
-            <android.support.v7.widget.GridLayout
+            <GridLayout
                 android:id="@+id/grid_classroom_ten"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -105,10 +104,10 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
                 android:layout_marginTop="16dp"
-                app:columnCount="4"
-                app:rowCount="30"
+                android:columnCount="4"
+                android:rowCount="30"
                 >
-            </android.support.v7.widget.GridLayout>
+            </GridLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
@@ -148,7 +147,7 @@
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="@color/divider"/>
 
-            <android.support.v7.widget.GridLayout
+            <GridLayout
                 android:id="@+id/grid_classroom_twelve"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -157,10 +156,10 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
                 android:layout_marginTop="16dp"
-                app:columnCount="4"
-                app:rowCount="30"
+                android:columnCount="4"
+                android:rowCount="30"
                 >
-            </android.support.v7.widget.GridLayout>
+            </GridLayout>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
@@ -201,7 +200,7 @@
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="@color/divider"/>
 
-            <android.support.v7.widget.GridLayout
+            <GridLayout
                 android:id="@+id/grid_classroom_fourteen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -210,10 +209,10 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
                 android:layout_marginTop="16dp"
-                app:columnCount="4"
-                app:rowCount="30"
+                android:columnCount="4"
+                android:rowCount="30"
                 >
-            </android.support.v7.widget.GridLayout>
+            </GridLayout>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
@@ -255,7 +254,7 @@
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="@color/divider"/>
 
-            <android.support.v7.widget.GridLayout
+            <GridLayout
                 android:id="@+id/grid_classroom_sixteen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -264,10 +263,10 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
                 android:layout_marginTop="16dp"
-                app:columnCount="4"
-                app:rowCount="30"
+                android:columnCount="4"
+                android:rowCount="30"
                 >
-            </android.support.v7.widget.GridLayout>
+            </GridLayout>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
@@ -308,7 +307,7 @@
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="@color/divider"/>
 
-            <android.support.v7.widget.GridLayout
+            <GridLayout
                 android:id="@+id/grid_classroom_eighteen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -317,10 +316,10 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
                 android:layout_marginTop="16dp"
-                app:columnCount="4"
-                app:rowCount="30"
+                android:columnCount="4"
+                android:rowCount="30"
                 >
-            </android.support.v7.widget.GridLayout>
+            </GridLayout>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
@@ -361,7 +360,7 @@
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="@color/divider"/>
 
-            <android.support.v7.widget.GridLayout
+            <GridLayout
                 android:id="@+id/grid_classroom_twenty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -370,10 +369,10 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
                 android:layout_marginTop="16dp"
-                app:columnCount="4"
-                app:rowCount="30"
+                android:columnCount="4"
+                android:rowCount="30"
                 >
-            </android.support.v7.widget.GridLayout>
+            </GridLayout>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
