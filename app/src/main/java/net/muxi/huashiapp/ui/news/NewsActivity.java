@@ -197,7 +197,6 @@ public class NewsActivity extends ToolbarActivity {
                 });
     }
 
-
     private void startScale(View view) {
         int viewTop = view.getTop();
         int viewHeight = view.getHeight();

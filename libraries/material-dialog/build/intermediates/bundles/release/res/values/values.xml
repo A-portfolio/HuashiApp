@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorBlack">#000000</color>
+    <dimen name="action_area_height">52dp</dimen>
+    <dimen name="dialog_action_size">18sp</dimen>
+    <dimen name="dialog_content_padding">24dp</dimen>
+    <dimen name="dialog_content_size">16sp</dimen>
+    <dimen name="dialog_elevation">24dp</dimen>
+    <dimen name="dialog_margin_horizational">32dp</dimen>
+    <dimen name="dialog_title_size">22sp</dimen>
+    <dimen name="padding_between_title_and_body">20dp</dimen>
+    <dimen name="padding_button">8dp</dimen>
+    <string name="action_negative">取消</string>
+    <string name="action_positive">确认</string>
+    <string name="app_name">Material-dialog</string>
+    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+</resources>

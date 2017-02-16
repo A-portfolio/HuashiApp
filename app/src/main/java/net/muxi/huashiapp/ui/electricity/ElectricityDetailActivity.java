@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 
 import net.muxi.huashiapp.R;
@@ -18,7 +20,6 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.ToastUtil;
-import net.muxi.huashiapp.util.ZhugeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +31,12 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static com.tencent.bugly.crashreport.inner.InnerAPI.context;
+
 /**
  * Created by december on 16/7/7.
  */
-public class ElectricityDetailActivity extends ToolbarActivity implements ElectricityDetailFragment.OnChangeBtnClickListener {
+public class ElectricityDetailActivity extends ToolbarActivity  {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -45,6 +48,8 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
     SwipeRefreshLayout mSwipeRefreshLayout;
     private PreferenceUtil sp;
 
+    private CardView mCardView;
+
     private String mQuery;
     private List<Fragment> detailFragments;
 
@@ -53,8 +58,10 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_electricity_detail);
         ButterKnife.bind(this);
+
+        init();
         sp = new PreferenceUtil();
-        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -64,6 +71,7 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
         mSwipeRefreshLayout.setEnabled(false);
         mQuery = getIntent().getStringExtra("query");
         setTitle(mQuery);
+        setTitleColor(Color.BLACK);
         EleRequestData eleAirRequest = new EleRequestData();
         eleAirRequest.setDor(mQuery);
         eleAirRequest.setType("air");
@@ -145,8 +153,6 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
             });
             ToastUtil.showShort(getString(R.string.tip_check_net));
         }
-
-        init();
     }
 
     public void init() {
@@ -159,25 +165,28 @@ public class ElectricityDetailActivity extends ToolbarActivity implements Electr
         detailFragments = new ArrayList<>();
         detailFragments.add(new ElectricityDetailFragment());
         detailFragments.add(new ElectricityDetailFragment());
-        ((ElectricityDetailFragment) detailFragments.get(0)).setOnChangeBtnClickListener(this);
-        ((ElectricityDetailFragment) detailFragments.get(1)).setOnChangeBtnClickListener(this);
+
+//        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(0);
+//        ((ElectricityDetailFragment) detailFragments.get(1)).setCardColor(1);
+//        ((ElectricityDetailFragment) detailFragments.get(0)).setOnChangeBtnClickListener(this);
+//        ((ElectricityDetailFragment) detailFragments.get(1)).setOnChangeBtnClickListener(this);
         MyDetailAdapter myDetailAdapter = new MyDetailAdapter(getSupportFragmentManager(), detailFragments, titles);
         mViewPager.setAdapter(myDetailAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        mTabLayout.setTabTextColors(getResources().getColor(R.color.color_normal_tab), getResources().getColor(R.color.colorWhite));
+        mTabLayout.setTabTextColors(ContextCompat.getColor(context,R.color.color_normal_tab),ContextCompat.getColor(context,R.color.colorAccent));
         mTabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        mTabLayout.setSelectedTabIndicatorColor(Color.WHITE);
+        mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorAccent));
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);
     }
 
-    @Override
-    public void onChangeBtnClick() {
-        ZhugeUtils.sendEvent("电费查询更换寝室","更换寝室");
-        PreferenceUtil sp = new PreferenceUtil();
-        sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
-        Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);
-        startActivity(intent);
-        this.finish();
-    }
+//    @Override
+//    public void onChangeBtnClick() {
+//        ZhugeUtils.sendEvent("电费查询更换寝室","更换寝室");
+//        PreferenceUtil sp = new PreferenceUtil();
+//        sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
+//        Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);
+//        startActivity(intent);
+//        this.finish();
+//    }
 }

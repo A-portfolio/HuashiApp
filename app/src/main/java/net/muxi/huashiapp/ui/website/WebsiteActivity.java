@@ -15,8 +15,9 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.WebsiteData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.util.ToastUtil;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
+import net.muxi.huashiapp.util.ToastUtil;
+import net.muxi.huashiapp.widget.DividerItemDecoration;
 
 import java.util.List;
 
@@ -107,6 +108,7 @@ public class WebsiteActivity extends ToolbarActivity {
         adapter = new WebsiteAdapter(websiteData);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
         adapter.setOnItemClickListener(new WebsiteAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, List<WebsiteData> websiteData, int position) {
