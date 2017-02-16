@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:id="@+id/view_error"
+                android:layout_height="match_parent"
+>
+
+    <ImageView
+        android:id="@+id/iv_error"
+        android:layout_width="266dp"
+        android:layout_height="226dp"
+        android:layout_marginTop="140dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/bg_error"/>
+
+    <Space
+        android:id="@+id/space_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_error"
+        android:layout_toLeftOf="@+id/space_center"
+        android:text="出错啦，"
+        android:textColor="#C6D2DE"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/view_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_error"
+        android:layout_toRightOf="@id/space_center"
+        android:text="点击刷新"
+        android:textColor="#7B79FF"
+        android:textSize="16sp"/>
+
+</RelativeLayout>

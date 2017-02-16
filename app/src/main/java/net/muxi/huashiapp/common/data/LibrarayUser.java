@@ -5,8 +5,8 @@ package net.muxi.huashiapp.common.data;
  */
 public class LibrarayUser {
 
-    private String libraryId;
-    private String libraryPwd;
+    public String libraryId;
+    public String libraryPwd;
 
     public String getLibraryId() {
         return libraryId;

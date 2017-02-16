@@ -8,16 +8,16 @@ import android.os.Parcelable;
  */
 public class Course implements Parcelable{
 
-    private String id;
-    private String course;
-    private String teacher;
-    private String weeks;
-    private String day;
-    private int start;
-    private int during;
-    private String place;
-    private String remind;
-    private int color;
+    public String id;
+    public String course;
+    public String teacher;
+    public String weeks;
+    public String day;
+    public int start;
+    public int during;
+    public String place;
+    public String remind;
+    public int color;
 
     public String getId() {
         return id;

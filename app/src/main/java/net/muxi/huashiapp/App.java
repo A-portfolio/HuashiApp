@@ -2,6 +2,7 @@ package net.muxi.huashiapp;
 
 import android.app.Application;
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.alipay.euler.andfix.patch.PatchManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -91,7 +92,7 @@ public class App extends Application {
         PreferenceUtil sp = new PreferenceUtil();
         sp.clearString(PreferenceUtil.LIBRARY_ID);
         sp.clearString(PreferenceUtil.LIBRARY_PWD);
-        sLibrarayUser.setSid("0");
+        sLibrarayUser.setSid("");
         sLibrarayUser.setPassword("");
     }
 
@@ -107,8 +108,15 @@ public class App extends Application {
         PreferenceUtil sp = new PreferenceUtil();
         sp.clearString(PreferenceUtil.STUDENT_ID);
         sp.clearString(PreferenceUtil.STUDENT_PWD);
-        sUser.setSid("0");
+        sUser.setSid("");
         sUser.setPassword("");
     }
 
+    public static boolean isInfoLogin(){
+        return !TextUtils.isEmpty(sUser.sid);
+    }
+
+    public static boolean isLibLogin(){
+        return !TextUtils.isEmpty(sLibrarayUser.sid);
+    }
 }

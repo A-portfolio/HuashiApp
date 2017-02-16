@@ -5,9 +5,9 @@ package net.muxi.huashiapp.common.data;
  */
 public class SplashData {
 
-    private String img;
-    private String url;
-    private long update;
+    public String img;
+    public String url;
+    public long update;
 
     public String getImg() {
         return img;

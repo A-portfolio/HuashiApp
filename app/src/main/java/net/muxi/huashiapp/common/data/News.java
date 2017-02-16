@@ -7,10 +7,10 @@ import java.util.List;
  */
 public class News {
 
-    private String content;
-    private String date;
-    private String title;
-    private List<String> appendix_list;
+    public String content;
+    public String date;
+    public String title;
+    public List<String> appendix_list;
 
     public String getContent() {
         return content;

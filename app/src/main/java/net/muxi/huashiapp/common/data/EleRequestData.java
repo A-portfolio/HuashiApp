@@ -5,8 +5,8 @@ package net.muxi.huashiapp.common.data;
  */
 public class EleRequestData {
 
-    private String dor;
-    private String type;
+    public String dor;
+    public String type;
 
     public String getDor() {
         return dor;

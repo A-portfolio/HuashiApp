@@ -23,20 +23,12 @@ public class BaseActivity extends AppCompatActivity{
 
     protected Menu menu;
     protected ActionBar mActionBar;
-    private ProgressDialog mProgressDialog;
 
     private LoadingDialog mLoadingDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            mProgressDialog = new ProgressDialog(this, R.style.ThemeHoloLightDialogAlert);
-        }else {
-            mProgressDialog = new ProgressDialog(this);
-            Logger.d("lollipop");
-        }
-        mProgressDialog.setCancelable(false);
         mActionBar = getSupportActionBar();
         if (mActionBar != null) {
             mActionBar.setDisplayHomeAsUpEnabled(true);

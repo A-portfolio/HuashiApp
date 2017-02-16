@@ -8,12 +8,12 @@ import java.util.List;
  */
 public class Book {
 
-    private String bid;
-    private String book;
-    private String intro;
-    private String author;
+    public String bid;
+    public String book;
+    public String intro;
+    public String author;
 
-    private List<BooksBean> books;
+    public List<BooksBean> books;
 
     public String getBid() {
         return bid;
@@ -56,10 +56,10 @@ public class Book {
     }
 
     public static class BooksBean {
-        private String status;
-        private String tid;
-        private String date;
-        private String room;
+        public String status;
+        public String tid;
+        public String date;
+        public String room;
 
         public String getDate() {
             return date;

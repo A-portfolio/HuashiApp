@@ -1,78 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--图书所在地和可借状态-->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp"
-    android:background="@drawable/card_library"
+    android:layout_height="132dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginTop="4dp"
     android:paddingBottom="16dp"
-    android:paddingRight="16dp"
+    android:id="@+id/item_layout"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
     android:paddingTop="16dp">
 
-    <LinearLayout
-        android:id="@+id/state_layout"
-        android:layout_width="62dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="16dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="书刊状态"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/tv_state"
-            android:layout_width="28dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="6dp"
-            android:textSize="@dimen/large_size"
-            tools:text="保留本"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/state_layout"
-        android:orientation="vertical">
+        android:textSize="@dimen/medium_size"
+        android:textStyle="bold"
+        tools:text="保留本"/>
 
+    <TextView
+        android:id="@+id/tv_tid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_state"
+        android:layout_marginTop="16dp"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/library_state_size"
+        tools:text="索书号"/>
 
-        <TextView
-            android:id="@+id/tv_tid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/library_state_size"
-            tools:text="fsadkksd"/>
+    <TextView
+        android:id="@+id/tv_bid"
+        android:textColor="?android:attr/textColorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_state"
+        android:layout_marginTop="16dp"
+        android:layout_alignParentRight="true"
+        android:textSize="@dimen/library_state_size"
+        tools:text="条码号"/>
 
-        <TextView
-            android:id="@+id/tv_bid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/library_state_size"
-            tools:text="1232222"/>
-
-
-        <TextView
-            android:id="@+id/tv_place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/library_state_size"
-            tools:text="fff "/>
-
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:textSize="@dimen/library_state_size"
-            android:layout_height="wrap_content"
-            tools:text="fdsk"/>
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_place"
+        android:drawableLeft="@drawable/ic_course_place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_tid"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/library_state_size"
+        tools:text="fff "/>
 
 </RelativeLayout>

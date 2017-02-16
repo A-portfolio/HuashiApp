@@ -1,100 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--suppress XmlUnusedNamespaceDeclaration, XmlUnusedNamespaceDeclaration, XmlUnusedNamespaceDeclaration -->
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minHeight="700dp">
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+>
 
-    <ImageView
-        android:id="@+id/drawee_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:src="@drawable/img_lib_bookbg"
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="20sp"
+        tools:text="三国演义"/>
+
+    <TextView
+        android:id="@+id/tv_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="?android:attr/textColorSecondary"
+        tools:text="罗贯中"
     />
 
-    <LinearLayout
-        android:id="@+id/background_layout"
+    <Button
+        android:id="@+id/btn_attention"
+        android:layout_width="92dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ripple_accent"
+        android:text="关注"
+        android:textColor="@color/colorWhite"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="10dp"
+        android:text="简介"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/tv_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:lineSpacingMultiplier="1.2"
+        android:lines="2"
+        android:textColor="?android:attr/textColorSecondary"
+        tools:text="xxxxxxxxxxxxxxxxx"/>
 
-        <ImageButton
-            android:id="@+id/imgbtn_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="26dp"
-            />
+    <TextView
+        android:id="@+id/tv_show_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginLeft="24dp"
+        android:text="展开全部"
+        android:textColor="@color/colorAccent"
+        android:layout_marginBottom="26dp"
+        android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="32dp"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/large_size"
-            tools:text="三国演义"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"/>
 
-        <TextView
-            android:id="@+id/tv_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_title"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:gravity="center"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/medium_size"
-            tools:text="罗贯中"/>
+</LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_published"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/colorWhite"
-            tools:text="工业出版社"/>
-
-        <TextView
-            android:id="@+id/tv_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:lineSpacingMultiplier="1.2"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/medium_size"
-            tools:text="xxxxxxxxxxxxxxxxx"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="15dp"
-            android:layout_marginTop="15dp"
-            />
-
-        <!--<LinearLayout-->
-        <!--android:id="@+id/state_layout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/tv_info"-->
-        <!--android:orientation="vertical">-->
-
-        <!--</LinearLayout>-->
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-</FrameLayout>
