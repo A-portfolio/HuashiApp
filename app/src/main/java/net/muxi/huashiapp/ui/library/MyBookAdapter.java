@@ -35,30 +35,31 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (Integer.valueOf(mPersonalBooks.get(position).getTime()) < 0) {
-            holder.mTvState.setText(mContext.getResources().getString(R.string.lib_mybook_overdue));
-            holder.mTvState.setTextColor(mContext.getResources().getColor(R.color.state_warn));
-            holder.mTvDay.setVisibility(View.GONE);
-            holder.mTvDeadline.setTextColor(mContext.getResources().getColor(R.color.state_warn));
-        } else {
-            holder.mTvState.setText(mPersonalBooks.get(position).getTime());
-            holder.mTvState.setTextColor(mContext.getResources().getColor(R.color.state_normal));
-            holder.mTvDeadline.setTextColor(mContext.getResources().getColor(R.color.state_normal));
-        }
-        String book = getBookStr(App.sContext.getString(R.string.lib_book_name),mPersonalBooks.get(position).getBook());
-        holder.mTvBook.setText(Html.fromHtml(book));
-        String author = getBookStr(App.sContext.getString(R.string.lib_author),mPersonalBooks.get(position).getAuthor());
-        holder.mTvAuthor.setText(Html.fromHtml(author));
-        String itime = getBookStr(App.sContext.getString(R.string.lib_itime),mPersonalBooks.get(position).getItime());
-        holder.mTvBorrowDate.setText(Html.fromHtml(itime));
-        holder.mTvDeadline.setText(mPersonalBooks.get(position).getOtime());
+//        if (Integer.valueOf(mPersonalBooks.get(position).getTime()) < 0) {
+//            holder.mTvState.setText(mContext.getResources().getString(R.string.lib_mybook_overdue));
+//            holder.mTvState.setTextColor(mContext.getResources().getColor(R.color.state_warn));
+//            holder.mTvDay.setVisibility(View.GONE);
+//            holder.mTvDeadline.setTextColor(mContext.getResources().getColor(R.color.state_warn));
+//        } else {
+//            holder.mTvState.setText(mPersonalBooks.get(position).getTime());
+//            holder.mTvState.setTextColor(mContext.getResources().getColor(R.color.state_normal));
+//            holder.mTvDeadline.setTextColor(mContext.getResources().getColor(R.color.state_normal));
+//        }
+//        String book = getBookStr(App.sContext.getString(R.string.lib_book_name),mPersonalBooks.get(position).getBook());
+//        holder.mTvBook.setText(Html.fromHtml(book));
+//        String author = getBookStr(App.sContext.getString(R.string.lib_author),mPersonalBooks.get(position).getAuthor());
+//        holder.mTvAuthor.setText(Html.fromHtml(author));
+//        String itime = getBookStr(App.sContext.getString(R.string.lib_itime),mPersonalBooks.get(position).getItime());
+//        holder.mTvBorrowDate.setText(Html.fromHtml(itime));
+//        holder.mTvDeadline.setText(mPersonalBooks.get(position).getOtime());
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mybook, parent, false);
+//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mybook, parent, false);
         mContext = parent.getContext();
-        return new ViewHolder(view);
+//        return new ViewHolder(view);
+        return null;
     }
 
     @Override
@@ -68,20 +69,20 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_state)
-        TextView mTvState;
-        @BindView(R.id.tv_day)
-        TextView mTvDay;
-        @BindView(R.id.state_layout)
-        LinearLayout mStateLayout;
-        @BindView(R.id.tv_book)
-        TextView mTvBook;
-        @BindView(R.id.tv_author)
-        TextView mTvAuthor;
-        @BindView(R.id.tv_borrow_date)
-        TextView mTvBorrowDate;
-        @BindView(R.id.tv_deadline)
-        TextView mTvDeadline;
+//        @BindView(R.id.tv_state)
+//        TextView mTvState;
+//        @BindView(R.id.tv_day)
+//        TextView mTvDay;
+//        @BindView(R.id.state_layout)
+//        LinearLayout mStateLayout;
+//        @BindView(R.id.tv_book)
+//        TextView mTvBook;
+//        @BindView(R.id.tv_author)
+//        TextView mTvAuthor;
+//        @BindView(R.id.tv_borrow_date)
+//        TextView mTvBorrowDate;
+//        @BindView(R.id.tv_deadline)
+//        TextView mTvDeadline;
 
         public ViewHolder(View itemView) {
             super(itemView);

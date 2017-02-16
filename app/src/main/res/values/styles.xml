@@ -101,10 +101,11 @@
     </style>
 
     <style name="TextNormal" parent="TextAppearance.AppCompat">
-        <item name="android:textColorHint">@color/bg_selected</item>
+        <item name="android:textColorHint">@color/color_selected</item>
         <item name="android:textSize">12sp</item>
+        <item name="colorControlHighlight">@color/color_selected</item>
         <item name="colorControlNormal">@color/divider</item>
-        <item name="colorControlActivated">@color/bg_selected</item>
+        <item name="colorControlActivated">@color/color_selected</item>
     </style>
 
     <style name="TextError" parent="TextAppearance.AppCompat">
@@ -112,6 +113,7 @@
         <item name="android:textSize">12sp</item>
         <item name="colorControlNormal">@color/divider</item>
         <item name="colorControlActivated">@color/red</item>
+        <item name="colorControlHighlight">@color/red</item>
     </style>
 
     <style name="SearchEditTextTheme" parent="Base.Widget.AppCompat.EditText">

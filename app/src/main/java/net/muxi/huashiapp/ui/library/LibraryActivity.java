@@ -68,7 +68,7 @@ public class LibraryActivity extends ToolbarActivity {
     @BindView(R.id.root_layout)
     FrameLayout mRootLayout;
 
-    private BookDetailView mBookDetailView;
+//    private BookDetailView mBookDetailView;
 
     private List<BookSearchResult.ResultsBean> mBookList;
     private FrameLayout contentLayout;
@@ -380,15 +380,15 @@ public class LibraryActivity extends ToolbarActivity {
                         if (mBaseDetailLayout == null) {
                             mBaseDetailLayout = new BaseDetailLayout(LibraryActivity.this);
                             mContentLayout.addView(mBaseDetailLayout);
-                            mBookDetailView = new BookDetailView(LibraryActivity.this);
+//                            mBookDetailView = new BookDetailView(LibraryActivity.this);
 //                        mBookDetailView.setDraweeBg("res://net.muxi.huashiapp/" + R.drawable.img_lib_bookbg);
-                            mBaseDetailLayout.setContent(mBookDetailView);
-                            mBookDetailView.setOnCloseClickListener(new BookDetailView.OnCloseClickListener() {
-                                @Override
-                                public void onCloseClick() {
-                                    onBackPressed();
-                                }
-                            });
+//                            mBaseDetailLayout.setContent(mBookDetailView);
+//                            mBookDetailView.setOnCloseClickListener(new BookDetailView.OnCloseClickListener() {
+//                                @Override
+//                                public void onCloseClick() {
+//                                    onBackPressed();
+//                                }
+//                            });
                         }
                     }
                 });
@@ -397,7 +397,7 @@ public class LibraryActivity extends ToolbarActivity {
     private void setDetailData(Book book, String published) {
 //        BookDetailView bookDetailView = new BookDetailView(LibraryActivity.this,book,published);
 //        mBaseDetailLayout.setContent(bookDetailView);
-        mBookDetailView.setBookData(book, published);
+//        mBookDetailView.setBookData(book, published);
     }
 
     private void addShadowView() {

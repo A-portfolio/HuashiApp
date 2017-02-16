@@ -41,7 +41,7 @@ public class LibraryMainFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lib_main, container, false);
-        ButterKnife.bind(this, super.onCreateView(inflater, container, savedInstanceState));
+        ButterKnife.bind(this,view);
         mToolbar.setTitle(R.string.library);
 
         mEtSearch.setOnClickListener(v -> {

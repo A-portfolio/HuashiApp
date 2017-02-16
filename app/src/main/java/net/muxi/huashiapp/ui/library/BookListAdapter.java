@@ -33,7 +33,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
         String bookStatus = mBook.books.get(position).status;
         if (bookStatus.equals("可借")) {
             holder.mTvState.setTextColor(
-                    App.getContext().getResources().getColor(R.color.bg_selected));
+                    App.getContext().getResources().getColor(R.color.color_selected));
             holder.mItemLayout.setBackgroundResource(R.drawable.bg_book_state_enabled);
         } else {
             holder.mTvState.setTextColor(

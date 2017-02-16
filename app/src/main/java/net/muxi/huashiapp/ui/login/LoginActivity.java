@@ -3,9 +3,11 @@ package net.muxi.huashiapp.ui.login;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +19,7 @@ import android.widget.EditText;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
+import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.net.CampusFactory;
@@ -39,12 +42,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by ybao on 16/4/18.
  */
-public class LoginActivity extends BaseActivity {
-
-    public static final String NETCONNECT_FAILED = "请连接网络再试";
-    public static final String VERIFY_FAILED = "你的学号或者密码有误";
-    public static final String SERVICE_PROBLEM = "服务器繁忙,请稍后再试";
-    public static final String LOGIN_SUCCESS = "登录成功";
+public class LoginActivity extends ToolbarActivity {
 
     //此处方便登录调试,到时候要删除
     public static final boolean DEBUG_VALUE = true;
@@ -94,28 +92,36 @@ public class LoginActivity extends BaseActivity {
         } else {
             setTitle("登录图书馆");
             pwdHint = "初始密码为123456";
-            mEtPwd.setHint(pwdHint);
+            mLayoutPwd.setHint(pwdHint);
         }
 
     }
 
     @OnClick(R.id.btn_login)
     public void onClick() {
-        if (mEtSid.getText().equals("")) {
-            mLayoutSid.setHint("学号不能为空");
-            setTheme(R.style.TextError);
+        if (mEtSid.getText().toString().equals("")) {
+            setErrorStatus(mLayoutSid);
+//            mLayoutSid.setHint("学号不能为空");
+//            setTheme(R.style.TextError);
+//
+//            Drawable background = mLayoutPwd.getEditText().getBackground();
+//            DrawableCompat.setTint(background, getResources().getColor(R.color.red));
+//            mLayoutPwd.getEditText().setBackground(background);
             return;
         } else {
             mLayoutSid.setHint("输入学号");
-            setTheme(R.style.TextNormal);
+            setNormalStatus(mLayoutSid);
+//            setTheme(R.style.TextNormal);
         }
-        if (mEtPwd.getText().equals("")) {
+        if (mEtPwd.getText().toString().equals("")) {
             mLayoutPwd.setHint("密码不能为空");
-            setTheme(R.style.TextError);
+            setErrorStatus(mLayoutPwd);
+//            setTheme(R.style.TextError);
             return;
         } else {
             mLayoutPwd.setHint(pwdHint);
-            setTheme(R.style.TextNormal);
+            setNormalStatus(mLayoutPwd);
+//            setTheme(R.style.TextNormal);
         }
 
         showLoading();
@@ -160,6 +166,22 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+    public void setErrorStatus(TextInputLayout inputLayout){
+        inputLayout.getEditText().setHighlightColor(getResources().getColor(R.color.red));
+        inputLayout.getEditText().setHintTextColor(getResources().getColor(R.color.red));
+        Drawable background = inputLayout.getEditText().getBackground();
+        DrawableCompat.setTint(background, getResources().getColor(R.color.red));
+        inputLayout.getEditText().setBackground(background);
+    }
+
+    public void setNormalStatus(TextInputLayout inputLayout){
+        inputLayout.getEditText().setHighlightColor(getResources().getColor(R.color.color_selected));
+        inputLayout.getEditText().setHintTextColor(getResources().getColor(R.color.color_selected));
+        Drawable background = inputLayout.getEditText().getBackground();
+        DrawableCompat.setTint(background, getResources().getColor(R.color.color_selected));
+        inputLayout.getEditText().setBackground(background);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -187,5 +209,10 @@ public class LoginActivity extends BaseActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected boolean canBack() {
+        return false;
     }
 }
