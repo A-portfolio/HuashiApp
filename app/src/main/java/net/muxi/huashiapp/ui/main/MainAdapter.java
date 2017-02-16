@@ -9,11 +9,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
-import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.ui.credit.SelectCreditActivity;
@@ -31,7 +29,7 @@ import butterknife.ButterKnife;
 /**
  * Created by december on 16/4/19.
  */
-public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnItemClickListener {
+public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
 
     private static final int ITEM_TYPE_BANNER = 0;
     private static final int ITEM_TYPE_COMMON = 1;
@@ -49,7 +47,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private OnBannerItemClickListener mOnBannerItemClickListener;
 
     private Context mContext;
-    private ConvenientBanner mConvenientBanner;
 
     //banner 所占的 item 数量
     private static final int ITEM_BANNER = 1;
@@ -86,8 +83,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         for (int i = 0; i < mBannerDatas.size(); i++) {
             imageUrls.add(mBannerDatas.get(i).getImg());
         }
-        mConvenientBanner.notifyDataSetChanged();
-        Logger.d(mConvenientBanner.isTurning() + "");
     }
 
     public void swapProduct(List<String> pics, List<String> desc) {
@@ -148,30 +143,14 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 case 0:
                     ScoreSelectActivity.start(mContext);
                     break;
-//                case 1:
-//                    LibrarySearchResultActivity.start(mContext);
-//                    break;
+                case 9:
+                    App.clearUser();
+                    App.clearLibUser();
+                    break;
             }
         });
     }
 
-    private void setupBanner(RecyclerView.ViewHolder holder) {
-        ((BannerViewHolder) holder).mBanner.setPages(new CBViewHolderCreator() {
-            @Override
-            public Object createHolder() {
-                return new FrescoBannerHolder();
-            }
-        }, imageUrls)
-                .setPageIndicator(new int[]{R.drawable.ic_add_black_24dp, R.drawable.ic_add_black_24dp})
-                .setOnItemClickListener(this);
-
-        ((BannerViewHolder) holder).mBanner.startTurning(TURNING_TIME);
-        ((BannerViewHolder) holder).mBanner.setManualPageable(true);
-        mConvenientBanner = ((BannerViewHolder) holder).mBanner;
-        for (int i = 0; i < mBannerDatas.size(); i++) {
-            FrescoUtil.savePicture(mBannerDatas.get(i).getImg(), mContext, mBannerDatas.get(i).getFilename());
-        }
-    }
 
     public void setItemClickListener(ItemClickListener itemClickListener) {
         this.mItemClickListener = itemClickListener;
@@ -186,12 +165,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         return mdesc.size();
     }
 
-    @Override
-    public void onItemClick(int position) {
-        if (mOnBannerItemClickListener != null) {
-            mOnBannerItemClickListener.onBannerItemClick(mBannerDatas.get(position));
-        }
-    }
 
     public class CommonViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mTextView;
@@ -214,16 +187,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
     }
 
-    public class BannerViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.banner)
-        ConvenientBanner mBanner;
-
-        public BannerViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }
 }
 
 
