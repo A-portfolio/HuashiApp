@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:hint="输入学号"
-        android:theme="@style/TextNormal"
         android:layout_marginRight="16dp"
+        app:hintTextAppearance="@style/TextNormal"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true">
 
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:theme="@style/TextError"
+        app:hintTextAppearance="@style/TextError"
         android:hint="输入您的密码"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true">
@@ -59,6 +59,7 @@
         android:layout_height="48dp"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="64dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/ripple_accent"
         android:text="登录"

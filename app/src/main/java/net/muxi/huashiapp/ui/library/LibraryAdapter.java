@@ -40,10 +40,11 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_book, parent, false);
+//        View v = LayoutInflater.from(parent.getContext())
+//                .inflate(R.layout.item_book, parent, false);
 
-        return new ViewHolder(v);
+//        return new ViewHolder(v);
+        return null;
     }
 
 
@@ -60,13 +61,13 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         holder.mTvBook.setText(bookTitle);
         holder.mTvAuthor.setText(mBookList.get(position).getAuthor());
         holder.mTvInfo.setText(mBookList.get(position).getIntro());
-        holder.mBookLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!NoDoubleClickUtil.isDoubleClick())
-                mOnItemClickListener.onItemClick(v, mBookList.get(position));
-            }
-        });
+//        holder.mBookLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!NoDoubleClickUtil.isDoubleClick())
+//                mOnItemClickListener.onItemClick(v, mBookList.get(position));
+//            }
+//        });
     }
 
     //截取数字后的书名
@@ -100,10 +101,10 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         TextView mTvAuthor;
         @BindView(R.id.tv_info)
         TextView mTvInfo;
-        @BindView(R.id.tv_encoding)
-        ImageView mTvEncoding;
-        @BindView(R.id.book_layout)
-        RelativeLayout mBookLayout;
+//        @BindView(R.id.tv_encoding)
+//        ImageView mTvEncoding;
+//        @BindView(R.id.book_layout)
+//        RelativeLayout mBookLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);

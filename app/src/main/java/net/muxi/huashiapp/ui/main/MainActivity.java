@@ -32,6 +32,8 @@ public class MainActivity extends BaseActivity implements
     @BindView(R.id.content_layout)
     FrameLayout mContentLayout;
 
+    private Fragment mCurFragment;
+
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);
         context.startActivity(starter);
@@ -57,6 +59,30 @@ public class MainActivity extends BaseActivity implements
 
     }
 
+    /**
+     * 当返回至主界面时重新刷新界面获取数据
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mCurFragment == null){
+            return;
+        }
+        switch (mCurFragment.getTag()) {
+            case "table":
+                showFragment(TimetableFragment.newInstance());
+                break;
+            case "lib_main":
+            case "lib_mine":
+                if (App.isLibLogin()) {
+                    showFragment(LibraryMineFragment.newInstance());
+                } else {
+                    showFragment(LibraryMainFragment.newInstance());
+                }
+                break;
+        }
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -64,43 +90,41 @@ public class MainActivity extends BaseActivity implements
                 showFragment(MainFragment.newInstance());
                 break;
             case R.id.action_timetable:
-                Logger.d(TextUtils.isEmpty(App.sUser.sid) + "");
+                showFragment(TimetableFragment.newInstance());
                 if (TextUtils.isEmpty(App.sUser.sid)) {
-                    LoginActivity.start(MainActivity.this,"info");
-                } else {
-                    showFragment(TimetableFragment.newInstance());
+                    LoginActivity.start(MainActivity.this, "info");
                 }
                 break;
             case R.id.action_library:
-                if (App.isLibLogin()){
+                if (App.isLibLogin()) {
                     showFragment(LibraryMineFragment.newInstance());
-                }else {
+                } else {
                     showFragment(LibraryMainFragment.newInstance());
                 }
                 break;
             case R.id.action_more:
-
+                showFragment(MoreFragment.newInstance());
                 break;
         }
         return true;
     }
 
     public void showFragment(Fragment fragment) {
-        String tag;
-        if (fragment instanceof MainFragment){
+        mCurFragment = fragment;
+        String tag = "";
+        if (fragment instanceof MainFragment) {
             tag = "main";
-        }else if (fragment instanceof TimetableFragment){
+        } else if (fragment instanceof TimetableFragment) {
             tag = "table";
-        }else if (fragment instanceof LibraryMainFragment){
+        } else if (fragment instanceof LibraryMainFragment) {
             tag = "lib_main";
-        }else if (fragment instanceof LibraryMineFragment){
+        } else if (fragment instanceof LibraryMineFragment) {
             tag = "lib_mine";
-        }else if (fragment instanceof MoreFragment){
+        } else if (fragment instanceof MoreFragment) {
             tag = "more";
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.content_layout,
-                fragment,tag).commit();
+                fragment, tag).commit();
     }
-
 
 }

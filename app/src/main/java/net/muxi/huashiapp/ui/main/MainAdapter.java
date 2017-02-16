@@ -148,9 +148,9 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 case 0:
                     ScoreSelectActivity.start(mContext);
                     break;
-                case 1:
-                    LibrarySearchResultActivity.start(mContext);
-                    break;
+//                case 1:
+//                    LibrarySearchResultActivity.start(mContext);
+//                    break;
             }
         });
     }
