@@ -6,87 +6,126 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include android:id="@id/view_toolbar"
-             layout="@layout/view_toolbar"/>
-
-
-
-    <RelativeLayout
-        android:id="@+id/areachoice_layout"
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="34dp"
-        android:clickable="true"
-        android:background="?android:attr/selectableItemBackground"
-        android:layout_centerVertical="true"
-        android:layout_margin="@dimen/activity_horizontal_margin">
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <TextView
-            android:id="@+id/icon_areachoice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/ic_select_studyarea"
-            android:gravity="center"/>
-
-
-        <TextView
-            android:id="@+id/tv_area_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/icon_areachoice"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_toEndOf="@+id/icon_areachoice"
-            android:layout_toRightOf="@+id/icon_areachoice"
-            android:text="选择自习地点"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/study_room_tv_room"/>
-
-        <TextView
-            android:id="@+id/area_choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="八号楼"
-            android:textColor="@color/hintColor"
-            android:textSize="@dimen/study_room_tv_area_choice"
-            android:layout_marginTop="5dp"
-            android:layout_alignLeft="@id/tv_area_hint"
-            android:layout_alignStart="@id/tv_area_hint"
-            android:layout_below="@id/tv_area_hint"
-            />
-
-
-    </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
 
 
     <ImageView
-        android:id="@+id/line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/dividerGrey"
-        android:layout_below="@+id/areachoice_layout"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_alignLeft="@+id/areachoice_layout"
-        android:layout_alignStart="@+id/areachoice_layout"/>
-
-    <Button
-        android:id="@+id/btn_change_area"
-        android:layout_below="@id/line"
-        android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
-        android:text="查询"
-        android:layout_height="@dimen/study_room_button_height"
+        android:id="@+id/iv_time_choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="@dimen/study_room_iv_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:src="@drawable/ic_select_studytime"/>
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/study_room_button_margin_top"
+        android:layout_toRightOf="@+id/iv_time_choice"
+        android:layout_toEndOf="@+id/iv_time_choice"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="44dp"
+        android:text="选择周数和星期"
+        android:textColor="?android:attr/textColorPrimary"
         />
 
-    
+
+    <TextView
+        android:id="@+id/tv_study_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_time"
+        android:layout_alignLeft="@+id/tv_time"
+        android:layout_alignStart="@+id/tv_time"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@null"
+        android:lines="1"
+        tools:text="第13周周二"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/study_room_tv_hint"
+        />
+
+    <View android:id="@+id/divider1"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_below="@+id/iv_time_choice"
+          android:layout_margin="16dp"
+          android:background="@color/divider"/>
+
+    <ImageView
+        android:id="@+id/iv_area_choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider1"
+        android:layout_marginTop="@dimen/study_room_iv_vertical_margin"
+        android:layout_alignLeft="@+id/iv_time_choice"
+        android:layout_alignStart="@+id/iv_time_choice"
+        android:src="@drawable/ic_select_studyarea"
+        />
+
+    <TextView
+        android:id="@+id/tv_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/iv_area_choice"
+        android:layout_toEndOf="@+id/iv_area_choice"
+        android:layout_below="@+id/divider1"
+        android:layout_marginTop="44dp"
+        android:text="自习地点"
+        android:textColor="?android:attr/textColorPrimary"
+        />
+
+
+    <TextView
+        android:id="@+id/tv_study_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_area"
+        android:layout_alignLeft="@+id/tv_area"
+        android:layout_alignStart="@+id/tv_area"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@null"
+        android:lines="1"
+        tools:text="7号楼"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/study_room_tv_hint"
+        />
+
+    <View android:id="@+id/divider2"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_below="@+id/iv_area_choice"
+          android:layout_margin="@dimen/activity_horizontal_margin"
+          android:background="@color/divider"/>
+
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="查询"
+        android:layout_below="@id/divider2"
+        android:layout_marginTop="@dimen/study_room_button_margin_top"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@drawable/shape_btn"
+        android:textColor="@color/colorWhite"
+        />
 
 </RelativeLayout>

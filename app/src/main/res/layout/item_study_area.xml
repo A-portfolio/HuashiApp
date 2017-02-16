@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/study_area_option"
+          android:layout_width="match_parent"
+          android:layout_height="72dp"
+          android:textColor="@color/colorBlack"
+          android:paddingLeft="72dp"
+          android:gravity="center_vertical"
+          android:clickable="true"
+          android:background="?android:attr/selectableItemBackground"
+          android:textSize="16sp">
+
+</TextView>

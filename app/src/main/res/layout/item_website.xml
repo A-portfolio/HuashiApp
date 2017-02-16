@@ -1,56 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/website_layout"
+    android:id="@+id/website_site"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginEnd="16dp"
-    >
+    android:layout_height="72dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:gravity="center_vertical"
+    tools:text="信息门户"
+    android:paddingLeft="72dp"
+    android:textColor="@color/colorBlack"
+    android:textSize="16sp">
 
-        <TextView
-            android:id="@+id/website_icon"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            />
-
-        <TextView
-            android:id="@+id/website_site"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/website_site_size"
-            tools:text="信息门户"
-            android:textColor="@color/colorWhite"
-            android:layout_toRightOf="@+id/website_icon"
-            android:layout_toEndOf="@+id/website_icon"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_alignBaseline="@id/website_icon"
-            />
-
-         <TextView
-             android:id="@+id/next"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_centerVertical="true"
-             android:layout_alignParentRight="true"
-             android:layout_alignParentEnd="true"
-             android:layout_marginRight="16dp"
-             android:layout_marginEnd="16dp"
-             android:layout_alignBaseline="@+id/website_site"
-             />
+</TextView>
 
 
-        </RelativeLayout>
+
 
