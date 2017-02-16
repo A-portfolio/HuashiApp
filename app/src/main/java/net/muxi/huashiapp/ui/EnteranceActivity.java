@@ -48,7 +48,8 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
         mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
         sp = new PreferenceUtil();
@@ -75,7 +76,8 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.drawee) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sp.getString(Constants.SPLASH_URL).toString()));
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(sp.getString(Constants.SPLASH_URL).toString()));
             startActivity(intent);
         }
     }
@@ -97,10 +99,12 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
 
                     @Override
                     public void onNext(SplashData splashData) {
-                        if (splashData.getUpdate() != 0 && mSplashUpdate != splashData.getUpdate()) {
+                        if (splashData.getUpdate() != 0
+                                && mSplashUpdate != splashData.getUpdate()) {
                             saveSplashData(splashData);
                             Logger.d("save splash data");
-                            FrescoUtil.savePicture(splashData.getImg(), EnteranceActivity.this, "splash.jpg");
+                            FrescoUtil.savePicture(splashData.getImg(), EnteranceActivity.this,
+                                    "splash.jpg");
                         } else {
                             sp.saveLong(Constants.SPLASH_UPDATE, -1);
                         }

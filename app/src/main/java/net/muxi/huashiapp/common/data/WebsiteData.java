@@ -6,8 +6,8 @@ package net.muxi.huashiapp.common.data;
 
 public class WebsiteData {
 
-    private String url;
-    private String site;
+    public String url;
+    public String site;
 
     public String getUrl() {
         return url;

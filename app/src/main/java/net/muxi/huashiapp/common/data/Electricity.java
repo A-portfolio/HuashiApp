@@ -5,11 +5,11 @@ package net.muxi.huashiapp.common.data;
  */
 public class Electricity {
 
-    private String dor;
+    public String dor;
 
-    private DegreeBean degree;
+    public DegreeBean degree;
 
-    private EleBean ele;
+    public EleBean ele;
 
     public String getDor() {
         return dor;
@@ -37,11 +37,11 @@ public class Electricity {
 
     public static class DegreeBean {
         //当月
-        private String current;
+        public String current;
         //剩余
-        private double remain;
+        public double remain;
         //上月
-        private String before;
+        public String before;
 
         public String getCurrent() {
             return current;
@@ -69,10 +69,10 @@ public class Electricity {
     }
 
     public static class EleBean {
-        private String current;
-        private String remain;
-        private double _ele;
-        private String before;
+        public String current;
+        public String remain;
+        public double _ele;
+        public String before;
 
         public String getCurrent() {
             return current;

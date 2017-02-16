@@ -6,14 +6,14 @@ package net.muxi.huashiapp.common.data;
 public class CardData {
 
 
-    private String dealDateTime;
+    public String dealDateTime;
     //余额
-    private String outMoney;
-    private String userName;
+    public String outMoney;
+    public String userName;
 
-    private String transMoney;
+    public String transMoney;
 
-    private String dealTypeName;
+    public String dealTypeName;
 
     public String getDealDateTime() {
         return dealDateTime;

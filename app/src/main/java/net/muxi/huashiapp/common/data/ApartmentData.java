@@ -13,9 +13,9 @@ public class ApartmentData {
      * place : 文华公书林（老图书馆）3楼
      */
 
-    private String apartment;
-    private String place;
-    private List<String> phone;
+    public String apartment;
+    public String place;
+    public List<String> phone;
 
     public String getApartment() {
         return apartment;

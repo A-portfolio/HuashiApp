@@ -5,11 +5,11 @@ package net.muxi.huashiapp.common.data;
  */
 public class PersonalBook {
 
-    private String itime;
-    private String otime;
-    private String book;
-    private String time;
-    private String author;
+    public String itime;
+    public String otime;
+    public String book;
+    public String time;
+    public String author;
 
     public String getItime() {
         return itime;

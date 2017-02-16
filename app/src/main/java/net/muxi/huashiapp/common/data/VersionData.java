@@ -15,12 +15,12 @@ public class VersionData {
      * size : 100M
      */
 
-    private String name;
-    private String version;
-    private String download;
-    private String update;
-    private String intro;
-    private String size;
+    public String name;
+    public String version;
+    public String download;
+    public String update;
+    public String intro;
+    public String size;
 
     public String getName() {
         return name;

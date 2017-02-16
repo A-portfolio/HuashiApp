@@ -12,10 +12,10 @@ public class BannerData {
      * filename : Banner-Test1
      */
 
-    private String url;
-    private long update;
-    private String img;
-    private String filename;
+    public String url;
+    public long update;
+    public String img;
+    public String filename;
 
     public String getUrl() {
         return url;

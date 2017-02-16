@@ -25,7 +25,7 @@
     
     <color name="grey_bottom_line">#c6d2de</color>
 
-    <color name="bg_multi_week">#3AD49B</color>
+    <color name="bg_selected">#3AD49B</color>
     
     <color name="bottom_nav_enable">#333333</color>
     <color name="bottom_nav_disable">#33333333</color>

@@ -5,9 +5,9 @@ package net.muxi.huashiapp.common.data;
  */
 public class DetailScores {
 
-    private String course;
-    private String usual;
-    private String ending;
+    public String course;
+    public String usual;
+    public String ending;
 
     public String getUsual() {
         return usual;

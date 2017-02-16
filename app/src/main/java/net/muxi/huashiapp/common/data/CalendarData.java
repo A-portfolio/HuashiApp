@@ -13,10 +13,10 @@ public class CalendarData {
      * filename : Calendar-New.jpg
      */
 
-    private String size;
-    private long update;
-    private String img;
-    private String filename;
+    public String size;
+    public long update;
+    public String img;
+    public String filename;
 
     public String getSize() {
         return size;

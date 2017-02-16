@@ -9,7 +9,7 @@ public class MainLoginResponse{
      * status : 200
      */
 
-    private int status;
+    public int status;
 
     public int getStatus() {
         return status;

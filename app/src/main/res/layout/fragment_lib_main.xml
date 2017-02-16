@@ -10,16 +10,9 @@
         android:id="@+id/et_search"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        style="@style/SearchEditTextTheme"
         android:layout_marginTop="86dp"
-        android:editable="false"
-        android:background="@drawable/shape_disabled"
-        android:drawableLeft="@drawable/search"
-        android:drawablePadding="12dp"
-        android:gravity="center_vertical"
-        android:hint="搜索书名或作者"
-        android:paddingLeft="16dp"/>
+    />
 
     <ImageView
         android:id="@+id/iv_people"
@@ -32,27 +25,27 @@
         android:src="@drawable/inset_lib_main"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_marginTop="95dp"
-        android:layout_marginLeft="54dp"
-        android:layout_below="@+id/et_search"
-        android:text="还在刷网页？\n一个匣子就够了"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="?android:attr/textColorPrimary"
         android:id="@+id/tv_title"
-        android:layout_height="wrap_content"/>
-    
-    <Button
-        android:layout_width="match_parent"
-        android:id="@+id/btn_login_lib"
-        android:text="登录我的图书馆"
-        android:textColor="@color/colorWhite"
-        android:background="@drawable/ripple_orange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_search"
         android:layout_marginLeft="54dp"
-        android:layout_toLeftOf="@+id/iv_people"
+        android:layout_marginTop="95dp"
+        android:text="还在刷网页？\n一个匣子就够了"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/btn_login_lib"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
         android:layout_below="@+id/tv_title"
+        android:layout_marginLeft="54dp"
         android:layout_marginTop="16dp"
-            android:layout_height="36dp"/>
+        android:layout_toLeftOf="@+id/iv_people"
+        android:background="@drawable/ripple_orange"
+        android:text="登录我的图书馆"
+        android:textColor="@color/colorWhite"/>
 
 </RelativeLayout>

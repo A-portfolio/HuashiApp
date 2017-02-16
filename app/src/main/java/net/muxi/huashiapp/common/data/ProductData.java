@@ -13,7 +13,7 @@ public class ProductData {
      * update : 1.471793717565404E9
      */
 
-    private double update;
+    public double update;
     /**
      * icon : http://static.muxixyz.com/ic-xueer.png
      * intro : 华师课程经验挖掘机
@@ -22,7 +22,7 @@ public class ProductData {
      * url : https://xueer.muxixyz.com
      */
 
-    private List<ProductsBean> _products;
+    public List<ProductsBean> _products;
 
     public double getUpdate() {
         return update;
@@ -41,11 +41,11 @@ public class ProductData {
     }
 
     public static class ProductsBean {
-        private String icon;
-        private String intro;
-        private String name;
-        private Object nickname;
-        private String url;
+        public String icon;
+        public String intro;
+        public String name;
+        public Object nickname;
+        public String url;
 
         public String getIcon() {
             return icon;

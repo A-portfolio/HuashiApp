@@ -15,13 +15,13 @@ public class Scores {
      *
      */
 
-    private String category;
-    private String credit;
-    private String grade;
-    private String jxb_id;
-    private String course;
-    private String type;
-    private String kcxzmc;
+    public String category;
+    public String credit;
+    public String grade;
+    public String jxb_id;
+    public String course;
+    public String type;
+    public String kcxzmc;
 
     public String getKcxzmc() {
         return kcxzmc;

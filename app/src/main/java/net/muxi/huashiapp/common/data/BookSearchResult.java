@@ -13,7 +13,7 @@ public class BookSearchResult {
      * per_page : 20
      */
 
-    private MetaBean meta;
+    public MetaBean meta;
     /**
      * bid : TP312/GJ 7
      * book : 1.Java语言规范:基于Java SE 8:Java SE 8 edition
@@ -22,7 +22,7 @@ public class BookSearchResult {
      * author : (美) 詹姆斯·高斯林 ... [等] 著
      */
 
-    private List<ResultsBean> results;
+    public List<ResultsBean> results;
 
     public MetaBean getMeta() {
         return meta;
@@ -41,8 +41,8 @@ public class BookSearchResult {
     }
 
     public static class MetaBean {
-        private int max;
-        private int per_page;
+        public int max;
+        public int per_page;
 
         public int getMax() {
             return max;
@@ -62,11 +62,11 @@ public class BookSearchResult {
     }
 
     public static class ResultsBean {
-        private String bid;
-        private String book;
-        private String intro;
-        private String id;
-        private String author;
+        public String bid;
+        public String book;
+        public String intro;
+        public String id;
+        public String author;
 
         public String getBid() {
             return bid;

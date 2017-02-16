@@ -8,6 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowNoTitle">true</item>
         <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:textColorPrimary">#333333</item>
+        <item name="android:textColorSecondary">#666666</item>
+        <item name="android:textColorTertiary">#999999</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowBackground">@color/green</item>
     </style>
@@ -95,6 +98,32 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="TextNormal" parent="TextAppearance.AppCompat">
+        <item name="android:textColorHint">@color/bg_selected</item>
+        <item name="android:textSize">12sp</item>
+        <item name="colorControlNormal">@color/divider</item>
+        <item name="colorControlActivated">@color/bg_selected</item>
+    </style>
+
+    <style name="TextError" parent="TextAppearance.AppCompat">
+        <item name="android:textColorHint">@color/red</item>
+        <item name="android:textSize">12sp</item>
+        <item name="colorControlNormal">@color/divider</item>
+        <item name="colorControlActivated">@color/red</item>
+    </style>
+
+    <style name="SearchEditTextTheme" parent="Base.Widget.AppCompat.EditText">
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:background">@drawable/shape_disabled</item>
+        <item name="android:drawableLeft">@drawable/search</item>
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:editable">false</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:hint">搜索书名或作者</item>
+        <item name="android:paddingLeft">16dp</item>
     </style>
 
 </resources>

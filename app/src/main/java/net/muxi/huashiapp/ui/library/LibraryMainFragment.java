@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseFragment;
+import net.muxi.huashiapp.ui.login.LoginActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +48,7 @@ public class LibraryMainFragment extends BaseFragment {
             LibrarySearchActivity.start(getContext());
         });
         mBtnLoginLib.setOnClickListener(v -> {
-
+            LoginActivity.start(getContext(),"lib");
         });
         return view;
     }
