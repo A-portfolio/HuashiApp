@@ -20,6 +20,11 @@ public class DateUtil {
         return dateFormat.format(date);
     }
 
+    public static String toToday(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("MM月dd日");
+        return dateFormat.format(date);
+    }
+
     public static String toDateInYear(Date date){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
@@ -65,6 +70,31 @@ public class DateUtil {
         calendar.setTime(date);
         calendar.add(Calendar.DATE, distance);
         return toDate(calendar.getTime());
+    }
+
+
+    //获取当前日期
+    public static String getToday(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return toToday(calendar.getTime());
+    }
+
+
+    /**
+     * 根据日期获取
+     * @param date
+     * @return
+     */
+    public static String getWeek(Date date){
+        String [] weeks = {"周日","周一","周二","周三","周四","周五","周六"};
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int week_index = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if (week_index < 0){
+            week_index = 0;
+        }
+        return weeks[week_index];
     }
 
 

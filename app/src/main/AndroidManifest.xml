@@ -41,7 +41,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.studyroom.StudyRoomActivity"
+            android:name=".ui.EnteranceActivity"
             android:theme="@style/AppWelcomTheme"
 
             android:windowSoftInputMode="adjustResize">
@@ -123,11 +123,14 @@
 
         <activity android:name="net.muxi.huashiapp.ui.InfoActivity"/>
 
-        <!--<activity android:name=".ui.studyroom.StudyRoomActivity"/>-->
+        <activity android:name=".ui.studyroom.StudyRoomActivity"/>
 
         <activity android:name=".ui.studyroom.StudyRoomDetailActivity"/>
 
         <activity android:name=".ui.studyroom.StudyAreaOptionActivity"/>
+
+        <activity android:name=".ui.studyroom.StudyRoomBlankActivity"
+                  android:launchMode="singleTask"/>
 
 
         <activity android:name="net.muxi.huashiapp.ui.wxapi.WXEntryActivity"

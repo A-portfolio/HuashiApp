@@ -3,10 +3,10 @@ package net.muxi.huashiapp.ui.studyroom;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +31,7 @@ import static com.tencent.bugly.crashreport.inner.InnerAPI.context;
 
 public class StudyRoomDetailActivity extends ToolbarActivity {
 
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.grid_classroom_eight)
@@ -47,8 +48,6 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     GridLayout mGridClassroomEighteen;
     @BindView(R.id.grid_classroom_twenty)
     GridLayout mGridClassroomTwenty;
-
-
     private ClassRoom mClassRoom;
 
     //查询参数
