@@ -7,10 +7,4 @@
               android:elevation="4dp"
               android:orientation="vertical">
 
-    <com.bigkoo.convenientbanner.ConvenientBanner
-        android:id="@+id/banner"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        app:canLoop="true"/>
-
 </LinearLayout>
