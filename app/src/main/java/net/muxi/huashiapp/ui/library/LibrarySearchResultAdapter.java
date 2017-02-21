@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.library;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +26,14 @@ public class LibrarySearchResultAdapter extends BaseAdapter {
     @BindView(R.id.tv_author)
     TextView mTvAuthor;
 
+    private Context mContext;
+
     private List<BookSearchResult.ResultsBean> mBookList;
 
-    public LibrarySearchResultAdapter(
+    public LibrarySearchResultAdapter(Context context,
             List<BookSearchResult.ResultsBean> bookList) {
         mBookList = bookList;
+        mContext = context;
     }
 
     @Override
@@ -49,9 +53,9 @@ public class LibrarySearchResultAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        View v = LayoutInflater.from(view.getContext()).inflate(R.layout.item_book_search_result,
+        View v = LayoutInflater.from(mContext).inflate(R.layout.item_book_search_result,
                 null);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this,v);
         mTvBook.setText(mBookList.get(i).getBook());
         mTvAuthor.setText(mBookList.get(i).getBook());
         return v;

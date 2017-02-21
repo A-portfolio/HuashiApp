@@ -40,9 +40,10 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
+        <!--android:theme="@style/AppWelcomTheme"-->
+
         <activity
             android:name=".ui.EnteranceActivity"
-            android:theme="@style/AppWelcomTheme"
 
             android:windowSoftInputMode="adjustResize">
             <intent-filter>

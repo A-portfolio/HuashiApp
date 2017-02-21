@@ -58,5 +58,5 @@ dependencies {
     //    compile 'com.zhuge.analysis:zhugeio:latest.integration'
     compile 'me.biubiubiu.justifytext:library:1.1'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0'
-    compile 'com.github.fengminchao:MultiStatusView:0.5'
+    compile 'com.github.fengminchao:MultiStatusView:0.6'
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/view_net_error"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="79dp"
+        android:text="关注图书会收到可借提醒噢~"
+        android:textColor="@color/grey"
+        android:textSize="16sp"/>
+
+    <ImageView
+        android:layout_width="266dp"
+        android:src="@drawable/bg_empty_lib_attention"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tv_empty"
+        android:scaleType="centerInside"
+        android:layout_height="186dp"/>
+
+</RelativeLayout>

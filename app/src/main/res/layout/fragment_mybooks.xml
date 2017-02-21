@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--因为multi_status_view暂时不能在代码中设置对应的 view，所以先把 关注图书的布局 layout设为 netErrorView-->
+<com.muxistudio.multistatusview.MultiStatusView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:id="@+id/multi_status_view"
+    app:contentView="@layout/view_list"
+    app:emptyView="@layout/view_empty_borrow"
+    app:netErrorView="@layout/view_empty_attention"
+>
+
+</com.muxistudio.multistatusview.MultiStatusView>

@@ -20,16 +20,14 @@ import java.util.List;
 public class HuaShiDao {
 
     private SQLiteDatabase db;
-    private PreferenceUtil sp;
 
     public HuaShiDao() {
         db = DataBase.getInstance();
-        sp = new PreferenceUtil();
     }
 
     //插入当前用户的搜索记录,如果当前用户没有登录则为 null
     public void insertSearchHistory(String book) {
-        String libraryId = sp.getString(PreferenceUtil.LIBRARY_ID,"0");
+        String libraryId = PreferenceUtil.getString(PreferenceUtil.LIBRARY_ID,"0");
         db.execSQL("INSERT INTO " + DataBase.TABLE_SEARCH_HISTORY +
                         " VALUES(NULL,?,? )",
                 new String[]{libraryId, book});
@@ -37,7 +35,7 @@ public class HuaShiDao {
     }
 
     public List<String> loadSearchHistory() {
-        String libraryId = sp.getString(PreferenceUtil.LIBRARY_ID,"0");
+        String libraryId = PreferenceUtil.getString(PreferenceUtil.LIBRARY_ID,"0");
         Log.d("tag", libraryId);
         List<String> records = new ArrayList<>();
         Cursor cursor;
@@ -59,7 +57,7 @@ public class HuaShiDao {
     }
 
     public void deleteAllHistory() {
-        String libraryId = sp.getString(PreferenceUtil.LIBRARY_ID);
+        String libraryId = PreferenceUtil.getString(PreferenceUtil.LIBRARY_ID);
         db.execSQL("DELETE * FROM " + DataBase.TABLE_SEARCH_HISTORY +
                 " WHERE " + DataBase.KEY_LIBRARY_USER_ID + " = ? " +
                 new String[]{libraryId});
