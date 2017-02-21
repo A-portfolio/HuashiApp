@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -23,6 +24,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.util.Logger;
 
 import org.w3c.dom.Text;
 
@@ -41,8 +43,6 @@ import rx.schedulers.Schedulers;
 public class LibrarySearchResultActivity extends ToolbarActivity implements
         AbsListView.OnScrollListener {
 
-    @BindView(R.id.drawee)
-    SimpleDraweeView mDrawee;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.multi_status_view)
@@ -74,14 +74,17 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
 
         query = getIntent().getStringExtra("query");
         mBookList = new ArrayList<>();
-        mLibrarySearchResultAdapter = new LibrarySearchResultAdapter(mBookList);
+        mLibrarySearchResultAdapter = new LibrarySearchResultAdapter(this,mBookList);
         footerView = (TextView) LayoutInflater.from(this).inflate(R.layout.view_footer, null);
 
-        mMultiStatusView.setOnRetryListener(v -> {
-            page = 1;
-            loadBooks();
+        mMultiStatusView.setOnRetryListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                page = 1;
+                showLoading();
+                loadBooks();
+            }
         });
-
         loadBooks();
     }
 
@@ -93,6 +96,7 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
                     max = bookSearchResult.getMeta().getMax();
                     if (page == 1) {
                         mMultiStatusView.showContent();
+                        mListView = (ListView) mMultiStatusView.getContentView();
                         mListView.setOnScrollListener(this);
                         mListView.setAdapter(mLibrarySearchResultAdapter);
                         mListView.addFooterView(footerView);
@@ -110,10 +114,17 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
                 }, throwable -> {
                     throwable.printStackTrace();
                     mMultiStatusView.showError();
+                    mMultiStatusView.setOnRetryListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            page = 1;
+                            showLoading();
+                            loadBooks();
+                        }
+                    });
                 }, () -> {
-                    if (page == 1) {
-                        hideLoading();
-                    }
+                    Logger.d("hideloading");
+                    hideLoading();
                 });
     }
 
@@ -130,7 +141,6 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
                 if (preLastItem != lastItem && page <= max) {
                     page++;
                     loadBooks();
-                    showLoading();
                     preLastItem = lastItem;
                 }
             }

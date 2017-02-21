@@ -13,12 +13,13 @@
         android:background="@drawable/shape_disabled"
         android:lines="1"
         android:imeOptions="actionSearch"
+        android:inputType="text"
         android:drawableLeft="@drawable/ic_back"
         android:drawablePadding="36dp"
         android:drawableRight="@drawable/search_close"
         android:hint="输入书名或作者"
-        android:paddingLeft="12dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
     />
 
     <TextView

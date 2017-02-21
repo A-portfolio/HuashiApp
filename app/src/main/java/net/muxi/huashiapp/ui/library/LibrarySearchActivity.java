@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.db.HuaShiDao;
+import net.muxi.huashiapp.util.DimensUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +54,9 @@ public class LibrarySearchActivity extends BaseActivity {
     }
 
     private void initView() {
+        dao = new HuaShiDao();
         list = dao.loadSearchHistory();
-        mArrayList = new ArrayAdapter<String>(this, R.layout.item_search_history, R.id.tv_search,
+        mArrayList = new ArrayAdapter<String>(this, R.layout.item_search_history, R.id.tv_book,
                 list);
         mLv.setAdapter(mArrayList);
     }
@@ -62,22 +65,37 @@ public class LibrarySearchActivity extends BaseActivity {
         mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                switch (i){
+                switch (i) {
                     case EditorInfo.IME_ACTION_SEARCH:
                         String query = mEtSearch.getText().toString();
                         dao.insertSearchHistory(query);
-                        LibrarySearchResultActivity.start(LibrarySearchActivity.this,query);
+                        LibrarySearchResultActivity.start(LibrarySearchActivity.this, query);
                 }
                 return false;
             }
         });
+        mEtSearch.setOnTouchListener(((view, motionEvent) -> {
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                float x = motionEvent.getRawX();
+                float y = motionEvent.getRawY();
+                if (x < DimensUtil.dp2px(48) && x > DimensUtil.dp2px(24) && y < DimensUtil.dp2px(44)
+                        && y > DimensUtil.dp2px(20)) {
+                    finish();
+                } else if (x < DimensUtil.getScreenWidth() - DimensUtil.dp2px(24)
+                        && x > DimensUtil.getScreenWidth() - DimensUtil.dp2px(48)
+                        && y < DimensUtil.dp2px(44) && y > DimensUtil.dp2px(20)) {
+                    mEtSearch.setText("");
+                }
+            }
+            return true;
+        }));
         mTvClear.setOnClickListener(v -> {
             dao.deleteAllHistory();
             list.clear();
             mArrayList.notifyDataSetChanged();
         });
         mLv.setOnItemClickListener((adapterView, view, i, l) -> {
-            LibrarySearchResultActivity.start(LibrarySearchActivity.this,list.get(i));
+            LibrarySearchResultActivity.start(LibrarySearchActivity.this, list.get(i));
         });
     }
 
