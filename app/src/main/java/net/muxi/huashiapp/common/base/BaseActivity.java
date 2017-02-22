@@ -43,7 +43,8 @@ public class BaseActivity extends AppCompatActivity{
 
     public void setContentView(int layoutResId){
         super.setContentView(layoutResId);
-        getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+//        getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+        getWindow().findViewById(android.R.id.content).setBackgroundColor(Color.WHITE);
     }
 
     public void showLoading(){

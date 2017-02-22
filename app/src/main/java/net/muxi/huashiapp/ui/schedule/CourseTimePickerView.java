@@ -8,6 +8,7 @@ import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NumberPickerHelper;
 
 import butterknife.BindView;
@@ -71,12 +72,14 @@ public class CourseTimePickerView extends RelativeLayout{
         mNpStart.setOnValueChangedListener((numberPicker, i, i1) -> {
             if (i1 > mNpEnd.getValue()) {
                 i1 = mNpEnd.getValue();
+                mNpStart.setValue(i1);
             }
             mOnValueChangeListener.onValueChange(mNpWeekday.getValue(), i1, mNpEnd.getValue());
         });
         mNpEnd.setOnValueChangedListener((numberPicker, i, i1) -> {
             if (i1 < mNpStart.getValue()) {
                 i1 = mNpStart.getValue();
+                mNpEnd.setValue(i1);
             }
             mOnValueChangeListener.onValueChange(mNpWeekday.getValue(), mNpStart.getValue(), i1);
         });

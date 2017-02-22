@@ -179,7 +179,6 @@ public class CourseEditActivity extends ToolbarActivity {
                                 ZhugeUtils.sendEvent("课程提醒状态", course.getRemind());
                                 int newId = id;
                                 dao.insertCourse(course);
-                                Logger.d("add course success");
                                 ToastUtil.showShort("添加成功");
                                 Intent intent = new Intent();
                                 CourseEditActivity.this.setResult(RESULT_OK, intent);
