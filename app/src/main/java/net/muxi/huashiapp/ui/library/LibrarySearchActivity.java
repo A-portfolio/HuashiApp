@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.inputmethod.EditorInfo;
@@ -16,6 +17,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.util.DimensUtil;
+import net.muxi.huashiapp.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +58,9 @@ public class LibrarySearchActivity extends BaseActivity {
     private void initView() {
         dao = new HuaShiDao();
         list = dao.loadSearchHistory();
+        if (list.size() > 5) {
+            list = list.subList(0, 5);
+        }
         mArrayList = new ArrayAdapter<String>(this, R.layout.item_search_history, R.id.tv_book,
                 list);
         mLv.setAdapter(mArrayList);
@@ -78,12 +83,15 @@ public class LibrarySearchActivity extends BaseActivity {
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 float x = motionEvent.getRawX();
                 float y = motionEvent.getRawY();
+                Logger.d(DimensUtil.dp2px(48) + "");
                 if (x < DimensUtil.dp2px(48) && x > DimensUtil.dp2px(24) && y < DimensUtil.dp2px(44)
-                        && y > DimensUtil.dp2px(20)) {
+                        + DimensUtil.getStatusBarHeight()
+                        && y > DimensUtil.dp2px(20) + DimensUtil.getStatusBarHeight()) {
                     finish();
                 } else if (x < DimensUtil.getScreenWidth() - DimensUtil.dp2px(24)
                         && x > DimensUtil.getScreenWidth() - DimensUtil.dp2px(48)
-                        && y < DimensUtil.dp2px(44) && y > DimensUtil.dp2px(20)) {
+                        && y < DimensUtil.dp2px(44) + DimensUtil.getStatusBarHeight()
+                        && y > DimensUtil.dp2px(20) + DimensUtil.getStatusBarHeight()) {
                     mEtSearch.setText("");
                 }
             }

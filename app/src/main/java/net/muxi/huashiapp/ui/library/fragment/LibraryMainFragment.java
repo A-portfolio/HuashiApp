@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.library;
+package net.muxi.huashiapp.ui.library.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseFragment;
+import net.muxi.huashiapp.ui.library.LibrarySearchActivity;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 
 import butterknife.BindView;

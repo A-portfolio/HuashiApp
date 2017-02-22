@@ -28,6 +28,7 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.ui.main.MainActivity;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.ToastUtil;
@@ -141,6 +142,7 @@ public class LoginActivity extends ToolbarActivity {
                                 } else {
                                     finish();
                                     App.saveLibUser(user);
+                                    loadMyBooks();
                                 }
                             }, throwable -> {
                                 throwable.printStackTrace();
@@ -148,6 +150,25 @@ public class LoginActivity extends ToolbarActivity {
                             },
                             () -> hideLoading());
         }
+    }
+
+    private void loadMyBooks() {
+        CampusFactory.getRetrofitService().getAttentionBooks(Base64Util.createBaseStr(App.sLibrarayUser))
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.immediate())
+                .subscribe(listResponse -> {
+                    if (listResponse.code() == 200){
+                        MyBooksUtils.saveAttentionBooks(listResponse.body());
+                    }
+                });
+        CampusFactory.getRetrofitService().getPersonalBook(Base64Util.createBaseStr(App.sLibrarayUser))
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(personalBooks -> {
+                    if (personalBooks != null){
+                        MyBooksUtils.saveBorrowedBooks(personalBooks);
+                    }
+                });
     }
 
     @Override

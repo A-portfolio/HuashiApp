@@ -42,6 +42,32 @@ public class DateUtil {
         return toWeek(calendar.getTime());
     }
 
+    /**
+     * 解析类似于 2017-2-14 这种类型的日期
+     * @param dateStr
+     * @return
+     */
+    public static Date parseDateInYear(String dateStr){
+        try {
+            Date date = DateFormat.getInstance().parse(dateStr);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 获取两个日期之间间隔的天数,如果第二个日期在第一个日期之后的话返回为 正
+     * @param date1
+     * @param date2
+     * @return
+     */
+    public static int getDayBetweenDates(Date date1,Date date2){
+        long duration = date2.getTime() - date1.getTime();
+        return (int)(duration / (60 * 60 * 24));
+    }
+
     //获取两个日期相隔的周,用于课程表
     public static long getDistanceWeek(String date1,String date2){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");

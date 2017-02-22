@@ -54,10 +54,15 @@ public class LibrarySearchResultAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.item_book_search_result,
-                null);
+                viewGroup,false);
         ButterKnife.bind(this,v);
-        mTvBook.setText(mBookList.get(i).getBook());
-        mTvAuthor.setText(mBookList.get(i).getBook());
+        String s = mBookList.get(i).book;
+        int index = mBookList.get(i).book.indexOf(".");
+        if (index >= 0 && index < mBookList.get(i).book.length()){
+            s = s.substring(index + 1,s.length());
+        }
+        mTvBook.setText(s);
+        mTvAuthor.setText(mBookList.get(i).author);
         return v;
     }
 

@@ -14,12 +14,11 @@ import android.widget.FrameLayout;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.ui.library.LibraryMainFragment;
-import net.muxi.huashiapp.ui.library.LibraryMineFragment;
+import net.muxi.huashiapp.ui.library.fragment.LibraryMainFragment;
+import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.more.MoreFragment;
 import net.muxi.huashiapp.ui.schedule.TimetableFragment;
-import net.muxi.huashiapp.util.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

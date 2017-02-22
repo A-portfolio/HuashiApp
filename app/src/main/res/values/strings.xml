@@ -73,6 +73,20 @@
     <string name="lib_author">作者:</string>
     <string name="lib_itime">借阅日期:</string>
     <string name="lib_return_time">归还日期:</string>
+    <string name="atten">关注</string>
+    <string name="has_atten">已关注</string>
+    <string name="renew">续借图书</string>
+    <string name="can_borrow">可借</string>
+    <string name="can_borrow_book">可借本</string>
+    <string name="lend">借出</string>
+    <string name="retained_book">保留本</string>
+    <string name="renew_ok">续借图书成功</string>
+    <string name="renew_not_in_date">剩余天数不足3天的图书才能续借</string>
+    <string name="renew_already">已经续借过一次啦</string>
+    <string name="request_invalid">请求无效,请稍后再试</string>
+    <string name="expand_all">展开全部</string>
+    <string name="fold_all">收起</string>
+
 
     <!--setting activity key-->
     <string name="pre_schedule">pre_schedule</string>

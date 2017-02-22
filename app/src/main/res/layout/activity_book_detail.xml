@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+>
 
     <include layout="@layout/view_toolbar"/>
 
     <com.muxistudio.multistatusview.MultiStatusView
-        android:layout_width="match_parent"
         android:id="@+id/multi_status_view"
+        android:layout_width="match_parent"
+        app:contentView="@layout/view_space"
         app:errorView="@layout/view_error"
-        app:contentView="@layout/view_book_detail"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"/>
 
-</LinearLayout>
+    <FrameLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"></FrameLayout>
+
+</FrameLayout>

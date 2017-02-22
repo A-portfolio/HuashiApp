@@ -8,46 +8,10 @@ public class PersonalBook {
     public String itime;
     public String otime;
     public String book;
-    public String time;
+    public String room;
     public String author;
-
-    public String getItime() {
-        return itime;
-    }
-
-    public void setItime(String itime) {
-        this.itime = itime;
-    }
-
-    public String getOtime() {
-        return otime;
-    }
-
-    public void setOtime(String otime) {
-        this.otime = otime;
-    }
-
-    public String getBook() {
-        return book;
-    }
-
-    public void setBook(String book) {
-        this.book = book;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+    public String bar_code;
+    public int time;
+    public String check;
+    public String id;
 }

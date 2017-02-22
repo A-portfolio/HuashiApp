@@ -95,8 +95,7 @@
                   android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.library.MineActivity"
-                  android:launchMode="singleTask"/>
+        <activity android:name=".ui.library.BookDetailActivity"/>
 
         <activity android:name="net.muxi.huashiapp.ui.card.CardActivity"
                   android:launchMode="singleTask"/>
