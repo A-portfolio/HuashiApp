@@ -3,7 +3,6 @@
         android:color="@color/colorRipple">
 
     <item
-        android:id="@android:id/mask"
-        android:drawable="@color/colorRipple"/>
+        android:drawable="@drawable/shape_clicktv"/>
 
 </ripple>

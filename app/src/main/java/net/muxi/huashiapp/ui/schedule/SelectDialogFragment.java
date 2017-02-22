@@ -41,9 +41,9 @@ public class SelectDialogFragment extends BottomDialogFragment {
     @BindView(R.id.grid_layout)
     GridLayout mGridLayout;
     @BindView(R.id.btn_cancel)
-    Button mBtnCancel;
+    TextView mBtnCancel;
     @BindView(R.id.btn_enter)
-    Button mBtnEnter;
+    TextView mBtnEnter;
 
     private Context mContext;
 
@@ -86,11 +86,10 @@ public class SelectDialogFragment extends BottomDialogFragment {
                 if (mTvSingleWeek.getBackground() == null) {
                     setSingleWeeks();
                     setMultiSelectButtonBg();
-                    mTvSingleWeek.setBackgroundResource(R.drawable.bg_multi_select);
-                    mTvSingleWeek.setTextColor(Color.WHITE);
+                    setMultiWeekTextChecked(mTvSingleWeek,true);
                 } else {
                     setAllWeeks(false);
-                    mTvSingleWeek.setBackground(null);
+                    setMultiWeekTextChecked(mTvSingleWeek,false);
                 }
             }
         });
@@ -101,11 +100,10 @@ public class SelectDialogFragment extends BottomDialogFragment {
                 if (mTvDoubleWeek.getBackground() == null) {
                     setDoubleWeeks();
                     setMultiSelectButtonBg();
-                    mTvDoubleWeek.setBackgroundResource(R.drawable.bg_multi_select);
-                    mTvDoubleWeek.setTextColor(Color.WHITE);
+                    setMultiWeekTextChecked(mTvDoubleWeek,true);
                 } else {
                     setAllWeeks(false);
-                    mTvDoubleWeek.setBackground(null);
+                    setMultiWeekTextChecked(mTvDoubleWeek,false);
                 }
             }
         });
@@ -115,11 +113,10 @@ public class SelectDialogFragment extends BottomDialogFragment {
                 if (mTvAllWeek.getBackground() == null) {
                     setAllWeeks(true);
                     setMultiSelectButtonBg();
-                    mTvAllWeek.setBackgroundResource(R.drawable.bg_multi_select);
-                    mTvAllWeek.setTextColor(Color.WHITE);
+                    setMultiWeekTextChecked(mTvAllWeek,true);
                 } else {
                     setAllWeeks(false);
-                    mTvAllWeek.setBackground(null);
+                    setMultiWeekTextChecked(mTvAllWeek,false);
                 }
             }
         });
@@ -146,11 +143,11 @@ public class SelectDialogFragment extends BottomDialogFragment {
                         ((TextView) view).setTextColor(Color.WHITE);
                     } else {
                         view.setBackground(null);
-                        ((TextView) view).setTextColor(getResources().getColor(R.color.divider));
+                        ((TextView) view).setTextColor(getResources().getColor(R.color.hintColor));
                     }
-                    mTvSingleWeek.setBackground(null);
-                    mTvDoubleWeek.setBackground(null);
-                    mTvAllWeek.setBackground(null);
+                    setMultiWeekTextChecked(mTvSingleWeek,false);
+                    setMultiWeekTextChecked(mTvAllWeek,false);
+                    setMultiWeekTextChecked(mTvDoubleWeek,false);
                 }
             });
         }
@@ -208,6 +205,7 @@ public class SelectDialogFragment extends BottomDialogFragment {
             s = String.format("%d-%d周",start,end);
         }else {
             s = TextUtils.join(",",weekList);
+            s += "周";
         }
         return s;
     }
@@ -226,9 +224,9 @@ public class SelectDialogFragment extends BottomDialogFragment {
      * 设置所有多选按钮的背景
      */
     public void setMultiSelectButtonBg() {
-        mTvSingleWeek.setBackground(null);
-        mTvDoubleWeek.setBackground(null);
-        mTvAllWeek.setBackground(null);
+        setMultiWeekTextChecked(mTvSingleWeek,false);
+        setMultiWeekTextChecked(mTvDoubleWeek,false);
+        setMultiWeekTextChecked(mTvAllWeek,false);
     }
 
     public boolean isSingleWeeks(List<Integer> weekList) {
@@ -281,9 +279,9 @@ public class SelectDialogFragment extends BottomDialogFragment {
     public void setSingleWeeks() {
         for (int i = 0; i < 21; i++) {
             if (i % 2 == 0) {
-                mTvWeeks[i].setBackgroundResource(R.drawable.bg_selected_week);
+                setWeekTextChecked(mTvWeeks[i],true);
             } else {
-                mTvWeeks[i].setBackground(null);
+                setWeekTextChecked(mTvWeeks[i],false);
             }
         }
     }
@@ -291,9 +289,9 @@ public class SelectDialogFragment extends BottomDialogFragment {
     public void setDoubleWeeks() {
         for (int i = 0; i < WEEK_LENGTH; i++) {
             if (i % 2 == 0) {
-                mTvWeeks[i].setBackground(null);
+                setWeekTextChecked(mTvWeeks[i],false);
             } else {
-                mTvWeeks[i].setBackgroundResource(R.drawable.bg_selected_week);
+                setWeekTextChecked(mTvWeeks[i],true);
             }
         }
     }
@@ -301,10 +299,40 @@ public class SelectDialogFragment extends BottomDialogFragment {
     public void setAllWeeks(boolean b) {
         for (int i = 0; i < WEEK_LENGTH; i++) {
             if (b) {
-                mTvWeeks[i].setBackgroundResource(R.drawable.bg_selected_week);
+                setWeekTextChecked(mTvWeeks[i],true);
             } else {
-                mTvWeeks[i].setBackground(null);
+                setWeekTextChecked(mTvWeeks[i],false);
             }
+        }
+    }
+
+    /**
+     * 设置周 tv 的颜色和背景
+     * @param textView
+     * @param checked
+     */
+    public void setWeekTextChecked(TextView textView,boolean checked){
+        if (checked){
+            textView.setBackgroundResource(R.drawable.bg_selected_week);
+            textView.setTextColor(Color.WHITE);
+        }else {
+            textView.setBackground(null);
+            textView.setTextColor(getResources().getColor(R.color.hintColor));
+        }
+    }
+
+    /**
+     * 设置多选周tv 的颜色和背景
+     * @param textView
+     * @param checked
+     */
+    public void setMultiWeekTextChecked(TextView textView,boolean checked){
+        if (checked){
+            textView.setBackgroundResource(R.drawable.bg_multi_select);
+            textView.setTextColor(Color.WHITE);
+        }else {
+            textView.setBackground(null);
+            textView.setTextColor(getResources().getColor(R.color.hintColor));
         }
     }
 

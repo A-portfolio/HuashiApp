@@ -3,37 +3,37 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="16dp"
-    android:background="@drawable/bg_card">
+    android:background="@drawable/bg_card"
+    android:paddingTop="16dp">
 
     <TextView
-    android:gravity="center"
-    android:id="@+id/tv_single_week"
-    android:layout_centerHorizontal="true"
-    android:layout_height="24dp"
-    android:textColor="@color/colorBottomDialogText"
-    android:layout_width="48dp"
-    android:text="单周"/>
+        android:id="@+id/tv_single_week"
+        android:layout_width="48dp"
+        android:layout_height="24dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="单周"
+        android:textColor="@color/colorBottomDialogText"/>
 
     <TextView
-    android:gravity="center"
-    android:id="@+id/tv_double_week"
-    android:layout_height="24dp"
-    android:layout_marginLeft="40dp"
-    android:textColor="@color/colorBottomDialogText"
-    android:layout_toRightOf="@+id/tv_single_week"
-    android:layout_width="48dp"
-    android:text="双周"/>
+        android:id="@+id/tv_double_week"
+        android:layout_width="48dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="40dp"
+        android:layout_toRightOf="@+id/tv_single_week"
+        android:gravity="center"
+        android:text="双周"
+        android:textColor="@color/colorBottomDialogText"/>
 
     <TextView
-    android:gravity="center"
-    android:id="@+id/tv_all_week"
-    android:layout_height="24dp"
-    android:layout_marginRight="40dp"
-    android:textColor="@color/colorBottomDialogText"
-    android:layout_toLeftOf="@+id/tv_single_week"
-    android:layout_width="48dp"
-    android:text="全选"/>
+        android:id="@+id/tv_all_week"
+        android:layout_width="48dp"
+        android:layout_height="24dp"
+        android:layout_marginRight="40dp"
+        android:layout_toLeftOf="@+id/tv_single_week"
+        android:gravity="center"
+        android:text="全选"
+        android:textColor="@color/colorBottomDialogText"/>
 
     <GridLayout
         android:id="@+id/grid_layout"
@@ -49,25 +49,29 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/grid_layout">
 
-        <Button
+        <TextView
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="56dp"
             android:layout_below="@+id/grid_layout"
             android:layout_weight="1"
-            android:background="@null"
-            android:text="取消"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="@string/cancel"
             android:textColor="@color/colorBottomDialogText"
         />
 
-        <Button
+        <TextView
             android:id="@+id/btn_enter"
             android:layout_width="wrap_content"
             android:layout_height="56dp"
             android:layout_below="@+id/grid_layout"
             android:layout_weight="1"
-            android:background="@null"
-            android:text="确认"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="@string/confirm"
             android:textColor="@color/colorBottomDialogText"
         />
 
