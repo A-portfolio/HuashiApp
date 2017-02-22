@@ -25,7 +25,6 @@ import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NotifyUtil;
 import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.TimeTableUtil;
-import net.muxi.huashiapp.ui.library.MineActivity;
 import net.muxi.huashiapp.ui.score.ScoreActivity;
 
 import java.util.ArrayList;
@@ -149,16 +148,13 @@ public class AlarmReceiver extends BroadcastReceiver {
                         List<String> books = new ArrayList<>();
                         boolean isRemind = false;
                         for (int i = 0, j = personalBooks.size(); i < j; i++) {
-                            if (Integer.valueOf(personalBooks.get(i).getTime()) < 4) {
+                            if (Integer.valueOf(personalBooks.get(i).time) < 4) {
                                 isRemind = true;
-                                books.add(personalBooks.get(i).getBook());
+                                books.add(personalBooks.get(i).book);
                             }
                         }
                         if (isRemind) {
                             String content = String.format(App.sContext.getString(R.string.notify_content_lib), connectBooks(books));
-                            NotifyUtil.show(mContext, MineActivity.class,
-                                    mContext.getResources().getString(R.string.notify_title_lib),
-                                    content);
                         }
                     }
                 });

@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:id="@+id/multi_status_view"
-    app:contentView="@layout/view_list"
+    app:contentView="@layout/view_content_recycler"
     app:emptyView="@layout/view_empty_borrow"
     app:netErrorView="@layout/view_empty_attention"
 >

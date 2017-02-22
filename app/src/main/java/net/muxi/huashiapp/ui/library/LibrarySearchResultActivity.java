@@ -102,8 +102,7 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
                         mListView.addFooterView(footerView);
                         mListView.setOnItemClickListener((adapterView, view, i, l) -> {
                             BookSearchResult.ResultsBean book = mBookList.get(i);
-                            BookDetailActivity.start(LibrarySearchResultActivity.this,
-                                    book.getBid(), book.getId(), book.getBook(), book.getAuthor());
+                            BookDetailActivity.start(LibrarySearchResultActivity.this,book.id);
                         });
                     } else if (page >= max) {
                         footerView.setText("－到底啦，没有更多啦－");
@@ -123,7 +122,6 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
                         }
                     });
                 }, () -> {
-                    Logger.d("hideloading");
                     hideLoading();
                 });
     }

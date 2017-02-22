@@ -1,7 +1,6 @@
-package net.muxi.huashiapp.ui.library;
+package net.muxi.huashiapp.ui.library.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +48,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return mBook.getBooks().size();
+        return mBook.books.size();
     }
 
     @Override

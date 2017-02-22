@@ -2,30 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="72dp"
-              android:layout_marginLeft="16dp"
-              android:layout_marginRight="16dp"
+              android:id="@+id/layout_item"
               android:background="?android:attr/selectableItemBackground"
               android:orientation="vertical"
               android:paddingLeft="56dp">
 
     <TextView
-        android:id="@+id/tv_book"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:lines="1"
+        android:textColor="?android:attr/textColorPrimary"
+        android:layout_marginTop="16dp"
         android:ellipsize="end"
-        android:text="feng"
-        android:textColor="?android:attr/textColorPrimary"/>
+        android:lines="1"
+        android:textSize="16sp"/>
 
     <TextView
-        android:id="@+id/tv_author"
+        android:id="@+id/tv_remind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="feng"
+        android:ellipsize="end"
         android:lines="1"
-        android:textSize="10sp"
-    />
+        android:textSize="12sp"/>
 
 </LinearLayout>

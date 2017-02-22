@@ -43,6 +43,11 @@ public class PreferenceUtil {
     public static final String REMIND_UPDATE = "remind_update";
     //最新的通知公告日期
     public static final String LATEST_NEWS_DATE = "latest_news_date";
+    //关注图书的列表
+    public static final String ATTENTION_BOOK_IDS = "attention_book_ids";
+    //借阅图书的列表
+    public static final String BORROW_BOOK_IDS = "borrow_book_ids";
+
 
     public static void saveBoolean(String key, boolean value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(App.sContext).edit();
