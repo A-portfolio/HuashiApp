@@ -90,12 +90,12 @@ public class TableContent extends FrameLayout {
     public void addCourses(List<Course> courseList,int selectWeek) {
         mCourseList.addAll(courseList);
         for (int i = 0; i < courseList.size(); i++) {
-            if (!TimeTableUtil.isThisWeek(selectWeek,courseList.get(i).getWeeks())) {
+            if (!TimeTableUtil.isThisWeek(selectWeek,courseList.get(i).weeks)) {
                 addCourseView(courseList.get(i),selectWeek);
             }
         }
         for (int i = 0;i < courseList.size();i ++){
-            if (TimeTableUtil.isThisWeek(selectWeek,courseList.get(i).getWeeks())){
+            if (TimeTableUtil.isThisWeek(selectWeek,courseList.get(i).weeks)){
                 addCourseView(courseList.get(i),selectWeek);
             }
         }
@@ -107,21 +107,21 @@ public class TableContent extends FrameLayout {
         tvCourse.setTextSize(TypedValue.COMPLEX_UNIT_SP,10);
         tvCourse.setPadding(DimensUtil.dp2px(10),DimensUtil.dp2px(8),DimensUtil.dp2px(10),DimensUtil.dp2px(8));
         LayoutParams courseParams = new LayoutParams(TimeTable.COURSE_WIDTH,
-                course.getDuring() * TimeTable.COURSE_TIME_HEIGHT - 3);
+                course.during * TimeTable.COURSE_TIME_HEIGHT - 3);
         courseParams.setMargins(
-                DimensUtil.dp2px(65 * TimeTableUtil.weekday2num(course.getDay()) + 1),
-                DimensUtil.dp2px(57 * (course.getStart() - 1) + 1), 0, 0);
-        if (TimeTableUtil.isThisWeek(selectWeek,course.getWeeks())) {
+                DimensUtil.dp2px(65 * TimeTableUtil.weekday2num(course.day) + 1),
+                DimensUtil.dp2px(57 * (course.start - 1) + 1), 0, 0);
+        if (TimeTableUtil.isThisWeek(selectWeek,course.weeks)) {
             tvCourse.setBackground(getResources().getDrawable(
-                    TimeTableUtil.getCourseBg(course.getColor())));
-            tvCourse.setText(ellipseCourse(course.getCourse()) + "\n\n@" +
-                    course.getPlace() + "\n" +
-                    course.getTeacher());
+                    TimeTableUtil.getCourseBg(course.color)));
+            tvCourse.setText(ellipseCourse(course.course) + "\n\n@" +
+                    course.place + "\n" +
+                    course.teacher);
         }else {
             tvCourse.setBackground(getResources().getDrawable(R.drawable.shape_grey));
-            tvCourse.setText(ellipseNotCurCourse(course.getCourse()) + "\n\n@" +
-            course.getPlace() + "\n" +
-            course.getTeacher());
+            tvCourse.setText(ellipseNotCurCourse(course.course) + "\n\n@" +
+            course.place + "\n" +
+            course.teacher);
         }
         this.addView(tvCourse, courseParams);
 

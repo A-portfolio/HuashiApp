@@ -3,6 +3,7 @@ package net.muxi.huashiapp.ui.schedule;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,12 +26,14 @@ import net.muxi.huashiapp.util.ToastUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Response;
+import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -42,42 +45,21 @@ public class CourseEditActivity extends ToolbarActivity {
 
     @BindView(R.id.et_course)
     EditText mEtCourse;
-    @BindView(R.id.divider1)
-    View mDivider1;
-    @BindView(R.id.iv_week_select)
-    ImageView mIvWeekSelect;
-    @BindView(R.id.tv_week)
-    TextView mTvWeek;
     @BindView(R.id.et_week)
     TextView mEtWeek;
-    @BindView(R.id.divider2)
-    View mDivider2;
-    @BindView(R.id.iv_course_time)
-    ImageView mIvCourseTime;
     @BindView(R.id.tv_time)
     TextView mTvTime;
     @BindView(R.id.et_time)
     TextView mEtTime;
-    @BindView(R.id.divider3)
-    View mDivider3;
-    @BindView(R.id.iv_course_place)
-    ImageView mIvCoursePlace;
     @BindView(R.id.et_place)
     EditText mEtPlace;
-    @BindView(R.id.divider4)
-    View mDivider4;
-    @BindView(R.id.iv_course_teacher)
-    ImageView mIvCourseTeacher;
     @BindView(R.id.et_teacher)
     EditText mEtTeacher;
-    @BindView(R.id.divider5)
-    View mDivider5;
     @BindView(R.id.btn_ensure)
-    Button mBtnEnsure;
+    TextView mBtnEnsure;
 
     private Course mCourse;
     private HuaShiDao dao;
-    private PreferenceUtil sp;
 
     //是否是新添加课程
     private boolean isAdd = true;
@@ -106,17 +88,17 @@ public class CourseEditActivity extends ToolbarActivity {
         isAdd = getIntent().getBooleanExtra("is_add", true);
         if (!isAdd) {
             mCourse = getIntent().getParcelableExtra("course");
-            String[] arrays = mCourse.getWeeks().split(",");
+            String[] arrays = mCourse.weeks.split(",");
             for (String s : arrays) {
                 mWeeks.add(Integer.parseInt(s));
             }
             for (int i = 0; i < 7; i++) {
-                if (mCourse.getDay().equals(Constants.WEEKDAYS_XQ[i])) {
+                if (mCourse.day.equals(Constants.WEEKDAYS_XQ[i])) {
                     mWeekday = i;
                 }
             }
-            start = mCourse.getStart();
-            duration = mCourse.getDuring();
+            start = mCourse.start;
+            duration = mCourse.during;
         } else {
             mCourse = new Course();
             for (int i = 1; i < 19; i++) {
@@ -140,11 +122,11 @@ public class CourseEditActivity extends ToolbarActivity {
             mEtTime.setText("周一1-2节");
         } else {
             mBtnEnsure.setText("完成编辑");
-            mEtCourse.setText(mCourse.getCourse());
-            mEtWeek.setText(mCourse.getWeeks());
+            mEtCourse.setText(mCourse.course);
+            mEtWeek.setText(mCourse.weeks);
             mEtTime.setText(String.format("周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
                     start + duration - 1));
-            mEtTeacher.setText(mCourse.getTeacher());
+            mEtTeacher.setText(mCourse.teacher);
         }
     }
 
@@ -154,49 +136,21 @@ public class CourseEditActivity extends ToolbarActivity {
         }
     }
 
-    public void addCourse(final Course course, final int id) {
-        if (NetStatus.isConnected() == true) {
-//            showLoading(true, getString(R.string.tip_adding_course));
-            CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(App.sUser), course)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.newThread())
-                    .subscribe(new Observer<Response<VerifyResponse>>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            e.printStackTrace();
-                            ToastUtil.showShort(getString(R.string.tip_adding_fail));
-                        }
-
-                        @Override
-                        public void onNext(Response<VerifyResponse> verifyResponseResponse) {
-                            if (verifyResponseResponse.code() == 201) {
-                                ZhugeUtils.sendEvent("课程添加", "成功添加课程");
-                                ZhugeUtils.sendEvent("课程提醒状态", course.getRemind());
-                                int newId = id;
-                                dao.insertCourse(course);
-                                ToastUtil.showShort("添加成功");
-                                Intent intent = new Intent();
-                                CourseEditActivity.this.setResult(RESULT_OK, intent);
-                                //添加的课程 id 自增
-                                newId++;
-                                sp.saveInt(PreferenceUtil.COURSE_ID, newId);
-                                Intent intent1 = new Intent();
-                                intent1.setAction("android.intent.action.WidgetProvider");
-                                sendBroadcast(intent1);
-                                CourseEditActivity.this.finish();
-                            } else {
-                                ToastUtil.showShort(getString(R.string.tip_adding_fail));
-                            }
-                        }
-                    });
-        } else {
-            ToastUtil.showLong(getString(R.string.tip_check_net));
-        }
+    public void addCourse() {
+        CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(App.sUser), mCourse)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(verifyResponseResponse -> {
+                    switch (verifyResponseResponse.code()) {
+                        case 201:
+                            dao.insertCourse(mCourse);
+                            finish();
+                            break;
+                        default:
+                            showErrorSnackbarShort(R.string.tip_school_server_error);
+                            break;
+                    }
+                });
     }
 
     /**
@@ -205,14 +159,14 @@ public class CourseEditActivity extends ToolbarActivity {
      * @param newCourse 新添加的课程
      */
     private boolean isConflict(Course newCourse) {
-        List<Course> courses = dao.loadCourse(newCourse.getDay());
+        List<Course> courses = dao.loadCourse(newCourse.day);
         for (int i = 0, size = courses.size(); i < size; i++) {
             Course course = courses.get(i);
-            if ((course.getStart() <= newCourse.getStart() &&
-                    (course.getStart() + course.getDuring()) > newCourse.getStart())
-                    || (course.getStart() >= newCourse.getStart() &&
-                    course.getStart() < (newCourse.getStart() + newCourse.getDuring()))) {
-                String[] localCourse = course.getWeeks().split(",");
+            if ((course.start <= newCourse.start &&
+                    (course.start + course.during) > newCourse.start)
+                    || (course.start >= newCourse.start &&
+                    course.start < (newCourse.start + newCourse.during))) {
+                String[] localCourse = course.weeks.split(",");
                 for (int j = 0; j < localCourse.length; j++) {
                     for (int k = 0; k < mWeeks.size(); k++) {
                         if (localCourse[j].equals(String.valueOf(mWeeks.get(k)))) {
@@ -257,7 +211,61 @@ public class CourseEditActivity extends ToolbarActivity {
 
     @OnClick(R.id.btn_ensure)
     public void onClick() {
-        // TODO: 17/2/8 update timetable api
-//        addCourse(mCourse,);
+        mCourse.course = mEtCourse.getText().toString();
+        mCourse.teacher = mEtTeacher.getText().toString();
+        mCourse.place = mEtPlace.getText().toString();
+        mCourse.weeks = TextUtils.join(",", mWeeks);
+        mCourse.day = Constants.WEEKDAYS_XQ[mWeekday];
+        mCourse.start = start;
+        mCourse.during = duration;
+        mCourse.remind = "false";
+        if (TextUtils.isEmpty(mCourse.id)) {
+            mCourse.id = generateId();
+        }
+        if (mCourse.hasNullValue()) {
+            return;
+        }
+        if (isAdd) {
+            addCourse();
+        } else {
+            updateCourse();
+        }
     }
+
+    private String generateId() {
+        List<Integer> lists = new ArrayList<>();
+        for (Course course : dao.loadAllCourses()) {
+            if (Integer.valueOf(course.id) < 1000) {
+                lists.add(Integer.valueOf(course.id));
+            }
+        }
+        if (lists.size() == 0){
+            return "1";
+        }
+        Collections.sort(lists);
+        return String.valueOf(lists.get(lists.size() - 1) + 1);
+
+    }
+
+
+    private void updateCourse() {
+        CampusFactory.getRetrofitService().updateCourse(Base64Util.createBaseStr(App.sUser),
+                mCourse.id, mCourse)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(verifyResponseResponse -> {
+                    switch (verifyResponseResponse.code()) {
+                        case 200:
+                            dao.updateCourse(mCourse);
+                            finish();
+                            break;
+                        case 404:
+                            showErrorSnackbarShort(R.string.course_not_found);
+                            break;
+                        default:
+                            showErrorSnackbarShort(R.string.tip_school_server_error);
+                    }
+                });
+    }
+
 }

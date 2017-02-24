@@ -80,6 +80,6 @@
         android:layout_width="match_parent"
         android:elevation="1dp"
         android:visibility="invisible"
-        android:layout_height="match_parent"></net.muxi.huashiapp.ui.schedule.TableMenuView>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

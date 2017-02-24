@@ -64,21 +64,21 @@ public class HuaShiDao {
     }
 
     public void insertCourse(Course course) {
-        db.execSQL("INSERT INTO " + DataBase.TABLE_COURSE + " values (?,?,?,?,? ," + course.getStart() + "," + course.getDuring() + ",?,?,?) ",
+        db.execSQL("INSERT INTO " + DataBase.TABLE_COURSE + " values (?,?,?,?,? ," + course.start + "," + course.during + ",?,?,?) ",
                 new String[]{
-                        course.getId(),
-                        course.getCourse(),
-                        course.getTeacher(),
-                        course.getWeeks(),
-                        course.getDay(),
-                        course.getPlace(),
-                        String.valueOf(course.getRemind()),
-                        String.valueOf(course.getColor())
+                        course.id,
+                        course.course,
+                        course.teacher,
+                        course.weeks,
+                        course.day,
+                        course.place,
+                        String.valueOf(course.remind),
+                        String.valueOf(course.color)
                 });
     }
 
     public void updateCourse(Course course){
-        deleteCourse(course.getId());
+        deleteCourse(course.id);
         insertCourse(course);
     }
 
@@ -99,46 +99,20 @@ public class HuaShiDao {
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 Course course = new Course();
-                course.setId(cursor.getString(cursor.getColumnIndex(DataBase.KEY_ID)));
-                course.setCourse(cursor.getString(cursor.getColumnIndex(DataBase.KEY_COURSE_NAME)));
-                course.setTeacher(cursor.getString(cursor.getColumnIndex(DataBase.KEY_TEACHER)));
-                course.setWeeks(cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
-                course.setDay(cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKDAY)));
-                course.setStart(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_TIME)));
-                course.setDuring(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_DURATION)));
-                course.setPlace(cursor.getString(cursor.getColumnIndex(DataBase.KEY_PLACE)));
-                course.setRemind(cursor.getString(cursor.getColumnIndex(DataBase.KEY_REMIND)));
-                course.setColor(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_COLOR)));
+                course.id = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_ID)));
+                course.course = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_COURSE_NAME)));
+                course.teacher = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_TEACHER)));
+                course.weeks= (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
+                course.day = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKDAY)));
+                course.start = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_TIME)));
+                course.during = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_DURATION)));
+                course.place = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_PLACE)));
+                course.remind = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_REMIND)));
+                course.color = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_COLOR)));
                 courses.add(course);
             }
         }
         if (cursor != null) {
-            cursor.close();
-        }
-        return courses;
-    }
-
-    public List<Course> loadCustomCourse(){
-        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_COURSE +
-         " where " + DataBase.KEY_ID + " is not null",null);
-        List<Course> courses = new ArrayList<>();
-        if (cursor.getCount() > 0){
-            while (cursor.moveToNext()){
-                Course course = new Course();
-                course.setId(cursor.getString(cursor.getColumnIndex(DataBase.KEY_ID)));
-                course.setCourse(cursor.getString(cursor.getColumnIndex(DataBase.KEY_COURSE_NAME)));
-                course.setTeacher(cursor.getString(cursor.getColumnIndex(DataBase.KEY_TEACHER)));
-                course.setWeeks(cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
-                course.setDay(cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKDAY)));
-                course.setStart(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_TIME)));
-                course.setDuring(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_DURATION)));
-                course.setPlace(cursor.getString(cursor.getColumnIndex(DataBase.KEY_PLACE)));
-                course.setRemind(cursor.getString(cursor.getColumnIndex(DataBase.KEY_REMIND)));
-                course.setColor(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_COLOR)));
-                courses.add(course);
-            }
-        }
-        if (cursor != null){
             cursor.close();
         }
         return courses;
@@ -150,16 +124,16 @@ public class HuaShiDao {
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 Course course = new Course();
-                course.setId(cursor.getString(cursor.getColumnIndex(DataBase.KEY_ID)));
-                course.setCourse(cursor.getString(cursor.getColumnIndex(DataBase.KEY_COURSE_NAME)));
-                course.setTeacher(cursor.getString(cursor.getColumnIndex(DataBase.KEY_TEACHER)));
-                course.setWeeks(cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
-                course.setDay(cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKDAY)));
-                course.setStart(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_TIME)));
-                course.setDuring(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_DURATION)));
-                course.setPlace(cursor.getString(cursor.getColumnIndex(DataBase.KEY_PLACE)));
-                course.setRemind(cursor.getString(cursor.getColumnIndex(DataBase.KEY_REMIND)));
-                course.setColor(cursor.getInt(cursor.getColumnIndex(DataBase.KEY_COLOR)));
+                course.id = cursor.getString(cursor.getColumnIndex(DataBase.KEY_ID));
+                course.course = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_COURSE_NAME)));
+                course.teacher = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_TEACHER)));
+                course.weeks = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
+                course.day = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKDAY)));
+                course.start = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_TIME)));
+                course.during = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_DURATION)));
+                course.place = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_PLACE)));
+                course.remind = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_REMIND)));
+                course.color= (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_COLOR)));
                 courses.add(course);
             }
         }
