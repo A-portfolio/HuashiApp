@@ -136,6 +136,7 @@
         android:layout_marginRight="16dp"
         android:layout_toRightOf="@+id/iv_week_select"
         android:background="@null"
+        android:maxLines="1"
         android:hint="输入上课地点"
         android:lines="1"
     />
@@ -166,7 +167,7 @@
         android:layout_toRightOf="@+id/iv_week_select"
         android:background="@null"
         android:hint="输入教师"
-        android:lines="1"
+        android:maxLines="1"
     />
 
     <View android:id="@+id/divider5"
@@ -176,15 +177,16 @@
           android:layout_margin="16dp"
           android:background="@color/divider"/>
 
-    <Button
+    <TextView
         android:id="@+id/btn_ensure"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:gravity="center"
         android:layout_below="@+id/divider5"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="44dp"
-        android:background="@drawable/shape_btn"
+        android:background="@drawable/ripple_accent"
         android:text="添加课程"
         android:textColor="@color/colorWhite"/>
 

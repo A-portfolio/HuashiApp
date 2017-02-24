@@ -35,6 +35,7 @@ import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -67,8 +68,6 @@ public interface RetrofitService {
      * 403 禁止访问
      * 404 无关注图书
      * 502 服务器端错误
-     * @param verification
-     * @return
      */
     @GET("lib/get_atten/")
     Observable<Response<List<AttentionBook>>> getAttentionBooks(
@@ -79,11 +78,10 @@ public interface RetrofitService {
      * 403 禁止访问
      * 409 已关注
      * 502 服务器端错误
-     * @param verification
-     * @return
      */
     @POST("lib/create_atten/")
-    Observable<Response<VerifyResponse>> createAttentionBook(@Header("Authorization") String verification, @Body
+    Observable<Response<VerifyResponse>> createAttentionBook(
+            @Header("Authorization") String verification, @Body
             BookPost bookPost);
 
     /**
@@ -91,22 +89,18 @@ public interface RetrofitService {
      * 403 禁止访问
      * 404 未找到图书
      * 502 服务器端错误
-     * @param verification
-     * @param id
-     * @return
      */
 //    @DELETE("lib/del_atten/")
     @HTTP(method = "DELETE", path = "lib/del_atten/", hasBody = true)
-    Observable<Response<VerifyResponse>> delAttentionBook(@Header("Authorization") String verification,
+    Observable<Response<VerifyResponse>> delAttentionBook(
+            @Header("Authorization") String verification,
             @Body BookId id);
+
     /**
      * 200 续借成功
      * 406 不到续借时间
      * 403 超过最大续借次数
      * 400 请求无效
-     * @param verification
-     * @param renewData
-     * @return
      */
     @POST("lib/renew/")
     Observable<Response<VerifyResponse>> renewBook(@Header("Authorization") String verification,
@@ -125,6 +119,11 @@ public interface RetrofitService {
     @DELETE("table/{id}/")
     Observable<Response<VerifyResponse>> deleteCourse(@Header("Authorization") String authorization,
             @Path("id") String id);
+
+    @PUT("table/{id}/")
+    Observable<Response<VerifyResponse>> updateCourse(@Header("Authorization") String authorization,
+            @Path("id") String id,
+            @Body Course course);
 
     //URL: /api/grade/search/?xnm=2015&xqm=3
     @GET("grade/search/")

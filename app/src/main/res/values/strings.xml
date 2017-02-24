@@ -142,6 +142,7 @@
     <string name="txt_text">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>
+    <string name="course_not_found">待修改课程不存在</string>
 </resources>
 
 
