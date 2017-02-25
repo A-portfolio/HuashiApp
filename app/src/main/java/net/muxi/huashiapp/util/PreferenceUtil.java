@@ -47,7 +47,8 @@ public class PreferenceUtil {
     public static final String ATTENTION_BOOK_IDS = "attention_book_ids";
     //借阅图书的列表
     public static final String BORROW_BOOK_IDS = "borrow_book_ids";
-
+    //是否是第一次进入课程表
+    public static final String IS_FIRST_ENTER_TABLE = "is_first_enter_table";
 
     public static void saveBoolean(String key, boolean value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(App.sContext).edit();

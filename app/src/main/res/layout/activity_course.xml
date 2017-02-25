@@ -9,7 +9,6 @@
 
 
     <include
-        android:id="@+id/view_toolbar"
         layout="@layout/view_toolbar"/>
 
     <EditText
@@ -20,7 +19,7 @@
         android:textStyle="bold"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="72dp"
         android:background="@null"
         android:hint="请输入课程名称"
         android:lines="1"

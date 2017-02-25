@@ -1,5 +1,9 @@
 package net.muxi.huashiapp.ui.schedule;
 
+import static net.muxi.huashiapp.util.TimeTableUtil.isContinuOusWeeks;
+import static net.muxi.huashiapp.util.TimeTableUtil.isDoubleWeeks;
+import static net.muxi.huashiapp.util.TimeTableUtil.isSingleWeeks;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -123,7 +127,8 @@ public class CourseEditActivity extends ToolbarActivity {
         } else {
             mBtnEnsure.setText("完成编辑");
             mEtCourse.setText(mCourse.course);
-            mEtWeek.setText(mCourse.weeks);
+            mEtPlace.setText(mCourse.place);
+            mEtWeek.setText(getDisplayWeeks());
             mEtTime.setText(String.format("周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
                     start + duration - 1));
             mEtTeacher.setText(mCourse.teacher);
@@ -207,6 +212,30 @@ public class CourseEditActivity extends ToolbarActivity {
                 });
                 break;
         }
+    }
+
+    public String getDisplayWeeks() {
+        String s;
+        int start;
+        int end;
+        List<Integer> weekList = mWeeks;
+        if (isSingleWeeks(weekList)) {
+            start = weekList.get(0);
+            end = weekList.get(weekList.size() - 1) + 1;
+            s = String.format("%d-%d周单",start,end);
+        } else if (isDoubleWeeks(weekList)) {
+            start = weekList.get(0) - 1;
+            end = weekList.get(weekList.size() - 1);
+            s = String.format("%d-%d周双",start,end);
+        } else if (isContinuOusWeeks(weekList)) {
+            start = weekList.get(0);
+            end = weekList.get(weekList.size() - 1);
+            s = String.format("%d-%d周",start,end);
+        }else {
+            s = TextUtils.join(",",weekList);
+            s += "周";
+        }
+        return s;
     }
 
     @OnClick(R.id.btn_ensure)

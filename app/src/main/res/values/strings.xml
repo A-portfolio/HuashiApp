@@ -55,6 +55,7 @@
     <string name="tip_logining">登录中...</string>
     <string name="tip_adding_course">正在添加课程...</string>
     <string name="tip_adding_fail">添加课程失败 </string>
+    <string name="tip_delete_course_ok">删除课程成功</string>
     <string name="tip_school_server_error">学校服务器异常,请稍后再试</string>
     <string name="tip_share_success">分享成功</string>
     <string name="tip_share_fail">分享失败</string>
@@ -62,6 +63,10 @@
     <string name="tip_link_unable_open">该链接不能打开</string>
     <string name="tip_copy_success">已复制到剪切板</string>
     <string name="tip_not_remind">不再提醒</string>
+    <string name="delete">删除</string>
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
+    <string name="edit">编辑</string>
     <!--library-->
     <string name="lib_search_tip">请输入要搜索的图书或作者</string>
     <string name="lib_mybook_overdue">过期</string>
@@ -140,9 +145,10 @@
     <string name="tip_start_download_apk">开始下载更新包</string>
 
     <string name="txt_text">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
-    <string name="confirm">确认</string>
-    <string name="cancel">取消</string>
+
     <string name="course_not_found">待修改课程不存在</string>
+    <string name="tip_pull_to_refresh">下拉以刷新</string>
+
 </resources>
 
 

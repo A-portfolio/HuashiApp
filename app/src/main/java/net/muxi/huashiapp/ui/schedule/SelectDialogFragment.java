@@ -1,5 +1,9 @@
 package net.muxi.huashiapp.ui.schedule;
 
+import static net.muxi.huashiapp.util.TimeTableUtil.isContinuOusWeeks;
+import static net.muxi.huashiapp.util.TimeTableUtil.isDoubleWeeks;
+import static net.muxi.huashiapp.util.TimeTableUtil.isSingleWeeks;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -227,53 +231,6 @@ public class SelectDialogFragment extends BottomDialogFragment {
         setMultiWeekTextChecked(mTvSingleWeek,false);
         setMultiWeekTextChecked(mTvDoubleWeek,false);
         setMultiWeekTextChecked(mTvAllWeek,false);
-    }
-
-    public boolean isSingleWeeks(List<Integer> weekList) {
-        boolean b = true;
-        if (weekList.size() < 2) {
-            return false;
-        }
-        if (weekList.get(0) % 2 == 1) {
-            for (int i = 0; i < weekList.size() - 1; i++) {
-                if (weekList.get(i + 1) - weekList.get(i) != 2) {
-                    b = false;
-                    break;
-                }
-            }
-            return b;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean isDoubleWeeks(List<Integer> weekList) {
-        boolean b = true;
-        if (weekList.size() < 2) {
-            return false;
-        }
-        if (weekList.get(0) % 2 == 0) {
-            for (int i = 0; i < weekList.size() - 1; i++) {
-               if (weekList.get(i + 1) - weekList.get(i) != 2){
-                   b = false;
-                   break;
-               }
-            }
-            return b;
-        }else {
-            return false;
-        }
-    }
-
-    public boolean isContinuOusWeeks(List<Integer> weekList) {
-        if (weekList.size() < 2){
-            return false;
-        }
-        if (weekList.get(weekList.size() - 1) - weekList.get(0) == weekList.size() - 1){
-            return true;
-        }else {
-            return false;
-        }
     }
 
     public void setSingleWeeks() {
