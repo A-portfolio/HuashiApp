@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="172dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="4dp"
+    android:background="@drawable/shape_white_dialog">
+
+    <Space
+        android:id="@+id/space_center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/tv_course"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="毛概"/>
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/shape_category_tag"
+        android:paddingBottom="3dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="3dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="12sp"
+        android:text="已开课"
+        />
+
+    <TextView
+        android:id="@+id/tv_weeks"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@+id/tv_course"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:drawableLeft="@drawable/ic_week"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:textSize="14sp"
+        tools:text="1-18周"/>
+
+    <TextView
+        android:id="@+id/tv_teacher"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@+id/tv_weeks"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:drawableLeft="@drawable/ic_teacher"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:textSize="14sp"
+        tools:text="韩大大"/>
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@+id/tv_course"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@+id/space_center"
+        android:drawableLeft="@drawable/ic_time"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:textSize="14sp"
+        tools:text="周一1-2节"/>
+
+
+    <TextView
+        android:id="@+id/tv_place"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@+id/tv_time"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@id/space_center"
+        android:drawableLeft="@drawable/ic_place"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:textSize="14sp"
+        tools:text="本校9102"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:background="@color/divider"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/layout_cancel"
+        android:layout_toLeftOf="@+id/space_center"
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_del_grey"
+            android:gravity="center_vertical"
+            android:textSize="12sp"
+            android:drawablePadding="4dp"
+            android:text="@string/delete"
+            android:textColor="@color/hintColor"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/layout_edit"
+        android:layout_toRightOf="@+id/space_center"
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_edit_grey"
+            android:gravity="center_vertical"
+            android:textSize="12sp"
+            android:drawablePadding="4dp"
+            android:text="@string/edit"
+            android:textColor="@color/hintColor"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

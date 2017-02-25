@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
@@ -37,7 +38,7 @@ public class TableContent extends FrameLayout {
 
     private List<Course> mCourseList = new ArrayList<>();
     
-    private TextView clickEventTarget = null;
+//    private TextView clickEventTarget = null;
 
     public TableContent(Context context) {
         this(context, null);
@@ -102,7 +103,7 @@ public class TableContent extends FrameLayout {
     }
 
     public void addCourseView(Course course,int selectWeek) {
-        TextView tvCourse = new TextView(mContext);
+        CourseView tvCourse = new CourseView(mContext);
         tvCourse.setTextColor(Color.WHITE);
         tvCourse.setTextSize(TypedValue.COMPLEX_UNIT_SP,10);
         tvCourse.setPadding(DimensUtil.dp2px(10),DimensUtil.dp2px(8),DimensUtil.dp2px(10),DimensUtil.dp2px(8));
@@ -123,19 +124,15 @@ public class TableContent extends FrameLayout {
             course.place + "\n" +
             course.teacher);
         }
+        tvCourse.setCourseId(course.id);
         this.addView(tvCourse, courseParams);
 
-        // TODO: 17/2/8 course textview click event
         tvCourse.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                ((TimeTable) getParent().getParent().getParent()).setCurDownTarget(view);
             }
             return false;
         });
-//        tvCourse.setOnClickListener(v -> {
-//            if (mOnCourseClickListener != null){
-//                mOnCourseClickListener.onCourseClick(course);
-//            }
-//        });
     }
 
 

@@ -1,29 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:orientation="vertical">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <net.muxi.huashiapp.ui.schedule.TableContent
-        android:id="@+id/timetable_content"
-        android:layout_width="455dp"
-        android:layout_height="798dp"
-        android:layout_marginLeft="49dp"
-        android:layout_marginTop="41dp"
-    />
+    <net.muxi.huashiapp.ui.schedule.RefreshView
+        android:id="@+id/refresh_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/table_content_layout"
+        android:visibility="gone"/>
 
-    <net.muxi.huashiapp.ui.schedule.WeekLayout
-        android:id="@+id/week_layout"
-        android:layout_width="455dp"
-        android:layout_height="41dp"
-        android:layout_marginLeft="49dp"
-    />
+    <net.muxi.huashiapp.ui.schedule.CurweekSetView
+        android:id="@+id/view_curweek_set"
+        android:layout_width="match_parent"
+        android:layout_height="196dp"
+        android:layout_above="@+id/table_content_layout"
+        android:visibility="gone"/>
 
-    <net.muxi.huashiapp.ui.schedule.CourseTimeLayout
-        android:id="@+id/course_time_layout"
-        android:layout_width="49dp"
-        android:layout_height="798dp"
-        android:layout_marginTop="41dp"
-    />
+    <RelativeLayout
+        android:id="@+id/table_content_layout"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content">
 
-</merge>
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"/>
+
+        <net.muxi.huashiapp.ui.schedule.TableContent
+            android:id="@+id/timetable_content"
+            android:layout_width="455dp"
+            android:layout_height="798dp"
+            android:layout_below="@+id/divider"
+            android:layout_marginLeft="49dp"
+            android:layout_marginTop="41dp"
+        />
+
+        <net.muxi.huashiapp.ui.schedule.WeekLayout
+            android:id="@+id/week_layout"
+            android:layout_width="455dp"
+            android:layout_height="41dp"
+            android:layout_below="@id/divider"
+            android:layout_marginLeft="49dp"
+        />
+
+        <net.muxi.huashiapp.ui.schedule.CourseTimeLayout
+            android:id="@+id/course_time_layout"
+            android:layout_width="49dp"
+            android:layout_height="798dp"
+            android:layout_below="@id/divider"
+            android:layout_marginTop="41dp"
+        />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/table_content_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginTop="18dp"
+        android:text="———别闹，学霸也是要睡觉的———"
+        android:textColor="@color/grey"
+        android:textSize="10sp"/>
+
+</RelativeLayout>

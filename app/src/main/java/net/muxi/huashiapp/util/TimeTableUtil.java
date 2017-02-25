@@ -191,4 +191,74 @@ public class TimeTableUtil {
         }
         return i;
     }
+
+    public static boolean isSingleWeeks(List<Integer> weekList) {
+        boolean b = true;
+        if (weekList.size() < 2) {
+            return false;
+        }
+        if (weekList.get(0) % 2 == 1) {
+            for (int i = 0; i < weekList.size() - 1; i++) {
+                if (weekList.get(i + 1) - weekList.get(i) != 2) {
+                    b = false;
+                    break;
+                }
+            }
+            return b;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isDoubleWeeks(List<Integer> weekList) {
+        boolean b = true;
+        if (weekList.size() < 2) {
+            return false;
+        }
+        if (weekList.get(0) % 2 == 0) {
+            for (int i = 0; i < weekList.size() - 1; i++) {
+                if (weekList.get(i + 1) - weekList.get(i) != 2){
+                    b = false;
+                    break;
+                }
+            }
+            return b;
+        }else {
+            return false;
+        }
+    }
+
+    public static boolean isContinuOusWeeks(List<Integer> weekList) {
+        if (weekList.size() < 2){
+            return false;
+        }
+        if (weekList.get(weekList.size() - 1) - weekList.get(0) == weekList.size() - 1){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public static String getDisplayWeeks(List<Integer> weekList) {
+        String s;
+        int start;
+        int end;
+        if (isSingleWeeks(weekList)) {
+            start = weekList.get(0);
+            end = weekList.get(weekList.size() - 1) + 1;
+            s = String.format("%d-%d周单",start,end);
+        } else if (isDoubleWeeks(weekList)) {
+            start = weekList.get(0) - 1;
+            end = weekList.get(weekList.size() - 1);
+            s = String.format("%d-%d周双",start,end);
+        } else if (isContinuOusWeeks(weekList)) {
+            start = weekList.get(0);
+            end = weekList.get(weekList.size() - 1);
+            s = String.format("%d-%d周",start,end);
+        }else {
+            s = TextUtils.join(",",weekList);
+            s += "周";
+        }
+        return s;
+    }
 }
