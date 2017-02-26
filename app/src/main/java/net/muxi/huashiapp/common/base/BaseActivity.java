@@ -19,15 +19,19 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.widget.LoadingDialog;
 
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
+
 /**
  * Created by ybao on 16/4/19.
  */
-public class BaseActivity extends AppCompatActivity{
+public class BaseActivity extends AppCompatActivity {
 
     protected Menu menu;
     protected ActionBar mActionBar;
 
     private LoadingDialog mLoadingDialog;
+    private CompositeSubscription mCompositeSubscription;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +40,7 @@ public class BaseActivity extends AppCompatActivity{
         if (mActionBar != null) {
             mActionBar.setDisplayHomeAsUpEnabled(true);
         }
+        getWindow().getDecorView().setBackgroundColor(Color.WHITE);
 //        ZhugeSDK.getInstance().openDebug();
 //        ZhugeSDK.getInstance().openLog();
 
@@ -43,29 +48,35 @@ public class BaseActivity extends AppCompatActivity{
 //
 //    public void setContentView(int layoutResId){
 //        super.setContentView(layoutResId);
-////        getWindow().getDecorView().setBackgroundColor(Color.WHITE);
 ////        getWindow().findViewById(android.R.id.content).setBackgroundColor(Color.WHITE);
 //    }
 
-    public void showLoading(){
+    public void showLoading() {
         Logger.d("showloading");
-        if (mLoadingDialog == null){
+        if (mLoadingDialog == null) {
             mLoadingDialog = new LoadingDialog();
         }
-        mLoadingDialog.show(getSupportFragmentManager(),"loading");
+        mLoadingDialog.show(getSupportFragmentManager(), "loading");
     }
 
-    public void hideLoading(){
+    public void hideLoading() {
         Logger.d("hideloading");
-        if (mLoadingDialog != null){
+        if (mLoadingDialog != null) {
             mLoadingDialog.dismiss();
         }
+    }
+
+    public void addSubscription(Subscription s) {
+        if (mCompositeSubscription == null) {
+            mCompositeSubscription = new CompositeSubscription();
+        }
+        mCompositeSubscription.add(s);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        switch (itemId){
+        switch (itemId) {
             case android.R.id.home:
                 onBackPressed();
                 break;
@@ -84,34 +95,37 @@ public class BaseActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mCompositeSubscription != null){
+            mCompositeSubscription.unsubscribe();
+        }
         ZhugeSDK.getInstance().flush(getApplicationContext());
     }
 
-    public void showSnackbarLong(String msg){
-        Snackbar.make(getWindow().getDecorView(),msg,Snackbar.LENGTH_LONG)
+    public void showSnackbarLong(String msg) {
+        Snackbar.make(getWindow().getDecorView(), msg, Snackbar.LENGTH_LONG)
                 .show();
     }
 
-    public void showSnackbarShort(String msg){
-        Snackbar.make(getWindow().getDecorView(),msg,Snackbar.LENGTH_SHORT)
+    public void showSnackbarShort(String msg) {
+        Snackbar.make(getWindow().getDecorView(), msg, Snackbar.LENGTH_SHORT)
                 .show();
     }
 
-    public void showSnackbarLong(int resId){
+    public void showSnackbarLong(int resId) {
         showSnackbarLong(getString(resId));
     }
 
-    public void showSnackbarShort(int resId){
+    public void showSnackbarShort(int resId) {
         showSnackbarShort(getString(resId));
     }
 
-    public void showErrorSnackbarShort(int resId){
+    public void showErrorSnackbarShort(int resId) {
         showErrorSnackbarShort(getString(resId));
     }
 
-    public void showErrorSnackbarShort(String msg){
+    public void showErrorSnackbarShort(String msg) {
         Snackbar snackbar;
-        snackbar = Snackbar.make(findViewById(android.R.id.content),msg,Snackbar.LENGTH_SHORT)
+        snackbar = Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_SHORT)
                 .setText(msg);
         View view = snackbar.getView();
         view.setBackgroundColor(getResources().getColor(R.color.red));

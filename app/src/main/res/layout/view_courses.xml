@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:background="@color/shadow_dialog"
-    android:id="@+id/scrollView"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
     >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:id="@+id/layout_courses"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:id="@+id/layout_courses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
 
-</ScrollView>
+    </ScrollView>
+</RelativeLayout>

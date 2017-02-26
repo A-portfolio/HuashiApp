@@ -1,26 +1,25 @@
 package net.muxi.huashiapp.ui.schedule;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.util.TimeUtils;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.Course;
+import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.event.DeleteCourseOkEvent;
 import net.muxi.huashiapp.util.Base64Util;
-import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.TimeTableUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -65,10 +64,14 @@ public class CourseDetailView extends RelativeLayout {
             color = getResources().getColor(R.color.primary_text_color);
         } else {
             color = getResources().getColor(R.color.grey);
-            mTvWeeks.setCompoundDrawables(getResources().getDrawable(R.drawable.ic_week_grey),null,null,null);
-            mTvTeacher.setCompoundDrawables(getResources().getDrawable(R.drawable.ic_teacher_grey),null,null,null);
-            mTvTime.setCompoundDrawables(getResources().getDrawable(R.drawable.ic_time_grey),null,null,null);
-            mTvPlace.setCompoundDrawables(getResources().getDrawable(R.drawable.ic_place_grey),null,null,null);
+            mTvWeeks.setCompoundDrawables(getResources().getDrawable(R.drawable.ic_week_grey), null,
+                    null, null);
+            mTvTeacher.setCompoundDrawables(getResources().getDrawable(R.drawable.ic_teacher_grey),
+                    null, null, null);
+            mTvTime.setCompoundDrawables(getResources().getDrawable(R.drawable.ic_time_grey), null,
+                    null, null);
+            mTvPlace.setCompoundDrawables(getResources().getDrawable(R.drawable.ic_place_grey),
+                    null, null, null);
             mTvStatus.setBackgroundResource(R.drawable.shape_category_tag_disabled);
             mTvStatus.setText("非本周");
         }
@@ -82,10 +85,12 @@ public class CourseDetailView extends RelativeLayout {
         mTvCourse.setText(course.course);
         mTvTeacher.setText(course.teacher);
         mTvPlace.setText(course.place);
-        mTvTime.setText(String.format("%d-%d节",course.start,course.during + course.start - 1));
+        mTvTime.setText(String.format("周%s%d-%d节",
+                Constants.WEEKDAYS[TimeTableUtil.weekday2num(course.day)], course.start,
+                course.during + course.start - 1));
         List<Integer> weekList = new ArrayList<>();
-        String[] arrays = TextUtils.split(course.weeks,",");
-        for (String s : arrays){
+        String[] arrays = TextUtils.split(course.weeks, ",");
+        for (String s : arrays) {
             try {
                 weekList.add(Integer.parseInt(s));
             } catch (NumberFormatException e) {
@@ -93,40 +98,50 @@ public class CourseDetailView extends RelativeLayout {
             }
         }
         mTvWeeks.setText(TimeTableUtil.getDisplayWeeks(weekList));
-        
+
         mLayoutCancel.setOnClickListener(v -> {
             delCourse(course);
-            if (mOnNegativeButtonClickListener != null){
+            if (mOnNegativeButtonClickListener != null) {
                 mOnNegativeButtonClickListener.onClick(v);
             }
         });
         mLayoutEdit.setOnClickListener(v -> {
-            CourseEditActivity.start(context,false,course);
-            if (mOnPositiveButtonClickListener != null){
-                mOnPositiveButtonClickListener.onClick(v);
+            CourseEditActivity.start(context, false, course);
+            if (mOnEditButtonClickListener != null) {
+                mOnEditButtonClickListener.onClick(v);
             }
         });
     }
 
     private void delCourse(Course course) {
-        CampusFactory.getRetrofitService().deleteCourse(Base64Util.createBaseStr(App.sUser),course.id)
+        CampusFactory.getRetrofitService().deleteCourse(Base64Util.createBaseStr(App.sUser),
+                course.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(verifyResponseResponse -> {
-                    if (verifyResponseResponse.code() == 200){
-                        ((BaseActivity)mContext).showSnackbarShort(R.string.tip_delete_course_ok);
+                    if (verifyResponseResponse.code() == 200) {
+                        ((BaseActivity) mContext).showSnackbarShort(R.string.tip_delete_course_ok);
+//                        ((DetailCoursesDialog)mContext).dismiss();
+                        RxBus.getDefault().send(new DeleteCourseOkEvent(course));
+                        HuaShiDao dao = new HuaShiDao();
+                        dao.deleteCourse(course.id);
+                    }else {
+                        ((BaseActivity) mContext).showErrorSnackbarShort(R.string.tip_err_server);
                     }
+                },throwable -> {
+                    throwable.printStackTrace();
+                    ((BaseActivity) mContext).showErrorSnackbarShort(R.string.tip_err_server);
                 });
     }
 
-    private OnClickListener mOnPositiveButtonClickListener;
+    private OnClickListener mOnEditButtonClickListener;
     private OnClickListener mOnNegativeButtonClickListener;
 
-    public void setOnPositiveButtonClickListener(OnClickListener listener){
-        mOnPositiveButtonClickListener = listener;
+    public void setOnEditButtonClickListener(OnClickListener listener) {
+        mOnEditButtonClickListener = listener;
     }
 
-    public void setOnNegativeButtonClickListener(OnClickListener listener){
+    public void setOnNegativeButtonClickListener(OnClickListener listener) {
         mOnNegativeButtonClickListener = listener;
     }
 

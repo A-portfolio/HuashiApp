@@ -1,35 +1,51 @@
-#华师匣子 Android 端
-为了方便后期的维护和版本迭代，说明下 app 的代码结构 
-        
-## 分包
-app 分包的话按模块划分，其他的网络，数据库操作，bean,service都在 common 目录下，common 目录下的widget中是通用的 widget，模块特有的 widget 则直接放在模块中，
+# 华师匣子
 
-## 网络操作
-直接用Retrofit+okHttp,各种请求操作封装在 net 包下的RetrofitService,通过CampusRetrofit类的getRetrofitService()方法来获取RetrofitService 的实例
-## 数据库操作
-用了自带的 SQLite，之后在发新版本的时候如果改了数据库的表结构记得在DataBase类中写好相应的onUpgrade方法
-## 缓存相关
-SQLite数据库缓存
+![](./screenshots/ic_launcher.png)
 
-+ 课表
-+ 部门信息
-+ 图书搜索历史
-+ banner
-课表的话主要是与服务器同步，现在是每次只要用户联网就向服务器发请求看是否课表一致，这个到时候要改，要不然服务器压力比较大。
-部门信息的话是只要部门数量有变化就会更新，（之前有过部门信息给错的情况没更新这点没考虑到）
-图书搜索历史：图书搜索历史是直接本地存储，没有上传至服务器，所以用户只要清空缓存就会删掉，当无用户登录状态时也会保存记录。
-banner：存储了 banner 的跳转链接，图片地址等。。
+> 口袋里的华师
 
-SharedPreferences 存储
-基本上其他一些数据都是通过这个来存储：用户名，密码，课程表当期那州，校历图片地址等，可以在PreferenceUtil这个类中查看具体的存储数据。用户的学号和密码是直接写了全局静态变量，因为调用比较频繁而且应用的占用内存不大所以被回收的可能性不大。
+由木犀团队为华师学子倾力打造的校园通 App。  
+目前一版已上线，二版预计3月初上线。
 
-## 图片加载
-图片加载的话是用了Fresco这个图片加载库，用之前得了解下它的特性，注意加载的图片长宽是要给定好的。闪屏加载的大图得给16：10的图，因为要考虑到有些手机的分辨率比较奇怪。
+## 功能介绍：  
+- [课程表]查看课表、添加课程  
+- [图书馆]搜索图书、查看已借图书信息  
+- [学生卡]查看学生卡余额  
+- [成绩查询]查询考试成绩  
+- [电费查询]查询寝室电费  
+- [部门信息]查看各部门办公信息  
+- [通知公告]查看学校通知信息  
+- [消息提醒]课程提醒、新成绩提醒、图书提醒以及学生卡余额提醒  
+- [校历查询]查询学校校历  
 
-## 其他第三方管理后台
-- bugly:崩溃分析上报
-- 诸葛 io：用户行为分析及反馈
-- 信鸽:推送
+## 应用下载
+
+[下载官网](https://ccnubox.muxixyz.com/)  
+[豌豆荚下载](http://www.wandoujia.com/apps/net.muxi.huashiapp)
+
+## 应用截图
+### 一版
+![](./screenshots/v1_main.png) ![](./screenshots/v1_card.png)   
+![](./screenshots/v1_timetable.png) ![](./screenshots/v1_lib.png) 
+
+### 二版
+
+![](./screenshots/v2_timetable.png) ![](./screenshots/v2_lib.png)
+ 
+
+## Thanks
+[Fresco](https://github.com/facebook/fresco)  
+[Retrofit](https://github.com/square/retrofit)  
+[RxJava](https://github.com/ReactiveX/RxJava)  
+[Butter Knife](https://github.com/JakeWharton/butterknife)
+
+
+
+### 华中师范大学[木犀团队](http://muxistudio.com/)出品
+![](https://avatars2.githubusercontent.com/u/10476331?v=3&s=200)
+
+
+
 
 
 

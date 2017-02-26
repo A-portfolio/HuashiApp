@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <net.muxi.huashiapp.ui.schedule.RefreshView
         android:id="@+id/refresh_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/table_content_layout"
+        android:layout_above="@+id/layout_table"
         android:visibility="gone"/>
 
     <net.muxi.huashiapp.ui.schedule.CurweekSetView
         android:id="@+id/view_curweek_set"
         android:layout_width="match_parent"
         android:layout_height="196dp"
-        android:layout_above="@+id/table_content_layout"
+        android:layout_above="@+id/layout_table"
         android:visibility="gone"/>
 
     <RelativeLayout
-        android:id="@+id/table_content_layout"
+        android:id="@+id/layout_table"
         android:layout_width="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_height="wrap_content">
 
         <View
@@ -29,6 +28,27 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/divider"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="41dp"
+            android:layout_below="@+id/divider"
+            android:layout_marginLeft="48dp"
+            android:background="@color/divider"/>
+
+        <View
+            android:layout_width="49dp"
+            android:layout_height="1dp"
+            android:layout_below="@+id/divider"
+            android:layout_marginTop="40dp"
+            android:background="@color/divider"
+        />
+
+        <View
+            android:layout_width="48dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/divider"
+            android:background="@color/colorWhite"/>
 
         <net.muxi.huashiapp.ui.schedule.TableContent
             android:id="@+id/timetable_content"
@@ -60,13 +80,14 @@
     <TextView
         android:id="@+id/tv_tip"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/table_content_layout"
+        android:layout_height="15dp"
+        android:layout_below="@+id/layout_table"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginBottom="22dp"
+        android:layout_marginTop="22dp"
+        android:background="@color/blue"
         android:text="———别闹，学霸也是要睡觉的———"
         android:textColor="@color/grey"
         android:textSize="10sp"/>
 
-</RelativeLayout>
+</merge>
