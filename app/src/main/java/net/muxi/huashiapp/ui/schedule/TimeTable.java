@@ -1,20 +1,16 @@
 package net.muxi.huashiapp.ui.schedule;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Scroller;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
 
@@ -54,13 +50,16 @@ public class TimeTable extends RelativeLayout {
     RefreshView mRefreshView;
     @BindView(R.id.view_curweek_set)
     CurweekSetView mViewCurweekSet;
-
-    private ViewDragHelper mViewDragHelper;
+    @BindView(R.id.layout_table)
+    RelativeLayout mLayoutTable;
+    @BindView(R.id.tv_tip)
+    TextView mTvTip;
 
     private View curDownTargetView;
 
+    private Scroller mScroller;
+
     private Context mContext;
-    private FrameLayout cornerView;
     private List<TextView> mCourseViews = new ArrayList<>();
 
     public static final boolean IS_WEEKDAY_SHOW = false;
@@ -92,14 +91,12 @@ public class TimeTable extends RelativeLayout {
         super(context, attrs);
         mContext = context;
         initLayout();
-        mViewDragHelper = ViewDragHelper.create(this,callback);
         Logger.d(getId() + "");
     }
 
     public void initLayout() {
-        LayoutInflater.from(mContext).inflate(R.layout.view_timetable, this, true);
+        LayoutInflater.from(mContext).inflate(R.layout.view_timetable, this);
         ButterKnife.bind(this);
-        setCornerView();
         setRefreshView();
 
 //        mTimetableContent.setOnScrollChangeListener(new OnScrollChangeListener() {
@@ -112,28 +109,6 @@ public class TimeTable extends RelativeLayout {
 
     private void setRefreshView() {
 
-    }
-
-    //绘制左上角的 view
-    public void setCornerView() {
-        cornerView = new FrameLayout(mContext);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(LITTLE_VIEW_WIDTH,
-                LITTLE_VIEW_HEIGHT);
-        cornerView.setLayoutParams(params);
-        cornerView.setBackgroundColor(Color.WHITE);
-        View dividerH = new View(mContext);
-        View dividerV = new View(mContext);
-        LayoutParams hParams = new LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, DIVIDER_WIDTH);
-        LayoutParams vParams = new LayoutParams(DIVIDER_WIDTH,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        hParams.setMargins(0, DimensUtil.dp2px(40), 0, 0);
-        vParams.setMargins(DimensUtil.dp2px(48), 0, 0, 0);
-        dividerH.setBackgroundColor(getResources().getColor(R.color.divider));
-        dividerV.setBackgroundColor(getResources().getColor(R.color.divider));
-        cornerView.addView(dividerH, hParams);
-        cornerView.addView(dividerV, vParams);
-        addView(cornerView);
     }
 
     public TableContent getTableContent() {
@@ -150,21 +125,11 @@ public class TimeTable extends RelativeLayout {
     }
 
 
-
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
     }
 
-    @Override
-    public void computeScroll() {
-        super.computeScroll();
-    }
-
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return mViewDragHelper.shouldInterceptTouchEvent(ev);
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -195,16 +160,15 @@ public class TimeTable extends RelativeLayout {
                     xDistance = (int) (curX - event.getX());
                 }
 
-                if (scrolledY + curY - event.getY()
-                        > COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56) * 3
-                        + DimensUtil.getStatusBarHeight() - DimensUtil.getScreenHeight() ||
-                        scrolledY + curY - event.getY() < 0) {
+                if (scrolledY + curY - event.getY() < 0) {
                     yDistance = -scrolledY;
                 } else if (scrolledY + curY - event.getY()
-                        > COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56) * 3
+                        > COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56) * 2
+                        + DimensUtil.dp2px(60)
                         + DimensUtil.getStatusBarHeight() - DimensUtil.getScreenHeight()) {
                     yDistance = COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56)
-                            * 3 + DimensUtil.getStatusBarHeight() - DimensUtil.getScreenHeight()
+                            * 2 + DimensUtil.dp2px(56) + DimensUtil.getStatusBarHeight()
+                            - DimensUtil.getScreenHeight()
                             - scrolledY;
                 } else {
                     yDistance = (int) (curY - event.getY());
@@ -213,6 +177,7 @@ public class TimeTable extends RelativeLayout {
                 mWeekLayout.scrollBy(xDistance, 0);
                 mCourseTimeLayout.scrollBy(0, yDistance);
                 mTimetableContent.scrollBy(xDistance, yDistance);
+                mTvTip.scrollBy(0,yDistance);
 
                 curX = event.getX();
                 curY = event.getY();
@@ -223,7 +188,7 @@ public class TimeTable extends RelativeLayout {
                             curY, startX, startY) < MAX_CLICK_DISTANCE) {
                         //如果是点击事件的话展示当前时间点的所有课程
 //                        showCurrentCourses(((CourseView) curDownTargetView).getCourseId());
-                        if (mOnCourseClickListener != null){
+                        if (mOnCourseClickListener != null) {
                             mOnCourseClickListener.onClick(curDownTargetView);
                         }
                         curDownTargetView = null;
@@ -234,37 +199,57 @@ public class TimeTable extends RelativeLayout {
         return true;
     }
 
-    private ViewDragHelper.Callback callback = new ViewDragHelper.Callback() {
-        @Override
-        public boolean tryCaptureView(View child, int pointerId) {
-            return false;
-        }
+    @Override
+    public void computeScroll() {
+        super.computeScroll();
+//        if (mScroller.computeScrollOffset()){
+//            mScroller.startScroll();
+//        }
+    }
 
-        @Override
-        public void onViewCaptured(View capturedChild, int activePointerId) {
-            super.onViewCaptured(capturedChild, activePointerId);
-        }
-
-        @Override
-        public int getViewVerticalDragRange(View child) {
-            return super.getViewVerticalDragRange(child);
-        }
-
-        @Override
-        public void onViewReleased(View releasedChild, float xvel, float yvel) {
-            super.onViewReleased(releasedChild, xvel, yvel);
-        }
-
-        @Override
-        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
-            super.onViewPositionChanged(changedView, left, top, dx, dy);
-        }
-
-        @Override
-        public int clampViewPositionVertical(View child, int top, int dy) {
-            return super.clampViewPositionVertical(child, top, dy);
-        }
-    };
+    //    private ViewDragHelper.Callback callback = new ViewDragHelper.Callback() {
+//        @Override
+//        public boolean tryCaptureView(View child, int pointerId) {
+//            Logger.d(child == mTimetableContent ? "true" : "false");
+//            Logger.d(child.getId() + "");
+//            return child == mTimetableContent;
+//        }
+//
+//        @Override
+//        public void onViewCaptured(View capturedChild, int activePointerId) {
+//            super.onViewCaptured(capturedChild, activePointerId);
+//        }
+//
+//        @Override
+//        public int getViewVerticalDragRange(View child) {
+//            return super.getViewVerticalDragRange(child);
+//        }
+//
+//        @Override
+//        public void onViewReleased(View releasedChild, float xvel, float yvel) {
+//            super.onViewReleased(releasedChild, xvel, yvel);
+//            mViewDragHelper.flingCapturedView(0, 0,
+//                    WEEK_DAY_WIDTH * 7 - (DimensUtil.getScreenWidth() - LITTLE_VIEW_WIDTH),
+//                    COURSE_TIME_HEIGHT * 14 + DimensUtil.dp2px(60) - (DimensUtil.getScreenHeight()
+//                            - DimensUtil.getStatusBarHeight() - 2 * DimensUtil.dp2px(56)));
+//            ViewCompat.postInvalidateOnAnimation(TimeTable.this);
+//        }
+//
+//        @Override
+//        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
+//            super.onViewPositionChanged(changedView, left, top, dx, dy);
+//        }
+//
+//        @Override
+//        public int clampViewPositionHorizontal(View child, int left, int dx) {
+//            return left;
+//        }
+//
+//        @Override
+//        public int clampViewPositionVertical(View child, int top, int dy) {
+//            return top;
+//        }
+//    };
 
     /**
      * 记录当前按下的 view
@@ -279,7 +264,7 @@ public class TimeTable extends RelativeLayout {
         return (float) Math.sqrt(dx * dx + dy * dy);
     }
 
-    public void setOnCourseClickListener(OnClickListener listener){
+    public void setOnCourseClickListener(OnClickListener listener) {
         mOnCourseClickListener = listener;
     }
 

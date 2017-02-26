@@ -83,6 +83,13 @@ public class TableContent extends FrameLayout {
         }
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        getParent().requestDisallowInterceptTouchEvent(true);
+//        Logger.d(((View)getParent()).getId() + "");
+        return super.dispatchTouchEvent(ev);
+    }
+
     /**
      * 添加课程
      *
@@ -108,7 +115,7 @@ public class TableContent extends FrameLayout {
         tvCourse.setTextSize(TypedValue.COMPLEX_UNIT_SP,10);
         tvCourse.setPadding(DimensUtil.dp2px(10),DimensUtil.dp2px(8),DimensUtil.dp2px(10),DimensUtil.dp2px(8));
         LayoutParams courseParams = new LayoutParams(TimeTable.COURSE_WIDTH,
-                course.during * TimeTable.COURSE_TIME_HEIGHT - 3);
+                course.during * TimeTable.COURSE_TIME_HEIGHT - DimensUtil.dp2px(3));
         courseParams.setMargins(
                 DimensUtil.dp2px(65 * TimeTableUtil.weekday2num(course.day) + 1),
                 DimensUtil.dp2px(57 * (course.start - 1) + 1), 0, 0);
@@ -129,7 +136,7 @@ public class TableContent extends FrameLayout {
 
         tvCourse.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-                ((TimeTable) getParent().getParent().getParent()).setCurDownTarget(view);
+                ((TimeTable) getParent().getParent()).setCurDownTarget(view);
             }
             return false;
         });

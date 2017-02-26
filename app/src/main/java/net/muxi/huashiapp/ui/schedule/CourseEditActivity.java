@@ -114,8 +114,6 @@ public class CourseEditActivity extends ToolbarActivity {
         }
 
         initView();
-        //填入数据,debug
-        addData();
         dao = new HuaShiDao();
     }
 
@@ -132,12 +130,6 @@ public class CourseEditActivity extends ToolbarActivity {
             mEtTime.setText(String.format("周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
                     start + duration - 1));
             mEtTeacher.setText(mCourse.teacher);
-        }
-    }
-
-    private void addData() {
-        for (int i = 1; i < 19; i++) {
-            mWeeks.add(i);
         }
     }
 
