@@ -1,16 +1,23 @@
 package net.muxi.huashiapp.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.ui.more.FeedbackDialog;
+import net.muxi.huashiapp.util.NetStatus;
+import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,8 +31,6 @@ public class SuggestionActivity extends ToolbarActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.tv_tip)
-    TextView mTvTip;
     @BindView(R.id.et_suggestion)
     EditText mEtSuggestion;
     @BindView(R.id.btn_submit)
@@ -35,6 +40,11 @@ public class SuggestionActivity extends ToolbarActivity {
     @BindView(R.id.et_contact)
     EditText mEtContact;
 
+
+    public static void start(Context context){
+        Intent starter = new Intent(context,SuggestionActivity.class);
+        context.startActivity(starter);
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +71,21 @@ public class SuggestionActivity extends ToolbarActivity {
 
             }
         });
+
+        mBtnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mEtSuggestion.getText().length() == 0){
+                    showSnackbarShort(getString(R.string.tip_write_suggestion_first));
+                    return;
+                } else {
+                    sendSuggestion(mEtSuggestion.getText().toString() + "联系方式" + mEtContact.getText().toString());
+                }
+            }
+        });
     }
 
-//        mBtnSubmit.setOnClickListener(new View.OnClickListener() {
+//        mBtnSubmit.set(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                if (mEtSuggestion.getText().length() == 0) {
@@ -97,28 +119,24 @@ public class SuggestionActivity extends ToolbarActivity {
 //        });
 //    }
 //
-//    public void sendSuggestion(String str){
-//        if (NetStatus.isConnected()){
-//            ZhugeUtils.sendEvent("意见提交",str);
-//            final MaterialDialog materialDialog = new MaterialDialog(SuggestionActivity.this);
-//            materialDialog.setTitle("匣爸温馨提示");
-//            materialDialog.setContent("反馈成功!感谢您对华师匣子的支持!");
-//            materialDialog.setNegativeButtonColor(ContextCompat.getColor(context,R.color.colorWhite));
-//            materialDialog.setPositiveButtonColor(ContextCompat.getColor(context,R.color.colorPrimary));
-//            materialDialog.setPositiveButton("确定", new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    SuggestionActivity.this.finish();
-//                }
-//            });
-//            materialDialog.setCanceledOnTouchOutside(false);
-//            materialDialog.show();
-////            ToastUtil.showShort("提交成功");
-//
-//        }else {
-//            ToastUtil.showShort(App.sContext.getString(R.string.tip_check_net));
-//        }
-//    }
+    public void sendSuggestion(String str){
+        if (NetStatus.isConnected()){
+            ZhugeUtils.sendEvent("意见提交",str);
+            FeedbackDialog feedbackDialog = new FeedbackDialog();
+            feedbackDialog.show(getSupportFragmentManager(), "feedback_dialog");
+            feedbackDialog.setOnClickListener(new FeedbackDialog.OnClickListener() {
+                @Override
+                public void OnClick() {
+                    SuggestionActivity.this.finish();
+                }
+            });
+        }else {
+            showSnackbarShort(App.sContext.getString(R.string.tip_check_net));
+        }
+    }
+
+
+
 
 
     //显示当前的字数

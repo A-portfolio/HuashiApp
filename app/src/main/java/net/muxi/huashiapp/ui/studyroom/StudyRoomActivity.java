@@ -53,9 +53,6 @@ public class StudyRoomActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         setTitle("空闲教室");
 
-
-
-
     }
 
     @Override

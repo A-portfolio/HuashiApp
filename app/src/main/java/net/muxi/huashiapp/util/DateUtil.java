@@ -108,7 +108,7 @@ public class DateUtil {
 
 
     /**
-     * 根据日期获取
+     * 根据日期获取星期几
      * @param date
      * @return
      */

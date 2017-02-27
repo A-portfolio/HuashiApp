@@ -97,4 +97,7 @@
     <!--学生卡-->
     <color name="card_text_color">#8d8bdb</color>
 
+    <!--通知栏提醒-->
+    <color name="explanation_color">#999999</color>
+
 </resources>

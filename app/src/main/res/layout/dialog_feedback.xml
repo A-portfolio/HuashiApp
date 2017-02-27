@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/bg_card">
+
+    <TextView
+        android:id="@+id/title_sugg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="@string/title_sugg_submit"
+        android:textColor="@color/textColor"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_below="@id/title_sugg"
+        android:background="@color/divider"/>
+
+    <TextView
+        android:id="@+id/content_sugg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/medium_size"
+        android:text="@string/content_sugg_submit"
+        android:layout_below="@id/divider"
+        android:layout_marginTop="46dp"
+        android:layout_centerInParent="true"
+        />
+
+
+    <Button
+        android:id="@+id/btn_exit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/content_sugg"
+        android:layout_marginTop="46dp"
+        android:background="@null"
+        android:textColor="@color/colorAccent"
+        android:text="@string/btn_submit_exit"
+        />
+</RelativeLayout>

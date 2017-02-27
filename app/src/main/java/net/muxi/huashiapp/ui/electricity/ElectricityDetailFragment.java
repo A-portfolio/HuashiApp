@@ -2,7 +2,6 @@ package net.muxi.huashiapp.ui.electricity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +12,6 @@ import android.widget.TextView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.Electricity;
-
-import static com.tencent.bugly.crashreport.inner.InnerAPI.context;
 
 /**
  * Created by december on 16/7/6.
@@ -34,6 +31,7 @@ public class ElectricityDetailFragment extends BaseFragment {
     private CardView mCardDegreeLeft;
     private CardView mCardTotalUse;
     private OnChangeBtnClickListener mOnChangeBtnClickListener;
+
 
     public interface OnChangeBtnClickListener {
         void onChangeBtnClick();
@@ -74,6 +72,18 @@ public class ElectricityDetailFragment extends BaseFragment {
         mOnChangeBtnClickListener = listener;
     }
 
+    public void setCardColor(int i) {
+        if (i == 0) {
+            mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
+            mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
+            mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_two));
+        } else if (i == 1) {
+            mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_one));
+            mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_one));
+            mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_two));
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -91,23 +101,6 @@ public class ElectricityDetailFragment extends BaseFragment {
         mTvMoneyLeft.setText(eleData.getEle().getRemain());
         mTvMoneyLastMonth.setText(eleData.getEle().getBefore());
         mTvMoneyCurMonth.setText(eleData.getEle().getCurrent());
-    }
-
-    public void setCardColor(int i) {
-        if (i == 0){
-            mCardMoneyLeft.setCardBackgroundColor(ContextCompat.getColor(context,R.color.color_card_light_one));
-            mCardDegreeLeft.setCardBackgroundColor(ContextCompat.getColor(context,R.color.color_card_light_one));
-            mCardTotalUse.setCardBackgroundColor(ContextCompat.getColor(context,R.color.color_card_light_two));
-        } else if (i == 1){
-            mCardMoneyLeft.setCardBackgroundColor(ContextCompat.getColor(context,R.color.color_card_air_one));
-            mCardDegreeLeft.setCardBackgroundColor(ContextCompat.getColor(context,R.color.color_card_air_one));
-            mCardTotalUse.setCardBackgroundColor(ContextCompat.getColor(context,R.color.color_card_air_two));
-        }
-
-
-
-
-
     }
 
 }
