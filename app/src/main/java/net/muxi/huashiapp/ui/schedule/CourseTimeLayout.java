@@ -1,10 +1,13 @@
 package net.muxi.huashiapp.ui.schedule;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Scroller;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
@@ -17,6 +20,7 @@ import net.muxi.huashiapp.R;
 public class CourseTimeLayout extends ScheduleTimeLayout{
 
     private Context mContext;
+    private Scroller mScroller;
 
     private View[] views;
 
@@ -27,9 +31,10 @@ public class CourseTimeLayout extends ScheduleTimeLayout{
     public CourseTimeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
+        mScroller = new Scroller(context);
         this.setOrientation(VERTICAL);
-        this.setBackgroundColor(Color.WHITE);
         initView();
+        setWillNotDraw(false);
     }
 
     private void initView() {
@@ -42,6 +47,29 @@ public class CourseTimeLayout extends ScheduleTimeLayout{
             }
             addView(views[i]);
         }
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        Paint p = new Paint();
+        p.setColor(Color.WHITE);
+        p.setStyle(Paint.Style.FILL);
+        p.setAntiAlias(true);
+        canvas.drawRect(0,0,getWidth(),TimeTable.COURSE_TIME_HEIGHT * 14,p);
+    }
+
+    @Override
+    public void computeScroll() {
+        super.computeScroll();
+        if (mScroller.computeScrollOffset()){
+            scrollBy(mScroller.getCurrX(),mScroller.getCurrY());
+            postInvalidate();
+        }
+    }
+
+    public void smoothScrollTo(int x,int y){
+        mScroller.startScroll(mScroller.getCurrX(),mScroller.getCurrY(),x,y);
     }
 
 }

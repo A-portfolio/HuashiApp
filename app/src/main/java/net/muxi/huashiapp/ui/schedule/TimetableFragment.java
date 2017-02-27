@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.ui.schedule;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,12 +14,16 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.event.RefreshFinishEvent;
+import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.TimeTableUtil;
 
 import java.util.ArrayList;
@@ -28,6 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -66,6 +72,10 @@ public class TimetableFragment extends BaseFragment {
 
     private HuaShiDao dao;
 
+    private Subscription mSubscription;
+
+    private boolean handlingRefresh = false;
+
     public static TimetableFragment newInstance() {
         Bundle args = new Bundle();
         TimetableFragment fragment = new TimetableFragment();
@@ -80,6 +90,7 @@ public class TimetableFragment extends BaseFragment {
         Logger.d("createview");
         View view = inflater.inflate(R.layout.fragment_timetable, container, false);
         ButterKnife.bind(this, view);
+        getActivity().getWindow().getDecorView().setBackgroundColor(Color.argb(255, 250, 250, 250));
         dao = new HuaShiDao();
 
         initData();
@@ -119,28 +130,40 @@ public class TimetableFragment extends BaseFragment {
             mTableMenuView.setCurweek(curWeek);
         });
         mTimetable.setOnCourseClickListener(v -> {
-            String id = ((CourseView)v).getCourseId();
-            DetailCoursesDialog dialog = DetailCoursesDialog.newInstance(getSameTimeCourses(id),selectedWeek);
-            dialog.show(getChildFragmentManager(),"detail_courses");
+            String id = ((CourseView) v).getCourseId();
+            DetailCoursesDialog dialog = DetailCoursesDialog.newInstance(getSameTimeCourses(id),
+                    selectedWeek);
+            dialog.show(getChildFragmentManager(), "detail_courses");
         });
 
+//        mSubscription = RxBus.getDefault().toObservable(RefreshTableEvent.class)
+//                .subscribe(refreshTableEvent -> {
+//                    handlingRefresh = true;
+//                    Logger.d("get the event" + getId());
+//                    loadTable();
+//                },throwable -> throwable.printStackTrace());
+
+        mTimetable.setOnRefreshListener(() -> {
+            handlingRefresh = true;
+            loadTable();
+        });
     }
 
-    public List<Course> getSameTimeCourses(String id){
+    public List<Course> getSameTimeCourses(String id) {
         List<Course> courseList = new ArrayList<>();
         int start = 1;
         int duration = 2;
         String weekday = "星期一";
-        for (Course course : mCourses){
-            if (course.id.equals(id)){
+        for (Course course : mCourses) {
+            if (course.id.equals(id)) {
                 start = course.start;
                 duration = course.during;
                 weekday = course.day;
                 break;
             }
         }
-        for (Course course : mCourses){
-            if(course.start == start && course.during == duration && course.day.equals(weekday)){
+        for (Course course : mCourses) {
+            if (course.start == start && course.during == duration && course.day.equals(weekday)) {
                 courseList.add(course);
             }
         }
@@ -157,7 +180,17 @@ public class TimetableFragment extends BaseFragment {
                     updateDB(courseList);
                     mCourses = courseList;
                     renderCourseView(courseList);
-                }, throwable -> throwable.printStackTrace());
+                    if (handlingRefresh) {
+                        handlingRefresh = false;
+                        RxBus.getDefault().send(new RefreshFinishEvent(courseList.size() != 0));
+                    }
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    if(handlingRefresh){
+                        handlingRefresh = false;
+                        RxBus.getDefault().send(new RefreshFinishEvent(false));
+                    }
+                });
     }
 
 
@@ -179,7 +212,7 @@ public class TimetableFragment extends BaseFragment {
     private void rotateSelectView() {
         if (!selectedIvStatus) {
             mIvSelectWeek.setRotation(180);
-        }else {
+        } else {
             mIvSelectWeek.setRotation(0);
         }
         selectedIvStatus = !selectedIvStatus;
@@ -203,6 +236,17 @@ public class TimetableFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true) == true) {
+            PreferenceUtil.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, false);
+        }
+        if (mSubscription != null && mSubscription.isUnsubscribed()){
+            mSubscription.unsubscribe();
+        }
     }
 
     @OnClick({R.id.tv_select_week, R.id.iv_select_week})

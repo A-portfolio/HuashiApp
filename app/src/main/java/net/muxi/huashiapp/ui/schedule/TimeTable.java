@@ -10,9 +10,13 @@ import android.widget.Scroller;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.data.Course;
+import net.muxi.huashiapp.event.RefreshFinishEvent;
+import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +37,10 @@ public class TimeTable extends RelativeLayout {
     public static final int LITTLE_VIEW_HEIGHT = DimensUtil.dp2px(41);
     //course height = COURSE_TIME_HEIGHT * x -1-x
     public static final int COURSE_WIDTH = DimensUtil.dp2px(62);
+    public static final int REFRESH_VIEW_HEIGHT = DimensUtil.dp2px(90);
+    public static final int ABLE_TO_REFRESH_HEIGHT = DimensUtil.dp2px(82);
+    public static final int REFRESHING_VIEW_HEIGHT = DimensUtil.dp2px(82);
+    public static final int REFRESH_RESULT_VIEW_HEIGHT = DimensUtil.dp2px(48);
 
     public static final int COURSE_TIME_DIVIDER = DimensUtil.dp2px(1);
     public static final int DIVIDER_WIDTH = DimensUtil.dp2px(1);
@@ -51,11 +59,13 @@ public class TimeTable extends RelativeLayout {
     @BindView(R.id.view_curweek_set)
     CurweekSetView mViewCurweekSet;
     @BindView(R.id.layout_table)
-    RelativeLayout mLayoutTable;
+    TimeTableLayout mLayoutTable;
     @BindView(R.id.tv_tip)
     TextView mTvTip;
 
     private View curDownTargetView;
+
+    private boolean isFirstShow = true;
 
     private Scroller mScroller;
 
@@ -71,6 +81,8 @@ public class TimeTable extends RelativeLayout {
 
     private long lastTime;
     private boolean isTouchCancel = true;
+
+    private boolean isPulling = false;
 
     private OnClickListener mOnCourseClickListener;
 
@@ -90,8 +102,28 @@ public class TimeTable extends RelativeLayout {
     public TimeTable(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
+        mScroller = new Scroller(context);
+        isFirstShow = PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true);
+        Logger.d(isFirstShow + " firstshow");
         initLayout();
-        Logger.d(getId() + "");
+        RxBus.getDefault().toObservable(RefreshFinishEvent.class)
+                .subscribe(refreshFinishEvent -> {
+                    if (refreshFinishEvent.isRefreshResult()) {
+                        mRefreshView.setRefreshResult(R.string.tip_refresh_ok);
+                        mRefreshView.setRefreshViewBackground(R.color.colorAccent);
+                    } else {
+                        mRefreshView.setRefreshResult(R.string.tip_refresh_fail);
+                        mRefreshView.setRefreshViewBackground(R.color.red);
+                    }
+                    smoothScrollTo(0, -REFRESH_RESULT_VIEW_HEIGHT);
+                    postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRefreshView.setReadyToPull();
+                            smoothScrollTo(0, 0);
+                        }
+                    }, 1000);
+                });
     }
 
     public void initLayout() {
@@ -144,11 +176,18 @@ public class TimeTable extends RelativeLayout {
                 break;
             case MotionEvent.ACTION_MOVE:
 
+                if (!isFirstShow) {
+                    if (mRefreshView.status == RefreshView.Status.REFRESH_FINISHED ||
+                            mRefreshView.status == RefreshView.Status.REFRESHING) {
+                        return true;
+                    }
+                }
+
                 int scrolledX = mTimetableContent.getScrollX();
                 int scrolledY = mTimetableContent.getScrollY();
 
-                int xDistance;
-                int yDistance;
+                int xDistance = 0;
+                int yDistance = 0;
 
                 if (scrolledX + curX - event.getX() < 0) {
                     xDistance = -scrolledX;
@@ -160,96 +199,107 @@ public class TimeTable extends RelativeLayout {
                     xDistance = (int) (curX - event.getX());
                 }
 
-                if (scrolledY + curY - event.getY() < 0) {
-                    yDistance = -scrolledY;
-                } else if (scrolledY + curY - event.getY()
-                        > COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56) * 2
+                Logger.d("scrolly: " + scrolledY + "");
+
+                //不同情况下的区别滚动
+                if (isFirstShow) {
+                    if (scrolledY + curY - event.getY() < 0) {
+                        yDistance = -scrolledY;
+                    }
+                } else {
+                    if (getScrollY() + curY - event.getY() < 0 && scrolledY <= 1) {
+                        isPulling = true;
+                        if (getScrollY() + curY - event.getY() < 0
+                                && getScrollY() + curY - event.getY() >= -REFRESH_VIEW_HEIGHT) {
+                            yDistance = (int) (curY - event.getY()) / 2;
+                            scrollBy(0, yDistance);
+                            if (getScrollY() < -ABLE_TO_REFRESH_HEIGHT) {
+                                mRefreshView.setReleaseToRefresh();
+                            } else {
+                                mRefreshView.setPullToRefresh();
+                            }
+                        } else if (getScrollY() + curY - event.getY() < -REFRESH_VIEW_HEIGHT) {
+                            yDistance = -REFRESH_VIEW_HEIGHT - getScrollY();
+                            scrollBy(0, yDistance);
+                        }
+                        curX = event.getX();
+                        curY = event.getY();
+                        return true;
+                    }
+                }
+
+                //滚动课表
+                if (scrolledY + curY - event.getY() >= 0 && scrolledY + curY - event.getY()
+                        <= COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56) * 2
                         + DimensUtil.dp2px(60)
                         + DimensUtil.getStatusBarHeight() - DimensUtil.getScreenHeight()) {
-                    yDistance = COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56)
+                    yDistance = (int) (curY - event.getY());
+                }
+
+                if (scrolledY + curY - event.getY()
+                        > COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56)
+                        * 2
+                        + DimensUtil.dp2px(60)
+                        + DimensUtil.getStatusBarHeight() - DimensUtil.getScreenHeight()) {
+                    yDistance = COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(
+                            56)
                             * 2 + DimensUtil.dp2px(56) + DimensUtil.getStatusBarHeight()
                             - DimensUtil.getScreenHeight()
                             - scrolledY;
-                } else {
-                    yDistance = (int) (curY - event.getY());
                 }
 
                 mWeekLayout.scrollBy(xDistance, 0);
                 mCourseTimeLayout.scrollBy(0, yDistance);
                 mTimetableContent.scrollBy(xDistance, yDistance);
-                mTvTip.scrollBy(0,yDistance);
 
                 curX = event.getX();
                 curY = event.getY();
                 break;
             case MotionEvent.ACTION_UP:
                 if (curDownTargetView != null) {
-                    if (System.currentTimeMillis() - lastTime < MAX_CLICK_DURATION && distance(curX,
+                    if (System.currentTimeMillis() - lastTime < MAX_CLICK_DURATION
+                            && distance(curX,
                             curY, startX, startY) < MAX_CLICK_DISTANCE) {
                         //如果是点击事件的话展示当前时间点的所有课程
-//                        showCurrentCourses(((CourseView) curDownTargetView).getCourseId());
                         if (mOnCourseClickListener != null) {
                             mOnCourseClickListener.onClick(curDownTargetView);
                         }
                         curDownTargetView = null;
                     }
                 }
+                Logger.d(mRefreshView.status.toString());
+                if (mRefreshView.status == RefreshView.Status.PULL_TO_REFRESH) {
+                    smoothScrollTo(0, 0);
+                    mRefreshView.status = RefreshView.Status.READY_TO_PULL;
+                } else if (mRefreshView.status == RefreshView.Status.RELEASE_TO_REFRESH) {
+                    mRefreshView.setRefreshing();
+                    smoothScrollTo(0, -REFRESHING_VIEW_HEIGHT);
+//                    RxBus.getDefault().send(new RefreshTableEvent());
+                    if (mOnRefreshListener != null){
+                        mOnRefreshListener.onRefresh();
+                    }
+                    Logger.d("reload");
+                }
                 break;
         }
+
         return true;
+    }
+
+    public void smoothScrollTo(int x, int y) {
+        Logger.d(getScrollX() + "y: " + getScrollY());
+        mScroller.startScroll(getScrollX(), getScrollY(), x - getScrollX(), y - getScrollY());
+        invalidate();
     }
 
     @Override
     public void computeScroll() {
         super.computeScroll();
-//        if (mScroller.computeScrollOffset()){
-//            mScroller.startScroll();
-//        }
+        if (mScroller.computeScrollOffset()) {
+            scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+            invalidate();
+        }
     }
-
-    //    private ViewDragHelper.Callback callback = new ViewDragHelper.Callback() {
-//        @Override
-//        public boolean tryCaptureView(View child, int pointerId) {
-//            Logger.d(child == mTimetableContent ? "true" : "false");
-//            Logger.d(child.getId() + "");
-//            return child == mTimetableContent;
-//        }
-//
-//        @Override
-//        public void onViewCaptured(View capturedChild, int activePointerId) {
-//            super.onViewCaptured(capturedChild, activePointerId);
-//        }
-//
-//        @Override
-//        public int getViewVerticalDragRange(View child) {
-//            return super.getViewVerticalDragRange(child);
-//        }
-//
-//        @Override
-//        public void onViewReleased(View releasedChild, float xvel, float yvel) {
-//            super.onViewReleased(releasedChild, xvel, yvel);
-//            mViewDragHelper.flingCapturedView(0, 0,
-//                    WEEK_DAY_WIDTH * 7 - (DimensUtil.getScreenWidth() - LITTLE_VIEW_WIDTH),
-//                    COURSE_TIME_HEIGHT * 14 + DimensUtil.dp2px(60) - (DimensUtil.getScreenHeight()
-//                            - DimensUtil.getStatusBarHeight() - 2 * DimensUtil.dp2px(56)));
-//            ViewCompat.postInvalidateOnAnimation(TimeTable.this);
-//        }
-//
-//        @Override
-//        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
-//            super.onViewPositionChanged(changedView, left, top, dx, dy);
-//        }
-//
-//        @Override
-//        public int clampViewPositionHorizontal(View child, int left, int dx) {
-//            return left;
-//        }
-//
-//        @Override
-//        public int clampViewPositionVertical(View child, int top, int dy) {
-//            return top;
-//        }
-//    };
 
     /**
      * 记录当前按下的 view
@@ -266,6 +316,17 @@ public class TimeTable extends RelativeLayout {
 
     public void setOnCourseClickListener(OnClickListener listener) {
         mOnCourseClickListener = listener;
+    }
+
+    private OnRefreshListener mOnRefreshListener;
+
+    public void setOnRefreshListener(OnRefreshListener onRefreshListener){
+        mOnRefreshListener = onRefreshListener;
+    }
+
+    public interface OnRefreshListener{
+
+        void onRefresh();
     }
 
 }
