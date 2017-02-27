@@ -153,6 +153,8 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomEight.addView(context1, params);
             }
+
+
         }
 
         if (mClassRoom.getValue3() != null) {

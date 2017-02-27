@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -39,10 +38,9 @@ import com.tencent.tauth.Tencent;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.Constants;
-
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.listener.BaseUiListener;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.common.listener.BaseUiListener;
 import net.muxi.huashiapp.util.AppUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.ToastUtil;
@@ -83,6 +81,9 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     private String type = "webpage";
 
 
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +120,11 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         if (savedInstanceState != null) {
             mWeiboShareAPI.handleWeiboResponse(getIntent(), this);
         }
+
     }
+
+
+
 
     public static Intent newIntent(Context context, String url, String title, String intro, String iconUrl) {
         Intent intent = new Intent(context, WebViewActivity.class);
@@ -163,12 +168,15 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         return super.onOptionsItemSelected(item);
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
     }
 
-    @Override protected void onPause() {
+    @Override
+    protected void onPause() {
         super.onPause();
         mWebview.onPause();
     }

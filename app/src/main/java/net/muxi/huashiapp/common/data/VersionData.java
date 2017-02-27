@@ -1,7 +1,7 @@
 package net.muxi.huashiapp.common.data;
 
 /**
- * Created by ybao on 16/8/6.
+ * xxxCreated by ybao on 16/8/6.
  * 版本数据
  */
 public class VersionData {

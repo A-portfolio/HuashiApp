@@ -13,8 +13,8 @@
 
     <dimen name="most_large_size">28sp</dimen>
     <dimen name="large_size">22sp</dimen>
-    <dimen name="medium_size">18sp</dimen>
-    <dimen name="small_size">12sp</dimen>
+    <dimen name="medium_size">14sp</dimen>
+    <dimen name="small_size">10sp</dimen>
     <dimen name="login_edit_text_size">22sp</dimen>
     <dimen name="login_btn_text_size">22sp</dimen>
     <dimen name="login_hint_text_size">16sp</dimen>
@@ -82,6 +82,6 @@
     <dimen name="spinner_height">36dp</dimen>
     <dimen name="spinner_marigin">170dp</dimen>
 
-    <dimen name="setting_preference_height">56dp</dimen>
+    <dimen name="setting_preference_height">64dp</dimen>
 
 </resources>

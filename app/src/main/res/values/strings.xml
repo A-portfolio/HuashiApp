@@ -99,6 +99,8 @@
     <string name="pre_card">pre_card</string>
     <string name="pre_score">pre_score</string>
     <string name="pre_all">pre_all</string>
+    <string name="setting_library">图书到期通知和关注图书可借通知</string>
+    <string name="setting_card">校园卡余额不足时圈存提醒</string>
 
     <string name="course_single_week">单周</string>
     <string name="course_double_week">双周</string>
@@ -127,22 +129,36 @@
 
     <!--空闲教室-->
     <string name="content_correct_studyroom">亲爱的匣客，为了更好的使用空闲教室功能，欢迎积极反馈报错哟！</string>
+    
 
     <!--关于-->
-    <string name="title_input_suggeston">在这里输入您的意见</string>
-    <string name="title_input_contact">在这里输入您的联系方式</string>
+    <string name="title_input_suggeston">您的每一个意见都是我们宝贵的财富</string>
+    <string name="title_input_contact">留下您的QQ吧</string>
     <string name="hint_contact">邮箱/QQ/手机号</string>
-    <string name="title_sugg_submit">确定提交信息吗?</string>
-    <string name="content_sugg_submit">留下你的联系方式,有机会获得精美礼品一份哦!</string>
-    <string name="btn_submit">提交</string>
-    <string name="title_update">版本更新</string>
-    <string name="btn_update">立即更新</string>
-    <string name="btn_not_now">稍后再说</string>
+    <string name="title_sugg_submit">反馈成功</string>
+    <string name="content_sugg_submit">谢谢您的反馈，我们会仔细阅读并处理~</string>
+    <string name="btn_submit_exit">给朕快点处理</string>
+    <string name="btn_submit">反馈</string>
+    <string name="ccnubox_group">匣子交流群：576225292</string>
+    <string name="muxi_group">木犀互联网学习群：534239958</string>
+    <string name="tip_write_suggestion_first">请先输入您的意见</string>
+
+    <!--检查更新-->
+    <string name="title_update">发现新版本</string>
+    <string name="btn_update">更新</string>
+    <string name="btn_cancel">取消</string>
     <string name="tip_update_intro">更新说明:</string>
     <string name="tip_update_size">更新包大小:</string>
     <string name="title_not_have_to_update">已经是最新版本</string>
-    <string name="tip_write_suggestion_first">请先输入您的意见</string>
     <string name="tip_start_download_apk">开始下载更新包</string>
+
+    <!--退出-->
+    <string name="id_log_out">退出信息门户</string>
+    <string name="library_log_out">退出图书馆</string>
+    <string name="all_log_out">全部退出</string>
+    <string name="tip_id_log_out">成功退出信息门户</string>
+    <string name="tip_library_log_out">成功退出图书馆</string>
+    <string name="tip_all_log_out">全部退出成功</string>
 
     <string name="txt_text">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
 

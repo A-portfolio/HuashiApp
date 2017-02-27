@@ -166,8 +166,8 @@ public class ElectricityDetailActivity extends ToolbarActivity  {
         detailFragments.add(new ElectricityDetailFragment());
         detailFragments.add(new ElectricityDetailFragment());
 
-//        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(0);
-//        ((ElectricityDetailFragment) detailFragments.get(1)).setCardColor(1);
+//        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(this,0);
+//        ((ElectricityDetailFragment) detailFragments.get(1)).setCardColor(this,1);
 //        ((ElectricityDetailFragment) detailFragments.get(0)).setOnChangeBtnClickListener(this);
 //        ((ElectricityDetailFragment) detailFragments.get(1)).setOnChangeBtnClickListener(this);
         MyDetailAdapter myDetailAdapter = new MyDetailAdapter(getSupportFragmentManager(), detailFragments, titles);
@@ -189,4 +189,6 @@ public class ElectricityDetailActivity extends ToolbarActivity  {
 //        startActivity(intent);
 //        this.finish();
 //    }
+
+
 }
