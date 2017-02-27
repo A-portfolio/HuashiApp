@@ -1,10 +1,13 @@
 package net.muxi.huashiapp.ui.schedule;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Scroller;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.Constants;
@@ -21,6 +24,7 @@ import java.util.List;
 public class WeekLayout extends ScheduleTimeLayout {
 
     private Context mContext;
+    private Scroller mScroller;
 
     private View[] views;
 
@@ -31,9 +35,10 @@ public class WeekLayout extends ScheduleTimeLayout {
     public WeekLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        this.setBackgroundColor(Color.WHITE);
+        mScroller = new Scroller(context);
         views = new View[7];
         initView();
+        setWillNotDraw(false);
     }
 
     private void initView() {
@@ -53,4 +58,26 @@ public class WeekLayout extends ScheduleTimeLayout {
         }
     }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        Paint p = new Paint();
+        p.setStyle(Paint.Style.FILL);
+        p.setColor(Color.WHITE);
+        p.setAntiAlias(true);
+        canvas.drawRect(0,0,TimeTable.WEEK_DAY_WIDTH * 7,TimeTable.LITTLE_VIEW_HEIGHT,p);
+    }
+
+    @Override
+    public void computeScroll() {
+        super.computeScroll();
+        if (mScroller.computeScrollOffset()){
+            scrollTo(mScroller.getCurrX(),mScroller.getCurrY());
+            postInvalidate();
+        }
+    }
+
+    public void smoothScrollTo(int x,int y){
+        mScroller.startScroll(mScroller.getCurrX(),mScroller.getCurrY(),x,y);
+    }
 }

@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="22dp"
+        android:text="———别闹，学霸也是要睡觉的———"
+        android:textColor="@color/grey"
+        android:textSize="10sp"/>
 
     <net.muxi.huashiapp.ui.schedule.RefreshView
         android:id="@+id/refresh_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/layout_table"
+        android:layout_marginTop="-90dp"
+        android:layout_height="90dp"
         android:visibility="gone"/>
 
     <net.muxi.huashiapp.ui.schedule.CurweekSetView
@@ -18,7 +29,7 @@
         android:layout_above="@+id/layout_table"
         android:visibility="gone"/>
 
-    <RelativeLayout
+    <net.muxi.huashiapp.ui.schedule.TimeTableLayout
         android:id="@+id/layout_table"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -75,19 +86,7 @@
             android:layout_marginTop="41dp"
         />
 
-    </RelativeLayout>
+    </net.muxi.huashiapp.ui.schedule.TimeTableLayout>
 
-    <TextView
-        android:id="@+id/tv_tip"
-        android:layout_width="wrap_content"
-        android:layout_height="15dp"
-        android:layout_below="@+id/layout_table"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="22dp"
-        android:layout_marginTop="22dp"
-        android:background="@color/blue"
-        android:text="———别闹，学霸也是要睡觉的———"
-        android:textColor="@color/grey"
-        android:textSize="10sp"/>
 
 </merge>

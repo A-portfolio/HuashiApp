@@ -48,7 +48,6 @@ public class TableContent extends FrameLayout {
         super(context, attrs);
         mScroller = new Scroller(context);
         mContext = context;
-        this.setBackgroundColor(Color.WHITE);
         setWillNotDraw(false);
     }
 
@@ -67,10 +66,15 @@ public class TableContent extends FrameLayout {
             path.lineTo(TimeTable.WEEK_DAY_WIDTH * (i + 1) - DimensUtil.dp2px(0.5f), TimeTable.COURSE_TIME_HEIGHT * 14);
         }
         Paint p = new Paint();
+        p.setAntiAlias(true);
+
+        p.setColor(Color.WHITE);
+        p.setStyle(Paint.Style.FILL);
+        canvas.drawRect(0,0,TimeTable.WEEK_DAY_WIDTH * 7,TimeTable.COURSE_TIME_HEIGHT * 14,p);
+
         p.setColor(getResources().getColor(R.color.divider));
         p.setStrokeWidth(DimensUtil.dp2px(1));
         p.setStyle(Paint.Style.STROKE);
-        p.setAntiAlias(true);
         canvas.drawPath(path, p);
     }
 
@@ -81,6 +85,10 @@ public class TableContent extends FrameLayout {
             scrollTo(mScroller.getCurrX(),mScroller.getCurrY());
             postInvalidate();
         }
+    }
+
+    public void smoothScrollTo(int x,int y){
+        mScroller.startScroll(mScroller.getCurrX(),mScroller.getCurrY(),x,y);
     }
 
     @Override

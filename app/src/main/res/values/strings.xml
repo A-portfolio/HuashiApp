@@ -147,7 +147,11 @@
     <string name="txt_text">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
 
     <string name="course_not_found">待修改课程不存在</string>
-    <string name="tip_pull_to_refresh">下拉以刷新</string>
+    <string name="tip_pull_to_refresh">下拉刷新课程表</string>
+    <string name="tip_release_to_refresh">松开即刷新</string>
+    <string name="tip_refreshing">正在刷新中</string>
+    <string name="tip_refresh_ok">刷新成功</string>
+    <string name="tip_refresh_fail">糟糕！刷新失败</string>
 
 </resources>
 
