@@ -12,8 +12,6 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="320dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:background="@color/colorWhite"
@@ -75,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="56sp"
                 tools:text="180.00"
                 />
