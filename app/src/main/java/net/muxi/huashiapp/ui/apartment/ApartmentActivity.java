@@ -1,5 +1,7 @@
 package net.muxi.huashiapp.ui.apartment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,6 +30,11 @@ import rx.schedulers.Schedulers;
  * Created by december on 16/7/30.
  */
 public class ApartmentActivity extends ToolbarActivity {
+
+    public static void start(Context context){
+        Intent starter = new Intent(context,ApartmentActivity.class);
+        context.startActivity(starter);
+    }
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;

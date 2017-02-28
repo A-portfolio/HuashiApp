@@ -89,6 +89,8 @@ public class MoreFragment extends BaseFragment {
                     case 0:
                         break;
                     case 1:
+                        ShareDialog shareDialog = new ShareDialog();
+                        shareDialog.show(getFragmentManager(),"dialog_share");
                         break;
                     case 2:
                         SettingActivity.start(getContext());
