@@ -11,11 +11,12 @@
            android:layout_height="1px"
            android:layout_centerInParent="true"/>
 
-    <TextView android:layout_width="140dp"
+    <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginLeft="-8dp"
               android:layout_above="@+id/space_center"
               android:layout_toRightOf="@+id/space_center"
+              android:textStyle="bold"
               android:textColor="@color/colorWhite"
               android:text="使用课程表前，\n请先设置当前周"
               android:textSize="20sp"/>

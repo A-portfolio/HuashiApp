@@ -70,12 +70,14 @@ public class RefreshView extends RelativeLayout {
     }
 
     public void startRefresh(){
+        mDrawee.setImageURI(null);
         mDrawee.setController(mDraweeController);
     }
 
     public void setPullToRefresh(){
         Uri uri = Uri.parse("res:/" + R.drawable.table_loading_final);
         mDrawee.setImageURI(uri);
+        mDrawee.setController(null);
         mTvTip.setText(R.string.tip_pull_to_refresh);
         status = Status.PULL_TO_REFRESH;
     }
