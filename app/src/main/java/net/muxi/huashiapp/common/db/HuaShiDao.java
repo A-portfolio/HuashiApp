@@ -27,7 +27,7 @@ public class HuaShiDao {
 
     //插入当前用户的搜索记录,如果当前用户没有登录则为 null
     public void insertSearchHistory(String book) {
-        String libraryId = PreferenceUtil.getString(PreferenceUtil.LIBRARY_ID,"0");
+        String libraryId = PreferenceUtil.getString(PreferenceUtil.LIBRARY_ID, "0");
         db.execSQL("INSERT INTO " + DataBase.TABLE_SEARCH_HISTORY +
                         " VALUES(NULL,?,? )",
                 new String[]{libraryId, book});
@@ -35,7 +35,7 @@ public class HuaShiDao {
     }
 
     public List<String> loadSearchHistory() {
-        String libraryId = PreferenceUtil.getString(PreferenceUtil.LIBRARY_ID,"0");
+        String libraryId = PreferenceUtil.getString(PreferenceUtil.LIBRARY_ID, "0");
         Log.d("tag", libraryId);
         List<String> records = new ArrayList<>();
         Cursor cursor;
@@ -77,7 +77,7 @@ public class HuaShiDao {
                 });
     }
 
-    public void updateCourse(Course course){
+    public void updateCourse(Course course) {
         deleteCourse(course.id);
         insertCourse(course);
     }
@@ -102,7 +102,7 @@ public class HuaShiDao {
                 course.id = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_ID)));
                 course.course = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_COURSE_NAME)));
                 course.teacher = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_TEACHER)));
-                course.weeks= (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
+                course.weeks = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
                 course.day = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKDAY)));
                 course.start = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_TIME)));
                 course.during = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_DURATION)));
@@ -133,7 +133,7 @@ public class HuaShiDao {
                 course.during = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_DURATION)));
                 course.place = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_PLACE)));
                 course.remind = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_REMIND)));
-                course.color= (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_COLOR)));
+                course.color = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_COLOR)));
                 courses.add(course);
             }
         }
@@ -190,9 +190,9 @@ public class HuaShiDao {
         db.execSQL("DELETE FROM " + DataBase.TABLE_BANNER + ";");
     }
 
-    public void insertApart(ApartmentData data){
+    public void insertApart(ApartmentData data) {
         String phone = new String();
-        for (String phoneStr : data.getPhone()){
+        for (String phoneStr : data.getPhone()) {
             phone = phone + phoneStr + " ";
         }
         db.execSQL("insert into " + DataBase.TABLE_APARTMENT + " values(null,?,?,?) ",
@@ -203,9 +203,9 @@ public class HuaShiDao {
                 });
     }
 
-    public List<ApartmentData> loadApart(){
+    public List<ApartmentData> loadApart() {
         List<ApartmentData> apartmentDatas = new ArrayList<>();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_APARTMENT+ " ", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_APARTMENT + " ", null);
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 ApartmentData data = new ApartmentData();
@@ -222,17 +222,18 @@ public class HuaShiDao {
         return apartmentDatas;
     }
 
-    public void deleteApartData(){
+    public void deleteApartData() {
         db.execSQL("delete from " + DataBase.TABLE_APARTMENT + ";");
     }
 
 
     /**
      * 解析电话字符串
+     *
      * @param phone
      * @return
      */
-    public List<String> getPhoneList(String phone){
+    public List<String> getPhoneList(String phone) {
         List<String> list = Arrays.asList(phone.split(" "));
         return list;
     }
@@ -242,29 +243,30 @@ public class HuaShiDao {
                 new String[]{
                         data.getSite(),
                         data.getUrl()
-                        });
+                });
 
     }
 
-    public List<WebsiteData> loadSite(){
+    public List<WebsiteData> loadSite() {
         List<WebsiteData> websiteDatas = new ArrayList<>();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_WEBSITE ,null);
-        if (cursor.getCount() > 0){
-            while (cursor.moveToNext()){
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_WEBSITE, null);
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
                 WebsiteData data = new WebsiteData();
                 data.setSite(cursor.getString(cursor.getColumnIndex(DataBase.KEY_SITE)));
                 data.setUrl(cursor.getString(cursor.getColumnIndex(DataBase.KEY_SITE_URL)));
                 websiteDatas.add(data);
             }
         }
-        if (cursor != null){
+        if (cursor != null) {
             cursor.close();
         }
         return websiteDatas;
     }
 
-    public void deleteWebsite(){
+    public void deleteWebsite() {
         db.execSQL("delete from " + DataBase.TABLE_WEBSITE + ";");
     }
+
 
 }

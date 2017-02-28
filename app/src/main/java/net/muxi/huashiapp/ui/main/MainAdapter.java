@@ -13,13 +13,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.BannerData;
-import net.muxi.huashiapp.common.data.Item;
-import net.muxi.huashiapp.ui.CalendarActivity;
-import net.muxi.huashiapp.ui.apartment.ApartmentActivity;
-import net.muxi.huashiapp.ui.card.CardActivity;
-import net.muxi.huashiapp.ui.credit.SelectCreditActivity;
-import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
-import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.common.data.ItemData;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +29,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     private static final long TURNING_TIME = 4000;
 
-    private List<Item> mItems;
+    private List<ItemData> mItems;
     private List<BannerData> mBannerDatas;
     //图片的地址
     private List<String> imageUrls;
@@ -83,7 +77,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         void onBannerItemClick(BannerData bannerData);
     }
 
-    public MainAdapter(List<Item> items, List<BannerData> bannerDatas) {
+    public MainAdapter(List<ItemData> items, List<BannerData> bannerDatas) {
 //        this.mdesc = desc;
 //        this.mpics = pics;
 
@@ -95,7 +89,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
     }
 
-    public MainAdapter(List<Item> items) {
+    public MainAdapter(List<ItemData> items) {
         this.mItems = items;
     }
 
@@ -108,7 +102,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
     }
 
-    public void swapProduct(List<Item> items) {
+    public void swapProduct(List<ItemData> items) {
 //        mpics = pics;
 //        mdesc = desc;
         this.mItems = items;
@@ -158,37 +152,37 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         ((CommonViewHolder) holder).mTextView.setText(mItems.get(position).getName());
         ((CommonViewHolder) holder).itemView.setTag(position);
 
-        ((CommonViewHolder) holder).mItemLayout.setOnClickListener(v -> {
-            Logger.d(position + "");
-            switch (position) {
-                case 0:
+//        ((CommonViewHolder) holder).mItemLayout.setOnClickListener(v -> {
+//            Logger.d(position + "");
+//            switch (position) {
+//                case 0:
 //                    ScoreSelectActivity.start(mContext);
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    CardActivity.start(mContext);
-                    break;
-                case 4:
-                    SelectCreditActivity.start(mContext);
-                    break;
-                case 5:
-                    StudyRoomActivity.start(mContext);
-                    break;
-                case 6:
-                    ApartmentActivity.start(mContext);
-                    break;
-                case 7:
-                    CalendarActivity.start(mContext);
-                    break;
-                case 8:
-                    break;
-                case 9:
-                    break;
-            }
-        });
+//                    break;
+//                case 1:
+//                    break;
+//                case 2:
+//                    break;
+//                case 3:
+//                    CardActivity.start(mContext);
+//                    break;
+//                case 4:
+//                    SelectCreditActivity.start(mContext);
+//                    break;
+//                case 5:
+//                    StudyRoomActivity.start(mContext);
+//                    break;
+//                case 6:
+//                    ApartmentActivity.start(mContext);
+//                    break;
+//                case 7:
+//                    CalendarActivity.start(mContext);
+//                    break;
+//                case 8:
+//                    break;
+//                case 9:
+//                    break;
+//            }
+//        });
     }
 
 
