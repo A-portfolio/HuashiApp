@@ -37,7 +37,7 @@ public class TimeTable extends RelativeLayout {
     public static final int LITTLE_VIEW_HEIGHT = DimensUtil.dp2px(41);
     //course height = COURSE_TIME_HEIGHT * x -1-x
     public static final int COURSE_WIDTH = DimensUtil.dp2px(62);
-    public static final int REFRESH_VIEW_HEIGHT = DimensUtil.dp2px(90);
+    public static final int REFRESH_VIEW_HEIGHT = DimensUtil.dp2px(100);
     public static final int ABLE_TO_REFRESH_HEIGHT = DimensUtil.dp2px(82);
     public static final int REFRESHING_VIEW_HEIGHT = DimensUtil.dp2px(82);
     public static final int REFRESH_RESULT_VIEW_HEIGHT = DimensUtil.dp2px(48);
