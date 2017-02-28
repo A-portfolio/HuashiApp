@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--suppress XmlUnusedNamespaceDeclaration, XmlUnusedNamespaceDeclaration, XmlUnusedNamespaceDeclaration -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                xmlns:tools="http://schemas.android.com/tools"
                 android:orientation="vertical">
 
-    <include android:id="@+id/view_toolbar"
-             layout="@layout/view_toolbar"/>
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_below="@+id/view_toolbar"
-                  android:orientation="vertical">
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -20,12 +30,23 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin">
 
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_notice_course"
+                />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="课程消息提醒"
+                android:layout_marginLeft="24dp"
+                android:layout_toRightOf="@id/img"
+                android:text="新课程提醒"
                 android:textSize="@dimen/medium_size"/>
+
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_course_remind"
@@ -36,18 +57,43 @@
                 android:checked="true"/>
 
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/setting_preference_height"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin">
 
-            <TextView
+            <ImageView
+                android:id="@+id/img1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="图书消息提醒"
-                android:textSize="@dimen/medium_size"/>
+                android:src="@drawable/ic_notice_library"
+                />
+
+            <TextView
+                android:id="@+id/library_notice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/img1"
+                android:layout_marginLeft="24dp"
+                android:layout_toRightOf="@id/img1"
+                android:text="图书提醒"
+                android:textSize="@dimen/medium_size"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/library_notice"
+                android:layout_below="@id/library_notice"
+                android:layout_marginTop="2dp"
+                android:text="@string/setting_library"
+                android:textColor="@color/explanation_color"
+                android:textSize="10sp"
+                />
+
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_library_remind"
@@ -65,12 +111,36 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin">
 
-            <TextView
+            <ImageView
+                android:id="@+id/img2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:src="@drawable/ic_notice_card"
+                />
+
+            <TextView
+                android:id="@+id/card_notice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/img2"
+                android:layout_marginLeft="24dp"
+                android:layout_toRightOf="@id/img2"
                 android:text="学生卡消息提醒"
-                android:textSize="@dimen/medium_size"/>
+                android:textSize="@dimen/medium_size"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/card_notice"
+                android:layout_below="@+id/card_notice"
+                android:layout_marginTop="2dp"
+                android:text="@string/setting_card"
+                android:textColor="@color/explanation_color"
+                android:textSize="10sp"
+                />
+
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_card_remind"
@@ -88,12 +158,23 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin">
 
+            <ImageView
+                android:id="@+id/img3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_notice_score"
+                />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="24dp"
+                android:layout_toRightOf="@id/img3"
                 android:text="成绩消息提醒"
-                android:textSize="@dimen/medium_size"/>
+                android:textSize="@dimen/medium_size"
+                />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_score_remind"
@@ -105,46 +186,7 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/setting_preference_height"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="全部提醒"
-                android:textSize="@dimen/medium_size"/>
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/switch_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:checked="true"/>
-
-        </RelativeLayout>
-
     </LinearLayout>
-
-
-    <Button
-        android:id="@+id/btn_logout"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="32dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:background="@drawable/shape_btn"
-        android:elevation="8dp"
-        android:textColor="@color/colorWhite"/>
-
-
-
 
 
 </RelativeLayout>

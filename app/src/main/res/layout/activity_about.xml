@@ -8,68 +8,132 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include android:id="@+id/view_toolbar"
-             layout="@layout/view_toolbar"/>
-
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_below="@+id/view_toolbar"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:background="@drawable/white_frame_normal"
-        android:orientation="vertical">
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <TextView
-            android:id="@+id/btn_suggestion"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:drawablePadding="16dp"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="24dp"
-            android:text="意见反馈"/>
+    </android.support.v7.widget.Toolbar>
 
-    </LinearLayout>
 
     <ImageView
         android:id="@+id/img_ccnubox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-    />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/toolbar"
+        android:src="@drawable/img_ccnubox"
+        />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_ccnubox"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="华师匣子"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/medium_size"
+        />
 
     <TextView
         android:id="@+id/tv_versionname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/img_ccnubox"
+        android:layout_below="@id/tv_name"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="4dp"
-        android:textColor="@color/textColorGrey"
-        android:textSize="@dimen/medium_size"
-        tools:text="1.0"/>
+        android:textSize="@dimen/small_size"
+        tools:text="版本2.0"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tv_muxi_link"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:text="木犀团队出品"
-        android:textColor="@color/textColorGrey"
-        android:textSize="20sp"/>
 
     <TextView
         android:id="@+id/tv_muxi_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="24dp"
         android:autoLink="web"
-        android:text="muxistudio.com"
-        android:textColor="@color/colorPrimary"/>
+        android:text="访问木犀官网"
+        android:textColor="@color/orange"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tv_muxi_link"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/divider"
+        />
+
+    <TextView
+        android:id="@+id/tv_ccnubox_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_muxi_link"
+        android:layout_below="@id/divider"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/ccnubox_group"
+        android:textColor="?android:attr/textColorPrimary"
+        />
+
+    <TextView
+        android:id="@+id/tv_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/divider"
+        android:layout_alignTop="@id/tv_ccnubox_group"
+        android:text="点击复制"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/medium_size"
+        />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tv_ccnubox_group"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/divider"/>
+
+    <TextView
+        android:id="@+id/tv_muxi_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_muxi_link"
+        android:layout_below="@id/divider2"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/muxi_group"
+        android:textColor="?android:attr/textColorPrimary"
+        />
+
+    <TextView
+        android:id="@+id/tv_copy2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/divider2"
+        android:layout_alignTop="@id/tv_muxi_group"
+        android:text="点击复制"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/medium_size"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tv_muxi_group"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/divider"/>
 
 </RelativeLayout>

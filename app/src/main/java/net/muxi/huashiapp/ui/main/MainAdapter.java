@@ -18,16 +18,11 @@ import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.ui.AboutActivity;
 import net.muxi.huashiapp.ui.credit.SelectCreditActivity;
-import net.muxi.huashiapp.ui.library.LibrarySearchResultActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
-import net.muxi.huashiapp.util.FrescoUtil;
 import net.muxi.huashiapp.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by december on 16/4/19.
@@ -188,7 +183,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
 
         @Override
         public void onClick(View v) {
-            if (mItemClickListener != null) {
+            if (mItemClickListener!= null) {
                 mItemClickListener.onItemClick(itemView, getPosition());
             }
         }

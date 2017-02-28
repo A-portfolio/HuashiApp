@@ -107,8 +107,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="net.muxi.huashiapp.ui.website.WebsiteActivity"
-                  android:launchMode="singleTask"/>
+        <!--<activity android:name="net.muxi.huashiapp.ui.website.WebsiteActivity"-->
+                  <!--android:launchMode="singleTask"/>-->
 
         <activity android:name="net.muxi.huashiapp.ui.apartment.ApartmentActivity"
                   android:launchMode="singleTask"/>
@@ -122,6 +122,8 @@
         <activity android:name="net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity"/>
 
         <activity android:name="net.muxi.huashiapp.ui.InfoActivity"/>
+
+        <activity android:name=".ui.SuggestionActivity"/>
 
         <activity android:name=".ui.studyroom.StudyRoomActivity"/>
 

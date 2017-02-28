@@ -1,22 +1,16 @@
 package net.muxi.huashiapp.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.ToastUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
-import net.muxi.huashiapp.ui.login.LoginActivity;
-import net.muxi.huashiapp.ui.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,10 +28,6 @@ public class SettingActivity extends ToolbarActivity {
     SwitchCompat mSwitchCardRemind;
     @BindView(R.id.switch_score_remind)
     SwitchCompat mSwitchScoreRemind;
-    @BindView(R.id.switch_all)
-    SwitchCompat mSwitchAll;
-    @BindView(R.id.btn_logout)
-    Button mBtnLogout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -51,12 +41,17 @@ public class SettingActivity extends ToolbarActivity {
     private String preAll;
 
 
+    public static void start(Context context){
+        Intent starter = new Intent(context,SettingActivity.class);
+        context.startActivity(starter);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
-        setTitle("设置");
+        setTitle("通知栏提醒");
         sp = new PreferenceUtil();
 
         preSchedule = getResources().getString(R.string.pre_schedule);
@@ -66,41 +61,6 @@ public class SettingActivity extends ToolbarActivity {
         preAll = getResources().getString(R.string.pre_all);
 
         loadAllValue();
-
-        mSwitchAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    setAllValue(true);
-                } else {
-                    setAllValue(false);
-                }
-            }
-        });
-
-        if (App.sUser.getSid() != "0"){
-            mBtnLogout.setText("注销");
-        }else {
-            mBtnLogout.setText("登录");
-        }
-
-        mBtnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (App.sUser.getSid() != "0") {
-                    Intent intent = new Intent(SettingActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    App.clearLibUser();
-                    App.clearUser();
-                    sp.clearAllData();
-                    startActivity(intent);
-                    ToastUtil.showShort("注销成功");
-                } else {
-                    Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                }
-            }
-        });
     }
 
     @Override
@@ -123,7 +83,6 @@ public class SettingActivity extends ToolbarActivity {
         mSwitchLibraryRemind.setChecked(value);
         mSwitchCardRemind.setChecked(value);
         mSwitchScoreRemind.setChecked(value);
-        mSwitchAll.setChecked(value);
     }
 
     private void saveAllValue() {
@@ -131,7 +90,6 @@ public class SettingActivity extends ToolbarActivity {
         sp.saveBoolean(preLibrary, mSwitchLibraryRemind.isChecked());
         sp.saveBoolean(preCard, mSwitchCardRemind.isChecked());
         sp.saveBoolean(preScore, mSwitchScoreRemind.isChecked());
-        sp.saveBoolean(preAll, mSwitchAll.isChecked());
     }
 
     private void loadAllValue() {
@@ -139,7 +97,6 @@ public class SettingActivity extends ToolbarActivity {
         mSwitchLibraryRemind.setChecked(sp.getBoolean(preLibrary, true));
         mSwitchCardRemind.setChecked(sp.getBoolean(preCard, true));
         mSwitchScoreRemind.setChecked(sp.getBoolean(preScore, true));
-        mSwitchAll.setChecked(sp.getBoolean(preAll, true));
     }
 
 }

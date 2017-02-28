@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="分享至"
+        android:textColor="?android:attr/textColorPrimary"
+        />
+
+    <GridLayout
+        android:id="@+id/grid_share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_share"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:columnCount="3"
+        android:rowCount="2">
+
+    </GridLayout>
+
+
+</RelativeLayout>
