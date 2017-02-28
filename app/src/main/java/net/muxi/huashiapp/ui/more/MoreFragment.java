@@ -17,14 +17,12 @@ import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.base.BaseFragment;
-import net.muxi.huashiapp.common.data.VersionData;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.service.DownloadService;
 import net.muxi.huashiapp.ui.AboutActivity;
 import net.muxi.huashiapp.ui.SettingActivity;
 import net.muxi.huashiapp.ui.SuggestionActivity;
 import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.ToastUtil;
 
 import java.io.File;
@@ -33,7 +31,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -130,18 +127,18 @@ public class MoreFragment extends BaseFragment {
                         checkUpdateDialog.setOnPositiveButton(
                                 App.sContext.getString(R.string.btn_update),
                                 () -> {
-                                    downloadUrl = versionData.getDownload();
-                                    beginUpdate(versionData.getDownload());
+                                    beginUpdate(versionData.download);
                                     checkUpdateDialog.dismiss();
                                 });
                         checkUpdateDialog.setOnNegativeButton(
                                 App.sContext.getString(R.string.btn_cancel),
                                 () -> checkUpdateDialog.dismiss());
                         checkUpdateDialog.show(getFragmentManager(), "dialog_update");
-                    }else {
-                        ((BaseActivity)getActivity()).showSnackbarShort(R.string.title_not_have_to_update);
+                    } else {
+                        ((BaseActivity) getActivity()).showSnackbarShort(
+                                R.string.title_not_have_to_update);
                     }
-                });
+                },throwable -> throwable.printStackTrace());
     }
 
     private void beginUpdate(String download) {
@@ -161,8 +158,9 @@ public class MoreFragment extends BaseFragment {
         if (file.exists()) {
             file.delete();
             Logger.d("apk file delete");
+        } else {
+            Logger.d("file not exists");
         }
-        Logger.d("file not exists");
     }
 
     private void logout() {
