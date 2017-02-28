@@ -1,5 +1,7 @@
 package net.muxi.huashiapp.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,6 +43,13 @@ public class CalendarActivity extends ToolbarActivity {
     TextView mTvEmpty;
     @BindView(R.id.scroll_view)
     ScrollView mScrollView;
+
+
+    public static void start(Context context){
+        Intent starter = new Intent(context,CalendarActivity.class);
+        context.startActivity(starter);
+    }
+
 
     private SimpleDraweeView mDraweeView;
 

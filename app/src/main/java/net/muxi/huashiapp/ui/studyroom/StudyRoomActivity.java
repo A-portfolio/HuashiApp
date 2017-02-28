@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.studyroom;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +14,6 @@ import android.widget.TextView;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.util.ToastUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
@@ -35,6 +35,11 @@ public class StudyRoomActivity extends ToolbarActivity {
     TextView mTvStudyArea;
     @BindView(R.id.btn_search)
     Button mBtnSearch;
+
+    public static void start(Context context){
+        Intent starter = new Intent(context,StudyRoomActivity.class);
+        context.startActivity(starter);
+    }
 
     private int mWeek;
     private int mDay;
@@ -100,14 +105,15 @@ public class StudyRoomActivity extends ToolbarActivity {
                 if (mTvStudyTime.getText().length() !=0  && mTvStudyArea.getText().length() != 0) {
                     ZhugeUtils.sendEvent("查看空闲教室","查看空闲教室");
                     mQuery = mTvStudyTime.getText().toString() + mTvStudyArea.getText().toString();
-                    intent = new Intent(StudyRoomActivity.this, StudyRoomDetailActivity.class);
-                    intent.putExtra("query", mQuery);
-                    startActivity(intent);
+//                    intent = new Intent(StudyRoomActivity.this, StudyRoomDetailActivity.class);
+//                    intent.putExtra("query", mQuery);
+//                    startActivity(intent);
+                    StudyRoomDetailActivity.start(StudyRoomActivity.this,mQuery);
                     mTvStudyTime.setText(null);
                     mTvStudyArea.setText(null);
                     break;
                 } else {
-                    ToastUtil.showShort("请填写完整信息");
+                   showSnackbarShort("请填写完整信息");
                 }
         }
     }

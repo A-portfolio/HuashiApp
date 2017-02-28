@@ -67,6 +67,10 @@ public class DataBase extends SQLiteOpenHelper {
   public static final String KEY_BOOK_ID = "book_id";
   public static final String KEY_SEARCH = "search";
 
+  //item的属性
+  public static final String KEY_NAME = "name";
+  public static final String KEY_ICON = "icon";
+
   public DataBase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
     super(context, name, factory, version);
   }

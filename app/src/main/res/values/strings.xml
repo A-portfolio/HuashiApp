@@ -169,6 +169,15 @@
     <string name="tip_refresh_ok">刷新成功</string>
     <string name="tip_refresh_fail">糟糕！刷新失败</string>
 
+    <!--分享-->
+    <string name="share_to_qq">QQ好友</string>
+    <string name="share_to_wx">微信好友</string>
+    <string name="share_to_weibo">微博</string>
+    <string name="share_to_qzone">QQ空间</string>
+    <string name="share_to_moments">朋友圈</string>
+    <string name="copy_download_url">复制下载链接</string>
+
+
 </resources>
 
 
