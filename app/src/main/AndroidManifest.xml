@@ -83,17 +83,11 @@
         <activity android:name="net.muxi.huashiapp.ui.news.NewsActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.library.LibraryActivity"
-                  android:launchMode="singleTask"/>
 
         <activity android:name="net.muxi.huashiapp.ui.library.LibrarySearchActivity"
                   android:launchMode="singleTask"/>
 
         <activity android:name=".ui.library.LibrarySearchResultActivity"/>
-
-        <activity android:name="net.muxi.huashiapp.ui.library.LibraryLoginActivity"
-                  android:launchMode="singleTask"
-                  android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".ui.library.BookDetailActivity"/>
 
@@ -196,7 +190,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="provider"
+            android:authorities="net.muxi.huashiapp.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
