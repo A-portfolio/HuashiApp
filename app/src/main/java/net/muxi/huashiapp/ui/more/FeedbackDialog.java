@@ -35,7 +35,7 @@ public class FeedbackDialog extends CenterDialogFragment {
         mBtnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnClickListener != null){
+                if (mOnClickListener != null) {
                     mOnClickListener.OnClick();
                 }
             }
@@ -44,12 +44,12 @@ public class FeedbackDialog extends CenterDialogFragment {
 
     }
 
-    public void setOnClickListener(OnClickListener onClickListener){
+    public void setOnClickListener(OnClickListener onClickListener) {
         mOnClickListener = onClickListener;
     }
 
 
-    public interface OnClickListener{
+    public interface OnClickListener {
         public void OnClick();
     }
 

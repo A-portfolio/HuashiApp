@@ -1,11 +1,15 @@
 package net.muxi.huashiapp.ui.main;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -19,6 +23,7 @@ import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.more.MoreFragment;
 import net.muxi.huashiapp.ui.schedule.TimetableFragment;
+import net.muxi.huashiapp.util.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +49,12 @@ public class MainActivity extends BaseActivity implements
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mNavView.setOnNavigationItemSelectedListener(this);
+        //开启动态权限
+        if (!isStorgePermissionGranted()) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
+
         initData();
         initView();
     }
@@ -64,7 +75,7 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        if(mCurFragment == null){
+        if (mCurFragment == null) {
             return;
         }
         switch (mCurFragment.getTag()) {
@@ -124,6 +135,29 @@ public class MainActivity extends BaseActivity implements
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.content_layout,
                 fragment, tag).commit();
+    }
+
+    public boolean isStorgePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Logger.d("able to write external");
+        }
     }
 
 }

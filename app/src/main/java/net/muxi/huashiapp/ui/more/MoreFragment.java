@@ -1,15 +1,10 @@
 package net.muxi.huashiapp.ui.more;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +15,7 @@ import android.view.ViewGroup;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.VersionData;
 import net.muxi.huashiapp.common.net.CampusFactory;
@@ -58,8 +54,11 @@ public class MoreFragment extends BaseFragment {
 
 
     private String[] titles = {"常见问题Q&A", "分享App给好友", "通知栏提醒", "意见反馈", "检查更新", "关于", "退出账号"};
-    private Integer[] icons = {R.drawable.ic_more_qa, R.drawable.ic_more_share, R.drawable.ic_more_notice, R.drawable.ic_more_feedback,
-            R.drawable.ic_more_update, R.drawable.ic_more_about, R.drawable.ic_more_sign_out};
+    private Integer[] icons =
+            {R.drawable.ic_more_qa, R.drawable.ic_more_share, R.drawable.ic_more_notice,
+                    R.drawable.ic_more_feedback,
+                    R.drawable.ic_more_update, R.drawable.ic_more_about,
+                    R.drawable.ic_more_sign_out};
 
 
     public static MoreFragment newInstance() {
@@ -69,7 +68,8 @@ public class MoreFragment extends BaseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_more, container, false);
         ButterKnife.bind(this, view);
 
@@ -112,84 +112,36 @@ public class MoreFragment extends BaseFragment {
     }
 
     private void checkUpdates() {
-        if (NetStatus.isConnected()) {
-            CampusFactory.getRetrofitService().getLatestVersion()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.newThread())
-                    .subscribe(new Observer<VersionData>() {
-                                   @Override
-                                   public void onCompleted() {
+        CampusFactory.getRetrofitService().getLatestVersion()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(versionData -> {
+                    if (versionData.getVersion() != null &&
+                            !BuildConfig.VERSION_NAME.equals(versionData.version)) {
 
-                                   }
-
-                                   @Override
-                                   public void onError(Throwable e) {
-                                       e.printStackTrace();
-
-                                   }
-
-                                   @Override
-                                   public void onNext(VersionData versionData) {
-                                       if (versionData.getVersion() != null && !BuildConfig.VERSION_NAME.equals(versionData.getVersion())) {
-                                           CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
-                                           checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update) + versionData.getVersion());
-                                           checkUpdateDialog.setContent(App.sContext.getString(R.string.tip_update_intro) + versionData.getIntro() + "/n" +
-                                                   App.sContext.getString(R.string.tip_update_size) + versionData.getSize());
-                                           checkUpdateDialog.setOnPositiveButton(App.sContext.getString(R.string.btn_update), new CheckUpdateDialog.OnPositiveClickListener() {
-                                               @Override
-                                               public void OnPositiveClick() {
-                                                   downloadUrl = versionData.getDownload();
-                                                   if (isStorgePermissionGranted()) {
-                                                       beginUpdate(versionData.getDownload());
-                                                   }
-                                                   checkUpdateDialog.dismiss();
-                                               }
-                                           });
-                                           checkUpdateDialog.setOnNegativeButton(App.sContext.getString(R.string.btn_cancel), new CheckUpdateDialog.OnNegativeClickListener() {
-                                               @Override
-                                               public void OnNegativeClick() {
-                                                   checkUpdateDialog.dismiss();
-                                               }
-                                           });
-                                           checkUpdateDialog.show(getFragmentManager(), "dialog_update");
-
-                                       } else {
-                                           showSnackbarShort(App.sContext.getString(R.string.title_not_have_to_update));
-                                       }
-
-                                   }
-                               }
-
-                    );
-        } else {
-            showSnackbarShort(App.sContext.getString(R.string.tip_check_net));
-        }
-    }
-
-
-    public boolean isStorgePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Logger.d("permission " + permissions[0] + "is" + grantResults[0]);
-            Logger.d(downloadUrl);
-            if (downloadUrl != null && downloadUrl.length() != 0) {
-                beginUpdate(downloadUrl);
-            }
-        }
+                        CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
+                        checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update)
+                                + versionData.getVersion());
+                        checkUpdateDialog.setContent(
+                                App.sContext.getString(R.string.tip_update_intro)
+                                        + versionData.getIntro() + "/n" +
+                                        App.sContext.getString(R.string.tip_update_size)
+                                        + versionData.getSize());
+                        checkUpdateDialog.setOnPositiveButton(
+                                App.sContext.getString(R.string.btn_update),
+                                () -> {
+                                    downloadUrl = versionData.getDownload();
+                                    beginUpdate(versionData.getDownload());
+                                    checkUpdateDialog.dismiss();
+                                });
+                        checkUpdateDialog.setOnNegativeButton(
+                                App.sContext.getString(R.string.btn_cancel),
+                                () -> checkUpdateDialog.dismiss());
+                        checkUpdateDialog.show(getFragmentManager(), "dialog_update");
+                    }else {
+                        ((BaseActivity)getActivity()).showSnackbarShort(R.string.title_not_have_to_update);
+                    }
+                });
     }
 
     private void beginUpdate(String download) {
@@ -213,7 +165,7 @@ public class MoreFragment extends BaseFragment {
         Logger.d("file not exists");
     }
 
-    private void logout(){
+    private void logout() {
         LogoutDialog logoutDialog = new LogoutDialog();
         logoutDialog.setBtnIdLogout(new LogoutDialog.OnIdClickListener() {
             @Override
@@ -242,7 +194,7 @@ public class MoreFragment extends BaseFragment {
                 showSnackbarShort(App.sContext.getString(R.string.tip_all_log_out));
             }
         });
-        logoutDialog.show(getFragmentManager(),"dialog_logout");
+        logoutDialog.show(getFragmentManager(), "dialog_logout");
     }
 
 
