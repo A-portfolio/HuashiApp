@@ -3,6 +3,9 @@ package net.muxi.huashiapp.ui.main;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.BannerData;
@@ -21,6 +25,7 @@ import net.muxi.huashiapp.ui.credit.SelectCreditActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.util.Logger;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,8 +147,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                     ScoreSelectActivity.start(mContext);
                     break;
                 case 1:
-                    Intent intent = new Intent(mContext,AboutActivity.class);
-                    ((BaseActivity)mContext).startActivity(intent);
+                    Intent intent1 = new Intent(mContext,AboutActivity.class);
+                    ((BaseActivity)mContext).startActivity(intent1);
+                    break;
+                case 2:
                     break;
                 case 9:
                     App.clearUser();
