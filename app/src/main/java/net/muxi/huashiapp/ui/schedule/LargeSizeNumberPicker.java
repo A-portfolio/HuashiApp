@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 
+import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.util.NumberPickerHelper;
+
 /**
  * Created by ybao on 17/2/9.
  * 18字号的numberpicker
@@ -16,8 +19,14 @@ import android.widget.NumberPicker;
 
 public class LargeSizeNumberPicker extends NumberPicker{
 
+    public LargeSizeNumberPicker(Context context) {
+        this(context,null);
+    }
+
     public LargeSizeNumberPicker(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
+        NumberPickerHelper.setDividerColor(this,Color.TRANSPARENT);
     }
 
     @Override
@@ -41,6 +50,7 @@ public class LargeSizeNumberPicker extends NumberPicker{
     private void updateView(View view) {
         if(view instanceof EditText){
             ((EditText) view).setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+            ((EditText) view).setTextColor(getResources().getColor(R.color.colorAccent));
         }
     }
 }

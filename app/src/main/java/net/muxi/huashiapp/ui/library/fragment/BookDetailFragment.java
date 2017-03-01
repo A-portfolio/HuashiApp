@@ -26,6 +26,7 @@ import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookId;
 import net.muxi.huashiapp.common.data.BookPost;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.MyBooksUtils;
@@ -144,6 +145,10 @@ public class BookDetailFragment extends BaseFragment {
         }
         startAttenStatus = hasAttention;
         mBtnAttention.setOnClickListener(v -> {
+            if (!App.isLibLogin()){
+                LoginActivity.start(getContext(),"lib");
+                return;
+            }
             if (hasAttention) {
                 delAtten();
             } else {

@@ -42,9 +42,9 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:divider="@null"
         android:id="@+id/lv"
         android:layout_below="@+id/tv_clear"/>
 

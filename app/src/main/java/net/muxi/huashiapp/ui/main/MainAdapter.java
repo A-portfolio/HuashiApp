@@ -16,10 +16,10 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.BannerData;
+import net.muxi.huashiapp.common.data.ItemData;
 import net.muxi.huashiapp.ui.AboutActivity;
 import net.muxi.huashiapp.ui.credit.SelectCreditActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
@@ -27,26 +27,24 @@ import net.muxi.huashiapp.util.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by december on 16/4/19.
  */
-public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements MyItemTouchCallback.ItemTouchAdapter {
 
     private static final int ITEM_TYPE_BANNER = 0;
     private static final int ITEM_TYPE_COMMON = 1;
 
     private static final long TURNING_TIME = 4000;
 
-    private List<String> mpics;
-    private List<String> mdesc;
-    private List<Integer> mIcons;
+    private List<ItemData> mItems;
     private List<BannerData> mBannerDatas;
     //图片的地址
     private List<String> imageUrls;
 
-    private ItemClickListener mItemClickListener;
     private OnBannerItemClickListener mOnBannerItemClickListener;
 
     private Context mContext;
@@ -56,17 +54,41 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
     //webview item 的位置
     private static final int WEB_POSITON = 9;
 
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
+    @Override
+    public void onMove(int fromPosition, int toPosition) {
+        if (fromPosition == mItems.size() || toPosition == mItems.size() ) {
+            return;
+        }
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(mItems, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(mItems, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+
     }
+
+    @Override
+    public void onSwiped(int position) {
+        mItems.remove(position);
+        notifyItemRemoved(position);
+
+    }
+
 
     public interface OnBannerItemClickListener {
         void onBannerItemClick(BannerData bannerData);
     }
 
-    public MainAdapter(List<String> pics, List<String> desc, List<BannerData> bannerDatas) {
-        this.mdesc = desc;
-        this.mpics = pics;
+    public MainAdapter(List<ItemData> items, List<BannerData> bannerDatas) {
+//        this.mdesc = desc;
+//        this.mpics = pics;
+
+        this.mItems = items;
         mBannerDatas = bannerDatas;
         imageUrls = new ArrayList<>();
         for (int i = 0; i < bannerDatas.size(); i++) {
@@ -74,9 +96,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
         }
     }
 
-    public MainAdapter(List<String> title, List<Integer> pic) {
-        this.mdesc = title;
-        this.mIcons = pic;
+    public MainAdapter(List<ItemData> items) {
+        this.mItems = items;
     }
 
     public void swapBannerData(List<BannerData> bannerDatas) {
@@ -88,14 +109,15 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
         }
     }
 
-    public void swapProduct(List<String> pics, List<String> desc) {
-        mpics = pics;
-        mdesc = desc;
+    public void swapProduct(List<ItemData> items) {
+//        mpics = pics;
+//        mdesc = desc;
+        this.mItems = items;
         notifyDataSetChanged();
     }
 
     public boolean isBannerPosition(int position) {
-        return position == 6 ? true : false;
+        return position == 0 ? true : false;
     }
 
     @Override
@@ -109,7 +131,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
 //            return new CommonViewHolder(view);
 //        }
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_main,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_main, parent, false);
         return new CommonViewHolder(view);
     }
 
@@ -133,37 +155,13 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
 //                ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
 //            }
 //        }
-        ((CommonViewHolder)holder).mDraweeView.setImageURI(Uri.parse("res:/" + mIcons.get(position)));
-        ((CommonViewHolder)holder).mTextView.setText(mdesc.get(position));
-        ((CommonViewHolder)holder).itemView.setTag(position);
+        ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItems.get(position).getIcon()));
+        ((CommonViewHolder) holder).mTextView.setText(mItems.get(position).getName());
+        ((CommonViewHolder) holder).itemView.setTag(position);
 
-        ((CommonViewHolder)holder).mItemLayout.setOnClickListener(v -> {
-            Logger.d(position + "");
-            switch (position){
-                case 4:
-                    SelectCreditActivity.start(mContext);
-                    break;
-                case 0:
-                    ScoreSelectActivity.start(mContext);
-                    break;
-                case 1:
-                    Intent intent1 = new Intent(mContext,AboutActivity.class);
-                    ((BaseActivity)mContext).startActivity(intent1);
-                    break;
-                case 2:
-                    break;
-                case 9:
-                    App.clearUser();
-                    App.clearLibUser();
-                    break;
-            }
-        });
     }
 
 
-    public void setItemClickListener(ItemClickListener itemClickListener) {
-        this.mItemClickListener = itemClickListener;
-    }
 
     public void setOnBannerItemClickListener(OnBannerItemClickListener bannerItemClickListener) {
         mOnBannerItemClickListener = bannerItemClickListener;
@@ -171,11 +169,11 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
 
     @Override
     public int getItemCount() {
-        return mdesc.size();
+        return mItems.size();
     }
 
 
-    public class CommonViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class CommonViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextView;
         private SimpleDraweeView mDraweeView;
         private RelativeLayout mItemLayout;
@@ -185,14 +183,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
             mTextView = (TextView) itemview.findViewById(R.id.main_text_view);
             mDraweeView = (SimpleDraweeView) itemview.findViewById(R.id.main_pic);
             mItemLayout = (RelativeLayout) itemview.findViewById(R.id.item_layout);
-            itemview.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (mItemClickListener!= null) {
-                mItemClickListener.onItemClick(itemView, getPosition());
-            }
         }
     }
 

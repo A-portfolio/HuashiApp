@@ -6,87 +6,95 @@
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center_horizontal"
     >
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
+
+    <TextView
+        android:id="@+id/money_sign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_toLeftOf="@+id/money"
+        android:text="¥"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="48sp"
+        />
+
+    <TextView
+        android:id="@+id/money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/money_sign"
+        android:layout_centerHorizontal="true"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="48sp"
+        tools:text="180.00"
+        />
+
+    <TextView
+        android:id="@+id/txt2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/money_sign"
+        android:layout_centerInParent="true"
+        android:text="剩余金额"
+        android:textSize="@dimen/medium_size"
+        />
+
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt2"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@id/money_sign"
+        android:text="截止"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/small_size"
+        />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/text1"
+        android:layout_toRightOf="@+id/text1"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/small_size"
+        tools:text="==============="
+        />
+
+    <View
+        android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="1dp"
+        android:layout_below="@id/tv_date"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="20dp"
+        android:background="@color/divider"/>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@id/divider"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
+        android:layout_marginTop="20dp"
         android:background="@color/colorWhite"
         android:elevation="8dp"
         app:cardCornerRadius="8dp"
         >
-        <LinearLayout
+
+        <com.github.mikephil.charting.charts.CombinedChart
+            android:id="@+id/chart1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            >
-            <TextView
-                android:id="@+id/txt1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:text="亲爱的匣客"
-                android:textColor="@color/card_text_color"
-                android:textSize="18sp"
-                />
-            <ImageView
-                android:id="@+id/line"
-                android:layout_width="250dp"
-                android:layout_height="1dp"
-                android:layout_margin="7dp"
-                android:background="@color/dividerGrey"
-                />
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
-                <TextView
-                    android:id="@+id/text1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="截止"
-                    android:textSize="18sp"
-                    />
-                <TextView
-                    android:id="@+id/tv_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/text1"
-                    android:textColor="@color/card_text_color"
-                    android:textSize="18sp"
-                    tools:text="======="
-                    />
-            </RelativeLayout>
-            <TextView
-                android:id="@+id/txt2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="您的学生卡账户余额为:"
-                android:textSize="18sp"
-                />
-            <TextView
-                android:id="@+id/money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="56sp"
-                tools:text="180.00"
-                />
-
-
-            <com.github.mikephil.charting.charts.CombinedChart
-                android:id="@+id/chart1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="-46dp"
-                android:layout_marginLeft="-24dp"
-                android:layout_marginRight="-24dp"
-                />
-        </LinearLayout>
+            android:layout_marginBottom="-46dp"
+            android:layout_marginLeft="-24dp"
+            android:layout_marginRight="-24dp"
+            />
     </android.support.v7.widget.CardView>
+
 </RelativeLayout>

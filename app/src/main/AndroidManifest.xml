@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!--获取设备唯一标识-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <!--获取访问用户账户名的权限用以精准匹配标签(可选)-->
@@ -101,8 +102,8 @@
             </intent-filter>
         </activity>
 
-        <!--<activity android:name="net.muxi.huashiapp.ui.website.WebsiteActivity"-->
-                  <!--android:launchMode="singleTask"/>-->
+        <activity android:name="net.muxi.huashiapp.ui.website.WebsiteActivity"
+                  android:launchMode="singleTask"/>
 
         <activity android:name="net.muxi.huashiapp.ui.apartment.ApartmentActivity"
                   android:launchMode="singleTask"/>
@@ -119,7 +120,8 @@
 
         <activity android:name=".ui.SuggestionActivity"/>
 
-        <activity android:name=".ui.studyroom.StudyRoomActivity"/>
+        <activity android:name=".ui.studyroom.StudyRoomActivity"
+                  android:launchMode="singleTask"/>
 
         <activity android:name=".ui.studyroom.StudyRoomDetailActivity"/>
 

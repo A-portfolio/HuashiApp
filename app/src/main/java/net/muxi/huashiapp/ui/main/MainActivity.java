@@ -143,7 +143,6 @@ public class MainActivity extends BaseActivity implements
                     == PackageManager.PERMISSION_GRANTED) {
                 return true;
             } else {
-
                 return false;
             }
         } else {

@@ -27,7 +27,7 @@ public class CreditYearSelectView extends RelativeLayout {
     @BindView(R.id.end_year)
     LargeSizeNumberPicker mNpEndYear;
 
-    private String[] years = UserUtil.generateYear(6);
+    private String[] years = UserUtil.generateYears(6);
 
     private OnValueChangeListener mOnValueChangeListener;
 
@@ -44,8 +44,8 @@ public class CreditYearSelectView extends RelativeLayout {
         mNpStartYear.setMaxValue(5);
         mNpEndYear.setMinValue(0);
         mNpEndYear.setMaxValue(5);
-        mNpStartYear.setDisplayedValues(UserUtil.generateYear(6));
-        mNpEndYear.setDisplayedValues(UserUtil.generateYear(6));
+        mNpStartYear.setDisplayedValues(UserUtil.generateYears(6));
+        mNpEndYear.setDisplayedValues(UserUtil.generateYears(6));
         NumberPickerHelper.setDividerColor(mNpStartYear, Color.TRANSPARENT);
         NumberPickerHelper.setDividerColor(mNpEndYear, Color.TRANSPARENT);
         mNpStartYear.setOnValueChangedListener((numberPicker, i, i1) -> {
@@ -53,7 +53,7 @@ public class CreditYearSelectView extends RelativeLayout {
                 mNpStartYear.setValue(mNpEndYear.getValue() - 1);
             }
             if (mOnValueChangeListener != null){
-                mOnValueChangeListener.onValueChange(UserUtil.generateYear(6)[i1],UserUtil.generateYear(6)[mNpEndYear.getValue()]);
+                mOnValueChangeListener.onValueChange(UserUtil.generateYears(6)[i1],UserUtil.generateYears(6)[mNpEndYear.getValue()]);
             }
         });
         mNpEndYear.setOnValueChangedListener((numberPicker, i, i1) -> {
@@ -61,7 +61,7 @@ public class CreditYearSelectView extends RelativeLayout {
                 mNpEndYear.setValue(mNpStartYear.getValue() + 1);
             }
             if (mOnValueChangeListener != null){
-                mOnValueChangeListener.onValueChange(UserUtil.generateYear(6)[mNpStartYear.getValue()],UserUtil.generateYear(6)[i1]);
+                mOnValueChangeListener.onValueChange(UserUtil.generateYears(6)[mNpStartYear.getValue()],UserUtil.generateYears(6)[i1]);
             }
         });
     }

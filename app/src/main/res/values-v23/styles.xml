@@ -9,5 +9,10 @@
                 <item name="windowNoTitle">true</item>
                 <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
                 <item name="android:windowLightStatusBar">true</item>
+                <item name="android:buttonStyle">@style/AppButtonStyle</item>
+        </style>
+
+        <style name="AppButtonStyle" parent="Base.Widget.AppCompat.Button">
+                <item name="android:stateListAnimator">@null</item>
         </style>
 </resources>

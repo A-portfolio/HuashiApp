@@ -65,7 +65,7 @@ public class App extends Application {
         Logger.d("id:" + sLibrarayUser.getSid() + "\tpwd:" + sLibrarayUser.getPassword());
     }
 
-    public static void clearLibUser(){
+    public static void logoutLibUser(){
         PreferenceUtil sp = new PreferenceUtil();
         sp.clearString(PreferenceUtil.LIBRARY_ID);
         sp.clearString(PreferenceUtil.LIBRARY_PWD);
@@ -83,7 +83,7 @@ public class App extends Application {
         Logger.d("id:" + sUser.getSid() + "\tpwd:" + sUser.getPassword());
     }
 
-    public static void clearUser(){
+    public static void logoutUser(){
         PreferenceUtil sp = new PreferenceUtil();
         sp.clearString(PreferenceUtil.STUDENT_ID);
         sp.clearString(PreferenceUtil.STUDENT_PWD);
