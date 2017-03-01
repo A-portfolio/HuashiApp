@@ -86,6 +86,8 @@ public class MoreFragment extends BaseFragment {
                     case 0:
                         break;
                     case 1:
+                        ShareDialog shareDialog = new ShareDialog();
+                        shareDialog.show(getFragmentManager(),"dialog_share");
                         break;
                     case 2:
                         SettingActivity.start(getContext());
@@ -168,7 +170,7 @@ public class MoreFragment extends BaseFragment {
         logoutDialog.setBtnIdLogout(new LogoutDialog.OnIdClickListener() {
             @Override
             public void OnIdClick() {
-                App.clearUser();
+                App.logoutUser();
                 logoutDialog.dismiss();
                 showSnackbarShort(App.sContext.getString(R.string.tip_id_log_out));
             }
@@ -177,7 +179,7 @@ public class MoreFragment extends BaseFragment {
         logoutDialog.setBtnLibraryLogout(new LogoutDialog.OnLibraryClickListener() {
             @Override
             public void OnLibraryClick() {
-                App.clearLibUser();
+                App.logoutLibUser();
                 logoutDialog.dismiss();
                 showSnackbarShort(App.sContext.getString(R.string.tip_library_log_out));
             }
@@ -186,8 +188,8 @@ public class MoreFragment extends BaseFragment {
         logoutDialog.setBtnAllLogout(new LogoutDialog.OnAllClickListener() {
             @Override
             public void OnAllClick() {
-                App.clearUser();
-                App.clearLibUser();
+                App.logoutUser();
+                App.logoutLibUser();
                 logoutDialog.dismiss();
                 showSnackbarShort(App.sContext.getString(R.string.tip_all_log_out));
             }

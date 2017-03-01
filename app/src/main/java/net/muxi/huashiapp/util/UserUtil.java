@@ -10,7 +10,12 @@ import net.muxi.huashiapp.App;
 
 public class UserUtil {
 
-    public static String[] generateYear(int length){
+    /**
+     * 生成学生对应的几个学年
+     * @param length
+     * @return
+     */
+    public static String[] generateYears(int length){
         String[] years = new String[length];
         int startYear;
         if (!TextUtils.isEmpty(App.sUser.sid) && App.sUser.sid.length() > 4){
@@ -23,5 +28,14 @@ public class UserUtil {
             return years;
         }
         return null;
+    }
+
+    public static String[] generateHyphenYears(int length){
+        String[] years = generateYears(length + 1);
+        String[] yearsWithHyphen = new String[length];
+        for (int i = 0;i < length;i ++){
+            yearsWithHyphen[i] = years[i] + "-" + years[i+1];
+        }
+        return yearsWithHyphen;
     }
 }

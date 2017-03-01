@@ -17,20 +17,30 @@ public class PreferenceUtil {
     public static final String LIBRARY_ID = "libraryId";
     public static final String LIBRARY_PWD = "libraryPwd";
     public static final String COURSE_ID = "course_id";
+
+    //课程表
     //课表中的第一周的第一天日期
     public static final String FIRST_WEEK_DATE = "first_date";
+    //是否是第一次进入课程表
+    public static final String IS_FIRST_ENTER_TABLE = "is_first_enter_table";
+
+    //成绩
     //当前出了成绩的科目数
     public static final String SCORES_NUM = "score_num";
+
+    //校历
     //校历的最近更新时间
     public static final String CALENDAR_UPDATE = "calendar_update";
     //校历的图片地址
     public static final String CALENDAR_ADDRESS = "calendar_address";
+    //校历的尺寸
+    public static final String CALENDAR_SIZE = "calendar_size";
+
     //电费的查询参数
     public static final String ELE_QUERY_STRING = "ele_query";
     //更新前的 App 版本
     public static final String LAST_APP_VERSION = "last_app_version";
-    //校历的尺寸
-    public static final String CALENDAR_SIZE = "calendar_size";
+
     //首页产品更新时间
     public static final String PRODUCT_UPDATE = "product_update";
     //首页产品 json 数据
@@ -43,12 +53,15 @@ public class PreferenceUtil {
     public static final String REMIND_UPDATE = "remind_update";
     //最新的通知公告日期
     public static final String LATEST_NEWS_DATE = "latest_news_date";
+
+    //图书馆
     //关注图书的列表
     public static final String ATTENTION_BOOK_IDS = "attention_book_ids";
     //借阅图书的列表
     public static final String BORROW_BOOK_IDS = "borrow_book_ids";
-    //是否是第一次进入课程表
-    public static final String IS_FIRST_ENTER_TABLE = "is_first_enter_table";
+
+    //拖拽后item位置
+    public static final String ITEM_POSITION = "item_position";
 
     public static void saveBoolean(String key, boolean value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(App.sContext).edit();
@@ -70,67 +83,68 @@ public class PreferenceUtil {
         editor.apply();
     }
 
+
     public static String getString(String key) {
         return PreferenceManager.getDefaultSharedPreferences(App.sContext).getString(key, "");
     }
 
 
-    public static String getString(String key,String def){
-        return PreferenceManager.getDefaultSharedPreferences(App.sContext).getString(key,def);
+    public static String getString(String key, String def) {
+        return PreferenceManager.getDefaultSharedPreferences(App.sContext).getString(key, def);
     }
 
 
     //可用于用户上次使用后注销账号时移除账号
-    public static void clearString(String key){
+    public static void clearString(String key) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(App.sContext).edit();
         editor.remove(key);
         editor.apply();
     }
 
 
-    public static void saveInt(String key,int value){
+    public static void saveInt(String key, int value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(App.sContext).edit();
-        editor.putInt(key,value);
+        editor.putInt(key, value);
         editor.apply();
     }
 
-    public static void saveLong(String key,long value){
+    public static void saveLong(String key, long value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(App.sContext).edit();
-        editor.putLong(key,value);
+        editor.putLong(key, value);
         editor.apply();
     }
 
-    public static void saveFloat(String key,float value){
+    public static void saveFloat(String key, float value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(App.sContext).edit();
-        editor.putFloat(key,value);
+        editor.putFloat(key, value);
         editor.apply();
     }
 
-    public static float getFloat(String key){
+    public static float getFloat(String key) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(App.sContext);
-        return sp.getFloat(key,-1);
+        return sp.getFloat(key, -1);
     }
 
-    public static long getLong(String key){
+    public static long getLong(String key) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(App.sContext);
-        return sp.getLong(key,-1);
+        return sp.getLong(key, -1);
     }
 
-    public static int getInt(String key){
+    public static int getInt(String key) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(App.sContext);
-        return sp.getInt(key,-1);
+        return sp.getInt(key, -1);
     }
 
-    public static int getInt(String key,int def){
+    public static int getInt(String key, int def) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(App.sContext);
-        return sp.getInt(key,def);
+        return sp.getInt(key, def);
     }
 
     /**
      * 清楚所有的数据,在注销时使用
      */
-    public void clearAllData(){
-        // TODO: 17/1/27 clear data 
+    public void clearAllData() {
+        // TODO: 17/1/27 clear data
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(App.sContext);
     }
 

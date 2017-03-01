@@ -4,18 +4,6 @@
         <item name="android:colorButtonNormal">@color/orange</item>
     </style>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
-        <item name="android:textColorPrimary">#333333</item>
-        <item name="android:textColorSecondary">#666666</item>
-        <item name="android:textColorTertiary">#999999</item>
-        <item name="android:buttonStyle">@style/AppButtonStyle</item>
-    </style>
 
     <style name="AppButtonStyle" parent="Base.Widget.AppCompat.Button">
         <item name="android:stateListAnimator">@null</item>

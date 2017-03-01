@@ -8,20 +8,37 @@
         layout="@layout/view_toolbar"
     />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="86dp"
-        android:text="滑动选择学年"/>
 
-    <EditText
-        android:id="@+id/et_year"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/iv_year"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="112dp"
-        android:hint="输入学年"/>
+        android:layout_marginTop="103dp"
+        android:src="@drawable/ic_choose_year"/>
+
+    <TextView
+        android:id="@+id/tv_select_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_alignTop="@id/iv_year"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/iv_year"
+        android:text="选择学年"
+        android:textColor="?android:attr/textColorPrimary"/>
+
+    <TextView
+        android:id="@+id/et_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_select_year"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/iv_year"
+        android:textSize="10sp"
+        tools:text="2013-2016学年"/>
 
     <View android:id="@+id/divider"
           android:layout_width="match_parent"
@@ -61,10 +78,10 @@
             android:layout_below="@id/tv_type"
             android:layout_weight="1"
             android:gravity="center"
-            android:button="@null"
-            android:text="全部"
             android:background="@drawable/selector_score_term"
             android:textColor="@color/selector_score_term"
+            android:button="@null"
+            android:text="全部"
             android:textStyle="bold"/>
 
         <RadioButton
@@ -72,12 +89,12 @@
             android:layout_width="0dp"
             android:layout_height="64dp"
             android:button="@null"
+            android:background="@drawable/selector_score_term"
+            android:textColor="@color/selector_score_term"
             android:layout_below="@id/tv_type"
             android:layout_marginLeft="14dp"
             android:layout_toRightOf="@+id/rb_all"
             android:layout_weight="1"
-            android:background="@drawable/selector_score_term"
-            android:textColor="@color/selector_score_term"
             android:gravity="center"
             android:text="1"
             android:textStyle="italic"/>
@@ -89,12 +106,12 @@
             android:layout_height="64dp"
             android:layout_below="@id/tv_type"
             android:layout_marginLeft="14dp"
+            android:background="@drawable/selector_score_term"
+            android:textColor="@color/selector_score_term"
             android:layout_toRightOf="@+id/rb_1"
             android:layout_weight="1"
             android:gravity="center"
             android:text="2"
-            android:background="@drawable/selector_score_term"
-            android:textColor="@color/selector_score_term"
             android:textStyle="italic"/>
 
         <RadioButton

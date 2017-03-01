@@ -1,5 +1,7 @@
 package net.muxi.huashiapp.ui.studyroom;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -16,10 +18,10 @@ import net.muxi.huashiapp.common.data.ClassRoom;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.NetStatus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -50,6 +52,12 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     GridLayout mGridClassroomTwenty;
     private ClassRoom mClassRoom;
 
+
+    public static void start(Context context,String query){
+        Intent starter = new Intent(context,StudyRoomDetailActivity.class);
+        starter.putExtra("query",query);
+        context.startActivity(starter);
+    }
     //查询参数
     private String mQuery;
 
@@ -71,29 +79,25 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
         Logger.d(mQuery + " ");
 
 
+        if(!NetStatus.isConnected()){
+            showErrorSnackbarShort(R.string.tip_check_net);
+            return;
+        }
+        showLoading();
         CampusFactory.getRetrofitService()
                 .getClassRoom(mQuery.substring(1, 2), getDayValue(mQuery), mQuery.substring(5, 6))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<ClassRoom>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-
-                    }
-
-                    @Override
-                    public void onNext(ClassRoom classRoom) {
-                        mClassRoom = classRoom;
-                        setNull();
-                        setData();
-                    }
+                .subscribe(classRoom -> {
+                    mClassRoom = classRoom;
+                    setNull();
+                    setData();
+                },throwable -> {
+                    throwable.printStackTrace();
+                }, () -> {
+                    hideLoading();
                 });
+
 
 
     }
