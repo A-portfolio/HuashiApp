@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
+    android:layout_height="54dp"
+    app:cardBackgroundColor="@color/indicator_color"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="2dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_indicate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            tools:text="请点击"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/divider"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toRightOf="@+id/tv_indicate"
+            android:background="#32ffffff"/>
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="12dp"
+            android:layout_toRightOf="@+id/divider"
+            android:src="@drawable/ic_close_indicator"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:scaleType="fitXY"
+            android:layout_height="12dp"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

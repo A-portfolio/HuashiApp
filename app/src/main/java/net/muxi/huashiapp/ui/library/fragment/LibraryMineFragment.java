@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.ui.library.LibrarySearchActivity;
 import net.muxi.huashiapp.ui.library.adapter.MyBookListPagerAdapter;
-import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.DimensUtil;
+import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,11 @@ public class LibraryMineFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_lib_mine, container, false);
         ButterKnife.bind(this, view);
         initView();
+        IndicatedView indicatedView = new IndicatedView(getContext());
+        indicatedView.setTipViewText("请登录图书馆");
+        indicatedView.setIndicatedViewPosition(DimensUtil.dp2px(156), DimensUtil.dp2px(156),
+                (FrameLayout) getActivity().findViewById(android.R.id.content),
+                IndicatedView.DIRECTION_DOWN);
         return view;
     }
 
@@ -68,11 +75,14 @@ public class LibraryMineFragment extends BaseFragment {
         mTabLayout.setupWithViewPager(mViewPager);
 
         List<Fragment> fragmentList = new ArrayList<>();
-        MyBookListFragment myBookListFragment = MyBookListFragment.newInstance(MyBookListFragment.TYPE_BORROW);
-        MyBookListFragment myBookListFragment1 = MyBookListFragment.newInstance(MyBookListFragment.TYPE_ATTENTION);
+        MyBookListFragment myBookListFragment = MyBookListFragment.newInstance(
+                MyBookListFragment.TYPE_BORROW);
+        MyBookListFragment myBookListFragment1 = MyBookListFragment.newInstance(
+                MyBookListFragment.TYPE_ATTENTION);
         fragmentList.add(myBookListFragment);
         fragmentList.add(myBookListFragment1);
-        mPagerAdapter = new MyBookListPagerAdapter(getChildFragmentManager(),fragmentList,titleList);
+        mPagerAdapter = new MyBookListPagerAdapter(getChildFragmentManager(), fragmentList,
+                titleList);
         mViewPager.setAdapter(mPagerAdapter);
 
 

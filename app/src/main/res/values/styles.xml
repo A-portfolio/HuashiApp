@@ -11,7 +11,7 @@
         <item name="android:textColorPrimary">#333333</item>
         <item name="android:textColorSecondary">#666666</item>
         <item name="android:textColorTertiary">#999999</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:buttonStyle">@style/AppButtonStyle</item>
     </style>
 
     <style name="ActionbarAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
