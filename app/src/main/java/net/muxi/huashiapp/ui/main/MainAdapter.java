@@ -34,7 +34,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     //图片的地址
     private List<String> imageUrls;
 
-    private ItemClickListener mItemClickListener;
     private OnBannerItemClickListener mOnBannerItemClickListener;
 
     private Context mContext;
@@ -69,9 +68,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     }
 
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
 
     public interface OnBannerItemClickListener {
         void onBannerItemClick(BannerData bannerData);
@@ -152,43 +148,9 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         ((CommonViewHolder) holder).mTextView.setText(mItems.get(position).getName());
         ((CommonViewHolder) holder).itemView.setTag(position);
 
-//        ((CommonViewHolder) holder).mItemLayout.setOnClickListener(v -> {
-//            Logger.d(position + "");
-//            switch (position) {
-//                case 0:
-//                    ScoreSelectActivity.start(mContext);
-//                    break;
-//                case 1:
-//                    break;
-//                case 2:
-//                    break;
-//                case 3:
-//                    CardActivity.start(mContext);
-//                    break;
-//                case 4:
-//                    SelectCreditActivity.start(mContext);
-//                    break;
-//                case 5:
-//                    StudyRoomActivity.start(mContext);
-//                    break;
-//                case 6:
-//                    ApartmentActivity.start(mContext);
-//                    break;
-//                case 7:
-//                    CalendarActivity.start(mContext);
-//                    break;
-//                case 8:
-//                    break;
-//                case 9:
-//                    break;
-//            }
-//        });
     }
 
 
-    public void setItemClickListener(ItemClickListener itemClickListener) {
-        this.mItemClickListener = itemClickListener;
-    }
 
     public void setOnBannerItemClickListener(OnBannerItemClickListener bannerItemClickListener) {
         mOnBannerItemClickListener = bannerItemClickListener;
@@ -200,7 +162,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
 
-    public class CommonViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class CommonViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextView;
         private SimpleDraweeView mDraweeView;
         private RelativeLayout mItemLayout;
@@ -210,14 +172,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             mTextView = (TextView) itemview.findViewById(R.id.main_text_view);
             mDraweeView = (SimpleDraweeView) itemview.findViewById(R.id.main_pic);
             mItemLayout = (RelativeLayout) itemview.findViewById(R.id.item_layout);
-            itemview.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (mItemClickListener != null) {
-                mItemClickListener.onItemClick(itemView, getPosition());
-            }
         }
     }
 

@@ -84,17 +84,12 @@
         <activity android:name="net.muxi.huashiapp.ui.news.NewsActivity"
                   android:launchMode="singleTask"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.library.LibraryActivity"
-                  android:launchMode="singleTask"/>
 
         <activity android:name="net.muxi.huashiapp.ui.library.LibrarySearchActivity"
                   android:launchMode="singleTask"/>
 
         <activity android:name=".ui.library.LibrarySearchResultActivity"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.library.LibraryLoginActivity"
-                  android:launchMode="singleTask"
-                  android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".ui.library.BookDetailActivity"/>
 
@@ -108,8 +103,8 @@
             </intent-filter>
         </activity>
 
-        <!--<activity android:name="net.muxi.huashiapp.ui.website.WebsiteActivity"-->
-                  <!--android:launchMode="singleTask"/>-->
+        <activity android:name="net.muxi.huashiapp.ui.website.WebsiteActivity"
+                  android:launchMode="singleTask"/>
 
         <activity android:name="net.muxi.huashiapp.ui.apartment.ApartmentActivity"
                   android:launchMode="singleTask"/>
@@ -126,7 +121,8 @@
 
         <activity android:name=".ui.SuggestionActivity"/>
 
-        <activity android:name=".ui.studyroom.StudyRoomActivity"/>
+        <activity android:name=".ui.studyroom.StudyRoomActivity"
+                  android:launchMode="singleTask"/>
 
         <activity android:name=".ui.studyroom.StudyRoomDetailActivity"/>
 
