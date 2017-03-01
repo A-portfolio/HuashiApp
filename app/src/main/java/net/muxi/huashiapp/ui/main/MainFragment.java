@@ -13,9 +13,14 @@ import android.view.ViewGroup;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.ItemData;
+import net.muxi.huashiapp.ui.CalendarActivity;
+import net.muxi.huashiapp.ui.apartment.ApartmentActivity;
+import net.muxi.huashiapp.ui.card.CardActivity;
+import net.muxi.huashiapp.ui.credit.SelectCreditActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
+import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
+import net.muxi.huashiapp.ui.website.WebsiteActivity;
 import net.muxi.huashiapp.util.ACache;
-import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.VibratorUtil;
 
 import java.util.ArrayList;
@@ -38,10 +43,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     private MainAdapter mMainAdapter;
 
     private ItemTouchHelper itemTouchHelper;
-
-    private PreferenceUtil sp;
-
-
+    
     private List<ItemData> mItemDatas = new ArrayList<ItemData>();
 
 
@@ -57,6 +59,15 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
 
+        mToolbar.setTitle("华师匣子");
+
+        setData();
+        initView();
+
+        return view;
+    }
+
+    private void setData() {
         ArrayList<ItemData> items = (ArrayList<ItemData>) ACache.get(getActivity()).getAsObject("items");
 
         if (items != null) {
@@ -74,8 +85,9 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
             mItemDatas.add(new ItemData("学而", R.drawable.ic_xueer + ""));
             mItemDatas.add(new ItemData("更多", R.drawable.ic_more + ""));
         }
+    }
 
-        mToolbar.setTitle("华师匣子");
+    private void initView() {
         mMainAdapter = new MainAdapter(mItemDatas);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         mRecyclerView.setHasFixedSize(true);
@@ -96,14 +108,39 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
             @Override
             public void onItemClick(RecyclerView.ViewHolder vh) {
                 ItemData itemData = mItemDatas.get(vh.getLayoutPosition());
-                switch (itemData.getName()){
+                switch (itemData.getName()) {
                     case "成绩":
                         ScoreSelectActivity.start(getContext());
+                        break;
+                    case "校园通知":
+                        break;
+                    case "电费":
+                        break;
+                    case "校园卡":
+                        CardActivity.start(getContext());
+                        break;
+                    case "算学分":
+                        SelectCreditActivity.start(getContext());
+                        break;
+                    case "空闲教室":
+                        StudyRoomActivity.start(getContext());
+                        break;
+                    case "部门信息":
+                        ApartmentActivity.start(getContext());
+                        break;
+                    case "校历":
+                        CalendarActivity.start(getContext());
+                        break;
+                    case "常用网站":
+                        WebsiteActivity.start(getContext());
+                        break;
+                    case "学而":
+                        break;
+                    case "更多":
                         break;
                 }
             }
         });
-        return view;
     }
 
     @Override
