@@ -1,58 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/view_toolbar"/>
+    <include layout="@layout/view_toolbar"/>
 
-    <ScrollView
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="80dp"
+        android:text="选择区域"
+        android:textSize="12sp"
+        />
+
+    <LinearLayout
+        android:id="@+id/area_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        >
 
-            <net.muxi.huashiapp.ui.electricity.NonScrollExpandLv
-                android:id="@+id/lv_expand"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:childDivider="@null"
-                android:divider="@null"
-                android:groupIndicator="@null"/>
+        <TextView
+            android:id="@+id/area_1"
+            android:layout_width="72dp"
+            android:layout_height="64dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_disabled"
+            android:gravity="center"
+            android:text="东区"
+            android:textColor="@color/disable_color"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/area_2"
+            android:layout_width="72dp"
+            android:layout_height="64dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_disabled"
+            android:gravity="center"
+            android:text="西区"
+            android:textColor="@color/disable_color"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/area_3"
+            android:layout_width="72dp"
+            android:layout_height="64dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_disabled"
+            android:gravity="center"
+            android:text="元宝山"
+            android:textColor="@color/disable_color"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/area_4"
+            android:layout_width="72dp"
+            android:layout_height="64dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_disabled"
+            android:gravity="center"
+            android:text="南湖"
+            android:textColor="@color/disable_color"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/area_5"
+            android:layout_width="72dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/shape_disabled"
+            android:gravity="center"
+            android:text="国交"
+            android:textColor="@color/disable_color"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/area_6"
+            android:layout_width="72dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_disabled"
+            android:gravity="center"
+            android:text="产宿"
+            android:textColor="@color/disable_color"
+            android:textStyle="bold"/>
 
 
-            <EditText
-                android:id="@+id/et_romm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:inputType="number"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:drawablePadding="32dp"
-                android:hint="请输入房间号如304"/>
+    </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_search"
-                android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:elevation="4dp"
-                android:layout_marginBottom="32dp"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="36dp"
-                android:background="@drawable/shape_btn"
-                android:text="查询"
-                android:textColor="@color/colorWhite"/>
+    <ImageView
+        android:id="@+id/iv_choose_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/area_layout"
+        android:layout_below="@id/area_layout"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/ic_select_room"
+        />
+
+    <TextView
+        android:id="@+id/hint_choose_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/iv_choose_area"
+        android:layout_marginLeft="24dp"
+        android:layout_toEndOf="@+id/iv_choose_area"
+        android:layout_toRightOf="@+id/iv_choose_area"
+        android:text="选择楼栋"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/medium_size"
+        />
 
 
-        </LinearLayout>
+    <TextView
+        android:id="@+id/tv_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/hint_choose_area"
+        android:layout_alignStart="@+id/hint_choose_area"
+        android:layout_below="@+id/hint_choose_area"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@null"
+        android:lines="1"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/study_room_tv_hint"
+        tools:text="6栋"
+        />
 
-    </ScrollView>
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/iv_choose_area"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/divider"/>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/iv_choose_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/iv_choose_area"
+        android:layout_below="@id/divider"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:src="@drawable/ic_edit"
+        />
+
+
+    <EditText
+        android:id="@+id/et_room"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/iv_choose_room"
+        android:layout_marginLeft="24dp"
+        android:layout_toRightOf="@id/iv_choose_room"
+        android:hint="输入寝室号"
+        android:textColor="@color/hintColor"
+        android:textSize="@dimen/medium_size"/>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/iv_choose_room"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/divider"/>
+
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/divider2"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/shape_btn"
+        android:text="查询"
+        android:textColor="@color/colorWhite"/>
+
+
+</RelativeLayout>

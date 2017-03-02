@@ -18,6 +18,7 @@ import net.muxi.huashiapp.ui.CalendarActivity;
 import net.muxi.huashiapp.ui.apartment.ApartmentActivity;
 import net.muxi.huashiapp.ui.card.CardActivity;
 import net.muxi.huashiapp.ui.credit.SelectCreditActivity;
+import net.muxi.huashiapp.ui.electricity.ElectricityActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.ui.website.WebsiteActivity;
@@ -44,7 +45,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     private MainAdapter mMainAdapter;
 
     private ItemTouchHelper itemTouchHelper;
-    
+
     private List<ItemData> mItemDatas = new ArrayList<ItemData>();
 
 
@@ -76,7 +77,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         } else {
             mItemDatas.add(new ItemData("成绩", R.drawable.ic_score + ""));
             mItemDatas.add(new ItemData("校园通知", R.drawable.ic_news + ""));
-            mItemDatas.add(new ItemData("电费", R.drawable.ic_ele + ""));
+            mItemDatas.add(new ItemData("电费", R.drawable.ic_ele+ ""));
             mItemDatas.add(new ItemData("校园卡", R.drawable.ic_card + ""));
             mItemDatas.add(new ItemData("算学分", R.drawable.ic_credit + ""));
             mItemDatas.add(new ItemData("空闲教室", R.drawable.ic_empty_room + ""));
@@ -116,6 +117,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                     case "校园通知":
                         break;
                     case "电费":
+                        ElectricityActivity.start(getContext());
                         break;
                     case "校园卡":
                         CardActivity.start(getContext());

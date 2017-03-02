@@ -23,6 +23,7 @@
     <string name="action_library">图书馆</string>
     <string name="action_more">更多</string>
     <string name="action_correct">空闲教室报错</string>
+    <string name="action_change_room">更换寝室</string>
 
     <string name="calculate">计算</string>
 
@@ -126,6 +127,8 @@
 
     <!--电费查询-->
     <string name="ele_room_not_found">该宿舍不存在</string>
+    <string name="title_pay_hint">微信缴费提示</string>
+    <string name="content_pay_hint">微信能缴费啦，关注"xxxxxx"即可网上缴费。\n包括：照明，空调电费</string>
 
     <!--空闲教室-->
     <string name="content_correct_studyroom">亲爱的匣客，为了更好的使用空闲教室功能，欢迎积极反馈报错哟！</string>

@@ -60,8 +60,9 @@ public class PreferenceUtil {
     //借阅图书的列表
     public static final String BORROW_BOOK_IDS = "borrow_book_ids";
 
-    //拖拽后item位置
-    public static final String ITEM_POSITION = "item_position";
+    //判断是否是第一次启动应用
+    public static final String APP_FIRST_OPEN = "first_open";
+
 
     public static void saveBoolean(String key, boolean value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(App.sContext).edit();
