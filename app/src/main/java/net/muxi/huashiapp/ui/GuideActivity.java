@@ -42,7 +42,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener{
     private List<View> mViews;
     private ImageView[] indicatorImgs;
     private static final int GUIDE_PAGE_COUNT = 3;
-    private int[] imgs = new int[]{R.drawable.bg_guide_1, R.drawable.bg_guide_2,R.drawable.bg_guide_3,R.drawable.bg_guide_3};
+    private int[] imgs = new int[]{R.drawable.bg_guide_1, R.drawable.bg_guide_2,R.drawable.bg_guide_3};
 
     private Button mButton;
     public static void start(Context context) {
