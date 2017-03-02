@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.electricity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,26 +9,29 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.EleRequestData;
-import net.muxi.huashiapp.common.data.Electricity;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.ToastUtil;
+import net.muxi.huashiapp.util.ZhugeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Response;
-import rx.Observer;
+import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -36,16 +40,27 @@ import static com.tencent.bugly.crashreport.inner.InnerAPI.context;
 /**
  * Created by december on 16/7/7.
  */
-public class ElectricityDetailActivity extends ToolbarActivity  {
+public class ElectricityDetailActivity extends ToolbarActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
-    @BindView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.pay_hint)
+    TextView mPayHint;
+
+    public static void start(Context context, String query) {
+        Intent starter = new Intent(context, ElectricityDetailActivity.class);
+        starter.putExtra("query", query);
+        context.startActivity(starter);
+    }
+
+
+    private static final String PAY_HINT = "电费不足？查看如何微信缴费";
+
     private PreferenceUtil sp;
 
     private CardView mCardView;
@@ -59,18 +74,16 @@ public class ElectricityDetailActivity extends ToolbarActivity  {
         setContentView(R.layout.activity_electricity_detail);
         ButterKnife.bind(this);
 
+
+        mToolbar.setTitle("查询结果");
+
+        setFontType(PAY_HINT);
+
         init();
         sp = new PreferenceUtil();
-        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(true);
-            }
-        });
-        mSwipeRefreshLayout.setEnabled(false);
+
+
         mQuery = getIntent().getStringExtra("query");
-        setTitle(mQuery);
         setTitleColor(Color.BLACK);
         EleRequestData eleAirRequest = new EleRequestData();
         eleAirRequest.setDor(mQuery);
@@ -81,77 +94,45 @@ public class ElectricityDetailActivity extends ToolbarActivity  {
         CampusFactory.getRetrofitService().getElectricity(eleLightRequest)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<Response<Electricity>>() {
-                    @Override
-                    public void onCompleted() {
-
+                .subscribe(electricityResponse -> {
+                    if (electricityResponse.code() == 404) {
+                        sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
+                        showSnackbarShort(getString(R.string.ele_room_not_found));
+                        Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);
+                        startActivity(intent);
+                        ElectricityDetailActivity.this.finish();
+                    }
+                    if (electricityResponse.code() == 503) {
+                        showSnackbarShort(getString(R.string.tip_school_server_error));
+                    }
+                    if (electricityResponse.code() == 200) {
+                        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(0);
+                        ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(electricityResponse.body());
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        if (mSwipeRefreshLayout != null){
-                            mSwipeRefreshLayout.setRefreshing(false);
-                        }
-                        ToastUtil.showShort(getString(R.string.tip_err_server));
-                    }
-
-                    @Override
-                    public void onNext(Response<Electricity> response) {
-                        if (mSwipeRefreshLayout != null){
-                            mSwipeRefreshLayout.setRefreshing(false);
-                        }
-                        if (response.code() == 404){
-                            sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
-                            ToastUtil.showShort(getString(R.string.ele_room_not_found));
-                            Intent intent = new Intent(ElectricityDetailActivity.this,ElectricityActivity.class);
-                            startActivity(intent);
-                            ElectricityDetailActivity.this.finish();
-                        }
-                        if (response.code() == 503){
-                            ToastUtil.showShort(getString(R.string.tip_school_server_error));
-                        }
-                        if (response.code() == 200) {
-                            ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(response.body());
-                        }
-                    }
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    showErrorSnackbarShort(getString(R.string.tip_check_net));
+                }, () -> {
+                    hideLoading();
                 });
         if (NetStatus.isConnected()) {
             CampusFactory.getRetrofitService().getElectricity(eleAirRequest)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.newThread())
-                    .subscribe(new Observer<Response<Electricity>>() {
-                        @Override
-                        public void onCompleted() {
-
+                    .subscribe(electricityResponse -> {
+                        if (electricityResponse.code() == 200) {
+                            ((ElectricityDetailFragment) detailFragments.get(1)).setCardColor(1);
+                            ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(electricityResponse.body());
                         }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            if (mSwipeRefreshLayout != null){
-                                mSwipeRefreshLayout.setRefreshing(false);
-                            }
-                            e.printStackTrace();
-                        }
-
-                        @Override
-                        public void onNext(Response<Electricity> response) {
-                            if (mSwipeRefreshLayout != null){
-                                mSwipeRefreshLayout.setRefreshing(false);
-                            }
-                            if (response.code() == 200) {
-                                ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(response.body());
-                            }
-                        }
+                    }, throwable -> {
+                        throwable.printStackTrace();
+                        showErrorSnackbarShort(getString(R.string.tip_check_net));
+                    }, () -> {
+                        hideLoading();
                     });
         } else {
-            mSwipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
-            });
-            ToastUtil.showShort(getString(R.string.tip_check_net));
+            showErrorSnackbarShort(getString(R.string.tip_check_net));
         }
     }
 
@@ -174,21 +155,45 @@ public class ElectricityDetailActivity extends ToolbarActivity  {
         mViewPager.setAdapter(myDetailAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        mTabLayout.setTabTextColors(ContextCompat.getColor(context,R.color.color_normal_tab),ContextCompat.getColor(context,R.color.colorAccent));
+        mTabLayout.setTabTextColors(ContextCompat.getColor(context, R.color.color_normal_tab), ContextCompat.getColor(context, R.color.colorAccent));
         mTabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorAccent));
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);
     }
 
-//    @Override
-//    public void onChangeBtnClick() {
-//        ZhugeUtils.sendEvent("电费查询更换寝室","更换寝室");
-//        PreferenceUtil sp = new PreferenceUtil();
-//        sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
-//        Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);
-//        startActivity(intent);
-//        this.finish();
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_electricity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_change_room) {
+            ZhugeUtils.sendEvent("电费查询更换寝室", "更换寝室");
+            PreferenceUtil sp = new PreferenceUtil();
+            sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
+            Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);
+            startActivity(intent);
+            this.finish();
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //设置特定位置字体变换颜色
+    private void setFontType(String string) {
+        SpannableString spannableString = new SpannableString(string);
+        spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorAccent)), 5, string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mPayHint.setText(spannableString);
 
 
+    }
+
+    @OnClick(R.id.pay_hint)
+    public void onClick() {
+        ElectricityPayHintView view = new ElectricityPayHintView(this);
+        setContentView(view);
+    }
 }

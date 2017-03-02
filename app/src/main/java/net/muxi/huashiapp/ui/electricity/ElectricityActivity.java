@@ -1,17 +1,20 @@
 package net.muxi.huashiapp.ui.electricity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.ToastUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
@@ -23,62 +26,74 @@ import butterknife.OnClick;
  */
 public class ElectricityActivity extends ToolbarActivity {
 
-    @BindView(R.id.btn_search)
-    Button mBtnSearch;
-    @BindView(R.id.lv_expand)
-    NonScrollExpandLv mLvExpand;
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.et_romm)
-    EditText mEtRomm;
+    @BindView(R.id.area_1)
+    TextView mArea1;
+    @BindView(R.id.area_2)
+    TextView mArea2;
+    @BindView(R.id.area_3)
+    TextView mArea3;
+    @BindView(R.id.area_4)
+    TextView mArea4;
+    @BindView(R.id.area_5)
+    TextView mArea5;
+    @BindView(R.id.area_6)
+    TextView mArea6;
+    @BindView(R.id.tv_area)
+    TextView mTvArea;
+    @BindView(R.id.et_room)
+    EditText mEtRoom;
+    @BindView(R.id.btn_search)
+    Button mBtnSearch;
 
-    private String[] mGroupString;
-    private String[][] mChildString = new String[2][19];
+    public static void start(Context context) {
+        Intent starter = new Intent(context, ElectricityActivity.class);
+        context.startActivity(starter);
+    }
 
-    private static final String[] groupString = {"区域", "建筑"};
 
-    //西区对应的建筑
-    private static final String[][] childStrings1 = {
-            {"西区", "东区", "元宝山", "南湖", "国交","产宿"},
-            {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋"}
-    };
+    private String[] mBuildings = new String[19];
+
+    private TextView[] mArea;
+    private String area;
+
 
     //东区对应的建筑
-    private static final String[][] childStrings2 = {
-            {"西区", "东区", "元宝山", "南湖", "国交","产宿"},
-            {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋", "9栋", "10栋", "11栋", "12栋", "13栋西", "13栋东", "14栋", "15栋西", "15栋东", "16栋", "附1栋"}
+    private static final String[] buildingStrings1 = {
+            "东区1栋", "东区2栋", "东区3栋", "东区4栋", "东区5栋", "东区6栋", "东区7栋", "东区8栋", "东区9栋", "东区10栋", "东区11栋", "东区12栋", "13栋西",
+            "东区13栋东", "东区14栋", "东区15西", "东区15栋东", "东区16栋", "东区附1栋"};
+
+    //西区对应的建筑
+    private static final String[] buildingStrings2 = {
+            "西区1栋", "西区2栋", "西区3栋", "西区4栋", "西区5栋", "西区6栋", "西区7栋", "西区8栋"
     };
 
     //元宝山对应的建筑
-    private static final String[][] childStrings3 = {
-            {"西区", "东区", "元宝山", "南湖", "国交","产宿"},
-            {"1栋", "2栋", "3栋", "4栋", "5栋"}
+    private static final String[] buildingStrings3 = {
+            "元宝山1栋", "元宝山2栋", "元宝山3栋", "元宝山4栋", "元宝山5栋"
     };
 
     //南湖对应的建筑
-    private static final String[][] childStrings4 = {
-            {"西区", "东区", "元宝山", "南湖", "国交","产宿"},
-            {"1栋", "2栋", "3栋", "4栋", "5栋", "6栋", "7栋", "8栋", "9栋", "10栋", "11栋", "12栋", "13栋"}
+    private static final String[] buildingStrings4 = {
+            "南湖1栋", "南湖2栋", "南湖3栋", "南湖4栋", "南湖5栋", "南湖6栋", "南湖7栋", "南湖8栋", "南湖9栋", "南湖10栋", "南湖11栋", "南湖12栋", "南湖13栋"
     };
 
     //国交对应的建筑
-    private static final String[][] childStrings5 = {
-            {"西区", "东区", "元宝山", "南湖", "国交","产宿"},
-            {"3栋", "4栋", "5栋", "6栋","9栋"}
-
+    private static final String[] buildingStrings5 = {
+            "国交3栋", "国交4栋", "国交5栋", "国交6栋", "国交9栋"
     };
 
     //产宿对应的建筑
-    private static final String[][] childStrings6 = {
-            {"西区", "东区", "元宝山", "南湖", "国交","产宿"},
-            {"8栋","9栋"}
+    private static final String[] buildingStrings6 = {
+            "产宿8栋", "产宿9栋"
     };
 
 
     //查询参数
     private String mQuery;
 
-    private MyExpandableAdapter mAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,92 +103,86 @@ public class ElectricityActivity extends ToolbarActivity {
         mToolbar.setTitle("电费查询");
         Logger.d("ele oncreate");
 
-        mGroupString = new String[]{"区域", "建筑"};
-        mChildString = childStrings1;
-        initView();
+        mArea = new TextView[]{mArea1, mArea2, mArea3, mArea4, mArea5, mArea6};
+
     }
 
-    public void initView() {
-        mAdapter = new MyExpandableAdapter(this, mGroupString, mChildString);
-        mLvExpand.setAdapter(mAdapter);
-        Logger.d(mLvExpand.getWidth() + "");
-//        mLvExpand.setIndicatorBounds(DimensUtil.getScreenWidth() - DimensUtil.dp2px(56),DimensUtil.getScreenWidth() - DimensUtil.dp2px(36));
-//        int width = getWindowManager().getDefaultDisplay().getWidth();
-//        mLvExpand.setIndicatorBounds(width - 80, width - 10);
-        mAdapter.setOnRbClickListener(new MyExpandableAdapter.OnRbClickListener() {
-            @Override
-            public void onRbClick(int groupPosition, int rbPosition) {
-                if (groupPosition == 0) {
-                    switch (rbPosition) {
-                        case 0:
-                            mChildString = childStrings1;
-                            break;
-                        case 1:
-                            mChildString = childStrings2;
-                            break;
-                        case 2:
-                            mChildString = childStrings3;
-                            break;
-                        case 3:
-                            mChildString = childStrings4;
-                            break;
-                        case 4:
-                            mChildString = childStrings5;
-                            break;
-                        case 5:
-                            mChildString = childStrings6;
-                            break;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        area = data.getStringExtra("area");
+        mTvArea.setText(area);
+    }
+
+
+    @OnClick({R.id.area_1, R.id.area_2, R.id.area_3, R.id.area_4, R.id.area_5, R.id.area_6, R.id.tv_area, R.id.et_room, R.id.btn_search})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.area_1:
+                setBackground(0);
+                mBuildings = buildingStrings1;
+                break;
+            case R.id.area_2:
+                setBackground(1);
+                mBuildings = buildingStrings2;
+                break;
+            case R.id.area_3:
+                setBackground(2);
+                mBuildings = buildingStrings3;
+                break;
+            case R.id.area_4:
+                setBackground(3);
+                mBuildings = buildingStrings4;
+                break;
+            case R.id.area_5:
+                setBackground(4);
+                mBuildings = buildingStrings5;
+                break;
+            case R.id.area_6:
+                setBackground(5);
+                mBuildings = buildingStrings6;
+                break;
+            case R.id.tv_area:
+                    Intent intent = new Intent(ElectricityActivity.this, ElectricityAreaOptionActivity.class);
+                    intent.putExtra("buildings", mBuildings);
+                    startActivityForResult(intent,0);
+                break;
+            case R.id.btn_search:
+
+                if (mTvArea.getText().length() != 0 && mEtRoom.getText().toString().length() != 0) {
+                    int index = area.indexOf("栋");
+                    if (area.length() > index + 1) {
+                        mQuery = area.substring(0, 1) + area.substring(2, index) + "-" + area.substring(index + 1, area.length()) + mEtRoom.getText().toString();
+                    } else {
+                        mQuery = area.substring(0, 1) + area.substring(2, index) + "-" + mEtRoom.getText().toString();
                     }
-                    mGroupString[0] = mChildString[0][rbPosition];
-                    mGroupString[1] = groupString[1];
-                    mAdapter.updateData(mGroupString, mChildString);
-                    mLvExpand.collapseGroup(0);
+                    PreferenceUtil sp = new PreferenceUtil();
+                    sp.saveString(PreferenceUtil.ELE_QUERY_STRING, mQuery);
+                    ElectricityDetailActivity.start(this, mQuery);
+                    ZhugeUtils.sendEvent("查询电费", "查询电费");
+                    this.finish();
+                    break;
+                } else {
+                    showErrorSnackbarShort("请完善信息");
                 }
-                if (groupPosition == 1) {
-                    mGroupString[1] = mChildString[1][rbPosition];
-                    mAdapter.updateData(mGroupString, mChildString);
-                    mLvExpand.collapseGroup(1);
-                }
-            }
-        });
 
+        }
 
     }
 
-    @OnClick(R.id.btn_search)
-    public void onClick() {
-        if (!isEmpty()) {
-            int index = mGroupString[1].indexOf("栋");
-            if (mGroupString[1].length() > index + 1) {
-                mQuery = mGroupString[0].substring(0, 1) + mGroupString[1].substring(0, index) + "-" + mGroupString[1].substring(index + 1, mGroupString[1].length()) + mEtRomm.getText().toString();
+    private void setBackground(int position) {
+        for (int i = 0; i < 6; i++) {
+            if (i == position) {
+                mArea[i].setBackgroundResource(R.drawable.shape_green);
+                mArea[i].setTextColor(Color.WHITE);
             } else {
-                mQuery = mGroupString[0].substring(0, 1) + mGroupString[1].substring(0, index) + "-" + mEtRomm.getText().toString();
+                mArea[i].setBackgroundResource(R.drawable.shape_disabled);
+                mArea[i].setTextColor(getResources().getColor(R.color.disable_color));
             }
-            PreferenceUtil sp = new PreferenceUtil();
-            sp.saveString(PreferenceUtil.ELE_QUERY_STRING, mQuery);
-            Intent intent = new Intent(ElectricityActivity.this, ElectricityDetailActivity.class);
-            intent.putExtra("query", mQuery);
-            startActivity(intent);
-            ZhugeUtils.sendEvent("查询电费", "查询电费");
-            this.finish();
-        } else {
-            ToastUtil.showShort("请先完善信息");
+
         }
 
     }
 
-    /**
-     * 判断 是否有未选项
-     *
-     * @return
-     */
-    public boolean isEmpty() {
-        if (!mGroupString[0].equals(groupString[0])
-                && !mGroupString[1].equals(groupString[1])
-                && !mEtRomm.getText().toString().equals("")) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+
 }

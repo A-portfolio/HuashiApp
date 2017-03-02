@@ -94,8 +94,6 @@ public class StudyRoomActivity extends ToolbarActivity {
                 });
                 break;
             case R.id.tv_study_area:
-//                intent = new Intent(StudyRoomActivity.this, StudyAreaOptionActivity.class);
-//                startActivity(intent);
                 intent = new Intent();
                 intent.setClass(StudyRoomActivity.this, StudyAreaOptionActivity.class);
                 startActivityForResult(intent,0);
@@ -105,12 +103,10 @@ public class StudyRoomActivity extends ToolbarActivity {
                 if (mTvStudyTime.getText().length() !=0  && mTvStudyArea.getText().length() != 0) {
                     ZhugeUtils.sendEvent("查看空闲教室","查看空闲教室");
                     mQuery = mTvStudyTime.getText().toString() + mTvStudyArea.getText().toString();
-//                    intent = new Intent(StudyRoomActivity.this, StudyRoomDetailActivity.class);
-//                    intent.putExtra("query", mQuery);
-//                    startActivity(intent);
                     StudyRoomDetailActivity.start(StudyRoomActivity.this,mQuery);
-                    mTvStudyTime.setText(null);
-                    mTvStudyArea.setText(null);
+//                    mTvStudyTime.setText(null);
+//                    mTvStudyArea.setText(null);
+                    this.finish();
                     break;
                 } else {
                    showSnackbarShort("请填写完整信息");

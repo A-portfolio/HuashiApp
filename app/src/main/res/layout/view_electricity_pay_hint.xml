@@ -2,9 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/colorWhite"
-    >
+              android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/view_close_btn"
@@ -12,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:src="@drawable/search_close"
         />
 
     <TextView
@@ -20,34 +19,50 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="86dp"
-        android:text="空闲教室报错"
+        android:text="@string/title_pay_hint"
         android:textSize="20sp"
         android:textColor="?android:attr/textColorPrimary"
         />
-    
+
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lineSpacingMultiplier="1.4"
-        android:text="@string/content_correct_studyroom"
+        android:text="@string/content_pay_hint"
         android:textSize="14sp"
         android:layout_marginTop="70dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
         />
 
-    <Button
-        android:id="@+id/btn_feedback"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="前去反馈"
-        android:background="@drawable/shape_btn"
-        android:textColor="@color/colorWhite"
+        android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="68dp"
+        >
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="这是微信号的名称"
+        android:textColor="?android:attr/textColorPrimary"
         />
 
+    <TextView
+        android:id="@+id/tv_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tv_name"
+        android:layout_toRightOf="@id/tv_name"
+        android:text="点击复制"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/medium_size"
+        android:layout_marginLeft="32dp"
+        />
+
+    </RelativeLayout>
 
 </LinearLayout>

@@ -54,9 +54,14 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.GuideActivity"
+                  android:launchMode="singleTask"
+                  android:windowSoftInputMode="adjustResize"/>
+
         <activity android:name="net.muxi.huashiapp.ui.main.MainActivity"
                   android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize"/>
+
 
         <activity android:name="net.muxi.huashiapp.ui.login.LoginActivity"
                   android:launchMode="singleTask"
@@ -115,6 +120,8 @@
         <activity android:name="net.muxi.huashiapp.ui.electricity.ElectricityActivity"/>
 
         <activity android:name="net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity"/>
+
+        <activity android:name=".ui.electricity.ElectricityAreaOptionActivity"/>
 
         <activity android:name="net.muxi.huashiapp.ui.InfoActivity"/>
 
