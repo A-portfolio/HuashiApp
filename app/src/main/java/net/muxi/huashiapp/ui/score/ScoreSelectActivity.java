@@ -63,6 +63,7 @@ public class ScoreSelectActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         setTitle("成绩查询");
         setYear(value);
+        mRbAll.setChecked(true);
         mBtnEnter.setOnClickListener(v -> {
             int term = 0;
             switch (mLayoutTerm.getCheckedRadioButtonId()) {

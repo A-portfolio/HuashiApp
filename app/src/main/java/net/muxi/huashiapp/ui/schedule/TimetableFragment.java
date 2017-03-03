@@ -1,12 +1,21 @@
 package net.muxi.huashiapp.ui.schedule;
 
+import static net.muxi.huashiapp.widget.IndicatedView.IndicatedView.DIRECTION_DOWN;
+import static net.muxi.huashiapp.widget.IndicatedView.IndicatedView.DIRECTION_UP;
+import static net.muxi.huashiapp.widget.IndicatedView.IndicatedView.LINE_HEIGHT;
+import static net.muxi.huashiapp.widget.IndicatedView.IndicatedView.LINE_MARGIN_VERTICAL;
+import static net.muxi.huashiapp.widget.IndicatedView.IndicatedView.SIDE_MARGIN;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -15,16 +24,21 @@ import android.widget.TextView;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
+import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.event.AddCourseEvent;
+import net.muxi.huashiapp.event.DeleteCourseOkEvent;
 import net.muxi.huashiapp.event.RefreshFinishEvent;
-import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.util.Base64Util;
+import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.TimeTableUtil;
+import net.muxi.huashiapp.util.TipViewUtil;
+import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +46,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -72,8 +85,6 @@ public class TimetableFragment extends BaseFragment {
 
     private HuaShiDao dao;
 
-    private Subscription mSubscription;
-
     private boolean handlingRefresh = false;
 
     public static TimetableFragment newInstance() {
@@ -87,9 +98,9 @@ public class TimetableFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        Logger.d("createview");
         View view = inflater.inflate(R.layout.fragment_timetable, container, false);
         ButterKnife.bind(this, view);
+
         getActivity().getWindow().getDecorView().setBackgroundColor(Color.argb(255, 250, 250, 250));
         dao = new HuaShiDao();
 
@@ -116,9 +127,17 @@ public class TimetableFragment extends BaseFragment {
         Logger.d(TimeTableUtil.getCurWeek() + "");
         renderCurweekView(TimeTableUtil.getCurWeek());
         renderSelectedWeekView(TimeTableUtil.getCurWeek());
+//        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE)) {
+        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE,true)) {
+            IndicatedView indicatedView = new IndicatedView(getContext());
+            indicatedView.setTipViewText("设置当前周也可以点这里噢");
+            TipViewUtil.addToContent(getContext(),indicatedView,DIRECTION_DOWN,DimensUtil.getScreenWidth() - DimensUtil.dp2px(38),DimensUtil.dp2px(38));
+        }
+
     }
 
     private void initListener() {
+
         mWeekSelectedView.setOnWeekSelectedListener(week -> {
             rotateSelectView();
             selectedWeek = week;
@@ -136,13 +155,18 @@ public class TimetableFragment extends BaseFragment {
             dialog.show(getChildFragmentManager(), "detail_courses");
         });
 
-//        mSubscription = RxBus.getDefault().toObservable(RefreshTableEvent.class)
-//                .subscribe(refreshTableEvent -> {
-//                    handlingRefresh = true;
-//                    Logger.d("get the event" + getId());
-//                    loadTable();
-//                },throwable -> throwable.printStackTrace());
-
+        Subscription subscription1 = RxBus.getDefault().toObservable(AddCourseEvent.class)
+                .subscribe(addCourseEvent -> {
+                    mCourses = dao.loadAllCourses();
+                    renderCourseView(mCourses);
+                });
+        ((BaseActivity)getContext()).addSubscription(subscription1);
+        Subscription subscription2 = RxBus.getDefault().toObservable(DeleteCourseOkEvent.class)
+                .subscribe(deleteCourseOkEvent -> {
+                    mCourses = dao.loadAllCourses();
+                    renderCourseView(mCourses);
+                });
+        ((BaseActivity)getContext()).addSubscription(subscription2);
         mTimetable.setOnRefreshListener(() -> {
             handlingRefresh = true;
             loadTable();
@@ -186,7 +210,7 @@ public class TimetableFragment extends BaseFragment {
                     }
                 }, throwable -> {
                     throwable.printStackTrace();
-                    if(handlingRefresh){
+                    if (handlingRefresh) {
                         handlingRefresh = false;
                         RxBus.getDefault().send(new RefreshFinishEvent(false));
                     }
@@ -232,6 +256,12 @@ public class TimetableFragment extends BaseFragment {
         mTvCurrentWeek.setText("当前周设置为" + week);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mCourses = dao.loadAllCourses();
+        renderCourseView(mCourses);
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -241,11 +271,8 @@ public class TimetableFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true) == true) {
+        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true)) {
             PreferenceUtil.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, false);
-        }
-        if (mSubscription != null && mSubscription.isUnsubscribed()){
-            mSubscription.unsubscribe();
         }
     }
 

@@ -63,10 +63,12 @@
     <string name="tip_link_unable_open">该链接不能打开</string>
     <string name="tip_copy_success">已复制到剪切板</string>
     <string name="tip_not_remind">不再提醒</string>
+    <string name="tip_click_here_to_set_curweek">设置当前周也可以点这里噢</string>
     <string name="delete">删除</string>
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>
     <string name="edit">编辑</string>
+    <string name="undo">撤销</string>
     <!--library-->
     <string name="lib_search_tip">请输入要搜索的图书或作者</string>
     <string name="lib_mybook_overdue">过期</string>

@@ -115,13 +115,11 @@ public class DataBase extends SQLiteOpenHelper {
                 KEY_APART_PLACE + " TEXT); ";
         db.execSQL(createApartmentTable);
 
-
         String createWebsiteTable = "CREATE TABLE IF NOT EXISTS " + TABLE_WEBSITE +
                 " ( " + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 KEY_SITE + " TEXT, " +
                 KEY_SITE_URL + " TEXT); ";
         db.execSQL(createWebsiteTable);
-
 
         //        String createLibTable = "create table if not exists " + TABLE_LIB +
         //                " ( " + KEY_ID + " integer primary key autoincrement, " +

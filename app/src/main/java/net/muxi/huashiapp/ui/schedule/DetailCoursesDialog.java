@@ -3,6 +3,7 @@ package net.muxi.huashiapp.ui.schedule;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -21,7 +22,6 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.event.DeleteCourseOkEvent;
 import net.muxi.huashiapp.util.Base64Util;
@@ -63,7 +63,7 @@ public class DetailCoursesDialog extends DialogFragment {
     public static DetailCoursesDialog newInstance(List<Course> courseList, int selectWeek) {
         Bundle args = new Bundle();
         args.putParcelableArrayList("course_list", (ArrayList) courseList);
-        args.putInt("select_week", 1);
+        args.putInt("select_week", selectWeek);
         DetailCoursesDialog fragment = new DetailCoursesDialog();
         fragment.setArguments(args);
         return fragment;
@@ -72,7 +72,7 @@ public class DetailCoursesDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = new Dialog(getContext(), R.style.CenterDialogStyle);
+        Dialog dialog = new Dialog(getContext(), R.style.FullScreenDialogStyle);
         mCourseList = getArguments().getParcelableArrayList("course_list");
         for (Course course : mCourseList) {
             Logger.d(course.course);
@@ -99,6 +99,9 @@ public class DetailCoursesDialog extends DialogFragment {
         wmlp.height = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(wmlp);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
         setCancelable(true);
         return dialog;
     }
@@ -113,26 +116,6 @@ public class DetailCoursesDialog extends DialogFragment {
             dialog.getWindow().setLayout(width, height);
         }
     }
-
-    private void delCourse(Course course) {
-        CampusFactory.getRetrofitService().deleteCourse(Base64Util.createBaseStr(App.sUser),
-                course.id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(verifyResponseResponse -> {
-                    if (verifyResponseResponse.code() == 200) {
-                        ((BaseActivity) getContext()).showSnackbarShort(
-                                R.string.tip_delete_course_ok);
-                    } else {
-                        ((BaseActivity) getContext()).showErrorSnackbarShort(
-                                R.string.tip_err_server);
-                    }
-                }, throwable -> {
-                    throwable.printStackTrace();
-                    ((BaseActivity) getContext()).showErrorSnackbarShort(R.string.tip_err_server);
-                });
-    }
-
 
     private void addCourseViews(List<Course> courseList, View view) {
         if (courseList == null) {

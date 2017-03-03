@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
     android:layout_height="54dp"
+    android:layout_gravity="bottom"
     app:cardBackgroundColor="@color/indicator_color"
+    android:id="@+id/layout_card"
     app:cardCornerRadius="2dp"
     app:cardElevation="2dp">
 
@@ -24,26 +26,27 @@
             tools:text="请点击"/>
 
         <View
+            android:id="@+id/divider"
             android:layout_width="1dp"
             android:layout_height="36dp"
             android:layout_centerVertical="true"
-            android:id="@+id/divider"
-            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
             android:layout_toRightOf="@+id/tv_indicate"
             android:background="#32ffffff"/>
 
         <ImageView
             android:id="@+id/iv_close"
             android:layout_width="12dp"
-            android:layout_toRightOf="@+id/divider"
-            android:src="@drawable/ic_close_indicator"
-            android:layout_marginLeft="16dp"
+            android:layout_height="12dp"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_toRightOf="@+id/divider"
             android:scaleType="fitXY"
-            android:layout_height="12dp"/>
+            android:src="@drawable/ic_close_indicator"/>
 
     </RelativeLayout>
+
 
 </android.support.v7.widget.CardView>

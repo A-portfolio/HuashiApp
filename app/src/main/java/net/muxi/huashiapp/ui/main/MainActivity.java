@@ -85,8 +85,14 @@ public class MainActivity extends BaseActivity implements
             case "lib_main":
             case "lib_mine":
                 if (App.isLibLogin()) {
+                    if (getSupportFragmentManager().findFragmentByTag("lib_mine") != null){
+                        return;
+                    }
                     showFragment(LibraryMineFragment.newInstance());
                 } else {
+                    if (getSupportFragmentManager().findFragmentByTag("lib_main") != null){
+                        return;
+                    }
                     showFragment(LibraryMainFragment.newInstance());
                 }
                 break;
