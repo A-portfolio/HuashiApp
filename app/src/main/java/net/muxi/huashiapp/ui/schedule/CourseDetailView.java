@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.ui.schedule;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -15,15 +16,19 @@ import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.event.AddCourseEvent;
 import net.muxi.huashiapp.event.DeleteCourseOkEvent;
 import net.muxi.huashiapp.util.Base64Util;
+import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.TimeTableUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -50,6 +55,8 @@ public class CourseDetailView extends RelativeLayout {
     LinearLayout mLayoutCancel;
     @BindView(R.id.layout_edit)
     LinearLayout mLayoutEdit;
+
+    private int retryCount = 0;
 
     private Context mContext;
 
@@ -120,17 +127,51 @@ public class CourseDetailView extends RelativeLayout {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(verifyResponseResponse -> {
                     if (verifyResponseResponse.code() == 200) {
-                        ((BaseActivity) mContext).showSnackbarShort(R.string.tip_delete_course_ok);
-//                        ((DetailCoursesDialog)mContext).dismiss();
-                        RxBus.getDefault().send(new DeleteCourseOkEvent(course));
+                        Snackbar.make(((BaseActivity) mContext).getWindow().findViewById(
+                                android.R.id.content),
+                                R.string.tip_delete_course_ok, Snackbar.LENGTH_LONG)
+                                .setAction(R.string.undo, v -> {
+                                    addCourse(course);
+                                }).show();
+
+                        Logger.d("send del");
                         HuaShiDao dao = new HuaShiDao();
                         dao.deleteCourse(course.id);
-                    }else {
+                        RxBus.getDefault().send(new DeleteCourseOkEvent(course));
+                    } else {
                         ((BaseActivity) mContext).showErrorSnackbarShort(R.string.tip_err_server);
                     }
-                },throwable -> {
+                }, throwable -> {
                     throwable.printStackTrace();
                     ((BaseActivity) mContext).showErrorSnackbarShort(R.string.tip_err_server);
+                });
+    }
+
+    public void addCourse(Course course) {
+        if (retryCount >= 5){
+            retryCount = 0;
+            return;
+        }
+        CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(App.sUser), course)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(verifyResponseResponse -> {
+                    switch (verifyResponseResponse.code()) {
+                        case 201:
+                            HuaShiDao dao = new HuaShiDao();
+                            dao.insertCourse(course);
+                            RxBus.getDefault().send(new AddCourseEvent(course));
+                            retryCount = 0;
+                            break;
+                        default:
+                            addCourse(course);
+                            retryCount ++;
+                            break;
+                    }
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    addCourse(course);
+                    retryCount ++;
                 });
     }
 

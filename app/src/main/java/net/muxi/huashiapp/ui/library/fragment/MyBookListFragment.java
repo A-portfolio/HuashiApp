@@ -197,4 +197,9 @@ public class MyBookListFragment extends BaseFragment {
         holder.getView(R.id.layout_item).setClickable(true);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Logger.d("book mylist");
+    }
 }

@@ -156,12 +156,10 @@ public class TimeTable extends RelativeLayout {
         return super.dispatchTouchEvent(ev);
     }
 
-
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -325,7 +323,6 @@ public class TimeTable extends RelativeLayout {
     }
 
     public interface OnRefreshListener{
-
         void onRefresh();
     }
 

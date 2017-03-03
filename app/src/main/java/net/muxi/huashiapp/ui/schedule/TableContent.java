@@ -121,6 +121,7 @@ public class TableContent extends FrameLayout {
         CourseView tvCourse = new CourseView(mContext);
         tvCourse.setTextColor(Color.WHITE);
         tvCourse.setTextSize(TypedValue.COMPLEX_UNIT_SP,10);
+//        tvCourse.setClickable(true);
         tvCourse.setPadding(DimensUtil.dp2px(10),DimensUtil.dp2px(8),DimensUtil.dp2px(10),DimensUtil.dp2px(8));
         LayoutParams courseParams = new LayoutParams(TimeTable.COURSE_WIDTH,
                 course.during * TimeTable.COURSE_TIME_HEIGHT - DimensUtil.dp2px(3));
@@ -134,7 +135,7 @@ public class TableContent extends FrameLayout {
                     course.place + "\n" +
                     course.teacher);
         }else {
-            tvCourse.setBackground(getResources().getDrawable(R.drawable.shape_grey));
+            tvCourse.setBackground(getResources().getDrawable(R.drawable.ripple_grey));
             tvCourse.setText(ellipseNotCurCourse(course.course) + "\n\n@" +
             course.place + "\n" +
             course.teacher);

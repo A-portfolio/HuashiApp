@@ -16,6 +16,7 @@ import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.ui.library.LibrarySearchActivity;
 import net.muxi.huashiapp.ui.library.adapter.MyBookListPagerAdapter;
 import net.muxi.huashiapp.util.DimensUtil;
+import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 
 import java.util.ArrayList;
@@ -53,11 +54,6 @@ public class LibraryMineFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_lib_mine, container, false);
         ButterKnife.bind(this, view);
         initView();
-        IndicatedView indicatedView = new IndicatedView(getContext());
-        indicatedView.setTipViewText("请登录图书馆");
-        indicatedView.setIndicatedViewPosition(DimensUtil.dp2px(156), DimensUtil.dp2px(156),
-                (FrameLayout) getActivity().findViewById(android.R.id.content),
-                IndicatedView.DIRECTION_DOWN);
         return view;
     }
 
@@ -85,6 +81,11 @@ public class LibraryMineFragment extends BaseFragment {
                 titleList);
         mViewPager.setAdapter(mPagerAdapter);
 
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Logger.d("book mine");
     }
 }

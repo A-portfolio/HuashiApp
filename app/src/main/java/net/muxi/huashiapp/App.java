@@ -32,7 +32,9 @@ public class App extends Application {
         sContext = getApplicationContext();
         Fresco.initialize(this);
 
-        CrashReport.initCrashReport(getApplicationContext(), "900043675", BuildConfig.DEBUG);
+        if (!BuildConfig.DEBUG) {
+            CrashReport.initCrashReport(getApplicationContext(), "900043675", BuildConfig.DEBUG);
+        }
         Fresco.initialize(this);
         sp = new PreferenceUtil();
 
@@ -44,7 +46,6 @@ public class App extends Application {
         if (BuildConfig.DEBUG) {
             ZhugeSDK.getInstance().openLog();
         }
-
 
         sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, ""));
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
@@ -58,17 +59,15 @@ public class App extends Application {
     }
 
     public static void saveLibUser(User libUser) {
-        PreferenceUtil sp = new PreferenceUtil();
-        sp.saveString(PreferenceUtil.LIBRARY_ID, libUser.getSid());
-        sp.saveString(PreferenceUtil.LIBRARY_PWD, libUser.getPassword());
+        PreferenceUtil.saveString(PreferenceUtil.LIBRARY_ID, libUser.getSid());
+        PreferenceUtil.saveString(PreferenceUtil.LIBRARY_PWD, libUser.getPassword());
         sLibrarayUser = libUser;
         Logger.d("id:" + sLibrarayUser.getSid() + "\tpwd:" + sLibrarayUser.getPassword());
     }
 
     public static void logoutLibUser(){
-        PreferenceUtil sp = new PreferenceUtil();
-        sp.clearString(PreferenceUtil.LIBRARY_ID);
-        sp.clearString(PreferenceUtil.LIBRARY_PWD);
+        PreferenceUtil.clearString(PreferenceUtil.LIBRARY_ID);
+        PreferenceUtil.clearString(PreferenceUtil.LIBRARY_PWD);
         PreferenceUtil.clearString(PreferenceUtil.ATTENTION_BOOK_IDS);
         PreferenceUtil.clearString(PreferenceUtil.BORROW_BOOK_IDS);
         sLibrarayUser.setSid("");
@@ -77,16 +76,15 @@ public class App extends Application {
 
     public static void saveUser(User user) {
         PreferenceUtil sp = new PreferenceUtil();
-        sp.saveString(PreferenceUtil.STUDENT_ID, user.getSid());
-        sp.saveString(PreferenceUtil.STUDENT_PWD, user.getPassword());
+        PreferenceUtil.saveString(PreferenceUtil.STUDENT_ID, user.getSid());
+        PreferenceUtil.saveString(PreferenceUtil.STUDENT_PWD, user.getPassword());
         sUser = user;
         Logger.d("id:" + sUser.getSid() + "\tpwd:" + sUser.getPassword());
     }
 
     public static void logoutUser(){
-        PreferenceUtil sp = new PreferenceUtil();
-        sp.clearString(PreferenceUtil.STUDENT_ID);
-        sp.clearString(PreferenceUtil.STUDENT_PWD);
+        PreferenceUtil.clearString(PreferenceUtil.STUDENT_ID);
+        PreferenceUtil.clearString(PreferenceUtil.STUDENT_PWD);
         sUser.setSid("");
         sUser.setPassword("");
     }

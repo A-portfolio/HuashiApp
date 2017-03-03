@@ -99,6 +99,13 @@
         <item name="android:windowIsFloating">false</item>
     </style>
 
+    <style name="FullScreenDialogStyle" parent="@style/Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <!--<item name="android:windowBackground">#7F333333</item>-->
+    </style>
+
     <style name="CenterDialogStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFrame">@null</item>

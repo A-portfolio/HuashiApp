@@ -63,16 +63,16 @@ public class TimeTableUtil {
         int color = 0;
         switch (colorNumber) {
             case 0:
-                color = R.drawable.shape_orange;
+                color = R.drawable.ripple_orange;
                 break;
             case 1:
-                color = R.drawable.shape_blue;
+                color = R.drawable.ripple_blue;
                 break;
             case 2:
-                color = R.drawable.shape_green;
+                color = R.drawable.ripple_green;
                 break;
             case 3:
-                color = R.drawable.shape_yellow;
+                color = R.drawable.ripple_yellow;
                 break;
         }
         return color;
