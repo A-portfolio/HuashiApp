@@ -6,12 +6,14 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.Electricity;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by december on 16/7/6.
@@ -19,23 +21,20 @@ import net.muxi.huashiapp.common.data.Electricity;
 public class ElectricityDetailFragment extends BaseFragment {
 
 
+    @BindView(R.id.card_money_left)
+    CardView mCardMoneyLeft;
+    @BindView(R.id.card_degree_left)
+    CardView mCardDegreeLeft;
+    @BindView(R.id.card_total_use)
+    CardView mCardTotalUse;
+
     private TextView mTvDegreeLeft;
     private TextView mTvDegreeLastMonth;
     private TextView mTvDegreeCurMonth;
     private TextView mTvMoneyLeft;
     private TextView mTvMoneyLastMonth;
     private TextView mTvMoneyCurMonth;
-    private Button mBtnChangeRoom;
 
-    private CardView mCardMoneyLeft;
-    private CardView mCardDegreeLeft;
-    private CardView mCardTotalUse;
-    private OnChangeBtnClickListener mOnChangeBtnClickListener;
-
-
-    public interface OnChangeBtnClickListener {
-        void onChangeBtnClick();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,37 +51,28 @@ public class ElectricityDetailFragment extends BaseFragment {
         mTvMoneyLeft = (TextView) view.findViewById(R.id.tv_money_left);
         mTvMoneyLastMonth = (TextView) view.findViewById(R.id.tv_money_last_month);
         mTvMoneyCurMonth = (TextView) view.findViewById(R.id.tv_money_cur_month);
-        mCardMoneyLeft = (CardView) view.findViewById(R.id.card_money_left);
-        mCardDegreeLeft = (CardView) view.findViewById(R.id.card_degree_left);
-        mCardTotalUse = (CardView) view.findViewById(R.id.card_total_use);
-//        mBtnChangeRoom = (Button) view.findViewById(R.id.btn_change_room);
-//        mBtnChangeRoom.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (mOnChangeBtnClickListener != null){
-//                    mOnChangeBtnClickListener.onChangeBtnClick();
-//                }
-//            }
-//        });
+
+        ButterKnife.bind(this, view);
+
+
         return view;
     }
 
 
-    public void setOnChangeBtnClickListener(OnChangeBtnClickListener listener) {
-        mOnChangeBtnClickListener = listener;
-    }
 
-    public void setCardColor(int i) {
-        if (i == 0) {
+    public void setCardColor(int position) {
+        if (position == 0) {
             mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
             mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
             mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_two));
-        } else if (i == 1) {
+        } else if (position == 1) {
             mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_one));
             mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_one));
             mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_two));
         }
     }
+
+
 
     @Override
     public void onDestroy() {

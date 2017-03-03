@@ -40,10 +40,25 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
 
     private PreferenceUtil sp;
 
+    private boolean isFirstOpen;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        sp = new PreferenceUtil();
+        isFirstOpen = sp.getBoolean(PreferenceUtil.APP_FIRST_OPEN);
+
+        if (!isFirstOpen) {
+            MainActivity.start(this);
+            this.finish();
+        }
+
+
         setContentView(R.layout.activity_enterance);
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
@@ -52,7 +67,6 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
         mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
-        sp = new PreferenceUtil();
         Logger.d(sp.getString(Constants.SPLASH_IMG));
         if (sp.getLong(Constants.SPLASH_UPDATE) == -1) {
             mDrawee.setImageURI(Uri.parse("asset://net.muxi.huashiapp/bg_enterance.png"));

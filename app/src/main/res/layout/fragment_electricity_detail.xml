@@ -111,6 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="152dp"
             android:layout_below="@+id/card_degree_left"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="8dp"
@@ -118,20 +119,23 @@
             >
 
             <RelativeLayout
+                android:id="@+id/relative_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_marginLeft="54dp"
                 android:layout_marginRight="54dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
                 >
+
 
                 <TextView
                     android:id="@+id/tv_degree_cur_month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="12dp"
-                    android:textColor="@color/colorAccent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="68dp"
+                    android:textColor="@color/colorWhite"
                     android:textSize="26sp"
                     tools:text="22.67"
                     />
@@ -140,10 +144,10 @@
                     android:id="@+id/title_month_ec_use"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_degree_cur_month"
                     android:layout_alignLeft="@id/tv_degree_cur_month"
+                    android:layout_below="@id/tv_degree_cur_month"
                     android:text="当月度数"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorWhite"
                     android:textSize="14sp"
                     />
 
@@ -151,11 +155,11 @@
                     android:id="@+id/tv_degree_last_month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="26sp"
-                    tools:text="91.96"
-                    android:textColor="@color/colorAccent"
                     android:layout_above="@+id/title_last_month_ec_use"
                     android:layout_alignLeft="@id/title_month_ec_use"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="26sp"
+                    tools:text="91.96"
                     />
 
 
@@ -163,23 +167,22 @@
                     android:id="@+id/title_last_month_ec_use"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="上月度数"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="14sp"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignLeft="@id/title_month_ec_use"
+                    android:layout_alignParentBottom="true"
+                    android:text="上月度数"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
                     />
-
 
                 <TextView
                     android:id="@+id/tv_money_sign2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="¥"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="26sp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
+                    android:text="¥"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="26sp"
                     />
 
                 <TextView
@@ -187,9 +190,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/tv_money_sign2"
+                    android:textColor="@color/colorWhite"
                     android:textSize="26sp"
                     tools:text="15.66"
-                    android:textColor="@color/colorAccent"
                     />
 
 
@@ -197,10 +200,10 @@
                     android:id="@+id/title_month_money_use"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_money_sign2"
                     android:layout_alignLeft="@id/tv_money_sign2"
+                    android:layout_below="@id/tv_money_sign2"
                     android:text="当月电费"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorWhite"
                     android:textSize="14sp"
                     />
 
@@ -209,21 +212,21 @@
                     android:id="@+id/tv_money_sign3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="¥"
-                    android:layout_alignLeft="@id/tv_money_sign2"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="26sp"
                     android:layout_above="@+id/title_last_month_money_use"
+                    android:layout_alignLeft="@id/tv_money_sign2"
+                    android:text="¥"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="26sp"
                     />
 
                 <TextView
                     android:id="@+id/tv_money_last_month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/tv_money_sign3"
                     android:layout_above="@id/title_last_month_money_use"
+                    android:layout_toRightOf="@id/tv_money_sign3"
+                    android:textColor="@color/colorWhite"
                     android:textSize="26sp"
-                    android:textColor="@color/colorAccent"
                     tools:text="30.66"
                     />
 
@@ -231,32 +234,20 @@
                     android:id="@+id/title_last_month_money_use"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="上月电费"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="14sp"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignLeft="@id/tv_money_sign3"
+                    android:layout_alignParentBottom="true"
+                    android:text="上月电费"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
                     />
 
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
 
-        <!--<Button-->
-        <!--android:id="@+id/btn_change_room"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="36dp"-->
-        <!--android:layout_below="@+id/line4"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginBottom="32dp"-->
-        <!--android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
-        <!--android:layout_marginRight="@dimen/activity_horizontal_margin"-->
-        <!--android:layout_marginTop="24dp"-->
-        <!--android:background="@drawable/shape_btn"-->
-        <!--android:text="更换寝室"-->
-        <!--android:textColor="@color/colorWhite"/>-->
-
     </RelativeLayout>
+
+
 
 
 </ScrollView>
