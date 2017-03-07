@@ -23,7 +23,6 @@ import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.more.MoreFragment;
 import net.muxi.huashiapp.ui.schedule.TimetableFragment;
-import net.muxi.huashiapp.util.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -156,13 +155,13 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Logger.d("able to write external");
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+//            @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//            Logger.d("able to write external");
+//        }
+//    }
 
 }

@@ -138,7 +138,7 @@ public interface RetrofitService {
             @Query("course") String course,
             @Query("jxb_id") String jxbId);
 
-    @GET("info/")
+    @GET("webview_info/")
     Observable<List<News>> getNews();
 
     @GET("calendar/")

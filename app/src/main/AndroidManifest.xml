@@ -143,6 +143,9 @@
                   android:exported="true"
                   android:launchMode="singleInstance"/>
 
+        <activity android:name=".ui.FAQActivity"
+                  android:launchMode="singleInstance"/>
+
         <receiver android:name="net.muxi.huashiapp.service.AlarmLiveReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT"/>
