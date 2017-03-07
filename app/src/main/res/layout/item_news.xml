@@ -2,42 +2,54 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:id="@+id/news_layout"
     android:layout_width="match_parent"
-    android:layout_height="72dp">
+    android:layout_height="72dp"
+    android:orientation="vertical">
 
-    <TextView
-        android:gravity="center"
+    <ImageView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/news_info_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:src="@drawable/ic_news"/>
 
 
     <TextView
-        android:singleLine="true"
-        android:width="360dp"
-        tools:text="关于华中师范大学录取"
         android:id="@+id/news_info_title"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/medium_size"
         android:layout_alignTop="@+id/news_info_icon"
-        android:layout_toRightOf="@+id/news_info_icon"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
         android:layout_toEndOf="@+id/news_info_icon"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"/>
-    
+        android:layout_toRightOf="@+id/news_info_icon"
+        android:width="360dp"
+        android:singleLine="true"
+        tools:text="关于华中师范大学录取"/>
+
     <TextView
-        tools:text="2015-10-24"
         android:id="@+id/news_info_date"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_below="@+id/news_info_title"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/small_size"
         android:layout_alignLeft="@+id/news_info_title"
-        android:layout_alignStart="@+id/news_info_title"/>
+        android:layout_alignStart="@+id/news_info_title"
+        android:layout_below="@+id/news_info_title"
+        tools:text="2015-10-24"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

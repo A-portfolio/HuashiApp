@@ -156,7 +156,6 @@ public class BaseDetailLayout extends FrameLayout {
         mToolbar = new Toolbar(context);
         mToolbar.setTitle("详情");
         mToolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        mToolbar.setNavigationIcon(R.drawable.ic_add_black_24dp);
         mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setMinimumHeight(DimensUtil.getActionbarHeight());
         mToolbar.setNavigationOnClickListener(new OnClickListener() {

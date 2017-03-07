@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -47,8 +46,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
     TabLayout mTabLayout;
     @BindView(R.id.viewPager)
     ViewPager mViewPager;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
     @BindView(R.id.pay_hint)
     TextView mPayHint;
 
@@ -75,7 +72,8 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         ButterKnife.bind(this);
 
 
-        mToolbar.setTitle("查询结果");
+//        mToolbar.setTitle("查询结果");
+        setTitle("查询结果");
 
         setFontType(PAY_HINT);
 

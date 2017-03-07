@@ -152,7 +152,7 @@ public class ElectricityActivity extends ToolbarActivity {
                 if (mTvArea.getText().length() != 0 && mEtRoom.getText().toString().length() != 0) {
                     int index = area.indexOf("栋");
                     if (area.length() > index + 1) {
-                        mQuery = area.substring(0, 1) + area.substring(2, index) + "-" + area.substring(index + 1, area.length()) + mEtRoom.getText().toString();
+                        mQuery = area.substring(0, 1) + area.substring(2, index) + "-" + area.substring(index + 1) + mEtRoom.getText().toString();
                     } else {
                         mQuery = area.substring(0, 1) + area.substring(2, index) + "-" + mEtRoom.getText().toString();
                     }

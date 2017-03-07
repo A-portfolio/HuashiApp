@@ -13,16 +13,22 @@ import android.view.ViewGroup;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseFragment;
+import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.ItemData;
+import net.muxi.huashiapp.common.db.HuaShiDao;
+import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.ui.CalendarActivity;
 import net.muxi.huashiapp.ui.apartment.ApartmentActivity;
 import net.muxi.huashiapp.ui.card.CardActivity;
 import net.muxi.huashiapp.ui.credit.SelectCreditActivity;
 import net.muxi.huashiapp.ui.electricity.ElectricityActivity;
+import net.muxi.huashiapp.ui.news.NewsActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.ui.website.WebsiteActivity;
 import net.muxi.huashiapp.util.ACache;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.VibratorUtil;
 
 import java.util.ArrayList;
@@ -30,6 +36,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by ybao on 17/1/25.
@@ -48,6 +57,10 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
     private List<ItemData> mItemDatas = new ArrayList<ItemData>();
 
+    private List<BannerData> mBannerDatas;
+
+    private HuaShiDao dao;
+
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
@@ -64,7 +77,12 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         mToolbar.setTitle("华师匣子");
 
         setData();
+
+        dao = new HuaShiDao();
+        mBannerDatas = dao.loadBannerData();
+
         initView();
+        getBannerDatas();
 
         return view;
     }
@@ -90,8 +108,15 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     }
 
     private void initView() {
-        mMainAdapter = new MainAdapter(mItemDatas);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
+        mMainAdapter = new MainAdapter(mItemDatas,mBannerDatas);
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return mMainAdapter.isBannerPosition(position) ? layoutManager.getSpanCount() : 1;
+            }
+        });
+        mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mMainAdapter);
 
@@ -115,6 +140,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                         ScoreSelectActivity.start(getContext());
                         break;
                     case "校园通知":
+                        NewsActivity.start(getContext());
                         break;
                     case "电费":
                         ElectricityActivity.start(getContext());
@@ -147,6 +173,58 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
             }
         });
     }
+
+    private void getBannerDatas() {
+        if (NetStatus.isConnected()) {
+            CampusFactory.getRetrofitService().getBanner()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.newThread())
+                    .subscribe(new Observer<List<BannerData>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onNext(List<BannerData> bannerDatas) {
+                            if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(mBannerDatas) || bannerDatas.size() != mBannerDatas.size()) {
+                                mBannerDatas.clear();
+                                mBannerDatas.addAll(bannerDatas);
+                                dao.deleteAllBannerData();
+                                for (int i = 0; i < mBannerDatas.size(); i++) {
+                                    dao.insertBannerData(mBannerDatas.get(i));
+                                }
+                                updateRecyclerView(bannerDatas);
+                                Logger.d("update recyclerview");
+                            }
+                            Logger.d("get bannerdatas");
+                        }
+                    });
+        }
+
+    }
+
+    public long getTheLastUpdateTime(List<BannerData> bannerDatas) {
+        long lastTime = -1;
+        if (bannerDatas.size() > 0) {
+            for (int i = 0; i < bannerDatas.size(); i++) {
+                if (lastTime < bannerDatas.get(i).getUpdate()) {
+                    lastTime = bannerDatas.get(i).getUpdate();
+                }
+            }
+        }
+        return lastTime;
+    }
+
+    public void updateRecyclerView(List<BannerData> bannerDatas) {
+        mMainAdapter.swapBannerData(bannerDatas);
+    }
+
 
     @Override
     public void onFinishDrag() {
