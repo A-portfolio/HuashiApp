@@ -10,7 +10,7 @@
 
     <include layout="@layout/view_toolbar"/>
 
-    <include layout="@layout/view_card"/>
+    <include layout="@layout/view_card_detail"/>
 
 </LinearLayout>
 

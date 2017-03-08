@@ -42,7 +42,7 @@ public class FrescoUtil {
         if (!picDir.exists()) {
             picDir.mkdir();
         }
-        CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(ImageRequest.fromUri(Uri.parse(picUrl)));
+        CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(ImageRequest.fromUri(picUrl),context);
         File cacheFile = getCacheImageOnDisk(cacheKey);
         if (cacheFile == null) {
             downloadImage(Uri.parse(picUrl), fileName, context);
@@ -57,11 +57,11 @@ public class FrescoUtil {
         Logger.d(IMAGE_CACHE_DIR);
         File localFile = null;
         if (cacheKey != null) {
-            if (ImagePipelineFactory.getInstance().getMainDiskStorageCache().hasKey(cacheKey)) {
-                BinaryResource resource = ImagePipelineFactory.getInstance().getMainDiskStorageCache().getResource(cacheKey);
+            if (ImagePipelineFactory.getInstance().getMainFileCache().hasKey(cacheKey)) {
+                BinaryResource resource = ImagePipelineFactory.getInstance().getMainFileCache().getResource(cacheKey);
                 localFile = ((FileBinaryResource) resource).getFile();
-            } else if (ImagePipelineFactory.getInstance().getSmallImageDiskStorageCache().hasKey(cacheKey)) {
-                BinaryResource resource = ImagePipelineFactory.getInstance().getSmallImageDiskStorageCache().getResource(cacheKey);
+            } else if (ImagePipelineFactory.getInstance().getSmallImageFileCache().hasKey(cacheKey)) {
+                BinaryResource resource = ImagePipelineFactory.getInstance().getSmallImageFileCache().getResource(cacheKey);
                 localFile = ((FileBinaryResource) resource).getFile();
             }
         }
