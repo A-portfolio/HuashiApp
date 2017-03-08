@@ -4,23 +4,37 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
     <EditText
         android:id="@+id/et_search"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_margin="8dp"
         android:background="@drawable/shape_disabled"
-        android:lines="1"
+        android:hint="输入书名或作者"
         android:imeOptions="actionSearch"
         android:inputType="text"
-        android:drawableLeft="@drawable/ic_back"
-        android:drawablePadding="36dp"
-        android:drawableRight="@drawable/search_close"
-        android:hint="输入书名或作者"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingLeft="64dp"
+        android:paddingRight="64dp"
     />
+
+    <ImageView
+        android:layout_width="24dp"
+        android:src="@drawable/ic_back"
+        android:id="@+id/iv_back"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="24dp"
+        android:layout_height="24dp"/>
+
+    <ImageView
+        android:layout_width="24dp"
+        android:src="@drawable/search_close"
+        android:id="@+id/iv_close"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="24dp"
+        android:layout_height="24dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -41,11 +55,11 @@
         android:text="清除"/>
 
     <ListView
+        android:id="@+id/lv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
+        android:layout_below="@+id/tv_clear"
         android:divider="@null"
-        android:id="@+id/lv"
-        android:layout_below="@+id/tv_clear"/>
+        android:scrollbars="none"/>
 
 </RelativeLayout>

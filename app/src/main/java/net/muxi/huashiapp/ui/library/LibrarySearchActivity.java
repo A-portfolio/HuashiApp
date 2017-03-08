@@ -4,22 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.util.DimensUtil;
-import net.muxi.huashiapp.util.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,6 +32,10 @@ public class LibrarySearchActivity extends BaseActivity {
     TextView mTvClear;
     @BindView(R.id.lv)
     ListView mLv;
+    @BindView(R.id.iv_back)
+    ImageView mIvBack;
+    @BindView(R.id.iv_close)
+    ImageView mIvClose;
 
     private HuaShiDao dao;
     private List<String> list;
@@ -79,24 +79,10 @@ public class LibrarySearchActivity extends BaseActivity {
                 return false;
             }
         });
-        mEtSearch.setOnTouchListener(((view, motionEvent) -> {
-            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                float x = motionEvent.getRawX();
-                float y = motionEvent.getRawY();
-                Logger.d(DimensUtil.dp2px(48) + "");
-                if (x < DimensUtil.dp2px(48) && x > DimensUtil.dp2px(24) && y < DimensUtil.dp2px(44)
-                        + DimensUtil.getStatusBarHeight()
-                        && y > DimensUtil.dp2px(20) + DimensUtil.getStatusBarHeight()) {
-                    finish();
-                } else if (x < DimensUtil.getScreenWidth() - DimensUtil.dp2px(24)
-                        && x > DimensUtil.getScreenWidth() - DimensUtil.dp2px(48)
-                        && y < DimensUtil.dp2px(44) + DimensUtil.getStatusBarHeight()
-                        && y > DimensUtil.dp2px(20) + DimensUtil.getStatusBarHeight()) {
-                    mEtSearch.setText("");
-                }
-            }
-            return true;
-        }));
+        mIvBack.setOnClickListener(v -> {
+            finish();
+        });
+        mIvClose.setOnClickListener(v -> mEtSearch.setText(""));
         mTvClear.setOnClickListener(v -> {
             dao.deleteAllHistory();
             list.clear();

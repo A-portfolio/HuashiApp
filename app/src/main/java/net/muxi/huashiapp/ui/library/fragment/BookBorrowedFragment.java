@@ -3,9 +3,11 @@ package net.muxi.huashiapp.ui.library.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ import net.muxi.huashiapp.common.data.PersonalBook;
 import net.muxi.huashiapp.common.data.RenewData;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.util.Base64Util;
+import net.muxi.huashiapp.util.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +58,9 @@ public class BookBorrowedFragment extends BaseFragment {
     @BindView(R.id.btn_renew)
     Button mBtnRenew;
 
+    private boolean isEllipsized = false;
+    private boolean isLineOver = false;
+
     private Book mBook;
     private String id;
     private PersonalBook mPersonalBook;
@@ -90,9 +96,40 @@ public class BookBorrowedFragment extends BaseFragment {
         mTvBid.setText(mBook.bid);
 
         loadPersonBook();
-        mTvShowAll.setOnClickListener(v -> {
-            mTvInfo.setMaxLines(Integer.MAX_VALUE);
-            mTvShowAll.setVisibility(View.INVISIBLE);
+        ViewTreeObserver vto = mTvInfo.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Layout l = mTvInfo.getLayout();
+                if ( l != null){
+                    int lines = l.getLineCount();
+                    if ( lines > 0) {
+                        if (l.getEllipsisCount(lines - 1) > 0) {
+                            Logger.d("text is ellips");
+                            isEllipsized = true;
+                            isLineOver = true;
+                        }else {
+                            isEllipsized = false;
+                        }
+                    }else {
+                        isEllipsized = false;
+                    }
+
+                }
+                if (!isLineOver){
+                    mTvShowAll.setVisibility(View.GONE);
+                }else {
+                    mTvShowAll.setOnClickListener(v -> {
+                        if (isEllipsized){
+                            mTvInfo.setMaxLines(Integer.MAX_VALUE);
+                            mTvShowAll.setText(R.string.fold_all);
+                        }else {
+                            mTvInfo.setMaxLines(2);
+                            mTvShowAll.setText(R.string.expand_all);
+                        }
+                    });
+                }
+            }
         });
         mBtnRenew.setOnClickListener(v -> {
             renewBook();
