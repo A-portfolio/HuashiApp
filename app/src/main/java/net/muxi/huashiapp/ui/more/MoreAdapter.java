@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class MoreAdapter extends RecyclerView.Adapter<MoreAdapter.MoreViewHolder
     public void onBindViewHolder(MoreViewHolder holder, int position) {
         holder.mItemImg.setImageResource(mIcons.get(position));
         if (position == 6){
-            holder.mItemText.setTextColor(ContextCompat.getColor(context,R.color.red));
+            holder.mItemText.setTextColor(App.sContext.getResources().getColor(R.color.red));
         }
         holder.mItemText.setText(mContents.get(position));
         holder.mItemLayout.setOnClickListener(new View.OnClickListener() {
