@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +19,7 @@ import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.service.DownloadService;
 import net.muxi.huashiapp.ui.AboutActivity;
+import net.muxi.huashiapp.ui.FAQActivity;
 import net.muxi.huashiapp.ui.SettingActivity;
 import net.muxi.huashiapp.ui.SuggestionActivity;
 import net.muxi.huashiapp.util.Logger;
@@ -84,6 +84,7 @@ public class MoreFragment extends BaseFragment {
             public void OnItemClick(View view, int position) {
                 switch (position) {
                     case 0:
+                        FAQActivity.start(getContext());
                         break;
                     case 1:
                         ShareDialog shareDialog = new ShareDialog();
@@ -172,7 +173,7 @@ public class MoreFragment extends BaseFragment {
             public void OnIdClick() {
                 App.logoutUser();
                 logoutDialog.dismiss();
-                showSnackbarShort(App.sContext.getString(R.string.tip_id_log_out));
+                ((BaseActivity) getActivity()).showSnackbarShort(App.sContext.getString(R.string.tip_id_log_out));
             }
         });
 
@@ -181,7 +182,7 @@ public class MoreFragment extends BaseFragment {
             public void OnLibraryClick() {
                 App.logoutLibUser();
                 logoutDialog.dismiss();
-                showSnackbarShort(App.sContext.getString(R.string.tip_library_log_out));
+                ((BaseActivity) getActivity()).showSnackbarShort(App.sContext.getString(R.string.tip_library_log_out));
             }
         });
 
@@ -191,17 +192,10 @@ public class MoreFragment extends BaseFragment {
                 App.logoutUser();
                 App.logoutLibUser();
                 logoutDialog.dismiss();
-                showSnackbarShort(App.sContext.getString(R.string.tip_all_log_out));
+                ((BaseActivity) getActivity()).showSnackbarShort(App.sContext.getString(R.string.tip_all_log_out));
             }
         });
         logoutDialog.show(getFragmentManager(), "dialog_logout");
     }
-
-
-    public void showSnackbarShort(String msg) {
-        Snackbar.make(getActivity().getWindow().getDecorView(), msg, Snackbar.LENGTH_SHORT)
-                .show();
-    }
-
 
 }

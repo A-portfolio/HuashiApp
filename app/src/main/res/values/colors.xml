@@ -101,5 +101,8 @@
 
     <!--通知栏提醒-->
     <color name="explanation_color">#999999</color>
+    
+    <!--校园通知-->
+    <color name="color_link_layout">#FAFAFA</color>
 
 </resources>

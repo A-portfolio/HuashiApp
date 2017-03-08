@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/apartment_layout"
     android:layout_width="match_parent"
     android:layout_height="102dp"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    app:elevation="0dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,7 +23,7 @@
             android:textSize="16sp"
             tools:text="学生事务大厅"/>
 
-        <ImageView
+        <View
             android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -31,16 +33,16 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:background="@color/dividerGrey"/>
+            android:background="@color/divider"/>
 
         <TextView
             android:id="@+id/ic_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/line"
-            android:layout_marginTop="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/ic_apartment_phone"/>
 
         <TextView
@@ -48,11 +50,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/line"
-            android:layout_marginTop="11dp"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:layout_toRightOf="@id/ic_phone"
+            android:layout_marginTop="11dp"
             android:layout_toEndOf="@id/ic_phone"
+            android:layout_toRightOf="@id/ic_phone"
             android:autoLink="phone"
             android:textColor="@color/textColorGrey"
             android:textIsSelectable="true"
@@ -61,12 +63,12 @@
 
         <TextView
             android:id="@+id/ic_position"
-            android:background="@drawable/ic_apartment_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/ic_phone"
             android:layout_alignStart="@id/ic_phone"
             android:layout_below="@id/ic_phone"
+            android:background="@drawable/ic_apartment_position"
             />
 
 
@@ -74,15 +76,15 @@
             android:id="@+id/tv_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_phone"
+            android:layout_alignStart="@+id/tv_phone"
+            android:layout_below="@id/tv_phone"
+            android:layout_marginTop="9dp"
             android:autoLink="map"
             android:textColor="@color/textColorGrey"
             android:textIsSelectable="true"
             android:textSize="14sp"
-            tools:text="文华公书林二楼"
-            android:layout_below="@id/tv_phone"
-            android:layout_marginTop="9dp"
-            android:layout_alignLeft="@+id/tv_phone"
-            android:layout_alignStart="@+id/tv_phone"/>
+            tools:text="文华公书林二楼"/>
 
     </RelativeLayout>
 
