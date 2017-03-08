@@ -68,7 +68,7 @@ public class AboutActivity extends ToolbarActivity {
         switch (view.getId()) {
             case R.id.tv_muxi_link:
                 ZhugeUtils.sendEvent("打开木犀官网", "打开木犀官网");
-                Intent intent = WebViewActivity.newIntent(AboutActivity.this, "http://" + mTvMuxiLink.getText().toString());
+                Intent intent = WebViewActivity.newIntent(AboutActivity.this, "http://muxistudio.com");
                 startActivity(intent);
                 break;
             case R.id.tv_copy:
