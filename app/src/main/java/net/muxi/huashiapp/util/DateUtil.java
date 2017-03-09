@@ -123,24 +123,6 @@ public class DateUtil {
         return weeks[week_index];
     }
 
-
-//    public static List<String> getTheWeekDate(int weekDistance) {
-//        List<String> dateInWeek = new ArrayList<String>();
-//
-////        Calendar calendar = Calendar.getInstance();
-//        Date curDate = new Date();
-//        String theWeek = toWeek(curDate);
-//        int i = 0;
-//        while(! theWeek.equals("周一") ){
-//            i --;
-//            theWeek = toWeek(curDate,i);
-//        }
-//        for (int j = 0 ;j < 7 ;j ++){
-//            dateInWeek.add(getTheDate(curDate,i + j + weekDistance * 7));
-//        }
-//        return dateInWeek;
-//    }
-
     //获取今天是一周的第几天
     public static int getDayInWeek(Date date){
         Calendar calendar = Calendar.getInstance();

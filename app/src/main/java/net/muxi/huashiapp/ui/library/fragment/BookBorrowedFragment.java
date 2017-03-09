@@ -93,7 +93,7 @@ public class BookBorrowedFragment extends BaseFragment {
         mTvTitle.setText(mBook.book);
         mTvAuthor.setText(mBook.author);
         mTvInfo.setText(mBook.intro);
-        mTvBid.setText(mBook.bid);
+        mTvBid.setText("索书号" + mBook.bid);
 
         loadPersonBook();
         ViewTreeObserver vto = mTvInfo.getViewTreeObserver();
@@ -146,8 +146,8 @@ public class BookBorrowedFragment extends BaseFragment {
                 .toList()
                 .subscribe(personalBooks -> {
                     if (personalBooks != null && personalBooks.size() > 0){
-                        mTvTid.setText(personalBooks.get(0).bar_code);
-                        mTvDay.setText(String.format("当前借阅(剩余%d天",personalBooks.get(0).time));
+                        mTvTid.setText("条码号" + personalBooks.get(0).bar_code);
+                        mTvDay.setText(String.format("当前借阅（剩余%d天）",personalBooks.get(0).time));
                         mTvPlace.setText(personalBooks.get(0).room);
                         mPersonalBook = personalBooks.get(0);
                     }

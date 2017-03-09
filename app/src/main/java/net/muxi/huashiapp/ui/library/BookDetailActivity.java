@@ -70,9 +70,7 @@ public class BookDetailActivity extends ToolbarActivity {
                     mMultiStatusView.showContent();
                     if (PreferenceUtil.getString(PreferenceUtil.BORROW_BOOK_IDS).contains(id)){
                         showBorrowedBookFragment(book);
-                        Logger.d("bor b");
                     }else{
-                        Logger.d("detail b");
                         showDetailFragment(book);
                     }
                 }, throwable -> {
