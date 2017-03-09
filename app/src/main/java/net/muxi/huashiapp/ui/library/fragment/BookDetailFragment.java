@@ -179,8 +179,8 @@ public class BookDetailFragment extends BaseFragment {
                             holder.getView(R.id.item_layout).setBackgroundResource(
                                     R.drawable.bg_book_state_disabled);
                         }
-                        holder.setText(R.id.tv_tid, booksBean.tid);
-                        holder.setText(R.id.tv_bid, booksBean.bid);
+                        holder.setText(R.id.tv_tid, "条码号" + booksBean.tid);
+                        holder.setText(R.id.tv_bid, "索书号" + mBook.bid);
                         holder.setText(R.id.tv_place, booksBean.room);
                     }
                 });
