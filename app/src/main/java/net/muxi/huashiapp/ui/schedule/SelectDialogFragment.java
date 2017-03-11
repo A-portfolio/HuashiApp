@@ -21,7 +21,9 @@ import android.widget.TextView;
 
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.widget.BottomDialogFragment;
+import net.muxi.huashiapp.widget.HorPickerPager.HorizontalPickPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,12 +58,11 @@ public class SelectDialogFragment extends BottomDialogFragment {
 
     private PositiveButtonClickListener mPositiveButtonClickListener;
 
-    public static final int WEEK_HEIGHT = 24 * 3;
-    public static final int WEEK_WIDTH = 24 * 3;
+    public static final int WEEK_HEIGHT = DimensUtil.dp2px(24);
+    public static final int WEEK_WIDTH = DimensUtil.dp2px(24);
 
-    public static final int WEEK_MARGIN_VERTICAL = 16 * 3;
-    public static final int WEEK_MARGIN_HORIZONTAL = 12 * 3;
-    public static final int DIALOG_MARGIN = 8 * 3;
+    public static final int WEEK_MARGIN_VERTICAL = DimensUtil.dp2px(16);
+    public static final int WEEK_MARGIN_HORIZONTAL = DimensUtil.dp2px(12);
 
     public static final int WEEK_LENGTH = 21;
 
@@ -132,13 +133,17 @@ public class SelectDialogFragment extends BottomDialogFragment {
             mTvWeeks[i].setTextColor(getResources().getColor(R.color.colorBottomDialogText));
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(WEEK_WIDTH,
                     WEEK_HEIGHT);
-            params.setMargins(WEEK_MARGIN_HORIZONTAL, WEEK_MARGIN_VERTICAL, WEEK_MARGIN_HORIZONTAL,
-                    WEEK_MARGIN_VERTICAL);
             if (weekList.contains(i + 1)) {
                 mTvWeeks[i].setBackgroundResource(R.drawable.bg_selected_week);
                 mTvWeeks[i].setTextColor(Color.WHITE);
             }
             mGridLayout.addView(mTvWeeks[i], params);
+            GridLayout.LayoutParams tvWeekLayoutParams = ((GridLayout.LayoutParams) mTvWeeks[i].getLayoutParams());
+            tvWeekLayoutParams.leftMargin = WEEK_MARGIN_HORIZONTAL;
+            tvWeekLayoutParams.rightMargin = WEEK_MARGIN_HORIZONTAL;
+            tvWeekLayoutParams.topMargin = WEEK_MARGIN_VERTICAL;
+            tvWeekLayoutParams.bottomMargin = WEEK_MARGIN_VERTICAL;
+
             mTvWeeks[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

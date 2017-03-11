@@ -6,15 +6,19 @@ package net.muxi.huashiapp.common.net;
  */
 public class CampusFactory {
 
-    public static final Object monitor = new Object();
-    public static RetrofitService sRetrofitService = null;
+    public volatile static RetrofitService sRetrofitService = null;
 
     public static RetrofitService getRetrofitService(){
-        synchronized (monitor){
-            if (sRetrofitService == null){
-                sRetrofitService = new CampusRetrofit().getRetrofitService();
+        RetrofitService retrofitService = sRetrofitService;
+        if (retrofitService == null){
+            synchronized (CampusFactory.class){
+                retrofitService = sRetrofitService;
+                if (retrofitService == null) {
+                    sRetrofitService = new CampusRetrofit().getRetrofitService();
+                    retrofitService = sRetrofitService;
+                }
             }
-            return sRetrofitService;
         }
+        return retrofitService;
     }
 }

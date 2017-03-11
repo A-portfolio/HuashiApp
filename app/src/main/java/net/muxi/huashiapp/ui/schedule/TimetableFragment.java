@@ -145,6 +145,10 @@ public class TimetableFragment extends BaseFragment {
             renderSelectedWeekView(week);
         });
         mIvMenu.setOnClickListener(v -> {
+            if(selectedIvStatus){
+                mWeekSelectedView.slideUp();
+                rotateSelectView();
+            }
             mTableMenuView.show();
             mTableMenuView.setCurweek(curWeek);
         });
