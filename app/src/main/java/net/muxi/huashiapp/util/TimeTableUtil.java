@@ -3,8 +3,6 @@ package net.muxi.huashiapp.util;
 import android.text.TextUtils;
 
 import net.muxi.huashiapp.Constants;
-
-
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Course;
 
@@ -76,6 +74,20 @@ public class TimeTableUtil {
                 break;
         }
         return color;
+    }
+
+    public static int getCourseBgAccordDay(String day) {
+        int[] colors = {R.drawable.ripple_green_light,
+                R.drawable.ripple_yellow,
+                R.drawable.ripple_blue,
+                R.drawable.ripple_orange,
+                R.drawable.ripple_green};
+        for (int i = 0; i < Constants.WEEKDAYS_XQ.length; i++) {
+            if (day.equals(Constants.WEEKDAYS_XQ[i])) {
+                return colors[i % 5];
+            }
+        }
+        return colors[0];
     }
 
     public static String simplifyCourse(String course) {
@@ -217,24 +229,24 @@ public class TimeTableUtil {
         }
         if (weekList.get(0) % 2 == 0) {
             for (int i = 0; i < weekList.size() - 1; i++) {
-                if (weekList.get(i + 1) - weekList.get(i) != 2){
+                if (weekList.get(i + 1) - weekList.get(i) != 2) {
                     b = false;
                     break;
                 }
             }
             return b;
-        }else {
+        } else {
             return false;
         }
     }
 
     public static boolean isContinuOusWeeks(List<Integer> weekList) {
-        if (weekList.size() < 2){
+        if (weekList.size() < 2) {
             return false;
         }
-        if (weekList.get(weekList.size() - 1) - weekList.get(0) == weekList.size() - 1){
+        if (weekList.get(weekList.size() - 1) - weekList.get(0) == weekList.size() - 1) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -246,17 +258,17 @@ public class TimeTableUtil {
         if (isSingleWeeks(weekList)) {
             start = weekList.get(0);
             end = weekList.get(weekList.size() - 1) + 1;
-            s = String.format("%d-%d周单",start,end);
+            s = String.format("%d-%d周单", start, end);
         } else if (isDoubleWeeks(weekList)) {
             start = weekList.get(0) - 1;
             end = weekList.get(weekList.size() - 1);
-            s = String.format("%d-%d周双",start,end);
+            s = String.format("%d-%d周双", start, end);
         } else if (isContinuOusWeeks(weekList)) {
             start = weekList.get(0);
             end = weekList.get(weekList.size() - 1);
-            s = String.format("%d-%d周",start,end);
-        }else {
-            s = TextUtils.join(",",weekList);
+            s = String.format("%d-%d周", start, end);
+        } else {
+            s = TextUtils.join(",", weekList);
             s += "周";
         }
         return s;
