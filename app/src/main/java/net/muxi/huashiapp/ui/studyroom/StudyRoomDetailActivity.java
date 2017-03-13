@@ -4,10 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,8 +25,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import static com.tencent.bugly.crashreport.inner.InnerAPI.context;
 
 /**
  * Created by december on 17/2/1.
@@ -53,11 +52,12 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     private ClassRoom mClassRoom;
 
 
-    public static void start(Context context,String query){
-        Intent starter = new Intent(context,StudyRoomDetailActivity.class);
-        starter.putExtra("query",query);
+    public static void start(Context context, String query) {
+        Intent starter = new Intent(context, StudyRoomDetailActivity.class);
+        starter.putExtra("query", query);
         context.startActivity(starter);
     }
+
     //查询参数
     private String mQuery;
 
@@ -78,26 +78,24 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
         mQuery = getIntent().getStringExtra("query");
         Logger.d(mQuery + " ");
 
-
-        if(!NetStatus.isConnected()){
+        if (!NetStatus.isConnected()) {
             showErrorSnackbarShort(R.string.tip_check_net);
             return;
         }
         showLoading();
         CampusFactory.getRetrofitService()
-                .getClassRoom(mQuery.substring(1, 2), getDayValue(mQuery), mQuery.substring(5, 6))
+                .getClassRoom(getWeek(mQuery), getDayValue(mQuery), getBuidingValue(mQuery))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(classRoom -> {
                     mClassRoom = classRoom;
                     setNull();
                     setData();
-                },throwable -> {
+                }, throwable -> {
                     throwable.printStackTrace();
                 }, () -> {
                     hideLoading();
                 });
-
 
 
     }
@@ -150,7 +148,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
             mGridClassroomEight.setColumnCount(4);
             for (int i = 0; i < mClassRoom.getValue1().size(); i++) {
                 TextView context1 = new TextView(this);
-                context1.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
+                context1.setTextColor(getResources().getColor(R.color.colorBlack));
                 context1.setText(mClassRoom.getValue1().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.rightMargin = DimensUtil.dp2px(64f);
@@ -166,7 +164,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
             mGridClassroomTen.setColumnCount(4);
             for (int i = 0; i < mClassRoom.getValue3().size(); i++) {
                 TextView context2 = new TextView(this);
-                context2.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
+                context2.setTextColor(getResources().getColor(R.color.colorBlack));
                 context2.setText(mClassRoom.getValue3().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.rightMargin = DimensUtil.dp2px(64f);
@@ -180,7 +178,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
             mGridClassroomTwelve.setColumnCount(4);
             for (int i = 0; i < mClassRoom.getValue5().size(); i++) {
                 TextView context3 = new TextView(this);
-                context3.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
+                context3.setTextColor(getResources().getColor(R.color.colorBlack));
                 context3.setText(mClassRoom.getValue5().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.rightMargin = DimensUtil.dp2px(64f);
@@ -195,7 +193,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
             mGridClassroomFourteen.setColumnCount(4);
             for (int i = 0; i < mClassRoom.getValue7().size(); i++) {
                 TextView context4 = new TextView(this);
-                context4.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
+                context4.setTextColor(getResources().getColor(R.color.colorBlack));
                 context4.setText(mClassRoom.getValue7().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.rightMargin = DimensUtil.dp2px(64f);
@@ -209,7 +207,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
             mGridClassroomSixteen.setColumnCount(4);
             for (int i = 0; i < mClassRoom.getValue9().size(); i++) {
                 TextView context5 = new TextView(this);
-                context5.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
+                context5.setTextColor(getResources().getColor(R.color.colorBlack));
                 context5.setText(mClassRoom.getValue9().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.rightMargin = DimensUtil.dp2px(64f);
@@ -223,7 +221,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
             mGridClassroomEighteen.setColumnCount(4);
             for (int i = 0; i < mClassRoom.getValue11().size(); i++) {
                 TextView context6 = new TextView(this);
-                context6.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
+                context6.setTextColor(getResources().getColor(R.color.colorBlack));
                 context6.setText(mClassRoom.getValue11().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.rightMargin = DimensUtil.dp2px(64f);
@@ -237,7 +235,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
             mGridClassroomTwenty.setColumnCount(4);
             for (int i = 0; i < mClassRoom.getValue13().size(); i++) {
                 TextView context7 = new TextView(this);
-                context7.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
+                context7.setTextColor(getResources().getColor(R.color.colorBlack));
                 context7.setText(mClassRoom.getValue13().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.rightMargin = DimensUtil.dp2px(64f);
@@ -255,7 +253,8 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
      * @return
      */
     private String getDayValue(String str) {
-        String s = str.substring(3, 5);
+        int index = str.indexOf("周");
+        String s = str.substring(index + 1, index + 3);
         switch (s) {
             case "周一":
                 s = "mon";
@@ -273,6 +272,18 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 s = "fri";
                 break;
         }
+        return s;
+    }
+
+    private String getWeek(String str) {
+        int index = str.indexOf("周");
+        String s = str.substring(1, index);
+        return s;
+    }
+
+    private String getBuidingValue(String str) {
+        int index = str.indexOf("号");
+        String s = str.substring(index - 1, index);
         return s;
     }
 
@@ -294,6 +305,8 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
         int itemId = item.getItemId();
         if (itemId == R.id.action_correct) {
             StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomDetailActivity.this);
+            Animation animation = AnimationUtils.loadAnimation(this,R.anim.view_show);
+            studyRoomCorrectView.startAnimation(animation);
             setContentView(studyRoomCorrectView);
         }
         return super.onOptionsItemSelected(item);

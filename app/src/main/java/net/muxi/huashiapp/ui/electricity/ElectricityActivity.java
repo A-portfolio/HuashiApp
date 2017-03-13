@@ -62,8 +62,8 @@ public class ElectricityActivity extends ToolbarActivity {
 
     //东区对应的建筑
     private static final String[] buildingStrings1 = {
-            "东区1栋", "东区2栋", "东区3栋", "东区4栋", "东区5栋", "东区6栋", "东区7栋", "东区8栋", "东区9栋", "东区10栋", "东区11栋", "东区12栋", "13栋西",
-            "东区13栋东", "东区14栋", "东区15西", "东区15栋东", "东区16栋", "东区附1栋"};
+            "东区1栋", "东区2栋", "东区3栋", "东区4栋", "东区5栋", "东区6栋", "东区7栋", "东区8栋", "东区9栋", "东区10栋", "东区11栋", "东区12栋", "东区13栋西",
+            "东区13栋东", "东区14栋", "东区15栋西", "东区15栋东", "东区16栋", "东区附1栋"};
 
     //西区对应的建筑
     private static final String[] buildingStrings2 = {
@@ -105,13 +105,22 @@ public class ElectricityActivity extends ToolbarActivity {
 
         mArea = new TextView[]{mArea1, mArea2, mArea3, mArea4, mArea5, mArea6};
 
+        initView();
     }
 
+    private void initView() {
+        mArea1.setBackgroundResource(R.drawable.shape_green);
+        mArea1.setTextColor(Color.WHITE);
+        mTvArea.setText("东区2栋");
+        mBuildings = buildingStrings1;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        area = data.getStringExtra("area");
-        mTvArea.setText(area);
+        if (data != null) {
+            area = data.getStringExtra("area");
+            mTvArea.setText(area);
+        }
     }
 
 
@@ -143,18 +152,18 @@ public class ElectricityActivity extends ToolbarActivity {
                 mBuildings = buildingStrings6;
                 break;
             case R.id.tv_area:
-                    Intent intent = new Intent(ElectricityActivity.this, ElectricityAreaOptionActivity.class);
-                    intent.putExtra("buildings", mBuildings);
-                    startActivityForResult(intent,0);
+                Intent intent = new Intent(ElectricityActivity.this, ElectricityAreaOptionActivity.class);
+                intent.putExtra("buildings", mBuildings);
+                startActivityForResult(intent, 0);
                 break;
             case R.id.btn_search:
 
                 if (mTvArea.getText().length() != 0 && mEtRoom.getText().toString().length() != 0) {
-                    int index = area.indexOf("栋");
-                    if (area.length() > index + 1) {
-                        mQuery = area.substring(0, 1) + area.substring(2, index) + "-" + area.substring(index + 1) + mEtRoom.getText().toString();
+                    int index = mTvArea.getText().toString().indexOf("栋");
+                    if (mTvArea.getText().length() > index + 1) {
+                        mQuery = mTvArea.getText().toString().substring(0, 1) + mTvArea.getText().toString().substring(2, index) + "-" + mTvArea.getText().toString().substring(index + 1) + mEtRoom.getText().toString();
                     } else {
-                        mQuery = area.substring(0, 1) + area.substring(2, index) + "-" + mEtRoom.getText().toString();
+                        mQuery = mTvArea.getText().toString().substring(0, 1) + mTvArea.getText().toString().substring(2, index) + "-" + mEtRoom.getText().toString();
                     }
                     PreferenceUtil sp = new PreferenceUtil();
                     sp.saveString(PreferenceUtil.ELE_QUERY_STRING, mQuery);

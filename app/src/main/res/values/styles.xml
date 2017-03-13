@@ -108,10 +108,7 @@
 
     <style name="CenterDialogStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:background">@color/textColor</item>
-        <item name="android:backgroundDimAmount">0.9</item>
+        <item name="android:backgroundDimAmount">0.7</item>
         <!--<item name="android:backgroundDimEnabled">true</item>-->
     </style>
     
