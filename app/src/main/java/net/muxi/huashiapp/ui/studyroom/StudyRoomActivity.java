@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -36,8 +38,8 @@ public class StudyRoomActivity extends ToolbarActivity {
     @BindView(R.id.btn_search)
     Button mBtnSearch;
 
-    public static void start(Context context){
-        Intent starter = new Intent(context,StudyRoomActivity.class);
+    public static void start(Context context) {
+        Intent starter = new Intent(context, StudyRoomActivity.class);
         context.startActivity(starter);
     }
 
@@ -58,6 +60,13 @@ public class StudyRoomActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         setTitle("空闲教室");
 
+        initView();
+
+    }
+
+    private void initView() {
+        mTvStudyTime.setText("第13周周二");
+        mTvStudyArea.setText("7号楼");
     }
 
     @Override
@@ -71,7 +80,10 @@ public class StudyRoomActivity extends ToolbarActivity {
         int itemId = item.getItemId();
         if (itemId == R.id.action_correct) {
             StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomActivity.this);
+            Animation animation = AnimationUtils.loadAnimation(this, R.anim.view_show);
+            studyRoomCorrectView.startAnimation(animation);
             setContentView(studyRoomCorrectView);
+
 
         }
         return super.onOptionsItemSelected(item);
@@ -96,28 +108,28 @@ public class StudyRoomActivity extends ToolbarActivity {
             case R.id.tv_study_area:
                 intent = new Intent();
                 intent.setClass(StudyRoomActivity.this, StudyAreaOptionActivity.class);
-                startActivityForResult(intent,0);
+                startActivityForResult(intent, 0);
 
                 break;
             case R.id.btn_search:
-                if (mTvStudyTime.getText().length() !=0  && mTvStudyArea.getText().length() != 0) {
-                    ZhugeUtils.sendEvent("查看空闲教室","查看空闲教室");
+                if (mTvStudyTime.getText().length() != 0 && mTvStudyArea.getText().length() != 0) {
+                    ZhugeUtils.sendEvent("查看空闲教室", "查看空闲教室");
                     mQuery = mTvStudyTime.getText().toString() + mTvStudyArea.getText().toString();
-                    StudyRoomDetailActivity.start(StudyRoomActivity.this,mQuery);
-//                    mTvStudyTime.setText(null);
-//                    mTvStudyArea.setText(null);
+                    StudyRoomDetailActivity.start(StudyRoomActivity.this, mQuery);
                     this.finish();
                     break;
                 } else {
-                   showSnackbarShort("请填写完整信息");
+                    showSnackbarShort("请填写完整信息");
                 }
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        area = data.getStringExtra("studyArea");
-        mTvStudyArea.setText(area);
+        if (data != null) {
+            area = data.getStringExtra("studyArea");
+            mTvStudyArea.setText(area);
+        }
     }
 
     @Override

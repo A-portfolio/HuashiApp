@@ -50,7 +50,7 @@ public class MoreFragment extends BaseFragment {
     private String downloadUrl;
 
 
-    private String[] titles = {"常见问题Q&A", "分享App给好友", "通知栏提醒", "意见反馈", "检查更新", "关于", "退出账号"};
+    private String[] titles = {"常见问题Q&A", "分享App给好友", "通知栏提醒", "意见反馈", "检查更新 " + "(当前" + BuildConfig.VERSION_NAME + "版本)", "关于", "退出账号"};
     private Integer[] icons =
             {R.drawable.ic_more_qa, R.drawable.ic_more_share, R.drawable.ic_more_notice,
                     R.drawable.ic_more_feedback,

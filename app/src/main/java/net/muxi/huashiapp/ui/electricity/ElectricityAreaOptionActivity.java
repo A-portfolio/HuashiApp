@@ -59,4 +59,10 @@ public class ElectricityAreaOptionActivity extends ToolbarActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        setResult(0,intent);
+        ElectricityAreaOptionActivity.this.finish();
+    }
 }

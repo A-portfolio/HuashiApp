@@ -50,37 +50,40 @@
         android:id="@+id/iv_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/et_suggestion"
         android:layout_below="@id/et_suggestion"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:layout_alignLeft="@id/et_suggestion"
         android:src="@drawable/ic_edit_feedback"
         />
 
-    <TextView
-        android:id="@+id/tv_title_contact"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_word_length"
-        android:layout_toRightOf="@id/iv_edit"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_centerInParent="true"
-        android:text="@string/title_input_contact"
-        android:textColor="@color/textColorGrey"/>
 
     <EditText
         android:id="@+id/et_contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_title_contact"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_below="@id/et_suggestion"
+        android:layout_marginLeft="24dp"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="22dp"
+        android:layout_toRightOf="@id/iv_edit"
+        android:background="@null"
+        android:hint="留下您的QQ吧"
+        android:textSize="@dimen/medium_size"
         android:lines="1"/>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/et_contact"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:background="@color/divider"/>
 
     <Button
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/et_contact"
+        android:layout_below="@+id/divider2"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"

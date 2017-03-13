@@ -45,6 +45,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener{
     private int[] imgs = new int[]{R.drawable.bg_guide_1, R.drawable.bg_guide_2,R.drawable.bg_guide_3};
 
     private Button mButton;
+
     public static void start(Context context) {
         Intent intent = new Intent(context, GuideActivity.class);
         context.startActivity(intent);

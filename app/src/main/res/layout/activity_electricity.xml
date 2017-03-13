@@ -168,11 +168,13 @@
         android:id="@+id/et_room"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/iv_choose_room"
+        android:layout_below="@id/divider"
+        android:layout_marginTop="24dp"
         android:layout_marginLeft="24dp"
         android:layout_toRightOf="@id/iv_choose_room"
         android:hint="输入寝室号"
         android:textColor="@color/hintColor"
+        android:background="@null"
         android:textSize="@dimen/medium_size"/>
 
     <View

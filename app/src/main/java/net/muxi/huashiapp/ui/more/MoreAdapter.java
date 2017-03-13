@@ -1,6 +1,5 @@
 package net.muxi.huashiapp.ui.more;
 
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +13,6 @@ import net.muxi.huashiapp.R;
 
 import java.util.List;
 
-import static com.tencent.bugly.crashreport.inner.InnerAPI.context;
-
 
 /**
  * Created by december on 17/2/18.
@@ -25,7 +22,6 @@ public class MoreAdapter extends RecyclerView.Adapter<MoreAdapter.MoreViewHolder
 
     private List<Integer> mIcons;
     private List<String> mContents;
-
 
 
     public ItemClickListener mItemClickListener;
@@ -50,15 +46,15 @@ public class MoreAdapter extends RecyclerView.Adapter<MoreAdapter.MoreViewHolder
     @Override
     public void onBindViewHolder(MoreViewHolder holder, int position) {
         holder.mItemImg.setImageResource(mIcons.get(position));
-        if (position == 6){
+        if (position == 6) {
             holder.mItemText.setTextColor(App.sContext.getResources().getColor(R.color.red));
         }
         holder.mItemText.setText(mContents.get(position));
         holder.mItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mItemClickListener != null){
-                    mItemClickListener.OnItemClick(v,position);
+                if (mItemClickListener != null) {
+                    mItemClickListener.OnItemClick(v, position);
                 }
             }
         });

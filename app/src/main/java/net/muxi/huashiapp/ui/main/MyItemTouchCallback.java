@@ -90,10 +90,9 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback  {
         viewHolder.itemView.setAlpha(1.0f);
         if (background != null) viewHolder.itemView.setBackgroundDrawable(background);
         if (bkcolor != -1) viewHolder.itemView.setBackgroundColor(bkcolor);
-        //viewHolder.itemView.setBackgroundColor(0);
 
         if (onDragListener!=null){
-            onDragListener.onFinishDrag();
+            onDragListener.onFinishDrag(viewHolder);
         }
     }
 
@@ -102,7 +101,7 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback  {
         return this;
     }
     public interface OnDragListener{
-        void onFinishDrag();
+        void onFinishDrag(RecyclerView.ViewHolder vh);
     }
 
     public interface ItemTouchAdapter {
