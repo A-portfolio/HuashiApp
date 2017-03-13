@@ -129,8 +129,7 @@ public class TableContent extends FrameLayout {
                 DimensUtil.dp2px(65 * TimeTableUtil.weekday2num(course.day) + 1),
                 DimensUtil.dp2px(57 * (course.start - 1) + 1), 0, 0);
         if (TimeTableUtil.isThisWeek(selectWeek,course.weeks)) {
-            tvCourse.setBackground(getResources().getDrawable(
-                    TimeTableUtil.getCourseBg(course.color)));
+            tvCourse.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBgAccordDay(course.day)));
             tvCourse.setText(ellipseCourse(course.course) + "\n\n@" +
                     course.place + "\n" +
                     course.teacher);

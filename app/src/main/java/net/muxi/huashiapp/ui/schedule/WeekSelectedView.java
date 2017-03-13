@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.util.DimensUtil;
+import net.muxi.huashiapp.util.Logger;
 
 /**
  * Created by ybao on 17/1/29.
@@ -49,9 +51,15 @@ public class WeekSelectedView extends GridLayout {
             mTvWeeks[i].setText((i + 1) + "");
             mTvWeeks[i].setTextColor(getResources().getColor(android.R.color.primary_text_light));
             mTvWeeks[i].setGravity(Gravity.CENTER);
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(SELECTED_VIEW_HEIGHT,SELECTED_VIEW_HEIGHT);
-            params.setMargins(SELECTED_VIEW_MARGIN,SELECTED_VIEW_MARGIN,SELECTED_VIEW_MARGIN,SELECTED_VIEW_MARGIN);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(SELECTED_VIEW_HEIGHT,SELECTED_VIEW_HEIGHT);
             this.addView(mTvWeeks[i],params);
+            LayoutParams tvWeekLayoutParams = (GridLayout.LayoutParams) mTvWeeks[i].getLayoutParams();
+            tvWeekLayoutParams.leftMargin = SELECTED_VIEW_MARGIN;
+            tvWeekLayoutParams.rightMargin = SELECTED_VIEW_MARGIN;
+            tvWeekLayoutParams.topMargin = SELECTED_VIEW_MARGIN;
+            tvWeekLayoutParams.bottomMargin = SELECTED_VIEW_MARGIN;
+
             final int selectedWeek = i;
             mTvWeeks[i].setOnClickListener(new OnClickListener() {
                 @Override

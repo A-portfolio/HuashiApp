@@ -18,15 +18,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginRight="24dp"
         android:descendantFocusability="blocksDescendants"
         android:theme="@style/AppTheme.Picker"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="24dp"
+        android:layout_toLeftOf="@+id/np_end"
+        android:gravity="center"
         android:layout_toRightOf="@+id/np_start"
         android:text="至"/>
 
