@@ -31,20 +31,17 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-/**
- * Created by december on 17/3/1.
- */
 
 public class ACache {
-
     public static final int TIME_HOUR = 60 * 60;
     public static final int TIME_DAY = TIME_HOUR * 24;
-    private static final int MAX_SIZE = 1000 * 1000 * 50; // 50 mb
-    private static final int MAX_COUNT = Integer.MAX_VALUE; // 不限制存放数据的数量
+    private static final int MAX_SIZE = 1000 * 1000 * 50;
+    private static final int MAX_COUNT = Integer.MAX_VALUE;
     private static Map<String, ACache> mInstanceMap = new HashMap<String, ACache>();
     private ACacheManager mCache;
 
@@ -710,9 +707,9 @@ public class ACache {
 
             Long oldestUsage = null;
             File mostLongUsedFile = null;
-            Set<Map.Entry<File, Long>> entries = lastUsageDates.entrySet();
+            Set<Entry<File, Long>> entries = lastUsageDates.entrySet();
             synchronized (lastUsageDates) {
-                for (Map.Entry<File, Long> entry : entries) {
+                for (Entry<File, Long> entry : entries) {
                     if (mostLongUsedFile == null) {
                         mostLongUsedFile = entry.getKey();
                         oldestUsage = entry.getValue();

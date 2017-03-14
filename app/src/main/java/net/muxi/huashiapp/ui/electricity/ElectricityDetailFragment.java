@@ -12,21 +12,18 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.Electricity;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by december on 16/7/6.
  */
 public class ElectricityDetailFragment extends BaseFragment {
 
 
-    @BindView(R.id.card_money_left)
-    CardView mCardMoneyLeft;
-    @BindView(R.id.card_degree_left)
-    CardView mCardDegreeLeft;
-    @BindView(R.id.card_total_use)
-    CardView mCardTotalUse;
+//    @BindView(R.id.card_money_left)
+//    CardView mCardMoneyLeft;
+//    @BindView(R.id.card_degree_left)
+//    CardView mCardDegreeLeft;
+//    @BindView(R.id.card_total_use)
+//    CardView mCardTotalUse;
 
     private TextView mTvDegreeLeft;
     private TextView mTvDegreeLastMonth;
@@ -34,6 +31,10 @@ public class ElectricityDetailFragment extends BaseFragment {
     private TextView mTvMoneyLeft;
     private TextView mTvMoneyLastMonth;
     private TextView mTvMoneyCurMonth;
+
+    private CardView mCardMoneyLeft;
+    private CardView mCardDegreeLeft;
+    private CardView mCardTotalUse;
 
 
     @Override
@@ -52,31 +53,42 @@ public class ElectricityDetailFragment extends BaseFragment {
         mTvMoneyLastMonth = (TextView) view.findViewById(R.id.tv_money_last_month);
         mTvMoneyCurMonth = (TextView) view.findViewById(R.id.tv_money_cur_month);
 
-        ButterKnife.bind(this, view);
+        mCardMoneyLeft = (CardView) view.findViewById(R.id.card_money_left);
+        mCardDegreeLeft = (CardView) view.findViewById(R.id.card_degree_left);
+        mCardTotalUse = (CardView) view.findViewById(R.id.card_total_use);
 
 
         return view;
     }
 
 
-
     public void setCardColor(int position) {
-        if (position == 0) {
-            mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
-            mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
-            mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_two));
-        } else if (position == 1) {
-            mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_one));
-            mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_one));
-            mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_two));
+        if (isAdded()) {
+            if (position == 0) {
+                mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
+                mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
+                mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_two));
+            } else {
+                if (position == 1) {
+                    mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_one));
+                    mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_one));
+                    mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_two));
+                }
+            }
         }
     }
 
-
-
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStart() {
+        super.onStart();
+
+        if (isAdded()){
+            mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
+            mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
+            mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_two));
+
+
+        }
     }
 
     /**
@@ -93,4 +105,8 @@ public class ElectricityDetailFragment extends BaseFragment {
         mTvMoneyCurMonth.setText(eleData.getEle().getCurrent());
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

@@ -88,7 +88,7 @@
     <color name="color_shadow">#80000000</color>
 
     <!--电费-->
-    <color name="color_normal_tab">#B3FFFFFF</color>
+    <color name="color_normal_tab">#B2B2B2</color>
     <color name="color_white_loading">#96FFFFFF</color>
     <color name="color_card_light_one">#FFC635</color>
     <color name="color_card_light_two">#52B6FF</color>

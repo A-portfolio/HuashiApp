@@ -1,11 +1,13 @@
 package net.muxi.huashiapp.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +24,12 @@ import net.muxi.huashiapp.ui.apartment.ApartmentActivity;
 import net.muxi.huashiapp.ui.card.CardActivity;
 import net.muxi.huashiapp.ui.credit.SelectCreditActivity;
 import net.muxi.huashiapp.ui.electricity.ElectricityActivity;
+import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.news.NewsActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.ui.website.WebsiteActivity;
+import net.muxi.huashiapp.ui.webview.WebViewActivity;
 import net.muxi.huashiapp.util.ACache;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NetStatus;
@@ -76,26 +80,27 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
         mToolbar.setTitle("华师匣子");
 
-        setData();
 
         dao = new HuaShiDao();
         mBannerDatas = dao.loadBannerData();
 
-        initView();
         getBannerDatas();
+
+        setData();
+        initView();
 
         return view;
     }
 
     private void setData() {
-        ArrayList<ItemData> items = (ArrayList<ItemData>) ACache.get(getActivity()).getAsObject("items");
+        ArrayList<ItemData> items = (ArrayList<ItemData>) ACache.get(getContext()).getAsObject("items");
 
-        if (items != null) {
+        if (items != null)
             mItemDatas.addAll(items);
-        } else {
+        else {
             mItemDatas.add(new ItemData("成绩", R.drawable.ic_score + ""));
             mItemDatas.add(new ItemData("校园通知", R.drawable.ic_news + ""));
-            mItemDatas.add(new ItemData("电费", R.drawable.ic_ele+ ""));
+            mItemDatas.add(new ItemData("电费", R.drawable.ic_ele + ""));
             mItemDatas.add(new ItemData("校园卡", R.drawable.ic_card + ""));
             mItemDatas.add(new ItemData("算学分", R.drawable.ic_credit + ""));
             mItemDatas.add(new ItemData("空闲教室", R.drawable.ic_empty_room + ""));
@@ -105,11 +110,12 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
             mItemDatas.add(new ItemData("学而", R.drawable.ic_xueer + ""));
             mItemDatas.add(new ItemData("更多", R.drawable.ic_more + ""));
         }
+
     }
 
     private void initView() {
         final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
-        mMainAdapter = new MainAdapter(mItemDatas,mBannerDatas);
+        mMainAdapter = new MainAdapter(mItemDatas, mBannerDatas);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -126,7 +132,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         mRecyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRecyclerView) {
             @Override
             public void onLongClick(RecyclerView.ViewHolder vh) {
-                if (vh.getLayoutPosition() != mItemDatas.size()) {
+                if (vh.getLayoutPosition() != mItemDatas.size() && vh.getLayoutPosition() != 0) {
                     itemTouchHelper.startDrag(vh);
                     VibratorUtil.Vibrate(getActivity(), 50);
                 }
@@ -134,41 +140,66 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
             @Override
             public void onItemClick(RecyclerView.ViewHolder vh) {
-                ItemData itemData = mItemDatas.get(vh.getLayoutPosition());
-                switch (itemData.getName()) {
-                    case "成绩":
-                        ScoreSelectActivity.start(getContext());
-                        break;
-                    case "校园通知":
-                        NewsActivity.start(getContext());
-                        break;
-                    case "电费":
-                        ElectricityActivity.start(getContext());
-                        break;
-                    case "校园卡":
-                        CardActivity.start(getContext());
-                        break;
-                    case "算学分":
-                        SelectCreditActivity.start(getContext());
-                        break;
-                    case "空闲教室":
-                        StudyRoomActivity.start(getContext());
-                        break;
-                    case "部门信息":
-                        ApartmentActivity.start(getContext());
-                        break;
-                    case "校历":
-                        CalendarActivity.start(getContext());
-                        break;
-                    case "常用网站":
-                        WebsiteActivity.start(getContext());
-                        break;
-                    case "学而":
-                        App.logoutUser();
-                        App.logoutLibUser();
-                        break;
-                    case "更多":
-                        break;
+                if (vh.getLayoutPosition() == 0) {
+                    mMainAdapter.setOnBannerItemClickListener(new MainAdapter.OnBannerItemClickListener() {
+                        @Override
+                        public void onBannerItemClick(BannerData bannerData) {
+                            try {
+                                Intent intent = WebViewActivity.newIntent(getContext(), bannerData.getUrl());
+                                startActivity(intent);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } else
+
+                {
+                    ItemData itemData = mItemDatas.get(vh.getLayoutPosition() - 1);
+                    switch (itemData.getName()) {
+                        case "成绩":
+                            ScoreSelectActivity.start(getContext());
+                            if (TextUtils.isEmpty(App.sUser.getSid())) {
+                                LoginActivity.start(getContext(), "info");
+                            }
+                            break;
+                        case "校园通知":
+                            NewsActivity.start(getContext());
+                            break;
+                        case "电费":
+                            ElectricityActivity.start(getContext());
+                            break;
+                        case "校园卡":
+                            CardActivity.start(getContext());
+                            if (TextUtils.isEmpty(App.sUser.getSid())) {
+                                LoginActivity.start(getContext(), "info");
+                            }
+                            break;
+                        case "算学分":
+                            SelectCreditActivity.start(getContext());
+                            if (TextUtils.isEmpty(App.sUser.getSid())) {
+                                LoginActivity.start(getContext(), "info");
+                            }
+                            break;
+                        case "空闲教室":
+                            StudyRoomActivity.start(getContext());
+                            break;
+                        case "部门信息":
+                            ApartmentActivity.start(getContext());
+                            break;
+                        case "校历":
+                            CalendarActivity.start(getContext());
+                            break;
+                        case "常用网站":
+                            WebsiteActivity.start(getContext());
+                            break;
+                        case "学而":
+                            App.logoutUser();
+                            App.logoutLibUser();
+                            break;
+                        case "更多":
+                            break;
+                    }
                 }
             }
         });
@@ -227,7 +258,9 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
 
     @Override
-    public void onFinishDrag() {
+    public void onFinishDrag(RecyclerView.ViewHolder vh) {
         ACache.get(getActivity()).put("items", (ArrayList<ItemData>) mItemDatas);
+        Logger.d(mItemDatas.get(2).getName() + " ");
+
     }
 }

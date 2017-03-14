@@ -10,12 +10,12 @@
     <com.muxistudio.cardbanner.CardBanner
         android:id="@+id/card_banner"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        app:cardMargin="16dp"
+        android:layout_height="180dp"
+        app:cardMargin="8dp"
         app:baseElevation="4dp"
-        app:cardRadius="8dp"
-        app:floatElevation="8dp"
+        app:cardRadius="6dp"
+        app:floatElevation="4dp"
         app:isLoop="false"
-        app:sideCardWidth="16dp"/>
+        app:sideCardWidth="8dp"/>
 
 </RelativeLayout>

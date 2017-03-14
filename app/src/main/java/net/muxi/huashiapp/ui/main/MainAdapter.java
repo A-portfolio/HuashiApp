@@ -17,6 +17,7 @@ import com.muxistudio.cardbanner.ViewHolder;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.ItemData;
+import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.FrescoUtil;
 
 import java.util.ArrayList;
@@ -26,14 +27,14 @@ import java.util.List;
 /**
  * Created by december on 16/4/19.
  */
-public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements MyItemTouchCallback.ItemTouchAdapter {
+public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements MyItemTouchCallback.ItemTouchAdapter  {
 
     private static final int ITEM_TYPE_BANNER = 0;
     private static final int ITEM_TYPE_COMMON = 1;
 
     private static final long TURNING_TIME = 4000;
 
-    private List<ItemData> mItems;
+    private List<ItemData> mItemDatas;
     private List<BannerData> mBannerDatas;
 
 
@@ -53,25 +54,26 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void onMove(int fromPosition, int toPosition) {
-        if (fromPosition == mItems.size() || toPosition == mItems.size()) {
+        if (fromPosition == mItemDatas.size() - 1|| toPosition == mItemDatas.size() - 1) {
             return;
         }
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(mItems, i, i + 1);
+                Collections.swap(mItemDatas, i, i + 1);
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(mItems, i, i - 1);
+                Collections.swap(mItemDatas, i, i - 1);
             }
         }
+
         notifyItemMoved(fromPosition, toPosition);
 
     }
 
     @Override
     public void onSwiped(int position) {
-        mItems.remove(position);
+        mItemDatas.remove(position);
         notifyItemRemoved(position);
 
     }
@@ -83,7 +85,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     public MainAdapter(List<ItemData> items, List<BannerData> bannerDatas) {
-        this.mItems = items;
+        this.mItemDatas = items;
         mBannerDatas = bannerDatas;
         resUrls = new ArrayList<>();
         for (int i = 0; i < bannerDatas.size(); i++) {
@@ -92,7 +94,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     public MainAdapter(List<ItemData> items) {
-        this.mItems = items;
+        this.mItemDatas = items;
     }
 
     public void swapBannerData(List<BannerData> bannerDatas) {
@@ -105,7 +107,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     public void swapProduct(List<ItemData> items) {
-        this.mItems = items;
+        this.mItemDatas = items;
         notifyDataSetChanged();
     }
 
@@ -152,26 +154,32 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             ((BannerViewHolder) holder).mCardBanner.setAutoScroll(true);
             ((BannerViewHolder) holder).mCardBanner.setScrollDuration(3000);
             ((BannerViewHolder) holder).mCardBanner.setScrollTime(500);
+//            ((BannerViewHolder) holder).mCardBanner.setOnClickListener(new On);
+            ((BannerViewHolder) holder).mCardBanner.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnBannerItemClickListener != null){
+                        mOnBannerItemClickListener.onBannerItemClick(mBannerDatas.get(position));
+                    }
+                }
+            });
 
         } else if (holder instanceof CommonViewHolder) {
             if (position > 0) {
-                ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItems.get(position).getIcon()));
-                ((CommonViewHolder) holder).mTextView.setText(mItems.get(position).getName());
-                ((CommonViewHolder) holder).itemView.setTag(position);
+                ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItemDatas.get(position - ITEM_BANNER).getIcon()));
+                ((CommonViewHolder) holder).mTextView.setText(mItemDatas.get(position - ITEM_BANNER).getName());
+                ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
             } else {
-                if (mItems.get(position).getName().equals("学而")) {
-                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mItems.get(position - ITEM_BANNER).getIcon()));
-                    FrescoUtil.savePicture(mItems.get(position - ITEM_BANNER).getIcon(), mContext, mItems.get(position - ITEM_BANNER).getName());
+                if (mItemDatas.get(position).getName().equals("学而")) {
+                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mItemDatas.get(position - ITEM_BANNER).getIcon()));
+                    FrescoUtil.savePicture(mItemDatas.get(position - ITEM_BANNER).getIcon(), mContext, mItemDatas.get(position - ITEM_BANNER).getName());
                 } else {
-                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItems.get(position - ITEM_BANNER).getIcon()));
+                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItemDatas.get(position - ITEM_BANNER).getIcon()));
                 }
-                ((CommonViewHolder) holder).mTextView.setText(mItems.get(position - ITEM_BANNER).getName());
+                ((CommonViewHolder) holder).mTextView.setText(mItemDatas.get(position - ITEM_BANNER).getName());
                 ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
             }
         }
-//            ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItems.get(position).getIcon()));
-//            ((CommonViewHolder) holder).mTextView.setText(mItems.get(position).getName());
-//            ((CommonViewHolder) holder).itemView.setTag(position);
     }
 
 
@@ -182,8 +190,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public int getItemCount() {
-        return mItems.size() + 1;
+        return mItemDatas.size() + 1;
     }
+
+
 
 
     public class CommonViewHolder extends RecyclerView.ViewHolder {
@@ -196,6 +206,9 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             mTextView = (TextView) itemview.findViewById(R.id.main_text_view);
             mDraweeView = (SimpleDraweeView) itemview.findViewById(R.id.main_pic);
             mItemLayout = (RelativeLayout) itemview.findViewById(R.id.item_layout);
+            ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams) mDraweeView.getLayoutParams();
+            layoutParams.width = DimensUtil.getScreenWidth() / 3;
+            mDraweeView.setLayoutParams(layoutParams);
         }
     }
 

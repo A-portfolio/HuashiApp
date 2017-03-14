@@ -1,12 +1,9 @@
 package net.muxi.huashiapp.common.base;
 
-import android.app.ProgressDialog;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -21,6 +18,8 @@ import net.muxi.huashiapp.widget.LoadingDialog;
 
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
+
+import static android.support.design.widget.Snackbar.make;
 
 /**
  * Created by ybao on 16/4/19.
@@ -95,19 +94,20 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mCompositeSubscription != null){
+        if (mCompositeSubscription != null) {
             mCompositeSubscription.unsubscribe();
         }
         ZhugeSDK.getInstance().flush(getApplicationContext());
     }
 
     public void showSnackbarLong(String msg) {
-        Snackbar.make(getWindow().getDecorView(), msg, Snackbar.LENGTH_LONG)
+        make(getWindow().getDecorView(), msg, Snackbar.LENGTH_LONG)
                 .show();
+
     }
 
     public void showSnackbarShort(String msg) {
-        Snackbar.make(getWindow().getDecorView(), msg, Snackbar.LENGTH_SHORT)
+        Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_SHORT)
                 .show();
     }
 
@@ -125,7 +125,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void showErrorSnackbarShort(String msg) {
         Snackbar snackbar;
-        snackbar = Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_SHORT)
+        snackbar = make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_SHORT)
                 .setText(msg);
         View view = snackbar.getView();
         view.setBackgroundColor(getResources().getColor(R.color.red));

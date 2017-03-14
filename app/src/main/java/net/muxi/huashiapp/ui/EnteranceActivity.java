@@ -52,39 +52,42 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
         isFirstOpen = sp.getBoolean(PreferenceUtil.APP_FIRST_OPEN);
 
         if (!isFirstOpen) {
-            MainActivity.start(this);
+            GuideActivity.start(this);
+            sp.saveBoolean(PreferenceUtil.APP_FIRST_OPEN, true);
             this.finish();
-        }
-
-
-        setContentView(R.layout.activity_enterance);
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-
-        mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
-        Logger.d(sp.getString(Constants.SPLASH_IMG));
-        if (sp.getLong(Constants.SPLASH_UPDATE) == -1) {
-            mDrawee.setImageURI(Uri.parse("asset://net.muxi.huashiapp/bg_enterance.png"));
+            return;
         } else {
-            if (!sp.getString(Constants.SPLASH_IMG).equals("")) {
-                mDrawee.setImageURI(Uri.parse(sp.getString(Constants.SPLASH_IMG)));
-            }
-        }
 
-        getSplashData();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(EnteranceActivity.this, MainActivity.class);
-                startActivity(intent);
-                EnteranceActivity.this.finish();
+
+            setContentView(R.layout.activity_enterance);
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
             }
-        }, SPLASH_TIME);
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
+            mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
+            Logger.d(sp.getString(Constants.SPLASH_IMG));
+            if (sp.getLong(Constants.SPLASH_UPDATE) == -1) {
+                mDrawee.setImageURI(Uri.parse("asset://net.muxi.huashiapp/bg_enterance.png"));
+            } else {
+                if (!sp.getString(Constants.SPLASH_IMG).equals("")) {
+                    mDrawee.setImageURI(Uri.parse(sp.getString(Constants.SPLASH_IMG)));
+                }
+            }
+
+            getSplashData();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(EnteranceActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    EnteranceActivity.this.finish();
+                }
+            }, SPLASH_TIME);
+        }
     }
 
     @Override
