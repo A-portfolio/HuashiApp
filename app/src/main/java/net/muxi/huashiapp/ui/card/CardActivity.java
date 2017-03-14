@@ -128,7 +128,7 @@ public class CardActivity extends ToolbarActivity {
                         @Override
                         public void onNext(List<CardData> cardDatas) {
                             Logger.d("id card");
-                            mDate.setText(cardDatas.get(0).getDealDateTime());
+                            mDate.setText("截止" + cardDatas.get(0).getDealDateTime());
                             mMoney.setText(cardDatas.get(0).getOutMoney());
                             mCardDatas = cardDatas;
                             setupCountView();

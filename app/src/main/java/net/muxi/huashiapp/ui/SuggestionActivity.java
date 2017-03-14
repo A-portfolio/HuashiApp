@@ -1,5 +1,7 @@
 package net.muxi.huashiapp.ui;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by december on 16/8/1.
@@ -39,12 +42,17 @@ public class SuggestionActivity extends ToolbarActivity {
     TextView mTvWordLength;
     @BindView(R.id.et_contact)
     EditText mEtContact;
+    @BindView(R.id.group_ccnubox)
+    TextView mGroupCcnubox;
+    @BindView(R.id.tv_copy)
+    TextView mTvCopy;
 
 
-    public static void start(Context context){
-        Intent starter = new Intent(context,SuggestionActivity.class);
+    public static void start(Context context) {
+        Intent starter = new Intent(context, SuggestionActivity.class);
         context.startActivity(starter);
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +83,7 @@ public class SuggestionActivity extends ToolbarActivity {
         mBtnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mEtSuggestion.getText().length() == 0){
+                if (mEtSuggestion.getText().length() == 0) {
                     showSnackbarShort(getString(R.string.tip_write_suggestion_first));
                     return;
                 } else {
@@ -85,7 +93,7 @@ public class SuggestionActivity extends ToolbarActivity {
         });
     }
 
-//        mBtnSubmit.set(new View.OnClickListener() {
+    //        mBtnSubmit.set(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                if (mEtSuggestion.getText().length() == 0) {
@@ -119,9 +127,9 @@ public class SuggestionActivity extends ToolbarActivity {
 //        });
 //    }
 //
-    public void sendSuggestion(String str){
-        if (NetStatus.isConnected()){
-            ZhugeUtils.sendEvent("意见提交",str);
+    public void sendSuggestion(String str) {
+        if (NetStatus.isConnected()) {
+            ZhugeUtils.sendEvent("意见提交", str);
             FeedbackDialog feedbackDialog = new FeedbackDialog();
             feedbackDialog.show(getSupportFragmentManager(), "feedback_dialog");
             feedbackDialog.setOnClickListener(new FeedbackDialog.OnClickListener() {
@@ -130,13 +138,10 @@ public class SuggestionActivity extends ToolbarActivity {
                     SuggestionActivity.this.finish();
                 }
             });
-        }else {
+        } else {
             showSnackbarShort(App.sContext.getString(R.string.tip_check_net));
         }
     }
-
-
-
 
 
     //显示当前的字数
@@ -152,5 +157,16 @@ public class SuggestionActivity extends ToolbarActivity {
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
+    }
+
+    @OnClick(R.id.tv_copy)
+    public void onClick() {
+        ClipboardManager manager = (ClipboardManager) this
+                .getSystemService(Context.CLIPBOARD_SERVICE);
+        manager.setPrimaryClip(ClipData.newPlainText(null,mGroupCcnubox.getText()));
+        if (manager.hasPrimaryClip()){
+            manager.getPrimaryClip().getItemAt(0).getText();
+        }
+        showSnackbarShort("成功复制到粘贴板");
     }
 }

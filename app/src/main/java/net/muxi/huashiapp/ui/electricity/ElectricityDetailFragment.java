@@ -78,18 +78,19 @@ public class ElectricityDetailFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (isAdded()){
-            mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
-            mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
-            mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_two));
-
-
-        }
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//
+//        if (isAdded()) {
+//            mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
+//            mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
+//            mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_two));
+//
+//        }
+//
+//
+//    }
 
     /**
      * set the detail info of the electricity

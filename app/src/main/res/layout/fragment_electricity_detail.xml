@@ -134,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="68dp"
+                    android:layout_marginRight="32dp"
                     android:textColor="@color/colorWhite"
                     android:textSize="26sp"
                     tools:text="22.67"

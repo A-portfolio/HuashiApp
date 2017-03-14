@@ -103,6 +103,7 @@ public class ElectricityDetailActivity extends ToolbarActivity {
                         showSnackbarShort(getString(R.string.tip_school_server_error));
                     }
                     if (electricityResponse.code() == 200) {
+                        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(0);
                         ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(electricityResponse.body());
                     }
 
@@ -118,6 +119,7 @@ public class ElectricityDetailActivity extends ToolbarActivity {
                     .subscribeOn(Schedulers.newThread())
                     .subscribe(electricityResponse -> {
                         if (electricityResponse.code() == 200) {
+                            ((ElectricityDetailFragment) detailFragments.get(1)).setCardColor(1);
                             ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(electricityResponse.body());
                         }
                     }, throwable -> {
@@ -144,8 +146,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         detailFragments.add(new ElectricityDetailFragment());
 
 
-        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(0);
-        ((ElectricityDetailFragment) detailFragments.get(1)).setCardColor(1);
 
 
         MyDetailAdapter myDetailAdapter = new MyDetailAdapter(getSupportFragmentManager(), detailFragments, titles);

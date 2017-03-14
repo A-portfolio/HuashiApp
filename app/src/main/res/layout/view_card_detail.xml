@@ -41,25 +41,16 @@
         />
 
 
-    <TextView
-        android:id="@+id/text1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txt2"
-        android:layout_marginTop="20dp"
-        android:layout_toRightOf="@id/money_sign"
-        android:text="截止"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/small_size"
-        />
+
 
     <TextView
         android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/text1"
-        android:layout_toRightOf="@+id/text1"
+        android:layout_below="@id/txt2"
+        android:layout_marginTop="20dp"
         android:textColor="@color/colorAccent"
+        android:layout_centerHorizontal="true"
         android:textSize="@dimen/small_size"
         tools:text="==============="
         />

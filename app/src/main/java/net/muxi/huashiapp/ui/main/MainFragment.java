@@ -1,6 +1,5 @@
 package net.muxi.huashiapp.ui.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,15 +23,16 @@ import net.muxi.huashiapp.ui.apartment.ApartmentActivity;
 import net.muxi.huashiapp.ui.card.CardActivity;
 import net.muxi.huashiapp.ui.credit.SelectCreditActivity;
 import net.muxi.huashiapp.ui.electricity.ElectricityActivity;
+import net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.news.NewsActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.ui.website.WebsiteActivity;
-import net.muxi.huashiapp.ui.webview.WebViewActivity;
 import net.muxi.huashiapp.util.ACache;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NetStatus;
+import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.VibratorUtil;
 
 import java.util.ArrayList;
@@ -65,6 +65,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
     private HuaShiDao dao;
 
+    private PreferenceUtil sp;
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
@@ -80,7 +81,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
         mToolbar.setTitle("华师匣子");
 
-
+        sp = new PreferenceUtil();
         dao = new HuaShiDao();
         mBannerDatas = dao.loadBannerData();
 
@@ -119,7 +120,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return mMainAdapter.isBannerPosition(position) ? layoutManager.getSpanCount() : 1;
+                return (mMainAdapter.isBannerPosition(position) || mMainAdapter.isFooterPosition(position) ? layoutManager.getSpanCount() : 1);
             }
         });
         mRecyclerView.setLayoutManager(layoutManager);
@@ -132,7 +133,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         mRecyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRecyclerView) {
             @Override
             public void onLongClick(RecyclerView.ViewHolder vh) {
-                if (vh.getLayoutPosition() != mItemDatas.size() && vh.getLayoutPosition() != 0) {
+                if (vh.getLayoutPosition() != mItemDatas.size() && vh.getLayoutPosition() != 0 && vh.getLayoutPosition() != mItemDatas.size() + 1) {
                     itemTouchHelper.startDrag(vh);
                     VibratorUtil.Vibrate(getActivity(), 50);
                 }
@@ -140,21 +141,10 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
             @Override
             public void onItemClick(RecyclerView.ViewHolder vh) {
-                if (vh.getLayoutPosition() == 0) {
-                    mMainAdapter.setOnBannerItemClickListener(new MainAdapter.OnBannerItemClickListener() {
-                        @Override
-                        public void onBannerItemClick(BannerData bannerData) {
-                            try {
-                                Intent intent = WebViewActivity.newIntent(getContext(), bannerData.getUrl());
-                                startActivity(intent);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                } else
+                if (vh.getLayoutPosition() == 0){
 
-                {
+                }
+                if (vh.getLayoutPosition() != 0 && vh.getLayoutPosition() != mItemDatas.size() + 1){
                     ItemData itemData = mItemDatas.get(vh.getLayoutPosition() - 1);
                     switch (itemData.getName()) {
                         case "成绩":
@@ -167,7 +157,12 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             NewsActivity.start(getContext());
                             break;
                         case "电费":
-                            ElectricityActivity.start(getContext());
+                            String eleQuery = sp.getString(PreferenceUtil.ELE_QUERY_STRING);
+                            if (eleQuery.equals("")) {
+                                ElectricityActivity.start(getContext());
+                            } else {
+                                ElectricityDetailActivity.start(getContext(), eleQuery);
+                            }
                             break;
                         case "校园卡":
                             CardActivity.start(getContext());
@@ -258,9 +253,10 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
 
     @Override
-    public void onFinishDrag(RecyclerView.ViewHolder vh) {
+    public void onFinishDrag() {
         ACache.get(getActivity()).put("items", (ArrayList<ItemData>) mItemDatas);
-        Logger.d(mItemDatas.get(2).getName() + " ");
-
+        for (ItemData itemData : mItemDatas) {
+            Logger.d(itemData.getName() + " ");
+        }
     }
 }

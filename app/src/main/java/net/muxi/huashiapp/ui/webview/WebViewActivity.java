@@ -82,6 +82,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
 
 
+    public static void start(Context context){}
 
 
     @Override
