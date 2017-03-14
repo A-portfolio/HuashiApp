@@ -59,7 +59,7 @@ public class HuaShiDao {
     public void deleteAllHistory() {
         String libraryId = PreferenceUtil.getString(PreferenceUtil.LIBRARY_ID);
         db.execSQL("DELETE FROM " + DataBase.TABLE_SEARCH_HISTORY +
-                " WHERE " + DataBase.KEY_LIBRARY_USER_ID + " = ? " +
+                " WHERE " + DataBase.KEY_LIBRARY_USER_ID + " = ? ",
                 new String[]{libraryId});
     }
 
