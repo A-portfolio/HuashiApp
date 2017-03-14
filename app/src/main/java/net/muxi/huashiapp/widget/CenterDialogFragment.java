@@ -31,7 +31,6 @@ public class CenterDialogFragment extends DialogFragment {
     public Dialog createCenterDialog(View view){
         Dialog dialog = new Dialog(getContext(),R.style.CenterDialogStyle);
         dialog.setContentView(view);
-        dialog.setCanceledOnTouchOutside(false);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.CENTER);
         WindowManager.LayoutParams params = window.getAttributes();

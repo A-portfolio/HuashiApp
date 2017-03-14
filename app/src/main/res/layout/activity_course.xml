@@ -15,7 +15,6 @@
         android:id="@+id/et_course"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view_toolbar"
         android:textStyle="bold"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"

@@ -92,7 +92,7 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback  {
         if (bkcolor != -1) viewHolder.itemView.setBackgroundColor(bkcolor);
 
         if (onDragListener!=null){
-            onDragListener.onFinishDrag(viewHolder);
+            onDragListener.onFinishDrag();
         }
     }
 
@@ -101,7 +101,7 @@ public class MyItemTouchCallback extends ItemTouchHelper.Callback  {
         return this;
     }
     public interface OnDragListener{
-        void onFinishDrag(RecyclerView.ViewHolder vh);
+        void onFinishDrag();
     }
 
     public interface ItemTouchAdapter {

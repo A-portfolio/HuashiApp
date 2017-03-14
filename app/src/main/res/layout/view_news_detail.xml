@@ -16,7 +16,6 @@
         android:id="@+id/news_float_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="26dp"
         android:src="@drawable/ic_close"
         />
@@ -61,32 +60,32 @@
         android:layout_below="@id/news_date"
         android:layout_marginTop="40dp"/>
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/news_content"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="30dp"
-        android:background="@color/divider"/>
+    <!--<View-->
+        <!--android:id="@+id/divider"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_below="@id/news_content"-->
+        <!--android:layout_marginBottom="30dp"-->
+        <!--android:layout_marginTop="30dp"-->
+        <!--android:background="@color/divider"/>-->
 
 
-    <TextView
-        android:id="@+id/tv_appendix"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/divider"
-        android:text="相关链接:"/>
+    <!--<TextView-->
+        <!--android:id="@+id/tv_appendix"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/divider"-->
+        <!--android:text="相关链接:"/>-->
 
-    <LinearLayout
-        android:id="@+id/link_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_appendix"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/bg_link_layout"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin"/>
+    <!--<LinearLayout-->
+        <!--android:id="@+id/link_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/tv_appendix"-->
+        <!--android:layout_marginTop="12dp"-->
+        <!--android:background="@drawable/bg_link_layout"-->
+        <!--android:orientation="vertical"-->
+        <!--android:padding="@dimen/activity_horizontal_margin"/>-->
 
 
 </RelativeLayout>

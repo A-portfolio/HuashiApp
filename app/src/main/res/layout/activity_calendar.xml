@@ -35,7 +35,7 @@
         android:id="@+id/img_empty"
         android:layout_width="@dimen/empty_img_height"
         android:layout_height="@dimen/empty_img_height"
-        android:layout_below="@+id/view_toolbar"
+        android:layout_below="@+id/toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/empty_img_marginTop"
         android:scaleType="fitXY"

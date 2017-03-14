@@ -79,11 +79,42 @@
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:background="@color/divider"/>
 
+    <TextView
+        android:id="@+id/group_ccnubox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/divider2"
+        android:layout_below="@id/divider2"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/ccnubox_group"
+        android:textColor="?android:attr/textColorPrimary"
+        />
+
+    <TextView
+        android:id="@+id/tv_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider2"
+        android:layout_alignRight="@id/divider2"
+        android:layout_alignTop="@id/group_ccnubox"
+        android:text="点击复制"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/medium_size"
+        />
+
+    <View
+        android:layout_below="@id/group_ccnubox"
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:layout_margin="@dimen/activity_horizontal_margin"/>
+
     <Button
         android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/divider2"
+        android:layout_below="@+id/divider3"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
