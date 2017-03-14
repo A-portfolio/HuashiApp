@@ -6,10 +6,31 @@
 
     <include layout="@layout/view_toolbar"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="56dp"/>
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_below="@+id/recycler_view"
+                android:background="@color/color_link_layout"
+                android:gravity="center"
+                android:text="————别笑，我也是有底线的————"
+                android:textSize="@dimen/medium_size"
+                />
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </LinearLayout>

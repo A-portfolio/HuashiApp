@@ -64,7 +64,8 @@ public class StudyAreaOptionActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        Intent intent = new Intent();
+        setResult(0,intent);
         this.finish();
     }
 

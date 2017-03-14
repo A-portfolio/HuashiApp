@@ -38,6 +38,9 @@ public class CenterDialogFragment extends DialogFragment {
         params.width = (WindowManager.LayoutParams.MATCH_PARENT);
         params.height = (WindowManager.LayoutParams.WRAP_CONTENT);
         window.setAttributes(params);
+        window.setBackgroundDrawableResource(R.drawable.bg_center_dialog);
+
+
         return dialog;
     }
 

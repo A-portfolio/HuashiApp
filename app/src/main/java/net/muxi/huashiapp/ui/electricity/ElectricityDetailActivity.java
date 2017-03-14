@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.text.SpannableString;
@@ -15,6 +14,8 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
@@ -33,8 +34,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import static com.tencent.bugly.crashreport.inner.InnerAPI.context;
 
 /**
  * Created by december on 16/7/7.
@@ -104,7 +103,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
                         showSnackbarShort(getString(R.string.tip_school_server_error));
                     }
                     if (electricityResponse.code() == 200) {
-                        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(0);
                         ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(electricityResponse.body());
                     }
 
@@ -120,7 +118,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
                     .subscribeOn(Schedulers.newThread())
                     .subscribe(electricityResponse -> {
                         if (electricityResponse.code() == 200) {
-                            ((ElectricityDetailFragment) detailFragments.get(1)).setCardColor(1);
                             ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(electricityResponse.body());
                         }
                     }, throwable -> {
@@ -141,22 +138,25 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         for (int i = 0; i < 2; i++) {
             mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(i)));
         }
+
         detailFragments = new ArrayList<>();
         detailFragments.add(new ElectricityDetailFragment());
         detailFragments.add(new ElectricityDetailFragment());
 
-//        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(this,0);
-//        ((ElectricityDetailFragment) detailFragments.get(1)).setCardColor(this,1);
-//        ((ElectricityDetailFragment) detailFragments.get(0)).setOnChangeBtnClickListener(this);
-//        ((ElectricityDetailFragment) detailFragments.get(1)).setOnChangeBtnClickListener(this);
+
+        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(0);
+        ((ElectricityDetailFragment) detailFragments.get(1)).setCardColor(1);
+
+
         MyDetailAdapter myDetailAdapter = new MyDetailAdapter(getSupportFragmentManager(), detailFragments, titles);
         mViewPager.setAdapter(myDetailAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        mTabLayout.setTabTextColors(ContextCompat.getColor(context, R.color.color_normal_tab), ContextCompat.getColor(context, R.color.colorAccent));
+        mTabLayout.setTabTextColors(getResources().getColor(R.color.color_normal_tab), getResources().getColor(R.color.colorAccent));
         mTabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorAccent));
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+
     }
 
     @Override
@@ -164,6 +164,7 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         getMenuInflater().inflate(R.menu.menu_electricity, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -185,13 +186,14 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         SpannableString spannableString = new SpannableString(string);
         spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorAccent)), 5, string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mPayHint.setText(spannableString);
-
-
     }
 
     @OnClick(R.id.pay_hint)
     public void onClick() {
         ElectricityPayHintView view = new ElectricityPayHintView(this);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.view_show);
+        view.startAnimation(animation);
         setContentView(view);
     }
+
 }
