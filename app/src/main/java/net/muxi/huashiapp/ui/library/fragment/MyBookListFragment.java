@@ -2,7 +2,6 @@ package net.muxi.huashiapp.ui.library.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -87,35 +86,41 @@ public class MyBookListFragment extends BaseFragment {
 
     public void loadAttentionBooks() {
         mMultiStatusView.showContent();
-        CampusFactory.getRetrofitService().getAttentionBooks(Base64Util.createBaseStr(App.sLibrarayUser))
+        CampusFactory.getRetrofitService().getAttentionBooks(
+                Base64Util.createBaseStr(App.sLibrarayUser))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(attentionBooksResponse -> {
                     switch (attentionBooksResponse.code()) {
                         case 200:
                             List<AttentionBook> attentionBooks = attentionBooksResponse.body();
+                            if (attentionBooks.size() == 0) {
+                                throw new RuntimeException();
+                            }
                             Observable.from(attentionBooks)
                                     .toSortedList((attentionBook, attentionBook2) -> {
-                                        if (!attentionBook.avbl.equals(attentionBook2.avbl)){
-                                            if (attentionBook.avbl.equals("n")){
+                                        if (!attentionBook.avbl.equals(attentionBook2.avbl)) {
+                                            if (attentionBook.avbl.equals("n")) {
                                                 return 1;
-                                            }else {
+                                            } else {
                                                 return -1;
                                             }
                                         }
                                         return 0;
                                     })
                                     .subscribe(attentionBooks1 -> {
-                                        MultiItemTypeAdapter adapter = new MultiItemTypeAdapter(getContext(),
+                                        MultiItemTypeAdapter adapter = new MultiItemTypeAdapter(
+                                                getContext(),
                                                 attentionBooks1);
                                         adapter.addItemViewDelegate(new AttenBookRemindAdapter());
                                         adapter.addItemViewDelegate(new AttenBookAdapter());
-                                        mRecyclerView = (RecyclerView) mMultiStatusView.getContentView();
-                                        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                                        mRecyclerView =
+                                                (RecyclerView) mMultiStatusView.getContentView();
+                                        mRecyclerView.setLayoutManager(
+                                                new LinearLayoutManager(getContext()));
                                         mRecyclerView.setHasFixedSize(true);
                                         mRecyclerView.setAdapter(adapter);
-                                    },throwable -> throwable.printStackTrace());
-
+                                    }, throwable -> throwable.printStackTrace());
 
                             //关注的图书 id 存储到本地
                             Observable.from(attentionBooks).map(attentionBook -> attentionBook.id)
@@ -127,16 +132,13 @@ public class MyBookListFragment extends BaseFragment {
                         case 403:
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(
                                     getString(R.string.tip_err_account));
-                            mMultiStatusView.showNetError();
-                            break;
+                            throw new RuntimeException();
                         case 502:
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(
                                     getString(R.string.tip_err_server));
-                            mMultiStatusView.showNetError();
-                            break;
+                            throw new RuntimeException();
                         case 404:
-                            mMultiStatusView.showNetError();
-                            break;
+                            throw new RuntimeException();
                     }
                 }, throwable -> {
                     throwable.printStackTrace();
@@ -153,10 +155,14 @@ public class MyBookListFragment extends BaseFragment {
 
     public void loadBorrowBooks() {
         mMultiStatusView.showContent();
-        CampusFactory.getRetrofitService().getPersonalBook(Base64Util.createBaseStr(App.sLibrarayUser))
+        CampusFactory.getRetrofitService().getPersonalBook(
+                Base64Util.createBaseStr(App.sLibrarayUser))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(personalBooks -> {
+                    if (personalBooks.size() == 0) {
+                        throw new RuntimeException();
+                    }
                     mRecyclerView = (RecyclerView) mMultiStatusView.getContentView();
                     Collections.sort(personalBooks, ((personalBook, t1) -> {
                         return personalBook.time - t1.time;
@@ -192,7 +198,7 @@ public class MyBookListFragment extends BaseFragment {
                     getResources().getColor(R.color.red));
         }
         holder.getView(R.id.layout_item).setOnClickListener(v -> {
-            BookDetailActivity.start(getContext(),personalBook.id);
+            BookDetailActivity.start(getContext(), personalBook.id);
         });
         holder.getView(R.id.layout_item).setClickable(true);
     }
