@@ -36,6 +36,7 @@ public class ElectricityDetailFragment extends BaseFragment {
     private CardView mCardDegreeLeft;
     private CardView mCardTotalUse;
 
+    private static final String MONEY_SIGN = "¥";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -20,6 +20,7 @@ import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.ItemData;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
 import net.muxi.huashiapp.util.DimensUtil;
+import net.muxi.huashiapp.util.FrescoUtil;
 import net.muxi.huashiapp.util.Logger;
 
 import java.util.ArrayList;
@@ -162,19 +163,17 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItemDatas.get(position - ITEM_BANNER).getIcon()));
                 ((CommonViewHolder) holder).mTextView.setText(mItemDatas.get(position - ITEM_BANNER).getName());
                 ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
-            }
-//            } else {
-//                if (mItemDatas.get(position - ITEM_BANNER).getName().equals("学而")) {
-//                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mItemDatas.get(position - ITEM_BANNER).getIcon()));
-//                    FrescoUtil.savePicture(mItemDatas.get(position - ITEM_BANNER).getIcon(), mContext, mItemDatas.get(position - ITEM_BANNER).getName());
-//                } else {
-//                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItemDatas.get(position - ITEM_BANNER).getIcon()));
-//                }
-//                ((CommonViewHolder) holder).mTextView.setText(mItemDatas.get(position - ITEM_BANNER).getName());
-//                ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
-//            }
+            } else if (mItemDatas.get(position - ITEM_BANNER).getName().equals("学而")) {
+                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mItemDatas.get(position - ITEM_BANNER).getIcon()));
+                    FrescoUtil.savePicture(mItemDatas.get(position - ITEM_BANNER).getIcon(), mContext, mItemDatas.get(position - ITEM_BANNER).getName());
+                } else {
+                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItemDatas.get(position - ITEM_BANNER).getIcon()));
+                }
+                ((CommonViewHolder) holder).mTextView.setText(mItemDatas.get(position - ITEM_BANNER).getName());
+                ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
+
+            } else if (holder instanceof FooterViewHolder){}
         }
-    }
 
 
     public void setOnBannerItemClickListener(OnBannerItemClickListener bannerItemClickListener) {
@@ -193,14 +192,16 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             return;
         } else if (fromPosition == mItemDatas.size() + 1 || toPosition == mItemDatas.size() +1){
             return;
+        } else if (fromPosition == 0 || toPosition == 0){
+            return;
         }
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(mItemDatas, i + 1, i + 2);
+                Collections.swap(mItemDatas, i- 1, i );
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(mItemDatas, i - 1, i - 2);
+                Collections.swap(mItemDatas, i - 1 , i - 2 );
             }
         }
 

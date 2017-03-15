@@ -32,7 +32,6 @@ import rx.schedulers.Schedulers;
 
 public class StudyRoomDetailActivity extends ToolbarActivity {
 
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.grid_classroom_eight)
@@ -97,8 +96,8 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                     hideLoading();
                 });
 
-
     }
+
 
     //返回数据为空时显示图片
     private void setNull() {
@@ -151,7 +150,8 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context1.setTextColor(getResources().getColor(R.color.colorBlack));
                 context1.setText(mClassRoom.getValue1().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.rightMargin = DimensUtil.dp2px(42f);
+//                params.rightMargin = DimensUtil.dp2px(42f);
+                params.width = DimensUtil.getScreenWidth() / 4;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomEight.addView(context1, params);
             }
@@ -167,7 +167,8 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context2.setTextColor(getResources().getColor(R.color.colorBlack));
                 context2.setText(mClassRoom.getValue3().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.rightMargin = DimensUtil.dp2px(42f);
+//                params.rightMargin = DimensUtil.dp2px(42f);
+                params.width = DimensUtil.getScreenWidth() / 4;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomTen.addView(context2, params);
             }
@@ -181,7 +182,8 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context3.setTextColor(getResources().getColor(R.color.colorBlack));
                 context3.setText(mClassRoom.getValue5().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.rightMargin = DimensUtil.dp2px(42f);
+//                params.rightMargin = DimensUtil.dp2px(42f);
+                params.width = DimensUtil.getScreenWidth() / 4;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomTwelve.addView(context3, params);
             }
@@ -196,7 +198,8 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context4.setTextColor(getResources().getColor(R.color.colorBlack));
                 context4.setText(mClassRoom.getValue7().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.rightMargin = DimensUtil.dp2px(42f);
+//                params.rightMargin = DimensUtil.dp2px(42f);
+                params.width = DimensUtil.getScreenWidth() / 4;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomFourteen.addView(context4, params);
             }
@@ -210,7 +213,8 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context5.setTextColor(getResources().getColor(R.color.colorBlack));
                 context5.setText(mClassRoom.getValue9().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.rightMargin = DimensUtil.dp2px(42f);
+//                params.rightMargin = DimensUtil.dp2px(42f);
+                params.width = DimensUtil.getScreenWidth() / 4;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomSixteen.addView(context5, params);
             }
@@ -224,7 +228,8 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context6.setTextColor(getResources().getColor(R.color.colorBlack));
                 context6.setText(mClassRoom.getValue11().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.rightMargin = DimensUtil.dp2px(42f);
+//                params.rightMargin = DimensUtil.dp2px(42f);
+                params.width = DimensUtil.getScreenWidth() / 4;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomEighteen.addView(context6, params);
             }
@@ -238,7 +243,8 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context7.setTextColor(getResources().getColor(R.color.colorBlack));
                 context7.setText(mClassRoom.getValue13().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.rightMargin = DimensUtil.dp2px(42f);
+//                params.rightMargin = DimensUtil.dp2px(42f);
+                params.width = DimensUtil.getScreenWidth() / 4;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomTwenty.addView(context7, params);
             }
