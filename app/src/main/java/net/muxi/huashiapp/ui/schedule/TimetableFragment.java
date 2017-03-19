@@ -1,21 +1,14 @@
 package net.muxi.huashiapp.ui.schedule;
 
 import static net.muxi.huashiapp.widget.IndicatedView.IndicatedView.DIRECTION_DOWN;
-import static net.muxi.huashiapp.widget.IndicatedView.IndicatedView.DIRECTION_UP;
-import static net.muxi.huashiapp.widget.IndicatedView.IndicatedView.LINE_HEIGHT;
-import static net.muxi.huashiapp.widget.IndicatedView.IndicatedView.LINE_MARGIN_VERTICAL;
-import static net.muxi.huashiapp.widget.IndicatedView.IndicatedView.SIDE_MARGIN;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -72,6 +65,8 @@ public class TimetableFragment extends BaseFragment {
     RelativeLayout mToolLayout;
     @BindView(R.id.table_menu_view)
     TableMenuView mTableMenuView;
+    @BindView(R.id.shade_view)
+    View mShadeView;
 
     /**
      * 本学期所有的课程
@@ -128,10 +123,11 @@ public class TimetableFragment extends BaseFragment {
         renderCurweekView(TimeTableUtil.getCurWeek());
         renderSelectedWeekView(TimeTableUtil.getCurWeek());
 //        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE)) {
-        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE,true)) {
+        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true)) {
             IndicatedView indicatedView = new IndicatedView(getContext());
             indicatedView.setTipViewText("设置当前周也可以点这里噢");
-            TipViewUtil.addToContent(getContext(),indicatedView,DIRECTION_DOWN,DimensUtil.getScreenWidth() - DimensUtil.dp2px(38),DimensUtil.dp2px(38));
+            TipViewUtil.addToContent(getContext(), indicatedView, DIRECTION_DOWN,
+                    DimensUtil.getScreenWidth() - DimensUtil.dp2px(38), DimensUtil.dp2px(38));
         }
 
     }
@@ -145,7 +141,7 @@ public class TimetableFragment extends BaseFragment {
             renderSelectedWeekView(week);
         });
         mIvMenu.setOnClickListener(v -> {
-            if(selectedIvStatus){
+            if (selectedIvStatus) {
                 mWeekSelectedView.slideUp();
                 rotateSelectView();
             }
@@ -158,19 +154,28 @@ public class TimetableFragment extends BaseFragment {
                     selectedWeek);
             dialog.show(getChildFragmentManager(), "detail_courses");
         });
+        mShadeView.setOnClickListener(v -> {
+            mTvSelectWeek.performClick();
+            if (selectedIvStatus) {
+                mWeekSelectedView.slideUp();
+                mShadeView.setVisibility(View.GONE);
+                rotateSelectView();
+            }
+
+        });
 
         Subscription subscription1 = RxBus.getDefault().toObservable(AddCourseEvent.class)
                 .subscribe(addCourseEvent -> {
                     mCourses = dao.loadAllCourses();
                     renderCourseView(mCourses);
                 });
-        ((BaseActivity)getContext()).addSubscription(subscription1);
+        ((BaseActivity) getContext()).addSubscription(subscription1);
         Subscription subscription2 = RxBus.getDefault().toObservable(DeleteCourseOkEvent.class)
                 .subscribe(deleteCourseOkEvent -> {
                     mCourses = dao.loadAllCourses();
                     renderCourseView(mCourses);
                 });
-        ((BaseActivity)getContext()).addSubscription(subscription2);
+        ((BaseActivity) getContext()).addSubscription(subscription2);
         mTimetable.setOnRefreshListener(() -> {
             handlingRefresh = true;
             loadTable();
@@ -288,8 +293,10 @@ public class TimetableFragment extends BaseFragment {
                 if (!selectedIvStatus) {
                     mWeekSelectedView.slideDown();
                     mWeekSelectedView.setSelectedWeek(selectedWeek);
+                    mShadeView.setVisibility(View.VISIBLE);
                 } else {
                     mWeekSelectedView.slideUp();
+                    mShadeView.setVisibility(View.GONE);
                 }
                 rotateSelectView();
                 break;
