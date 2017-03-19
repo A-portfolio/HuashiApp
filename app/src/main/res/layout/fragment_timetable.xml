@@ -5,13 +5,13 @@
              android:layout_height="match_parent">
 
     <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center_horizontal|bottom"-->
-        <!--android:layout_marginBottom="22dp"-->
-        <!--android:text="———别闹，学霸也是要睡觉的———"-->
-        <!--android:textColor="@color/grey_bottom_line"-->
-        <!--android:textSize="12sp"/>-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal|bottom"-->
+    <!--android:layout_marginBottom="22dp"-->
+    <!--android:text="———别闹，学霸也是要睡觉的———"-->
+    <!--android:textColor="@color/grey_bottom_line"-->
+    <!--android:textSize="12sp"/>-->
 
     <net.muxi.huashiapp.ui.schedule.TimeTable
         android:id="@+id/timetable"
@@ -19,19 +19,27 @@
         android:layout_height="match_parent"
         android:layout_marginTop="56dp"/>
 
+    <View
+        android:id="@+id/shade_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#88333333"
+        android:visibility="gone"
+    />
+
     <net.muxi.huashiapp.ui.schedule.WeekSelectedView
         android:id="@+id/week_selected_view"
         android:layout_width="match_parent"
-        android:elevation="1dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"/>
+        android:layout_marginTop="56dp"
+        android:elevation="1dp"/>
 
     <RelativeLayout
         android:id="@+id/tool_layout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:elevation="1dp"
-        android:background="@color/colorWhite">
+        android:background="@color/colorWhite"
+        android:elevation="1dp">
 
         <TextView
             android:id="@+id/tv_select_week"
@@ -78,8 +86,8 @@
     <net.muxi.huashiapp.ui.schedule.TableMenuView
         android:id="@+id/table_menu_view"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:elevation="1dp"
-        android:visibility="invisible"
-        android:layout_height="match_parent"/>
+        android:visibility="invisible"/>
 
 </FrameLayout>
