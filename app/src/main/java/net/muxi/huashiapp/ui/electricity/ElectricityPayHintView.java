@@ -132,4 +132,5 @@ public class ElectricityPayHintView extends RelativeLayout {
         }
         return true;
     }
+
 }

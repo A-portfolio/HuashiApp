@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:fresco="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <include layout="@layout/view_toolbar"/>
 
@@ -15,8 +16,8 @@
             android:id="@+id/iv_today"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginTop="24dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="24dp"
             android:background="@drawable/shape_rectangle_today"
             android:text="今"
             android:textColor="@color/colorWhite"
@@ -26,29 +27,32 @@
             android:id="@+id/tv_today"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="28sp"
-            tools:text="12月3日星期五"
+            android:layout_marginTop="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginStart="24dp"
-            android:layout_alignBaseline="@+id/iv_today"
+            android:layout_toEndOf="@+id/iv_today"
             android:layout_toRightOf="@+id/iv_today"
-            android:layout_toEndOf="@+id/iv_today"/>
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="28sp"
+            tools:text="12月3日星期五"/>
 
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/tv_today"
-            android:layout_marginTop="24dp"
             android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="24dp"
             android:background="@color/divider"/>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/divider"
-            android:src="@drawable/img_studyroom_blank"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/bg_studyroom_blank"
+            android:scaleType="centerCrop"
             />
 
     </RelativeLayout>

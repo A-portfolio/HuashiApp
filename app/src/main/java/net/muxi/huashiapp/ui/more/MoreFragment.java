@@ -119,7 +119,6 @@ public class MoreFragment extends BaseFragment {
                 .subscribe(versionData -> {
                     if (versionData.getVersion() != null &&
                             !BuildConfig.VERSION_NAME.equals(versionData.version)) {
-
                         CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
                         checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update)
                                 + versionData.getVersion());
