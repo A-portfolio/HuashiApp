@@ -19,13 +19,15 @@
             android:layout_height="92dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            app:cardElevation="0dp"
             app:cardCornerRadius="4dp"
             >
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="56dp"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="54dp"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 >
 
@@ -33,6 +35,7 @@
                     android:id="@+id/tv_money_sign"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
                     android:text="¥"
                     android:textColor="@color/colorWhite"
                     android:textSize="36sp"
@@ -52,13 +55,14 @@
                     android:id="@+id/title_money_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_money_sign"
+                    android:layout_alignParentBottom="true"
                     android:text="剩余金额"
                     android:textColor="@color/colorWhite"
                     android:textSize="14sp"/>
 
 
             </RelativeLayout>
+
 
         </android.support.v7.widget.CardView>
 
@@ -70,13 +74,15 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="8dp"
+            app:cardElevation="0dp"
             app:cardCornerRadius="4dp"
             >
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="56dp"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="54dp"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 >
 
@@ -85,7 +91,8 @@
                     android:id="@+id/tv_degree_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="56dp"
+                    android:layout_alignLeft="@+id/title_ec_left"
+                    android:layout_alignParentTop="true"
                     android:textColor="@color/colorWhite"
                     android:textSize="36sp"
                     tools:text="336.54"
@@ -95,7 +102,7 @@
                     android:id="@+id/title_ec_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_degree_left"
+                    android:layout_alignParentBottom="true"
                     android:text="剩余电量"
                     android:textColor="@color/colorWhite"
                     android:textSize="14sp"
@@ -115,140 +122,165 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="8dp"
+            app:cardElevation="0dp"
             app:cardCornerRadius="4dp"
             >
 
-
-        <RelativeLayout
-                android:id="@+id/relative_layout"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="54dp"
-                android:layout_marginRight="54dp"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="54dp"
+                android:paddingTop="@dimen/activity_vertical_margin"
                 >
-
-
-                <TextView
-                    android:id="@+id/tv_degree_cur_month"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="32dp"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="26sp"
-                    tools:text="22.67"
-                    />
-
-                <TextView
-                    android:id="@+id/title_month_ec_use"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/tv_degree_cur_month"
-                    android:layout_below="@id/tv_degree_cur_month"
-                    android:text="当月度数"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="14sp"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_degree_last_month"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/title_last_month_ec_use"
-                    android:layout_alignLeft="@id/title_month_ec_use"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="26sp"
-                    tools:text="91.96"
-                    />
-
-
-                <TextView
-                    android:id="@+id/title_last_month_ec_use"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/title_month_ec_use"
-                    android:layout_alignParentBottom="true"
-                    android:text="上月度数"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="14sp"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_money_sign2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:text="¥"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="26sp"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_money_cur_month"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/tv_money_sign2"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="26sp"
-                    tools:text="15.66"
-                    />
-
-
-                <TextView
-                    android:id="@+id/title_month_money_use"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/tv_money_sign2"
-                    android:layout_below="@id/tv_money_sign2"
-                    android:text="当月电费"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="14sp"
-                    />
 
 
                 <TextView
                     android:id="@+id/tv_money_sign3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/title_last_month_money_use"
-                    android:layout_alignLeft="@id/tv_money_sign2"
                     android:text="¥"
                     android:textColor="@color/colorWhite"
                     android:textSize="26sp"
                     />
 
+                <LinearLayout
+                    android:id="@+id/layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tv_money_sign3"
+                    android:paddingRight="14dp">
+
+                    <TextView
+                        android:id="@+id/tv_degree_cur_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="26sp"
+                        tools:text="22.67"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/tv_money_cur_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="26sp"
+                        tools:text="15.66"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout">
+
+                    <TextView
+                        android:id="@+id/title_month_money_use"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="当月电费"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="14sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/title_month_ec_use"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="当月度数"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="14sp"
+                        />
+
+
+                </LinearLayout>
+
                 <TextView
-                    android:id="@+id/tv_money_last_month"
+                    android:id="@+id/tv_money_sign2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_above="@id/title_last_month_money_use"
-                    android:layout_toRightOf="@id/tv_money_sign3"
+                    android:layout_alignTop="@+id/layout3"
+                    android:layout_below="@id/layout2"
+                    android:text="¥"
                     android:textColor="@color/colorWhite"
                     android:textSize="26sp"
-                    tools:text="30.66"
                     />
 
-                <TextView
-                    android:id="@+id/title_last_month_money_use"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/layout3"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/tv_money_sign3"
-                    android:layout_alignParentBottom="true"
-                    android:text="上月电费"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="14sp"
-                    />
+                    android:layout_above="@+id/layout4"
+                    android:layout_toRightOf="@id/tv_money_sign2"
+                    android:paddingRight="14dp">
+
+
+                    <TextView
+                        android:id="@+id/tv_degree_last_month"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="26sp"
+                        tools:text="91.96"/>
+
+
+                    <TextView
+                        android:id="@+id/tv_money_last_month"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="26sp"
+                        tools:text="30.66"
+                        />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true">
+
+                    <TextView
+                        android:id="@+id/title_last_month_money_use"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="上月电费"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="14sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/title_last_month_ec_use"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="上月度数"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="14sp"
+                        />
+
+
+                </LinearLayout>
+
 
             </RelativeLayout>
+
         </android.support.v7.widget.CardView>
 
 
+
     </RelativeLayout>
-
-
-
 
 </ScrollView>

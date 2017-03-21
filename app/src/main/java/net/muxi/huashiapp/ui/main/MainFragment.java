@@ -28,14 +28,17 @@ import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.news.NewsActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
+import net.muxi.huashiapp.ui.studyroom.StudyRoomBlankActivity;
 import net.muxi.huashiapp.ui.website.WebsiteActivity;
 import net.muxi.huashiapp.util.ACache;
+import net.muxi.huashiapp.util.DateUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.VibratorUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -177,7 +180,12 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             }
                             break;
                         case "空闲教室":
-                            StudyRoomActivity.start(getContext());
+                            String today = DateUtil.getWeek(new Date());
+                            if (today.equals("周六") || today.equals("周日")){
+                                StudyRoomBlankActivity.start(getContext());
+                            } else {
+                                StudyRoomActivity.start(getContext());
+                            }
                             break;
                         case "部门信息":
                             ApartmentActivity.start(getContext());

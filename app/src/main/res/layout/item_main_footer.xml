@@ -6,5 +6,6 @@
     android:layout_height="54dp"
     android:background="@color/color_link_layout"
     android:gravity="center"
-    android:text="————别笑，我也是有底线的————"
-    android:textSize="@dimen/medium_size"/>
+    android:text="———别笑，我也是有底线的———"
+    android:textColor="@color/grey"
+    android:textSize="@dimen/small_size"/>

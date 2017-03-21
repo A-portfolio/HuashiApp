@@ -36,7 +36,18 @@ public class ElectricityDetailFragment extends BaseFragment {
     private CardView mCardDegreeLeft;
     private CardView mCardTotalUse;
 
-    private static final String MONEY_SIGN = "¥";
+    private int type;
+
+    private static final int TYPE_LIGHT = 0;
+    private static final int TYPE_AIR = 1;
+
+    public static ElectricityDetailFragment newInstance(int type) {
+        Bundle args = new Bundle();
+        args.putInt("type", type);
+        ElectricityDetailFragment fragment = new ElectricityDetailFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,35 +74,22 @@ public class ElectricityDetailFragment extends BaseFragment {
     }
 
 
-    public void setCardColor(int position) {
-        if (isAdded()) {
-            if (position == 0) {
-                mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
-                mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
-                mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_two));
-            } else {
-                if (position == 1) {
-                    mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_one));
-                    mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_one));
-                    mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_two));
-                }
-            }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        type = getArguments().getInt("type");
+
+        if (type == TYPE_LIGHT) {
+            mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
+            mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
+            mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_two));
+        } else if (type == TYPE_AIR) {
+            mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_one));
+            mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_one));
+            mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_two));
         }
     }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//
-//        if (isAdded()) {
-//            mCardMoneyLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
-//            mCardDegreeLeft.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
-//            mCardTotalUse.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_two));
-//
-//        }
-//
-//
-//    }
 
     /**
      * set the detail info of the electricity
@@ -99,12 +97,16 @@ public class ElectricityDetailFragment extends BaseFragment {
      * @param eleData
      */
     public void setEleDetail(Electricity eleData) {
+        int index = eleData.getDegree().getBefore().indexOf(".");
+        int index2 = eleData.getDegree().getCurrent().indexOf(".");
+        int index3 = eleData.getEle().getBefore().indexOf(".");
+        int index4 = eleData.getEle().getCurrent().indexOf(".");
         mTvDegreeLeft.setText(eleData.getDegree().getRemain() + "");
-        mTvDegreeLastMonth.setText(eleData.getDegree().getBefore());
-        mTvDegreeCurMonth.setText(eleData.getDegree().getCurrent());
+        mTvDegreeLastMonth.setText(eleData.getDegree().getBefore().substring(0, index + 3));
+        mTvDegreeCurMonth.setText(eleData.getDegree().getCurrent().substring(0, index2 + 3));
         mTvMoneyLeft.setText(eleData.getEle().getRemain());
-        mTvMoneyLastMonth.setText(eleData.getEle().getBefore());
-        mTvMoneyCurMonth.setText(eleData.getEle().getCurrent());
+        mTvMoneyLastMonth.setText(eleData.getEle().getBefore().substring(0, index3 + 3));
+        mTvMoneyCurMonth.setText(eleData.getEle().getCurrent().substring(0, index4 + 3));
     }
 
     @Override

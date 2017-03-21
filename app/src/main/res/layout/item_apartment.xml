@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="102dp"
     android:layout_margin="8dp"
-    app:elevation="0dp">
+    android:paddingBottom="8dp"
+    app:cardElevation="0dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,7 +36,7 @@
             android:layout_marginTop="8dp"
             android:background="@color/divider"/>
 
-        <TextView
+        <ImageView
             android:id="@+id/ic_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,7 +62,7 @@
             android:textSize="14sp"
             tools:text="123456"/>
 
-        <TextView
+        <ImageView
             android:id="@+id/ic_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

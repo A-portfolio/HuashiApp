@@ -30,9 +30,9 @@
 
     <net.muxi.huashiapp.ui.schedule.TimeTableLayout
         android:id="@+id/layout_table"
-        android:layout_below="@+id/view_curweek_set"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_curweek_set">
 
         <View
             android:id="@+id/divider"
@@ -53,7 +53,7 @@
             android:layout_below="@+id/divider"
             android:layout_marginTop="40dp"
             android:background="@color/divider"
-        />
+            />
 
         <View
             android:layout_width="48dp"
@@ -68,7 +68,7 @@
             android:layout_below="@+id/divider"
             android:layout_marginLeft="49dp"
             android:layout_marginTop="41dp"
-        />
+            />
 
         <net.muxi.huashiapp.ui.schedule.WeekLayout
             android:id="@+id/week_layout"
@@ -76,7 +76,7 @@
             android:layout_height="41dp"
             android:layout_below="@id/divider"
             android:layout_marginLeft="49dp"
-        />
+            />
 
         <net.muxi.huashiapp.ui.schedule.CourseTimeLayout
             android:id="@+id/course_time_layout"
@@ -84,7 +84,7 @@
             android:layout_height="798dp"
             android:layout_below="@id/divider"
             android:layout_marginTop="41dp"
-        />
+            />
 
     </net.muxi.huashiapp.ui.schedule.TimeTableLayout>
 

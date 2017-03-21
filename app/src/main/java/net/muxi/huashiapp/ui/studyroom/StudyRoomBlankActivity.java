@@ -1,10 +1,14 @@
 package net.muxi.huashiapp.ui.studyroom;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
@@ -28,6 +32,11 @@ public class StudyRoomBlankActivity extends ToolbarActivity {
     @BindView(R.id.tv_today)
     TextView mTvToday;
 
+    public static void start(Context context){
+        Intent starter = new Intent(context,StudyRoomBlankActivity.class);
+        context.startActivity(starter);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +44,7 @@ public class StudyRoomBlankActivity extends ToolbarActivity {
 
         ButterKnife.bind(this);
         setTitle("空闲教室");
+
 
         String today = DateUtil.getToday(new Date()) + DateUtil.getWeek(new Date());
         mTvToday.setText(today);
@@ -52,6 +62,8 @@ public class StudyRoomBlankActivity extends ToolbarActivity {
         int itemId = item.getItemId();
         if (itemId == R.id.action_correct) {
             StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomBlankActivity.this);
+            Animation animation = AnimationUtils.loadAnimation(this,R.anim.view_show);
+            studyRoomCorrectView.startAnimation(animation);
             setContentView(studyRoomCorrectView);
         }
         return super.onOptionsItemSelected(item);

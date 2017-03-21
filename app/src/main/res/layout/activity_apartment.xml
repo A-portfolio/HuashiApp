@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/color_link_layout"
+    android:orientation="vertical"
+    >
 
     <include layout="@layout/view_toolbar"/>
 

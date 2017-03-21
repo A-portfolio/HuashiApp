@@ -71,6 +71,7 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         ButterKnife.bind(this);
 
 
+
 //        mToolbar.setTitle("查询结果");
         setTitle("查询结果");
 
@@ -103,7 +104,7 @@ public class ElectricityDetailActivity extends ToolbarActivity {
                         showSnackbarShort(getString(R.string.tip_school_server_error));
                     }
                     if (electricityResponse.code() == 200) {
-                        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(0);
+//                        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(0);
                         ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(electricityResponse.body());
                     }
 
@@ -119,7 +120,7 @@ public class ElectricityDetailActivity extends ToolbarActivity {
                     .subscribeOn(Schedulers.newThread())
                     .subscribe(electricityResponse -> {
                         if (electricityResponse.code() == 200) {
-                            ((ElectricityDetailFragment) detailFragments.get(1)).setCardColor(1);
+//                            ((ElectricityDetailFragment) detailFragments.get(1)).setCardColor(1);
                             ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(electricityResponse.body());
                         }
                     }, throwable -> {
@@ -142,8 +143,8 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         }
 
         detailFragments = new ArrayList<>();
-        detailFragments.add(new ElectricityDetailFragment());
-        detailFragments.add(new ElectricityDetailFragment());
+        detailFragments.add(ElectricityDetailFragment.newInstance(0));
+        detailFragments.add(ElectricityDetailFragment.newInstance(1));
 
 
 
@@ -196,4 +197,9 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         setContentView(view);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
 }
