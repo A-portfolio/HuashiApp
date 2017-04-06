@@ -247,8 +247,10 @@ public class CourseEditActivity extends ToolbarActivity {
             return;
         }
         if (isAdd) {
+            ZhugeUtils.sendEvent("课程添加");
             addCourse();
         } else {
+            ZhugeUtils.sendEvent("课程修改");
             updateCourse();
         }
     }

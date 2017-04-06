@@ -31,6 +31,7 @@ import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.TimeTableUtil;
 import net.muxi.huashiapp.util.TipViewUtil;
+import net.muxi.huashiapp.util.ZhugeUtils;
 import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 
 import java.util.ArrayList;
@@ -292,6 +293,7 @@ public class TimetableFragment extends BaseFragment {
             case R.id.iv_select_week:
                 if (!selectedIvStatus) {
                     mWeekSelectedView.slideDown();
+                    ZhugeUtils.sendEvent("选择周数");
                     mWeekSelectedView.setSelectedWeek(selectedWeek);
                     mShadeView.setVisibility(View.VISIBLE);
                 } else {

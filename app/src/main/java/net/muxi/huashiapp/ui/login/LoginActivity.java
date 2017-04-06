@@ -130,6 +130,7 @@ public class LoginActivity extends ToolbarActivity {
                             () -> {
                                 hideLoading();
                             });
+            ZhugeUtils.sendEvent("图书馆登录");
         } else {
             CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))
                     .subscribeOn(Schedulers.io())
@@ -149,6 +150,7 @@ public class LoginActivity extends ToolbarActivity {
                                 showErrorSnackbarShort(getString(R.string.tip_check_net));
                             },
                             () -> hideLoading());
+            ZhugeUtils.sendEvent("图书馆登录");
         }
     }
 
@@ -174,13 +176,11 @@ public class LoginActivity extends ToolbarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        ZhugeSDK.getInstance().init(App.getContext());
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        ZhugeSDK.getInstance().flush(App.getContext());
     }
 
     @Override

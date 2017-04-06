@@ -113,7 +113,6 @@ public class StudyRoomActivity extends ToolbarActivity {
                 break;
             case R.id.btn_search:
                 if (mTvStudyTime.getText().length() != 0 && mTvStudyArea.getText().length() != 0) {
-                    ZhugeUtils.sendEvent("查看空闲教室", "查看空闲教室");
                     mQuery = mTvStudyTime.getText().toString() + mTvStudyArea.getText().toString();
                     StudyRoomDetailActivity.start(StudyRoomActivity.this, mQuery);
                     this.finish();

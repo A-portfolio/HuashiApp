@@ -38,4 +38,12 @@ public class UserUtil {
         }
         return yearsWithHyphen;
     }
+
+    public static String getStudentGrade(){
+        if (!TextUtils.isEmpty(App.sUser.sid) && App.sUser.sid.length() > 4){
+            String year = App.sUser.sid.substring(0,4);
+            return year;
+        }
+        return "";
+    }
 }
