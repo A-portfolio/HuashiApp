@@ -14,6 +14,7 @@ import com.zhuge.analysis.stat.ZhugeSDK;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.ZhugeUtils;
 import net.muxi.huashiapp.widget.LoadingDialog;
 
 import rx.Subscription;
@@ -40,15 +41,16 @@ public class BaseActivity extends AppCompatActivity {
             mActionBar.setDisplayHomeAsUpEnabled(true);
         }
         getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-//        ZhugeSDK.getInstance().openDebug();
-//        ZhugeSDK.getInstance().openLog();
 
+        sendComponentNameByZG();
     }
-//
-//    public void setContentView(int layoutResId){
-//        super.setContentView(layoutResId);
-////        getWindow().findViewById(android.R.id.content).setBackgroundColor(Color.WHITE);
-//    }
+
+    private void sendComponentNameByZG() {
+         if (getComponentName() != null) {
+             ZhugeUtils.sendEvent(getComponentName());
+         }
+        Logger.d(getComponentName().getClassName());
+    }
 
     public void showLoading() {
         Logger.d("showloading");

@@ -182,6 +182,20 @@
     <string name="share_to_moments">朋友圈</string>
     <string name="copy_download_url">复制下载链接</string>
 
+    <!--事件-->
+    <string name="event_score">查询成绩</string>
+    <string name="event_ele">查询电费</string>
+    <string name="event_calendar">查询校历</string>
+    <string name="event_apartment">查看部门信息</string>
+    <string name="event_notification">查看消息公告</string>
+    <string name="event_net">查询常用网站</string>
+    <string name="event_room">查看空闲教室</string>
+    <string name="event_library">进入图书馆</string>
+    <string name="event_timetable">课表查询</string>
+    <string name="event_login_library">图书馆登录</string>
+    <string name="event_credit">进入学分计算</string>
+    <string name="event_card">学生卡查询</string>
+
 
 </resources>
 

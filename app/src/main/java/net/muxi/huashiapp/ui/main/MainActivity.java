@@ -23,6 +23,7 @@ import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.more.MoreFragment;
 import net.muxi.huashiapp.ui.schedule.TimetableFragment;
+import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +57,7 @@ public class MainActivity extends BaseActivity implements
 
         initData();
         initView();
+        ZhugeUtils.sendEvent("打开应用");
     }
 
     private void initView() {

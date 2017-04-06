@@ -168,7 +168,6 @@ public class ElectricityActivity extends ToolbarActivity {
                     PreferenceUtil sp = new PreferenceUtil();
                     sp.saveString(PreferenceUtil.ELE_QUERY_STRING, mQuery);
                     ElectricityDetailActivity.start(this, mQuery);
-                    ZhugeUtils.sendEvent("查询电费", "查询电费");
                     this.finish();
                     break;
                 } else {

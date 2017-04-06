@@ -30,29 +30,34 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sContext = getApplicationContext();
-        Fresco.initialize(this);
-
-        if (!BuildConfig.DEBUG) {
-            CrashReport.initCrashReport(getApplicationContext(), "900043675", BuildConfig.DEBUG);
-        }
-        Fresco.initialize(this);
         sp = new PreferenceUtil();
-
-//        //必须在init之前调用
-//        //禁止收集用户手机号码默认为收集
-        ZhugeSDK.getInstance().disablePhoneNumber();
-//        //禁止收集用户个人账户信息默认为收集
-        ZhugeSDK.getInstance().disableAccounts();
-        if (BuildConfig.DEBUG) {
-            ZhugeSDK.getInstance().openLog();
-        }
 
         sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, ""));
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
         sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));
         sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
+
+        Fresco.initialize(this);
+
+        initZhuge();
+        initBugly();
     }
 
+    private void initBugly() {
+        if (!BuildConfig.DEBUG) {
+            CrashReport.initCrashReport(getApplicationContext(), "900043675", BuildConfig.DEBUG);
+        }
+    }
+
+    private void initZhuge() {
+        //禁止收集用户手机号码默认为收集
+        ZhugeSDK.getInstance().disablePhoneNumber();
+        //禁止收集用户个人账户信息默认为收集
+        ZhugeSDK.getInstance().disableAccounts();
+        if (BuildConfig.DEBUG) {
+            ZhugeSDK.getInstance().openLog();
+        }
+    }
 
     public static Context getContext() {
         return sContext;
@@ -65,7 +70,7 @@ public class App extends Application {
         Logger.d("id:" + sLibrarayUser.getSid() + "\tpwd:" + sLibrarayUser.getPassword());
     }
 
-    public static void logoutLibUser(){
+    public static void logoutLibUser() {
         PreferenceUtil.clearString(PreferenceUtil.LIBRARY_ID);
         PreferenceUtil.clearString(PreferenceUtil.LIBRARY_PWD);
         PreferenceUtil.clearString(PreferenceUtil.ATTENTION_BOOK_IDS);
@@ -82,18 +87,18 @@ public class App extends Application {
         Logger.d("id:" + sUser.getSid() + "\tpwd:" + sUser.getPassword());
     }
 
-    public static void logoutUser(){
+    public static void logoutUser() {
         PreferenceUtil.clearString(PreferenceUtil.STUDENT_ID);
         PreferenceUtil.clearString(PreferenceUtil.STUDENT_PWD);
         sUser.setSid("");
         sUser.setPassword("");
     }
 
-    public static boolean isInfoLogin(){
+    public static boolean isInfoLogin() {
         return !TextUtils.isEmpty(sUser.sid);
     }
 
-    public static boolean isLibLogin(){
+    public static boolean isLibLogin() {
         return !TextUtils.isEmpty(sLibrarayUser.sid);
     }
 }
