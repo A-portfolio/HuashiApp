@@ -119,7 +119,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/study_room_button_margin_top"
-        android:background="@drawable/shape_btn"
+        android:background="@drawable/shape_accent_2"
         android:text="@string/btn_submit"
         android:textColor="@color/colorWhite"/>
 

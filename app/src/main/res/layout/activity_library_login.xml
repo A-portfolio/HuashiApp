@@ -142,7 +142,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/shape_btn"
+                android:background="@drawable/shape_accent_2"
                 android:elevation="24dp"
                 android:text="进入我的图书馆"
                 android:textColor="@color/colorWhite"/>

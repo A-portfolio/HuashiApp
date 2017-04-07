@@ -5,72 +5,93 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
     android:orientation="vertical"
-    android:padding="20dp">
-
-    <TextView
-        android:id="@+id/tv_course"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="4dp"
-        android:layout_toLeftOf="@+id/tv_place"
-        android:ellipsize="end"
-        android:lines="1"
-        android:textColor="@color/colorBlack"
-        android:textSize="16sp"
-        tools:text="交交互设计交互设计交互设计交互设计互设计"/>
+    android:background="@drawable/shape_white_card"
+    android:paddingBottom="6dp"
+    android:paddingTop="6dp"
+>
 
     <TextView
         android:id="@+id/tv_place"
         android:layout_width="wrap_content"
+        android:layout_marginLeft="@dimen/item_horizontal_margin"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:textColor="@color/colorBlack"
-        android:textSize="14sp"
-        tools:text="\@9102"/>
+        android:textColor="@color/colorAccent"
+        android:textSize="12sp"
+        tools:text="本校@9102"/>
 
     <TextView
-        android:id="@+id/tv_teacher"
+        android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/item_horizontal_margin"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/tv_place"
-        android:textColor="@color/textColorGrey"
-        android:textSize="12sp"
-        tools:text="老师"/>
+        android:textSize="10sp"
+        tools:text="10:00上课"/>
+
+    <View android:id="@+id/divider"
+          android:layout_width="match_parent"
+          android:layout_height="2dp"
+          android:layout_below="@+id/tv_place"
+          android:layout_marginBottom="6dp"
+          android:layout_marginTop="6dp"
+          android:background="@drawable/dashed"/>
 
     <TextView
-        android:id="@+id/tv_start"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_course"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:textColor="@color/course_widget_start"
-        android:textSize="12sp"
-        tools:text="10:00"/>
-
-    <TextView
-        android:id="@+id/tv_end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:textColor="@color/course_widget_end"
-        android:textSize="12sp"
-        tools:text="11:40"/>
+        android:layout_marginLeft="@dimen/item_horizontal_margin"
+        android:layout_below="@id/divider"
+        android:layout_toLeftOf="@+id/iv_detail"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="10sp"
+        tools:text="交交互设计交互设计交互设计交互设计互设计"/>
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="2dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_toLeftOf="@+id/tv_end"
-        android:layout_toRightOf="@+id/tv_start"
-    />
+        android:id="@+id/iv_detail"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginRight="@dimen/item_horizontal_margin"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/divider"
+        android:src="@drawable/appwidget_detail"/>
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_teacher"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_below="@+id/tv_place"-->
+    <!--android:textColor="@color/textColorGrey"-->
+    <!--android:textSize="12sp"-->
+    <!--tools:text="老师"/>-->
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/tv_end"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:textColor="@color/course_widget_end"-->
+        <!--android:textSize="12sp"-->
+        <!--tools:text="11:40"/>-->
+
+    <!--<ImageView-->
+        <!--android:id="@+id/imageView"-->
+        <!--android:layout_width="20dp"-->
+        <!--android:layout_height="20dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginBottom="2dp"-->
+        <!--android:layout_marginLeft="4dp"-->
+        <!--android:layout_marginRight="4dp"-->
+        <!--android:layout_toLeftOf="@+id/tv_end"-->
+    <!--/>-->
 
 </RelativeLayout>

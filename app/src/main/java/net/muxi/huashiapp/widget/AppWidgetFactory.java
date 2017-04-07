@@ -98,11 +98,12 @@ public class AppWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.item_widget_course);
         rv.setTextViewText(R.id.tv_course, mCourseList.get(i).getCourse());
         rv.setTextViewText(R.id.tv_place, mCourseList.get(i).getPlace());
-        rv.setTextViewText(R.id.tv_teacher, mCourseList.get(i).getTeacher());
-        int start = mCourseList.get(i).getStart();
-        rv.setTextViewText(R.id.tv_start, TimeTableUtil.getCourseTime(start, true));
-        int end = mCourseList.get(i).getStart() + mCourseList.get(i).getDuring() - 1;
-        rv.setTextViewText(R.id.tv_end, TimeTableUtil.getCourseTime(end, false));
+        rv.setTextViewText(R.id.tv_time,String.format("%s上课",TimeTableUtil.getCourseTime(mCourseList.get(i).getStart(),true)));
+//        rv.setTextViewText(R.id.tv_teacher, mCourseList.get(i).getTeacher());
+//        int start = mCourseList.get(i).getStart();
+//        rv.setTextViewText(R.id.tv_start, TimeTableUtil.getCourseTime(start, true));
+//        int end = mCourseList.get(i).getStart() + mCourseList.get(i).getDuring() - 1;
+//        rv.setTextViewText(R.id.tv_end, TimeTableUtil.getCourseTime(end, false));
         Logger.d("get remoteview");
         return rv;
     }
