@@ -123,7 +123,6 @@ public class TimetableFragment extends BaseFragment {
         Logger.d(TimeTableUtil.getCurWeek() + "");
         renderCurweekView(TimeTableUtil.getCurWeek());
         renderSelectedWeekView(TimeTableUtil.getCurWeek());
-//        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE)) {
         if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true)) {
             IndicatedView indicatedView = new IndicatedView(getContext());
             indicatedView.setTipViewText("设置当前周也可以点这里噢");

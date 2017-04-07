@@ -37,6 +37,7 @@
     <string name="notify_content_card">匣客，你的学生卡余额低于20元，及时充值啊！</string>
     <string name="notify_title_lib">华师匣子</string>
     <string name="notify_content_lib">匣客，%1$s要到归还日期啦！</string>
+    <string name="notify_content_attention">匣客，你关注的图书%s可以借阅啦~</string>
 
     <string name="tip_id_text">学号</string>
     <string name="tip_pwd_text">信息门户密码</string>
