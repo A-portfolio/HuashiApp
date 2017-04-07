@@ -11,6 +11,7 @@ import com.zhuge.analysis.stat.ZhugeSDK;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
+import net.muxi.huashiapp.util.ZhugeUtils;
 
 
 /**
@@ -57,6 +58,7 @@ public class App extends Application {
         if (BuildConfig.DEBUG) {
             ZhugeSDK.getInstance().openLog();
         }
+        ZhugeUtils.sendEvent("打开应用");
     }
 
     public static Context getContext() {

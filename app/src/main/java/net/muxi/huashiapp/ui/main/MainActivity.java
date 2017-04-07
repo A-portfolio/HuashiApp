@@ -23,6 +23,7 @@ import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.more.MoreFragment;
 import net.muxi.huashiapp.ui.schedule.TimetableFragment;
+import net.muxi.huashiapp.util.AlarmUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
@@ -57,7 +58,24 @@ public class MainActivity extends BaseActivity implements
 
         initData();
         initView();
-        ZhugeUtils.sendEvent("打开应用");
+        handleIntent();
+        AlarmUtil.register(this);
+    }
+
+    //根据 intent 跳转到对应的 fragment
+    private void handleIntent() {
+        if (!getIntent().hasExtra("ui")){
+            return;
+        }
+        String name = getIntent().getStringExtra("ui");
+        switch (name){
+            case "timetable":
+                showFragment(TimetableFragment.newInstance());
+                break;
+            case "library":
+                showFragment(LibraryMineFragment.newInstance());
+                break;
+        }
     }
 
     private void initView() {

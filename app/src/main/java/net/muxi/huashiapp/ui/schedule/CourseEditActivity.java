@@ -270,7 +270,6 @@ public class CourseEditActivity extends ToolbarActivity {
 
     }
 
-
     private void updateCourse() {
         CampusFactory.getRetrofitService().updateCourse(Base64Util.createBaseStr(App.sUser),
                 mCourse.id, mCourse)

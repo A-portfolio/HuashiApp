@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.common.db;
 
 import android.database.Cursor;
+import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -120,6 +121,31 @@ public class HuaShiDao {
 
     public List<Course> loadAllCourses() {
         Cursor cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_COURSE, null);
+        List<Course> courses = new ArrayList<>();
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                Course course = new Course();
+                course.id = cursor.getString(cursor.getColumnIndex(DataBase.KEY_ID));
+                course.course = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_COURSE_NAME)));
+                course.teacher = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_TEACHER)));
+                course.weeks = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
+                course.day = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKDAY)));
+                course.start = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_TIME)));
+                course.during = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_DURATION)));
+                course.place = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_PLACE)));
+                course.remind = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_REMIND)));
+                course.color = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_COLOR)));
+                courses.add(course);
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return courses;
+    }
+
+    public List<Course> loadAddedCourses(){
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_COURSE + " where id < 1000",null);
         List<Course> courses = new ArrayList<>();
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {

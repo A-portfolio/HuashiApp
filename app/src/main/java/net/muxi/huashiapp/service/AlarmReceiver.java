@@ -9,9 +9,8 @@ import android.util.Log;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.Constants;
-
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.ui.card.CardActivity;
+import net.muxi.huashiapp.common.data.AttentionBook;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.PersonalBook;
@@ -19,13 +18,15 @@ import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.ui.card.CardActivity;
+import net.muxi.huashiapp.ui.main.MainActivity;
+import net.muxi.huashiapp.ui.score.ScoreActivity;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.DateUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NotifyUtil;
 import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.TimeTableUtil;
-import net.muxi.huashiapp.ui.score.ScoreActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,6 +39,7 @@ import rx.schedulers.Schedulers;
 
 /**
  * Created by ybao on 16/5/16.
+ * todo test alarmreceiver
  */
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -64,33 +66,34 @@ public class AlarmReceiver extends BroadcastReceiver {
         mLibUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD));
 
         Logger.d(mUser.getSid());
+        if (TextUtils.isEmpty(mUser.sid)) {
+            return;
+        }
+
         //判断对应的登录状态以及当前时间,还有用户是否设置提醒
-        if (!mUser.getSid().equals("")) {
-            Log.d(TAG, "check sid");
-            if (intent.getIntExtra(Constants.ALARMTIME, 0) == 2) {
-                if (sp.getBoolean(App.getContext().getString(R.string.pre_schedule), true)) {
-//                    checkCourses();
-                    Log.d(TAG, "check course");
-                }
+        if (intent.getIntExtra(Constants.ALARMTIME, 0) == 2) {
+            if (sp.getBoolean(App.getContext().getString(R.string.pre_schedule), true)) {
+                checkCourses();
+                Log.d(TAG, "check course");
             }
-            if (intent.getIntExtra(Constants.ALARMTIME, 0) == 1) {
-                if (sp.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
-                    checkScores();
-                    Log.d(TAG, "check score");
-                }
+        }
+        if (intent.getIntExtra(Constants.ALARMTIME, 0) == 1) {
+            if (sp.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
+                checkScores();
+                Log.d(TAG, "check score");
             }
-            if (intent.getIntExtra(Constants.ALARMTIME, 0) == 0) {
-                if (sp.getBoolean(App.getContext().getString(R.string.pre_card), true)) {
-                    checkCard();
-                    Log.d(TAG, "check card");
-                }
-                if (sp.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
-                    checkScores();
-                }
-                if (mLibUser.getSid() != "") {
-                    if (sp.getBoolean(App.getContext().getString(R.string.pre_library), true)) {
-                        checkLib();
-                    }
+        }
+        if (intent.getIntExtra(Constants.ALARMTIME, 0) == 0) {
+            if (sp.getBoolean(App.getContext().getString(R.string.pre_card), true)) {
+                checkCard();
+                Log.d(TAG, "check card");
+            }
+            if (sp.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
+                checkScores();
+            }
+            if (mLibUser.getSid() != "") {
+                if (sp.getBoolean(App.getContext().getString(R.string.pre_library), true)) {
+                    checkLib();
                 }
             }
         }
@@ -114,10 +117,13 @@ public class AlarmReceiver extends BroadcastReceiver {
                     @Override
                     public void onNext(List<CardData> cardDatas) {
                         try {
-                            if (Integer.valueOf(cardDatas.get(0).getOutMoney()) < CARD_LEAVE_MONEY) {
+                            if (Integer.valueOf(cardDatas.get(0).getOutMoney())
+                                    < CARD_LEAVE_MONEY) {
                                 NotifyUtil.show(mContext, CardActivity.class,
-                                        mContext.getResources().getString(R.string.notify_title_card),
-                                        mContext.getResources().getString(R.string.notify_content_card));
+                                        mContext.getResources().getString(
+                                                R.string.notify_title_card),
+                                        mContext.getResources().getString(
+                                                R.string.notify_content_card));
                             }
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
@@ -154,51 +160,81 @@ public class AlarmReceiver extends BroadcastReceiver {
                             }
                         }
                         if (isRemind) {
-                            String content = String.format(App.sContext.getString(R.string.notify_content_lib), connectBooks(books));
+                            String content = String.format(
+                                    App.sContext.getString(R.string.notify_content_lib),
+                                    connectBooks(books));
+                            NotifyUtil.show(mContext, MainActivity.class,
+                                    mContext.getString(R.string.notify_title_course),
+                                    content, "library");
                         }
                     }
                 });
+        CampusFactory.getRetrofitService().getAttentionBooks(Base64Util.createBaseStr(mUser))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(listResponse -> {
+                    List<String> books = new ArrayList<String>();
+                    boolean isRemind = false;
+                    for (AttentionBook book : listResponse.body()) {
+                        if (book.avbl.equals("y")) {
+                            isRemind = true;
+                            books.add(book.book);
+                        }
+                    }
+                    if (isRemind) {
+                        String content = String.format(
+                                App.sContext.getString(R.string.notify_content_attention),
+                                connectBooks(books));
+                        NotifyUtil.show(mContext, MainActivity.class,
+                                mContext.getString(R.string.notify_title_course),
+                                content, "library");
+                    }
+                }, throwable -> throwable.printStackTrace());
     }
 
-//    private void checkCourses() {
-//        HuaShiDao dao = new HuaShiDao();
-//        List<Course> courses = dao.loadCustomCourse();
-//        Logger.d(courses.size() + "");
-//        int day = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
-//        String defalutDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()), 1 - day);
-//        String startDate = sp.getString(PreferenceUtil.FIRST_WEEK_DATE, defalutDate);
-//        int curWeek = (int) DateUtil.getDistanceWeek(startDate, DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
-//        Logger.d(curWeek + "");
-//        int today = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
-//        //如果今天是周日则另做判断
-//        if (today == 7) {
-//            today = 1;
-//            curWeek++;
-//        } else {
-//            today++;
-//        }
-//        List<String> courseName = new ArrayList<>();
-//        for (int i = 0, j = courses.size(); i < j; i++) {
-//            Course course = courses.get(i);
-//            if (course.getRemind().equals("true") &&
-//                    !course.getCourse().equals(Constants.INIT_COURSE) &&
-//                    (Constants.WEEKDAYS[today - 1]).equals(course.getDay()) &&
-//                    TimeTableUtil.isThisWeek(curWeek, course.getWeeks())) {
-//                courseName.add(course.getCourse());
-//            }
-//        }
-//        Logger.d("courseName size " + courseName.size());
-//        if (courseName.size() > 0) {
-//            String content = String.format(mContext.getString(R.string.notify_content_course), connectStrings(courseName));
-//            NotifyUtil.show(mContext, ScheduleActivity.class,
-//                    mContext.getString(R.string.notify_title_course),
-//                    content);
-//        }
-//    }
+    private void checkCourses() {
+        HuaShiDao dao = new HuaShiDao();
+        List<Course> courses = dao.loadAddedCourses();
+        Logger.d(courses.size() + "");
+        int day = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
+        String defalutDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()),
+                1 - day);
+        String startDate = sp.getString(PreferenceUtil.FIRST_WEEK_DATE, defalutDate);
+        int curWeek = (int) DateUtil.getDistanceWeek(startDate,
+                DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
+        Logger.d(curWeek + "");
+        int today = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
+        //如果今天是周日则另做判断
+        if (today == 7) {
+            today = 1;
+            curWeek++;
+        } else {
+            today++;
+        }
+        List<String> courseName = new ArrayList<>();
+        for (int i = 0, j = courses.size(); i < j; i++) {
+            Course course = courses.get(i);
+            if (course.getRemind().equals("true") &&
+                    !course.getCourse().equals(Constants.INIT_COURSE) &&
+                    (Constants.WEEKDAYS[today - 1]).equals(course.getDay()) &&
+                    TimeTableUtil.isThisWeek(curWeek, course.getWeeks())) {
+                courseName.add(course.getCourse());
+            }
+        }
+        Logger.d("courseName size " + courseName.size());
+        if (courseName.size() > 0) {
+            String content = String.format(mContext.getString(R.string.notify_content_course),
+                    connectStrings(courseName));
+            NotifyUtil.show(mContext, MainActivity.class,
+                    mContext.getString(R.string.notify_title_course),
+                    content, "timetable");
+        }
+    }
 
     private void checkScores() {
         judgeYearAndTerm();
-        CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(mUser), mCurYear + "", mCurTerm + "")
+        CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(mUser), mCurYear + "",
+                mCurTerm + "")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Scores>>() {
@@ -215,7 +251,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                     @Override
                     public void onNext(List<Scores> scoresList) {
                         Logger.d(scoresList.size() + "  " + sp.getInt(PreferenceUtil.SCORES_NUM));
-                        if (scoresList.size() != sp.getInt(PreferenceUtil.SCORES_NUM) && scoresList.size() != 0) {
+                        if (scoresList.size() != sp.getInt(PreferenceUtil.SCORES_NUM)
+                                && scoresList.size() != 0) {
                             sp.saveInt(PreferenceUtil.SCORES_NUM, scoresList.size());
                             NotifyUtil.show(mContext, ScoreActivity.class,
                                     mContext.getString(R.string.notify_title_score),
