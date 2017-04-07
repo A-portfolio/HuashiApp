@@ -32,12 +32,14 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
                 intent.getAction().equals("android.intent.action.WidgetProvider")) {
             Logger.d("begin update list");
             AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
-            int[] appWidgetIds = widgetManager.getAppWidgetIds(new ComponentName(context,ScheduleWidgetProvider.class));
+            int[] appWidgetIds = widgetManager.getAppWidgetIds(
+                    new ComponentName(context, ScheduleWidgetProvider.class));
 
             if (appWidgetIds.length > 0) {
                 rv = new RemoteViews(context.getPackageName(), R.layout.widget_schedule);
-                rv.setTextViewText(R.id.tv_week, Constants.WEEKS[TimeTableUtil.getCurWeek() - 1]);
-                rv.setTextViewText(R.id.tv_weekday, Constants.WEEKDAYS[DateUtil.getDayInWeek(new Date()) - 1]);
+                int week = TimeTableUtil.getCurWeek();
+                String weekday = Constants.WEEKDAYS[DateUtil.getDayInWeek(new Date()) - 1];
+                rv.setTextViewText(R.id.tv_weekday, String.format("第%d周%s", week, weekday));
                 widgetManager.updateAppWidget(appWidgetIds, rv);
                 widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv);
             }
@@ -56,7 +58,8 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
 
     }
 
-    private void updateWidget(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+    private void updateWidget(Context context, AppWidgetManager appWidgetManager,
+            int[] appWidgetIds) {
         int appWidgetId = appWidgetIds[0];
         Logger.d(appWidgetId + "");
         Intent intent = new Intent(context, WidgetService.class);
@@ -68,7 +71,8 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
 //        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
 //        rv.setRemoteAdapter(appWidgetId, R.id.lv, intent);
 //        rv.setTextViewText(R.id.tv_week, Constants.WEEKS[TimeTableUtil.getCurWeek() - 1]);
-//        rv.setTextViewText(R.id.tv_weekday, Constants.WEEKDAYS[DateUtil.getDayInWeek(new Date()) - 1]);
+//        rv.setTextViewText(R.id.tv_weekday, Constants.WEEKDAYS[DateUtil.getDayInWeek(new Date()
+// ) - 1]);
 //        rv.setOnClickPendingIntent(R.id.widget_layout, pendingIntent);
 //        appWidgetManager.updateAppWidget(appWidgetId, rv);
 //        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.lv);

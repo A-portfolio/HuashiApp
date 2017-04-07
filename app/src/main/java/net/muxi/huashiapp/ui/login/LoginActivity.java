@@ -2,17 +2,10 @@ package net.muxi.huashiapp.ui.login;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -20,25 +13,17 @@ import android.widget.EditText;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.User;
-import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.ui.main.MainActivity;
 import net.muxi.huashiapp.util.Base64Util;
-import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
-import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.ToastUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Response;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -102,7 +87,7 @@ public class LoginActivity extends ToolbarActivity {
 
     @OnClick(R.id.btn_login)
     public void onClick() {
-        if(!NetStatus.isConnected()){
+        if (!NetStatus.isConnected()) {
             showErrorSnackbarShort(R.string.tip_check_net);
             return;
         }
@@ -115,35 +100,35 @@ public class LoginActivity extends ToolbarActivity {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(verifyResponseResponse -> {
-                                if (verifyResponseResponse.code() == 403) {
-                                    showErrorSnackbarShort(getString(R.string.tip_err_account));
-                                } else if (verifyResponseResponse.code() == 502) {
-                                    showErrorSnackbarShort(getString(R.string.tip_err_server));
-                                } else {
+                                if (verifyResponseResponse.code() == 200) {
                                     finish();
                                     App.saveUser(user);
+                                } else if (verifyResponseResponse.code() == 403) {
+                                    showErrorSnackbarShort(getString(R.string.tip_err_account));
+                                } else {
+                                    showErrorSnackbarShort(getString(R.string
+                                            .tip_school_server_error));
                                 }
                             }, throwable -> {
                                 throwable.printStackTrace();
                                 showErrorSnackbarShort(getString(R.string.tip_check_net));
                             },
-                            () -> {
-                                hideLoading();
-                            });
+                            () -> hideLoading());
             ZhugeUtils.sendEvent("图书馆登录");
         } else {
             CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(verifyResponseResponse -> {
-                                if (verifyResponseResponse.code() == 403) {
-                                    showErrorSnackbarShort(getString(R.string.tip_err_account));
-                                } else if (verifyResponseResponse.code() == 502) {
-                                    showErrorSnackbarShort(getString(R.string.tip_err_server));
-                                } else {
+                                if (verifyResponseResponse.code() == 200) {
                                     finish();
                                     App.saveLibUser(user);
                                     loadMyBooks();
+                                } else if (verifyResponseResponse.code() == 403) {
+                                    showErrorSnackbarShort(getString(R.string.tip_err_account));
+                                } else {
+                                    showErrorSnackbarShort(getString(R.string
+                                            .tip_school_server_error));
                                 }
                             }, throwable -> {
                                 throwable.printStackTrace();
@@ -155,19 +140,21 @@ public class LoginActivity extends ToolbarActivity {
     }
 
     private void loadMyBooks() {
-        CampusFactory.getRetrofitService().getAttentionBooks(Base64Util.createBaseStr(App.sLibrarayUser))
+        CampusFactory.getRetrofitService().getAttentionBooks(
+                Base64Util.createBaseStr(App.sLibrarayUser))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.immediate())
                 .subscribe(listResponse -> {
-                    if (listResponse.code() == 200){
+                    if (listResponse.code() == 200) {
                         MyBooksUtils.saveAttentionBooks(listResponse.body());
                     }
                 });
-        CampusFactory.getRetrofitService().getPersonalBook(Base64Util.createBaseStr(App.sLibrarayUser))
+        CampusFactory.getRetrofitService().getPersonalBook(
+                Base64Util.createBaseStr(App.sLibrarayUser))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(personalBooks -> {
-                    if (personalBooks != null){
+                    if (personalBooks != null) {
                         MyBooksUtils.saveBorrowedBooks(personalBooks);
                     }
                 });

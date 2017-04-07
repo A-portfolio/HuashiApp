@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:text="前去反馈"
-        android:background="@drawable/shape_btn"
+        android:background="@drawable/shape_accent_2"
         android:textColor="@color/colorWhite"
         android:layout_marginTop="60dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
