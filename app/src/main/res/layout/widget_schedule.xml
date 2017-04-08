@@ -15,10 +15,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="20dp"
         android:textColor="@color/colorWhite"
-        android:textSize="10sp"
+        android:textSize="16sp"
         tools:text="第18周星期三"/>
 
     <ListView

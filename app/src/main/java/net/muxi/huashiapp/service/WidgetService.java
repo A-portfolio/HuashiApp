@@ -22,7 +22,6 @@ public class WidgetService extends RemoteViewsService{
         HuaShiDao dao = new HuaShiDao();
         ArrayList<Course> allCourses = (ArrayList<Course>) dao.loadAllCourses();
         intent.putParcelableArrayListExtra("course",allCourses);
-        Logger.d(" getviewFactory ");
         return new AppWidgetFactory(this.getApplicationContext(),intent);
     }
 
