@@ -29,54 +29,46 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
         Logger.d(intent.getAction());
         if (intent.getAction().equals("android.intent.action.TIME_SET") ||
-                intent.getAction().equals("android.intent.action.WidgetProvider")) {
+                intent.getAction().equals("android.intent.action.WidgetProvider") ||
+                intent.getAction().equals("android.appwidget.action.APPWIDGET_UPDATE")) {
+
             Logger.d("begin update list");
             AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = widgetManager.getAppWidgetIds(
                     new ComponentName(context, ScheduleWidgetProvider.class));
 
             if (appWidgetIds.length > 0) {
+                Intent widgetServiceIntent = new Intent(context,WidgetService.class);
                 rv = new RemoteViews(context.getPackageName(), R.layout.widget_schedule);
                 int week = TimeTableUtil.getCurWeek();
-                String weekday = Constants.WEEKDAYS[DateUtil.getDayInWeek(new Date()) - 1];
+                String weekday = Constants.WEEKDAYS_XQ[DateUtil.getDayInWeek(new Date()) - 1];
                 rv.setTextViewText(R.id.tv_weekday, String.format("第%d周%s", week, weekday));
+                rv.setRemoteAdapter(R.id.lv,widgetServiceIntent);
                 widgetManager.updateAppWidget(appWidgetIds, rv);
                 widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv);
             }
         }
     }
 
-    @Override
-    public void onEnabled(Context context) {
-        super.onEnabled(context);
-    }
-
-    @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        updateWidget(context, appWidgetManager, appWidgetIds);
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
-
-    }
+//    @Override
+//    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+//        updateWidget(context, appWidgetManager, appWidgetIds);
+//        super.onUpdate(context, appWidgetManager, appWidgetIds);
+//
+//    }
 
     private void updateWidget(Context context, AppWidgetManager appWidgetManager,
             int[] appWidgetIds) {
         int appWidgetId = appWidgetIds[0];
         Logger.d(appWidgetId + "");
         Intent intent = new Intent(context, WidgetService.class);
-//            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-//            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
         rv = new RemoteViews(context.getPackageName(), R.layout.widget_schedule);
-
-//        Intent activityIntent = new Intent(context, ScheduleActivity.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
-//        rv.setRemoteAdapter(appWidgetId, R.id.lv, intent);
-//        rv.setTextViewText(R.id.tv_week, Constants.WEEKS[TimeTableUtil.getCurWeek() - 1]);
-//        rv.setTextViewText(R.id.tv_weekday, Constants.WEEKDAYS[DateUtil.getDayInWeek(new Date()
-// ) - 1]);
-//        rv.setOnClickPendingIntent(R.id.widget_layout, pendingIntent);
-//        appWidgetManager.updateAppWidget(appWidgetId, rv);
-//        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.lv);
-//        Logger.d("appwidget update");
+        int week = TimeTableUtil.getCurWeek();
+        String weekday = Constants.WEEKDAYS_XQ[DateUtil.getDayInWeek(new Date()) - 1];
+        rv.setTextViewText(R.id.tv_weekday, String.format("第%d周%s", week, weekday));
+        rv.setRemoteAdapter(R.id.lv,intent);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds,R.id.lv);
+        appWidgetManager.updateAppWidget(appWidgetId,rv);
     }
 
 

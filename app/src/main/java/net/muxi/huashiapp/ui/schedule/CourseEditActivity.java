@@ -22,6 +22,7 @@ import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NetStatus;
@@ -141,6 +142,9 @@ public class CourseEditActivity extends ToolbarActivity {
                     switch (verifyResponseResponse.code()) {
                         case 201:
                             dao.insertCourse(mCourse);
+                            Intent intent = new Intent(this, ScheduleWidgetProvider.class);
+                            intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                            sendBroadcast(intent);
                             finish();
                             break;
                         default:
@@ -279,6 +283,9 @@ public class CourseEditActivity extends ToolbarActivity {
                     switch (verifyResponseResponse.code()) {
                         case 200:
                             dao.updateCourse(mCourse);
+                            Intent intent = new Intent(this, ScheduleWidgetProvider.class);
+                            intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                            sendBroadcast(intent);
                             finish();
                             break;
                         case 404:

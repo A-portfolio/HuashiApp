@@ -7,8 +7,11 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Course;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * Created by ybao on 16/7/27.
@@ -186,6 +189,7 @@ public class TimeTableUtil {
                 courseList.add(allCourseList.get(i));
             }
         }
+        Collections.sort(courseList,(c1,c2) -> c1.start - c2.start);
         return courseList;
     }
 

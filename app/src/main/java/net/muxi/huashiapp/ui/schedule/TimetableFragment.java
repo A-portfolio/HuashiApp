@@ -139,6 +139,7 @@ public class TimetableFragment extends BaseFragment {
             selectedWeek = week;
             renderCourseView(mCourses);
             renderSelectedWeekView(week);
+            mShadeView.setVisibility(View.GONE);
         });
         mIvMenu.setOnClickListener(v -> {
             if (selectedIvStatus) {

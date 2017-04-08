@@ -242,6 +242,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         public BannerViewHolder(View itemView) {
             super(itemView);
             mCardBanner = (CardBanner) itemView.findViewById(R.id.card_banner);
+//            mCardBanner.
         }
     }
 

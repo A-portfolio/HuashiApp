@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="item_vertical_margin">8dp</dimen>
-    <dimen name="item_horizontal_margin">8dp</dimen>
+    <dimen name="appwidget_item_horizontal_margin">24dp</dimen>
     <dimen name="dialog_horizontal_margin">64dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="oval_height">40dp</dimen>
