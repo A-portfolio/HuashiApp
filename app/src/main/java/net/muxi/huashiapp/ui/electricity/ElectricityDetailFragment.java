@@ -41,6 +41,7 @@ public class ElectricityDetailFragment extends BaseFragment {
     private static final int TYPE_LIGHT = 0;
     private static final int TYPE_AIR = 1;
 
+
     public static ElectricityDetailFragment newInstance(int type) {
         Bundle args = new Bundle();
         args.putInt("type", type);

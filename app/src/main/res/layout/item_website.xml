@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/website_site"
+    android:id="@+id/website_layout"
     android:layout_width="match_parent"
     android:layout_height="72dp"
     android:background="?android:attr/selectableItemBackground"
-    android:clickable="true"
-    android:gravity="center_vertical"
-    tools:text="信息门户"
-    android:paddingLeft="72dp"
-    android:textColor="@color/colorBlack"
-    android:textSize="16sp">
+    android:clickable="true">
 
-</TextView>
+    <TextView
+        android:id="@+id/website_site"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="72dp"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"
+        tools:text="信息门户"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_link_layout"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
+
 
 
 

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
@@ -53,12 +54,16 @@ public class StudyRoomActivity extends ToolbarActivity {
 
     private StudyTimePickerDialogFragment mDialogFragment;
 
+    private PreferenceUtil sp;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_studyroom);
         ButterKnife.bind(this);
         setTitle("空闲教室");
+
+        sp = new PreferenceUtil();
 
         initView();
 
@@ -79,7 +84,7 @@ public class StudyRoomActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_correct) {
-            StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomActivity.this);
+            StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomActivity.this, "work");
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.view_show);
             studyRoomCorrectView.startAnimation(animation);
             setContentView(studyRoomCorrectView);
@@ -114,6 +119,7 @@ public class StudyRoomActivity extends ToolbarActivity {
             case R.id.btn_search:
                 if (mTvStudyTime.getText().length() != 0 && mTvStudyArea.getText().length() != 0) {
                     mQuery = mTvStudyTime.getText().toString() + mTvStudyArea.getText().toString();
+                    sp.saveString(PreferenceUtil.STUDY_ROOM_QUERY_STRING,mQuery);
                     StudyRoomDetailActivity.start(StudyRoomActivity.this, mQuery);
                     this.finish();
                     break;
@@ -133,7 +139,12 @@ public class StudyRoomActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
+        StudyRoomCorrectView view = new StudyRoomCorrectView(StudyRoomActivity.this, "work");
+        if (getWindow().getDecorView().equals(view)) {
+            view.removeAllViews();
+            super.onBackPressed();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
