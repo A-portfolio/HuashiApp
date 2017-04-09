@@ -13,15 +13,14 @@ import java.util.ArrayList;
 
 /**
  * Created by ybao on 16/11/2.
+ * 开启桌面挂件时触发
  */
 
 public class WidgetService extends RemoteViewsService{
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        HuaShiDao dao = new HuaShiDao();
-        ArrayList<Course> allCourses = (ArrayList<Course>) dao.loadAllCourses();
-        intent.putParcelableArrayListExtra("course",allCourses);
+        Logger.d("widget service trigger");
         return new AppWidgetFactory(this.getApplicationContext(),intent);
     }
 

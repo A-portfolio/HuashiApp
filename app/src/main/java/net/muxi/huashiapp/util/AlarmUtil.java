@@ -20,14 +20,13 @@ public class AlarmUtil {
 
     public static void register(Context context) {
 
-        //提醒时间点个数
-        final int ALARM_NUM = 3;
         //提醒时间点
         final int[] REMIND_TIME = {9, 15, 20};
+        //提醒时间点个数
+        final int ALARM_NUM = REMIND_TIME.length;
 
         Calendar[] calendars = new Calendar[ALARM_NUM];
         Calendar now = Calendar.getInstance();
-        Log.d("alarm","begin register");
 
         for (int i = 0; i < ALARM_NUM; i++) {
             calendars[i] = Calendar.getInstance();
