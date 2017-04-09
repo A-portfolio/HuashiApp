@@ -1,5 +1,7 @@
 package net.muxi.huashiapp.widget;
 
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
@@ -8,6 +10,7 @@ import android.widget.RemoteViewsService;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
+import net.muxi.huashiapp.ui.main.MainActivity;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.TimeTableUtil;
 
@@ -68,7 +71,6 @@ public class AppWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public RemoteViews getViewAt(int i) {
-        Logger.d(getCount() + " ");
         if (getCount() == 0) {
             return null;
         }
@@ -77,8 +79,10 @@ public class AppWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
         rv.setTextViewText(R.id.tv_place, mCourseList.get(i).getPlace());
         rv.setTextViewText(R.id.tv_time, String.format("%s上课",
                 TimeTableUtil.getCourseTime(mCourseList.get(i).getStart(), true)));
-        Logger.d(mCourseList.get(i).getPlace());
-        Logger.d(mCourseList.get(i).getStart() + " start");
+
+        Intent intent = new Intent(mContext, MainActivity.class);
+        intent.putExtra("ui","table");
+        rv.setOnClickFillInIntent(R.id.iv_detail,intent);
         return rv;
     }
 
