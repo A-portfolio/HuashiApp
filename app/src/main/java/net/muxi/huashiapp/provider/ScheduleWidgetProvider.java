@@ -59,18 +59,4 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    private void updateWidget(Context context, AppWidgetManager appWidgetManager,
-            int[] appWidgetIds) {
-        int appWidgetId = appWidgetIds[0];
-        Intent intent = new Intent(context, WidgetService.class);
-        rv = new RemoteViews(context.getPackageName(), R.layout.widget_schedule);
-        int week = TimeTableUtil.getCurWeek();
-        String weekday = Constants.WEEKDAYS_XQ[DateUtil.getDayInWeek(new Date()) - 1];
-        rv.setTextViewText(R.id.tv_weekday, String.format("第%d周%s", week, weekday));
-        rv.setRemoteAdapter(R.id.lv,intent);
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds,R.id.lv);
-        appWidgetManager.updateAppWidget(appWidgetId,rv);
-    }
-
-
 }

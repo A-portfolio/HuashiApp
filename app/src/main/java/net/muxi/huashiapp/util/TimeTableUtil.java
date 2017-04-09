@@ -181,7 +181,6 @@ public class TimeTableUtil {
         for (int i = 0; i < allCourseList.size(); i++) {
             String weeks = allCourseList.get(i).getWeeks();
             String day = allCourseList.get(i).getDay();
-            Logger.d(day);
             if (isThisWeek(getCurWeek(), weeks) && day.equals(
                     Constants.WEEKDAYS_XQ[
                             DateUtil.getDayInWeek(new Date(System.currentTimeMillis()))

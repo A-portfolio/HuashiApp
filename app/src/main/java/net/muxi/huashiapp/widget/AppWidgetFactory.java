@@ -31,13 +31,11 @@ public class AppWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
     public static final String INTENT_COURSES = "courses";
     //存放当天要显示的课程
     private List<Course> mCourseList;
-    private List<Course> mAllCourseList = new ArrayList<>();
 
     private Context mContext;
 
     public AppWidgetFactory(Context context, Intent intent) {
         mContext = context;
-        mAllCourseList.addAll(intent.getParcelableArrayListExtra("course"));
         loadTodayCourses();
     }
 
@@ -52,7 +50,10 @@ public class AppWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
     }
 
     public void loadTodayCourses(){
-        mCourseList = TimeTableUtil.getTodayCourse(mAllCourseList);
+        HuaShiDao dao = new HuaShiDao();
+        List<Course> allCourses = dao.loadAllCourses();
+        mCourseList = TimeTableUtil.getTodayCourse(allCourses);
+        Logger.d(mCourseList.size() + " today couse size");
     }
 
     @Override

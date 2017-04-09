@@ -30,6 +30,7 @@ import net.muxi.huashiapp.util.TimeTableUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -71,10 +72,15 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         //判断对应的登录状态以及当前时间,还有用户是否设置提醒
-        if (intent.getIntExtra(Constants.ALARMTIME, 0) == 2) {
+        if (intent.getIntExtra(Constants.ALARMTIME, 2) == 2) {
+            Log.d(TAG,sp.getBoolean(App.getContext().getString(R.string.pre_schedule),true) + "");
             if (sp.getBoolean(App.getContext().getString(R.string.pre_schedule), true)) {
                 checkCourses();
                 Log.d(TAG, "check course");
+            }
+            if (sp.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
+                checkScores();
+                Log.d(TAG, "check score");
             }
         }
         if (intent.getIntExtra(Constants.ALARMTIME, 0) == 1) {
@@ -193,9 +199,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void checkCourses() {
-        HuaShiDao dao = new HuaShiDao();
-        List<Course> courses = dao.loadAddedCourses();
-        Logger.d(courses.size() + "");
+
         int day = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
         String defalutDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()),
                 1 - day);
@@ -203,28 +207,32 @@ public class AlarmReceiver extends BroadcastReceiver {
         int curWeek = (int) DateUtil.getDistanceWeek(startDate,
                 DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
         Logger.d(curWeek + "");
-        int today = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
         //如果今天是周日则另做判断
-        if (today == 7) {
-            today = 1;
+        if (day == 7) {
+            day = 1;
             curWeek++;
         } else {
-            today++;
+            day ++;
         }
-        List<String> courseName = new ArrayList<>();
-        for (int i = 0, j = courses.size(); i < j; i++) {
-            Course course = courses.get(i);
-            if (course.getRemind().equals("true") &&
-                    !course.getCourse().equals(Constants.INIT_COURSE) &&
-                    (Constants.WEEKDAYS[today - 1]).equals(course.getDay()) &&
-                    TimeTableUtil.isThisWeek(curWeek, course.getWeeks())) {
-                courseName.add(course.getCourse());
+
+        HuaShiDao dao = new HuaShiDao();
+        List<Course> allCourses = dao.loadAllCourses();
+        List<String> courses = new ArrayList<>();
+
+        for (int i = 0;i < allCourses.size();i ++){
+            Logger.d(allCourses.get(i).id);
+            if (Integer.parseInt(allCourses.get(i).id) < 1000
+                    && allCourses.get(i).day.equals(Constants.WEEKDAYS_XQ[day - 1])
+                    && !allCourses.get(i).getCourse().equals(Constants.INIT_COURSE)
+                    && TimeTableUtil.isThisWeek(curWeek,allCourses.get(i).weeks)){
+                courses.add(allCourses.get(i).course);
             }
         }
-        Logger.d("courseName size " + courseName.size());
-        if (courseName.size() > 0) {
+        Logger.d(courses.size() + "");
+
+        if (courses.size() > 0) {
             String content = String.format(mContext.getString(R.string.notify_content_course),
-                    connectStrings(courseName));
+                    connectStrings(courses));
             NotifyUtil.show(mContext, MainActivity.class,
                     mContext.getString(R.string.notify_title_course),
                     content, "timetable");
