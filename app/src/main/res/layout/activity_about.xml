@@ -28,9 +28,7 @@
         android:layout_marginTop="16dp"
         android:src="@drawable/img_ccnubox"
         android:layout_below="@+id/toolbar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="56dp"
-        android:layout_marginStart="56dp"/>
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/tv_name"
