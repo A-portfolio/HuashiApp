@@ -58,22 +58,30 @@ public class MainActivity extends BaseActivity implements
 
         initData();
         initView();
-        handleIntent();
+        handleIntent(getIntent());
         AlarmUtil.register(this);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
     //根据 intent 跳转到对应的 fragment
-    private void handleIntent() {
-        if (!getIntent().hasExtra("ui")){
+    private void handleIntent(Intent intent) {
+        if (!intent.hasExtra("ui")){
             return;
         }
-        String name = getIntent().getStringExtra("ui");
+        String name = intent.getStringExtra("ui");
         switch (name){
-            case "timetable":
+            case "table":
                 showFragment(TimetableFragment.newInstance());
+                mNavView.getMenu().getItem(1).setChecked(true);
                 break;
-            case "library":
+            case "lib":
                 showFragment(LibraryMineFragment.newInstance());
+                mNavView.getMenu().getItem(2).setChecked(true);
                 break;
         }
     }

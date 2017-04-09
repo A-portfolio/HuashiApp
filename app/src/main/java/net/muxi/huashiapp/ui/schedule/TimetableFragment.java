@@ -3,6 +3,7 @@ package net.muxi.huashiapp.ui.schedule;
 import static net.muxi.huashiapp.widget.IndicatedView.IndicatedView.DIRECTION_DOWN;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,6 +26,8 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.event.AddCourseEvent;
 import net.muxi.huashiapp.event.DeleteCourseOkEvent;
 import net.muxi.huashiapp.event.RefreshFinishEvent;
+import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
+import net.muxi.huashiapp.ui.main.MainActivity;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
@@ -81,6 +84,8 @@ public class TimetableFragment extends BaseFragment {
 
     private HuaShiDao dao;
 
+    private Context mContext;
+
     private boolean handlingRefresh = false;
 
     public static TimetableFragment newInstance() {
@@ -99,6 +104,8 @@ public class TimetableFragment extends BaseFragment {
 
         getActivity().getWindow().getDecorView().setBackgroundColor(Color.argb(255, 250, 250, 250));
         dao = new HuaShiDao();
+
+        mContext = getActivity();
 
         initData();
         initView();
@@ -169,13 +176,19 @@ public class TimetableFragment extends BaseFragment {
                 .subscribe(addCourseEvent -> {
                     mCourses = dao.loadAllCourses();
                     renderCourseView(mCourses);
-                });
+                    Intent intent = new Intent(mContext, ScheduleWidgetProvider.class);
+                    intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                    mContext.sendBroadcast(intent);
+                },throwable -> throwable.printStackTrace());
         ((BaseActivity) getContext()).addSubscription(subscription1);
         Subscription subscription2 = RxBus.getDefault().toObservable(DeleteCourseOkEvent.class)
                 .subscribe(deleteCourseOkEvent -> {
                     mCourses = dao.loadAllCourses();
                     renderCourseView(mCourses);
-                });
+                    Intent intent = new Intent(mContext, ScheduleWidgetProvider.class);
+                    intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                    mContext.sendBroadcast(intent);
+                },throwable -> throwable.printStackTrace());
         ((BaseActivity) getContext()).addSubscription(subscription2);
         mTimetable.setOnRefreshListener(() -> {
             handlingRefresh = true;
