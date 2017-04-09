@@ -121,9 +121,9 @@ public class CardActivity extends ToolbarActivity {
                             Logger.d(json);
                             Logger.d("get json");
 
-//                            mConsumeView.setInitData(data);
-//
-//                            mConsumeView.loadUrl("http://123.56.41.13:4088");
+                            mConsumeView.setInitData(data);
+
+                            mConsumeView.loadUrl("http://123.56.41.13:4088");
 
                         }
                     });
