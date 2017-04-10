@@ -25,11 +25,10 @@
         android:id="@+id/img_ccnubox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:layout_below="@id/toolbar"
         android:src="@drawable/img_ccnubox"
-        />
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/tv_name"

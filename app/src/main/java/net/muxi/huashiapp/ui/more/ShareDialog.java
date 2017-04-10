@@ -5,10 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 
 import com.sina.weibo.sdk.api.TextObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
@@ -29,16 +30,21 @@ import com.tencent.tauth.Tencent;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.listener.BaseUiListener;
+import net.muxi.huashiapp.ui.main.OnRecyclerItemClickListener;
+import net.muxi.huashiapp.ui.webview.ShareAdapter;
+import net.muxi.huashiapp.util.AppUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.ToastUtil;
 import net.muxi.huashiapp.widget.BottomDialogFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by december on 17/2/26.
@@ -46,24 +52,15 @@ import butterknife.OnClick;
 
 public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.Response {
 
+
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+
     private static final String WEB_URL = "url";
     private static final String WEB_TITLE = "title";
     private static final String WEB_INTRO = "intro";
     private static final String WEB_ICON_URL = "icon_url";
 
-
-    @BindView(R.id.btn_share_qq)
-    Button mBtnShareQq;
-    @BindView(R.id.btn_share_wx)
-    Button mBtnShareWx;
-    @BindView(R.id.btn_share_weibo)
-    Button mBtnShareWeibo;
-    @BindView(R.id.btn_share_qzone)
-    Button mBtnShareQzone;
-    @BindView(R.id.btn_share_moments)
-    Button mBtnShareMoments;
-    @BindView(R.id.btn_copy_link)
-    Button mBtnCopyLink;
 
     public static Tencent mTencent;
     private IWeiboShareAPI mWeiboShareAPI;
@@ -79,11 +76,23 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
     private IWXAPI api;
     private String type = "webpage";
 
+    private Integer[] pics = {R.drawable.ic_share_toqq, R.drawable.ic_share_towx, R.drawable.ic_share_toweibo,
+            R.drawable.ic_share_toqzone, R.drawable.ic_share_tomoments, R.drawable.ic_share_copy_link};
+
+    private String[] desc = {"QQ好友", "微信好友", "微博", "QQ空间", "朋友圈", "复制下载链接"};
+
+    private List<Integer> mpic;
+    private List<String> mdesc;
+
+    private ShareAdapter mShareAdapter;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_share, null);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_shareto, null);
         ButterKnife.bind(this, view);
+
+        Dialog dialog = createBottomDialog(view);
 
 
         title = getActivity().getIntent().hasExtra(WEB_TITLE) ? getActivity().getIntent().getStringExtra(WEB_TITLE) : getActivity().getIntent().getStringExtra(WEB_URL);
@@ -102,7 +111,39 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
             mWeiboShareAPI.handleWeiboResponse(getActivity().getIntent(), this);
         }
 
-        Dialog dialog = createBottomDialog(view);
+        mpic = new ArrayList<>();
+        mdesc = new ArrayList<>();
+
+        mpic.addAll(Arrays.asList(pics));
+        mdesc.addAll(Arrays.asList(desc));
+        mShareAdapter = new ShareAdapter(mpic, mdesc);
+        final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
+
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(mShareAdapter);
+
+        mRecyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRecyclerView) {
+            @Override
+            public void onItemClick(RecyclerView.ViewHolder vh) {
+                switch (vh.getLayoutPosition()) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+
+                    case 5:
+                        AppUtil.clipToClipBoard(getContext(), "http://ccnubox.muxixyz.com");
+                        ((BaseActivity) getActivity()).showSnackbarShort(getResources().getString(R.string.tip_copy_success));
+                        dialog.dismiss();
+                        break;
+
+
+                }
+            }
+        });
+
+
         return dialog;
 
 
@@ -183,26 +224,6 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
     }
 
 
-    @OnClick({R.id.btn_share_qq, R.id.btn_share_wx, R.id.btn_share_weibo, R.id.btn_share_qzone, R.id.btn_share_moments, R.id.btn_copy_link})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_share_qq:
-                break;
-            case R.id.btn_share_wx:
-                shareTOWeixin();
-                break;
-            case R.id.btn_share_weibo:
-                sendMultiMessage(true, false, false, false, false, false);
-                break;
-            case R.id.btn_share_qzone:
-                shareToQzone(title, intro, url, iconUrl);
-                break;
-            case R.id.btn_share_moments:
-                break;
-            case R.id.btn_copy_link:
-                break;
-        }
-    }
 }
 
 

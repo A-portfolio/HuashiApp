@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:layout_marginTop="6dp">
+
+    <ImageView
+        android:id="@+id/share_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/share_way"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/share_image"
+        android:layout_marginTop="2dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/explanation_color"
+        android:textSize="@dimen/small_size"
+        tools:text="电费查询"/>
+
+    <View
+        android:layout_below="@id/share_way"
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:visibility="gone"
+        android:layout_marginTop="4dp"/>
+</RelativeLayout>

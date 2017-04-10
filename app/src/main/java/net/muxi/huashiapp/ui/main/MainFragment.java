@@ -32,10 +32,13 @@ import net.muxi.huashiapp.ui.studyroom.StudyRoomBlankActivity;
 import net.muxi.huashiapp.ui.website.WebsiteActivity;
 import net.muxi.huashiapp.util.ACache;
 import net.muxi.huashiapp.util.DateUtil;
+import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
+import net.muxi.huashiapp.util.TipViewUtil;
 import net.muxi.huashiapp.util.VibratorUtil;
+import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,6 +72,9 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     private HuaShiDao dao;
 
     private PreferenceUtil sp;
+
+    public static final int DIRECTION_DOWN = 0;
+    public static final int DIRECTION_UP = 1;
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
@@ -118,6 +124,16 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     }
 
     private void initView() {
+        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true)) {
+            IndicatedView indicatedView = new IndicatedView(getContext());
+            indicatedView.setTipViewText("快看看底部都有什么功能吧!");
+            TipViewUtil.addToContent(getContext(), indicatedView, DIRECTION_UP,
+                    DimensUtil.getScreenWidth() / 4, DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight() - DimensUtil.dp2px(98));
+            IndicatedView indicatedView1 = new IndicatedView(getContext());
+            indicatedView1.setTipViewText("长按可以任意挪动位置噢");
+            TipViewUtil.addToContent(getContext(), indicatedView1, DIRECTION_UP,
+                    DimensUtil.getScreenWidth() / 4, (DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight()) / 3);
+        }
         final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         mMainAdapter = new MainAdapter(mItemDatas, mBannerDatas);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -144,10 +160,10 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
             @Override
             public void onItemClick(RecyclerView.ViewHolder vh) {
-                if (vh.getLayoutPosition() == 0){
+                if (vh.getLayoutPosition() == 0) {
 
                 }
-                if (vh.getLayoutPosition() != 0 && vh.getLayoutPosition() != mItemDatas.size() + 1){
+                if (vh.getLayoutPosition() != 0 && vh.getLayoutPosition() != mItemDatas.size() + 1) {
                     ItemData itemData = mItemDatas.get(vh.getLayoutPosition() - 1);
                     switch (itemData.getName()) {
                         case "成绩":
@@ -181,7 +197,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             break;
                         case "空闲教室":
                             String today = DateUtil.getWeek(new Date());
-                            if (today.equals("周六") || today.equals("周日")){
+                            if (today.equals("周六") || today.equals("周日")) {
                                 StudyRoomBlankActivity.start(getContext());
                             } else {
                                 StudyRoomActivity.start(getContext());

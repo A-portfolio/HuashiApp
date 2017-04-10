@@ -56,7 +56,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
         starter.putExtra("query", query);
         context.startActivity(starter);
     }
-
+    
     //查询参数
     private String mQuery;
 
@@ -296,8 +296,13 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
+        StudyRoomCorrectView view = new StudyRoomCorrectView(StudyRoomDetailActivity.this, "detail");
+        if (getWindow().getDecorView().equals(view)) {
+            view.removeAllViews();
+            super.onBackPressed();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -310,7 +315,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_correct) {
-            StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomDetailActivity.this);
+            StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomDetailActivity.this,"detail");
             Animation animation = AnimationUtils.loadAnimation(this,R.anim.view_show);
             studyRoomCorrectView.startAnimation(animation);
             setContentView(studyRoomCorrectView);

@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -41,6 +42,7 @@ import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.listener.BaseUiListener;
+import net.muxi.huashiapp.ui.more.ShareDialog;
 import net.muxi.huashiapp.util.AppUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.ToastUtil;
@@ -59,6 +61,8 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     private static final String WEB_TITLE = "title";
     private static final String WEB_INTRO = "intro";
     private static final String WEB_ICON_URL = "icon_url";
+
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.webview)
@@ -81,10 +85,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     private String type = "webpage";
 
 
-
-    public static void start(Context context){}
-
-
+    private RecyclerView mRecyclerView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +123,9 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
             mWeiboShareAPI.handleWeiboResponse(getIntent(), this);
         }
 
+
+
+
     }
 
 
@@ -146,30 +150,92 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         switch (itemId) {
-            case R.id.action_refresh:
-                mWebview.reload();
-                return true;
-            case R.id.action_copy_url:
-                AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
+            case R.id.action_option:
+                ShareToDialog shareToDialog = new ShareToDialog();
+                shareToDialog.show(getSupportFragmentManager(),"");
+
+                shareToDialog.setOnItemClickListener(new ShareToDialog.OnItemClick() {
+                    @Override
+                    public void onItemClick(int position) {
+                        switch (position){
+                            case 0:
+                                shareToQzone(title, intro , url ,iconUrl);
+                                shareToDialog.dismiss();
+                                break;
+                            case 1:
+                                shareTOWeixin();
+                                shareToDialog.dismiss();
+                                break;
+                            case 2:
+                                sendMultiMessage(true,false,false,false,false,false);
+                                shareToDialog.dismiss();
+                                break;
+                            case 3:
+                                shareToQzone(title,intro,url,iconUrl);
+                                shareToDialog.dismiss();
+                                break;
+                            case 4:
+                                shareTOWeixin();
+                                shareToDialog.dismiss();
+                                break;
+                            case 6:
+                                mWebview.reload();
+                                shareToDialog.dismiss();
+                                break;
+
+                            case 7:
+                                AppUtil.clipToClipBoard(WebViewActivity.this,mWebview.getUrl());
+                                showSnackbarShort(getResources().getString(R.string.tip_copy_success));
+                                shareToDialog.dismiss();
+                                break;
+
+                            case 8:
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW , Uri.parse(mWebview.getUrl()));
+                                startActivity(browserIntent);
+                                shareToDialog.dismiss();
+                                break;
+
+
+                        }
+                    }
+                });
                 break;
-            case R.id.action_open_browser:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mWebview.getUrl()));
-                startActivity(browserIntent);
-                break;
-            case R.id.action_share_qq:
-                shareToQzone(title, intro, url, iconUrl);
-                break;
-            case R.id.action_share_wechat:
-                shareTOWeixin();
-                break;
-            case R.id.action_share_weibo:
-                sendMultiMessage(true, false, false, false, false, false);
-                break;
+//            case R.id.action_refresh:
+//                mWebview.reload();
+//                return true;
+//            case R.id.action_copy_url:
+//                AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
+//                break;
+//            case R.id.action_open_browser:
+//                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mWebview.getUrl()));
+//                startActivity(browserIntent);
+//                break;
+//            case R.id.action_share_qq:
+//                shareToQzone(title, intro, url, iconUrl);
+//                break;
+//            case R.id.action_share_wechat:
+//                shareTOWeixin();
+//                break;
+//            case R.id.action_share_weibo:
+//                sendMultiMessage(true, false, false, false, false, false);
+//                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_webview,menu);
+        return true;
+    }
 
+
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        ShareDialog dialog = new ShareDialog();
+        dialog.show(getSupportFragmentManager(),"");
+        return false;
+    }
 
     @Override
     protected void onResume() {
@@ -186,12 +252,6 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     protected void onDestroy() {
         super.onDestroy();
         mWebview.destroy();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_webview, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 
 
