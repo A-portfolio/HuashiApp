@@ -13,9 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.ui.SuggestionActivity;
 import net.muxi.huashiapp.util.DimensUtil;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.PreferenceUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,9 +39,12 @@ public class StudyRoomCorrectView extends RelativeLayout {
 
     private Context mContext;
 
+    private String mType;
+
     private int mYDown;
     private int mYDistance;
     private int mCurY;
+
 
     private Scroller mScroller;
 
@@ -48,21 +52,34 @@ public class StudyRoomCorrectView extends RelativeLayout {
 
     public StudyRoomCorrectView(Context context) {
         super(context);
-        mContext = context;
-
-        mScroller = new Scroller(context);
-        initView();
-
     }
 
-    private void initView() {
+    public StudyRoomCorrectView(Context context, String type) {
+        super(context);
+        mContext = context;
+
+        mType = type;
+
+        Logger.d(mType);
+
+        mScroller = new Scroller(context);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_study_room_correct, this, true);
         ButterKnife.bind(this, view);
 
         mViewCloseBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((BaseActivity) mContext).onBackPressed();
+                if (mType.equals("work")) {
+                    ((StudyRoomActivity) mContext).onBackPressed();
+                    StudyRoomActivity.start(getContext());
+                } else if (mType.equals("detail")) {
+                    ((StudyRoomDetailActivity) mContext).onBackPressed();
+                    String query = PreferenceUtil.getString(PreferenceUtil.STUDY_ROOM_QUERY_STRING);
+                    StudyRoomDetailActivity.start(getContext(), query);
+                } else if (mType.equals("week")) {
+                    ((StudyRoomBlankActivity) mContext).onBackPressed();
+                    StudyRoomBlankActivity.start(getContext());
+                }
             }
         });
     }
@@ -111,13 +128,33 @@ public class StudyRoomCorrectView extends RelativeLayout {
             case MotionEvent.ACTION_UP:
                 if (this.getScrollY() < 0 && mVelocityTracker.getYVelocity() > 500) {
                     this.smoothScrollTo(-DimensUtil.getScreenHeight());
-                    ((BaseActivity) mContext).onBackPressed();
+                    if (mType.equals("work")) {
+                        ((StudyRoomActivity) mContext).onBackPressed();
+                        StudyRoomActivity.start(getContext());
+                    } else if (mType.equals("detail")) {
+                        ((StudyRoomDetailActivity) mContext).onBackPressed();
+                        String query = PreferenceUtil.getString(PreferenceUtil.STUDY_ROOM_QUERY_STRING);
+                        StudyRoomDetailActivity.start(getContext(), query);
+                    } else if (mType.equals("week")) {
+                        ((StudyRoomBlankActivity) mContext).onBackPressed();
+                        StudyRoomBlankActivity.start(getContext());
+                    }
                 } else if ((this.getScrollY() < 0) && (this.getScrollY() > -DISTANCE_TO_SLIDE)) {
                     this.smoothScrollTo(0);
                     break;
                 } else if (this.getScrollY() < -DISTANCE_TO_SLIDE) {
                     this.smoothScrollTo(-DimensUtil.getScreenHeight());
-                    ((BaseActivity) mContext).onBackPressed();
+                    if (mType.equals("work")) {
+                        ((StudyRoomActivity) mContext).onBackPressed();
+                        StudyRoomActivity.start(getContext());
+                    } else if (mType.equals("detail")) {
+                        ((StudyRoomDetailActivity) mContext).onBackPressed();
+                        String query = PreferenceUtil.getString(PreferenceUtil.STUDY_ROOM_QUERY_STRING);
+                        StudyRoomDetailActivity.start(getContext(), query);
+                    } else if (mType.equals("week")) {
+                        ((StudyRoomBlankActivity) mContext).onBackPressed();
+                        StudyRoomBlankActivity.start(getContext());
+                    }
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:

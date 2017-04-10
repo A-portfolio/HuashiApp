@@ -66,26 +66,12 @@
         android:background="@color/divider"/>
 
 
-    <android.support.v7.widget.CardView
+    <com.muxistudio.jsbridge.BridgeWebView
+        android:id="@+id/consume_view"
+        android:layout_marginTop="32dp"
+        android:layout_below="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@id/divider"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/colorWhite"
-        android:elevation="8dp"
-        app:cardCornerRadius="8dp"
-        >
+        android:layout_height="match_parent"/>
 
-        <com.github.mikephil.charting.charts.CombinedChart
-            android:id="@+id/chart1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="-46dp"
-            android:layout_marginLeft="-24dp"
-            android:layout_marginRight="-24dp"
-            />
-    </android.support.v7.widget.CardView>
 
 </RelativeLayout>

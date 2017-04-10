@@ -71,7 +71,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         ButterKnife.bind(this);
 
 
-
 //        mToolbar.setTitle("查询结果");
         setTitle("查询结果");
 
@@ -147,8 +146,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         detailFragments.add(ElectricityDetailFragment.newInstance(1));
 
 
-
-
         MyDetailAdapter myDetailAdapter = new MyDetailAdapter(getSupportFragmentManager(), detailFragments, titles);
         mViewPager.setAdapter(myDetailAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
@@ -199,7 +196,14 @@ public class ElectricityDetailActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        ElectricityPayHintView view = new ElectricityPayHintView(this);
+        if (getWindow().getDecorView().equals(view)) {
+            view.removeAllViews();
+            super.onBackPressed();
+        } else {
+            super.onBackPressed();
+        }
+
         this.finish();
     }
 }

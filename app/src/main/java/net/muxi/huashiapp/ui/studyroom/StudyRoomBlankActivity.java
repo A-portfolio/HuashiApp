@@ -32,8 +32,8 @@ public class StudyRoomBlankActivity extends ToolbarActivity {
     @BindView(R.id.tv_today)
     TextView mTvToday;
 
-    public static void start(Context context){
-        Intent starter = new Intent(context,StudyRoomBlankActivity.class);
+    public static void start(Context context) {
+        Intent starter = new Intent(context, StudyRoomBlankActivity.class);
         context.startActivity(starter);
     }
 
@@ -61,11 +61,22 @@ public class StudyRoomBlankActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_correct) {
-            StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomBlankActivity.this);
-            Animation animation = AnimationUtils.loadAnimation(this,R.anim.view_show);
+            StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomBlankActivity.this, "week");
+            Animation animation = AnimationUtils.loadAnimation(this, R.anim.view_show);
             studyRoomCorrectView.startAnimation(animation);
             setContentView(studyRoomCorrectView);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        StudyRoomCorrectView view = new StudyRoomCorrectView(StudyRoomBlankActivity.this, "week");
+        if (getWindow().getDecorView().equals(view)) {
+            view.removeAllViews();
+            super.onBackPressed();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
