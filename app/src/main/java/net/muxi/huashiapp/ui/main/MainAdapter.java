@@ -158,6 +158,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
 
+
         } else if (holder instanceof CommonViewHolder) {
             if (position > 0 && position != mItemDatas.size() + 1) {
                 ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItemDatas.get(position - ITEM_BANNER).getIcon()));

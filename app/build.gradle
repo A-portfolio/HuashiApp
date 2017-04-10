@@ -60,7 +60,7 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0'
     compile 'com.github.fengminchao:MultiStatusView:0.6'
     compile 'com.zhy:base-rvadapter:3.0.3'
-    compile 'com.github.fengminchao:CardBanner:0.8'
+    compile 'com.github.fengminchao:CardBanner:1.0'
     testCompile 'org.robolectric:shadows-support-v4:3.3'
     testCompile 'org.robolectric:robolectric:3.3.1'
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'

@@ -10,9 +10,7 @@
     <com.muxistudio.cardbanner.CardBanner
         android:id="@+id/card_banner"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginBottom="-4dp"
-        android:layout_marginTop="-4dp"
+        android:layout_height="150dp"
         app:cardMargin="8dp"
         app:baseElevation="0dp"
         app:floatElevation="0dp"
