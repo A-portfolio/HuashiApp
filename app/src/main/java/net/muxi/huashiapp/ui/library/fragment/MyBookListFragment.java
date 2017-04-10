@@ -112,8 +112,8 @@ public class MyBookListFragment extends BaseFragment {
                                         MultiItemTypeAdapter adapter = new MultiItemTypeAdapter(
                                                 getContext(),
                                                 attentionBooks1);
-                                        adapter.addItemViewDelegate(new AttenBookRemindAdapter());
-                                        adapter.addItemViewDelegate(new AttenBookAdapter());
+                                        adapter.addItemViewDelegate(new AttenBookRemindAdapter(getContext()));
+                                        adapter.addItemViewDelegate(new AttenBookAdapter(getContext()));
                                         mRecyclerView =
                                                 (RecyclerView) mMultiStatusView.getContentView();
                                         mRecyclerView.setLayoutManager(

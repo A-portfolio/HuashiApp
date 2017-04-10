@@ -13,6 +13,7 @@ import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import net.muxi.huashiapp.common.data.User;
+import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.ui.main.FetchPatchHandler;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -111,6 +112,8 @@ public class App extends Application {
         PreferenceUtil.clearString(PreferenceUtil.STUDENT_PWD);
         sUser.setSid("");
         sUser.setPassword("");
+        HuaShiDao dao = new HuaShiDao();
+        dao.deleteAllCourse();
     }
 
     public static boolean isInfoLogin() {

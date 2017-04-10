@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.library.adapter;
 
+import android.content.Context;
 import android.widget.TextView;
 
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
@@ -15,6 +16,12 @@ import net.muxi.huashiapp.ui.library.BookDetailActivity;
  */
 
 public class AttenBookRemindAdapter implements ItemViewDelegate<AttentionBook> {
+
+    private Context mContext;
+
+    public AttenBookRemindAdapter(Context context) {
+        mContext = context;
+    }
 
     @Override
     public int getItemViewLayoutId() {
@@ -33,6 +40,6 @@ public class AttenBookRemindAdapter implements ItemViewDelegate<AttentionBook> {
         ((TextView) holder.getView(R.id.tv_remind)).setTextColor(
                 App.sContext.getResources().getColor(R.color.color_selected));
         holder.getView(R.id.layout_item).setOnClickListener(
-                v -> BookDetailActivity.start(App.sContext, attentionBook.id));
+                v -> BookDetailActivity.start(mContext, attentionBook.id));
     }
 }
