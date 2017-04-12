@@ -132,7 +132,7 @@ public class IndicatedView extends FrameLayout {
             if (this.getVisibility() != GONE) {
                 this.setVisibility(GONE);
             }
-        }, 5000);
+        }, 3000);
     }
 
     @Override

@@ -90,14 +90,19 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
         mToolbar.setTitle("华师匣子");
 
+
         sp = new PreferenceUtil();
         dao = new HuaShiDao();
         mBannerDatas = dao.loadBannerData();
+
 
         getBannerDatas();
 
         setData();
         initView();
+
+        initHintView();
+
 
         return view;
     }
@@ -123,8 +128,8 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
     }
 
-    private void initView() {
-        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true)) {
+    private void initHintView() {
+        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN,true)) {
             IndicatedView indicatedView = new IndicatedView(getContext());
             indicatedView.setTipViewText("快看看底部都有什么功能吧!");
             TipViewUtil.addToContent(getContext(), indicatedView, DIRECTION_UP,
@@ -133,7 +138,13 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
             indicatedView1.setTipViewText("长按可以任意挪动位置噢");
             TipViewUtil.addToContent(getContext(), indicatedView1, DIRECTION_UP,
                     DimensUtil.getScreenWidth() / 4, (DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight()) / 3);
+            sp.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN,false);
+            return;
         }
+    }
+
+    private void initView() {
+
         final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         mMainAdapter = new MainAdapter(mItemDatas, mBannerDatas);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {

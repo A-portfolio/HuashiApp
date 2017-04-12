@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.antfortune.freeline'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.tencent.tinker.patch'
-apply plugin: 'tinkerpatch-support'
+//apply plugin: 'com.tencent.tinker.patch'
+//apply plugin: 'tinkerpatch-support'
 
 android {
     compileSdkVersion 25
@@ -30,7 +30,7 @@ android {
 
         multiDexEnabled true
 
-        buildConfigField "boolean", "TINKER_ENABLE", "${tinkerpatchSupport.tinkerEnable}"
+//        buildConfigField "boolean", "TINKER_ENABLE", "${tinkerpatchSupport.tinkerEnable}"
     }
 
     buildTypes {
@@ -91,56 +91,56 @@ dependencies {
 }
 
 
-def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = "app-1.0.6-0408-23-59-24"
-def variantName = "release"
-
-tinkerpatchSupport {
-    tinkerEnable = true
-    reflectApplication = true
-
-    autoBackupApkPath = "${bakPath}"
-
-    appKey = "15546ae78491131f"
-
-    appVersion = "1.0.6"
-
-    def pathPrefix = "${bakPath}/${baseInfo}/${variantName}/"
-    def name = "${project.name}-${variantName}"
-
-    baseApkFile = "${pathPrefix}/${name}.apk"
-    baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
-    baseResourceRFile = "${pathPrefix}/${name}-R.txt"
-
-}
-
-
-tinkerPatch {
-    ignoreWarning = false
-    useSign = true
-    dex {
-        dexMode = "jar"
-        pattern = ["classes*.dex"]
-        loader = []
-    }
-    lib {
-        pattern = ["lib/*/*.so"]
-    }
-
-    res {
-        pattern = ["res/*", "r/*", "assets/*", "resources.arsc", "AndroidManifest.xml"]
-        ignoreChange = []
-        largeModSize = 100
-    }
-
-    packageConfig {
-    }
-
-    sevenZip {
-        zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
-//        path = "/usr/local/bin/7za"
-    }
-    buildConfig {
-        keepDexApply = false
-    }
-}
+//def bakPath = file("${buildDir}/bakApk/")
+//def baseInfo = "app-1.0.6-0408-23-59-24"
+//def variantName = "release"
+//
+//tinkerpatchSupport {
+//    tinkerEnable = true
+//    reflectApplication = true
+//
+//    autoBackupApkPath = "${bakPath}"
+//
+//    appKey = "15546ae78491131f"
+//
+//    appVersion = "1.0.6"
+//
+//    def pathPrefix = "${bakPath}/${baseInfo}/${variantName}/"
+//    def name = "${project.name}-${variantName}"
+//
+//    baseApkFile = "${pathPrefix}/${name}.apk"
+//    baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
+//    baseResourceRFile = "${pathPrefix}/${name}-R.txt"
+//
+//}
+//
+//
+//tinkerPatch {
+//    ignoreWarning = false
+//    useSign = true
+//    dex {
+//        dexMode = "jar"
+//        pattern = ["classes*.dex"]
+//        loader = []
+//    }
+//    lib {
+//        pattern = ["lib/*/*.so"]
+//    }
+//
+//    res {
+//        pattern = ["res/*", "r/*", "assets/*", "resources.arsc", "AndroidManifest.xml"]
+//        ignoreChange = []
+//        largeModSize = 100
+//    }
+//
+//    packageConfig {
+//    }
+//
+//    sevenZip {
+//        zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
+////        path = "/usr/local/bin/7za"
+//    }
+//    buildConfig {
+//        keepDexApply = false
+//    }
+//}

@@ -17,7 +17,6 @@ import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +37,10 @@ public class StudyRoomActivity extends ToolbarActivity {
     TextView mTvStudyArea;
     @BindView(R.id.btn_search)
     Button mBtnSearch;
+    @BindView(R.id.tv_time)
+    TextView mTvTime;
+    @BindView(R.id.tv_area)
+    TextView mTvArea;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, StudyRoomActivity.class);
@@ -94,10 +97,47 @@ public class StudyRoomActivity extends ToolbarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.tv_study_time, R.id.tv_study_area, R.id.btn_search})
+//    @OnClick({R.id.tv_study_time, R.id.tv_study_area, R.id.btn_search})
+//    public void onClick(View view) {
+//        Intent intent;
+//        switch (view.getId()) {
+//            case R.id.tv_study_time:
+//                mDialogFragment = StudyTimePickerDialogFragment.newInstance(
+//                        mWeek,
+//                        mDay
+//                );
+//                mDialogFragment.show(getSupportFragmentManager(), "picker_time");
+//                mDialogFragment.setOnPositiveButtonClickListener((week, day) -> {
+//                    mWeek = week;
+//                    mDay = day;
+//                    mTvStudyTime.setText(String.format("第%d周周%s", mWeek + 1, Constants.WEEKDAYS[mDay]));
+//                });
+//                break;
+//            case R.id.tv_study_area:
+//                intent = new Intent();
+//                intent.setClass(StudyRoomActivity.this, StudyAreaOptionActivity.class);
+//                startActivityForResult(intent, 0);
+//
+//                break;
+//            case R.id.btn_search:
+//                if (mTvStudyTime.getText().length() != 0 && mTvStudyArea.getText().length() != 0) {
+//                    mQuery = mTvStudyTime.getText().toString() + mTvStudyArea.getText().toString();
+//                    sp.saveString(PreferenceUtil.STUDY_ROOM_QUERY_STRING, mQuery);
+//                    StudyRoomDetailActivity.start(StudyRoomActivity.this, mQuery);
+//                    this.finish();
+//                    break;
+//                } else {
+//                    showSnackbarShort("请填写完整信息");
+//                }
+//        }
+//    }
+
+
+    @OnClick({R.id.tv_time, R.id.tv_study_time, R.id.tv_area, R.id.tv_study_area, R.id.btn_search})
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
+            case R.id.tv_time:
             case R.id.tv_study_time:
                 mDialogFragment = StudyTimePickerDialogFragment.newInstance(
                         mWeek,
@@ -110,16 +150,16 @@ public class StudyRoomActivity extends ToolbarActivity {
                     mTvStudyTime.setText(String.format("第%d周周%s", mWeek + 1, Constants.WEEKDAYS[mDay]));
                 });
                 break;
+            case R.id.tv_area:
             case R.id.tv_study_area:
                 intent = new Intent();
                 intent.setClass(StudyRoomActivity.this, StudyAreaOptionActivity.class);
                 startActivityForResult(intent, 0);
-
                 break;
             case R.id.btn_search:
                 if (mTvStudyTime.getText().length() != 0 && mTvStudyArea.getText().length() != 0) {
                     mQuery = mTvStudyTime.getText().toString() + mTvStudyArea.getText().toString();
-                    sp.saveString(PreferenceUtil.STUDY_ROOM_QUERY_STRING,mQuery);
+                    sp.saveString(PreferenceUtil.STUDY_ROOM_QUERY_STRING, mQuery);
                     StudyRoomDetailActivity.start(StudyRoomActivity.this, mQuery);
                     this.finish();
                     break;
@@ -147,4 +187,5 @@ public class StudyRoomActivity extends ToolbarActivity {
             super.onBackPressed();
         }
     }
+
 }
