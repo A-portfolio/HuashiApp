@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -18,6 +20,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.ui.more.ShareDialog;
 import net.muxi.huashiapp.util.FrescoUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NetStatus;
@@ -154,4 +157,19 @@ public class CalendarActivity extends ToolbarActivity {
         imgHeight = Integer.valueOf(heightStr);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_option){
+            ShareDialog shareDialog = new ShareDialog();
+            shareDialog.show(getSupportFragmentManager(),"share_dialog");
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_webview,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 }

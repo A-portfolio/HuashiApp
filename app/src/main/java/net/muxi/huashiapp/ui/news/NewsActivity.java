@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -65,6 +64,8 @@ public class NewsActivity extends ToolbarActivity {
 
     private FrameLayout mFrameLayout;
 
+    private NewsDetailView newsDetailView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,13 +74,14 @@ public class NewsActivity extends ToolbarActivity {
         init();
 
 
-
+        showLoading();
         CampusFactory.getRetrofitService().getNews()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<News>>() {
                     @Override
                     public void onCompleted() {
+                        hideLoading();
 
                     }
 
@@ -128,8 +130,8 @@ public class NewsActivity extends ToolbarActivity {
         adapter.setOnItemClickListener(new MyNewsAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, List<News> newsList, int position) {
-                NewsDetailView newsDetailView = new NewsDetailView(NewsActivity.this,newsList,position);
-                Animation animation = AnimationUtils.loadAnimation(NewsActivity.this,R.anim.view_show);
+                newsDetailView = new NewsDetailView(NewsActivity.this, newsList, position);
+                Animation animation = AnimationUtils.loadAnimation(NewsActivity.this, R.anim.view_show);
                 newsDetailView.startAnimation(animation);
                 setContentView(newsDetailView);
 
@@ -226,21 +228,12 @@ public class NewsActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
-
-        if (mBaseDetailLayout != null) {
-            mBaseDetailLayout.slideContentView();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mContentLayout.removeView(mBaseDetailLayout);
-                    mContentLayout.removeView(mShadowView);
-                    mShadowView = null;
-                    mBaseDetailLayout = null;
-                }
-            }, 250);
-            return;
+        if (getWindow().getDecorView().equals(newsDetailView)) {
+            newsDetailView.removeAllViews();
+            super.onBackPressed();
+        } else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 
 }
