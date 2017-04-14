@@ -12,11 +12,13 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.muxistudio.jsbridge.BridgeWebView;
+import com.muxistudio.multistatusview.MultiStatusView;
 import com.tencent.smtt.sdk.WebSettings;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.CardData;
+import net.muxi.huashiapp.common.data.CardSumData;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.util.DateUtil;
@@ -33,8 +35,6 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static net.muxi.huashiapp.util.ToastUtil.showShort;
-
 /**
  * Created by december on 16/7/18.
  */
@@ -48,6 +48,8 @@ public class CardActivity extends ToolbarActivity {
     Toolbar mToolbar;
     @BindView(R.id.consume_view)
     BridgeWebView mConsumeView;
+    @BindView(R.id.multi_status_view)
+    MultiStatusView mMultiStatusView;
 
 
     public static void start(Context context) {
@@ -61,6 +63,7 @@ public class CardActivity extends ToolbarActivity {
     private List<CardData> mCardDatas;
     private float sum;
 
+    private PreferenceUtil sp;
 
 
     @Override
@@ -81,12 +84,26 @@ public class CardActivity extends ToolbarActivity {
         settings.setAppCacheEnabled(true);
 
 
+        mMultiStatusView.setOnRetryListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadDatas();
+            }
+        });
+
+        loadDatas();
+
+
+    }
+
+
+    private void loadDatas(){
         User user = new User();
-        PreferenceUtil sp = new PreferenceUtil();
+        sp = new PreferenceUtil();
         user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
         user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
         if (!NetStatus.isConnected()) {
-            showShort(getString(R.string.tip_check_net));
+            showErrorSnackbarShort(getString(R.string.tip_check_net));
         } else {
             CampusFactory.getRetrofitService()
                     .getCardBalance(user.getSid(), "90", "0", "20")
@@ -100,20 +117,27 @@ public class CardActivity extends ToolbarActivity {
 
                         @Override
                         public void onError(Throwable e) {
-                            showErrorSnackbarShort(getString(R.string.tip_school_server_error));
                             e.printStackTrace();
+                            mMultiStatusView.showError();
+                            mMultiStatusView.setOnRetryListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    loadDatas();
+                                }
+                            });
                         }
 
                         @Override
                         public void onNext(List<CardData> cardDatas) {
                             Logger.d("id card");
+                            mMultiStatusView.showContent();
                             mDate.setText("截止" + cardDatas.get(0).getDealDateTime());
                             mMoney.setText(cardDatas.get(0).getOutMoney());
                             mCardDatas = cardDatas;
 
-                            DataToJson[] data = new DataToJson[7];
+                            CardSumData[] data = new CardSumData[7];
                             for (int i = 0; i < data.length; i++) {
-                                data[i] = new DataToJson(DateUtil.getTheDateInYear(new Date(), -6 + i), getDailySum(i));
+                                data[i] = new CardSumData(DateUtil.getTheDateInYear(new Date(), -6 + i), getDailySum(i));
                             }
 
                             Gson gson = new Gson();
@@ -129,7 +153,6 @@ public class CardActivity extends ToolbarActivity {
                     });
         }
     }
-
 
     /**
      * 获取指定日的消费总额
@@ -155,17 +178,17 @@ public class CardActivity extends ToolbarActivity {
     }
 
 
-    //七天消费额转换为Json数据
-    class DataToJson {
-
-        public String time;
-        public float sum;
-
-        public DataToJson(String time, float sum) {
-            this.time = time;
-            this.sum = sum;
-        }
-    }
+//    //七天消费额转换为Json数据
+//    class CardSumData {
+//
+//        public String time;
+//        public float sum;
+//
+//        public CardSumData(String time, float sum) {
+//            this.time = time;
+//            this.sum = sum;
+//        }
+//    }
 
 
 }

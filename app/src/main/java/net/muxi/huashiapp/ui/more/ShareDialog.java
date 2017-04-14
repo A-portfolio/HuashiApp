@@ -190,6 +190,25 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
         api.sendReq(req);
     }
 
+    public void shareTOMements(){
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = url;
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = title;
+        msg.description = intro;
+        Logger.d(getActivity().getExternalCacheDir() + "/" + title + ".jpg");
+        Bitmap bmp = BitmapFactory.decodeFile(getActivity().getExternalCacheDir() + "/" + title + ".jpg");
+//        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
+//        bmp.recycle();
+        msg.setThumbImage(bmp);
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = type + System.currentTimeMillis();
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneSession;
+        api.sendReq(req);
+
+    }
+
     public TextObject getTextObj() {
         TextObject textObject = new TextObject();
         textObject.text = title + " " + intro + " " + url;

@@ -21,45 +21,35 @@
         android:src="@drawable/ic_close"
         />
 
-    <TextView
-        android:id="@+id/news_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="20sp"
-        tools:text="关于华中师范大学录取"/>
-
-    <TextView
-        android:id="@+id/news_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/news_title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="32dp"
-        android:layout_marginTop="32dp"
-        android:textColor="@color/secondTitle"
-        android:textSize="@dimen/medium_size"
-        tools:text="2016-6-30 8:47"/>
-
+    <!--<TextView-->
+        <!--android:id="@+id/news_title"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="80dp"-->
+        <!--android:textColor="?android:attr/textColorPrimary"-->
+        <!--android:textSize="20sp"-->
+        <!--tools:text="关于华中师范大学录取"/>-->
 
     <!--<TextView-->
-    <!--android:id="@+id/news_content"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:lineSpacingMultiplier="1.2"-->
-    <!--android:layout_marginTop="40dp"-->
-    <!--android:layout_below="@id/news_date"-->
-    <!--android:textSize="@dimen/medium_size"-->
-    <!--tools:text="为为维护全校选课秩序为维护全校选课秩序为维护全校选课秩序为维护全校选课秩序维护为维护全校选课秩序全校选课秩序"/>-->
+        <!--android:id="@+id/news_date"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/news_title"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="32dp"-->
+        <!--android:layout_marginTop="32dp"-->
+        <!--android:textColor="@color/secondTitle"-->
+        <!--android:textSize="@dimen/medium_size"-->
+        <!--tools:text="2016-6-30 8:47"/>-->
 
-    <WebView
+
+
+    <com.tencent.smtt.sdk.WebView
         android:id="@+id/news_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/news_date"
-        android:layout_marginTop="40dp"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/news_float_btn"/>
 
     <!--<View-->
         <!--android:id="@+id/divider"-->

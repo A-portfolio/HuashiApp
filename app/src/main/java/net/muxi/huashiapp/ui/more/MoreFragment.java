@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import net.muxi.huashiapp.ui.SettingActivity;
 import net.muxi.huashiapp.ui.SuggestionActivity;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
 import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.ToastUtil;
 
 import java.io.File;
@@ -49,6 +51,9 @@ public class MoreFragment extends BaseFragment {
 
     private String downloadUrl;
 
+    private PreferenceUtil sp;
+
+
 
     private String[] titles = {"常见问题Q&A", "分享App给好友", "通知栏提醒", "意见反馈", "检查更新 ", "关于", "退出账号"};
     private Integer[] icons =
@@ -66,9 +71,11 @@ public class MoreFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_more, container, false);
         ButterKnife.bind(this, view);
+
+        sp = new PreferenceUtil();
 
         mToolbar.setTitle("更多");
         initView();
@@ -84,12 +91,12 @@ public class MoreFragment extends BaseFragment {
             public void OnItemClick(View view, int position) {
                 switch (position) {
                     case 0:
-                        Intent intent = WebViewActivity.newIntent(getContext(),"https://ccnubox.muxixyz.com/qa/");
+                        Intent intent = WebViewActivity.newIntent(getContext(), "https://ccnubox.muxixyz.com/qa/");
                         startActivity(intent);
                         break;
                     case 1:
                         ShareDialog shareDialog = new ShareDialog();
-                        shareDialog.show(getFragmentManager(),"dialog_share");
+                        shareDialog.show(getFragmentManager(), "dialog_share");
                         break;
                     case 2:
                         SettingActivity.start(getContext());
@@ -141,7 +148,7 @@ public class MoreFragment extends BaseFragment {
                         ((BaseActivity) getActivity()).showSnackbarShort(
                                 R.string.title_not_have_to_update);
                     }
-                },throwable -> throwable.printStackTrace());
+                }, throwable -> throwable.printStackTrace());
     }
 
     private void beginUpdate(String download) {
@@ -168,34 +175,51 @@ public class MoreFragment extends BaseFragment {
 
     private void logout() {
         LogoutDialog logoutDialog = new LogoutDialog();
+        logoutDialog.show(getFragmentManager(), "dialog_logout");
         logoutDialog.setBtnIdLogout(new LogoutDialog.OnIdClickListener() {
             @Override
             public void OnIdClick() {
-                App.logoutUser();
-                logoutDialog.dismiss();
-                ((BaseActivity) getActivity()).showSnackbarShort(App.sContext.getString(R.string.tip_id_log_out));
+                if (TextUtils.isEmpty(App.sUser.getSid())) {
+                    logoutDialog.dismiss();
+                    ((BaseActivity) getActivity()).showErrorSnackbarShort(App.sContext.getString(R.string.not_log_in));
+                } else {
+                    App.logoutUser();
+                    logoutDialog.dismiss();
+                    ((BaseActivity) getActivity()).showSnackbarShort(App.sContext.getString(R.string.tip_id_log_out));
+                }
             }
         });
 
         logoutDialog.setBtnLibraryLogout(new LogoutDialog.OnLibraryClickListener() {
             @Override
             public void OnLibraryClick() {
-                App.logoutLibUser();
-                logoutDialog.dismiss();
-                ((BaseActivity) getActivity()).showSnackbarShort(App.sContext.getString(R.string.tip_library_log_out));
+                if (TextUtils.isEmpty(App.sUser.getSid())) {
+                    logoutDialog.dismiss();
+                    ((BaseActivity) getActivity()).showErrorSnackbarShort(App.sContext.getString(R.string.not_log_in));
+                } else {
+                    App.logoutLibUser();
+                    logoutDialog.dismiss();
+                    ((BaseActivity) getActivity()).showSnackbarShort(App.sContext.getString(R.string.tip_library_log_out));
+                }
             }
+
         });
 
         logoutDialog.setBtnAllLogout(new LogoutDialog.OnAllClickListener() {
             @Override
             public void OnAllClick() {
-                App.logoutUser();
-                App.logoutLibUser();
-                logoutDialog.dismiss();
-                ((BaseActivity) getActivity()).showSnackbarShort(App.sContext.getString(R.string.tip_all_log_out));
+                if (TextUtils.isEmpty(App.sUser.getSid())) {
+                    logoutDialog.dismiss();
+                    ((BaseActivity) getActivity()).showErrorSnackbarShort(App.sContext.getString(R.string.not_log_in));
+                } else {
+                    App.logoutUser();
+                    App.logoutLibUser();
+                    logoutDialog.dismiss();
+                    ((BaseActivity) getActivity()).showSnackbarShort(App.sContext.getString(R.string.tip_all_log_out));
+                }
             }
         });
-        logoutDialog.show(getFragmentManager(), "dialog_logout");
+
     }
 
 }

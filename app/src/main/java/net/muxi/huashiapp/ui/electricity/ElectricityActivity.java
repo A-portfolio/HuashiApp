@@ -15,7 +15,6 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +46,8 @@ public class ElectricityActivity extends ToolbarActivity {
     EditText mEtRoom;
     @BindView(R.id.btn_search)
     Button mBtnSearch;
+    @BindView(R.id.hint_choose_area)
+    TextView mHintChooseArea;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, ElectricityActivity.class);
@@ -124,7 +125,7 @@ public class ElectricityActivity extends ToolbarActivity {
     }
 
 
-    @OnClick({R.id.area_1, R.id.area_2, R.id.area_3, R.id.area_4, R.id.area_5, R.id.area_6, R.id.tv_area, R.id.et_room, R.id.btn_search})
+    @OnClick({R.id.area_1, R.id.area_2, R.id.area_3, R.id.area_4, R.id.area_5, R.id.area_6, R.id.tv_area, R.id.hint_choose_area,R.id.et_room, R.id.btn_search})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.area_1:
@@ -151,6 +152,7 @@ public class ElectricityActivity extends ToolbarActivity {
                 setBackground(5);
                 mBuildings = buildingStrings6;
                 break;
+            case R.id.hint_choose_area:
             case R.id.tv_area:
                 Intent intent = new Intent(ElectricityActivity.this, ElectricityAreaOptionActivity.class);
                 intent.putExtra("buildings", mBuildings);
@@ -177,6 +179,7 @@ public class ElectricityActivity extends ToolbarActivity {
         }
 
     }
+
 
     private void setBackground(int position) {
         for (int i = 0; i < 6; i++) {
