@@ -71,8 +71,7 @@ public class CourseTimePickerView extends RelativeLayout{
         });
         mNpStart.setOnValueChangedListener((numberPicker, i, i1) -> {
             if (i1 > mNpEnd.getValue()) {
-                i1 = mNpEnd.getValue();
-                mNpStart.setValue(i1);
+                mNpEnd.setValue(i1);
             }
             mOnValueChangeListener.onValueChange(mNpWeekday.getValue(), i1, mNpEnd.getValue());
         });
