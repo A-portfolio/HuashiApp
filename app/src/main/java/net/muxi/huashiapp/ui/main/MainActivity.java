@@ -16,18 +16,26 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
+import net.muxi.huashiapp.common.data.SplashData;
+import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMainFragment;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.more.MoreFragment;
 import net.muxi.huashiapp.ui.schedule.TimetableFragment;
 import net.muxi.huashiapp.util.AlarmUtil;
-import net.muxi.huashiapp.util.ZhugeUtils;
+import net.muxi.huashiapp.util.FrescoUtil;
+import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.PreferenceUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener {
@@ -60,6 +68,42 @@ public class MainActivity extends BaseActivity implements
         initView();
         handleIntent(getIntent());
         AlarmUtil.register(this);
+        getSplashData();
+    }
+
+    private void getSplashData() {
+        CampusFactory.getRetrofitService().getSplash()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Observer<SplashData>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(SplashData splashData) {
+                        if (splashData.getUpdate() != 0
+                                && PreferenceUtil.getLong(Constants.SPLASH_UPDATE)
+                                != splashData.getUpdate()) {
+                            saveSplashData(splashData);
+                            Logger.d("save splash data");
+                            FrescoUtil.savePicture(splashData.getImg(), MainActivity.this,
+                                    "splash.jpg");
+                        }
+                    }
+                });
+    }
+
+    private void saveSplashData(SplashData splashData) {
+        PreferenceUtil.saveLong(Constants.SPLASH_UPDATE, splashData.update);
+        PreferenceUtil.saveString(Constants.SPLASH_IMG, splashData.img);
+        PreferenceUtil.saveString(Constants.SPLASH_URL, splashData.url);
     }
 
     @Override
@@ -70,11 +114,11 @@ public class MainActivity extends BaseActivity implements
 
     //根据 intent 跳转到对应的 fragment
     private void handleIntent(Intent intent) {
-        if (!intent.hasExtra("ui")){
+        if (!intent.hasExtra("ui")) {
             return;
         }
         String name = intent.getStringExtra("ui");
-        switch (name){
+        switch (name) {
             case "table":
                 showFragment(TimetableFragment.newInstance());
                 mNavView.getMenu().getItem(1).setChecked(true);
@@ -112,12 +156,12 @@ public class MainActivity extends BaseActivity implements
             case "lib_main":
             case "lib_mine":
                 if (App.isLibLogin()) {
-                    if (getSupportFragmentManager().findFragmentByTag("lib_mine") != null){
+                    if (getSupportFragmentManager().findFragmentByTag("lib_mine") != null) {
                         return;
                     }
                     showFragment(LibraryMineFragment.newInstance());
                 } else {
-                    if (getSupportFragmentManager().findFragmentByTag("lib_main") != null){
+                    if (getSupportFragmentManager().findFragmentByTag("lib_main") != null) {
                         return;
                     }
                     showFragment(LibraryMainFragment.newInstance());
@@ -182,14 +226,5 @@ public class MainActivity extends BaseActivity implements
             return true;
         }
     }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-//            @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//            Logger.d("able to write external");
-//        }
-//    }
 
 }

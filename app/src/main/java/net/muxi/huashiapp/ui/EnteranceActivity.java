@@ -16,10 +16,10 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.SplashData;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.ui.main.MainActivity;
 import net.muxi.huashiapp.util.FrescoUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.ui.main.MainActivity;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -47,47 +47,32 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         sp = new PreferenceUtil();
-        isFirstOpen = sp.getBoolean(PreferenceUtil.APP_FIRST_OPEN);
+        isFirstOpen = sp.getBoolean(PreferenceUtil.APP_FIRST_OPEN, true);
 
         if (!isFirstOpen) {
-            GuideActivity.start(this);
-            sp.saveBoolean(PreferenceUtil.APP_FIRST_OPEN, true);
-            this.finish();
-            return;
-        } else {
-
-
-            setContentView(R.layout.activity_enterance);
-
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getWindow().setStatusBarColor(Color.TRANSPARENT);
-            }
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-
-            mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
-            Logger.d(sp.getString(Constants.SPLASH_IMG));
-            if (sp.getLong(Constants.SPLASH_UPDATE) == -1) {
-                mDrawee.setImageURI(Uri.parse("asset://net.muxi.huashiapp/bg_enterance.png"));
+            if (sp.getString(Constants.SPLASH_IMG).equals("")) {
+                startMainActivityDelay(0);
             } else {
-                if (!sp.getString(Constants.SPLASH_IMG).equals("")) {
-                    mDrawee.setImageURI(Uri.parse(sp.getString(Constants.SPLASH_IMG)));
-                }
-            }
+                setContentView(R.layout.activity_enterance);
 
-            getSplashData();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(EnteranceActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    EnteranceActivity.this.finish();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setStatusBarColor(Color.TRANSPARENT);
                 }
-            }, SPLASH_TIME);
+                getWindow().getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
+                mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
+                mDrawee.setImageURI(Uri.parse(sp.getString(Constants.SPLASH_IMG)));
+                Logger.d(sp.getString(Constants.SPLASH_IMG));
+                startMainActivityDelay(2500);
+            }
+            return;
         }
+
+        GuideActivity.start(this);
+        sp.saveBoolean(PreferenceUtil.APP_FIRST_OPEN, false);
+        this.finish();
     }
 
     @Override
@@ -99,43 +84,11 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    private void getSplashData() {
-        CampusFactory.getRetrofitService().getSplash()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<SplashData>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(SplashData splashData) {
-                        if (splashData.getUpdate() != 0
-                                && mSplashUpdate != splashData.getUpdate()) {
-                            saveSplashData(splashData);
-                            Logger.d("save splash data");
-                            FrescoUtil.savePicture(splashData.getImg(), EnteranceActivity.this,
-                                    "splash.jpg");
-                        } else {
-                            sp.saveLong(Constants.SPLASH_UPDATE, -1);
-                        }
-                    }
-                });
-    }
-
-    private void saveSplashData(SplashData splashData) {
-        mSplashUpdate = splashData.getUpdate();
-        mSplashImg = splashData.getImg();
-        mSplashUrl = splashData.getUrl();
-        sp.saveLong(Constants.SPLASH_UPDATE, mSplashUpdate);
-        sp.saveString(Constants.SPLASH_IMG, mSplashImg);
-        sp.saveString(Constants.SPLASH_URL, mSplashUrl);
+    public void startMainActivityDelay(long delayMills){
+        new Handler().postDelayed(() ->{
+            MainActivity.start(EnteranceActivity.this);
+            EnteranceActivity.this.finish();
+        },delayMills);
     }
 
     @Override
@@ -146,6 +99,7 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+        Logger.d("splash onresume");
     }
 
     @Override
