@@ -166,6 +166,7 @@
     <string name="tip_library_log_out">成功退出图书馆</string>
     <string name="tip_all_log_out">全部退出成功</string>
 
+    <string name="not_log_in">未登录账号</string>
     <string name="txt_text">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
 
     <string name="course_not_found">待修改课程不存在</string>

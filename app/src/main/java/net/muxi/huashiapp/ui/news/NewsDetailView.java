@@ -6,15 +6,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
-import android.widget.TextView;
+
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.util.DimensUtil;
 
@@ -32,10 +31,6 @@ public class NewsDetailView extends RelativeLayout {
 
     @BindView(R.id.news_float_btn)
     ImageView mNewsFloatBtn;
-    @BindView(R.id.news_title)
-    TextView mNewsTitle;
-    @BindView(R.id.news_date)
-    TextView mNewsDate;
     @BindView(R.id.news_content)
     WebView mNewsContent;
 
@@ -65,9 +60,9 @@ public class NewsDetailView extends RelativeLayout {
     private void initView() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.view_news_detail, this, true);
         ButterKnife.bind(this);
-        mNewsTitle.setText(mNewsList.get(mPosition).getTitle());
-
-        mNewsDate.setText(mNewsList.get(mPosition).getDate());
+//        mNewsTitle.setText(mNewsList.get(mPosition).getTitle());
+//
+//        mNewsDate.setText(mNewsList.get(mPosition).getDate());
         initWebView();
 //        addAppendix();
 //        mNewsLink.setText(mNewsList.get(mPosition).getAppendix_list().toString());
@@ -75,7 +70,8 @@ public class NewsDetailView extends RelativeLayout {
         mNewsFloatBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((BaseActivity) mContext).onBackPressed();
+                ((NewsActivity) mContext).onBackPressed();
+                NewsActivity.start(getContext());
             }
         });
 
@@ -131,13 +127,15 @@ public class NewsDetailView extends RelativeLayout {
             case MotionEvent.ACTION_UP:
                 if (this.getScrollY() < 0 && mVelocityTracker.getYVelocity() > 500) {
                     this.smoothScrollTo(-DimensUtil.getScreenHeight());
-                    ((BaseActivity) mContext).onBackPressed();
+                    ((NewsActivity) mContext).onBackPressed();
+                    NewsActivity.start(getContext());
                 } else if ((this.getScrollY() < 0) && (this.getScrollY() > -DISTANCE_TO_SLIDE)) {
                     this.smoothScrollTo(0);
                     break;
                 } else if (this.getScrollY() < -DISTANCE_TO_SLIDE) {
                     this.smoothScrollTo(-DimensUtil.getScreenHeight());
-                    ((BaseActivity) mContext).onBackPressed();
+                    ((NewsActivity) mContext).onBackPressed();
+                    NewsActivity.start(getContext());
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
