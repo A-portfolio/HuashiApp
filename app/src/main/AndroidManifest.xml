@@ -45,7 +45,7 @@
 
         <activity
             android:name=".ui.EnteranceActivity"
-
+            android:theme="@style/Theme.Transparent"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -60,8 +60,9 @@
 
         <activity android:name="net.muxi.huashiapp.ui.main.MainActivity"
                   android:launchMode="singleTask"
-                  android:windowSoftInputMode="adjustResize"/>
+                  android:windowSoftInputMode="adjustResize">
 
+        </activity>
 
         <activity android:name="net.muxi.huashiapp.ui.login.LoginActivity"
                   android:launchMode="singleTask"
