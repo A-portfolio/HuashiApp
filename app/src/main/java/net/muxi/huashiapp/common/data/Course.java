@@ -1,6 +1,5 @@
 package net.muxi.huashiapp.common.data;
 
-import android.content.res.Configuration;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -8,7 +7,7 @@ import android.text.TextUtils;
 /**
  * Created by ybao on 16/7/30.
  */
-public class Course implements Parcelable{
+public class Course implements Parcelable {
 
     public String id;
     public String course;
@@ -68,7 +67,7 @@ public class Course implements Parcelable{
         }
     };
 
-    public boolean hasNullValue(){
+    public boolean hasNullValue() {
         if (TextUtils.isEmpty(id)
                 || TextUtils.isEmpty(course)
                 || TextUtils.isEmpty(teacher)
@@ -76,7 +75,7 @@ public class Course implements Parcelable{
                 || TextUtils.isEmpty(day)
                 || TextUtils.isEmpty(place)
                 || TextUtils.isEmpty(remind)
-                ){
+                ) {
             return true;
         }
         return false;

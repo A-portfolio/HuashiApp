@@ -17,6 +17,7 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.util.Base64Util;
+import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.ZhugeUtils;
@@ -111,9 +112,12 @@ public class LoginActivity extends ToolbarActivity {
                                 }
                             }, throwable -> {
                                 throwable.printStackTrace();
+                                hideLoading();
                                 showErrorSnackbarShort(getString(R.string.tip_check_net));
                             },
-                            () -> hideLoading());
+                            () -> {
+                                hideLoading();
+                            });
             ZhugeUtils.sendEvent("图书馆登录");
         } else {
             CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))
@@ -132,9 +136,12 @@ public class LoginActivity extends ToolbarActivity {
                                 }
                             }, throwable -> {
                                 throwable.printStackTrace();
+                                hideLoading();
                                 showErrorSnackbarShort(getString(R.string.tip_check_net));
                             },
-                            () -> hideLoading());
+                            () -> {
+                                hideLoading();
+                            });
             ZhugeUtils.sendEvent("图书馆登录");
         }
     }
