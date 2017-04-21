@@ -248,6 +248,7 @@ public class CourseEditActivity extends ToolbarActivity {
             mCourse.id = generateId();
         }
         if (mCourse.hasNullValue()) {
+            showSnackbarShort(R.string.course_complete_course);
             return;
         }
         if (isAdd) {

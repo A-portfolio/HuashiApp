@@ -113,6 +113,7 @@
     <string name="course_set_curweek_title">请设置当前周</string>
     <string name="course_conflict_title">添加课程与课程表已有课程冲突,是否继续添加</string>
     <string name="course_delete_course_title">将此课程从课程表中删除</string>
+    <string name="course_complete_course">请完善课程信息</string>
 
     <string name="btn_negative">取消</string>
     <string name="btn_positive">确定</string>
