@@ -129,18 +129,6 @@ public class TimeTable extends RelativeLayout {
     public void initLayout() {
         LayoutInflater.from(mContext).inflate(R.layout.view_timetable, this);
         ButterKnife.bind(this);
-        setRefreshView();
-
-//        mTimetableContent.setOnScrollChangeListener(new OnScrollChangeListener() {
-//            @Override
-//            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-//                TimeTable.super.onScrollChanged();
-//            }
-//        });
-    }
-
-    private void setRefreshView() {
-
     }
 
     public TableContent getTableContent() {

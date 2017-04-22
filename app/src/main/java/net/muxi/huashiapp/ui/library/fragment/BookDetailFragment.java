@@ -20,12 +20,14 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookId;
 import net.muxi.huashiapp.common.data.BookPost;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.event.RefreshAttenBooks;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
@@ -197,6 +199,7 @@ public class BookDetailFragment extends BaseFragment {
                     switch (response.code()) {
                         case 200:
                             changeAttenStatus(false);
+                            RxBus.getDefault().send(new RefreshAttenBooks());
                             break;
                         case 403:
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(
@@ -226,6 +229,7 @@ public class BookDetailFragment extends BaseFragment {
                     switch (response.code()) {
                         case 201:
                             changeAttenStatus(true);
+                            RxBus.getDefault().send(new RefreshAttenBooks());
                             break;
                         case 403:
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(

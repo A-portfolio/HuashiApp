@@ -13,9 +13,11 @@ import android.widget.EditText;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.event.LibLoginEvent;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.MyBooksUtils;
@@ -118,16 +120,17 @@ public class LoginActivity extends ToolbarActivity {
                             () -> {
                                 hideLoading();
                             });
-            ZhugeUtils.sendEvent("图书馆登录");
+            ZhugeUtils.sendEvent("登录");
         } else {
             CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(verifyResponseResponse -> {
                                 if (verifyResponseResponse.code() == 200) {
-                                    finish();
                                     App.saveLibUser(user);
                                     loadMyBooks();
+                                    RxBus.getDefault().send(new LibLoginEvent());
+                                    finish();
                                 } else if (verifyResponseResponse.code() == 403) {
                                     showErrorSnackbarShort(getString(R.string.tip_err_account));
                                 } else {

@@ -14,12 +14,14 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.Book;
-import net.muxi.huashiapp.common.data.PersonalBook;
+import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.RenewData;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.event.RefreshBorrowedBooks;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
 
@@ -63,7 +65,7 @@ public class BookBorrowedFragment extends BaseFragment {
 
     private Book mBook;
     private String id;
-    private PersonalBook mPersonalBook;
+    private BorrowedBook mBorrowedBook;
 
     public static BookBorrowedFragment newInstance(Book book,String id) {
 
@@ -149,15 +151,15 @@ public class BookBorrowedFragment extends BaseFragment {
                         mTvTid.setText("条码号" + personalBooks.get(0).bar_code);
                         mTvDay.setText(String.format("当前借阅（剩余%d天）",personalBooks.get(0).time));
                         mTvPlace.setText(personalBooks.get(0).room);
-                        mPersonalBook = personalBooks.get(0);
+                        mBorrowedBook = personalBooks.get(0);
                     }
                 });
     }
 
     private void renewBook() {
         RenewData renewData = new RenewData();
-        renewData.bar_code = mPersonalBook.bar_code;
-        renewData.check = mPersonalBook.check;
+        renewData.bar_code = mBorrowedBook.bar_code;
+        renewData.check = mBorrowedBook.check;
         CampusFactory.getRetrofitService().renewBook(Base64Util.createBaseStr(App.sLibrarayUser),renewData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -165,6 +167,7 @@ public class BookBorrowedFragment extends BaseFragment {
                     switch (response.code()){
                         case 200:
                             ((BaseActivity) getActivity()).showSnackbarShort(R.string.renew_ok);
+                            RxBus.getDefault().send(new RefreshBorrowedBooks());
                             break;
                         case 406:
                             ((BaseActivity)getActivity()).showErrorSnackbarShort(R.string.renew_not_in_date);

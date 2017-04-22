@@ -11,6 +11,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -18,9 +20,11 @@ import android.widget.FrameLayout;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.SplashData;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.event.LibLoginEvent;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMainFragment;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
 import net.muxi.huashiapp.ui.login.LoginActivity;
@@ -64,11 +68,19 @@ public class MainActivity extends BaseActivity implements
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
 
-        initData();
         initView();
+        initListener();
         handleIntent(getIntent());
         AlarmUtil.register(this);
         getSplashData();
+    }
+
+    private void initListener() {
+        RxBus.getDefault().toObservable(LibLoginEvent.class)
+                .subscribe(libLoginEvent -> {
+                    getSupportFragmentManager().beginTransaction().remove(mCurFragment).commit();
+                    showFragment("lib_mine");
+                });
     }
 
     private void getSplashData() {
@@ -120,98 +132,85 @@ public class MainActivity extends BaseActivity implements
         String name = intent.getStringExtra("ui");
         switch (name) {
             case "table":
-                showFragment(TimetableFragment.newInstance());
+                showFragment("table");
                 mNavView.getMenu().getItem(1).setChecked(true);
                 break;
-            case "lib":
-                showFragment(LibraryMineFragment.newInstance());
+            case "lib_mine":
+                showFragment("lib_mine");
                 mNavView.getMenu().getItem(2).setChecked(true);
                 break;
         }
     }
 
     private void initView() {
-        getSupportFragmentManager().beginTransaction().add(R.id.content_layout,
-                MainFragment.newInstance()).commit();
+        showFragment("main");
         BottomNavigationHelper.disableShiftMode(mNavView);
-    }
-
-    private void initData() {
-
-    }
-
-    /**
-     * 当返回至主界面时重新刷新界面获取数据
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mCurFragment == null) {
-            return;
-        }
-        switch (mCurFragment.getTag()) {
-            case "table":
-                showFragment(TimetableFragment.newInstance());
-                break;
-            case "lib_main":
-            case "lib_mine":
-                if (App.isLibLogin()) {
-                    if (getSupportFragmentManager().findFragmentByTag("lib_mine") != null) {
-                        return;
-                    }
-                    showFragment(LibraryMineFragment.newInstance());
-                } else {
-                    if (getSupportFragmentManager().findFragmentByTag("lib_main") != null) {
-                        return;
-                    }
-                    showFragment(LibraryMainFragment.newInstance());
-                }
-                break;
-        }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_main:
-                showFragment(MainFragment.newInstance());
+                showFragment("main");
                 break;
             case R.id.action_timetable:
-                showFragment(TimetableFragment.newInstance());
                 if (TextUtils.isEmpty(App.sUser.sid)) {
                     LoginActivity.start(MainActivity.this, "info");
                 }
+                showFragment("table");
                 break;
             case R.id.action_library:
                 if (App.isLibLogin()) {
-                    showFragment(LibraryMineFragment.newInstance());
+                    showFragment("lib_mine");
                 } else {
-                    showFragment(LibraryMainFragment.newInstance());
+                    showFragment("lib_main");
                 }
                 break;
             case R.id.action_more:
-                showFragment(MoreFragment.newInstance());
+                showFragment("more");
                 break;
         }
         return true;
     }
 
-    public void showFragment(Fragment fragment) {
+    public void showFragment(Fragment fragment, String tag) {
         mCurFragment = fragment;
-        String tag = "";
-        if (fragment instanceof MainFragment) {
-            tag = "main";
-        } else if (fragment instanceof TimetableFragment) {
-            tag = "table";
-        } else if (fragment instanceof LibraryMainFragment) {
-            tag = "lib_main";
-        } else if (fragment instanceof LibraryMineFragment) {
-            tag = "lib_mine";
-        } else if (fragment instanceof MoreFragment) {
-            tag = "more";
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.content_layout,
+                fragment, tag);
+        fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.commit();
+        Logger.d(fragment.getTag());
+    }
+
+    public void showFragment(String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.findFragmentByTag(tag) != null) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.content_layout,
+                    fragmentManager.findFragmentByTag(tag), tag);
+            fragmentTransaction.addToBackStack(tag);
+            fragmentTransaction.commit();
+            return;
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_layout,
-                fragment, tag).commit();
+        Logger.d("begin new fragment instance");
+        switch (tag) {
+            case "main":
+                showFragment(MainFragment.newInstance(), tag);
+                break;
+            case "table":
+                showFragment(TimetableFragment.newInstance(), tag);
+                break;
+            case "lib_main":
+                showFragment(LibraryMainFragment.newInstance(), tag);
+                break;
+            case "lib_mine":
+                showFragment(LibraryMineFragment.newInstance(), tag);
+                break;
+            case "more":
+                showFragment(MoreFragment.newInstance(), tag);
+                break;
+        }
     }
 
     public boolean isStorgePermissionGranted() {

@@ -17,11 +17,13 @@ import android.widget.TextView;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
@@ -145,6 +147,7 @@ public class CourseEditActivity extends ToolbarActivity {
                             Intent intent = new Intent(this, ScheduleWidgetProvider.class);
                             intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
                             sendBroadcast(intent);
+                            RxBus.getDefault().send(new RefreshTableEvent());
                             finish();
                             break;
                         default:
@@ -287,6 +290,7 @@ public class CourseEditActivity extends ToolbarActivity {
                             Intent intent = new Intent(this, ScheduleWidgetProvider.class);
                             intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
                             sendBroadcast(intent);
+                            RxBus.getDefault().send(new RefreshTableEvent());
                             finish();
                             break;
                         case 404:

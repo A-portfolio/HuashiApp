@@ -16,7 +16,7 @@ import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.common.data.Electricity;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.data.PatchData;
-import net.muxi.huashiapp.common.data.PersonalBook;
+import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.ProductData;
 import net.muxi.huashiapp.common.data.RenewData;
 import net.muxi.huashiapp.common.data.Scores;
@@ -61,7 +61,7 @@ public interface RetrofitService {
     Observable<Book> getBookDetail(@Query("id") String id);
 
     @GET("lib/me/")
-    Observable<List<PersonalBook>> getPersonalBook(@Header("Authorization") String verification);
+    Observable<List<BorrowedBook>> getPersonalBook(@Header("Authorization") String verification);
 
     /**
      * 200 OK

@@ -1,23 +1,22 @@
 package net.muxi.huashiapp.ui.library.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.ui.library.LibrarySearchActivity;
 import net.muxi.huashiapp.ui.library.adapter.MyBookListPagerAdapter;
-import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +37,9 @@ public class LibraryMineFragment extends BaseFragment {
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
 
+    private MyBookListFragment mBooksBorrowedFragment;
+    private MyBookListFragment mBooksAttentionFragment;
+
     private MyBookListPagerAdapter mPagerAdapter;
 
     public static LibraryMineFragment newInstance() {
@@ -54,6 +56,7 @@ public class LibraryMineFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_lib_mine, container, false);
         ButterKnife.bind(this, view);
         initView();
+        Logger.d("lib mine oncreateview");
         return view;
     }
 
@@ -71,12 +74,16 @@ public class LibraryMineFragment extends BaseFragment {
         mTabLayout.setupWithViewPager(mViewPager);
 
         List<Fragment> fragmentList = new ArrayList<>();
-        MyBookListFragment myBookListFragment = MyBookListFragment.newInstance(
-                MyBookListFragment.TYPE_BORROW);
-        MyBookListFragment myBookListFragment1 = MyBookListFragment.newInstance(
-                MyBookListFragment.TYPE_ATTENTION);
-        fragmentList.add(myBookListFragment);
-        fragmentList.add(myBookListFragment1);
+        if (mBooksBorrowedFragment == null) {
+            mBooksBorrowedFragment = MyBookListFragment.newInstance(
+                    MyBookListFragment.TYPE_BORROW);
+        }
+        if (mBooksAttentionFragment == null) {
+            mBooksAttentionFragment = MyBookListFragment.newInstance(
+                    MyBookListFragment.TYPE_ATTENTION);
+        }
+        fragmentList.add(mBooksBorrowedFragment);
+        fragmentList.add(mBooksAttentionFragment);
         mPagerAdapter = new MyBookListPagerAdapter(getChildFragmentManager(), fragmentList,
                 titleList);
         mViewPager.setAdapter(mPagerAdapter);
@@ -86,6 +93,5 @@ public class LibraryMineFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Logger.d("book mine");
     }
 }
