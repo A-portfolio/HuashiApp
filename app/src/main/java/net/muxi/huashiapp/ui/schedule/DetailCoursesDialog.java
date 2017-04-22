@@ -24,6 +24,7 @@ import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.event.DeleteCourseOkEvent;
+import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
@@ -86,7 +87,7 @@ public class DetailCoursesDialog extends DialogFragment {
             dismiss();
         });
 
-        mSubscription = RxBus.getDefault().toObservable(DeleteCourseOkEvent.class)
+        mSubscription = RxBus.getDefault().toObservable(RefreshTableEvent.class)
                 .subscribe(deleteCourseOkEvent -> {
                     dismiss();
                 },throwable -> throwable.printStackTrace());

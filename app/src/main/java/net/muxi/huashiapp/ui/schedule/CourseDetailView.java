@@ -16,19 +16,16 @@ import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.event.AddCourseEvent;
-import net.muxi.huashiapp.event.DeleteCourseOkEvent;
+import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.TimeTableUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -137,7 +134,7 @@ public class CourseDetailView extends RelativeLayout {
                         Logger.d("send del");
                         HuaShiDao dao = new HuaShiDao();
                         dao.deleteCourse(course.id);
-                        RxBus.getDefault().send(new DeleteCourseOkEvent(course));
+                        RxBus.getDefault().send(new RefreshTableEvent());
                     } else {
                         ((BaseActivity) mContext).showErrorSnackbarShort(R.string.tip_err_server);
                     }
@@ -148,7 +145,7 @@ public class CourseDetailView extends RelativeLayout {
     }
 
     public void addCourse(Course course) {
-        if (retryCount >= 5){
+        if (retryCount >= 5) {
             retryCount = 0;
             return;
         }
@@ -160,18 +157,18 @@ public class CourseDetailView extends RelativeLayout {
                         case 201:
                             HuaShiDao dao = new HuaShiDao();
                             dao.insertCourse(course);
-                            RxBus.getDefault().send(new AddCourseEvent(course));
+                            RxBus.getDefault().send(new RefreshTableEvent());
                             retryCount = 0;
                             break;
                         default:
                             addCourse(course);
-                            retryCount ++;
+                            retryCount++;
                             break;
                     }
                 }, throwable -> {
                     throwable.printStackTrace();
                     addCourse(course);
-                    retryCount ++;
+                    retryCount++;
                 });
     }
 

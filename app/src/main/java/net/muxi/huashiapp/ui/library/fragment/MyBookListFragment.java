@@ -17,11 +17,14 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.AttentionBook;
-import net.muxi.huashiapp.common.data.PersonalBook;
+import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.event.RefreshAttenBooks;
+import net.muxi.huashiapp.event.RefreshBorrowedBooks;
 import net.muxi.huashiapp.ui.library.BookDetailActivity;
 import net.muxi.huashiapp.ui.library.adapter.AttenBookAdapter;
 import net.muxi.huashiapp.ui.library.adapter.AttenBookRemindAdapter;
@@ -35,6 +38,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -53,6 +57,12 @@ public class MyBookListFragment extends BaseFragment {
     public static final int TYPE_BORROW = 0;
     public static final int TYPE_ATTENTION = 1;
 
+    private Subscription s1;
+    private Subscription s2;
+
+    private List<AttentionBook> mAttentionBookList;
+    private List<BorrowedBook> mBorrowedBookList;
+
     public static MyBookListFragment newInstance(int type) {
 
         Bundle args = new Bundle();
@@ -62,6 +72,12 @@ public class MyBookListFragment extends BaseFragment {
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        type = getArguments().getInt("type");
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,23 +85,32 @@ public class MyBookListFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_mybooks, container, false);
         ButterKnife.bind(this, view);
 
-        type = getArguments().getInt("type");
         if (TYPE_BORROW == type) {
             initBorrowView();
+            s1 = RxBus.getDefault().toObservable(RefreshBorrowedBooks.class)
+                    .subscribe(refreshBorrowedBooks -> {
+                        loadBorrowBooks();
+                    });
         } else {
             initAttentionView();
+            s2 = RxBus.getDefault().toObservable(RefreshAttenBooks.class)
+                    .subscribe(refreshAttenBooks -> {
+                        loadAttentionBooks();
+                    });
         }
-
         return view;
     }
 
     private void initAttentionView() {
         mMultiStatusView.setOnRetryListener(v -> loadAttentionBooks());
-        loadAttentionBooks();
+        if (mAttentionBookList != null && mAttentionBookList.size() != 0) {
+            renderAttentionBooks(mAttentionBookList);
+        } else {
+            loadAttentionBooks();
+        }
     }
 
     public void loadAttentionBooks() {
-        mMultiStatusView.showContent();
         CampusFactory.getRetrofitService().getAttentionBooks(
                 Base64Util.createBaseStr(App.sLibrarayUser))
                 .subscribeOn(Schedulers.io())
@@ -97,6 +122,7 @@ public class MyBookListFragment extends BaseFragment {
                             if (attentionBooks.size() == 0) {
                                 throw new RuntimeException();
                             }
+                            mAttentionBookList = attentionBooks;
                             Observable.from(attentionBooks)
                                     .toSortedList((attentionBook, attentionBook2) -> {
                                         if (!attentionBook.avbl.equals(attentionBook2.avbl)) {
@@ -109,17 +135,7 @@ public class MyBookListFragment extends BaseFragment {
                                         return 0;
                                     })
                                     .subscribe(attentionBooks1 -> {
-                                        MultiItemTypeAdapter adapter = new MultiItemTypeAdapter(
-                                                getContext(),
-                                                attentionBooks1);
-                                        adapter.addItemViewDelegate(new AttenBookRemindAdapter(getContext()));
-                                        adapter.addItemViewDelegate(new AttenBookAdapter(getContext()));
-                                        mRecyclerView =
-                                                (RecyclerView) mMultiStatusView.getContentView();
-                                        mRecyclerView.setLayoutManager(
-                                                new LinearLayoutManager(getContext()));
-                                        mRecyclerView.setHasFixedSize(true);
-                                        mRecyclerView.setAdapter(adapter);
+                                        renderAttentionBooks(attentionBooks1);
                                     }, throwable -> throwable.printStackTrace());
 
                             //关注的图书 id 存储到本地
@@ -150,11 +166,14 @@ public class MyBookListFragment extends BaseFragment {
         mMultiStatusView.setOnRetryListener(v -> {
             loadBorrowBooks();
         });
-        loadBorrowBooks();
+        if (mBorrowedBookList != null) {
+            renderBorrowedBooks(mBorrowedBookList);
+        } else {
+            loadBorrowBooks();
+        }
     }
 
     public void loadBorrowBooks() {
-        mMultiStatusView.showContent();
         CampusFactory.getRetrofitService().getPersonalBook(
                 Base64Util.createBaseStr(App.sLibrarayUser))
                 .subscribeOn(Schedulers.io())
@@ -163,20 +182,8 @@ public class MyBookListFragment extends BaseFragment {
                     if (personalBooks.size() == 0) {
                         throw new RuntimeException();
                     }
-                    mRecyclerView = (RecyclerView) mMultiStatusView.getContentView();
-                    Collections.sort(personalBooks, ((personalBook, t1) -> {
-                        return personalBook.time - t1.time;
-                    }));
-                    mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                    mRecyclerView.setHasFixedSize(true);
-                    mRecyclerView.setAdapter(new CommonAdapter<PersonalBook>(getContext(),
-                            R.layout.item_my_book_remind, personalBooks) {
-                        @Override
-                        protected void convert(ViewHolder holder, PersonalBook personalBook,
-                                int position) {
-                            setBorrowItem(holder, personalBook, position);
-                        }
-                    });
+                    mBorrowedBookList = personalBooks;
+                    renderBorrowedBooks(personalBooks);
                     //借阅的 ids 存储到本地
                     Observable.from(personalBooks).map(personalBook -> personalBook.id)
                             .toList()
@@ -188,17 +195,57 @@ public class MyBookListFragment extends BaseFragment {
                 });
     }
 
-    private void setBorrowItem(ViewHolder holder, PersonalBook personalBook, int position) {
-        holder.setText(R.id.tv_title, personalBook.book);
-        String s = personalBook.time < 10 ? "0" + personalBook.time : String.valueOf(
-                personalBook.time);
+    public void renderBorrowedBooks(List<BorrowedBook> borrowedBookList) {
+        if (borrowedBookList.size() == 0) {
+            mMultiStatusView.showEmpty();
+            return;
+        }
+        mMultiStatusView.showContent();
+        mRecyclerView = (RecyclerView) mMultiStatusView.getContentView();
+        Collections.sort(borrowedBookList, ((personalBook, t1) -> {
+            return personalBook.time - t1.time;
+        }));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(new CommonAdapter<BorrowedBook>(getContext(),
+                R.layout.item_my_book_remind, borrowedBookList) {
+            @Override
+            protected void convert(ViewHolder holder, BorrowedBook borrowedBook,
+                    int position) {
+                setBorrowItem(holder, borrowedBook, position);
+            }
+        });
+    }
+
+    public void renderAttentionBooks(List<AttentionBook> attentionBookList) {
+        if (attentionBookList.size() == 0) {
+            mMultiStatusView.showNetError();
+        }
+        mMultiStatusView.showContent();
+        MultiItemTypeAdapter adapter = new MultiItemTypeAdapter(
+                getContext(),
+                attentionBookList);
+        adapter.addItemViewDelegate(new AttenBookRemindAdapter(getContext()));
+        adapter.addItemViewDelegate(new AttenBookAdapter(getContext()));
+        mRecyclerView =
+                (RecyclerView) mMultiStatusView.getContentView();
+        mRecyclerView.setLayoutManager(
+                new LinearLayoutManager(getContext()));
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(adapter);
+    }
+
+    private void setBorrowItem(ViewHolder holder, BorrowedBook borrowedBook, int position) {
+        holder.setText(R.id.tv_title, borrowedBook.book);
+        String s = borrowedBook.time < 10 ? "0" + borrowedBook.time : String.valueOf(
+                borrowedBook.time);
         holder.setText(R.id.tv_remind, String.format("时间剩余%s天", s));
-        if (personalBook.time < 3) {
+        if (borrowedBook.time < 3) {
             ((TextView) holder.getView(R.id.tv_remind)).setTextColor(
                     getResources().getColor(R.color.red));
         }
         holder.getView(R.id.layout_item).setOnClickListener(v -> {
-            BookDetailActivity.start(getContext(), personalBook.id);
+            BookDetailActivity.start(getContext(), borrowedBook.id);
         });
         holder.getView(R.id.layout_item).setClickable(true);
     }
@@ -206,6 +253,11 @@ public class MyBookListFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Logger.d("book mylist");
+        if (s1 != null && !s1.isUnsubscribed()) {
+            s1.unsubscribe();
+        }
+        if (s2 != null && !s2.isUnsubscribed()) {
+            s2.unsubscribe();
+        }
     }
 }

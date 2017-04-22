@@ -26,6 +26,7 @@ public class LargeSizeNumberPicker extends NumberPicker{
     public LargeSizeNumberPicker(Context context, AttributeSet attrs) {
         super(context, attrs);
         setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
+        setWrapSelectorWheel(false);
         NumberPickerHelper.setDividerColor(this,Color.TRANSPARENT);
     }
 

@@ -3,11 +3,9 @@ package net.muxi.huashiapp.util;
 import android.text.TextUtils;
 
 import net.muxi.huashiapp.common.data.AttentionBook;
-import net.muxi.huashiapp.common.data.PersonalBook;
+import net.muxi.huashiapp.common.data.BorrowedBook;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,8 +25,8 @@ public class MyBooksUtils {
                 });
     }
 
-    public static void saveBorrowedBooks(List<PersonalBook> personalBooks){
-        Observable.from(personalBooks).map(personalBook -> personalBook.id)
+    public static void saveBorrowedBooks(List<BorrowedBook> borrowedBooks){
+        Observable.from(borrowedBooks).map(personalBook -> personalBook.id)
                 .toList()
                 .subscribe(strings -> {
                     PreferenceUtil.saveString(PreferenceUtil.BORROW_BOOK_IDS, TextUtils.join(",",strings));

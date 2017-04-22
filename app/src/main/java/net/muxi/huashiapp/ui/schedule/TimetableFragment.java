@@ -26,6 +26,7 @@ import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.event.AddCourseEvent;
 import net.muxi.huashiapp.event.DeleteCourseOkEvent;
 import net.muxi.huashiapp.event.RefreshFinishEvent;
+import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
 import net.muxi.huashiapp.ui.main.MainActivity;
 import net.muxi.huashiapp.util.Base64Util;
@@ -174,6 +175,7 @@ public class TimetableFragment extends BaseFragment {
 
         Subscription subscription1 = RxBus.getDefault().toObservable(AddCourseEvent.class)
                 .subscribe(addCourseEvent -> {
+                    Logger.d("add course event");
                     mCourses = dao.loadAllCourses();
                     renderCourseView(mCourses);
                     Intent intent = new Intent(mContext, ScheduleWidgetProvider.class);
@@ -183,6 +185,7 @@ public class TimetableFragment extends BaseFragment {
         ((BaseActivity) getContext()).addSubscription(subscription1);
         Subscription subscription2 = RxBus.getDefault().toObservable(DeleteCourseOkEvent.class)
                 .subscribe(deleteCourseOkEvent -> {
+                    Logger.d("delete course event");
                     mCourses = dao.loadAllCourses();
                     renderCourseView(mCourses);
                     Intent intent = new Intent(mContext, ScheduleWidgetProvider.class);
@@ -190,6 +193,17 @@ public class TimetableFragment extends BaseFragment {
                     mContext.sendBroadcast(intent);
                 },throwable -> throwable.printStackTrace());
         ((BaseActivity) getContext()).addSubscription(subscription2);
+        Subscription subscription3 = RxBus.getDefault().toObservable(RefreshTableEvent.class)
+                .subscribe(refreshTableEvent -> {
+                    Logger.d("refresh course");
+                    mCourses = dao.loadAllCourses();
+                    renderCourseView(mCourses);
+                    Intent intent = new Intent(mContext,ScheduleWidgetProvider.class);
+                    intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                    mContext.sendBroadcast(intent);
+                },throwable -> throwable.printStackTrace());
+        ((BaseActivity)getContext()).addSubscription(subscription3);
+
         mTimetable.setOnRefreshListener(() -> {
             handlingRefresh = true;
             loadTable();
@@ -239,7 +253,6 @@ public class TimetableFragment extends BaseFragment {
                     }
                 });
     }
-
 
     /**
      * 渲染显示的课程： 更改日期，显示课程

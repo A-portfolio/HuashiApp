@@ -13,7 +13,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.AttentionBook;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.data.PersonalBook;
+import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.db.HuaShiDao;
@@ -30,7 +30,6 @@ import net.muxi.huashiapp.util.TimeTableUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -144,7 +143,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         CampusFactory.getRetrofitService().getPersonalBook(Base64Util.createBaseStr(mUser))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<List<PersonalBook>>() {
+                .subscribe(new Observer<List<BorrowedBook>>() {
                     @Override
                     public void onCompleted() {
 
@@ -156,13 +155,13 @@ public class AlarmReceiver extends BroadcastReceiver {
                     }
 
                     @Override
-                    public void onNext(List<PersonalBook> personalBooks) {
+                    public void onNext(List<BorrowedBook> borrowedBooks) {
                         List<String> books = new ArrayList<>();
                         boolean isRemind = false;
-                        for (int i = 0, j = personalBooks.size(); i < j; i++) {
-                            if (Integer.valueOf(personalBooks.get(i).time) < 4) {
+                        for (int i = 0, j = borrowedBooks.size(); i < j; i++) {
+                            if (Integer.valueOf(borrowedBooks.get(i).time) < 4) {
                                 isRemind = true;
-                                books.add(personalBooks.get(i).book);
+                                books.add(borrowedBooks.get(i).book);
                             }
                         }
                         if (isRemind) {
@@ -171,7 +170,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                                     connectBooks(books));
                             NotifyUtil.show(mContext, MainActivity.class,
                                     mContext.getString(R.string.notify_title_course),
-                                    content, "library");
+                                    content, "lib_mine");
                         }
                     }
                 });
@@ -193,7 +192,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                                 connectBooks(books));
                         NotifyUtil.show(mContext, MainActivity.class,
                                 mContext.getString(R.string.notify_title_course),
-                                content, "library");
+                                content, "lib_mine");
                     }
                 }, throwable -> throwable.printStackTrace());
     }
