@@ -2,6 +2,7 @@ package net.muxi.huashiapp.ui.library.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -53,7 +55,7 @@ public class BookDetailFragment extends BaseFragment {
     @BindView(R.id.tv_author)
     TextView mTvAuthor;
     @BindView(R.id.btn_attention)
-    Button mBtnAttention;
+    AppCompatCheckBox mBtnAttention;
     @BindView(R.id.tv_info)
     TextView mTvInfo;
     @BindView(R.id.tv_show_all)
@@ -140,6 +142,7 @@ public class BookDetailFragment extends BaseFragment {
 
         if (PreferenceUtil.getString(PreferenceUtil.ATTENTION_BOOK_IDS, "").contains(id)) {
             mBtnAttention.setText(getString(R.string.has_atten));
+            mBtnAttention.setChecked(true);
             hasAttention = true;
         } else {
             mBtnAttention.setText(getString(R.string.atten));
@@ -149,12 +152,15 @@ public class BookDetailFragment extends BaseFragment {
         mBtnAttention.setOnClickListener(v -> {
             if (!App.isLibLogin()){
                 LoginActivity.start(getContext(),"lib");
+                mBtnAttention.setChecked(false);
                 return;
             }
             if (hasAttention) {
                 delAtten();
+                changeAttenStatus(false);
             } else {
                 createAtten();
+                changeAttenStatus(true);
             }
         });
 
@@ -198,7 +204,7 @@ public class BookDetailFragment extends BaseFragment {
                 .subscribe(response -> {
                     switch (response.code()) {
                         case 200:
-                            changeAttenStatus(false);
+//                            changeAttenStatus(false);
                             RxBus.getDefault().send(new RefreshAttenBooks());
                             break;
                         case 403:
@@ -228,7 +234,7 @@ public class BookDetailFragment extends BaseFragment {
                 .subscribe(response -> {
                     switch (response.code()) {
                         case 201:
-                            changeAttenStatus(true);
+//                            changeAttenStatus(true);
                             RxBus.getDefault().send(new RefreshAttenBooks());
                             break;
                         case 403:
