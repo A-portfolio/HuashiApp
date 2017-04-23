@@ -70,6 +70,7 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lib_result);
         ButterKnife.bind(this);
+        setTitle("搜索结果");
         showLoading();
 
         query = getIntent().getStringExtra("query");

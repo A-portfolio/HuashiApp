@@ -15,15 +15,17 @@
         android:id="@+id/et_course"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="72dp"
         android:background="@null"
         android:hint="请输入课程名称"
-        android:lines="1"
+        android:inputType="text"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="28sp"/>
+        android:textSize="28sp"
+        android:textStyle="bold"/>
 
     <View android:id="@+id/divider1"
           android:layout_width="match_parent"
@@ -129,15 +131,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider3"
-        android:layout_marginTop="6dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginTop="6dp"
         android:layout_toRightOf="@+id/iv_week_select"
         android:background="@null"
-        android:maxLines="1"
         android:hint="输入上课地点"
         android:lines="1"
-    />
+        android:inputType="text"
+        android:scrollHorizontally="true"
+        android:maxLines="1"/>
 
     <View android:id="@+id/divider4"
           android:layout_width="match_parent"
@@ -164,9 +167,10 @@
         android:layout_marginTop="6dp"
         android:layout_toRightOf="@+id/iv_week_select"
         android:background="@null"
+        android:inputType="text"
+        android:scrollHorizontally="true"
         android:hint="输入教师"
-        android:maxLines="1"
-    />
+        android:maxLines="1"/>
 
     <View android:id="@+id/divider5"
           android:layout_width="match_parent"
@@ -179,12 +183,12 @@
         android:id="@+id/btn_ensure"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:gravity="center"
         android:layout_below="@+id/divider5"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="44dp"
         android:background="@drawable/ripple_accent"
+        android:gravity="center"
         android:text="添加课程"
         android:textColor="@color/colorWhite"/>
 

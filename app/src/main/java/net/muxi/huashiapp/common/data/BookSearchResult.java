@@ -6,8 +6,8 @@ import java.util.List;
  * Created by ybao on 16/6/21.
  * 搜索关键字返回的图书列表
  */
-public class BookSearchResult {
 
+public class BookSearchResult {
     /**
      * max : 5
      * per_page : 20

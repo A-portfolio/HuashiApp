@@ -16,7 +16,7 @@
         android:id="@+id/tv_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/medium_size"
+        android:textSize="18sp"
         android:textStyle="bold"
         tools:text="保留本"/>
 
@@ -28,7 +28,7 @@
         android:layout_marginTop="16dp"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/library_state_size"
-        tools:text="索书号"/>
+        tools:text="索书号T222222222"/>
 
     <TextView
         android:id="@+id/tv_bid"
@@ -39,7 +39,7 @@
         android:layout_marginTop="16dp"
         android:layout_alignParentRight="true"
         android:textSize="@dimen/library_state_size"
-        tools:text="条码号"/>
+        tools:text="条码号S437293849"/>
 
     <TextView
         android:id="@+id/tv_place"

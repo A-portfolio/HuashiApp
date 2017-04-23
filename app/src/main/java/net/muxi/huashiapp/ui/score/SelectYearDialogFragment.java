@@ -45,7 +45,7 @@ public class SelectYearDialogFragment extends BottomPickerDialogFragment{
         numberpicker.setMinValue(0);
         numberpicker.setMaxValue(3);
         numberpicker.setDisplayedValues(years);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.CENTER_HORIZONTAL);
         setContentView(numberpicker,params);

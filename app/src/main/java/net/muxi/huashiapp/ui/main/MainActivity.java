@@ -78,9 +78,20 @@ public class MainActivity extends BaseActivity implements
     private void initListener() {
         RxBus.getDefault().toObservable(LibLoginEvent.class)
                 .subscribe(libLoginEvent -> {
-                    getSupportFragmentManager().beginTransaction().remove(mCurFragment).commit();
-                    showFragment("lib_mine");
-                });
+                    FragmentManager fm = getSupportFragmentManager();
+                    fm.beginTransaction().remove(mCurFragment).commitAllowingStateLoss();
+                    if (fm.findFragmentByTag("lib_mine") != null) {
+                        fm.beginTransaction()
+                                .replace(R.id.content_layout, fm.findFragmentByTag("lib_mine"))
+                                .commitAllowingStateLoss();
+                    } else {
+                        Fragment fragment = LibraryMineFragment.newInstance();
+                        fm.beginTransaction()
+                                .replace(R.id.content_layout, fragment, "lib_mine")
+                                .addToBackStack("lib_mine")
+                                .commitAllowingStateLoss();
+                    }
+                }, Throwable::printStackTrace);
     }
 
     private void getSplashData() {
@@ -171,6 +182,11 @@ public class MainActivity extends BaseActivity implements
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     public void showFragment(Fragment fragment, String tag) {
