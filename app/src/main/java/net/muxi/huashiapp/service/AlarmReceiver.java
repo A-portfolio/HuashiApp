@@ -17,7 +17,7 @@ import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.card.CardActivity;
 import net.muxi.huashiapp.ui.main.MainActivity;
 import net.muxi.huashiapp.ui.score.ScoreActivity;

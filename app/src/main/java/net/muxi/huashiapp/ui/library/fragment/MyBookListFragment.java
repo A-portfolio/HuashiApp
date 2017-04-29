@@ -22,14 +22,13 @@ import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.AttentionBook;
 import net.muxi.huashiapp.common.data.BorrowedBook;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.event.RefreshAttenBooks;
 import net.muxi.huashiapp.event.RefreshBorrowedBooks;
 import net.muxi.huashiapp.ui.library.BookDetailActivity;
 import net.muxi.huashiapp.ui.library.adapter.AttenBookAdapter;
 import net.muxi.huashiapp.ui.library.adapter.AttenBookRemindAdapter;
 import net.muxi.huashiapp.util.Base64Util;
-import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.Collections;

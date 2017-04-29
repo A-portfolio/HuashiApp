@@ -3,7 +3,6 @@ package net.muxi.huashiapp.ui.credit;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 
@@ -12,16 +11,14 @@ import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Scores;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.Base64Util;
-import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.ToastUtil;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -113,22 +110,22 @@ public class CreditResultActivity extends ToolbarActivity {
     public void addCredit(List<Scores> scores) {
         for (Scores score : scores) {
             for (int i = 0; i < Constants.CREDIT_CATEGORY.length; i++) {
-                if (Constants.CREDIT_CATEGORY[i].equals(score.getKcxzmc())) {
+                if (Constants.CREDIT_CATEGORY[i].equals(score.kcxzmc)) {
                     switch (i) {
                         case 0:
-                            zb += Float.parseFloat(score.getCredit());
+                            zb += Float.parseFloat(score.credit);
                             break;
                         case 1:
-                            zx += Float.parseFloat(score.getCredit());
+                            zx += Float.parseFloat(score.credit);
                             break;
                         case 2:
-                            tb += Float.parseFloat(score.getCredit());
+                            tb += Float.parseFloat(score.credit);
                             break;
                         case 3:
-                            tx += Float.parseFloat(score.getCredit());
+                            tx += Float.parseFloat(score.credit);
                             break;
                         case 4:
-                            th += Float.parseFloat(score.getCredit());
+                            th += Float.parseFloat(score.credit);
                             break;
                     }
                     break;

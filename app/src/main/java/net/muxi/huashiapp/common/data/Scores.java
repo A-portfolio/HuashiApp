@@ -22,61 +22,7 @@ public class Scores {
     public String course;
     public String type;
     public String kcxzmc;
+    public String usual;
+    public String end;
 
-    public String getKcxzmc() {
-        return kcxzmc;
-    }
-
-    public void setKcxzmc(String kcxzmc) {
-        this.kcxzmc = kcxzmc;
-    }
-
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getCredit() {
-        return credit;
-    }
-
-    public void setCredit(String credit) {
-        this.credit = credit;
-    }
-
-    public String getGrade() {
-        return grade;
-    }
-
-    public void setGrade(String grade) {
-        this.grade = grade;
-    }
-
-    public String getJxb_id() {
-        return jxb_id;
-    }
-
-    public void setJxb_id(String jxb_id) {
-        this.jxb_id = jxb_id;
-    }
-
-    public String getCourse() {
-        return course;
-    }
-
-    public void setCourse(String course) {
-        this.course = course;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 }

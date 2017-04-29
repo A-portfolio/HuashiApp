@@ -2,31 +2,21 @@ package net.muxi.huashiapp.ui.library;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.interfaces.DraweeController;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.BookSearchResult;
-import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.util.Logger;
-
-import org.w3c.dom.Text;
+import net.muxi.huashiapp.net.CampusFactory;
 
 import java.util.ArrayList;
 import java.util.List;

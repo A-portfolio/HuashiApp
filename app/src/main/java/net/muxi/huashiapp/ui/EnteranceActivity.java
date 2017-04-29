@@ -14,16 +14,9 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.common.data.SplashData;
-import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.ui.main.MainActivity;
-import net.muxi.huashiapp.util.FrescoUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
-
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 
 /**

@@ -16,17 +16,21 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.User;
-import net.muxi.huashiapp.common.net.CampusFactory;
 import net.muxi.huashiapp.event.LibLoginEvent;
+import net.muxi.huashiapp.net.CampusFactory;
+import net.muxi.huashiapp.net.ccnu.CcnuCrawler;
 import net.muxi.huashiapp.util.Base64Util;
-import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -95,31 +99,39 @@ public class LoginActivity extends ToolbarActivity {
             return;
         }
         showLoading();
-        User user = new User();
+        final User user = new User();
         user.sid = mEtSid.getText().toString();
         user.password = mEtPwd.getText().toString();
         if (type.equals("info")) {
-            CampusFactory.getRetrofitService().mainLogin(Base64Util.createBaseStr(user))
+            Observable.create(new Observable.OnSubscribe<Boolean>() {
+                @Override
+                public void call(Subscriber<? super Boolean> subscriber) {
+                    subscriber.onStart();
+                    boolean crawlerResult = CcnuCrawler.loginInfo(user.sid, user.password);
+                    boolean infoResult = false;
+                    try {
+                        infoResult = CampusFactory.getRetrofitService().mainLogin(Base64Util.createBaseStr(user)).execute().code() == 200;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    subscriber.onNext(crawlerResult || infoResult);
+                    subscriber.onCompleted();
+                }
+            })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(verifyResponseResponse -> {
-                                if (verifyResponseResponse.code() == 200) {
-                                    finish();
-                                    App.saveUser(user);
-                                } else if (verifyResponseResponse.code() == 403) {
-                                    showErrorSnackbarShort(getString(R.string.tip_err_account));
-                                } else {
-                                    showErrorSnackbarShort(getString(R.string
-                                            .tip_school_server_error));
-                                }
-                            }, throwable -> {
-                                throwable.printStackTrace();
-                                hideLoading();
-                                showErrorSnackbarShort(getString(R.string.tip_check_net));
-                            },
-                            () -> {
-                                hideLoading();
-                            });
+                    .subscribe(b -> {
+                        if (b) {
+                            finish();
+                            App.saveUser(user);
+                        } else {
+                            showErrorSnackbarShort(R.string.tip_err_account);
+                        }
+                    }, throwable -> {
+                        throwable.printStackTrace();
+                        hideLoading();
+                        showErrorSnackbarShort(R.string.tip_check_net);
+                    });
             ZhugeUtils.sendEvent("登录");
         } else {
             CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))

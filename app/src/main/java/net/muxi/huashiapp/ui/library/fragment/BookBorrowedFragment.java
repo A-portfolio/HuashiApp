@@ -20,7 +20,7 @@ import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.RenewData;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.event.RefreshBorrowedBooks;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;

@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.common.net;
+package net.muxi.huashiapp.net;
 
 /**
  * Created by ybao on 16/4/28.
@@ -21,4 +21,6 @@ public class CampusFactory {
         }
         return retrofitService;
     }
+
+
 }

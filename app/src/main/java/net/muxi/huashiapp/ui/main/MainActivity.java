@@ -23,7 +23,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.SplashData;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.event.LibLoginEvent;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMainFragment;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;

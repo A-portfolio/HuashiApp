@@ -17,15 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.net.CampusFactory;
-import net.muxi.huashiapp.event.DeleteCourseOkEvent;
 import net.muxi.huashiapp.event.RefreshTableEvent;
-import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
 
@@ -35,8 +30,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by ybao (ybaovv@gmail.com)

@@ -79,9 +79,9 @@ dependencies {
     compile 'com.github.fengminchao:MultiStatusView:0.6'
     compile 'com.zhy:base-rvadapter:3.0.3'
     compile 'com.github.fengminchao:CardBanner:1.0'
-    compile('com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.1.4')
-    compile('com.tencent.tinker:tinker-android-anno:1.7.7')
-    compile('com.android.support:multidex:1.0.1')
+    compile 'com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.1.4'
+    compile 'com.tencent.tinker:tinker-android-anno:1.7.7'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.github.Muxi-Studio:YAJB-Android:1.0'
     testCompile 'org.robolectric:shadows-support-v4:3.3'
     testCompile 'org.robolectric:robolectric:3.3.1'

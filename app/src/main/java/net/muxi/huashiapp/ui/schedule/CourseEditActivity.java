@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
@@ -20,16 +18,11 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
 import net.muxi.huashiapp.util.Base64Util;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.NetStatus;
-import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.ToastUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
 import java.util.ArrayList;
@@ -39,9 +32,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Response;
-import rx.Observable;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
