@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.common.net;
+package net.muxi.huashiapp.net;
 
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +21,8 @@ public class CampusRetrofit{
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
+                .addInterceptor(new CookieInterceptor())
+                .addInterceptor(new AuthorizationInterceptor())
                 .readTimeout(15,TimeUnit.SECONDS)
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .writeTimeout(15,TimeUnit.SECONDS)

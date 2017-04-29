@@ -20,7 +20,7 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.CardSumData;
 import net.muxi.huashiapp.common.data.User;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.DateUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NetStatus;

@@ -13,7 +13,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.WebsiteData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
 
 import java.util.List;

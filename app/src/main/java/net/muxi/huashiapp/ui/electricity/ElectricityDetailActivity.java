@@ -23,7 +23,7 @@ import com.muxistudio.multistatusview.MultiStatusView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.EleRequestData;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.ToastUtil;

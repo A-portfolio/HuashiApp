@@ -17,7 +17,7 @@ import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.ItemData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.CalendarActivity;
 import net.muxi.huashiapp.ui.apartment.ApartmentActivity;
 import net.muxi.huashiapp.ui.card.CardActivity;

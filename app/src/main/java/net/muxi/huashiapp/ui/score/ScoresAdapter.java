@@ -27,7 +27,6 @@ import butterknife.ButterKnife;
  */
 public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder> {
 
-
     private List<Scores> mScoresList;
     private List<DetailScores> mDetailScores;
     private Context mContext;
@@ -54,21 +53,21 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mTvCourse.setText(mScoresList.get(position).getCourse());
-        holder.mTvProperty.setText(mScoresList.get(position).getType());
-        holder.mTvCate1.setText(ScoreUtil.toCate1(mScoresList.get(position).getKcxzmc()));
-        holder.mTvCate2.setText(ScoreUtil.toCate2(mScoresList.get(position).getKcxzmc()));
-        holder.mTvScore.setText("总成绩：" + mScoresList.get(position).getGrade());
-        holder.mTvCredit.setText("学分：" + mScoresList.get(position).getCredit());
+        holder.mTvCourse.setText(mScoresList.get(position).course);
+        holder.mTvProperty.setText(mScoresList.get(position).type);
+        holder.mTvCate1.setText(ScoreUtil.toCate1(mScoresList.get(position).kcxzmc));
+        holder.mTvCate2.setText(ScoreUtil.toCate2(mScoresList.get(position).kcxzmc));
+        holder.mTvScore.setText("总成绩：" + mScoresList.get(position).grade);
+        holder.mTvCredit.setText("学分：" + mScoresList.get(position).credit);
 
-        if (Float.parseFloat(mScoresList.get(position).getGrade()) < 60){
+        if (Float.parseFloat(mScoresList.get(position).grade) < 60){
             holder.mTvProperty.setBackgroundResource(R.drawable.shape_red);
             holder.mTvScore.setTextColor(App.sContext.getResources().getColor(R.color.red));
         }
 
         if (position < mDetailScores.size()){
-            holder.mTvUsual.setText("平时："+ mDetailScores.get(position).getUsual());
-            holder.mTvEnding.setText("期末："+ mDetailScores.get(position).getEnding());
+            holder.mTvUsual.setText("平时："+ mDetailScores.get(position).usual);
+            holder.mTvEnding.setText("期末："+ mDetailScores.get(position).ending);
         }
 
     }

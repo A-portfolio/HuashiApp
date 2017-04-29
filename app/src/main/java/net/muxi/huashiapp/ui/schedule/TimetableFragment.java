@@ -22,13 +22,12 @@ import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.event.AddCourseEvent;
 import net.muxi.huashiapp.event.DeleteCourseOkEvent;
 import net.muxi.huashiapp.event.RefreshFinishEvent;
 import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
-import net.muxi.huashiapp.ui.main.MainActivity;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
@@ -123,7 +122,9 @@ public class TimetableFragment extends BaseFragment {
 
     private void initView() {
         if (mCourses.size() == 0) {
-            loadTable();
+            if (App.isInfoLogin()) {
+                loadTable();
+            }
         } else {
             renderCourseView(mCourses);
         }

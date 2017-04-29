@@ -2,7 +2,6 @@ package net.muxi.huashiapp.ui.credit;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -11,15 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.Scores;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.ToastUtil;
@@ -29,7 +26,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -94,11 +90,11 @@ public class CreditGradeActivity extends ToolbarActivity {
         float sum = 0;
         float credits = 0;
         for (int pos : mCreditGradeAdapter.getCheckedList()) {
-            float credit = Float.parseFloat(mScoresList.get(pos).getCredit());
+            float credit = Float.parseFloat(mScoresList.get(pos).credit);
             credits += credit;
-            sum += Float.parseFloat(mScoresList.get(pos).getGrade()) * credit;
+            sum += Float.parseFloat(mScoresList.get(pos).grade) * credit;
         }
-        if (credits == 0){
+        if (credits == 0) {
             return 0;
         }
         return sum / credits;

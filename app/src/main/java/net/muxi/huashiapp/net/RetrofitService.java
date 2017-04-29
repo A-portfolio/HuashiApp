@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.common.net;
+package net.muxi.huashiapp.net;
 
 import net.muxi.huashiapp.common.data.ApartmentData;
 import net.muxi.huashiapp.common.data.AttentionBook;
@@ -7,6 +7,7 @@ import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookId;
 import net.muxi.huashiapp.common.data.BookPost;
 import net.muxi.huashiapp.common.data.BookSearchResult;
+import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.ClassRoom;
@@ -14,9 +15,9 @@ import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.common.data.Electricity;
+import net.muxi.huashiapp.common.data.InfoCookie;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.data.PatchData;
-import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.ProductData;
 import net.muxi.huashiapp.common.data.RenewData;
 import net.muxi.huashiapp.common.data.Scores;
@@ -28,6 +29,7 @@ import net.muxi.huashiapp.common.data.WebsiteData;
 import java.util.List;
 
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -48,7 +50,7 @@ import rx.Observable;
 public interface RetrofitService {
 
     @GET("info/login/")
-    Observable<Response<VerifyResponse>> mainLogin(@Header("Authorization") String authorization);
+    Call<ResponseBody> mainLogin(@Header("Authorization") String verification);
 
     @GET("lib/login/")
     Observable<Response<VerifyResponse>> libLogin(@Header("Authorization") String verification);
@@ -183,6 +185,11 @@ public interface RetrofitService {
     Observable<ClassRoom> getClassRoom(@Query("weekno") String week,
             @Query("weekday") String day,
             @Query("building") String area);
+
+    @POST("http://120.77.8.149:8090/api/grade/search/")
+    Observable<List<Scores>> getScores(@Body InfoCookie cookie,
+            @Query("xnm") String year,
+            @Query("xqm") String term);
 
 
 }

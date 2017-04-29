@@ -15,7 +15,7 @@ import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;

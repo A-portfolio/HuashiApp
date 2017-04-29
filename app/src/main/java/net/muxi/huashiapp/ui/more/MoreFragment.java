@@ -17,7 +17,7 @@ import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.base.BaseFragment;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.service.DownloadService;
 import net.muxi.huashiapp.ui.AboutActivity;
 import net.muxi.huashiapp.ui.SettingActivity;

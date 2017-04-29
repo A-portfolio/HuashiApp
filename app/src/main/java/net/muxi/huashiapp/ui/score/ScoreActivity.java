@@ -12,8 +12,10 @@ import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.DetailScores;
+import net.muxi.huashiapp.common.data.InfoCookie;
 import net.muxi.huashiapp.common.data.Scores;
-import net.muxi.huashiapp.common.net.CampusFactory;
+import net.muxi.huashiapp.net.CampusFactory;
+import net.muxi.huashiapp.net.ccnu.CcnuCrawler;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
 
@@ -24,6 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -81,16 +84,32 @@ public class ScoreActivity extends ToolbarActivity {
             }
             return;
         }
-        CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(App.sUser), year,
-                term)
+
+        Observable.create(new Observable.OnSubscribe<InfoCookie>() {
+
+            @Override
+            public void call(Subscriber<? super InfoCookie> subscriber) {
+                subscriber.onStart();
+                InfoCookie cookie = CcnuCrawler.getInfoCookie();
+                subscriber.onNext(cookie);
+                subscriber.onCompleted();
+            }
+        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(scores -> {
-                    Logger.d("get score");
-                    hideLoading();
-                    mScoresList.addAll(scores);
-                    mScoresAdapter.notifyDataSetChanged();
-                }, throwable -> throwable.printStackTrace());
+                .subscribe(cookie -> {
+                    loadGradeWithCookie(cookie);
+                },throwable -> throwable.printStackTrace());
+//        CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(App.sUser), year,
+//                term)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(scores -> {
+//                    Logger.d("get score");
+//                    hideLoading();
+//                    mScoresList.addAll(scores);
+//                    mScoresAdapter.notifyDataSetChanged();
+//                }, throwable -> throwable.printStackTrace());
 
 //        Observable.zip(CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr
 // (App.sUser),year,"3"),
@@ -100,6 +119,10 @@ public class ScoreActivity extends ToolbarActivity {
 //                    mScoresList.addAll(scores2);
 //                    return mScoresList;
 //                }))
+    }
+
+    private void loadGradeWithCookie(InfoCookie cookie) {
+//        CampusFactory.getRetrofitService().getScores()
     }
 
 //    public Observable<Scores> get

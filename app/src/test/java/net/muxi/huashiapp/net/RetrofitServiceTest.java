@@ -1,16 +1,14 @@
-package net.muxi.huashiapp.common.net;
+package net.muxi.huashiapp.net;
 
 import static org.junit.Assert.*;
 
 import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.util.Base64Util;
-import net.muxi.huashiapp.widget.ShadowView;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 

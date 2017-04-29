@@ -43,14 +43,14 @@ public class CreditGradeAdapter extends RecyclerView.Adapter<CreditGradeAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTvCourse.setText(mScoresList.get(position).getCourse());
-        holder.mTvCategory.setText(ScoreUtil.toCategory(mScoresList.get(position).getKcxzmc()));
-        holder.mTvCredit.setText(String.format("学分：%s",mScoresList.get(position).getCredit()));
-        holder.mTvProperty.setText(mScoresList.get(position).getType());
-        holder.mTvScore.setText(String.format("总成绩：%s",mScoresList.get(position).getGrade()));
+        holder.mTvCourse.setText(mScoresList.get(position).course);
+        holder.mTvCategory.setText(ScoreUtil.toCategory(mScoresList.get(position).kcxzmc));
+        holder.mTvCredit.setText(String.format("学分：%s",mScoresList.get(position).credit));
+        holder.mTvProperty.setText(mScoresList.get(position).type);
+        holder.mTvScore.setText(String.format("总成绩：%s",mScoresList.get(position).grade));
         if (checkedList.contains(position)) {
             holder.mIvChecked.setVisibility(View.VISIBLE);
-            if (Float.parseFloat(mScoresList.get(position).getGrade()) >= 60.0) {
+            if (Float.parseFloat(mScoresList.get(position).grade) >= 60.0) {
                 holder.mTvProperty.setBackgroundResource(R.drawable.shape_green);
             }else {
                 holder.mTvProperty.setBackgroundResource(R.drawable.shape_red);
@@ -67,7 +67,7 @@ public class CreditGradeAdapter extends RecyclerView.Adapter<CreditGradeAdapter.
             } else {
                 checkedList.add(position);
                 holder.mIvChecked.setVisibility(View.VISIBLE);
-                if (Float.parseFloat(mScoresList.get(position).getGrade()) >= 60.0) {
+                if (Float.parseFloat(mScoresList.get(position).grade) >= 60.0) {
                     holder.mTvProperty.setBackgroundResource(R.drawable.shape_green);
                 }else {
                     holder.mTvProperty.setBackgroundResource(R.drawable.shape_red);
