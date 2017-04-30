@@ -113,6 +113,7 @@ public class CcnuCrawler {
     }
 
     public static InfoCookie getInfoCookie() {
+
         try {
             if (!loginInfo(App.sUser.sid, App.sUser.password)) {
                 return null;
@@ -142,6 +143,7 @@ public class CcnuCrawler {
     }
 
     public static boolean loginInfo(String sid, String password) {
+        cookieStore.clear();
         try {
             Response<ResponseBody> response = retrofitService.loginInfo(sid,
                     password).execute();

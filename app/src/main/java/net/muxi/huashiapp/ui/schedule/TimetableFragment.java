@@ -141,6 +141,8 @@ public class TimetableFragment extends BaseFragment {
 
     }
 
+
+
     private void initListener() {
 
         mWeekSelectedView.setOnWeekSelectedListener(week -> {
@@ -233,8 +235,7 @@ public class TimetableFragment extends BaseFragment {
     }
 
     public void loadTable() {
-        CampusFactory.getRetrofitService().getSchedule(Base64Util.createBaseStr(App.sUser),
-                App.sUser.sid)
+        CampusFactory.getRetrofitService().getSchedule()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(courseList -> {
@@ -298,6 +299,11 @@ public class TimetableFragment extends BaseFragment {
         super.onResume();
         mCourses = dao.loadAllCourses();
         renderCourseView(mCourses);
+        if (mCourses.size() == 0) {
+            if (App.isInfoLogin()) {
+                loadTable();
+            }
+        }
     }
 
     @Override

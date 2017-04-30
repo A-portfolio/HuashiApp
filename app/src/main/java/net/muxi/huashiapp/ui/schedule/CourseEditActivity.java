@@ -12,17 +12,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.event.RefreshTableEvent;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
-import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
 import java.util.ArrayList;
@@ -127,7 +125,7 @@ public class CourseEditActivity extends ToolbarActivity {
     }
 
     public void addCourse() {
-        CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(App.sUser), mCourse)
+        CampusFactory.getRetrofitService().addCourse(mCourse)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(verifyResponseResponse -> {
@@ -211,17 +209,17 @@ public class CourseEditActivity extends ToolbarActivity {
         if (isSingleWeeks(weekList)) {
             start = weekList.get(0);
             end = weekList.get(weekList.size() - 1) + 1;
-            s = String.format("%d-%d周单",start,end);
+            s = String.format("%d-%d周单", start, end);
         } else if (isDoubleWeeks(weekList)) {
             start = weekList.get(0) - 1;
             end = weekList.get(weekList.size() - 1);
-            s = String.format("%d-%d周双",start,end);
+            s = String.format("%d-%d周双", start, end);
         } else if (isContinuOusWeeks(weekList)) {
             start = weekList.get(0);
             end = weekList.get(weekList.size() - 1);
-            s = String.format("%d-%d周",start,end);
-        }else {
-            s = TextUtils.join(",",weekList);
+            s = String.format("%d-%d周", start, end);
+        } else {
+            s = TextUtils.join(",", weekList);
             s += "周";
         }
         return s;
@@ -260,7 +258,7 @@ public class CourseEditActivity extends ToolbarActivity {
                 lists.add(Integer.valueOf(course.id));
             }
         }
-        if (lists.size() == 0){
+        if (lists.size() == 0) {
             return "1";
         }
         Collections.sort(lists);
@@ -269,8 +267,7 @@ public class CourseEditActivity extends ToolbarActivity {
     }
 
     private void updateCourse() {
-        CampusFactory.getRetrofitService().updateCourse(Base64Util.createBaseStr(App.sUser),
-                mCourse.id, mCourse)
+        CampusFactory.getRetrofitService().updateCourse(mCourse.id, mCourse)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(verifyResponseResponse -> {

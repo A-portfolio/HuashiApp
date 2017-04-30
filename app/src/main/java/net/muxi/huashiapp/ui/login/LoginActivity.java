@@ -108,13 +108,19 @@ public class LoginActivity extends ToolbarActivity {
                 public void call(Subscriber<? super Boolean> subscriber) {
                     subscriber.onStart();
                     boolean crawlerResult = CcnuCrawler.loginInfo(user.sid, user.password);
+                    if (crawlerResult) {
+                        subscriber.onNext(crawlerResult);
+                        subscriber.onCompleted();
+                        return;
+                    }
                     boolean infoResult = false;
                     try {
-                        infoResult = CampusFactory.getRetrofitService().mainLogin(Base64Util.createBaseStr(user)).execute().code() == 200;
+                        infoResult = CampusFactory.getRetrofitService().mainLogin(
+                                Base64Util.createBaseStr(user)).execute().code() == 200;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    subscriber.onNext(crawlerResult || infoResult);
+                    subscriber.onNext(infoResult);
                     subscriber.onCompleted();
                 }
             })

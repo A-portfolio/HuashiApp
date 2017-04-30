@@ -8,16 +8,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.event.RefreshTableEvent;
-import net.muxi.huashiapp.util.Base64Util;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.TimeTableUtil;
 
@@ -118,8 +116,7 @@ public class CourseDetailView extends RelativeLayout {
     }
 
     private void delCourse(Course course) {
-        CampusFactory.getRetrofitService().deleteCourse(Base64Util.createBaseStr(App.sUser),
-                course.id)
+        CampusFactory.getRetrofitService().deleteCourse(course.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(verifyResponseResponse -> {
@@ -149,7 +146,7 @@ public class CourseDetailView extends RelativeLayout {
             retryCount = 0;
             return;
         }
-        CampusFactory.getRetrofitService().addCourse(Base64Util.createBaseStr(App.sUser), course)
+        CampusFactory.getRetrofitService().addCourse(course)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(verifyResponseResponse -> {
