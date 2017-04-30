@@ -12,7 +12,6 @@ import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.ClassRoom;
 import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.common.data.Electricity;
 import net.muxi.huashiapp.common.data.News;
@@ -107,37 +106,41 @@ public interface RetrofitService {
     Observable<Response<VerifyResponse>> renewBook(@Header("Authorization") String verification,
             @Body RenewData renewData);
 
-    @GET("table/")
-    Observable<List<Course>> getSchedule(@Header("Authorization") String verification,
-            @Query("sid") String sid);
+//    @GET("table/")
+//    Observable<List<Course>> getSchedule(@Header("Authorization") String verification,
+//            @Query("sid") String sid);
+
+//    //添加课程
+//    @POST("table/")
+//    Observable<Response<VerifyResponse>> addCourse(@Header("Authorization") String authorization,
+//            @Body Course course);
+//
+//    //删除课程
+//    @DELETE("table/{id}/")
+//    Observable<Response<VerifyResponse>> deleteCourse(@Header("Authorization") String
+// authorization,
+//            @Path("id") String id);
+//
+//    @PUT("table/{id}/")
+//    Observable<Response<VerifyResponse>> updateCourse(@Header("Authorization") String
+// authorization,
+//            @Path("id") String id,
+//            @Body Course course);
+
+    @GET("http://120.77.8.149:5566/api/table/")
+    Observable<List<Course>> getSchedule();
 
     //添加课程
-    @POST("table/")
-    Observable<Response<VerifyResponse>> addCourse(@Header("Authorization") String authorization,
-            @Body Course course);
+    @POST("http://120.77.8.149:5566/api/table/")
+    Observable<Response<VerifyResponse>> addCourse(@Body Course course);
 
     //删除课程
-    @DELETE("table/{id}/")
-    Observable<Response<VerifyResponse>> deleteCourse(@Header("Authorization") String authorization,
-            @Path("id") String id);
+    @DELETE("http://120.77.8.149:5566/api/table/{id}/")
+    Observable<Response<VerifyResponse>> deleteCourse(@Path("id") String id);
 
-    @PUT("table/{id}/")
-    Observable<Response<VerifyResponse>> updateCourse(@Header("Authorization") String authorization,
-            @Path("id") String id,
+    @PUT("http://120.77.8.149:5566/api/table/{id}/")
+    Observable<Response<VerifyResponse>> updateCourse(@Path("id") String id,
             @Body Course course);
-
-    //URL: /api/grade/search/?xnm=2015&xqm=3
-//    @GET("grade/search/")
-//    Observable<List<Scores>> getScores(@Header("Authorization") String verification,
-//            @Query("xnm") String year,
-//            @Query("xqm") String term);
-//
-//    @GET("/grade/detail/search")
-//    Observable<DetailScores> getDetailScores(@Header("Authorization") String verification,
-//            @Query("xnm") String year,
-//            @Query("xqm") String term,
-//            @Query("course") String course,
-//            @Query("jxb_id") String jxbId);
 
     @GET("webview_info/")
     Observable<List<News>> getNews();
@@ -165,8 +168,8 @@ public interface RetrofitService {
     @GET("app/latest/")
     Observable<VersionData> getLatestVersion();
 
-    @GET
-    Observable<ResponseBody> downloadFile(@Url String url);
+//    @GET
+//    Observable<ResponseBody> downloadFile(@Url String url);
 
     @GET("patch/")
     Observable<List<PatchData>> getPatch();
