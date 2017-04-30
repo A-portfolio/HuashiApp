@@ -15,7 +15,6 @@ import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.common.data.Electricity;
-import net.muxi.huashiapp.common.data.InfoCookie;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.data.PatchData;
 import net.muxi.huashiapp.common.data.ProductData;
@@ -128,17 +127,17 @@ public interface RetrofitService {
             @Body Course course);
 
     //URL: /api/grade/search/?xnm=2015&xqm=3
-    @GET("grade/search/")
-    Observable<List<Scores>> getScores(@Header("Authorization") String verification,
-            @Query("xnm") String year,
-            @Query("xqm") String term);
-
-    @GET("/grade/detail/search")
-    Observable<DetailScores> getDetailScores(@Header("Authorization") String verification,
-            @Query("xnm") String year,
-            @Query("xqm") String term,
-            @Query("course") String course,
-            @Query("jxb_id") String jxbId);
+//    @GET("grade/search/")
+//    Observable<List<Scores>> getScores(@Header("Authorization") String verification,
+//            @Query("xnm") String year,
+//            @Query("xqm") String term);
+//
+//    @GET("/grade/detail/search")
+//    Observable<DetailScores> getDetailScores(@Header("Authorization") String verification,
+//            @Query("xnm") String year,
+//            @Query("xqm") String term,
+//            @Query("course") String course,
+//            @Query("jxb_id") String jxbId);
 
     @GET("webview_info/")
     Observable<List<News>> getNews();
@@ -186,9 +185,8 @@ public interface RetrofitService {
             @Query("weekday") String day,
             @Query("building") String area);
 
-    @POST("http://120.77.8.149:8090/api/grade/search/")
-    Observable<List<Scores>> getScores(@Body InfoCookie cookie,
-            @Query("xnm") String year,
+    @GET("http://120.77.8.149:8090/api/grade/")
+    Observable<List<Scores>> getScores(@Query("xnm") String year,
             @Query("xqm") String term);
 
 

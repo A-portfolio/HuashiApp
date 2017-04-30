@@ -82,7 +82,9 @@ public class CardActivity extends ToolbarActivity {
         WebSettings settings = mConsumeView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setAppCacheEnabled(true);
-
+        settings.setAppCachePath("data/data/net.muxi.huashiapp/cache");
+        settings.setAppCacheMaxSize(1024*1024*8);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
         mMultiStatusView.setOnRetryListener(new View.OnClickListener() {
             @Override

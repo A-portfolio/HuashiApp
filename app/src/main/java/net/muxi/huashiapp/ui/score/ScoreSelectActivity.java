@@ -12,18 +12,11 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.UserUtil;
-
-import java.io.IOException;
-import java.util.HashSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Response;
 
 /**
  * Created by ybao on 17/2/11.
@@ -46,7 +39,7 @@ public class ScoreSelectActivity extends ToolbarActivity {
     @BindView(R.id.tv_select_year)
     TextView mTvSelectYear;
     @BindView(R.id.et_year)
-    TextView mEtYear;
+    TextView mTvYear;
 
     private int value = 0;
     private String[] years = UserUtil.generateHyphenYears(4);
@@ -77,38 +70,10 @@ public class ScoreSelectActivity extends ToolbarActivity {
                     term = 16;
                     break;
             }
-//            searchScore(mEtYear.getText().toString(), term + "");
-//            ScoreActivity.start(ScoreSelectActivity.this, mEtYear.getText().toString(), term +
-// "");
+            ScoreActivity.start(ScoreSelectActivity.this, mTvYear.getText().toString().substring(0,4), term + "");
         });
 
     }
-
-//    private void searchScore(String s, String s1) {
-//        Call call1 = CampusFactory.getRetrofitService().loginInfo("2014214629","fmc2014214629");
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Response response = call1.execute();
-//                    String s = response.message();
-//                    Logger.d(s);
-//                    if (s.split("\"")[1].equals("index_jg.jsp")){
-//                        HashSet<String> cookieSet = new HashSet<>();
-////                        for (String str : response.headers("Set-Cookie")){
-////
-////                        }
-//                    }
-//                    CampusFactory.getRetrofitService().updateCookie().execute();
-//                    CampusFactory.getRetrofitService().updateFinalCookie().execute();
-//
-//                    Logger.d("request end");
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
-//    }
 
     @OnClick({R.id.tv_select_year, R.id.et_year})
     public void onClick(View view) {
@@ -129,7 +94,7 @@ public class ScoreSelectActivity extends ToolbarActivity {
     }
 
     public void setYear(int value) {
-        mEtYear.setText(String.format("%s学年", UserUtil.generateHyphenYears(4)[value]));
+        mTvYear.setText(String.format("%s学年", UserUtil.generateHyphenYears(4)[value]));
     }
 
 }

@@ -53,7 +53,7 @@ public class CreditGradeActivity extends ToolbarActivity {
     public static void start(Context context, int start, int end) {
         Intent starter = new Intent(context, CreditGradeActivity.class);
         starter.putExtra("start", start);
-        starter.putExtra("end", end);
+        starter.putExtra("ending", end);
         context.startActivity(starter);
     }
 
@@ -65,7 +65,7 @@ public class CreditGradeActivity extends ToolbarActivity {
         setTitle(String.format("%d-%d学年", start, end));
 
         start = getIntent().getIntExtra("start", 0);
-        end = getIntent().getIntExtra("end", 0);
+        end = getIntent().getIntExtra("ending", 0);
 
         for (int i = 0; i < (end - start) * 2; i++) {
             int term = 3;
@@ -121,8 +121,7 @@ public class CreditGradeActivity extends ToolbarActivity {
             ToastUtil.showShort("学校服务器异常");
             return;
         }
-        CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(App.sUser),
-                String.valueOf(year), String.valueOf(term))
+        CampusFactory.getRetrofitService().getScores(String.valueOf(year), String.valueOf(term))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(scores -> {

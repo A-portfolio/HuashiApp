@@ -52,7 +52,7 @@ public class CreditResultActivity extends ToolbarActivity {
     public static void start(Context context, int start, int end) {
         Intent starter = new Intent(context, CreditResultActivity.class);
         starter.putExtra("start", start);
-        starter.putExtra("end", end);
+        starter.putExtra("ending", end);
         context.startActivity(starter);
     }
 
@@ -63,7 +63,7 @@ public class CreditResultActivity extends ToolbarActivity {
         ButterKnife.bind(this);
 
         start = getIntent().getIntExtra("start", 0);
-        end = getIntent().getIntExtra("end", 0);
+        end = getIntent().getIntExtra("ending", 0);
         length = (end - start) * 2;
         setTitle(String.format("%d-%d学年", start, end));
         loadCredit();
@@ -85,8 +85,7 @@ public class CreditResultActivity extends ToolbarActivity {
             ToastUtil.showShort("学校服务器异常");
             return;
         }
-        CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(App.sUser),
-                String.valueOf(year), String.valueOf(term))
+        CampusFactory.getRetrofitService().getScores(String.valueOf(year), String.valueOf(term))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(scores -> {

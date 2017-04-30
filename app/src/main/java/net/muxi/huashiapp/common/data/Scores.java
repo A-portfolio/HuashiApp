@@ -23,6 +23,6 @@ public class Scores {
     public String type;
     public String kcxzmc;
     public String usual;
-    public String end;
+    public String ending;
 
 }
