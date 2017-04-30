@@ -1,7 +1,6 @@
 package net.muxi.huashiapp.ui.score;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +10,9 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.ui.credit.ScoreUtil;
-import net.muxi.huashiapp.util.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,14 +24,12 @@ import butterknife.ButterKnife;
 public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder> {
 
     private List<Scores> mScoresList;
-    private List<DetailScores> mDetailScores;
     private Context mContext;
     //存放已展开的卡片
 
-    public ScoresAdapter(List<Scores> scoresList,List<DetailScores> detailScores) {
+    public ScoresAdapter(List<Scores> scoresList) {
         super();
         mScoresList = scoresList;
-        mDetailScores = detailScores;
     }
 
     @Override
@@ -59,15 +53,12 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
         holder.mTvCate2.setText(ScoreUtil.toCate2(mScoresList.get(position).kcxzmc));
         holder.mTvScore.setText("总成绩：" + mScoresList.get(position).grade);
         holder.mTvCredit.setText("学分：" + mScoresList.get(position).credit);
+        holder.mTvUsual.setText("平时："+ (mScoresList.get(position).usual.equals("") ? "无" : mScoresList.get(position).usual));
+        holder.mTvEnding.setText("期末："+ (mScoresList.get(position).ending.equals("") ? "无" : mScoresList.get(position).ending));
 
         if (Float.parseFloat(mScoresList.get(position).grade) < 60){
             holder.mTvProperty.setBackgroundResource(R.drawable.shape_red);
             holder.mTvScore.setTextColor(App.sContext.getResources().getColor(R.color.red));
-        }
-
-        if (position < mDetailScores.size()){
-            holder.mTvUsual.setText("平时："+ mDetailScores.get(position).usual);
-            holder.mTvEnding.setText("期末："+ mDetailScores.get(position).ending);
         }
 
     }

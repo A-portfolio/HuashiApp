@@ -35,7 +35,7 @@ public class CourseTimePickerDialogFragment extends BottomDialogFragment {
         Bundle args = new Bundle();
         args.putInt("weekday", weekday);
         args.putInt("start", start);
-        args.putInt("end", end);
+        args.putInt("ending", end);
         CourseTimePickerDialogFragment fragment = new CourseTimePickerDialogFragment();
         fragment.setArguments(args);
         return fragment;
@@ -49,7 +49,7 @@ public class CourseTimePickerDialogFragment extends BottomDialogFragment {
         ButterKnife.bind(this, view);
         mCourseTimePickerView.setWeekday(getArguments().getInt("weekday", 0));
         mCourseTimePickerView.setStartTime(getArguments().getInt("start", 0));
-        mCourseTimePickerView.setEndTime(getArguments().getInt("end", 1));
+        mCourseTimePickerView.setEndTime(getArguments().getInt("ending", 1));
 
         mCourseTimePickerView.setOnValueChangeListener((weekday, start, end) -> {
             mTvTitle.setText(

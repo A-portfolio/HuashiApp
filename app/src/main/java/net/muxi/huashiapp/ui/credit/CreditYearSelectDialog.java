@@ -36,7 +36,7 @@ public class CreditYearSelectDialog extends BottomDialogFragment {
     public static CreditYearSelectDialog newInstance(String start, String end) {
         Bundle args = new Bundle();
         args.putString("start", start);
-        args.putString("end", end);
+        args.putString("ending", end);
         CreditYearSelectDialog fragment = new CreditYearSelectDialog();
         fragment.setArguments(args);
         return fragment;
@@ -47,7 +47,7 @@ public class CreditYearSelectDialog extends BottomDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         String startYear = getArguments().getString("start");
-        String endYear = getArguments().getString("end");
+        String endYear = getArguments().getString("ending");
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_credit_select_year,
                 null);

@@ -275,7 +275,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
                 }
                 mDivider.setVisibility(VISIBLE);
                 showSuggestions();
-                Logger.d("search view animation end");
+                Logger.d("search view animation ending");
                 return false;
             }
 

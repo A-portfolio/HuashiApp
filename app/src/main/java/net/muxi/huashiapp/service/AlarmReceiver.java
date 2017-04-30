@@ -240,7 +240,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private void checkScores() {
         judgeYearAndTerm();
-        CampusFactory.getRetrofitService().getScores(Base64Util.createBaseStr(mUser), mCurYear + "",
+        CampusFactory.getRetrofitService().getScores( mCurYear + "",
                 mCurTerm + "")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

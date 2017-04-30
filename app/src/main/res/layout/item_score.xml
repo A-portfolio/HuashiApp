@@ -3,8 +3,9 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/layout_item" android:layout_width="match_parent"
                 android:layout_height="72dp"
-                android:paddingBottom="16dp"
+                android:paddingLeft="16dp"
                 android:paddingTop="16dp"
+                android:paddingRight="16dp"
 >
 
     <TextView
@@ -12,9 +13,10 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginRight="16dp"
-        android:background="@drawable/shape_green"
         android:gravity="center"
+        android:background="@drawable/shape_green"
         android:textColor="@color/colorWhite"
+        android:layout_marginBottom="16dp"
         android:textStyle="bold"
         tools:text="文"/>
 
@@ -65,8 +67,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/tv_property"
-        android:layout_alignBottom="@+id/tv_property">
+        android:layout_alignBottom="@+id/tv_property"
+        android:layout_toRightOf="@+id/tv_property">
 
         <TextView
             android:id="@+id/tv_score"
@@ -80,8 +82,8 @@
         <TextView
             android:id="@+id/tv_credit"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
             tools:text="学分："/>
@@ -89,8 +91,8 @@
         <TextView
             android:id="@+id/tv_usual"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
             tools:text="平时："/>
@@ -105,5 +107,11 @@
             tools:text="期末："/>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider"/>
 
 </RelativeLayout>
