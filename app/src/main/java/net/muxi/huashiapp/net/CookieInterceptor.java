@@ -1,9 +1,12 @@
 package net.muxi.huashiapp.net;
 
+import android.util.Log;
+
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.common.data.InfoCookie;
 import net.muxi.huashiapp.common.data.Scores;
 import net.muxi.huashiapp.net.ccnu.CcnuCrawler;
+import net.muxi.huashiapp.util.Logger;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;

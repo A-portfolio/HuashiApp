@@ -51,8 +51,6 @@ public class CourseDetailView extends RelativeLayout {
     @BindView(R.id.layout_edit)
     LinearLayout mLayoutEdit;
 
-    private int retryCount = 0;
-
     private Context mContext;
 
     public CourseDetailView(Context context, Course course, int selectWeek) {
@@ -142,30 +140,19 @@ public class CourseDetailView extends RelativeLayout {
     }
 
     public void addCourse(Course course) {
-        if (retryCount >= 5) {
-            retryCount = 0;
-            return;
-        }
         CampusFactory.getRetrofitService().addCourse(course)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(verifyResponseResponse -> {
-                    switch (verifyResponseResponse.code()) {
-                        case 201:
-                            HuaShiDao dao = new HuaShiDao();
-                            dao.insertCourse(course);
-                            RxBus.getDefault().send(new RefreshTableEvent());
-                            retryCount = 0;
-                            break;
-                        default:
-                            addCourse(course);
-                            retryCount++;
-                            break;
+                .subscribe(courseId -> {
+                    if (courseId.id != 0){
+                        course.id = String.valueOf(courseId.id);
+                        HuaShiDao dao = new HuaShiDao();
+                        dao.insertCourse(course);
+                        RxBus.getDefault().send(new RefreshTableEvent());
                     }
                 }, throwable -> {
                     throwable.printStackTrace();
                     addCourse(course);
-                    retryCount++;
                 });
     }
 

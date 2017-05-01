@@ -128,20 +128,19 @@ public class CourseEditActivity extends ToolbarActivity {
         CampusFactory.getRetrofitService().addCourse(mCourse)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(verifyResponseResponse -> {
-                    switch (verifyResponseResponse.code()) {
-                        case 201:
-                            dao.insertCourse(mCourse);
-                            Intent intent = new Intent(this, ScheduleWidgetProvider.class);
-                            intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-                            sendBroadcast(intent);
-                            RxBus.getDefault().send(new RefreshTableEvent());
-                            finish();
-                            break;
-                        default:
-                            showErrorSnackbarShort(R.string.tip_school_server_error);
-                            break;
+                .subscribe(courseId -> {
+                    if (courseId.id != 0){
+                        mCourse.id = String.valueOf(courseId.id);
+                        dao.insertCourse(mCourse);
+                        Intent intent = new Intent(this, ScheduleWidgetProvider.class);
+                        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                        sendBroadcast(intent);
+                        RxBus.getDefault().send(new RefreshTableEvent());
+                        finish();
                     }
+                },throwable -> {
+                    throwable.printStackTrace();
+                    showErrorSnackbarShort(R.string.tip_school_server_error);
                 });
     }
 

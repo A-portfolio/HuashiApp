@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.TimeUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +23,13 @@ import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
+import net.muxi.huashiapp.event.CurWeekChangeEvent;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.event.AddCourseEvent;
 import net.muxi.huashiapp.event.DeleteCourseOkEvent;
 import net.muxi.huashiapp.event.RefreshFinishEvent;
 import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
-import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -130,8 +131,8 @@ public class TimetableFragment extends BaseFragment {
         }
 
         Logger.d(TimeTableUtil.getCurWeek() + "");
-        renderCurweekView(TimeTableUtil.getCurWeek());
-        renderSelectedWeekView(TimeTableUtil.getCurWeek());
+        setCurweek(TimeTableUtil.getCurWeek());
+        setSelectedWeek(TimeTableUtil.getCurWeek());
         if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true)) {
             IndicatedView indicatedView = new IndicatedView(getContext());
             indicatedView.setTipViewText("设置当前周也可以点这里噢");
@@ -149,7 +150,7 @@ public class TimetableFragment extends BaseFragment {
             rotateSelectView();
             selectedWeek = week;
             renderCourseView(mCourses);
-            renderSelectedWeekView(week);
+            setSelectedWeek(week);
             mShadeView.setVisibility(View.GONE);
         });
         mIvMenu.setOnClickListener(v -> {
@@ -206,7 +207,13 @@ public class TimetableFragment extends BaseFragment {
                     mContext.sendBroadcast(intent);
                 },throwable -> throwable.printStackTrace());
         ((BaseActivity)getContext()).addSubscription(subscription3);
-
+        Subscription subscription4 = RxBus.getDefault().toObservable(CurWeekChangeEvent.class)
+                .subscribe(curWeekChangeEvent -> {
+                    setCurweek(TimeTableUtil.getCurWeek());
+                    setSelectedWeek(TimeTableUtil.getCurWeek());
+                    renderCourseView(mCourses);
+                },throwable -> throwable.printStackTrace());
+        ((BaseActivity)getContext()).addSubscription(subscription4);
         mTimetable.setOnRefreshListener(() -> {
             handlingRefresh = true;
             loadTable();
@@ -283,14 +290,16 @@ public class TimetableFragment extends BaseFragment {
     /**
      * @param week 从1开始计数
      */
-    public void renderSelectedWeekView(int week) {
+    public void setSelectedWeek(int week) {
+        selectedWeek = week;
         mTvSelectWeek.setText(String.format("第%d周", week));
     }
 
     /**
      * @param week 从1开始计数
      */
-    public void renderCurweekView(int week) {
+    public void setCurweek(int week) {
+        curWeek = week;
         mTvCurrentWeek.setText("当前周设置为" + week);
     }
 
