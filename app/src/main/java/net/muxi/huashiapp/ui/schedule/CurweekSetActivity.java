@@ -12,7 +12,9 @@ import android.widget.ListView;
 
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.event.CurWeekChangeEvent;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.TimeTableUtil;
 
@@ -58,6 +60,7 @@ public class CurweekSetActivity extends ToolbarActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Logger.d("set curweek pos: " + i);
                 TimeTableUtil.saveCurWeek(i + 1);
+                RxBus.getDefault().send(new CurWeekChangeEvent());
                 CurweekSetActivity.this.finish();
             }
         });

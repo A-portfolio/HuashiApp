@@ -60,6 +60,7 @@ public class CcnuCrawler {
                     case LOGIN_INFO:
                         break;
                     case LINK_URL1:
+                    case LINK_REDIRECT:
                         list.addAll(cookieStore.get(0));
                         break;
                     case LINK_URL2:
@@ -97,8 +98,8 @@ public class CcnuCrawler {
             }
         };
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(interceptor)
                 .cookieJar(cookieJar)
+                .addInterceptor(interceptor)
                 .readTimeout(15, TimeUnit.SECONDS)
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .writeTimeout(15, TimeUnit.SECONDS)
@@ -113,33 +114,41 @@ public class CcnuCrawler {
     }
 
     public static InfoCookie getInfoCookie() {
+        if (cookieStore.size() > 0){
+            return searchCookie();
+        }
 
         try {
             if (!loginInfo(App.sUser.sid, App.sUser.password)) {
                 return null;
             }
             retrofitService.updateCookie().execute();
-            String big = "";
-            String jse = "";
-            for (Cookie cookie : cookieStore.get(1)) {
-                if (cookie.name().equals(COOKIE_KEY_BIG)) {
-                    big = cookie.value();
-                }
-            }
-            for (Cookie cookie : cookieStore.get(2)) {
-                if (cookie.name().equals(COOKIE_KEY_JSE)) {
-                    jse = cookie.value();
-                }
-            }
-            Logger.d("big: " + big);
-            Logger.d("jse: " + jse);
-
-            InfoCookie infoCookie = new InfoCookie(big, jse);
+            InfoCookie infoCookie = searchCookie();
             return infoCookie;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static InfoCookie searchCookie(){
+        String big = "";
+        String jse = "";
+        for (Cookie cookie : cookieStore.get(1)) {
+            if (cookie.name().equals(COOKIE_KEY_BIG)) {
+                big = cookie.value();
+            }
+        }
+        for (Cookie cookie : cookieStore.get(2)) {
+            if (cookie.name().equals(COOKIE_KEY_JSE)) {
+                jse = cookie.value();
+            }
+        }
+        Logger.d("big: " + big);
+        Logger.d("jse: " + jse);
+
+        InfoCookie infoCookie = new InfoCookie(big, jse);
+        return infoCookie;
     }
 
     public static boolean loginInfo(String sid, String password) {

@@ -7,5 +7,5 @@ package net.muxi.huashiapp.common.data;
 
 public class CourseId {
 
-
+    public int id;
 }

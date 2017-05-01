@@ -12,6 +12,7 @@ import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.ClassRoom;
 import net.muxi.huashiapp.common.data.Course;
+import net.muxi.huashiapp.common.data.CourseId;
 import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.common.data.Electricity;
 import net.muxi.huashiapp.common.data.News;
@@ -132,7 +133,7 @@ public interface RetrofitService {
 
     //添加课程
     @POST("http://120.77.8.149:5566/api/table/")
-    Observable<Response<VerifyResponse>> addCourse(@Body Course course);
+    Observable<CourseId> addCourse(@Body Course course);
 
     //删除课程
     @DELETE("http://120.77.8.149:5566/api/table/{id}/")

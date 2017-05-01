@@ -74,10 +74,8 @@ public class TimeTable extends RelativeLayout {
 
     public static final boolean IS_WEEKDAY_SHOW = false;
 
-    private float mx, my;
     private float curX, curY;
     private float startX, startY;
-    private Date date1;
 
     private long lastTime;
     private boolean isTouchCancel = true;

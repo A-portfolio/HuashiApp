@@ -3,9 +3,11 @@ package net.muxi.huashiapp.ui.schedule;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 import butterknife.OnClick;
@@ -16,6 +18,15 @@ import butterknife.OnClick;
  */
 
 public class CurweekSetView extends RelativeLayout {
+
+    //    public
+    public static final int MAX_CLICK_DISTANCE = DimensUtil.dp2px(15);
+    public static final int MAX_CLICK_DURATION = 500;
+    private float startX;
+    private float startY;
+    private float endX;
+    private float endY;
+    private long lastTime;
 
     public CurweekSetView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -29,8 +40,23 @@ public class CurweekSetView extends RelativeLayout {
         }
     }
 
-    @OnClick(R.id.btn_set_curweek)
-    public void onClick() {
-        CurweekSetActivity.start(getContext());
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startX = event.getX();
+                startY = event.getY();
+                lastTime = System.currentTimeMillis();
+                break;
+            case MotionEvent.ACTION_UP:
+                endX = event.getX();
+                endY = event.getY();
+                if (System.currentTimeMillis() - lastTime < MAX_CLICK_DURATION &&
+                        (endX - startX) * (endX - startX) + (endY - startY) * (endY - startY) < MAX_CLICK_DISTANCE * MAX_CLICK_DURATION){
+                    CurweekSetActivity.start(getContext());
+                }
+                break;
+        }
+        return true;
     }
 }
