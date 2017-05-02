@@ -122,14 +122,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         if (savedInstanceState != null) {
             mWeiboShareAPI.handleWeiboResponse(getIntent(), this);
         }
-
-
-
-
     }
-
-
-
 
     public static Intent newIntent(Context context, String url, String title, String intro, String iconUrl) {
         Intent intent = new Intent(context, WebViewActivity.class);

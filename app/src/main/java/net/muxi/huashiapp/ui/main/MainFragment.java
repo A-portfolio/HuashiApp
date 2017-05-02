@@ -31,6 +31,7 @@ import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomBlankActivity;
 import net.muxi.huashiapp.ui.website.WebsiteActivity;
+import net.muxi.huashiapp.ui.webview.WebViewActivity;
 import net.muxi.huashiapp.util.ACache;
 import net.muxi.huashiapp.util.DateUtil;
 import net.muxi.huashiapp.util.DimensUtil;
@@ -185,9 +186,10 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                     ItemData itemData = mItemDatas.get(vh.getLayoutPosition() - 1);
                     switch (itemData.getName()) {
                         case "成绩":
-                            ScoreSelectActivity.start(getContext());
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
                                 LoginActivity.start(getContext(), "info");
+                            }else {
+                                ScoreSelectActivity.start(getContext());
                             }
                             break;
                         case "校园通知":
@@ -202,15 +204,17 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             }
                             break;
                         case "校园卡":
-                            CardActivity.start(getContext());
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
                                 LoginActivity.start(getContext(), "info");
+                            }else {
+                                CardActivity.start(getContext());
                             }
                             break;
                         case "算学分":
-                            SelectCreditActivity.start(getContext());
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
                                 LoginActivity.start(getContext(), "info");
+                            }else {
+                                SelectCreditActivity.start(getContext());
                             }
                             break;
                         case "空闲教室":
@@ -231,8 +235,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             WebsiteActivity.start(getContext());
                             break;
                         case "学而":
-                            App.logoutUser();
-                            App.logoutLibUser();
+
                             break;
                         case "更多":
                             MoreActivity.start(getContext());

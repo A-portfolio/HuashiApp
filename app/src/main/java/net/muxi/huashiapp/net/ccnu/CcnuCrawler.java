@@ -114,7 +114,7 @@ public class CcnuCrawler {
     }
 
     public static InfoCookie getInfoCookie() {
-        if (cookieStore.size() > 0){
+        if (cookieStore.size() > 2){
             return searchCookie();
         }
 
