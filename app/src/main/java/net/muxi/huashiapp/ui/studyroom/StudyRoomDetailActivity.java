@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
@@ -48,6 +49,10 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     GridLayout mGridClassroomEighteen;
     @BindView(R.id.grid_classroom_twenty)
     GridLayout mGridClassroomTwenty;
+    @BindView(R.id.study_detail_layout)
+    RelativeLayout mStudyDetailLayout;
+
+
     private ClassRoom mClassRoom;
 
 
@@ -56,7 +61,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
         starter.putExtra("query", query);
         context.startActivity(starter);
     }
-    
+
     //查询参数
     private String mQuery;
 
@@ -150,8 +155,9 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context1.setTextColor(getResources().getColor(R.color.colorBlack));
                 context1.setText(mClassRoom.getValue1().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-//                params.rightMargin = DimensUtil.dp2px(42f);
-                params.width = DimensUtil.getScreenWidth() / 4;
+//                params.rightMargin = DimensUtil.dp2px(68f);
+//                params.width = DimensUtil.getScreenWidth() / 4;
+                params.rightMargin = mGridClassroomEight.getWidth() / 5;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomEight.addView(context1, params);
             }
@@ -296,10 +302,9 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
-        StudyRoomCorrectView view = new StudyRoomCorrectView(StudyRoomDetailActivity.this, "detail");
+        StudyRoomCorrectView view = new StudyRoomCorrectView(StudyRoomDetailActivity.this);
         if (getWindow().getDecorView().equals(view)) {
-            view.removeAllViews();
-            super.onBackPressed();
+            mStudyDetailLayout.removeView(view);
         } else {
             super.onBackPressed();
         }
@@ -315,10 +320,10 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_correct) {
-            StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomDetailActivity.this,"detail");
-            Animation animation = AnimationUtils.loadAnimation(this,R.anim.view_show);
+            StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomDetailActivity.this);
+            Animation animation = AnimationUtils.loadAnimation(this, R.anim.view_show);
             studyRoomCorrectView.startAnimation(animation);
-            setContentView(studyRoomCorrectView);
+            mStudyDetailLayout.addView(studyRoomCorrectView);
         }
         return super.onOptionsItemSelected(item);
     }

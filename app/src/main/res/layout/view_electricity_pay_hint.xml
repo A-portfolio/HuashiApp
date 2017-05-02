@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="#ffffff"
               android:orientation="vertical">
 
     <ImageView
@@ -43,13 +44,14 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="68dp"
         android:layout_marginTop="60dp"
+        android:layout_marginRight="68dp"
         >
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="这是微信号的名称"
+            android:text="华中师大节能办"
             android:textColor="?android:attr/textColorPrimary"
             />
 
@@ -58,8 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/tv_name"
-            android:layout_marginLeft="32dp"
-            android:layout_toRightOf="@id/tv_name"
+            android:layout_alignParentRight="true"
             android:text="点击复制"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/medium_size"

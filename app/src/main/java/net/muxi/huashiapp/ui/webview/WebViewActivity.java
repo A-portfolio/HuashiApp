@@ -163,7 +163,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
                                 shareToDialog.dismiss();
                                 break;
                             case 1:
-                                shareTOWeixin();
+                                shareTOWXSceneSession();
                                 shareToDialog.dismiss();
                                 break;
                             case 2:
@@ -175,7 +175,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
                                 shareToDialog.dismiss();
                                 break;
                             case 4:
-                                shareTOWeixin();
+                                shareTOWXSceneTimeline();
                                 shareToDialog.dismiss();
                                 break;
                             case 6:
@@ -288,10 +288,28 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     }
 
 
-    public void shareTOWeixin() {
+    public void shareTOWXSceneSession() {
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = url;
         WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = title;
+        msg.description = intro;
+        Logger.d(getExternalCacheDir() + "/" + title + ".jpg");
+        Bitmap bmp = BitmapFactory.decodeFile(getExternalCacheDir() + "/" + title + ".jpg");
+//        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
+//        bmp.recycle();
+        msg.setThumbImage(bmp);
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = type + System.currentTimeMillis();
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneSession;
+        api.sendReq(req);
+    }
+
+    public void shareTOWXSceneTimeline(){
+        WXWebpageObject webpageObject = new WXWebpageObject();
+        webpageObject.webpageUrl = url;
+        WXMediaMessage msg = new WXMediaMessage(webpageObject);
         msg.title = title;
         msg.description = intro;
         Logger.d(getExternalCacheDir() + "/" + title + ".jpg");

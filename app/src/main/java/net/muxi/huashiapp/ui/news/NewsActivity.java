@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
@@ -39,7 +40,8 @@ public class NewsActivity extends ToolbarActivity {
     @BindView(R.id.news_recycler_view)
     RecyclerView mNewsRecyclerView;
     @BindView(R.id.content_layout)
-    FrameLayout mContentLayout;
+    RelativeLayout mContentLayout;
+
 
     public static void start(Context context) {
         Intent starter = new Intent(context, NewsActivity.class);
@@ -133,7 +135,7 @@ public class NewsActivity extends ToolbarActivity {
                 newsDetailView = new NewsDetailView(NewsActivity.this, newsList, position);
                 Animation animation = AnimationUtils.loadAnimation(NewsActivity.this, R.anim.view_show);
                 newsDetailView.startAnimation(animation);
-                setContentView(newsDetailView);
+                mContentLayout.addView(newsDetailView);
 
 //
 //                if (mShadowView == null) {
@@ -229,8 +231,7 @@ public class NewsActivity extends ToolbarActivity {
     @Override
     public void onBackPressed() {
         if (getWindow().getDecorView().equals(newsDetailView)) {
-            newsDetailView.removeAllViews();
-            super.onBackPressed();
+            mContentLayout.removeView(newsDetailView);
         } else {
             super.onBackPressed();
         }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.Constants;
@@ -41,6 +42,8 @@ public class StudyRoomActivity extends ToolbarActivity {
     TextView mTvTime;
     @BindView(R.id.tv_area)
     TextView mTvArea;
+    @BindView(R.id.study_layout)
+    RelativeLayout mStudyLayout;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, StudyRoomActivity.class);
@@ -87,10 +90,10 @@ public class StudyRoomActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_correct) {
-            StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomActivity.this, "work");
+            StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomActivity.this);
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.view_show);
             studyRoomCorrectView.startAnimation(animation);
-            setContentView(studyRoomCorrectView);
+            mStudyLayout.addView(studyRoomCorrectView);
 
 
         }
@@ -164,7 +167,7 @@ public class StudyRoomActivity extends ToolbarActivity {
                     this.finish();
                     break;
                 } else {
-                    showSnackbarShort("请填写完整信息");
+                    showErrorSnackbarShort("请填写完整信息");
                 }
         }
     }
@@ -179,10 +182,9 @@ public class StudyRoomActivity extends ToolbarActivity {
 
     @Override
     public void onBackPressed() {
-        StudyRoomCorrectView view = new StudyRoomCorrectView(StudyRoomActivity.this, "work");
+        StudyRoomCorrectView view = new StudyRoomCorrectView(StudyRoomActivity.this);
         if (getWindow().getDecorView().equals(view)) {
-            view.removeAllViews();
-            super.onBackPressed();
+            mStudyLayout.removeView(view);
         } else {
             super.onBackPressed();
         }

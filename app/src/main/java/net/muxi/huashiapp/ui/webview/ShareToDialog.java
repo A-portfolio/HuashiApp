@@ -56,7 +56,7 @@ public class ShareToDialog extends BottomDialogFragment {
 
         mpic.addAll(Arrays.asList(pics));
         mdesc.addAll(Arrays.asList(desc));
-        mShareAdapter = new ShareAdapter(mpic,mdesc);
+        mShareAdapter = new ShareAdapter(mpic,mdesc,0);
         final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
 
         mRecyclerView.setLayoutManager(layoutManager);

@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
@@ -31,6 +32,9 @@ public class StudyRoomBlankActivity extends ToolbarActivity {
     Toolbar mToolbar;
     @BindView(R.id.tv_today)
     TextView mTvToday;
+    @BindView(R.id.study_blank_layout)
+    RelativeLayout mStudyBlankLayout;
+
 
     public static void start(Context context) {
         Intent starter = new Intent(context, StudyRoomBlankActivity.class);
@@ -61,20 +65,19 @@ public class StudyRoomBlankActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_correct) {
-            StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomBlankActivity.this, "week");
+            StudyRoomCorrectView studyRoomCorrectView = new StudyRoomCorrectView(StudyRoomBlankActivity.this);
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.view_show);
             studyRoomCorrectView.startAnimation(animation);
-            setContentView(studyRoomCorrectView);
+            mStudyBlankLayout.addView(studyRoomCorrectView);
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onBackPressed() {
-        StudyRoomCorrectView view = new StudyRoomCorrectView(StudyRoomBlankActivity.this, "week");
+        StudyRoomCorrectView view = new StudyRoomCorrectView(StudyRoomBlankActivity.this);
         if (getWindow().getDecorView().equals(view)) {
-            view.removeAllViews();
-            super.onBackPressed();
+            mStudyBlankLayout.removeView(view);
         } else {
             super.onBackPressed();
         }

@@ -13,9 +13,9 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.muxistudio.multistatusview.MultiStatusView;
@@ -26,7 +26,6 @@ import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.ToastUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
 import java.util.ArrayList;
@@ -52,6 +51,9 @@ public class ElectricityDetailActivity extends ToolbarActivity {
     TextView mPayHint;
     @BindView(R.id.multi_status_view)
     MultiStatusView mMultiStatusView;
+    @BindView(R.id.ele_detail_layout)
+    LinearLayout mEleDetailLayout;
+
 
     public static void start(Context context, String query) {
         Intent starter = new Intent(context, ElectricityDetailActivity.class);
@@ -68,6 +70,8 @@ public class ElectricityDetailActivity extends ToolbarActivity {
 
     private String mQuery;
     private List<Fragment> detailFragments;
+
+    private ElectricityDetailActivity mActivity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,18 +93,15 @@ public class ElectricityDetailActivity extends ToolbarActivity {
 
         mQuery = getIntent().getStringExtra("query");
 
-        mMultiStatusView.setOnRetryListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadDatas();
-            }
-        });
+
+        mMultiStatusView.setOnRetryListener(v -> loadDatas());
 
         loadDatas();
 
     }
 
-    private void loadDatas(){
+    private void loadDatas() {
+        showLoading();
         EleRequestData eleAirRequest = new EleRequestData();
         eleAirRequest.setDor(mQuery);
         eleAirRequest.setType("air");
@@ -112,32 +113,31 @@ public class ElectricityDetailActivity extends ToolbarActivity {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.newThread())
                     .subscribe(electricityResponse -> {
-                        if (electricityResponse.code() == 404) {
-                            sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
-                            ToastUtil.showShort(getString(R.string.ele_room_not_found));
-                            Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);
-                            startActivity(intent);
-                            ElectricityDetailActivity.this.finish();
-
-                        }
-                        if (electricityResponse.code() == 503) {
-                            showSnackbarShort(getString(R.string.tip_school_server_error));
-                        }
+//                        if (electricityResponse.code() == 404) {
+//                            sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
+//                            ToastUtil.showShort(getString(R.string.ele_room_not_found));
+//                            Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);
+//                            startActivity(intent);
+//                            ElectricityDetailActivity.this.finish();
+//
+//                        }
                         if (electricityResponse.code() == 200) {
 //                        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(0);
                             mMultiStatusView.showContent();
                             ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(electricityResponse.body());
                         }
+                        if (electricityResponse.code() == 503) {
+                            showSnackbarShort(getString(R.string.tip_school_server_error));
+                        }
+                        if (electricityResponse.code() == 500) {
+                            mMultiStatusView.showNetError();
+                            hideLoading();
+                        }
                     }, throwable -> {
                         throwable.printStackTrace();
-                        mMultiStatusView.showError();
-                        mMultiStatusView.setOnRetryListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                showLoading();
-                                loadDatas();
-                            }
-                        });
+                        mMultiStatusView.showNetError();
+                        hideLoading();
+
                     }, () -> {
                         hideLoading();
                     });
@@ -155,16 +155,14 @@ public class ElectricityDetailActivity extends ToolbarActivity {
                             mMultiStatusView.showContent();
                             ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(electricityResponse.body());
                         }
+                        if (electricityResponse.code() == 500) {
+                            mMultiStatusView.showNetError();
+                            hideLoading();
+                        }
                     }, throwable -> {
                         throwable.printStackTrace();
-                        mMultiStatusView.showContent();
-                        mMultiStatusView.setOnRetryListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                showLoading();
-                                loadDatas();
-                            }
-                        });
+                        mMultiStatusView.showNetError();
+                        hideLoading();
                     }, () -> {
                         hideLoading();
                     });
@@ -231,7 +229,9 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         ElectricityPayHintView view = new ElectricityPayHintView(this);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.view_show);
         view.startAnimation(animation);
-        setContentView(view);
+//        mEleDetailLayout.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+        mEleDetailLayout.addView(view);
+
     }
 
 
@@ -239,12 +239,12 @@ public class ElectricityDetailActivity extends ToolbarActivity {
     public void onBackPressed() {
         ElectricityPayHintView view = new ElectricityPayHintView(this);
         if (getWindow().getDecorView().equals(view)) {
-            view.removeAllViews();
-            super.onBackPressed();
+            view.getAnimation().cancel();
+            mEleDetailLayout.removeView(view);
+
         } else {
             super.onBackPressed();
         }
 
-        this.finish();
     }
 }

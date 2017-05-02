@@ -91,9 +91,14 @@ public class CardActivity extends ToolbarActivity {
             public void onClick(View v) {
                 loadDatas();
             }
+
         });
 
         loadDatas();
+
+
+
+
 
 
     }

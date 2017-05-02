@@ -130,9 +130,10 @@
     <string name="no_any_score">没有任何成绩信息</string>
 
     <!--电费查询-->
-    <string name="ele_room_not_found">该宿舍不存在</string>
+    <string name="ele_room_not_found">请填写正确的寝室信息</string>
     <string name="title_pay_hint">微信缴费提示</string>
-    <string name="content_pay_hint">微信能缴费啦，关注"xxxxxx"即可网上缴费。\n包括：照明，空调电费</string>
+    <string name="content_pay_hint">微信能缴费，啦关注【华中师大节能办】微信公众号即可线上充值。\n充值内容包括照明和空调费。
+</string>
 
     <!--空闲教室-->
     <string name="content_correct_studyroom">亲爱的匣客，为了更好的使用空闲教室功能，欢迎积极反馈报错哟！</string>

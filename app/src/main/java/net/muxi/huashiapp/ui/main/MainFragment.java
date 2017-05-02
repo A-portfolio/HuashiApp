@@ -19,6 +19,7 @@ import net.muxi.huashiapp.common.data.ItemData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.CalendarActivity;
+import net.muxi.huashiapp.ui.MoreActivity;
 import net.muxi.huashiapp.ui.apartment.ApartmentActivity;
 import net.muxi.huashiapp.ui.card.CardActivity;
 import net.muxi.huashiapp.ui.credit.SelectCreditActivity;
@@ -81,6 +82,12 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setData();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,7 +105,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
         getBannerDatas();
 
-        setData();
+//        setData();
         initView();
 
         initHintView();
@@ -228,6 +235,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             App.logoutLibUser();
                             break;
                         case "更多":
+                            MoreActivity.start(getContext());
                             break;
                     }
                 }

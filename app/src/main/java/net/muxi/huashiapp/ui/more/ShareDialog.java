@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.ui.more;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -56,21 +57,20 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
-    private static final String WEB_URL = "url";
-    private static final String WEB_TITLE = "title";
-    private static final String WEB_INTRO = "intro";
-    private static final String WEB_ICON_URL = "icon_url";
+
+    private static final String APP_TITLE = "华师匣子";
+    private static final String APP_INTRO = "具有成绩查询、图书查询、图书追踪等功能，轻松解决你的在校难题";
+    private static final String APP_URL = "https://ccnubox.muxixyz.com";
+
+    private static final String CAL_TITLE = "2016—2017学年度校历";
+    private static final String CAL_INTRO = "2016—2017学年度校历";
+    private static final String CAL_URL = "https://occc3ev3l.qnssl.com/xiaoli.png";
 
 
     public static Tencent mTencent;
     private IWeiboShareAPI mWeiboShareAPI;
     private BaseUiListener mBaseUiListener;
 
-    //对应网站应用的各项属性
-    private String url;
-    private String title;
-    private String iconUrl;
-    private String intro;
 
     private static final String APP_ID = "wxf054659decf8f748";
     private IWXAPI api;
@@ -86,6 +86,19 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
 
     private ShareAdapter mShareAdapter;
 
+    private int category;
+    public static final int TYPE_SHARE_APP = 0;
+    public static final int TYPE_SHARE_CALENDAR = 1;
+
+    public static ShareDialog newInstance(int category) {
+
+        Bundle args = new Bundle();
+        args.putInt("category", category);
+        ShareDialog fragment = new ShareDialog();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -95,11 +108,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
         Dialog dialog = createBottomDialog(view);
 
 
-        title = getActivity().getIntent().hasExtra(WEB_TITLE) ? getActivity().getIntent().getStringExtra(WEB_TITLE) : getActivity().getIntent().getStringExtra(WEB_URL);
-        url = getActivity().getIntent().hasExtra(WEB_URL) ? getActivity().getIntent().getStringExtra(WEB_URL) : "";
-        iconUrl = getActivity().getIntent().hasExtra(WEB_ICON_URL) ? getActivity().getIntent().getStringExtra(WEB_ICON_URL) : "http://ww3.sinaimg.cn/large/65e4f1e6gw1f9h8gdxc16j204004074e.jpg";
-        intro = getActivity().getIntent().hasExtra(WEB_INTRO) ? getActivity().getIntent().getStringExtra(WEB_INTRO) : "";
-
+        category = getArguments().getInt("category");
 
         api = WXAPIFactory.createWXAPI(getContext(), APP_ID, false);
         api.registerApp(APP_ID);
@@ -116,32 +125,84 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
 
         mpic.addAll(Arrays.asList(pics));
         mdesc.addAll(Arrays.asList(desc));
-        mShareAdapter = new ShareAdapter(mpic, mdesc);
+        mShareAdapter = new ShareAdapter(mpic, mdesc,1);
         final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
 
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mShareAdapter);
 
-        mRecyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRecyclerView) {
-            @Override
-            public void onItemClick(RecyclerView.ViewHolder vh) {
-                switch (vh.getLayoutPosition()) {
-                    case 0:
-                        break;
-                    case 1:
-                        break;
+        if (category == TYPE_SHARE_APP) {
+            mRecyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRecyclerView) {
+                @Override
+                public void onItemClick(RecyclerView.ViewHolder vh) {
+                    switch (vh.getLayoutPosition()) {
+                        case 0:
+                            shareToQzone(APP_TITLE, APP_INTRO, APP_URL, "");
+                            dialog.dismiss();
+                            break;
+                        case 1:
+                            AppShareToWXSceneSession();
+                            dialog.dismiss();
+                            break;
+                        case 2:
+                            sendAppMultiMessage(true, false, false, false, false, false);
+                            dialog.dismiss();
+                            break;
+                        case 3:
+                            shareToQzone(APP_TITLE, APP_INTRO, APP_URL, "");
+                            dialog.dismiss();
+                            break;
+                        case 4:
+                            AppShareToWXSceneTimeline();
+                            dialog.dismiss();
+                            break;
+                        case 5:
+                            AppUtil.clipToClipBoard(getContext(), APP_URL);
+                            ((BaseActivity) getActivity()).showSnackbarShort(getResources().getString(R.string.tip_copy_success));
+                            dialog.dismiss();
+                            break;
 
-                    case 5:
-                        AppUtil.clipToClipBoard(getContext(), "http://ccnubox.muxixyz.com");
-                        ((BaseActivity) getActivity()).showSnackbarShort(getResources().getString(R.string.tip_copy_success));
-                        dialog.dismiss();
-                        break;
 
-
+                    }
                 }
-            }
-        });
+            });
+        } else if (category == TYPE_SHARE_CALENDAR) {
+            mRecyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRecyclerView) {
+                @Override
+                public void onItemClick(RecyclerView.ViewHolder vh) {
+                    switch (vh.getLayoutPosition()) {
+                        case 0:
+                            shareToQzone(CAL_TITLE, CAL_INTRO, CAL_URL, "");
+                            dialog.dismiss();
+                            break;
+                        case 1:
+                            SCShareToWXSceneSession();
+                            dialog.dismiss();
+                            break;
+                        case 2:
+                            sendCalMultiMessage(true,false,false,false,false,false);
+                            dialog.dismiss();
+                            break;
+                        case 3:
+                            shareToQzone(APP_TITLE, APP_INTRO, APP_URL, "");
+                            dialog.dismiss();
+                            break;
+                        case 4:
+                            SCShareToWXSceneTimeline();
+                            dialog.dismiss();
+                            break;
+                        case 5:
+                            AppUtil.clipToClipBoard(getContext(), CAL_URL);
+                            ((BaseActivity) getActivity()).showSnackbarShort(getResources().getString(R.string.tip_copy_success));
+                            dialog.dismiss();
+                            break;
+
+
+                    }
+                }
+            });
+        }
 
 
         return dialog;
@@ -172,14 +233,34 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
 //        });
     }
 
-    public void shareTOWeixin() {
+
+    //分享华师匣子
+    public void AppShareToWXSceneSession() {
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = url;
+        webpage.webpageUrl = APP_URL;
         WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title = title;
-        msg.description = intro;
-        Logger.d(getActivity().getExternalCacheDir() + "/" + title + ".jpg");
-        Bitmap bmp = BitmapFactory.decodeFile(getActivity().getExternalCacheDir() + "/" + title + ".jpg");
+        msg.title = APP_TITLE;
+        msg.description = APP_INTRO;
+        Logger.d(getActivity().getExternalCacheDir() + "/ic_launcher.png");
+        Bitmap bmp = BitmapFactory.decodeFile(getActivity().getExternalCacheDir() + "/ic_launcher.png");
+//        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
+//        bmp.recycle();
+        msg.setThumbImage(bmp);
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = type + System.currentTimeMillis();
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneSession;
+        api.sendReq(req);
+    }
+
+    public void AppShareToWXSceneTimeline() {
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = APP_URL;
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = APP_TITLE;
+        msg.description = APP_INTRO;
+        Logger.d(getActivity().getExternalCacheDir() + "/ic_launcher.png");
+        Bitmap bmp = BitmapFactory.decodeFile(getActivity().getExternalCacheDir() + "/ic_launcher.png");
 //        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
 //        bmp.recycle();
         msg.setThumbImage(bmp);
@@ -190,14 +271,14 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
         api.sendReq(req);
     }
 
-    public void shareTOMements(){
-        WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = url;
-        WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title = title;
-        msg.description = intro;
-        Logger.d(getActivity().getExternalCacheDir() + "/" + title + ".jpg");
-        Bitmap bmp = BitmapFactory.decodeFile(getActivity().getExternalCacheDir() + "/" + title + ".jpg");
+    //分享school calender
+    public void SCShareToWXSceneSession() {
+        WXWebpageObject webpageObject = new WXWebpageObject();
+        webpageObject.webpageUrl = CAL_URL;
+        WXMediaMessage msg = new WXMediaMessage(webpageObject);
+        msg.title = CAL_TITLE;
+        msg.description = APP_INTRO;
+        Bitmap bmp = BitmapFactory.decodeFile(getActivity().getExternalCacheDir() + "/ic_launcher.png");
 //        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
 //        bmp.recycle();
         msg.setThumbImage(bmp);
@@ -206,20 +287,58 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
         req.message = msg;
         req.scene = SendMessageToWX.Req.WXSceneSession;
         api.sendReq(req);
+    }
+
+    public void SCShareToWXSceneTimeline(){
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = CAL_URL;
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = CAL_TITLE;
+        msg.description = CAL_INTRO;
+        Logger.d(getActivity().getExternalCacheDir() + "/ic_launcher.png");
+        Bitmap bmp = BitmapFactory.decodeFile(getActivity().getExternalCacheDir() + "/ic_launcher.png");
+//        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
+//        bmp.recycle();
+        msg.setThumbImage(bmp);
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = type + System.currentTimeMillis();
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneTimeline;
+        api.sendReq(req);
 
     }
 
-    public TextObject getTextObj() {
+
+    public TextObject getAppTextObj() {
         TextObject textObject = new TextObject();
-        textObject.text = title + " " + intro + " " + url;
+        textObject.text = APP_TITLE + " " + APP_INTRO + " " + APP_URL;
         return textObject;
     }
 
-    private void sendMultiMessage(boolean hasText, boolean hasImage, boolean hasWebpage,
-                                  boolean hasMusic, boolean hasVideo, boolean hasVoice) {
+    private void sendAppMultiMessage(boolean hasText, boolean hasImage, boolean hasWebpage,
+                                     boolean hasMusic, boolean hasVideo, boolean hasVoice) {
         WeiboMultiMessage weiboMessage = new WeiboMultiMessage();//初始化微博的分享消息
         if (hasText) {
-            weiboMessage.textObject = getTextObj();
+            weiboMessage.textObject = getAppTextObj();
+        }
+        SendMultiMessageToWeiboRequest request = new SendMultiMessageToWeiboRequest();
+        request.transaction = String.valueOf(System.currentTimeMillis());
+        request.multiMessage = weiboMessage;
+        mWeiboShareAPI.sendRequest(getActivity(), request); //发送请求消息到微博，唤起微博分享界面
+    }
+
+
+    public TextObject getCalTextObj() {
+        TextObject textObject = new TextObject();
+        textObject.text = CAL_TITLE + " " + CAL_INTRO + " " + CAL_URL;
+        return textObject;
+    }
+
+    private void sendCalMultiMessage(boolean hasText, boolean hasImage, boolean hasWebpage,
+                                     boolean hasMusic, boolean hasVideo, boolean hasVoice) {
+        WeiboMultiMessage weiboMessage = new WeiboMultiMessage();//初始化微博的分享消息
+        if (hasText) {
+            weiboMessage.textObject = getCalTextObj();
         }
         SendMultiMessageToWeiboRequest request = new SendMultiMessageToWeiboRequest();
         request.transaction = String.valueOf(System.currentTimeMillis());
@@ -243,6 +362,10 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
     }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Tencent.onActivityResultData(requestCode, requestCode, data, mBaseUiListener);
+    }
 }
 
 

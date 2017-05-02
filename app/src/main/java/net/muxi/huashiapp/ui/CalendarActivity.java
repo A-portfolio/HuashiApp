@@ -161,7 +161,7 @@ public class CalendarActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_option){
-            ShareDialog shareDialog = new ShareDialog();
+            ShareDialog shareDialog = ShareDialog.newInstance(1);
             shareDialog.show(getSupportFragmentManager(),"share_dialog");
         }
         return super.onOptionsItemSelected(item);

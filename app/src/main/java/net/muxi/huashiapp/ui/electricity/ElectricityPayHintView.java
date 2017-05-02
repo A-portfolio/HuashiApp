@@ -16,7 +16,6 @@ import android.widget.TextView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.util.DimensUtil;
-import net.muxi.huashiapp.util.PreferenceUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,11 +46,15 @@ public class ElectricityPayHintView extends RelativeLayout {
 
     private VelocityTracker mVelocityTracker;
 
+    private ElectricityPayHintView mView;
+
     public ElectricityPayHintView(Context context) {
         super(context);
         mContext = context;
 
         mScroller = new Scroller(context);
+
+
         initView();
     }
 
@@ -72,9 +75,10 @@ public class ElectricityPayHintView extends RelativeLayout {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.view_close_btn:
-                ((ElectricityDetailActivity) mContext).onBackPressed();
-                String eleQuery = PreferenceUtil.getString(PreferenceUtil.ELE_QUERY_STRING);
-                ElectricityDetailActivity.start(getContext(),eleQuery);
+                removeAllViews();
+//                ((ElectricityDetailActivity) mContext).onBackPressed();
+//                String eleQuery = PreferenceUtil.getString(PreferenceUtil.ELE_QUERY_STRING);
+//                ElectricityDetailActivity.start(getContext(),eleQuery);
                 break;
             case R.id.tv_copy:
                 ClipboardManager manager = (ClipboardManager) getContext()
@@ -117,17 +121,13 @@ public class ElectricityPayHintView extends RelativeLayout {
             case MotionEvent.ACTION_UP:
                 if (this.getScrollY() < 0 && mVelocityTracker.getYVelocity() > 500) {
                     this.smoothScrollTo(-DimensUtil.getScreenHeight());
-                    ((ElectricityDetailActivity) mContext).onBackPressed();
-                    String eleQuery = PreferenceUtil.getString(PreferenceUtil.ELE_QUERY_STRING);
-                    ElectricityDetailActivity.start(getContext(),eleQuery);
+                    removeAllViews();
                 } else if ((this.getScrollY() < 0) && (this.getScrollY() > -DISTANCE_TO_SLIDE)) {
                     this.smoothScrollTo(0);
                     break;
                 } else if (this.getScrollY() < -DISTANCE_TO_SLIDE) {
                     this.smoothScrollTo(-DimensUtil.getScreenHeight());
-                    ((ElectricityDetailActivity) mContext).onBackPressed();
-                    String eleQuery = PreferenceUtil.getString(PreferenceUtil.ELE_QUERY_STRING);
-                    ElectricityDetailActivity.start(getContext(),eleQuery);
+                   removeAllViews();
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:

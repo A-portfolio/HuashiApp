@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <!--获取设备唯一标识-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <!--获取访问用户账户名的权限用以精准匹配标签(可选)-->
@@ -54,22 +54,26 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.GuideActivity"
-                  android:launchMode="singleTask"
-                  android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".ui.GuideActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name="net.muxi.huashiapp.ui.main.MainActivity"
                   android:launchMode="singleTask"
                   android:windowSoftInputMode="adjustResize">
 
+
         </activity>
 
-        <activity android:name="net.muxi.huashiapp.ui.login.LoginActivity"
-                  android:launchMode="singleTask"
-                  android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name="net.muxi.huashiapp.ui.login.LoginActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.SettingActivity"
-                  android:launchMode="singleTask"/>
+        <activity
+            android:name="net.muxi.huashiapp.ui.SettingActivity"
+            android:launchMode="singleTask"/>
 
         <activity android:name=".ui.credit.SelectCreditActivity"/>
 
@@ -77,46 +81,56 @@
 
         <activity android:name=".ui.credit.CreditGradeActivity"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.schedule.CourseEditActivity"
-                  android:launchMode="singleTask"/>
+        <activity
+            android:name="net.muxi.huashiapp.ui.schedule.CourseEditActivity"
+            android:launchMode="singleTask"/>
 
         <activity android:name=".ui.schedule.CurweekSetActivity"/>
 
         <activity android:name=".ui.score.ScoreSelectActivity"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.score.ScoreActivity"
-                  android:launchMode="singleTask"/>
+        <activity
+            android:name="net.muxi.huashiapp.ui.score.ScoreActivity"
+            android:launchMode="singleTask"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.news.NewsActivity"
-                  android:launchMode="singleTask"/>
+        <activity
+            android:name="net.muxi.huashiapp.ui.news.NewsActivity"
+            android:launchMode="singleTask"/>
 
 
-        <activity android:name="net.muxi.huashiapp.ui.library.LibrarySearchActivity"
-                  android:launchMode="singleTask"/>
+        <activity
+            android:name="net.muxi.huashiapp.ui.library.LibrarySearchActivity"
+            android:launchMode="singleTask"/>
 
         <activity android:name=".ui.library.LibrarySearchResultActivity"/>
 
         <activity android:name=".ui.library.BookDetailActivity"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.card.CardActivity"
-                  android:launchMode="singleTask"/>
+        <activity
+            android:name="net.muxi.huashiapp.ui.card.CardActivity"
+            android:launchMode="singleTask"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.webview.WebViewActivity"
-                  android:launchMode="singleTask">
+        <activity
+            android:name="net.muxi.huashiapp.ui.webview.WebViewActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
             </intent-filter>
         </activity>
 
-        <activity android:name="net.muxi.huashiapp.ui.website.WebsiteActivity"
-                  android:launchMode="singleTask"/>
+        <activity
+            android:name="net.muxi.huashiapp.ui.website.WebsiteActivity"
+            android:launchMode="singleTask"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.apartment.ApartmentActivity"
-                  android:launchMode="singleTask"/>
+        <activity
+            android:name="net.muxi.huashiapp.ui.apartment.ApartmentActivity"
+            android:launchMode="singleTask"/>
 
         <activity android:name="net.muxi.huashiapp.ui.CalendarActivity"/>
 
         <activity android:name="net.muxi.huashiapp.ui.AboutActivity"/>
+
+        <activity android:name=".ui.MoreActivity"/>
 
         <activity android:name="net.muxi.huashiapp.ui.electricity.ElectricityActivity"/>
 
@@ -128,21 +142,24 @@
 
         <activity android:name=".ui.SuggestionActivity"/>
 
-        <activity android:name=".ui.studyroom.StudyRoomActivity"
-                  android:launchMode="singleTask"/>
+        <activity
+            android:name=".ui.studyroom.StudyRoomActivity"
+            android:launchMode="singleTask"/>
 
         <activity android:name=".ui.studyroom.StudyRoomDetailActivity"/>
 
         <activity android:name=".ui.studyroom.StudyAreaOptionActivity"/>
 
-        <activity android:name=".ui.studyroom.StudyRoomBlankActivity"
-                  android:launchMode="singleTask"/>
+        <activity
+            android:name=".ui.studyroom.StudyRoomBlankActivity"
+            android:launchMode="singleTask"/>
 
 
-        <activity android:name="net.muxi.huashiapp.ui.wxapi.WXEntryActivity"
+        <activity
+            android:name="net.muxi.huashiapp.ui.wxapi.WXEntryActivity"
 
-                  android:exported="true"
-                  android:launchMode="singleInstance"/>
+            android:exported="true"
+            android:launchMode="singleInstance"/>
 
         <receiver android:name="net.muxi.huashiapp.service.AlarmLiveReceiver">
             <intent-filter>
@@ -161,9 +178,11 @@
         <!--第三方开放平台-->
 
         <meta-data
-            android:name="ZHUGE_APPKEY" android:value="9197e7dd1e5c40cab4556a8b7c3145d3"/>
+            android:name="ZHUGE_APPKEY"
+            android:value="9197e7dd1e5c40cab4556a8b7c3145d3"/>
         <meta-data
-            android:name="ZHUGE_CHANNEL" android:value="校园通"/>
+            android:name="ZHUGE_CHANNEL"
+            android:value="校园通"/>
 
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -171,20 +190,24 @@
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
+
                 <data android:scheme="tencent1105548375"/>
             </intent-filter>
         </activity>
 
-        <activity android:name="com.tencent.connect.common.AssistActivity"
-                  android:configChanges="orientation|keyboardHidden|screenSize"
-                  android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
             android:configChanges="keyboardHidden|orientation"
-            android:exported="false" android:windowSoftInputMode="adjustResize">
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize">
         </activity>
 
         <!-- 【必须】 (2.30及以上版新增)展示通知的activity -->
@@ -214,8 +237,9 @@
                 <action android:name="android.intent.action.TIME_SET"/>
                 <action android:name="android.intent.action.WidgetProvider"/>
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
-                       android:resource="@xml/schedule_widget_provider"/>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/schedule_widget_provider"/>
         </receiver>
 
         <!-- 【必须】 信鸽receiver广播接收 -->
@@ -238,9 +262,10 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="net.muxi.huashiapp.service.WidgetService"
-                 android:exported="false"
-                 android:permission="android.permission.BIND_REMOTEVIEWS">
+        <service
+            android:name="net.muxi.huashiapp.service.WidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS">
         </service>
 
         <!-- 【必须】 信鸽service -->

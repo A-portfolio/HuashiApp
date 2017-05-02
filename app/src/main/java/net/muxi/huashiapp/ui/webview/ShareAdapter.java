@@ -24,6 +24,10 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.MyShareViewH
 
     private List<Integer> mpics;
     private List<String> mdesc;
+    private int type ;
+
+    private static final int TYPE_SHARE_TO = 0;
+    private static final int TYPE_SHARE = 1;
 
     private OnItemClickListener mOnItemClickListener;
 
@@ -31,9 +35,10 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.MyShareViewH
         void OnItemClick(View view, int position);
     }
 
-    public ShareAdapter(List<Integer> mpics, List<String> mdesc) {
+    public ShareAdapter(List<Integer> mpics, List<String> mdesc,int type) {
         this.mpics = mpics;
         this.mdesc = mdesc;
+        this.type = type;
     }
 
 
@@ -47,10 +52,14 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.MyShareViewH
     public void onBindViewHolder(MyShareViewHolder holder, int position) {
         holder.mShareImage.setImageResource(mpics.get(position));
         holder.mShareWay.setText(mdesc.get(position));
-        if (position < 6){
-            if (position > 2){
-                holder.mDivider.setVisibility(View.VISIBLE);
+        if (type == TYPE_SHARE_TO) {
+            if (position < 6) {
+                if (position > 2) {
+                    holder.mDivider.setVisibility(View.VISIBLE);
+                }
             }
+        } else if (type  == TYPE_SHARE){
+            holder.mDivider.setVisibility(View.GONE);
         }
             holder.mItemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override

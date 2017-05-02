@@ -95,7 +95,7 @@ public class MoreFragment extends BaseFragment {
                         startActivity(intent);
                         break;
                     case 1:
-                        ShareDialog shareDialog = new ShareDialog();
+                        ShareDialog shareDialog = ShareDialog.newInstance(0);
                         shareDialog.show(getFragmentManager(), "dialog_share");
                         break;
                     case 2:

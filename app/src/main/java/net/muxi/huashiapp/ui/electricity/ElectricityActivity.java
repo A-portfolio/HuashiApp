@@ -13,12 +13,17 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.common.data.EleRequestData;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by december on 16/6/27.
@@ -125,7 +130,7 @@ public class ElectricityActivity extends ToolbarActivity {
     }
 
 
-    @OnClick({R.id.area_1, R.id.area_2, R.id.area_3, R.id.area_4, R.id.area_5, R.id.area_6, R.id.tv_area, R.id.hint_choose_area,R.id.et_room, R.id.btn_search})
+    @OnClick({R.id.area_1, R.id.area_2, R.id.area_3, R.id.area_4, R.id.area_5, R.id.area_6, R.id.tv_area, R.id.hint_choose_area, R.id.et_room, R.id.btn_search})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.area_1:
@@ -169,17 +174,42 @@ public class ElectricityActivity extends ToolbarActivity {
                     }
                     PreferenceUtil sp = new PreferenceUtil();
                     sp.saveString(PreferenceUtil.ELE_QUERY_STRING, mQuery);
-                    ElectricityDetailActivity.start(this, mQuery);
-                    this.finish();
-                    break;
-                } else {
-                    showErrorSnackbarShort("请完善信息");
-                }
 
+
+                    EleRequestData eleAirRequest = new EleRequestData();
+                    eleAirRequest.setDor(mQuery);
+                    eleAirRequest.setType("air");
+                    EleRequestData eleLightRequest = new EleRequestData();
+                    eleLightRequest.setDor(mQuery);
+                    eleLightRequest.setType("light");
+                    if (!NetStatus.isConnected()) {
+                        showErrorSnackbarShort(getString(R.string.tip_check_net));
+                        return;
+                    }
+                    showLoading();
+                    CampusFactory.getRetrofitService().getElectricity(eleLightRequest)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.newThread())
+                            .subscribe(electricityResponse -> {
+                                        if (electricityResponse.code() == 404) {
+                                            sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
+                                            showErrorSnackbarShort(getString(R.string.ele_room_not_found));
+                                        } else {
+                                            ElectricityDetailActivity.start(this, mQuery);
+                                            this.finish();
+
+                                        }
+                                    }, throwable -> {
+                                        throwable.printStackTrace();
+                                    }, () -> {
+                                        hideLoading();
+
+                                    }
+                            );
+                }
         }
 
     }
-
 
     private void setBackground(int position) {
         for (int i = 0; i < 6; i++) {

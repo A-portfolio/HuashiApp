@@ -50,6 +50,8 @@ public class ElectricityDetailFragment extends BaseFragment {
         return fragment;
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,7 @@ public class ElectricityDetailFragment extends BaseFragment {
         mCardMoneyLeft = (CardView) view.findViewById(R.id.card_money_left);
         mCardDegreeLeft = (CardView) view.findViewById(R.id.card_degree_left);
         mCardTotalUse = (CardView) view.findViewById(R.id.card_total_use);
+
 
 
         return view;
@@ -109,6 +112,8 @@ public class ElectricityDetailFragment extends BaseFragment {
         mTvMoneyLastMonth.setText(eleData.getEle().getBefore().substring(0, index3 + 2));
         mTvMoneyCurMonth.setText(eleData.getEle().getCurrent().substring(0, index4 + 2));
     }
+
+
 
     @Override
     public void onDestroy() {

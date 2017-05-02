@@ -54,12 +54,9 @@ public class NewsDetailView extends RelativeLayout {
         mPosition = position;
 
         mScroller = new Scroller(context);
-        initView();
-    }
 
-    private void initView() {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.view_news_detail, this, true);
-        ButterKnife.bind(this);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_news_detail, this, true);
+        ButterKnife.bind(this,view);
 //        mNewsTitle.setText(mNewsList.get(mPosition).getTitle());
 //
 //        mNewsDate.setText(mNewsList.get(mPosition).getDate());
@@ -70,8 +67,7 @@ public class NewsDetailView extends RelativeLayout {
         mNewsFloatBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((NewsActivity) mContext).onBackPressed();
-                NewsActivity.start(getContext());
+                removeAllViews();
             }
         });
 
@@ -127,15 +123,13 @@ public class NewsDetailView extends RelativeLayout {
             case MotionEvent.ACTION_UP:
                 if (this.getScrollY() < 0 && mVelocityTracker.getYVelocity() > 500) {
                     this.smoothScrollTo(-DimensUtil.getScreenHeight());
-                    ((NewsActivity) mContext).onBackPressed();
-                    NewsActivity.start(getContext());
+                    removeAllViews();
                 } else if ((this.getScrollY() < 0) && (this.getScrollY() > -DISTANCE_TO_SLIDE)) {
                     this.smoothScrollTo(0);
                     break;
                 } else if (this.getScrollY() < -DISTANCE_TO_SLIDE) {
                     this.smoothScrollTo(-DimensUtil.getScreenHeight());
-                    ((NewsActivity) mContext).onBackPressed();
-                    NewsActivity.start(getContext());
+                    removeAllViews();
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
