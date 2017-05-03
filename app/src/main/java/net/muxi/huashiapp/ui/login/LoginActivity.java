@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -17,9 +18,11 @@ import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.event.LibLoginEvent;
+import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.net.ccnu.CcnuCrawler;
 import net.muxi.huashiapp.util.Base64Util;
+import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.ZhugeUtils;
@@ -69,6 +72,13 @@ public class LoginActivity extends ToolbarActivity {
         context.startActivity(starter);
     }
 
+    public static void start(Context context, String loginType,String target) {
+        Intent starter = new Intent(context, LoginActivity.class);
+        starter.putExtra("type", loginType);
+        starter.putExtra("target",target);
+        context.startActivity(starter);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,10 +108,14 @@ public class LoginActivity extends ToolbarActivity {
             showErrorSnackbarShort(R.string.tip_check_net);
             return;
         }
-        showLoading();
         final User user = new User();
         user.sid = mEtSid.getText().toString();
         user.password = mEtPwd.getText().toString();
+        if (TextUtils.isEmpty(user.sid) || TextUtils.isEmpty(user.password)){
+            showErrorSnackbarShort(R.string.tip_err_account);
+            return;
+        }
+        showLoading();
         if (type.equals("info")) {
             Observable.create(new Observable.OnSubscribe<Boolean>() {
                 @Override
@@ -117,6 +131,7 @@ public class LoginActivity extends ToolbarActivity {
                     try {
                         infoResult = CampusFactory.getRetrofitService().mainLogin(
                                 Base64Util.createBaseStr(user)).execute().code() == 200;
+                        Logger.d(infoResult + "");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -130,6 +145,8 @@ public class LoginActivity extends ToolbarActivity {
                         if (b) {
                             finish();
                             App.saveUser(user);
+                            String target = getIntent().hasExtra("target") ? getIntent().getStringExtra("target") : null;
+                            RxBus.getDefault().send(new LoginSuccessEvent(target));
                         } else {
                             showErrorSnackbarShort(R.string.tip_err_account);
                         }
@@ -137,7 +154,7 @@ public class LoginActivity extends ToolbarActivity {
                         throwable.printStackTrace();
                         hideLoading();
                         showErrorSnackbarShort(R.string.tip_check_net);
-                    });
+                    },() -> hideLoading());
             ZhugeUtils.sendEvent("登录");
         } else {
             CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))

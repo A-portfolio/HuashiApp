@@ -51,10 +51,10 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
         holder.mTvProperty.setText(mScoresList.get(position).type);
         holder.mTvCate1.setText(ScoreUtil.toCate1(mScoresList.get(position).kcxzmc));
         holder.mTvCate2.setText(ScoreUtil.toCate2(mScoresList.get(position).kcxzmc));
-        holder.mTvScore.setText("总成绩：" + mScoresList.get(position).grade);
-        holder.mTvCredit.setText("学分：" + mScoresList.get(position).credit);
-        holder.mTvUsual.setText("平时："+ (mScoresList.get(position).usual.equals("") ? "无" : mScoresList.get(position).usual));
-        holder.mTvEnding.setText("期末："+ (mScoresList.get(position).ending.equals("") ? "无" : mScoresList.get(position).ending));
+        holder.mTvScore.setText("总成绩:" + mScoresList.get(position).grade);
+        holder.mTvCredit.setText("学分:" + mScoresList.get(position).credit);
+        holder.mTvUsual.setText("平时:"+ (mScoresList.get(position).usual.equals("") ? "无" : mScoresList.get(position).usual));
+        holder.mTvEnding.setText("期末:"+ (mScoresList.get(position).ending.equals("") ? "无" : mScoresList.get(position).ending));
 
         if (Float.parseFloat(mScoresList.get(position).grade) < 60){
             holder.mTvProperty.setBackgroundResource(R.drawable.shape_red);

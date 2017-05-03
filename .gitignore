@@ -10,10 +10,14 @@
 /.idea
 /libraries
 
+# key
+app/HuashiApp.jks
+keystore.properties
+
 # freeline 
 freeline.py
-freeline/
+freeline/*
 freeline_project_description.json
-
 # apk
 *.apk
+

@@ -21,12 +21,12 @@
         android:background="@color/divider"/>
 
     <TextView
+        android:id="@+id/tv_credit_grade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textColor="?android:attr/textColorPrimary"
         android:text=" "
-        android:id="@+id/tv_credit_grade"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="48sp"
         android:textStyle="italic"/>
 
@@ -38,12 +38,16 @@
         android:textStyle="bold"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:text="知道了"
-        android:layout_marginTop="32dp"
         android:id="@+id/btn_ok"
-        android:layout_marginBottom="32dp"
-              android:layout_height="wrap_content"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="知道了"
+        android:textColor="@color/colorAccent"/>
 
 </LinearLayout>

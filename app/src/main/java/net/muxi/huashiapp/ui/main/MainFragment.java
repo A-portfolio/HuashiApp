@@ -13,10 +13,12 @@ import android.view.ViewGroup;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.ItemData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
+import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.CalendarActivity;
 import net.muxi.huashiapp.ui.MoreActivity;
@@ -31,7 +33,6 @@ import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomBlankActivity;
 import net.muxi.huashiapp.ui.website.WebsiteActivity;
-import net.muxi.huashiapp.ui.webview.WebViewActivity;
 import net.muxi.huashiapp.util.ACache;
 import net.muxi.huashiapp.util.DateUtil;
 import net.muxi.huashiapp.util.DimensUtil;
@@ -77,6 +78,10 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
     public static final int DIRECTION_DOWN = 0;
     public static final int DIRECTION_UP = 1;
+    public static final String SCORE_ACTIVITY = "score";
+    public static final String CARD_ACTIVITY = "card";
+    public static final String CREDIT_ACTIVITY = "credit";
+
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
@@ -87,40 +92,48 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setData();
+        RxBus.getDefault().toObservable(LoginSuccessEvent.class)
+                .subscribe(loginSuccessEvent -> {
+                    switch (loginSuccessEvent.targetActivityName){
+                        case SCORE_ACTIVITY:
+                            ScoreSelectActivity.start(getContext());
+                            break;
+                        case CARD_ACTIVITY:
+                            CardActivity.start(getContext());
+                            break;
+                        case CREDIT_ACTIVITY:
+                            SelectCreditActivity.start(getContext());
+                            break;
+                    }
+                },Throwable::printStackTrace);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
-
         mToolbar.setTitle("华师匣子");
-
 
         sp = new PreferenceUtil();
         dao = new HuaShiDao();
         mBannerDatas = dao.loadBannerData();
 
-
         getBannerDatas();
 
-//        setData();
         initView();
-
         initHintView();
-
-
         return view;
     }
 
     private void setData() {
-        ArrayList<ItemData> items = (ArrayList<ItemData>) ACache.get(getContext()).getAsObject("items");
+        ArrayList<ItemData> items = (ArrayList<ItemData>) ACache.get(getContext()).getAsObject(
+                "items");
 
-        if (items != null)
+        if (items != null) {
             mItemDatas.addAll(items);
-        else {
+        } else {
             mItemDatas.add(new ItemData("成绩", R.drawable.ic_score + ""));
             mItemDatas.add(new ItemData("校园通知", R.drawable.ic_news + ""));
             mItemDatas.add(new ItemData("电费", R.drawable.ic_ele + ""));
@@ -137,16 +150,19 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     }
 
     private void initHintView() {
-        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN,true)) {
+        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN, true)) {
             IndicatedView indicatedView = new IndicatedView(getContext());
             indicatedView.setTipViewText("快看看底部都有什么功能吧!");
             TipViewUtil.addToContent(getContext(), indicatedView, DIRECTION_UP,
-                    DimensUtil.getScreenWidth() / 4, DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight() - DimensUtil.dp2px(98));
+                    DimensUtil.getScreenWidth() / 4,
+                    DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight()
+                            - DimensUtil.dp2px(98));
             IndicatedView indicatedView1 = new IndicatedView(getContext());
             indicatedView1.setTipViewText("长按可以任意挪动位置噢");
             TipViewUtil.addToContent(getContext(), indicatedView1, DIRECTION_UP,
-                    DimensUtil.getScreenWidth() / 4, (DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight()) / 3);
-            sp.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN,false);
+                    DimensUtil.getScreenWidth() / 4,
+                    (DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight()) / 3);
+            sp.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN, false);
             return;
         }
     }
@@ -158,20 +174,23 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return (mMainAdapter.isBannerPosition(position) || mMainAdapter.isFooterPosition(position) ? layoutManager.getSpanCount() : 1);
+                return (mMainAdapter.isBannerPosition(position) || mMainAdapter.isFooterPosition(
+                        position) ? layoutManager.getSpanCount() : 1);
             }
         });
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mMainAdapter);
 
-        itemTouchHelper = new ItemTouchHelper(new MyItemTouchCallback(mMainAdapter).setOnDragListener(this));
+        itemTouchHelper = new ItemTouchHelper(
+                new MyItemTouchCallback(mMainAdapter).setOnDragListener(this));
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         mRecyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRecyclerView) {
             @Override
             public void onLongClick(RecyclerView.ViewHolder vh) {
-                if (vh.getLayoutPosition() != mItemDatas.size() && vh.getLayoutPosition() != 0 && vh.getLayoutPosition() != mItemDatas.size() + 1) {
+                if (vh.getLayoutPosition() != mItemDatas.size() && vh.getLayoutPosition() != 0
+                        && vh.getLayoutPosition() != mItemDatas.size() + 1) {
                     itemTouchHelper.startDrag(vh);
                     VibratorUtil.Vibrate(getActivity(), 50);
                 }
@@ -182,13 +201,21 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                 if (vh.getLayoutPosition() == 0) {
 
                 }
-                if (vh.getLayoutPosition() != 0 && vh.getLayoutPosition() != mItemDatas.size() + 1) {
+                if (vh.getLayoutPosition() != 0
+                        && vh.getLayoutPosition() != mItemDatas.size() + 1) {
                     ItemData itemData = mItemDatas.get(vh.getLayoutPosition() - 1);
                     switch (itemData.getName()) {
                         case "成绩":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
-                                LoginActivity.start(getContext(), "info");
-                            }else {
+                                LoginActivity.start(getContext(), "info",SCORE_ACTIVITY);
+//                                RxBus.getDefault().toObservable(LoginSuccessEvent.class)
+//                                        .filter(loginSuccessEvent -> loginSuccessEvent
+//                                                .targetActivityName.equals(
+//                                                        "score"))
+//                                        .subscribe(loginSuccessEvent -> ScoreSelectActivity.start(
+//                                                getContext())
+//                                                , Throwable::printStackTrace);
+                            } else {
                                 ScoreSelectActivity.start(getContext());
                             }
                             break;
@@ -205,15 +232,29 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             break;
                         case "校园卡":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
-                                LoginActivity.start(getContext(), "info");
-                            }else {
+                                LoginActivity.start(getContext(), "info",CARD_ACTIVITY);
+//                                RxBus.getDefault().toObservable(LoginSuccessEvent.class)
+//                                        .filter(loginSuccessEvent -> loginSuccessEvent
+//                                                .targetActivityName.equals(
+//                                                        "card"))
+//                                        .subscribe(loginSuccessEvent -> CardActivity.start(
+//                                                getContext())
+//                                                , Throwable::printStackTrace);
+                            } else {
                                 CardActivity.start(getContext());
                             }
                             break;
                         case "算学分":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
-                                LoginActivity.start(getContext(), "info");
-                            }else {
+                                LoginActivity.start(getContext(), "info",CREDIT_ACTIVITY);
+//                                RxBus.getDefault().toObservable(LoginSuccessEvent.class)
+//                                        .first()
+//                                        .takeFirst()
+//                                        .subscribe(loginSuccessEvent -> {
+//                                                    SelectCreditActivity.start(getContext());
+//                                                }
+//                                                , Throwable::printStackTrace);
+                            } else {
                                 SelectCreditActivity.start(getContext());
                             }
                             break;
@@ -264,7 +305,8 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
                         @Override
                         public void onNext(List<BannerData> bannerDatas) {
-                            if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(mBannerDatas) || bannerDatas.size() != mBannerDatas.size()) {
+                            if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(
+                                    mBannerDatas) || bannerDatas.size() != mBannerDatas.size()) {
                                 mBannerDatas.clear();
                                 mBannerDatas.addAll(bannerDatas);
                                 dao.deleteAllBannerData();

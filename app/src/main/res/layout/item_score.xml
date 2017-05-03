@@ -5,8 +5,7 @@
                 android:layout_height="72dp"
                 android:paddingLeft="16dp"
                 android:paddingTop="16dp"
-                android:paddingRight="16dp"
->
+                android:paddingRight="16dp">
 
     <TextView
         android:id="@+id/tv_property"
@@ -74,37 +73,39 @@
             android:id="@+id/tv_score"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="5"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
-            tools:text="总成绩："/>
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="总成绩:33.5"/>
 
         <TextView
             android:id="@+id/tv_credit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
-            tools:text="学分："/>
+            tools:text="学分:"/>
 
         <TextView
             android:id="@+id/tv_usual"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
-            tools:text="平时："/>
+            tools:text="平时:"/>
 
         <TextView
             android:id="@+id/tv_ending"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
-            tools:text="期末："/>
+            tools:text="期末:"/>
 
     </LinearLayout>
 

@@ -19,7 +19,6 @@ import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,7 +60,7 @@ public class ScoreActivity extends ToolbarActivity {
         term = getIntent().getStringExtra("term");
         if (!term.equals("0")) {
             setTitle(String.format("%s-%d学年第%d学期", year, Integer.parseInt(year) + 1,
-                    Arrays.binarySearch(Constants.TERMS, term) + 1));
+                    getTermOrder(Constants.TERMS, term)));
         } else {
             setTitle(String.format("%s-%d学年", year, Integer.parseInt(year) + 1));
         }
@@ -118,6 +117,15 @@ public class ScoreActivity extends ToolbarActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(ScoreActivity
                 .this));
         recyclerView.setAdapter(mScoresAdapter);
+    }
+
+    public int getTermOrder(String[] termStrings, String term) {
+        for (int i = 0; i < termStrings.length; i++) {
+            if (termStrings[i].equals(term)) {
+                return i + 1;
+            }
+        }
+        return 1;
     }
 
 }

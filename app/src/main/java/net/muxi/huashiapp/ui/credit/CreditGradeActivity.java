@@ -62,10 +62,9 @@ public class CreditGradeActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_grade);
         ButterKnife.bind(this);
-        setTitle(String.format("%d-%d学年", start, end));
-
         start = getIntent().getIntExtra("start", 0);
         end = getIntent().getIntExtra("ending", 0);
+        setTitle(String.format("%d-%d学年", start, end));
 
         for (int i = 0; i < (end - start) * 2; i++) {
             int term = 3;
