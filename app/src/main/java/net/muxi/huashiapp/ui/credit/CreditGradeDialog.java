@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.util.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +43,7 @@ public class CreditGradeDialog extends DialogFragment implements View.OnClickLis
         ButterKnife.bind(this,view);
         float result = getArguments().getFloat("result",0);
         mTvCreditGrade.setText(String.format("%.2f",result + 0.005));
+        mBtnOk.setOnClickListener(this);
 
         Dialog dialog = new Dialog(getContext());
         dialog.setContentView(view);
@@ -58,7 +60,8 @@ public class CreditGradeDialog extends DialogFragment implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_ok:{
-                dismiss();
+                Logger.d("dialog dismiss");
+                CreditGradeDialog.this.dismiss();
             }
         }
     }

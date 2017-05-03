@@ -43,6 +43,9 @@ public class CookieInterceptor implements Interceptor {
         List<String> pathSegments = originRequest.url().pathSegments();
 
         if (pathSegments.get(1).equals("table") || pathSegments.get(1).equals("grade")){
+            if (CcnuCrawler.sSid != null && !CcnuCrawler.sSid.equals(App.sUser.sid)){
+                CcnuCrawler.clearCookieStore();
+            }
             InfoCookie cookie = CcnuCrawler.getInfoCookie();
             if (cookie == null){
                 throw new IOException("cookie is null");

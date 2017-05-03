@@ -27,6 +27,7 @@ public class CcnuCrawler {
 
     public static List<List<Cookie>> cookieStore = new ArrayList<>();
     public static CcnuService retrofitService;
+    public static String sSid;
 
     public static final String LOGIN_INFO = "http://portal.ccnu.edu.cn/loginAction.do";
     public static final String LINK_URL1 = "http://portal.ccnu.edu.cn/roamingAction.do?appId=XK";
@@ -38,7 +39,7 @@ public class CcnuCrawler {
     public static final String COOKIE_KEY_BIG = "BIGipServerpool_jwc_xk";
     public static final String COOKIE_KEY_JSE = "JSESSIONID";
 
-    static {
+    static{
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         CookieJar cookieJar = new CookieJar() {
@@ -110,7 +111,6 @@ public class CcnuCrawler {
                 .baseUrl("https://ccnubox.muxixyz.com/api/")
                 .build();
         retrofitService = retrofit.create(CcnuService.class);
-
     }
 
     public static InfoCookie getInfoCookie() {
@@ -124,6 +124,7 @@ public class CcnuCrawler {
             }
             retrofitService.updateCookie().execute();
             InfoCookie infoCookie = searchCookie();
+            sSid = App.sUser.sid;
             return infoCookie;
         } catch (IOException e) {
             e.printStackTrace();
@@ -164,6 +165,10 @@ public class CcnuCrawler {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static void clearCookieStore(){
+        cookieStore.clear();
     }
 
 }

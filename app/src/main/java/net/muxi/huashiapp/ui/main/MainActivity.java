@@ -166,7 +166,7 @@ public class MainActivity extends BaseActivity implements
                 break;
             case R.id.action_timetable:
                 if (TextUtils.isEmpty(App.sUser.sid)) {
-                    LoginActivity.start(MainActivity.this, "info");
+                    LoginActivity.start(MainActivity.this, "info","table");
                 }
                 showFragment("table");
                 break;

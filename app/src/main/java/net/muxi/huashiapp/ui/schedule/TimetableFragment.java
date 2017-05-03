@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.util.TimeUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +22,13 @@ import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.event.CurWeekChangeEvent;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.event.AddCourseEvent;
+import net.muxi.huashiapp.event.CurWeekChangeEvent;
 import net.muxi.huashiapp.event.DeleteCourseOkEvent;
+import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.event.RefreshFinishEvent;
 import net.muxi.huashiapp.event.RefreshTableEvent;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
@@ -143,7 +143,6 @@ public class TimetableFragment extends BaseFragment {
     }
 
 
-
     private void initListener() {
 
         mWeekSelectedView.setOnWeekSelectedListener(week -> {
@@ -185,7 +184,7 @@ public class TimetableFragment extends BaseFragment {
                     Intent intent = new Intent(mContext, ScheduleWidgetProvider.class);
                     intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
                     mContext.sendBroadcast(intent);
-                },throwable -> throwable.printStackTrace());
+                }, throwable -> throwable.printStackTrace());
         ((BaseActivity) getContext()).addSubscription(subscription1);
         Subscription subscription2 = RxBus.getDefault().toObservable(DeleteCourseOkEvent.class)
                 .subscribe(deleteCourseOkEvent -> {
@@ -195,25 +194,34 @@ public class TimetableFragment extends BaseFragment {
                     Intent intent = new Intent(mContext, ScheduleWidgetProvider.class);
                     intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
                     mContext.sendBroadcast(intent);
-                },throwable -> throwable.printStackTrace());
+                }, throwable -> throwable.printStackTrace());
         ((BaseActivity) getContext()).addSubscription(subscription2);
         Subscription subscription3 = RxBus.getDefault().toObservable(RefreshTableEvent.class)
                 .subscribe(refreshTableEvent -> {
                     Logger.d("refresh course");
                     mCourses = dao.loadAllCourses();
                     renderCourseView(mCourses);
-                    Intent intent = new Intent(mContext,ScheduleWidgetProvider.class);
+                    Intent intent = new Intent(mContext, ScheduleWidgetProvider.class);
                     intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
                     mContext.sendBroadcast(intent);
-                },throwable -> throwable.printStackTrace());
-        ((BaseActivity)getContext()).addSubscription(subscription3);
+                }, throwable -> throwable.printStackTrace());
+        ((BaseActivity) getContext()).addSubscription(subscription3);
         Subscription subscription4 = RxBus.getDefault().toObservable(CurWeekChangeEvent.class)
                 .subscribe(curWeekChangeEvent -> {
                     setCurweek(TimeTableUtil.getCurWeek());
                     setSelectedWeek(TimeTableUtil.getCurWeek());
                     renderCourseView(mCourses);
-                },throwable -> throwable.printStackTrace());
-        ((BaseActivity)getContext()).addSubscription(subscription4);
+                }, throwable -> throwable.printStackTrace());
+        ((BaseActivity) getContext()).addSubscription(subscription4);
+
+        Subscription subscription5 = RxBus.getDefault().toObservable(LoginSuccessEvent.class)
+                .subscribe(loginSuccessEvent -> {
+                    if (loginSuccessEvent.targetActivityName.equals("table")){
+                        loadTable();
+                    }
+                },Throwable::printStackTrace);
+        ((BaseActivity)getContext()).addSubscription(subscription5);
+
         mTimetable.setOnRefreshListener(() -> {
             handlingRefresh = true;
             loadTable();
@@ -302,18 +310,18 @@ public class TimetableFragment extends BaseFragment {
         curWeek = week;
         mTvCurrentWeek.setText("当前周设置为" + week);
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mCourses = dao.loadAllCourses();
-        renderCourseView(mCourses);
-        if (mCourses.size() == 0) {
-            if (App.isInfoLogin()) {
-                loadTable();
-            }
-        }
-    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        mCourses = dao.loadAllCourses();
+//        renderCourseView(mCourses);
+//        if (mCourses.size() == 0) {
+//            if (App.isInfoLogin()) {
+//                loadTable();
+//            }
+//        }
+//    }
 
     @Override
     public void onAttach(Context context) {

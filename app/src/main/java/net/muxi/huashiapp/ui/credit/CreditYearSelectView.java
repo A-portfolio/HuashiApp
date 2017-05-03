@@ -49,15 +49,15 @@ public class CreditYearSelectView extends RelativeLayout {
         NumberPickerHelper.setDividerColor(mNpStartYear, Color.TRANSPARENT);
         NumberPickerHelper.setDividerColor(mNpEndYear, Color.TRANSPARENT);
         mNpStartYear.setOnValueChangedListener((numberPicker, i, i1) -> {
-            if (mNpStartYear.getValue() >= mNpEndYear.getValue()){
-                mNpStartYear.setValue(mNpEndYear.getValue() - 1);
+            if (i1 > mNpEndYear.getValue() - 1){
+                mNpEndYear.setValue(i1 + 1);
             }
             if (mOnValueChangeListener != null){
                 mOnValueChangeListener.onValueChange(UserUtil.generateYears(6)[i1],UserUtil.generateYears(6)[mNpEndYear.getValue()]);
             }
         });
         mNpEndYear.setOnValueChangedListener((numberPicker, i, i1) -> {
-            if (mNpEndYear.getValue() <= mNpStartYear.getValue()){
+            if (i1 <= mNpStartYear.getValue()){
                 mNpEndYear.setValue(mNpStartYear.getValue() + 1);
             }
             if (mOnValueChangeListener != null){
