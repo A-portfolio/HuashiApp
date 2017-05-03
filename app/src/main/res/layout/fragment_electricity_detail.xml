@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:scrollbars="none">
 
     <RelativeLayout
@@ -19,8 +20,8 @@
             android:layout_height="92dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            app:cardElevation="0dp"
             app:cardCornerRadius="4dp"
+            app:cardElevation="0dp"
             >
 
             <RelativeLayout
@@ -74,8 +75,8 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="8dp"
-            app:cardElevation="0dp"
             app:cardCornerRadius="4dp"
+            app:cardElevation="0dp"
             >
 
             <RelativeLayout
@@ -122,8 +123,8 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="8dp"
-            app:cardElevation="0dp"
             app:cardCornerRadius="4dp"
+            app:cardElevation="0dp"
             >
 
             <RelativeLayout
@@ -278,7 +279,6 @@
             </RelativeLayout>
 
         </android.support.v7.widget.CardView>
-
 
 
     </RelativeLayout>

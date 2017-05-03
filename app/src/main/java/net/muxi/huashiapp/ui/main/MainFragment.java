@@ -41,6 +41,7 @@ import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.TipViewUtil;
 import net.muxi.huashiapp.util.VibratorUtil;
+import net.muxi.huashiapp.util.ZhugeUtils;
 import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 
 import java.util.ArrayList;
@@ -218,9 +219,11 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 ScoreSelectActivity.start(getContext());
                             }
+                            ZhugeUtils.sendEvent("成绩查询","成绩查询");
                             break;
                         case "校园通知":
                             NewsActivity.start(getContext());
+                            ZhugeUtils.sendEvent("通知公告","通知公告");
                             break;
                         case "电费":
                             String eleQuery = sp.getString(PreferenceUtil.ELE_QUERY_STRING);
@@ -229,6 +232,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 ElectricityDetailActivity.start(getContext(), eleQuery);
                             }
+                            ZhugeUtils.sendEvent("电费查询","电费查询");
                             break;
                         case "校园卡":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
@@ -243,6 +247,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 CardActivity.start(getContext());
                             }
+                            ZhugeUtils.sendEvent("学生卡查询","学生卡查询");
                             break;
                         case "算学分":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
@@ -257,6 +262,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 SelectCreditActivity.start(getContext());
                             }
+                            ZhugeUtils.sendEvent("平均学分绩查询","平均学分绩查询");
                             break;
                         case "空闲教室":
                             String today = DateUtil.getWeek(new Date());
@@ -265,15 +271,19 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 StudyRoomActivity.start(getContext());
                             }
+                            ZhugeUtils.sendEvent("空闲教室查询","空闲教室查询");
                             break;
                         case "部门信息":
                             ApartmentActivity.start(getContext());
+                            ZhugeUtils.sendEvent("部门信息查询", "部门信息查询");
                             break;
                         case "校历":
                             CalendarActivity.start(getContext());
+                            ZhugeUtils.sendEvent("校历查询", "校历查询");
                             break;
                         case "常用网站":
                             WebsiteActivity.start(getContext());
+                            ZhugeUtils.sendEvent("常用网站查询", "常用网站查询");
                             break;
                         case "学而":
 

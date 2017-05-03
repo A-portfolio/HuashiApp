@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.CardView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -15,7 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.muxistudio.multistatusview.MultiStatusView;
@@ -24,7 +23,6 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
@@ -52,7 +50,7 @@ public class ElectricityDetailActivity extends ToolbarActivity {
     @BindView(R.id.multi_status_view)
     MultiStatusView mMultiStatusView;
     @BindView(R.id.ele_detail_layout)
-    LinearLayout mEleDetailLayout;
+    RelativeLayout mEleDetailLayout;
 
 
     public static void start(Context context, String query) {
@@ -66,12 +64,9 @@ public class ElectricityDetailActivity extends ToolbarActivity {
 
     private PreferenceUtil sp;
 
-    private CardView mCardView;
-
     private String mQuery;
     private List<Fragment> detailFragments;
 
-    private ElectricityDetailActivity mActivity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,7 +78,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
 //        mToolbar.setTitle("查询结果");
         setTitle("查询结果");
 
-        setFontType(PAY_HINT);
 
         init();
         sp = new PreferenceUtil();
@@ -94,25 +88,29 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         mQuery = getIntent().getStringExtra("query");
 
 
-        mMultiStatusView.setOnRetryListener(v -> loadDatas());
+        mMultiStatusView.setOnRetryListener(v -> {
+            showLoading();
+            loadDatas();
+        });
+
+        setFontType(PAY_HINT);
 
         loadDatas();
 
     }
 
     private void loadDatas() {
-        showLoading();
+//        showLoading();
         EleRequestData eleAirRequest = new EleRequestData();
         eleAirRequest.setDor(mQuery);
         eleAirRequest.setType("air");
         EleRequestData eleLightRequest = new EleRequestData();
         eleLightRequest.setDor(mQuery);
         eleLightRequest.setType("light");
-        if (NetStatus.isConnected()) {
-            CampusFactory.getRetrofitService().getElectricity(eleLightRequest)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.newThread())
-                    .subscribe(electricityResponse -> {
+        CampusFactory.getRetrofitService().getElectricity(eleLightRequest)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(electricityResponse -> {
 //                        if (electricityResponse.code() == 404) {
 //                            sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
 //                            ToastUtil.showShort(getString(R.string.ele_room_not_found));
@@ -121,54 +119,47 @@ public class ElectricityDetailActivity extends ToolbarActivity {
 //                            ElectricityDetailActivity.this.finish();
 //
 //                        }
-                        if (electricityResponse.code() == 200) {
+                    if (electricityResponse.code() == 200) {
 //                        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(0);
-                            mMultiStatusView.showContent();
-                            ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(electricityResponse.body());
-                        }
-                        if (electricityResponse.code() == 503) {
-                            showSnackbarShort(getString(R.string.tip_school_server_error));
-                        }
-                        if (electricityResponse.code() == 500) {
-                            mMultiStatusView.showNetError();
-                            hideLoading();
-                        }
-                    }, throwable -> {
-                        throwable.printStackTrace();
+                        mMultiStatusView.showContent();
+                        ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(electricityResponse.body());
+                    }
+                    if (electricityResponse.code() == 503) {
+                        showSnackbarShort(getString(R.string.tip_school_server_error));
+                    }
+                    if (electricityResponse.code() == 500) {
                         mMultiStatusView.showNetError();
                         hideLoading();
+                    }
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    mMultiStatusView.showNetError();
+                    hideLoading();
 
-                    }, () -> {
-                        hideLoading();
-                    });
-        } else {
-            showErrorSnackbarShort(getString(R.string.tip_check_net));
-        }
+                }, () -> {
+                    hideLoading();
+                });
 
-        if (NetStatus.isConnected()) {
-            CampusFactory.getRetrofitService().getElectricity(eleAirRequest)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.newThread())
-                    .subscribe(electricityResponse -> {
-                        if (electricityResponse.code() == 200) {
+        CampusFactory.getRetrofitService().getElectricity(eleAirRequest)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(electricityResponse -> {
+                    if (electricityResponse.code() == 200) {
 //                            ((ElectricityDetailFragment) detailFragments.get(1)).setCardColor(1);
-                            mMultiStatusView.showContent();
-                            ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(electricityResponse.body());
-                        }
-                        if (electricityResponse.code() == 500) {
-                            mMultiStatusView.showNetError();
-                            hideLoading();
-                        }
-                    }, throwable -> {
-                        throwable.printStackTrace();
+                        mMultiStatusView.showContent();
+                        ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(electricityResponse.body());
+                    }
+                    if (electricityResponse.code() == 500) {
                         mMultiStatusView.showNetError();
                         hideLoading();
-                    }, () -> {
-                        hideLoading();
-                    });
-        } else {
-            showErrorSnackbarShort(getString(R.string.tip_check_net));
-        }
+                    }
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    mMultiStatusView.showNetError();
+                    hideLoading();
+                }, () -> {
+                    hideLoading();
+                });
     }
 
     public void init() {

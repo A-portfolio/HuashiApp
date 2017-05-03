@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/study_detail_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/color_link_layout"
+                android:background="@color/colorWhite"
                 android:orientation="vertical"
     >
 
     <include layout="@layout/view_toolbar"/>
 
 
-    <ScrollView
+    <com.muxistudio.multistatusview.MultiStatusView
+        android:id="@+id/multi_status_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="56dp">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="56dp"
+        android:background="@color/colorWhite"
+        app:emptyView="@layout/view_empty_score"
+        app:netErrorView="@layout/view_error">
 
-        <include layout="@layout/item_studyroom_detail"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </ScrollView>
+            <include layout="@layout/item_studyroom_detail"/>
+
+        </ScrollView>
+
+    </com.muxistudio.multistatusview.MultiStatusView>
 
 
 </RelativeLayout>

@@ -14,13 +14,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.muxistudio.multistatusview.MultiStatusView;
+
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.ClassRoom;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.NetStatus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +53,9 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     @BindView(R.id.study_detail_layout)
     RelativeLayout mStudyDetailLayout;
 
+    @BindView(R.id.multi_status_view)
+    MultiStatusView mMultiStatusView;
+
 
     private ClassRoom mClassRoom;
 
@@ -82,21 +86,28 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
         mQuery = getIntent().getStringExtra("query");
         Logger.d(mQuery + " ");
 
-        if (!NetStatus.isConnected()) {
-            showErrorSnackbarShort(R.string.tip_check_net);
-            return;
-        }
+
+
+        mMultiStatusView.setOnRetryListener(v -> loadData());
+
+        loadData();
+    }
+
+    private void loadData() {
         showLoading();
         CampusFactory.getRetrofitService()
                 .getClassRoom(getWeek(mQuery), getDayValue(mQuery), getBuidingValue(mQuery))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(classRoom -> {
+                    mMultiStatusView.showContent();
                     mClassRoom = classRoom;
                     setNull();
                     setData();
                 }, throwable -> {
                     throwable.printStackTrace();
+                    mMultiStatusView.showNetError();
+                    hideLoading();
                 }, () -> {
                     hideLoading();
                 });
@@ -174,7 +185,8 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context2.setText(mClassRoom.getValue3().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
 //                params.rightMargin = DimensUtil.dp2px(42f);
-                params.width = DimensUtil.getScreenWidth() / 4;
+                params.width = 2 * mGridClassroomEight.getWidth() / 7  ;
+//                params.rightMargin = mGridClassroomEight.getWidth() / 5;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomTen.addView(context2, params);
             }
@@ -189,7 +201,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context3.setText(mClassRoom.getValue5().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
 //                params.rightMargin = DimensUtil.dp2px(42f);
-                params.width = DimensUtil.getScreenWidth() / 4;
+                params.rightMargin = mGridClassroomEight.getWidth() / 5;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomTwelve.addView(context3, params);
             }
@@ -205,7 +217,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context4.setText(mClassRoom.getValue7().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
 //                params.rightMargin = DimensUtil.dp2px(42f);
-                params.width = DimensUtil.getScreenWidth() / 4;
+                params.rightMargin = mGridClassroomEight.getWidth() / 5;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomFourteen.addView(context4, params);
             }
@@ -220,7 +232,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context5.setText(mClassRoom.getValue9().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
 //                params.rightMargin = DimensUtil.dp2px(42f);
-                params.width = DimensUtil.getScreenWidth() / 4;
+                params.rightMargin = mGridClassroomEight.getWidth() / 5;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomSixteen.addView(context5, params);
             }
@@ -235,7 +247,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context6.setText(mClassRoom.getValue11().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
 //                params.rightMargin = DimensUtil.dp2px(42f);
-                params.width = DimensUtil.getScreenWidth() / 4;
+                params.rightMargin = mGridClassroomEight.getWidth() / 5;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomEighteen.addView(context6, params);
             }
@@ -250,7 +262,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context7.setText(mClassRoom.getValue13().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
 //                params.rightMargin = DimensUtil.dp2px(42f);
-                params.width = DimensUtil.getScreenWidth() / 4;
+                params.rightMargin = mGridClassroomEight.getWidth() / 5;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomTwenty.addView(context7, params);
             }
