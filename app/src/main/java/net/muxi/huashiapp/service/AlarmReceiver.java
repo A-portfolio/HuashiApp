@@ -14,7 +14,7 @@ import net.muxi.huashiapp.common.data.AttentionBook;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.BorrowedBook;
-import net.muxi.huashiapp.common.data.Scores;
+import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.net.CampusFactory;
@@ -244,7 +244,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 mCurTerm + "")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Scores>>() {
+                .subscribe(new Observer<List<Score>>() {
                     @Override
                     public void onCompleted() {
 
@@ -256,7 +256,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     }
 
                     @Override
-                    public void onNext(List<Scores> scoresList) {
+                    public void onNext(List<Score> scoresList) {
                         Logger.d(scoresList.size() + "  " + sp.getInt(PreferenceUtil.SCORES_NUM));
                         if (scoresList.size() != sp.getInt(PreferenceUtil.SCORES_NUM)
                                 && scoresList.size() != 0) {

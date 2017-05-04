@@ -19,7 +19,7 @@ import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.data.PatchData;
 import net.muxi.huashiapp.common.data.ProductData;
 import net.muxi.huashiapp.common.data.RenewData;
-import net.muxi.huashiapp.common.data.Scores;
+import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.common.data.SplashData;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.data.VersionData;
@@ -39,7 +39,6 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 import rx.Observable;
 
 
@@ -190,7 +189,7 @@ public interface RetrofitService {
             @Query("building") String area);
 
     @GET("http://120.77.8.149:8090/api/grade/")
-    Observable<List<Scores>> getScores(@Query("xnm") String year,
+    Observable<List<Score>> getScores(@Query("xnm") String year,
             @Query("xqm") String term);
 
 

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.Scores;
+import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.ui.credit.ScoreUtil;
 
 import java.util.List;
@@ -23,11 +23,11 @@ import butterknife.ButterKnife;
  */
 public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder> {
 
-    private List<Scores> mScoresList;
+    private List<Score> mScoresList;
     private Context mContext;
     //存放已展开的卡片
 
-    public ScoresAdapter(List<Scores> scoresList) {
+    public ScoresAdapter(List<Score> scoresList) {
         super();
         mScoresList = scoresList;
     }

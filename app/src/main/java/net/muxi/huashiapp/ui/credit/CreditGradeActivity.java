@@ -12,20 +12,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
-import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.Scores;
+import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -42,13 +41,11 @@ public class CreditGradeActivity extends ToolbarActivity {
     @BindView(R.id.btn_enter)
     Button mBtnEnter;
 
-    private List<Scores> mScoresList = new ArrayList<>();
+    private List<Score> mScoresList = new ArrayList<>();
     private CreditGradeAdapter mCreditGradeAdapter;
 
     private int start;
     private int end;
-
-    private int counter;
 
     public static void start(Context context, int start, int end) {
         Intent starter = new Intent(context, CreditGradeActivity.class);
@@ -66,13 +63,7 @@ public class CreditGradeActivity extends ToolbarActivity {
         end = getIntent().getIntExtra("ending", 0);
         setTitle(String.format("%d-%d学年", start, end));
 
-        for (int i = 0; i < (end - start) * 2; i++) {
-            int term = 3;
-            if (i % 2 == 1) {
-                term = 12;
-            }
-            loadCredit(String.valueOf(start + i / 2), String.valueOf(term), 0);
-        }
+        loadCredit(getScoreRequest(start,end));
 
         mBtnEnter.setOnClickListener(v -> {
             showCreditGradeDialog();
@@ -114,27 +105,30 @@ public class CreditGradeActivity extends ToolbarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void loadCredit(String year, String term, final int reloadNum) {
-        if (reloadNum > 4) {
-            ToastUtil.showShort("学校服务器异常");
-            return;
-        }
-        CampusFactory.getRetrofitService().getScores(String.valueOf(year), String.valueOf(term))
+    public void loadCredit(Observable<List<Score>>[] listObservable) {
+        showLoading();
+        Observable.merge(listObservable,5)
+                .flatMap(Observable::from)
+                .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(scores -> {
-                    counter++;
-                    mScoresList.addAll(scores);
-
-                    Logger.d(counter + "");
-                    if (counter == (end - start) * 2) {
-                        initRecyclerView();
-                    }
-                }, throwable -> {
+                    mScoresList = scores;
+                    initRecyclerView();
+                },throwable -> {
+                    hideLoading();
                     throwable.printStackTrace();
-                    loadCredit(year, term, reloadNum + 1);
-                });
+                    showErrorSnackbarShort(R.string.tip_school_server_error);
+                },() -> hideLoading());
+    }
+
+    public Observable<List<Score>>[] getScoreRequest(int start,int end){
+        Observable<List<Score>>[] observables = new Observable[(end - start)* 3];
+        for (int i = 0;i < (end - start) * 3;i++){
+            observables[i] = CampusFactory.getRetrofitService()
+                    .getScores(String.valueOf(start + i / 3), String.valueOf(Constants.TERMS[i % 3]));
+        }
+        return observables;
     }
 
     public void initRecyclerView() {

@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.Scores;
+import net.muxi.huashiapp.common.data.Score;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +24,10 @@ import butterknife.ButterKnife;
 public class CreditGradeAdapter extends RecyclerView.Adapter<CreditGradeAdapter.ViewHolder> {
 
 
-    private List<Scores> mScoresList;
+    private List<Score> mScoresList;
     private List<Integer> checkedList = new ArrayList<>();
 
-    public CreditGradeAdapter(List<Scores> scoresList) {
+    public CreditGradeAdapter(List<Score> scoresList) {
         mScoresList = scoresList;
         for (int i = 0; i < mScoresList.size(); i++) {
             checkedList.add(i);

@@ -14,7 +14,7 @@ import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.DetailScores;
-import net.muxi.huashiapp.common.data.Scores;
+import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.Logger;
 
@@ -38,7 +38,7 @@ public class ScoreActivity extends ToolbarActivity {
     MultiStatusView mMultiStatusView;
 
     private ScoresAdapter mScoresAdapter;
-    private List<Scores> mScoresList = new ArrayList<>();
+    private List<Score> mScoresList = new ArrayList<>();
     private List<DetailScores> mDetailScores = new ArrayList<>();
 
     private String year;
@@ -103,7 +103,7 @@ public class ScoreActivity extends ToolbarActivity {
                         () -> hideLoading());
     }
 
-    private void renderScoreList(List<Scores> scores) {
+    private void renderScoreList(List<Score> scores) {
         if (scores == null || scores.size() == 0) {
             mMultiStatusView.showEmpty();
             return;

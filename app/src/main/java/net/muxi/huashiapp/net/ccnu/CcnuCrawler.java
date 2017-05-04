@@ -39,7 +39,7 @@ public class CcnuCrawler {
     public static final String COOKIE_KEY_BIG = "BIGipServerpool_jwc_xk";
     public static final String COOKIE_KEY_JSE = "JSESSIONID";
 
-    static{
+    static {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         CookieJar cookieJar = new CookieJar() {
@@ -111,10 +111,11 @@ public class CcnuCrawler {
                 .baseUrl("https://ccnubox.muxixyz.com/api/")
                 .build();
         retrofitService = retrofit.create(CcnuService.class);
+
     }
 
     public static InfoCookie getInfoCookie() {
-        if (cookieStore.size() > 2){
+        if (cookieStore.size() > 2) {
             return searchCookie();
         }
 
@@ -132,7 +133,7 @@ public class CcnuCrawler {
         return null;
     }
 
-    public static InfoCookie searchCookie(){
+    public static InfoCookie searchCookie() {
         String big = "";
         String jse = "";
         for (Cookie cookie : cookieStore.get(1)) {
@@ -167,7 +168,7 @@ public class CcnuCrawler {
         return false;
     }
 
-    public static void clearCookieStore(){
+    public static void clearCookieStore() {
         cookieStore.clear();
     }
 

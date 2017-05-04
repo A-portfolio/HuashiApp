@@ -3,7 +3,7 @@ package net.muxi.huashiapp.common.data;
 /**
  * Created by ybao on 16/6/25.
  */
-public class Scores {
+public class Score {
 
     /**
      * category : 专业课
