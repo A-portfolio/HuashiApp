@@ -104,7 +104,7 @@ public class NewsActivity extends ToolbarActivity {
 
     public void init() {
         setSupportActionBar(mToolbar);
-        mToolbar.setTitle("通知公告");
+        mToolbar.setTitle("校园通知");
         mNewsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mFrameLayout = (FrameLayout) findViewById(android.R.id.content);
 //        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));

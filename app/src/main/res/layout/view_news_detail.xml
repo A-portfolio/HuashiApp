@@ -8,15 +8,14 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:minHeight="@dimen/library_detail_min_height"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin">
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/news_float_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_alignRight="@+id/news_content"
         android:src="@drawable/ic_close"
         />
@@ -49,7 +48,8 @@
         android:id="@+id/news_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/news_float_btn"/>
+        android:layout_below="@id/news_float_btn"
+        />
 
     <!--<View-->
         <!--android:id="@+id/divider"-->

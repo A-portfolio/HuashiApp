@@ -81,6 +81,8 @@ public class NewsDetailView extends RelativeLayout {
         webSettings.setAllowFileAccess(true);
         webSettings.setAppCacheEnabled(true);
         webSettings.setLoadsImagesAutomatically(false);
+        webSettings.setTextSize(WebSettings.TextSize.SMALLER);
+
 
         mNewsContent.loadData(mNewsList.get(mPosition).getContent(), "text/html; charset=UTF-8", null);
 

@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,12 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+
 import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.ItemData;
+import net.muxi.huashiapp.common.data.ProductData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.net.CampusFactory;
@@ -33,9 +38,11 @@ import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomBlankActivity;
 import net.muxi.huashiapp.ui.website.WebsiteActivity;
+import net.muxi.huashiapp.ui.webview.WebViewActivity;
 import net.muxi.huashiapp.util.ACache;
 import net.muxi.huashiapp.util.DateUtil;
 import net.muxi.huashiapp.util.DimensUtil;
+import net.muxi.huashiapp.util.FrescoUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -53,6 +60,7 @@ import butterknife.ButterKnife;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
 
 /**
  * Created by ybao on 17/1/25.
@@ -77,6 +85,9 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
     private PreferenceUtil sp;
 
+    private ProductData mProductData;
+    private String mProductJson;
+
     public static final int DIRECTION_DOWN = 0;
     public static final int DIRECTION_UP = 1;
     public static final String SCORE_ACTIVITY = "score";
@@ -95,7 +106,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         setData();
         RxBus.getDefault().toObservable(LoginSuccessEvent.class)
                 .subscribe(loginSuccessEvent -> {
-                    switch (loginSuccessEvent.targetActivityName){
+                    switch (loginSuccessEvent.targetActivityName) {
                         case SCORE_ACTIVITY:
                             ScoreSelectActivity.start(getContext());
                             break;
@@ -106,13 +117,15 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             SelectCreditActivity.start(getContext());
                             break;
                     }
-                },Throwable::printStackTrace);
+                }, Throwable::printStackTrace);
+
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
         mToolbar.setTitle("华师匣子");
@@ -123,8 +136,17 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
         getBannerDatas();
 
+
         initView();
         initHintView();
+
+        Gson gson = new Gson();
+        mProductData = gson.fromJson(sp.getString(PreferenceUtil.PRODUCT_DATA, Constants.PRODUCT_JSON), ProductData.class);
+//        updateProductDisplay(mProductData);
+//        getProduct();
+
+
+
         return view;
     }
 
@@ -208,7 +230,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                     switch (itemData.getName()) {
                         case "成绩":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
-                                LoginActivity.start(getContext(), "info",SCORE_ACTIVITY);
+                                LoginActivity.start(getContext(), "info", SCORE_ACTIVITY);
 //                                RxBus.getDefault().toObservable(LoginSuccessEvent.class)
 //                                        .filter(loginSuccessEvent -> loginSuccessEvent
 //                                                .targetActivityName.equals(
@@ -219,11 +241,11 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 ScoreSelectActivity.start(getContext());
                             }
-                            ZhugeUtils.sendEvent("成绩查询","成绩查询");
+                            ZhugeUtils.sendEvent("成绩查询", "成绩查询");
                             break;
                         case "校园通知":
                             NewsActivity.start(getContext());
-                            ZhugeUtils.sendEvent("通知公告","通知公告");
+                            ZhugeUtils.sendEvent("通知公告", "通知公告");
                             break;
                         case "电费":
                             String eleQuery = sp.getString(PreferenceUtil.ELE_QUERY_STRING);
@@ -232,11 +254,11 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 ElectricityDetailActivity.start(getContext(), eleQuery);
                             }
-                            ZhugeUtils.sendEvent("电费查询","电费查询");
+                            ZhugeUtils.sendEvent("电费查询", "电费查询");
                             break;
                         case "校园卡":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
-                                LoginActivity.start(getContext(), "info",CARD_ACTIVITY);
+                                LoginActivity.start(getContext(), "info", CARD_ACTIVITY);
 //                                RxBus.getDefault().toObservable(LoginSuccessEvent.class)
 //                                        .filter(loginSuccessEvent -> loginSuccessEvent
 //                                                .targetActivityName.equals(
@@ -247,11 +269,11 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 CardActivity.start(getContext());
                             }
-                            ZhugeUtils.sendEvent("学生卡查询","学生卡查询");
+                            ZhugeUtils.sendEvent("学生卡查询", "学生卡查询");
                             break;
                         case "算学分":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
-                                LoginActivity.start(getContext(), "info",CREDIT_ACTIVITY);
+                                LoginActivity.start(getContext(), "info", CREDIT_ACTIVITY);
 //                                RxBus.getDefault().toObservable(LoginSuccessEvent.class)
 //                                        .first()
 //                                        .takeFirst()
@@ -262,7 +284,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 SelectCreditActivity.start(getContext());
                             }
-                            ZhugeUtils.sendEvent("平均学分绩查询","平均学分绩查询");
+                            ZhugeUtils.sendEvent("平均学分绩查询", "平均学分绩查询");
                             break;
                         case "空闲教室":
                             String today = DateUtil.getWeek(new Date());
@@ -271,7 +293,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 StudyRoomActivity.start(getContext());
                             }
-                            ZhugeUtils.sendEvent("空闲教室查询","空闲教室查询");
+                            ZhugeUtils.sendEvent("空闲教室查询", "空闲教室查询");
                             break;
                         case "部门信息":
                             ApartmentActivity.start(getContext());
@@ -286,7 +308,12 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             ZhugeUtils.sendEvent("常用网站查询", "常用网站查询");
                             break;
                         case "学而":
-
+                            Intent intent = WebViewActivity.newIntent(getContext(),mProductData.get_products().get(0).getUrl(),
+                                    mProductData.get_products().get(0).getName(),
+                                    mProductData.get_products().get(0).getIntro(),
+                                    mProductData.get_products().get(0).getIcon());
+                            startActivity(intent);
+                            ZhugeUtils.sendEvent("学而","学而");
                             break;
                         case "更多":
                             MoreActivity.start(getContext());
@@ -295,6 +322,37 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                 }
             }
         });
+    }
+
+    //更新首页视图
+    public void updateProductDisplay(ProductData productData) {
+        List<ItemData> itemDataList = new ArrayList<>();
+        for (int i = 0; i < productData.get_products().size(); i++) {
+            itemDataList.add(new ItemData(productData.get_products().get(i).getIcon(), productData.get_products().get(i).getName()));
+        }
+        mItemDatas.addAll(itemDataList);
+        mMainAdapter.swapProduct(mItemDatas);
+    }
+
+    public void getProduct() {
+        CampusFactory.getRetrofitService().getProduct()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(productData -> {
+                    if (productData.getUpdate() != mProductData.getUpdate()) {
+                        mProductData = productData;
+                        Gson gson = new Gson();
+                        mProductJson = gson.toJson(mProductData);
+                        sp.saveString(PreferenceUtil.PRODUCT_DATA, mProductJson);
+                        sp.saveFloat(PreferenceUtil.PRODUCT_UPDATE, (float) productData.getUpdate());
+                        FrescoUtil.savePicture(productData.get_products().get(0).getIcon(), getContext(), productData.get_products().get(0).getIcon());
+                        updateProductDisplay(productData);
+                    }
+
+                }, throwable -> {
+                    throwable.printStackTrace();
+                });
+
     }
 
     private void getBannerDatas() {

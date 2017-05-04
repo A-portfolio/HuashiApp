@@ -27,7 +27,7 @@
         custom:progress_text_visibility="invisible"
         custom:progress_unreached_bar_height="2dp"/>
 
-    <com.tencent.smtt.sdk.WebView
+    <com.muxistudio.jsbridge.BridgeWebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
