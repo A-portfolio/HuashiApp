@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
+import com.muxistudio.jsbridge.BridgeWebView;
 import com.sina.weibo.sdk.api.TextObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
 import com.sina.weibo.sdk.api.share.BaseResponse;
@@ -65,10 +66,10 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.webview)
-    WebView mWebview;
     @BindView(R.id.custom_progress_bar)
     NumberProgressBar mCustomProgressBar;
+    @BindView(R.id.webview)
+    BridgeWebView mWebview;
 
     public static Tencent mTencent;
     private IWeiboShareAPI mWeiboShareAPI;
@@ -86,6 +87,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
 
     private RecyclerView mRecyclerView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,14 +147,14 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         switch (itemId) {
             case R.id.action_option:
                 ShareToDialog shareToDialog = new ShareToDialog();
-                shareToDialog.show(getSupportFragmentManager(),"");
+                shareToDialog.show(getSupportFragmentManager(), "");
 
                 shareToDialog.setOnItemClickListener(new ShareToDialog.OnItemClick() {
                     @Override
                     public void onItemClick(int position) {
-                        switch (position){
+                        switch (position) {
                             case 0:
-                                shareToQzone(title, intro , url ,iconUrl);
+                                shareToQzone(title, intro, url, iconUrl);
                                 shareToDialog.dismiss();
                                 break;
                             case 1:
@@ -160,11 +162,11 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
                                 shareToDialog.dismiss();
                                 break;
                             case 2:
-                                sendMultiMessage(true,false,false,false,false,false);
+                                sendMultiMessage(true, false, false, false, false, false);
                                 shareToDialog.dismiss();
                                 break;
                             case 3:
-                                shareToQzone(title,intro,url,iconUrl);
+                                shareToQzone(title, intro, url, iconUrl);
                                 shareToDialog.dismiss();
                                 break;
                             case 4:
@@ -177,13 +179,13 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
                                 break;
 
                             case 7:
-                                AppUtil.clipToClipBoard(WebViewActivity.this,mWebview.getUrl());
+                                AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
                                 showSnackbarShort(getResources().getString(R.string.tip_copy_success));
                                 shareToDialog.dismiss();
                                 break;
 
                             case 8:
-                                Intent browserIntent = new Intent(Intent.ACTION_VIEW , Uri.parse(mWebview.getUrl()));
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mWebview.getUrl()));
                                 startActivity(browserIntent);
                                 shareToDialog.dismiss();
                                 break;
@@ -218,7 +220,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_webview,menu);
+        getMenuInflater().inflate(R.menu.menu_webview, menu);
         return true;
     }
 
@@ -226,7 +228,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     @Override
     public boolean onMenuOpened(int featureId, Menu menu) {
         ShareDialog dialog = new ShareDialog();
-        dialog.show(getSupportFragmentManager(),"");
+        dialog.show(getSupportFragmentManager(), "");
         return false;
     }
 
@@ -262,7 +264,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         }
 
         @Override
-        public void onReceivedTitle(com.tencent.smtt.sdk.WebView view, String title) {
+        public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
         }
     }
@@ -299,7 +301,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         api.sendReq(req);
     }
 
-    public void shareTOWXSceneTimeline(){
+    public void shareTOWXSceneTimeline() {
         WXWebpageObject webpageObject = new WXWebpageObject();
         webpageObject.webpageUrl = url;
         WXMediaMessage msg = new WXMediaMessage(webpageObject);

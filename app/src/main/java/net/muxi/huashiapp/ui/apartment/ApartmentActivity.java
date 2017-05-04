@@ -27,15 +27,18 @@ import rx.schedulers.Schedulers;
  */
 public class ApartmentActivity extends ToolbarActivity {
 
-    public static void start(Context context){
-        Intent starter = new Intent(context,ApartmentActivity.class);
-        context.startActivity(starter);
-    }
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, ApartmentActivity.class);
+        context.startActivity(starter);
+    }
+
 
     private HuaShiDao dao;
     private List<ApartmentData> mApartDatas;
@@ -50,7 +53,7 @@ public class ApartmentActivity extends ToolbarActivity {
         if (mApartDatas.size() > 0) {
             setupRecyclerView(mApartDatas);
         } else {
-           showLoading();
+            showLoading();
         }
         setTitle("部门信息");
         CampusFactory.getRetrofitService().getApartment()
@@ -59,17 +62,18 @@ public class ApartmentActivity extends ToolbarActivity {
                 .subscribe(new Observer<List<ApartmentData>>() {
                     @Override
                     public void onCompleted() {
-
+                        hideLoading();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+
+
                     }
 
                     @Override
                     public void onNext(List<ApartmentData> apartmentDataList) {
-                        hideLoading();
                         if (apartmentDataList.size() != mApartDatas.size()) {
                             setupRecyclerView(apartmentDataList);
                             dao.deleteApartData();

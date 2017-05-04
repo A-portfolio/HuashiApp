@@ -32,9 +32,11 @@ public class ElectricityDetailFragment extends BaseFragment {
     private TextView mTvMoneyLastMonth;
     private TextView mTvMoneyCurMonth;
 
+
     private CardView mCardMoneyLeft;
     private CardView mCardDegreeLeft;
     private CardView mCardTotalUse;
+
 
     private int type;
 
@@ -55,6 +57,8 @@ public class ElectricityDetailFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Nullable
@@ -112,6 +116,7 @@ public class ElectricityDetailFragment extends BaseFragment {
         mTvMoneyLastMonth.setText(eleData.getEle().getBefore().substring(0, index3 + 2));
         mTvMoneyCurMonth.setText(eleData.getEle().getCurrent().substring(0, index4 + 2));
     }
+
 
 
 

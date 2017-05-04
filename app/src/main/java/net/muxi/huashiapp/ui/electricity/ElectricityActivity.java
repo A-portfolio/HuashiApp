@@ -16,7 +16,6 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 import butterknife.BindView;
@@ -182,10 +181,6 @@ public class ElectricityActivity extends ToolbarActivity {
                     EleRequestData eleLightRequest = new EleRequestData();
                     eleLightRequest.setDor(mQuery);
                     eleLightRequest.setType("light");
-                    if (!NetStatus.isConnected()) {
-                        showErrorSnackbarShort(getString(R.string.tip_check_net));
-                        return;
-                    }
                     showLoading();
                     CampusFactory.getRetrofitService().getElectricity(eleLightRequest)
                             .observeOn(AndroidSchedulers.mainThread())

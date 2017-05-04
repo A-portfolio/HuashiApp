@@ -23,7 +23,6 @@ import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.DateUtil;
 import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.Date;
@@ -79,24 +78,20 @@ public class CardActivity extends ToolbarActivity {
         }
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
+        loadDatas();
+
         WebSettings settings = mConsumeView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setAppCacheEnabled(true);
         settings.setAppCachePath("data/data/net.muxi.huashiapp/cache");
-        settings.setAppCacheMaxSize(1024*1024*8);
+        settings.setAppCacheMaxSize(1024 * 1024 * 8);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
-        mMultiStatusView.setOnRetryListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadDatas();
-            }
 
+        mMultiStatusView.setOnRetryListener(v -> {
+            showLoading();
+            loadDatas();
         });
-
-        loadDatas();
-
-
 
 
 
@@ -104,62 +99,56 @@ public class CardActivity extends ToolbarActivity {
     }
 
 
-    private void loadDatas(){
+    private void loadDatas() {
         User user = new User();
         sp = new PreferenceUtil();
         user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
         user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
-        if (!NetStatus.isConnected()) {
-            showErrorSnackbarShort(getString(R.string.tip_check_net));
-        } else {
-            CampusFactory.getRetrofitService()
-                    .getCardBalance(user.getSid(), "90", "0", "20")
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.newThread())
-                    .subscribe(new Observer<List<CardData>>() {
-                        @Override
-                        public void onCompleted() {
+        CampusFactory.getRetrofitService()
+                .getCardBalance(user.getSid(), "90", "0", "20")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Observer<List<CardData>>() {
+                    @Override
+                    public void onCompleted() {
+                        hideLoading();
 
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        mMultiStatusView.showNetError();
+                        hideLoading();
+
+                    }
+
+                    @Override
+                    public void onNext(List<CardData> cardDatas) {
+                        Logger.d("id card");
+                        mMultiStatusView.showContent();
+                        mDate.setText("截止" + cardDatas.get(0).getDealDateTime());
+                        mMoney.setText(cardDatas.get(0).getOutMoney());
+                        mCardDatas = cardDatas;
+
+                        CardSumData[] data = new CardSumData[7];
+                        for (int i = 0; i < data.length; i++) {
+                            data[i] = new CardSumData(DateUtil.getTheDateInYear(new Date(), -6 + i), getDailySum(i));
                         }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            e.printStackTrace();
-                            mMultiStatusView.showError();
-                            mMultiStatusView.setOnRetryListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    loadDatas();
-                                }
-                            });
-                        }
+                        Gson gson = new Gson();
+                        String json = gson.toJson(data);
+                        Logger.d(json);
+                        Logger.d("get json");
 
-                        @Override
-                        public void onNext(List<CardData> cardDatas) {
-                            Logger.d("id card");
-                            mMultiStatusView.showContent();
-                            mDate.setText("截止" + cardDatas.get(0).getDealDateTime());
-                            mMoney.setText(cardDatas.get(0).getOutMoney());
-                            mCardDatas = cardDatas;
+                        mConsumeView.setInitData(data);
 
-                            CardSumData[] data = new CardSumData[7];
-                            for (int i = 0; i < data.length; i++) {
-                                data[i] = new CardSumData(DateUtil.getTheDateInYear(new Date(), -6 + i), getDailySum(i));
-                            }
+                        mConsumeView.loadUrl("http://123.56.41.13:4088");
 
-                            Gson gson = new Gson();
-                            String json = gson.toJson(data);
-                            Logger.d(json);
-                            Logger.d("get json");
+                    }
+                });
 
-                            mConsumeView.setInitData(data);
-
-                            mConsumeView.loadUrl("http://123.56.41.13:4088");
-
-                        }
-                    });
-        }
-    }
+}
 
     /**
      * 获取指定日的消费总额
