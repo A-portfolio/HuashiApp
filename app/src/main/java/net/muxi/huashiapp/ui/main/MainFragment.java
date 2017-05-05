@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseFragment;
@@ -140,34 +139,35 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         initView();
         initHintView();
 
-        Gson gson = new Gson();
-        mProductData = gson.fromJson(sp.getString(PreferenceUtil.PRODUCT_DATA, Constants.PRODUCT_JSON), ProductData.class);
-//        updateProductDisplay(mProductData);
-//        getProduct();
 
+        mProductData = new ProductData();
+//        Gson gson = new Gson();
+//        mProductData = gson.fromJson(sp.getString(PreferenceUtil.PRODUCT_DATA, Constants.PRODUCT_JSON), ProductData.class);
+//        getProduct();
+//        updateProductDisplay(mProductData);
+
+        getProduct();
 
 
         return view;
     }
 
     private void setData() {
-        ArrayList<ItemData> items = (ArrayList<ItemData>) ACache.get(getContext()).getAsObject(
-                "items");
+        ArrayList<ItemData> items = (ArrayList<ItemData>) ACache.get(getContext()).getAsObject("items");
 
         if (items != null) {
             mItemDatas.addAll(items);
         } else {
-            mItemDatas.add(new ItemData("成绩", R.drawable.ic_score + ""));
-            mItemDatas.add(new ItemData("校园通知", R.drawable.ic_news + ""));
-            mItemDatas.add(new ItemData("电费", R.drawable.ic_ele + ""));
-            mItemDatas.add(new ItemData("校园卡", R.drawable.ic_card + ""));
-            mItemDatas.add(new ItemData("算学分", R.drawable.ic_credit + ""));
-            mItemDatas.add(new ItemData("空闲教室", R.drawable.ic_empty_room + ""));
-            mItemDatas.add(new ItemData("部门信息", R.drawable.ic_apartment + ""));
-            mItemDatas.add(new ItemData("校历", R.drawable.ic_calendar + ""));
-            mItemDatas.add(new ItemData("常用网站", R.drawable.ic_net + ""));
-            mItemDatas.add(new ItemData("学而", R.drawable.ic_xueer + ""));
-            mItemDatas.add(new ItemData("更多", R.drawable.ic_more + ""));
+            mItemDatas.add(new ItemData("成绩", R.drawable.ic_score + "", false));
+            mItemDatas.add(new ItemData("校园通知", R.drawable.ic_news + "", false));
+            mItemDatas.add(new ItemData("电费", R.drawable.ic_ele + "", false));
+            mItemDatas.add(new ItemData("校园卡", R.drawable.ic_card + "", false));
+            mItemDatas.add(new ItemData("算学分", R.drawable.ic_credit + "", false));
+            mItemDatas.add(new ItemData("空闲教室", R.drawable.ic_empty_room + "", false));
+            mItemDatas.add(new ItemData("部门信息", R.drawable.ic_apartment + "", false));
+            mItemDatas.add(new ItemData("校历", R.drawable.ic_calendar + "", false));
+            mItemDatas.add(new ItemData("常用网站", R.drawable.ic_net + "", false));
+            mItemDatas.add(new ItemData("更多", R.drawable.ic_more + "", false));
         }
 
     }
@@ -308,12 +308,12 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             ZhugeUtils.sendEvent("常用网站查询", "常用网站查询");
                             break;
                         case "学而":
-                            Intent intent = WebViewActivity.newIntent(getContext(),mProductData.get_products().get(0).getUrl(),
+                            Intent intent = WebViewActivity.newIntent(getContext(), mProductData.get_products().get(0).getUrl(),
                                     mProductData.get_products().get(0).getName(),
                                     mProductData.get_products().get(0).getIntro(),
                                     mProductData.get_products().get(0).getIcon());
                             startActivity(intent);
-                            ZhugeUtils.sendEvent("学而","学而");
+                            ZhugeUtils.sendEvent("学而", "学而");
                             break;
                         case "更多":
                             MoreActivity.start(getContext());
@@ -326,12 +326,15 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
     //更新首页视图
     public void updateProductDisplay(ProductData productData) {
-        List<ItemData> itemDataList = new ArrayList<>();
-        for (int i = 0; i < productData.get_products().size(); i++) {
-            itemDataList.add(new ItemData(productData.get_products().get(i).getIcon(), productData.get_products().get(i).getName()));
+        if (mItemDatas.size() - 10 != productData.get_products().size()) {
+            List<ItemData> itemDataList = new ArrayList<>();
+            for (int i = 0; i < productData.get_products().size(); i++) {
+                itemDataList.add(new ItemData(productData.get_products().get(i).getName(), productData.get_products().get(i).getIcon(), true));
+            }
+            mItemDatas.addAll(mItemDatas.size() - 1, itemDataList);
+            mMainAdapter.swapProduct(mItemDatas);
         }
-        mItemDatas.addAll(itemDataList);
-        mMainAdapter.swapProduct(mItemDatas);
+
     }
 
     public void getProduct() {
@@ -345,8 +348,10 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                         mProductJson = gson.toJson(mProductData);
                         sp.saveString(PreferenceUtil.PRODUCT_DATA, mProductJson);
                         sp.saveFloat(PreferenceUtil.PRODUCT_UPDATE, (float) productData.getUpdate());
-                        FrescoUtil.savePicture(productData.get_products().get(0).getIcon(), getContext(), productData.get_products().get(0).getIcon());
-                        updateProductDisplay(productData);
+                        for (int i = 0; i < productData.get_products().size(); i++) {
+                            FrescoUtil.savePicture(productData.get_products().get(i).getIcon(), getContext(), productData.get_products().get(i).getName());
+                        }
+                        updateProductDisplay(mProductData);
                     }
 
                 }, throwable -> {

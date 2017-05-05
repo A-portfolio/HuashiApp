@@ -69,6 +69,8 @@
             android:layout_alignLeft="@+id/ic_phone"
             android:layout_alignStart="@id/ic_phone"
             android:layout_below="@id/ic_phone"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="2dp"
             android:background="@drawable/ic_apartment_position"
             />
 
@@ -80,6 +82,8 @@
             android:layout_alignLeft="@+id/tv_phone"
             android:layout_alignStart="@+id/tv_phone"
             android:layout_below="@id/tv_phone"
+            android:layout_toRightOf="@+id/ic_position"
+            android:layout_toEndOf="@+id/ic_position"
             android:layout_marginTop="9dp"
             android:autoLink="map"
             android:textColor="@color/textColorGrey"

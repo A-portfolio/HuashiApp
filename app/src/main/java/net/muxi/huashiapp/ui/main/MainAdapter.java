@@ -157,19 +157,23 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             ((BannerViewHolder) holder).mCardBanner.setScrollTime(500);
 
 
-
-
         } else if (holder instanceof CommonViewHolder) {
-            if (position > 0 && position != mItemDatas.size() + 1) {
-                ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItemDatas.get(position - ITEM_BANNER).getIcon()) + "/" );
-                ((CommonViewHolder) holder).mTextView.setText(mItemDatas.get(position - ITEM_BANNER).getName());
-                ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
-            } else if (mItemDatas.get(position - ITEM_BANNER).getName().equals("学而")) {
-                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mItemDatas.get(position - ITEM_BANNER).getIcon()));
-                    FrescoUtil.savePicture(mItemDatas.get(position - ITEM_BANNER).getIcon(), mContext, mItemDatas.get(position - ITEM_BANNER).getName());
-                } else {
+            if (mItemDatas.get(position - ITEM_BANNER).isDynamic()) {
+                ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mItemDatas.get(position - ITEM_BANNER).getIcon()));
+                FrescoUtil.savePicture(mItemDatas.get(position - ITEM_BANNER).getIcon(), mContext, mItemDatas.get(position - ITEM_BANNER).getName());
+            } else {
+                if (position > 0 && position != mItemDatas.size() + 1) {
                     ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItemDatas.get(position - ITEM_BANNER).getIcon()));
+                    ((CommonViewHolder) holder).mTextView.setText(mItemDatas.get(position - ITEM_BANNER).getName());
+                    ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
+//            } else if (mItemDatas.get(position - ITEM_BANNER).getName().equals("学而")) {
+//                  ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mItemDatas.get(position - ITEM_BANNER).getIcon()));
+//                  FrescoUtil.savePicture(mItemDatas.get(position - ITEM_BANNER).getIcon(), mContext, mItemDatas.get(position - ITEM_BANNER).getName());
+//                } else {
+//                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItemDatas.get(position - ITEM_BANNER).getIcon()));
+//                }
                 }
+            }
                 ((CommonViewHolder) holder).mTextView.setText(mItemDatas.get(position - ITEM_BANNER).getName());
                 ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
 
