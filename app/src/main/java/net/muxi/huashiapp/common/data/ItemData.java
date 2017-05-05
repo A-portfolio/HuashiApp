@@ -11,6 +11,7 @@ public class ItemData implements Serializable {
     private int position;
     private String name;
     private String icon;
+    private boolean isDynamic;
 
 
     public ItemData(int position,String name,String icon){
@@ -18,14 +19,18 @@ public class ItemData implements Serializable {
         this.name = name;
         this.icon = icon;
     }
-    public ItemData(String name, String icon) {
+    public ItemData(String name, String icon,boolean isDynamic) {
         this.name = name;
         this.icon = icon;
+        this.isDynamic = isDynamic;
     }
 
-    public ItemData(){
-
+    public boolean isDynamic() {
+        return isDynamic;
     }
+
+
+
 
     public int getPosition() {
         return position;

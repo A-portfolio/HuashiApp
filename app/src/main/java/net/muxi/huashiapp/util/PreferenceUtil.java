@@ -46,6 +46,7 @@ public class PreferenceUtil {
 
     //首页产品更新时间
     public static final String PRODUCT_UPDATE = "product_update";
+
     //首页产品 json 数据
     public static final String PRODUCT_DATA = "product_data";
     //是否是初次选择周数

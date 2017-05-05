@@ -66,6 +66,8 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
     private static final String CAL_INTRO = "2016—2017学年度校历";
     private static final String CAL_URL = "https://occc3ev3l.qnssl.com/xiaoli.png";
 
+    private static final String ICON_URL = "https://occc3ev3l.qnssl.com/ccnubox_icon.png";
+
 
     public static Tencent mTencent;
     private IWeiboShareAPI mWeiboShareAPI;
@@ -138,7 +140,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
                 public void onItemClick(RecyclerView.ViewHolder vh) {
                     switch (vh.getLayoutPosition()) {
                         case 0:
-                            shareToQzone(APP_TITLE, APP_INTRO, APP_URL, "");
+                            shareToQzone(APP_TITLE, APP_INTRO, APP_URL, ICON_URL);
                             dialog.dismiss();
                             break;
                         case 1:
@@ -150,7 +152,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
                             dialog.dismiss();
                             break;
                         case 3:
-                            shareToQzone(APP_TITLE, APP_INTRO, APP_URL, "");
+                            shareToQzone(APP_TITLE, APP_INTRO, APP_URL, ICON_URL);
                             dialog.dismiss();
                             break;
                         case 4:
@@ -173,7 +175,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
                 public void onItemClick(RecyclerView.ViewHolder vh) {
                     switch (vh.getLayoutPosition()) {
                         case 0:
-                            shareToQzone(CAL_TITLE, CAL_INTRO, CAL_URL, "");
+                            shareToQzone(CAL_TITLE, CAL_INTRO, CAL_URL, ICON_URL);
                             dialog.dismiss();
                             break;
                         case 1:
@@ -185,7 +187,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
                             dialog.dismiss();
                             break;
                         case 3:
-                            shareToQzone(APP_TITLE, APP_INTRO, APP_URL, "");
+                            shareToQzone(APP_TITLE, APP_INTRO, APP_URL, ICON_URL);
                             dialog.dismiss();
                             break;
                         case 4:
@@ -242,7 +244,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
         msg.title = APP_TITLE;
         msg.description = APP_INTRO;
         Logger.d(getActivity().getExternalCacheDir() + "/ic_launcher.png");
-        Bitmap bmp = BitmapFactory.decodeFile(getActivity().getExternalCacheDir() + "/ic_launcher.png");
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
 //        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
 //        bmp.recycle();
         msg.setThumbImage(bmp);
@@ -260,7 +262,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
         msg.title = APP_TITLE;
         msg.description = APP_INTRO;
         Logger.d(getActivity().getExternalCacheDir() + "/ic_launcher.png");
-        Bitmap bmp = BitmapFactory.decodeFile(getActivity().getExternalCacheDir() + "/ic_launcher.png");
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
 //        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
 //        bmp.recycle();
         msg.setThumbImage(bmp);
@@ -278,7 +280,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
         WXMediaMessage msg = new WXMediaMessage(webpageObject);
         msg.title = CAL_TITLE;
         msg.description = APP_INTRO;
-        Bitmap bmp = BitmapFactory.decodeFile(getActivity().getExternalCacheDir() + "/ic_launcher.png");
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
 //        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
 //        bmp.recycle();
         msg.setThumbImage(bmp);
@@ -296,7 +298,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
         msg.title = CAL_TITLE;
         msg.description = CAL_INTRO;
         Logger.d(getActivity().getExternalCacheDir() + "/ic_launcher.png");
-        Bitmap bmp = BitmapFactory.decodeFile(getActivity().getExternalCacheDir() + "/ic_launcher.png");
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
 //        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
 //        bmp.recycle();
         msg.setThumbImage(bmp);
