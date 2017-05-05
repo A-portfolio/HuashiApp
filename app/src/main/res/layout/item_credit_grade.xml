@@ -26,8 +26,9 @@
         android:layout_toLeftOf="@+id/iv_checked"
         android:layout_marginRight="16dp"
         android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="?android:attr/textColorPrimary"
-        tools:text="毛概"/>
+        tools:text=""/>
 
     <TextView
         android:id="@+id/tv_category"

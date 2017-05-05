@@ -25,8 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/tv_property"
         android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="?android:attr/textColorPrimary"
-        tools:text="毛概"/>
+        tools:text=""/>
 
     <TextView
         android:id="@+id/tv_cate1"
