@@ -25,9 +25,8 @@ import net.muxi.huashiapp.util.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-
-import static net.muxi.huashiapp.App.getContext;
 
 /**
  * Created by december on 16/4/19.
@@ -66,7 +65,16 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     public MainAdapter(List<ItemData> items, List<BannerData> bannerDatas) {
         this.mItemDatas = items;
+
         mBannerDatas = bannerDatas;
+
+
+        Comparator<BannerData> comparator = (o1, o2) -> {
+            Logger.d(o1.getNum() + ", " + o2.getNum());
+            return Integer.parseInt(o1.getNum()) - Integer.parseInt(o2.getNum());
+        };
+        Collections.sort(mBannerDatas, comparator);
+
         resUrls = new ArrayList<>();
         for (int i = 0; i < bannerDatas.size(); i++) {
             resUrls.add(mBannerDatas.get(i).getImg());
@@ -95,7 +103,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         return position == 0 ? true : false;
     }
 
-    public boolean isFooterPosition(int position){
+    public boolean isFooterPosition(int position) {
         return position == mItemDatas.size() + 1 ? true : false;
     }
 
@@ -119,7 +127,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         } else if (viewType == ITEM_TYPE_FOOTER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_footer, parent, false);
             return new FooterViewHolder(view);
-        } else  {
+        } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, parent, false);
             return new CommonViewHolder(view);
         }
@@ -129,6 +137,11 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof BannerViewHolder) {
+//            Comparator<BannerData> comparator = (o1, o2) -> {
+//                Log.d("Test", o1.getNum() + ", " + o2.getNum());
+//                return Integer.parseInt(o1.getNum()) - Integer.parseInt(o2.getNum());
+//            };
+//            Collections.sort(mBannerDatas, comparator);
             for (int i = 0; i < mBannerDatas.size(); i++) {
                 ViewHolder<BannerData> viewHolder = new ViewHolder<BannerData>() {
                     @Override
@@ -139,8 +152,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         simpleDraweeView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent = WebViewActivity.newIntent(getContext(),bannerDatas.getUrl());
-                                getContext().startActivity(intent);
+                                Intent intent = WebViewActivity.newIntent(mContext, bannerDatas.getUrl());
+                                mContext.startActivity(intent);
 
                             }
                         });
@@ -174,11 +187,12 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 //                }
                 }
             }
-                ((CommonViewHolder) holder).mTextView.setText(mItemDatas.get(position - ITEM_BANNER).getName());
-                ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
+            ((CommonViewHolder) holder).mTextView.setText(mItemDatas.get(position - ITEM_BANNER).getName());
+            ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
 
-            } else if (holder instanceof FooterViewHolder){}
+        } else if (holder instanceof FooterViewHolder) {
         }
+    }
 
 
     public void setOnBannerItemClickListener(OnBannerItemClickListener bannerItemClickListener) {
@@ -195,18 +209,18 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void onMove(int fromPosition, int toPosition) {
         if (fromPosition == mItemDatas.size() || toPosition == mItemDatas.size()) {
             return;
-        } else if (fromPosition == mItemDatas.size() + 1 || toPosition == mItemDatas.size() +1){
+        } else if (fromPosition == mItemDatas.size() + 1 || toPosition == mItemDatas.size() + 1) {
             return;
-        } else if (fromPosition == 0 || toPosition == 0){
+        } else if (fromPosition == 0 || toPosition == 0) {
             return;
         }
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(mItemDatas, i- 1, i );
+                Collections.swap(mItemDatas, i - 1, i);
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(mItemDatas, i - 1 , i - 2 );
+                Collections.swap(mItemDatas, i - 1, i - 2);
             }
         }
 

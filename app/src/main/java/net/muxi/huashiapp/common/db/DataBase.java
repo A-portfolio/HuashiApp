@@ -49,6 +49,8 @@ public class DataBase extends SQLiteOpenHelper {
     public static final String KEY_UPDATE = "update_time";
     public static final String KEY_IMG = "img";
     public static final String KEY_FILENAME = "filename";
+    public static final String KEY_NUM = "num";
+
 
     //apartment 的属性
     public static final String KEY_APART = "apart";
@@ -105,6 +107,7 @@ public class DataBase extends SQLiteOpenHelper {
                 KEY_URL + " TEXT, " +
                 KEY_UPDATE + " TEXT, " +
                 KEY_IMG + " TEXT, " +
+                KEY_NUM + " TEXT, " +
                 KEY_FILENAME + " TEXT); ";
         db.execSQL(createBannerTable);
 

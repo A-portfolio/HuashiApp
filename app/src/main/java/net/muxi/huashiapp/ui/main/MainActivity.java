@@ -75,6 +75,7 @@ public class MainActivity extends BaseActivity implements
         getSplashData();
     }
 
+
     private void initListener() {
         RxBus.getDefault().toObservable(LibLoginEvent.class)
                 .subscribe(libLoginEvent -> {

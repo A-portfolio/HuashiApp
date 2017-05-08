@@ -107,7 +107,7 @@ dependencies {
 
 
 //def bakPath = file("${buildDir}/bakApk/")
-//def baseInfo = "app-1.0.6-0408-23-59-24"
+//def baseInfo = "app-1.0.6-0505-20-31-58"
 //def variantName = "release"
 //
 //tinkerpatchSupport {
