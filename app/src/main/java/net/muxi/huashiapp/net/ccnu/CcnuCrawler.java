@@ -40,6 +40,12 @@ public class CcnuCrawler {
     public static final String COOKIE_KEY_JSE = "JSESSIONID";
 
     static {
+
+
+    }
+
+    public static void initCrawler(){
+        Logger.d("initCrawler");
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         CookieJar cookieJar = new CookieJar() {
@@ -111,12 +117,13 @@ public class CcnuCrawler {
                 .baseUrl("https://ccnubox.muxixyz.com/api/")
                 .build();
         retrofitService = retrofit.create(CcnuService.class);
-
     }
 
     public static InfoCookie getInfoCookie() {
         if (cookieStore.size() > 2) {
             return searchCookie();
+        }else {
+            initCrawler();
         }
 
         try {

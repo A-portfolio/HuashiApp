@@ -126,7 +126,9 @@ public class LoginActivity extends ToolbarActivity {
                 @Override
                 public void call(Subscriber<? super Boolean> subscriber) {
                     subscriber.onStart();
+                    CcnuCrawler.initCrawler();
                     boolean crawlerResult = CcnuCrawler.loginInfo(user.sid, user.password);
+//                    boolean crawlerResult = CcnuCrawler.getInfoCookie().Bigipserverpool_Jwc_Xk != null;
                     if (crawlerResult) {
                         subscriber.onNext(crawlerResult);
                         subscriber.onCompleted();
