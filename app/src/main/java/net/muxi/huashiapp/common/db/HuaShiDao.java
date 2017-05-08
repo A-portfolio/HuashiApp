@@ -1,7 +1,6 @@
 package net.muxi.huashiapp.common.db;
 
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -9,7 +8,6 @@ import net.muxi.huashiapp.common.data.ApartmentData;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.WebsiteData;
-import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.ArrayList;
@@ -166,6 +164,7 @@ public class HuaShiDao {
             while (cursor.moveToNext()) {
                 BannerData bannerData = new BannerData();
                 bannerData.setUrl(cursor.getString(cursor.getColumnIndex(DataBase.KEY_URL)));
+                bannerData.setNum(cursor.getString(cursor.getColumnIndex(DataBase.KEY_NUM)));
                 bannerData.setImg(cursor.getString(cursor.getColumnIndex(DataBase.KEY_IMG)));
                 bannerData.setFilename(cursor.getString(cursor.getColumnIndex(DataBase.KEY_FILENAME)));
                 bannerData.setUpdate(Long.parseLong(cursor.getString(cursor.getColumnIndex(DataBase.KEY_UPDATE))));
@@ -179,11 +178,12 @@ public class HuaShiDao {
     }
 
     public void insertBannerData(BannerData bannerData) {
-        db.execSQL("INSERT INTO " + DataBase.TABLE_BANNER + " VALUES(null,?,?,?,?)",
+        db.execSQL("INSERT INTO " + DataBase.TABLE_BANNER + " VALUES(null,?,?,?,?,?)",
                 new String[]{
                         bannerData.getUrl(),
                         String.valueOf(bannerData.getUpdate()),
                         bannerData.getImg(),
+                        bannerData.getNum(),
                         bannerData.getFilename()
                 });
     }

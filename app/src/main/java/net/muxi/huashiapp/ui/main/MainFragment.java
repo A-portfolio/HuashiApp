@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,8 +137,8 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         getBannerDatas();
 
 
-        initView();
         initHintView();
+        initView();
 
 
         mProductData = new ProductData();
@@ -368,7 +369,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                     .subscribe(new Observer<List<BannerData>>() {
                         @Override
                         public void onCompleted() {
-
                         }
 
                         @Override
@@ -378,6 +378,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
                         @Override
                         public void onNext(List<BannerData> bannerDatas) {
+                            Log.d("Test", "Test");
                             if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(
                                     mBannerDatas) || bannerDatas.size() != mBannerDatas.size()) {
                                 mBannerDatas.clear();
