@@ -111,9 +111,14 @@ public class LoginActivity extends ToolbarActivity {
         final User user = new User();
         user.sid = mEtSid.getText().toString();
         user.password = mEtPwd.getText().toString();
-        if (TextUtils.isEmpty(user.sid) || TextUtils.isEmpty(user.password)){
-            showErrorSnackbarShort(R.string.tip_err_account);
+        if (TextUtils.isEmpty(user.sid) && TextUtils.isEmpty(user.password)){
+            showErrorSnackbarShort(getString(R.string.tip_input_id_password));
             return;
+        }else if (TextUtils.isEmpty(user.sid)){
+            showErrorSnackbarShort(R.string.tip_input_id);
+            return;
+        }else if (TextUtils.isEmpty(user.password)){
+            showErrorSnackbarShort(R.string.tip_input_password);
         }
         showLoading();
         if (type.equals("info")) {
