@@ -25,16 +25,16 @@ public class CookieInterceptor implements Interceptor {
 
         List<String> pathSegments = originRequest.url().pathSegments();
 
-        if (pathSegments.get(1).equals("table") || pathSegments.get(1).equals("grade")){
-            if (CcnuCrawler.sSid != null && !CcnuCrawler.sSid.equals(App.sUser.sid)){
+        if (pathSegments.get(1).equals("table") || pathSegments.get(1).equals("grade")) {
+            if (CcnuCrawler.sSid != null && !CcnuCrawler.sSid.equals(App.sUser.sid)) {
                 CcnuCrawler.clearCookieStore();
             }
             InfoCookie cookie = CcnuCrawler.getInfoCookie();
-            if (cookie == null){
+            if (cookie == null) {
                 throw new IOException("cookie is null");
             }
-            builder.addHeader("Bigipserverpool_Jwc_Xk",cookie.Bigipserverpool_Jwc_Xk);
-            builder.addHeader("Jsessionid",cookie.Jsessionid);
+            builder.addHeader("Bigipserverpool_Jwc_Xk", cookie.Bigipserverpool_Jwc_Xk);
+            builder.addHeader("Jsessionid", cookie.Jsessionid);
             builder.addHeader("Sid", App.sUser.sid);
         }
 

@@ -254,7 +254,6 @@ public class TimetableFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(courseList -> {
-                    courseList.remove(0);
                     updateDB(courseList);
                     mCourses = courseList;
                     renderCourseView(courseList);

@@ -25,8 +25,8 @@ import retrofit2.Retrofit;
 
 public class CcnuCrawler {
 
-    public static List<List<Cookie>> cookieStore = new ArrayList<>();
-    public static CcnuService retrofitService;
+    private static List<List<Cookie>> cookieStore = new ArrayList<>();
+    private static CcnuService retrofitService;
     public static String sSid;
 
     public static final String LOGIN_INFO = "http://portal.ccnu.edu.cn/loginAction.do";
@@ -39,13 +39,8 @@ public class CcnuCrawler {
     public static final String COOKIE_KEY_BIG = "BIGipServerpool_jwc_xk";
     public static final String COOKIE_KEY_JSE = "JSESSIONID";
 
-    static {
-
-
-    }
-
+    //初始化爬虫代理,当用户切换账号时需要重新初始化
     public static void initCrawler(){
-        Logger.d("initCrawler");
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         CookieJar cookieJar = new CookieJar() {
@@ -122,8 +117,6 @@ public class CcnuCrawler {
     public static InfoCookie getInfoCookie() {
         if (cookieStore.size() > 2) {
             return searchCookie();
-        }else {
-            initCrawler();
         }
 
         try {
@@ -161,7 +154,8 @@ public class CcnuCrawler {
     }
 
     public static boolean loginInfo(String sid, String password) {
-        cookieStore.clear();
+        clearCookieStore();
+        initCrawler();
         try {
             Response<ResponseBody> response = retrofitService.loginInfo(sid,
                     password).execute();
