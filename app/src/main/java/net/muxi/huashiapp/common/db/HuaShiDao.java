@@ -164,10 +164,10 @@ public class HuaShiDao {
             while (cursor.moveToNext()) {
                 BannerData bannerData = new BannerData();
                 bannerData.setUrl(cursor.getString(cursor.getColumnIndex(DataBase.KEY_URL)));
-                bannerData.setNum(cursor.getString(cursor.getColumnIndex(DataBase.KEY_NUM)));
                 bannerData.setImg(cursor.getString(cursor.getColumnIndex(DataBase.KEY_IMG)));
                 bannerData.setFilename(cursor.getString(cursor.getColumnIndex(DataBase.KEY_FILENAME)));
                 bannerData.setUpdate(Long.parseLong(cursor.getString(cursor.getColumnIndex(DataBase.KEY_UPDATE))));
+                bannerData.setNum(cursor.getString(cursor.getColumnIndex(DataBase.KEY_NUM)));
                 bannerDatas.add(bannerData);
             }
         }
@@ -183,8 +183,8 @@ public class HuaShiDao {
                         bannerData.getUrl(),
                         String.valueOf(bannerData.getUpdate()),
                         bannerData.getImg(),
-                        bannerData.getNum(),
-                        bannerData.getFilename()
+                        bannerData.getFilename(),
+                        bannerData.getNum()
                 });
     }
 

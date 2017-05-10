@@ -148,7 +148,7 @@ public interface RetrofitService {
     @GET("calendar/")
     Observable<CalendarData> getCalendar();
 
-    @GET("banner/")
+    @GET("ios/banner/")
     Observable<List<BannerData>> getBanner();
 
     @GET("apartment/")

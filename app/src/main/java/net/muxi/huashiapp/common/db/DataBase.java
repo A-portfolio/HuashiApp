@@ -107,8 +107,9 @@ public class DataBase extends SQLiteOpenHelper {
                 KEY_URL + " TEXT, " +
                 KEY_UPDATE + " TEXT, " +
                 KEY_IMG + " TEXT, " +
-                KEY_NUM + " TEXT, " +
-                KEY_FILENAME + " TEXT); ";
+                KEY_FILENAME + " TEXT, "+
+                KEY_NUM+ " TEXT); ";
+
         db.execSQL(createBannerTable);
 
         String createApartmentTable = "CREATE TABLE IF NOT EXISTS " + TABLE_APARTMENT +
@@ -155,6 +156,7 @@ public class DataBase extends SQLiteOpenHelper {
             String clearAllCourse = "delete from course;";
             db.execSQL(clearAllCourse);
         }
+
         if (newVersion >= 3) {
 
             String dropWebsite = "drop table if exists " + TABLE_WEBSITE;
@@ -167,6 +169,31 @@ public class DataBase extends SQLiteOpenHelper {
             db.execSQL(createWebsiteTable);
 
         }
+
+        if (newVersion >= 4) {
+
+            String createBannerTable = "CREATE TABLE IF NOT EXISTS" + TABLE_BANNER  +
+                    " ( " + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    KEY_URL + " TEXT, " +
+                    KEY_UPDATE + " TEXT, " +
+                    KEY_IMG + " TEXT, " +
+                    KEY_FILENAME + " TEXT," +
+                    KEY_NUM + " TEXT); ";
+
+            String createTempBannerTable = "alter table TABLE_BANNER rename to _temp_banner";
+
+            String insertData = "insert into TABLE_BANNER select *,'' from _temp_banner";
+
+            String dropBanner = "drop table if exists" + TABLE_BANNER;
+
+            db.execSQL(createTempBannerTable);
+            db.execSQL(createBannerTable);
+            db.execSQL(insertData);
+            db.execSQL(dropBanner);
+
+
+        }
+
         Logger.d("database update");
     }
 }

@@ -26,6 +26,7 @@ import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
 import com.sina.weibo.sdk.api.share.SendMultiMessageToWeiboRequest;
 import com.sina.weibo.sdk.api.share.WeiboShareSDK;
 import com.sina.weibo.sdk.constant.WBConstants;
+import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
@@ -155,7 +156,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
                     public void onItemClick(int position) {
                         switch (position) {
                             case 0:
-                                shareToQzone(title, intro, url, iconUrl);
+                                shareToQQ(title, intro, url, iconUrl);
                                 shareToDialog.dismiss();
                                 break;
                             case 1:
@@ -320,10 +321,26 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         api.sendReq(req);
     }
 
+    public void shareToQQ(String title,String content,String url,String picUrl) {
+        mTencent = Tencent.createInstance(Constants.QQ_KEY,App.sContext);
+        final Bundle params = new Bundle();
+        params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE,QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
+        params.putString(QQShare.SHARE_TO_QQ_TITLE, title);//必填
+        if (content != null) {
+            params.putString(QQShare.SHARE_TO_QQ_SUMMARY, content);//选填
+        }
+        params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, url);//必填
+        ArrayList<String> imgUrlList = new ArrayList<>();
+        imgUrlList.add(picUrl);
+        params.putStringArrayList(QQShare.SHARE_TO_QQ_IMAGE_URL, imgUrlList);// 图片地址
+        Log.d("share", "start share to qq");
+        mTencent.shareToQQ(WebViewActivity.this,params,mBaseUiListener);
 
+    }
     public void shareToQzone(String title, String content, String url, String picUrl) {
         mTencent = Tencent.createInstance(Constants.QQ_KEY, App.sContext);
         final Bundle params = new Bundle();
+        params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE,QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
         params.putString(QzoneShare.SHARE_TO_QQ_TITLE, title);//必填
         if (content != null) {
             params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, content);//选填

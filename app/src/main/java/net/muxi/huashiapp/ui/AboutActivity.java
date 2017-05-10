@@ -1,22 +1,20 @@
 package net.muxi.huashiapp.ui;
 
 
-import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-
 import android.view.View;
 import android.widget.TextView;
-
 
 import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
+import net.muxi.huashiapp.util.AppUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
@@ -72,21 +70,23 @@ public class AboutActivity extends ToolbarActivity {
                 startActivity(intent);
                 break;
             case R.id.tv_copy:
-                manager = (ClipboardManager) this
-                        .getSystemService(Context.CLIPBOARD_SERVICE);
-                manager.setPrimaryClip(ClipData.newPlainText(null,mTvCcnuboxGroup.getText()));
-                if (manager.hasPrimaryClip()){
-                    manager.getPrimaryClip().getItemAt(0).getText();
-                }
+//                manager = (ClipboardManager) this
+//                        .getSystemService(Context.CLIPBOARD_SERVICE);
+//                manager.setPrimaryClip(ClipData.newPlainText(null,mTvCcnuboxGroup.getText()));
+//                if (manager.hasPrimaryClip()){
+//                    manager.getPrimaryClip().getItemAt(0).getText();
+//                }
+                AppUtil.clipToClipBoard(this,"576225292");
                 showSnackbarShort("成功复制到粘贴板");
                 break;
             case R.id.tv_copy2:
-                manager = (ClipboardManager) this
-                        .getSystemService(Context.CLIPBOARD_SERVICE);
-                manager.setPrimaryClip(ClipData.newPlainText(null,mTvMuxiGroup.getText()));
-                if (manager.hasPrimaryClip()){
-                    manager.getPrimaryClip().getItemAt(0).getText();
-                }
+//                manager = (ClipboardManager) this
+//                        .getSystemService(Context.CLIPBOARD_SERVICE);
+//                manager.setPrimaryClip(ClipData.newPlainText(null,mTvMuxiGroup.getText()));
+//                if (manager.hasPrimaryClip()){
+//                    manager.getPrimaryClip().getItemAt(0).getText();
+//                }
+                AppUtil.clipToClipBoard(this,"534239958");
                 showSnackbarShort("成功复制到粘贴板");
                 break;
         }
