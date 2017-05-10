@@ -120,20 +120,12 @@
         <!--<item name="android:backgroundDimEnabled">true</item>-->
     </style>
     
-    <style name="TextNormal" parent="TextAppearance.AppCompat">
+    <style name="TextNormal" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorHint">#B2B2B2</item>
         <item name="android:textSize">12sp</item>
         <item name="colorControlHighlight">@color/color_selected</item>
         <item name="colorControlNormal">@color/divider</item>
         <item name="colorControlActivated">@color/color_selected</item>
-    </style>
-
-    <style name="TextError" parent="TextAppearance.AppCompat">
-        <item name="android:textColorHint">@color/red</item>
-        <item name="android:textSize">12sp</item>
-        <item name="colorControlNormal">@color/divider</item>
-        <item name="colorControlActivated">@color/red</item>
-        <item name="colorControlHighlight">@color/red</item>
     </style>
 
     <style name="SearchEditTextTheme" parent="Base.Widget.AppCompat.EditText">

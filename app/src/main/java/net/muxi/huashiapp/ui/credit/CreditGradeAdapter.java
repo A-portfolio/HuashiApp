@@ -81,6 +81,9 @@ public class CreditGradeAdapter extends RecyclerView.Adapter<CreditGradeAdapter.
     }
 
     public void setAllChecked() {
+        if (checkedList == null){
+            return;
+        }
         checkedList.clear();
         for (int i = 0; i < mScoresList.size(); i++) {
             checkedList.add(i);

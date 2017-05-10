@@ -99,8 +99,10 @@ public class CreditGradeActivity extends ToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_all) {
-            mCreditGradeAdapter.setAllChecked();
-            mCreditGradeAdapter.notifyDataSetChanged();
+            if (mCreditGradeAdapter != null) {
+                mCreditGradeAdapter.setAllChecked();
+                mCreditGradeAdapter.notifyDataSetChanged();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
