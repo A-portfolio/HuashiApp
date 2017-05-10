@@ -20,6 +20,7 @@ import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
 import com.sina.weibo.sdk.api.share.SendMultiMessageToWeiboRequest;
 import com.sina.weibo.sdk.api.share.WeiboShareSDK;
 import com.sina.weibo.sdk.constant.WBConstants;
+import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
@@ -140,7 +141,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
                 public void onItemClick(RecyclerView.ViewHolder vh) {
                     switch (vh.getLayoutPosition()) {
                         case 0:
-                            shareToQzone(APP_TITLE, APP_INTRO, APP_URL, ICON_URL);
+                            shareToQQ(APP_TITLE, APP_INTRO, APP_URL, ICON_URL);
                             dialog.dismiss();
                             break;
                         case 1:
@@ -175,7 +176,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
                 public void onItemClick(RecyclerView.ViewHolder vh) {
                     switch (vh.getLayoutPosition()) {
                         case 0:
-                            shareToQzone(CAL_TITLE, CAL_INTRO, CAL_URL, ICON_URL);
+                            shareToQQ(CAL_TITLE, CAL_INTRO, CAL_URL, ICON_URL);
                             dialog.dismiss();
                             break;
                         case 1:
@@ -212,9 +213,28 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
 
     }
 
+
+    public void shareToQQ(String title,String content,String url,String picUrl) {
+        mTencent = Tencent.createInstance(Constants.QQ_KEY,App.sContext);
+        final Bundle params = new Bundle();
+        params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE,QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
+        params.putString(QQShare.SHARE_TO_QQ_TITLE, title);//必填
+        if (content != null) {
+            params.putString(QQShare.SHARE_TO_QQ_SUMMARY, content);//选填
+        }
+        params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, url);//必填
+        ArrayList<String> imgUrlList = new ArrayList<>();
+        imgUrlList.add(picUrl);
+        params.putStringArrayList(QQShare.SHARE_TO_QQ_IMAGE_URL, imgUrlList);// 图片地址
+        Log.d("share", "start share to qq");
+        mTencent.shareToQQ(getActivity(),params,mBaseUiListener);
+
+    }
+
     public void shareToQzone(String title, String content, String url, String picUrl) {
         mTencent = Tencent.createInstance(Constants.QQ_KEY, App.sContext);
         final Bundle params = new Bundle();
+        params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE,QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
         params.putString(QzoneShare.SHARE_TO_QQ_TITLE, title);//必填
         if (content != null) {
             params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, content);//选填
@@ -230,9 +250,6 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
 //            public void run() {
 //                Logger.d("start share");
         mTencent.shareToQzone(getActivity(), params, mBaseUiListener);
-//            }
-//
-//        });
     }
 
 

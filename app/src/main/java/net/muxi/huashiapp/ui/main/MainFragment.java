@@ -231,7 +231,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                     switch (itemData.getName()) {
                         case "成绩":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
-                                LoginActivity.start(getContext(), "info", SCORE_ACTIVITY);
+                                LoginActivity.start(getActivity(), "info", SCORE_ACTIVITY);
 //                                RxBus.getDefault().toObservable(LoginSuccessEvent.class)
 //                                        .filter(loginSuccessEvent -> loginSuccessEvent
 //                                                .targetActivityName.equals(
@@ -240,26 +240,26 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 //                                                getContext())
 //                                                , Throwable::printStackTrace);
                             } else {
-                                ScoreSelectActivity.start(getContext());
+                                ScoreSelectActivity.start(getActivity());
                             }
                             ZhugeUtils.sendEvent("成绩查询", "成绩查询");
                             break;
                         case "校园通知":
-                            NewsActivity.start(getContext());
+                            NewsActivity.start(getActivity());
                             ZhugeUtils.sendEvent("通知公告", "通知公告");
                             break;
                         case "电费":
                             String eleQuery = sp.getString(PreferenceUtil.ELE_QUERY_STRING);
                             if (eleQuery.equals("")) {
-                                ElectricityActivity.start(getContext());
+                                ElectricityActivity.start(getActivity());
                             } else {
-                                ElectricityDetailActivity.start(getContext(), eleQuery);
+                                ElectricityDetailActivity.start(getActivity(), eleQuery);
                             }
                             ZhugeUtils.sendEvent("电费查询", "电费查询");
                             break;
                         case "校园卡":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
-                                LoginActivity.start(getContext(), "info", CARD_ACTIVITY);
+                                LoginActivity.start(getActivity(), "info", CARD_ACTIVITY);
 //                                RxBus.getDefault().toObservable(LoginSuccessEvent.class)
 //                                        .filter(loginSuccessEvent -> loginSuccessEvent
 //                                                .targetActivityName.equals(
@@ -268,13 +268,13 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 //                                                getContext())
 //                                                , Throwable::printStackTrace);
                             } else {
-                                CardActivity.start(getContext());
+                                CardActivity.start(getActivity());
                             }
                             ZhugeUtils.sendEvent("学生卡查询", "学生卡查询");
                             break;
                         case "算学分":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
-                                LoginActivity.start(getContext(), "info", CREDIT_ACTIVITY);
+                                LoginActivity.start(getActivity(), "info", CREDIT_ACTIVITY);
 //                                RxBus.getDefault().toObservable(LoginSuccessEvent.class)
 //                                        .first()
 //                                        .takeFirst()
@@ -283,33 +283,33 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 //                                                }
 //                                                , Throwable::printStackTrace);
                             } else {
-                                SelectCreditActivity.start(getContext());
+                                SelectCreditActivity.start(getActivity());
                             }
                             ZhugeUtils.sendEvent("平均学分绩查询", "平均学分绩查询");
                             break;
                         case "空闲教室":
                             String today = DateUtil.getWeek(new Date());
                             if (today.equals("周六") || today.equals("周日")) {
-                                StudyRoomBlankActivity.start(getContext());
+                                StudyRoomBlankActivity.start(getActivity());
                             } else {
-                                StudyRoomActivity.start(getContext());
+                                StudyRoomActivity.start(getActivity());
                             }
                             ZhugeUtils.sendEvent("空闲教室查询", "空闲教室查询");
                             break;
                         case "部门信息":
-                            ApartmentActivity.start(getContext());
+                            ApartmentActivity.start(getActivity());
                             ZhugeUtils.sendEvent("部门信息查询", "部门信息查询");
                             break;
                         case "校历":
-                            CalendarActivity.start(getContext());
+                            CalendarActivity.start(getActivity());
                             ZhugeUtils.sendEvent("校历查询", "校历查询");
                             break;
                         case "常用网站":
-                            WebsiteActivity.start(getContext());
+                            WebsiteActivity.start(getActivity());
                             ZhugeUtils.sendEvent("常用网站查询", "常用网站查询");
                             break;
                         case "学而":
-                            Intent intent = WebViewActivity.newIntent(getContext(), mProductData.get_products().get(0).getUrl(),
+                            Intent intent = WebViewActivity.newIntent(getActivity(), mProductData.get_products().get(0).getUrl(),
                                     mProductData.get_products().get(0).getName(),
                                     mProductData.get_products().get(0).getIntro(),
                                     mProductData.get_products().get(0).getIcon());
@@ -317,7 +317,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             ZhugeUtils.sendEvent("学而", "学而");
                             break;
                         case "更多":
-                            MoreActivity.start(getContext());
+                            MoreActivity.start(getActivity());
                             break;
                     }
                 }

@@ -1,7 +1,5 @@
 package net.muxi.huashiapp.ui.electricity;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v4.view.MotionEventCompat;
 import android.view.LayoutInflater;
@@ -15,6 +13,7 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseActivity;
+import net.muxi.huashiapp.util.AppUtil;
 import net.muxi.huashiapp.util.DimensUtil;
 
 import butterknife.BindView;
@@ -81,12 +80,13 @@ public class ElectricityPayHintView extends RelativeLayout {
 //                ElectricityDetailActivity.start(getContext(),eleQuery);
                 break;
             case R.id.tv_copy:
-                ClipboardManager manager = (ClipboardManager) getContext()
-                        .getSystemService(Context.CLIPBOARD_SERVICE);
-                manager.setPrimaryClip(ClipData.newPlainText(null, mTvName.getText()));
-                if (manager.hasPrimaryClip()) {
-                    manager.getPrimaryClip().getItemAt(0).getText();
-                }
+//                ClipboardManager manager = (ClipboardManager) getContext()
+//                        .getSystemService(Context.CLIPBOARD_SERVICE);
+//                manager.setPrimaryClip(ClipData.newPlainText(null, mTvName.getText()));
+//                if (manager.hasPrimaryClip()) {
+//                    manager.getPrimaryClip().getItemAt(0).getText();
+//                }
+                AppUtil.clipToClipBoard(getContext(),mTvName.getText());
                 ((BaseActivity) mContext).showSnackbarShort("成功复制到粘贴板");
                 break;
         }

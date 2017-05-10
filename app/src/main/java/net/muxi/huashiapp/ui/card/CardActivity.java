@@ -1,11 +1,14 @@
 package net.muxi.huashiapp.ui.card;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -65,6 +68,8 @@ public class CardActivity extends ToolbarActivity {
     private PreferenceUtil sp;
 
 
+    private static final int REQUEST_READ_PHONE_STATE = 1;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,10 +78,19 @@ public class CardActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         setTitle("校园卡");
 
+        if (!isStorgePermissionGranted()) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
+//        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_READ_PHONE_STATE);}
+
 
         loadDatas();
 
@@ -94,8 +108,6 @@ public class CardActivity extends ToolbarActivity {
         });
 
 
-
-
     }
 
 
@@ -105,7 +117,7 @@ public class CardActivity extends ToolbarActivity {
         user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
         user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
         CampusFactory.getRetrofitService()
-                .getCardBalance(user.getSid(), "90", "0", "20")
+                .getCardBalance(user.getSid(), "90", "0", "60")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<CardData>>() {
@@ -148,7 +160,7 @@ public class CardActivity extends ToolbarActivity {
                     }
                 });
 
-}
+    }
 
     /**
      * 获取指定日的消费总额
@@ -164,8 +176,6 @@ public class CardActivity extends ToolbarActivity {
             if (mCardDatas.get(i).getDealTypeName().equals("消费"))
                 if (date.equals(mCardDatas.get(i).getDealDateTime().substring(0, 10))) {
                     sum += Float.valueOf(mCardDatas.get(i).getTransMoney());
-
-
                 }
         }
         Logger.d(sum + "");
@@ -173,20 +183,18 @@ public class CardActivity extends ToolbarActivity {
 
     }
 
-
-//    //七天消费额转换为Json数据
-//    class CardSumData {
-//
-//        public String time;
-//        public float sum;
-//
-//        public CardSumData(String time, float sum) {
-//            this.time = time;
-//            this.sum = sum;
-//        }
-//    }
-
-
+    public boolean isStorgePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
 }
 
 

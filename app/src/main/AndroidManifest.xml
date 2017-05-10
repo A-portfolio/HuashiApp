@@ -126,19 +126,23 @@
             android:name="net.muxi.huashiapp.ui.apartment.ApartmentActivity"
             android:launchMode="singleTask"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.CalendarActivity"/>
+        <activity android:name="net.muxi.huashiapp.ui.CalendarActivity"
+            android:launchMode="singleTask"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.AboutActivity"/>
+        <activity android:name="net.muxi.huashiapp.ui.AboutActivity"
+            android:launchMode="singleTask"/>
 
         <activity android:name=".ui.MoreActivity"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.electricity.ElectricityActivity"/>
+        <activity android:name="net.muxi.huashiapp.ui.electricity.ElectricityActivity"
+            android:launchMode="singleTask"/>
 
         <activity android:name="net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity"/>
 
         <activity android:name=".ui.electricity.ElectricityAreaOptionActivity"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.InfoActivity"/>
+        <activity android:name="net.muxi.huashiapp.ui.InfoActivity"
+            android:launchMode="singleTask"/>
 
         <activity android:name=".ui.SuggestionActivity"/>
 

@@ -169,7 +169,11 @@ public class ElectricityActivity extends ToolbarActivity {
                     if (mTvArea.getText().length() > index + 1) {
                         mQuery = mTvArea.getText().toString().substring(0, 1) + mTvArea.getText().toString().substring(2, index) + "-" + mTvArea.getText().toString().substring(index + 1) + mEtRoom.getText().toString();
                     } else {
-                        mQuery = mTvArea.getText().toString().substring(0, 1) + mTvArea.getText().toString().substring(2, index) + "-" + mEtRoom.getText().toString();
+                        if (mTvArea.getText().toString().substring(0,3).equals("元宝山")) {
+                            mQuery = mTvArea.getText().toString().substring(0, 1) + mTvArea.getText().toString().substring(index - 1, index) + "-" + mEtRoom.getText().toString();
+                        } else {
+                            mQuery = mTvArea.getText().toString().substring(0, 1) + mTvArea.getText().toString().substring(2, index) + "-" + mEtRoom.getText().toString();
+                        }
                     }
                     PreferenceUtil sp = new PreferenceUtil();
                     sp.saveString(PreferenceUtil.ELE_QUERY_STRING, mQuery);

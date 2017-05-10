@@ -137,11 +137,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof BannerViewHolder) {
-//            Comparator<BannerData> comparator = (o1, o2) -> {
-//                Log.d("Test", o1.getNum() + ", " + o2.getNum());
-//                return Integer.parseInt(o1.getNum()) - Integer.parseInt(o2.getNum());
-//            };
-//            Collections.sort(mBannerDatas, comparator);
+
             for (int i = 0; i < mBannerDatas.size(); i++) {
                 ViewHolder<BannerData> viewHolder = new ViewHolder<BannerData>() {
                     @Override
