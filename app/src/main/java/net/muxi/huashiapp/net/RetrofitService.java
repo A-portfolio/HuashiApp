@@ -106,39 +106,18 @@ public interface RetrofitService {
     Observable<Response<VerifyResponse>> renewBook(@Header("Authorization") String verification,
             @Body RenewData renewData);
 
-//    @GET("table/")
-//    Observable<List<Course>> getSchedule(@Header("Authorization") String verification,
-//            @Query("sid") String sid);
-
-//    //添加课程
-//    @POST("table/")
-//    Observable<Response<VerifyResponse>> addCourse(@Header("Authorization") String authorization,
-//            @Body Course course);
-//
-//    //删除课程
-//    @DELETE("table/{id}/")
-//    Observable<Response<VerifyResponse>> deleteCourse(@Header("Authorization") String
-// authorization,
-//            @Path("id") String id);
-//
-//    @PUT("table/{id}/")
-//    Observable<Response<VerifyResponse>> updateCourse(@Header("Authorization") String
-// authorization,
-//            @Path("id") String id,
-//            @Body Course course);
-
-    @GET("http://120.77.8.149:5566/api/table/")
+    @GET("table/")
     Observable<List<Course>> getSchedule();
 
     //添加课程
-    @POST("http://120.77.8.149:5566/api/table/")
+    @POST("table/")
     Observable<CourseId> addCourse(@Body Course course);
 
     //删除课程
-    @DELETE("http://120.77.8.149:5566/api/table/{id}/")
+    @DELETE("table/{id}/")
     Observable<Response<VerifyResponse>> deleteCourse(@Path("id") String id);
 
-    @PUT("http://120.77.8.149:5566/api/table/{id}/")
+    @PUT("table/{id}/")
     Observable<Response<VerifyResponse>> updateCourse(@Path("id") String id,
             @Body Course course);
 
@@ -168,9 +147,6 @@ public interface RetrofitService {
     @GET("app/latest/")
     Observable<VersionData> getLatestVersion();
 
-//    @GET
-//    Observable<ResponseBody> downloadFile(@Url String url);
-
     @GET("patch/")
     Observable<List<PatchData>> getPatch();
 
@@ -188,9 +164,8 @@ public interface RetrofitService {
             @Query("weekday") String day,
             @Query("building") String area);
 
-    @GET("http://120.77.8.149:8090/api/grade/")
+    @GET("grade/")
     Observable<List<Score>> getScores(@Query("xnm") String year,
             @Query("xqm") String term);
-
 
 }

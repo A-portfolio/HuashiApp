@@ -78,11 +78,6 @@ public class CardActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         setTitle("校园卡");
 
-        if (!isStorgePermissionGranted()) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
-        }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
@@ -181,19 +176,6 @@ public class CardActivity extends ToolbarActivity {
         Logger.d(sum + "");
         return sum;
 
-    }
-
-    public boolean isStorgePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
     }
 }
 

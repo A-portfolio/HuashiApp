@@ -4,18 +4,18 @@
                 android:id="@+id/layout_item" android:layout_width="match_parent"
                 android:layout_height="72dp"
                 android:paddingLeft="16dp"
-                android:paddingTop="16dp"
-                android:paddingRight="16dp">
+                android:paddingRight="16dp"
+                android:paddingTop="16dp">
 
     <TextView
         android:id="@+id/tv_property"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginRight="16dp"
-        android:gravity="center"
-        android:background="@drawable/shape_green"
-        android:textColor="@color/colorWhite"
         android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/shape_green"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
         android:textStyle="bold"
         tools:text="文"/>
 
@@ -26,6 +26,7 @@
         android:layout_toRightOf="@id/tv_property"
         android:ellipsize="end"
         android:maxLines="1"
+        android:maxLength="14"
         android:textColor="?android:attr/textColorPrimary"
         tools:text=""/>
 
@@ -75,10 +76,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
-            android:maxLines="1"
-            android:ellipsize="end"
             tools:text="总成绩:33.5"/>
 
         <TextView
