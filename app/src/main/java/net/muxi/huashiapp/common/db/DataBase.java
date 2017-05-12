@@ -178,19 +178,20 @@ public class DataBase extends SQLiteOpenHelper {
 
 //            db.execSQL(createTempBannerTable);
 //            db.execSQL(insertData);
-//            db.execSQL(dropBanner);
+
 
             String dropBanner = "drop table if exists " + TABLE_BANNER;
             db.execSQL(dropBanner);
 
 
-            String createBannerTable = "CREATE TABLE IF NOT EXISTS" + TABLE_BANNER  +
+            String createBannerTable = "CREATE TABLE IF NOT EXISTS " + TABLE_BANNER +
                     " ( " + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     KEY_URL + " TEXT, " +
                     KEY_UPDATE + " TEXT, " +
                     KEY_IMG + " TEXT, " +
-                    KEY_FILENAME + " TEXT," +
+                    KEY_FILENAME + " TEXT, "+
                     KEY_NUM + " TEXT); ";
+
             db.execSQL(createBannerTable);
 
         }

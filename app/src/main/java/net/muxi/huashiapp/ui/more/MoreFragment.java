@@ -59,7 +59,6 @@ public class MoreFragment extends BaseFragment {
     private PreferenceUtil sp;
 
 
-
     private String[] titles = {"常见问题Q&A", "分享App给好友", "通知栏提醒", "意见反馈", "检查更新 ", "关于", "退出账号"};
     private Integer[] icons =
             {R.drawable.ic_more_qa, R.drawable.ic_more_share, R.drawable.ic_more_notice,
@@ -126,17 +125,20 @@ public class MoreFragment extends BaseFragment {
 
     private void checkUpdates() {
         CampusFactory.getRetrofitService().getLatestVersion()
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
                 .subscribe(versionData -> {
-                    if (versionData.getVersion() != null &&
-                            !BuildConfig.VERSION_NAME.equals(versionData.version)) {
+                    if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME)) {
+                        Logger.d("has new version!!");
                         if (!sp.getString(PreferenceUtil.LAST_NOT_REMIND_VERSION, BuildConfig.VERSION_NAME).equals(versionData.getVersion())
                                 || sp.getBoolean(PreferenceUtil.REMIND_UPDATE, true)) {
                             if (!sp.getString(PreferenceUtil.LAST_NOT_REMIND_VERSION, BuildConfig.VERSION_NAME).equals(versionData.getVersion())) {
                                 sp.saveBoolean(PreferenceUtil.REMIND_UPDATE, true);
                             }
-                            CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
+                            Logger.d("init dialog");
+                            sp.saveString(PreferenceUtil.LAST_NOT_REMIND_VERSION, versionData.getVersion());
+                            downloadUrl = versionData.getDownload();
+                            final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
                             checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update)
                                     + versionData.getVersion());
                             checkUpdateDialog.setContent(
@@ -147,7 +149,7 @@ public class MoreFragment extends BaseFragment {
                             checkUpdateDialog.setOnPositiveButton(
                                     App.sContext.getString(R.string.btn_update),
                                     () -> {
-                                        if (isStorgePermissionGranted()){
+                                        if (isStorgePermissionGranted()) {
                                             beginUpdate(downloadUrl);
                                         }
                                         checkUpdateDialog.dismiss();
@@ -155,11 +157,12 @@ public class MoreFragment extends BaseFragment {
                             checkUpdateDialog.setOnNegativeButton(
                                     App.sContext.getString(R.string.btn_cancel),
                                     () -> checkUpdateDialog.dismiss());
+
                             checkUpdateDialog.show(getFragmentManager(), "dialog_update");
-                        } else {
-                            ((BaseActivity) getActivity()).showSnackbarShort(
-                                    R.string.title_not_have_to_update);
                         }
+                    } else {
+                        ((BaseActivity) getActivity()).showSnackbarShort(
+                                R.string.title_not_have_to_update);
                     }
                 }, throwable -> throwable.printStackTrace());
     }
@@ -198,18 +201,6 @@ public class MoreFragment extends BaseFragment {
         }
     }
 
-    public boolean isStorgePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
 
     private void logout() {
         LogoutDialog logoutDialog = new LogoutDialog();
@@ -258,6 +249,19 @@ public class MoreFragment extends BaseFragment {
             }
         });
 
+    }
+
+    public boolean isStorgePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 
 }

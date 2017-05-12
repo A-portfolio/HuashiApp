@@ -148,7 +148,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         RxBus.getDefault().toObservable(RefreshBanner.class)
                 .subscribe(refreshBanner -> {
                     refresh();
-                });
+                },throwable -> throwable.printStackTrace());
 
 
         initHintView();

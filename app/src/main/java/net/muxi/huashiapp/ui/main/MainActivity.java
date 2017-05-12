@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
@@ -25,15 +27,20 @@ import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.SplashData;
 import net.muxi.huashiapp.event.LibLoginEvent;
 import net.muxi.huashiapp.net.CampusFactory;
+import net.muxi.huashiapp.service.DownloadService;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMainFragment;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
 import net.muxi.huashiapp.ui.login.LoginActivity;
+import net.muxi.huashiapp.ui.more.CheckUpdateDialog;
 import net.muxi.huashiapp.ui.more.MoreFragment;
 import net.muxi.huashiapp.ui.schedule.TimetableFragment;
 import net.muxi.huashiapp.util.AlarmUtil;
 import net.muxi.huashiapp.util.FrescoUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
+import net.muxi.huashiapp.util.ToastUtil;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +58,10 @@ public class MainActivity extends BaseActivity implements
 
     private Fragment mCurFragment;
 
+    private String downloadUrl;
+
+    private PreferenceUtil sp;
+
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);
         context.startActivity(starter);
@@ -67,12 +78,89 @@ public class MainActivity extends BaseActivity implements
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
+        sp = new PreferenceUtil();
 
         initView();
         initListener();
         handleIntent(getIntent());
+        checkNewVersion();
         AlarmUtil.register(this);
         getSplashData();
+    }
+
+
+    private void checkNewVersion(){
+        CampusFactory.getRetrofitService().getLatestVersion()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(versionData -> {
+                    if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME)) {
+                        Logger.d("has new version!!");
+                        if (!sp.getString(PreferenceUtil.LAST_NOT_REMIND_VERSION, BuildConfig.VERSION_NAME).equals(versionData.getVersion())
+                                || sp.getBoolean(PreferenceUtil.REMIND_UPDATE, true)) {
+                            if (!sp.getString(PreferenceUtil.LAST_NOT_REMIND_VERSION, BuildConfig.VERSION_NAME).equals(versionData.getVersion())) {
+                                sp.saveBoolean(PreferenceUtil.REMIND_UPDATE, true);
+                            }
+                            Logger.d("init dialog");
+                            sp.saveString(PreferenceUtil.LAST_NOT_REMIND_VERSION, versionData.getVersion());
+                            downloadUrl = versionData.getDownload();
+                            final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
+                            checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update)
+                                    + versionData.getVersion());
+                            checkUpdateDialog.setContent(
+                                    App.sContext.getString(R.string.tip_update_intro)
+                                            + versionData.getIntro() + "/n" +
+                                            App.sContext.getString(R.string.tip_update_size)
+                                            + versionData.getSize());
+                            checkUpdateDialog.setOnPositiveButton(
+                                    App.sContext.getString(R.string.btn_update),
+                                    () -> {
+                                        if (isStorgePermissionGranted()) {
+                                            beginUpdate(downloadUrl);
+                                        }
+                                        checkUpdateDialog.dismiss();
+                                    });
+                            checkUpdateDialog.setOnNegativeButton(
+                                    App.sContext.getString(R.string.btn_cancel),
+                                    () -> checkUpdateDialog.dismiss());
+
+                            checkUpdateDialog.show(getSupportFragmentManager(), "dialog_update");
+                        }
+                    }
+                },throwable -> throwable.printStackTrace());
+    }
+
+    private void beginUpdate(String download) {
+        deleteApkBefore();
+        Intent intent = new Intent(this, DownloadService.class);
+        intent.putExtra("url", download);
+        intent.putExtra("fileType", "apk");
+        intent.putExtra("fileName", "ccnubox.apk");
+        startService(intent);
+        Logger.d("start download");
+        ToastUtil.showShort(getString(R.string.tip_start_download_apk));
+    }
+
+    private void deleteApkBefore() {
+        String path = Environment.getExternalStorageDirectory() + "/Download/" + "ccnubox.apk";
+        File file = new File(path);
+        if (file.exists()){
+            file.delete();
+            Logger.d("apk file delete");
+        }
+        Logger.d("file not exists");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Logger.d("permission " + permissions[0] + "is" + grantResults[0]);
+            Logger.d(downloadUrl);
+            if (downloadUrl != null && downloadUrl.length() != 0) {
+                beginUpdate(downloadUrl);
+            }
+        }
     }
 
 
