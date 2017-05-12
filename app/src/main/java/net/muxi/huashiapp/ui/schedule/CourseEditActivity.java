@@ -132,6 +132,7 @@ public class CourseEditActivity extends ToolbarActivity {
                     if (courseId.id != 0){
                         mCourse.id = String.valueOf(courseId.id);
                         dao.insertCourse(mCourse);
+                        showSnackbarShort("添加课程成功");
                         Intent intent = new Intent(this, ScheduleWidgetProvider.class);
                         intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
                         sendBroadcast(intent);
@@ -273,6 +274,7 @@ public class CourseEditActivity extends ToolbarActivity {
                     switch (verifyResponseResponse.code()) {
                         case 200:
                             dao.updateCourse(mCourse);
+                            showSnackbarShort("修改课程成功");
                             Intent intent = new Intent(this, ScheduleWidgetProvider.class);
                             intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
                             sendBroadcast(intent);
