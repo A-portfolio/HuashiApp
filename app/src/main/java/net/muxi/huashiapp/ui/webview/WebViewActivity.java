@@ -98,7 +98,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
         title = getIntent().hasExtra(WEB_TITLE) ? getIntent().getStringExtra(WEB_TITLE) : getIntent().getStringExtra(WEB_URL);
         url = getIntent().hasExtra(WEB_URL) ? getIntent().getStringExtra(WEB_URL) : "";
-        iconUrl = getIntent().hasExtra(WEB_ICON_URL) ? getIntent().getStringExtra(WEB_ICON_URL) : "https://occc3ev3l.qnssl.com/ccnubox_icon.png";
+        iconUrl = getIntent().hasExtra(WEB_ICON_URL) ? getIntent().getStringExtra(WEB_ICON_URL) : "http://static.muxixyz.com/ccnubox_share_icon.jpg";
         intro = getIntent().hasExtra(WEB_INTRO) ? getIntent().getStringExtra(WEB_INTRO) : "";
         setTitle(title);
 
@@ -292,7 +292,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         msg.title = title;
         msg.description = intro;
         Logger.d(getExternalCacheDir() + "/" + title + ".jpg");
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.ic_share_to);
 //        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
 //        bmp.recycle();
         msg.setThumbImage(bmp);
@@ -310,7 +310,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         msg.title = title;
         msg.description = intro;
         Logger.d(getExternalCacheDir() + "/" + title + ".jpg");
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.ic_share_to);
 //        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
 //        bmp.recycle();
         msg.setThumbImage(bmp);

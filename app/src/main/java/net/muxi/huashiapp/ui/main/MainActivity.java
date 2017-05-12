@@ -23,8 +23,8 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.SplashData;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.event.LibLoginEvent;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMainFragment;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
 import net.muxi.huashiapp.ui.login.LoginActivity;
@@ -94,6 +94,7 @@ public class MainActivity extends BaseActivity implements
                     }
                 }, Throwable::printStackTrace);
     }
+
 
     private void getSplashData() {
         CampusFactory.getRetrofitService().getSplash()

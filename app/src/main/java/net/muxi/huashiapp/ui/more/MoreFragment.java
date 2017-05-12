@@ -1,9 +1,14 @@
 package net.muxi.huashiapp.ui.more;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -126,27 +131,35 @@ public class MoreFragment extends BaseFragment {
                 .subscribe(versionData -> {
                     if (versionData.getVersion() != null &&
                             !BuildConfig.VERSION_NAME.equals(versionData.version)) {
-                        CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
-                        checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update)
-                                + versionData.getVersion());
-                        checkUpdateDialog.setContent(
-                                App.sContext.getString(R.string.tip_update_intro)
-                                        + versionData.getIntro() + "/n" +
-                                        App.sContext.getString(R.string.tip_update_size)
-                                        + versionData.getSize());
-                        checkUpdateDialog.setOnPositiveButton(
-                                App.sContext.getString(R.string.btn_update),
-                                () -> {
-                                    beginUpdate(versionData.download);
-                                    checkUpdateDialog.dismiss();
-                                });
-                        checkUpdateDialog.setOnNegativeButton(
-                                App.sContext.getString(R.string.btn_cancel),
-                                () -> checkUpdateDialog.dismiss());
-                        checkUpdateDialog.show(getFragmentManager(), "dialog_update");
-                    } else {
-                        ((BaseActivity) getActivity()).showSnackbarShort(
-                                R.string.title_not_have_to_update);
+                        if (!sp.getString(PreferenceUtil.LAST_NOT_REMIND_VERSION, BuildConfig.VERSION_NAME).equals(versionData.getVersion())
+                                || sp.getBoolean(PreferenceUtil.REMIND_UPDATE, true)) {
+                            if (!sp.getString(PreferenceUtil.LAST_NOT_REMIND_VERSION, BuildConfig.VERSION_NAME).equals(versionData.getVersion())) {
+                                sp.saveBoolean(PreferenceUtil.REMIND_UPDATE, true);
+                            }
+                            CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
+                            checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update)
+                                    + versionData.getVersion());
+                            checkUpdateDialog.setContent(
+                                    App.sContext.getString(R.string.tip_update_intro)
+                                            + versionData.getIntro() + "/n" +
+                                            App.sContext.getString(R.string.tip_update_size)
+                                            + versionData.getSize());
+                            checkUpdateDialog.setOnPositiveButton(
+                                    App.sContext.getString(R.string.btn_update),
+                                    () -> {
+                                        if (isStorgePermissionGranted()){
+                                            beginUpdate(downloadUrl);
+                                        }
+                                        checkUpdateDialog.dismiss();
+                                    });
+                            checkUpdateDialog.setOnNegativeButton(
+                                    App.sContext.getString(R.string.btn_cancel),
+                                    () -> checkUpdateDialog.dismiss());
+                            checkUpdateDialog.show(getFragmentManager(), "dialog_update");
+                        } else {
+                            ((BaseActivity) getActivity()).showSnackbarShort(
+                                    R.string.title_not_have_to_update);
+                        }
                     }
                 }, throwable -> throwable.printStackTrace());
     }
@@ -162,6 +175,18 @@ public class MoreFragment extends BaseFragment {
         ToastUtil.showShort(getString(R.string.tip_start_download_apk));
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Logger.d("permission " + permissions[0] + "is" + grantResults[0]);
+            Logger.d(downloadUrl);
+            if (downloadUrl != null && downloadUrl.length() != 0) {
+                beginUpdate(downloadUrl);
+            }
+        }
+    }
+
     private void deleteApkBefore() {
         String path = Environment.getExternalStorageDirectory() + "/Download/" + "ccnubox.apk";
         File file = new File(path);
@@ -170,6 +195,19 @@ public class MoreFragment extends BaseFragment {
             Logger.d("apk file delete");
         } else {
             Logger.d("file not exists");
+        }
+    }
+
+    public boolean isStorgePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        } else {
+            return true;
         }
     }
 

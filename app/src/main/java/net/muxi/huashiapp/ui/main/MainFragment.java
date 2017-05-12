@@ -3,6 +3,7 @@ package net.muxi.huashiapp.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
@@ -24,6 +28,7 @@ import net.muxi.huashiapp.common.data.ItemData;
 import net.muxi.huashiapp.common.data.ProductData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.event.LoginSuccessEvent;
+import net.muxi.huashiapp.event.RefreshBanner;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.CalendarActivity;
 import net.muxi.huashiapp.ui.MoreActivity;
@@ -120,6 +125,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                 }, Throwable::printStackTrace);
 
 
+
     }
 
     @Nullable
@@ -130,16 +136,23 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         ButterKnife.bind(this, view);
         mToolbar.setTitle("华师匣子");
 
+        initXGPush();
+
         sp = new PreferenceUtil();
+
+
         dao = new HuaShiDao();
         mBannerDatas = dao.loadBannerData();
 
         getBannerDatas();
+        RxBus.getDefault().toObservable(RefreshBanner.class)
+                .subscribe(refreshBanner -> {
+                    refresh();
+                });
 
 
         initHintView();
         initView();
-
 
         mProductData = new ProductData();
 //        Gson gson = new Gson();
@@ -149,9 +162,28 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
         getProduct();
 
-
         return view;
     }
+
+    private void initXGPush() {
+        XGPushConfig.enableDebug(getActivity(), true);
+        XGPushConfig.getToken(getActivity());
+        XGPushManager.registerPush(App.sContext, "users"
+                , new XGIOperateCallback() {
+                    @Override
+                    public void onSuccess(Object data, int i) {
+                        Log.d("TPush", "注册成功，设备token为：" + data);
+
+                    }
+
+                    @Override
+                    public void onFail(Object data, int errCode, String msg) {
+                        Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+
+                    }
+                });
+    }
+
 
     private void setData() {
         ArrayList<ItemData> items = (ArrayList<ItemData>) ACache.get(getContext()).getAsObject("items");
@@ -362,6 +394,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     }
 
     private void getBannerDatas() {
+//        RxBus.getDefault().send(new RefreshBanner());
         if (NetStatus.isConnected()) {
             CampusFactory.getRetrofitService().getBanner()
                     .observeOn(AndroidSchedulers.mainThread())
@@ -389,6 +422,9 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                                 }
                                 updateRecyclerView(bannerDatas);
                                 Logger.d("update recyclerview");
+
+                                RxBus.getDefault().send(new RefreshBanner());
+
                             }
                             Logger.d("get bannerdatas");
                         }
@@ -396,6 +432,12 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         }
 
     }
+
+    public void refresh(){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+    }
+
 
     public long getTheLastUpdateTime(List<BannerData> bannerDatas) {
         long lastTime = -1;
@@ -412,6 +454,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     public void updateRecyclerView(List<BannerData> bannerDatas) {
         mMainAdapter.swapBannerData(bannerDatas);
     }
+
 
 
     @Override

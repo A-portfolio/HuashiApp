@@ -15,7 +15,7 @@ public class DataBase extends SQLiteOpenHelper {
     private static DataBase instance;
 
     private static final String DB_NAME = "huashi_db";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
 
     //图书馆搜索的历史记录
     public static final String TABLE_SEARCH_HISTORY = "search_history";
@@ -108,7 +108,7 @@ public class DataBase extends SQLiteOpenHelper {
                 KEY_UPDATE + " TEXT, " +
                 KEY_IMG + " TEXT, " +
                 KEY_FILENAME + " TEXT, "+
-                KEY_NUM+ " TEXT); ";
+                KEY_NUM + " TEXT); ";
 
         db.execSQL(createBannerTable);
 
@@ -172,6 +172,18 @@ public class DataBase extends SQLiteOpenHelper {
 
         if (newVersion >= 4) {
 
+//            String createTempBannerTable = "alter table TABLE_BANNER rename to _temp_banner";
+//
+//            String insertData = "insert into TABLE_BANNER select *,'' from _temp_banner";
+
+//            db.execSQL(createTempBannerTable);
+//            db.execSQL(insertData);
+//            db.execSQL(dropBanner);
+
+            String dropBanner = "drop table if exists " + TABLE_BANNER;
+            db.execSQL(dropBanner);
+
+
             String createBannerTable = "CREATE TABLE IF NOT EXISTS" + TABLE_BANNER  +
                     " ( " + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     KEY_URL + " TEXT, " +
@@ -179,18 +191,7 @@ public class DataBase extends SQLiteOpenHelper {
                     KEY_IMG + " TEXT, " +
                     KEY_FILENAME + " TEXT," +
                     KEY_NUM + " TEXT); ";
-
-            String createTempBannerTable = "alter table TABLE_BANNER rename to _temp_banner";
-
-            String insertData = "insert into TABLE_BANNER select *,'' from _temp_banner";
-
-            String dropBanner = "drop table if exists" + TABLE_BANNER;
-
-            db.execSQL(createTempBannerTable);
             db.execSQL(createBannerTable);
-            db.execSQL(insertData);
-            db.execSQL(dropBanner);
-
 
         }
 
