@@ -17,7 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
+import com.google.gson.Gson;
+import com.muxistudio.jsbridge.BridgeHandler;
 import com.muxistudio.jsbridge.BridgeWebView;
+import com.muxistudio.jsbridge.CallbackFunc;
 import com.sina.weibo.sdk.api.TextObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
 import com.sina.weibo.sdk.api.share.BaseResponse;
@@ -96,9 +99,11 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         setContentView(R.layout.activity_web_view);
         ButterKnife.bind(this);
 
-        title = getIntent().hasExtra(WEB_TITLE) ? getIntent().getStringExtra(WEB_TITLE) : getIntent().getStringExtra(WEB_URL);
+        title = getIntent().hasExtra(WEB_TITLE) ? getIntent().getStringExtra(WEB_TITLE)
+                : getIntent().getStringExtra(WEB_URL);
         url = getIntent().hasExtra(WEB_URL) ? getIntent().getStringExtra(WEB_URL) : "";
-        iconUrl = getIntent().hasExtra(WEB_ICON_URL) ? getIntent().getStringExtra(WEB_ICON_URL) : "http://static.muxixyz.com/ccnubox_share_icon.jpg";
+        iconUrl = getIntent().hasExtra(WEB_ICON_URL) ? getIntent().getStringExtra(WEB_ICON_URL)
+                : "http://static.muxixyz.com/ccnubox_share_icon.jpg";
         intro = getIntent().hasExtra(WEB_INTRO) ? getIntent().getStringExtra(WEB_INTRO) : "";
         setTitle(title);
 
@@ -115,6 +120,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
                 Logger.d(title);
             }
         });
+        initRegisterInterface();
         mWebview.loadUrl(url);
 
         api = WXAPIFactory.createWXAPI(getApplicationContext(), APP_ID, false);
@@ -128,7 +134,24 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         }
     }
 
-    public static Intent newIntent(Context context, String url, String title, String intro, String iconUrl) {
+    //初始化暴露给 web 端的本地接口
+    public void initRegisterInterface() {
+        mWebview.register("obtainInfoUser", new BridgeHandler() {
+            @Override
+            public void handle(String s, CallbackFunc callbackFunc) {
+                callbackFunc.onCallback(new Gson().toJson(App.sUser));
+            }
+        });
+        mWebview.register("obtainLibUser", new BridgeHandler() {
+            @Override
+            public void handle(String s, CallbackFunc callbackFunc) {
+                callbackFunc.onCallback(new Gson().toJson(App.sLibrarayUser));
+            }
+        });
+    }
+
+    public static Intent newIntent(Context context, String url, String title, String intro,
+            String iconUrl) {
         Intent intent = new Intent(context, WebViewActivity.class);
         intent.putExtra(WEB_URL, url);
         intent.putExtra(WEB_TITLE, title);
@@ -182,12 +205,14 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
                             case 7:
                                 AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
-                                showSnackbarShort(getResources().getString(R.string.tip_copy_success));
+                                showSnackbarShort(
+                                        getResources().getString(R.string.tip_copy_success));
                                 shareToDialog.dismiss();
                                 break;
 
                             case 8:
-                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mWebview.getUrl()));
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                        Uri.parse(mWebview.getUrl()));
                                 startActivity(browserIntent);
                                 shareToDialog.dismiss();
                                 break;
@@ -204,7 +229,8 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 //                AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
 //                break;
 //            case R.id.action_open_browser:
-//                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mWebview.getUrl()));
+//                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mWebview.getUrl
+// ()));
 //                startActivity(browserIntent);
 //                break;
 //            case R.id.action_share_qq:
@@ -292,7 +318,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         msg.title = title;
         msg.description = intro;
         Logger.d(getExternalCacheDir() + "/" + title + ".jpg");
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.ic_share_to);
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_share_to);
 //        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
 //        bmp.recycle();
         msg.setThumbImage(bmp);
@@ -310,7 +336,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         msg.title = title;
         msg.description = intro;
         Logger.d(getExternalCacheDir() + "/" + title + ".jpg");
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.ic_share_to);
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_share_to);
 //        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 150, 150, true);
 //        bmp.recycle();
         msg.setThumbImage(bmp);
@@ -321,10 +347,10 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         api.sendReq(req);
     }
 
-    public void shareToQQ(String title,String content,String url,String picUrl) {
-        mTencent = Tencent.createInstance(Constants.QQ_KEY,App.sContext);
+    public void shareToQQ(String title, String content, String url, String picUrl) {
+        mTencent = Tencent.createInstance(Constants.QQ_KEY, App.sContext);
         final Bundle params = new Bundle();
-        params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE,QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
+        params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
         params.putString(QQShare.SHARE_TO_QQ_TITLE, title);//必填
         if (content != null) {
             params.putString(QQShare.SHARE_TO_QQ_SUMMARY, content);//选填
@@ -334,13 +360,15 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         imgUrlList.add(picUrl);
         params.putStringArrayList(QQShare.SHARE_TO_QQ_IMAGE_URL, imgUrlList);// 图片地址
         Log.d("share", "start share to qq");
-        mTencent.shareToQQ(WebViewActivity.this,params,mBaseUiListener);
+        mTencent.shareToQQ(WebViewActivity.this, params, mBaseUiListener);
 
     }
+
     public void shareToQzone(String title, String content, String url, String picUrl) {
         mTencent = Tencent.createInstance(Constants.QQ_KEY, App.sContext);
         final Bundle params = new Bundle();
-        params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE,QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
+        params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE,
+                QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
         params.putString(QzoneShare.SHARE_TO_QQ_TITLE, title);//必填
         if (content != null) {
             params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, content);//选填
@@ -370,7 +398,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     }
 
     private void sendMultiMessage(boolean hasText, boolean hasImage, boolean hasWebpage,
-                                  boolean hasMusic, boolean hasVideo, boolean hasVoice) {
+            boolean hasMusic, boolean hasVideo, boolean hasVoice) {
         WeiboMultiMessage weiboMessage = new WeiboMultiMessage();//初始化微博的分享消息
         if (hasText) {
             weiboMessage.textObject = getTextObj();

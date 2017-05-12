@@ -124,8 +124,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                     }
                 }, Throwable::printStackTrace);
 
-
-
     }
 
     @Nullable
