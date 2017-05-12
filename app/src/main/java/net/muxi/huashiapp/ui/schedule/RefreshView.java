@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -29,7 +30,6 @@ public class RefreshView extends RelativeLayout {
 
     @BindView(R.id.drawee)
     SimpleDraweeView mDrawee;
-    @BindView(R.id.tv_tip)
     TextView mTvTip;
     @BindView(R.id.layout_refresh)
     FrameLayout mLayoutRefresh;
@@ -54,14 +54,15 @@ public class RefreshView extends RelativeLayout {
     private void initView() {
         if (!PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true)) {
             setVisibility(VISIBLE);
-            LayoutInflater.from(getContext()).inflate(R.layout.view_table_refresh, this);
-            ButterKnife.bind(this);
-
-            mDraweeController = Fresco.newDraweeControllerBuilder()
-                    .setOldController(mDrawee.getController())
-                    .setUri("")
-                    .build();
         }
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_table_refresh, this);
+        ButterKnife.bind(this);
+        mTvTip = (TextView) view.findViewById(R.id.tv_tip);
+
+        mDraweeController = Fresco.newDraweeControllerBuilder()
+                .setOldController(mDrawee.getController())
+                .setUri("")
+                .build();
     }
 
     public void setTipText(String s) {

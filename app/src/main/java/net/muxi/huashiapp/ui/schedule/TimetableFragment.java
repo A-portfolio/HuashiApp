@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -309,18 +310,6 @@ public class TimetableFragment extends BaseFragment {
         curWeek = week;
         mTvCurrentWeek.setText("当前周设置为" + week);
     }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mCourses = dao.loadAllCourses();
-//        renderCourseView(mCourses);
-//        if (mCourses.size() == 0) {
-//            if (App.isInfoLogin()) {
-//                loadTable();
-//            }
-//        }
-//    }
 
     @Override
     public void onAttach(Context context) {
@@ -328,10 +317,14 @@ public class TimetableFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onStop() {
+        super.onStop();
         if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true)) {
             PreferenceUtil.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, false);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.detach(this);
+            ft.attach(this);
+            ft.commitNowAllowingStateLoss();
         }
     }
 
