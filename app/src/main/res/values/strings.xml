@@ -200,6 +200,7 @@
     <string name="event_login_library">图书馆登录</string>
     <string name="event_credit">进入学分计算</string>
     <string name="event_card">学生卡查询</string>
+    <string name="event_start_app">打开应用</string>
     <string name="tip_input_id">请输入学号</string>
     <string name="tip_input_id_password">请输入学号和密码</string>
     <string name="tip_input_password">请输入密码</string>

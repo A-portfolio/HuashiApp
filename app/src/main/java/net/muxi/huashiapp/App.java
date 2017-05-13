@@ -73,7 +73,6 @@ public class App extends Application {
         if (BuildConfig.DEBUG) {
             ZhugeSDK.getInstance().openLog();
         }
-        ZhugeUtils.sendEvent("打开应用");
     }
 
     public static Context getContext() {

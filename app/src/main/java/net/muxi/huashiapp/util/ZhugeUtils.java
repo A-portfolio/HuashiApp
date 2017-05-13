@@ -55,6 +55,8 @@ public class ZhugeUtils {
                 return resources.getString(R.string.event_credit);
             case "net.muxi.huashiapp.ui.card.CardActivity":
                 return resources.getString(R.string.event_card);
+            case "net.muxi.huashiapp.ui.main.MainActivity":
+                return resources.getString(R.string.event_start_app);
         }
         return "";
     }
