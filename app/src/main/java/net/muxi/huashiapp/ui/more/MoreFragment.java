@@ -6,9 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -58,7 +56,6 @@ public class MoreFragment extends BaseFragment {
 
     private PreferenceUtil sp;
 
-
     private String[] titles = {"常见问题Q&A", "分享App给好友", "通知栏提醒", "意见反馈", "检查更新 ", "关于", "退出账号"};
     private Integer[] icons =
             {R.drawable.ic_more_qa, R.drawable.ic_more_share, R.drawable.ic_more_notice,
@@ -75,7 +72,7 @@ public class MoreFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_more, container, false);
         ButterKnife.bind(this, view);
 
@@ -95,7 +92,8 @@ public class MoreFragment extends BaseFragment {
             public void OnItemClick(View view, int position) {
                 switch (position) {
                     case 0:
-                        Intent intent = WebViewActivity.newIntent(getContext(), "https://ccnubox.muxixyz.com/qa/");
+                        Intent intent = WebViewActivity.newIntent(getContext(),
+                                "https://ccnubox.muxixyz.com/qa/");
                         startActivity(intent);
                         break;
                     case 1:
@@ -129,37 +127,29 @@ public class MoreFragment extends BaseFragment {
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(versionData -> {
                     if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME)) {
-                        Logger.d("has new version!!");
-                        if (!sp.getString(PreferenceUtil.LAST_NOT_REMIND_VERSION, BuildConfig.VERSION_NAME).equals(versionData.getVersion())
-                                || sp.getBoolean(PreferenceUtil.REMIND_UPDATE, true)) {
-                            if (!sp.getString(PreferenceUtil.LAST_NOT_REMIND_VERSION, BuildConfig.VERSION_NAME).equals(versionData.getVersion())) {
-                                sp.saveBoolean(PreferenceUtil.REMIND_UPDATE, true);
-                            }
-                            Logger.d("init dialog");
-                            sp.saveString(PreferenceUtil.LAST_NOT_REMIND_VERSION, versionData.getVersion());
-                            downloadUrl = versionData.getDownload();
-                            final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
-                            checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update)
-                                    + versionData.getVersion());
-                            checkUpdateDialog.setContent(
-                                    App.sContext.getString(R.string.tip_update_intro)
-                                            + versionData.getIntro() + "/n" +
-                                            App.sContext.getString(R.string.tip_update_size)
-                                            + versionData.getSize());
-                            checkUpdateDialog.setOnPositiveButton(
-                                    App.sContext.getString(R.string.btn_update),
-                                    () -> {
-                                        if (isStorgePermissionGranted()) {
-                                            beginUpdate(downloadUrl);
-                                        }
-                                        checkUpdateDialog.dismiss();
-                                    });
-                            checkUpdateDialog.setOnNegativeButton(
-                                    App.sContext.getString(R.string.btn_cancel),
-                                    () -> checkUpdateDialog.dismiss());
+                        final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
+                        checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update)
+                                + versionData.getVersion());
+                        checkUpdateDialog.setContent(
+                                App.sContext.getString(R.string.tip_update_intro)
+                                        + versionData.getIntro() + "\n" +
+                                        App.sContext.getString(R.string.tip_update_size)
+                                        + versionData.getSize());
+                        checkUpdateDialog.setOnPositiveButton(
+                                App.sContext.getString(R.string.btn_update),
+                                () -> {
+                                    if (isStorgePermissionGranted()) {
+                                        beginUpdate(versionData.download);
+                                    }else {
+                                        ((BaseActivity)getActivity()).showErrorSnackbarShort(R.string.tip_require_write_permission);
+                                    }
+                                    checkUpdateDialog.dismiss();
+                                });
+                        checkUpdateDialog.setOnNegativeButton(
+                                App.sContext.getString(R.string.btn_cancel),
+                                () -> checkUpdateDialog.dismiss());
 
-                            checkUpdateDialog.show(getFragmentManager(), "dialog_update");
-                        }
+                        checkUpdateDialog.show(getFragmentManager(), "dialog_update");
                     } else {
                         ((BaseActivity) getActivity()).showSnackbarShort(
                                 R.string.title_not_have_to_update);
@@ -176,18 +166,6 @@ public class MoreFragment extends BaseFragment {
         getActivity().startService(intent);
         Logger.d("download");
         ToastUtil.showShort(getString(R.string.tip_start_download_apk));
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Logger.d("permission " + permissions[0] + "is" + grantResults[0]);
-            Logger.d(downloadUrl);
-            if (downloadUrl != null && downloadUrl.length() != 0) {
-                beginUpdate(downloadUrl);
-            }
-        }
     }
 
     private void deleteApkBefore() {
@@ -210,11 +188,13 @@ public class MoreFragment extends BaseFragment {
             public void OnIdClick() {
                 if (TextUtils.isEmpty(App.sUser.getSid())) {
                     logoutDialog.dismiss();
-                    ((BaseActivity) getActivity()).showErrorSnackbarShort(App.sContext.getString(R.string.not_log_in));
+                    ((BaseActivity) getActivity()).showErrorSnackbarShort(
+                            App.sContext.getString(R.string.not_log_in));
                 } else {
                     App.logoutUser();
                     logoutDialog.dismiss();
-                    ((BaseActivity) getActivity()).showSnackbarShort(App.sContext.getString(R.string.tip_id_log_out));
+                    ((BaseActivity) getActivity()).showSnackbarShort(
+                            App.sContext.getString(R.string.tip_id_log_out));
                 }
             }
         });
@@ -224,11 +204,13 @@ public class MoreFragment extends BaseFragment {
             public void OnLibraryClick() {
                 if (TextUtils.isEmpty(App.sUser.getSid())) {
                     logoutDialog.dismiss();
-                    ((BaseActivity) getActivity()).showErrorSnackbarShort(App.sContext.getString(R.string.not_log_in));
+                    ((BaseActivity) getActivity()).showErrorSnackbarShort(
+                            App.sContext.getString(R.string.not_log_in));
                 } else {
                     App.logoutLibUser();
                     logoutDialog.dismiss();
-                    ((BaseActivity) getActivity()).showSnackbarShort(App.sContext.getString(R.string.tip_library_log_out));
+                    ((BaseActivity) getActivity()).showSnackbarShort(
+                            App.sContext.getString(R.string.tip_library_log_out));
                 }
             }
 
@@ -239,12 +221,14 @@ public class MoreFragment extends BaseFragment {
             public void OnAllClick() {
                 if (TextUtils.isEmpty(App.sUser.getSid())) {
                     logoutDialog.dismiss();
-                    ((BaseActivity) getActivity()).showErrorSnackbarShort(App.sContext.getString(R.string.not_log_in));
+                    ((BaseActivity) getActivity()).showErrorSnackbarShort(
+                            App.sContext.getString(R.string.not_log_in));
                 } else {
                     App.logoutUser();
                     App.logoutLibUser();
                     logoutDialog.dismiss();
-                    ((BaseActivity) getActivity()).showSnackbarShort(App.sContext.getString(R.string.tip_all_log_out));
+                    ((BaseActivity) getActivity()).showSnackbarShort(
+                            App.sContext.getString(R.string.tip_all_log_out));
                 }
             }
         });
@@ -253,10 +237,10 @@ public class MoreFragment extends BaseFragment {
 
     public boolean isStorgePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
                 return true;
             } else {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 return false;
             }
         } else {

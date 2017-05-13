@@ -203,6 +203,7 @@
     <string name="tip_input_id">请输入学号</string>
     <string name="tip_input_id_password">请输入学号和密码</string>
     <string name="tip_input_password">请输入密码</string>
+    <string name="tip_require_write_permission">请在设置中对本应用开启读写文件的权限</string>
 
 
 </resources>
