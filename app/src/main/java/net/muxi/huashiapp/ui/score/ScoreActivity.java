@@ -16,6 +16,7 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.net.CampusFactory;
+import net.muxi.huashiapp.net.ccnu.CcnuCrawler;
 import net.muxi.huashiapp.util.Logger;
 
 import java.util.ArrayList;
@@ -98,6 +99,8 @@ public class ScoreActivity extends ToolbarActivity {
                         throwable -> {
                             throwable.printStackTrace();
                             mMultiStatusView.showNetError();
+                            CcnuCrawler.clearCookieStore();
+                            CcnuCrawler.initCrawler();
                             hideLoading();
                         },
                         () -> hideLoading());
