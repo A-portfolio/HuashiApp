@@ -8,13 +8,15 @@ import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.tinker.loader.app.ApplicationLike;
+import com.tinkerpatch.sdk.TinkerPatch;
+import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike;
 import com.zhuge.analysis.stat.ZhugeSDK;
 
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.db.HuaShiDao;
+import net.muxi.huashiapp.ui.main.FetchPatchHandler;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.ZhugeUtils;
 
 
 /**
@@ -35,15 +37,15 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
-//
-//        // 初始化TinkerPatch SDK, 更多配置可参照API章节中的,初始化SDK
-//        TinkerPatch.init(tinkerApplicationLike)
-//                .reflectPatchLibrary()
-//                .setPatchRollbackOnScreenOff(true)
-//                .setPatchRestartOnSrceenOff(true);
-//
-//        new FetchPatchHandler().fetchPatchWithInterval(3);
+        tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
+
+        // 初始化TinkerPatch SDK, 更多配置可参照API章节中的,初始化SDK
+        TinkerPatch.init(tinkerApplicationLike)
+                .reflectPatchLibrary()
+                .setPatchRollbackOnScreenOff(true)
+                .setPatchRestartOnSrceenOff(true);
+
+        new FetchPatchHandler().fetchPatchWithInterval(3);
 
         sContext = getApplicationContext();
         sp = new PreferenceUtil();
