@@ -26,6 +26,7 @@ import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.data.SplashData;
 import net.muxi.huashiapp.event.LibLoginEvent;
+import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.service.DownloadService;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMainFragment;
@@ -45,6 +46,7 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -153,8 +155,15 @@ public class MainActivity extends BaseActivity implements
                                 .commitAllowingStateLoss();
                     }
                 }, Throwable::printStackTrace);
+        Subscription subscription = RxBus.getDefault().toObservable(LoginSuccessEvent.class)
+                .subscribe(loginSuccessEvent -> {
+                    if (loginSuccessEvent.targetActivityName.equals("table")){
+                        Logger.d("get table event");
+                        ((TimetableFragment)mCurFragment).loadTable();
+                    }
+                },Throwable::printStackTrace);
+        addSubscription(subscription);
     }
-
 
     private void getSplashData() {
         CampusFactory.getRetrofitService().getSplash()

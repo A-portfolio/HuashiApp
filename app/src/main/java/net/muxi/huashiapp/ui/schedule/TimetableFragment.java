@@ -124,9 +124,9 @@ public class TimetableFragment extends BaseFragment {
 
     private void initView() {
         if (mCourses.size() == 0) {
-            if (App.isInfoLogin()) {
-                loadTable();
-            }
+//            if (App.isInfoLogin()) {
+//                loadTable();
+//            }
         } else {
             renderCourseView(mCourses);
         }
@@ -214,14 +214,6 @@ public class TimetableFragment extends BaseFragment {
                     renderCourseView(mCourses);
                 }, throwable -> throwable.printStackTrace());
         ((BaseActivity) getContext()).addSubscription(subscription4);
-
-        Subscription subscription5 = RxBus.getDefault().toObservable(LoginSuccessEvent.class)
-                .subscribe(loginSuccessEvent -> {
-                    if (loginSuccessEvent.targetActivityName.equals("table")){
-                        loadTable();
-                    }
-                },Throwable::printStackTrace);
-        ((BaseActivity)getContext()).addSubscription(subscription5);
 
         mTimetable.setOnRefreshListener(() -> {
             handlingRefresh = true;
