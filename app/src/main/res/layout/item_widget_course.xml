@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginRight="@dimen/appwidget_item_horizontal_margin"
+        android:textColor="#666666"
         android:layout_alignParentRight="true"
         android:textSize="14sp"
         tools:text="10:00上课"/>
@@ -45,6 +46,7 @@
         android:id="@+id/tv_course"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#666666"
         android:layout_marginLeft="@dimen/appwidget_item_horizontal_margin"
         android:layout_below="@id/divider"
         android:layout_toLeftOf="@+id/iv_detail"
