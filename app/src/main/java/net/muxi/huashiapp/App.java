@@ -37,15 +37,15 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
+//        tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
 
         // 初始化TinkerPatch SDK, 更多配置可参照API章节中的,初始化SDK
-        TinkerPatch.init(tinkerApplicationLike)
-                .reflectPatchLibrary()
-                .setPatchRollbackOnScreenOff(true)
-                .setPatchRestartOnSrceenOff(true);
+//        TinkerPatch.init(tinkerApplicationLike)
+//                .reflectPatchLibrary()
+//                .setPatchRollbackOnScreenOff(true)
+//                .setPatchRestartOnSrceenOff(true);
 
-        new FetchPatchHandler().fetchPatchWithInterval(3);
+//        new FetchPatchHandler().fetchPatchWithInterval(3);
 
         sContext = getApplicationContext();
         sp = new PreferenceUtil();

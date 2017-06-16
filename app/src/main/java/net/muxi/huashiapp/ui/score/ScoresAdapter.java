@@ -59,6 +59,9 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
         if (Float.parseFloat(mScoresList.get(position).grade) < 60){
             holder.mTvProperty.setBackgroundResource(R.drawable.shape_red);
             holder.mTvScore.setTextColor(App.sContext.getResources().getColor(R.color.red));
+        }else{
+            holder.mTvProperty.setBackgroundResource(R.drawable.shape_green);
+            holder.mTvScore.setTextColor(App.sContext.getResources().getColor(android.R.color.primary_text_light));
         }
 
     }
