@@ -74,14 +74,9 @@ public class ScoreActivity extends ToolbarActivity {
         showLoading();
         Logger.d("term" + term);
         if (term.equals("0")) {
-            String[] terms = {"3", "12", "16"};
-            Observable.merge(CampusFactory.getRetrofitService().getScores(year, terms[0]),
-                    CampusFactory.getRetrofitService().getScores(year, terms[1]),
-                    CampusFactory.getRetrofitService().getScores(year, terms[2]))
-                    .flatMap(Observable::from)
-                    .toList()
-                    .subscribeOn(Schedulers.io())
+            CampusFactory.getRetrofitService().getScores(year,"")
                     .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
                     .subscribe(scores -> renderScoreList(scores),
                             throwable -> {
                                 throwable.printStackTrace();

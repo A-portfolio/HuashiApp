@@ -125,10 +125,10 @@ public class CreditGradeActivity extends ToolbarActivity {
     }
 
     public Observable<List<Score>>[] getScoreRequest(int start,int end){
-        Observable<List<Score>>[] observables = new Observable[(end - start)* 3];
-        for (int i = 0;i < (end - start) * 3;i++){
+        Observable<List<Score>>[] observables = new Observable[(end - start)];
+        for (int i = 0;i < (end - start);i++){
             observables[i] = CampusFactory.getRetrofitService()
-                    .getScores(String.valueOf(start + i / 3), String.valueOf(Constants.TERMS[i % 3]));
+                    .getScores(String.valueOf(start + i ), "");
         }
         return observables;
     }

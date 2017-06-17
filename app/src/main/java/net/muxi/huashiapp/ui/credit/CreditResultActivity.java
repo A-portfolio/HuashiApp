@@ -42,8 +42,6 @@ public class CreditResultActivity extends ToolbarActivity {
     private int start;
     private int end;
 
-    private int length;
-
     private float zb, zx, tb, tx, th;
 
     public static void start(Context context, int start, int end) {
@@ -61,7 +59,6 @@ public class CreditResultActivity extends ToolbarActivity {
 
         start = getIntent().getIntExtra("start", 0);
         end = getIntent().getIntExtra("ending", 0);
-        length = (end - start) * 2;
         setTitle(String.format("%d-%d学年", start, end));
         loadCredit();
     }
@@ -94,11 +91,10 @@ public class CreditResultActivity extends ToolbarActivity {
     }
 
     public Observable<List<Score>>[] getScoreRequest(int start, int end) {
-        Observable<List<Score>>[] observables = new Observable[(end - start) * 3];
-        for (int i = 0; i < (end - start) * 3; i++) {
+        Observable<List<Score>>[] observables = new Observable[(end - start)];
+        for (int i = 0; i < (end - start) ; i++) {
             observables[i] = CampusFactory.getRetrofitService()
-                    .getScores(String.valueOf(start + i / 3),
-                            String.valueOf(Constants.TERMS[i % 3]));
+                    .getScores(String.valueOf(start + i), "");
         }
         return observables;
     }
