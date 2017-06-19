@@ -83,6 +83,6 @@ public class Constants {
     public static final String SPLASH_IMG = "splashImgUrl";
     public static final String SPLASH_UPDATE = "splashUpdate";
 
-    public static final String PRODUCT_JSON = "{\"_products\": [{\"icon\": \"https://occc3ev3l.qnssl.com/ic_xueer.png\", \"intro\": \"\\u534e\\u5e08\\u8bfe\\u7a0b\\u7ecf\\u9a8c\\u6316\\u6398\\u673a\", \"name\": \"\\u5b66\\u800c\", \"url\": \"https://xueer.muxixyz.com\"}], \"update\": 1471835245.67399}";
+    public static final String PRODUCT_JSON = "{\"update\": 1497603170.0, \"_product\": [{\"url\": \"https://xueer.muxixyz.com\", \"intro\": \"huashi xuanke\", \"name\": \"\\u5b66\\u800c\", \"icon\": \"http://static.muxixyz.com/ic_xueer.png\"}]}";
 
 }

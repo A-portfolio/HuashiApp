@@ -20,9 +20,9 @@ import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 
 import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.ItemData;
@@ -64,7 +64,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -148,18 +147,18 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         RxBus.getDefault().toObservable(RefreshBanner.class)
                 .subscribe(refreshBanner -> {
                     refresh();
-                },throwable -> throwable.printStackTrace());
+                }, throwable -> throwable.printStackTrace());
 
 
         initHintView();
         initView();
 
-        mProductData = new ProductData();
-//        Gson gson = new Gson();
-//        mProductData = gson.fromJson(sp.getString(PreferenceUtil.PRODUCT_DATA, Constants.PRODUCT_JSON), ProductData.class);
+//        mProductData = new ProductData();
+        Gson gson = new Gson();
+        mProductData = gson.fromJson(sp.getString(PreferenceUtil.PRODUCT_DATA, Constants.PRODUCT_JSON), ProductData.class);
 //        getProduct();
 //        updateProductDisplay(mProductData);
-
+        updateProductDisplay(mProductData);
         getProduct();
 
         return view;
@@ -341,10 +340,10 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             ZhugeUtils.sendEvent("常用网站查询", "常用网站查询");
                             break;
                         case "学而":
-                            Intent intent = WebViewActivity.newIntent(getActivity(), mProductData.get_products().get(0).getUrl(),
-                                    mProductData.get_products().get(0).getName(),
-                                    mProductData.get_products().get(0).getIntro(),
-                                    mProductData.get_products().get(0).getIcon());
+                            Intent intent = WebViewActivity.newIntent(getActivity(), mProductData.get_product().get(0).getUrl(),
+                                    mProductData.get_product().get(0).getName(),
+                                    mProductData.get_product().get(0).getIntro(),
+                                    mProductData.get_product().get(0).getIcon());
                             startActivity(intent);
                             ZhugeUtils.sendEvent("学而", "学而");
                             break;
@@ -359,10 +358,10 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
     //更新首页视图
     public void updateProductDisplay(ProductData productData) {
-        if (mItemDatas.size() - 10 != productData.get_products().size()) {
+        if (mItemDatas.size() - 10 != productData.get_product().size()) {
             List<ItemData> itemDataList = new ArrayList<>();
-            for (int i = 0; i < productData.get_products().size(); i++) {
-                itemDataList.add(new ItemData(productData.get_products().get(i).getName(), productData.get_products().get(i).getIcon(), true));
+            for (int i = 0; i < productData.get_product().size(); i++) {
+                itemDataList.add(new ItemData(productData.get_product().get(i).getName(), productData.get_product().get(i).getIcon(), true));
             }
             mItemDatas.addAll(mItemDatas.size() - 1, itemDataList);
             mMainAdapter.swapProduct(mItemDatas);
@@ -375,18 +374,25 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(productData -> {
-                    if (productData.getUpdate() != mProductData.getUpdate()) {
-                        mProductData = productData;
-                        Gson gson = new Gson();
-                        mProductJson = gson.toJson(mProductData);
-                        sp.saveString(PreferenceUtil.PRODUCT_DATA, mProductJson);
-                        sp.saveFloat(PreferenceUtil.PRODUCT_UPDATE, (float) productData.getUpdate());
-                        for (int i = 0; i < productData.get_products().size(); i++) {
-                            FrescoUtil.savePicture(productData.get_products().get(i).getIcon(), getContext(), productData.get_products().get(i).getName());
+                    if (productData != null) {
+                        Logger.d(productData.getUpdate() + "");
+                        Logger.d(productData._product.get(0).name);
+                        Logger.d(mProductData.getUpdate() +" ");
+                        if (productData.getUpdate() != mProductData.getUpdate()) {
+                            mProductData = productData;
+                            Gson gson = new Gson();
+                            mProductJson = gson.toJson(mProductData);
+                            sp.saveString(PreferenceUtil.PRODUCT_DATA, mProductJson);
+                            sp.saveFloat(PreferenceUtil.PRODUCT_UPDATE, (float) productData.getUpdate());
+                            for (int i = 0; i < productData.get_product().size(); i++) {
+                                FrescoUtil.savePicture(productData.get_product().get(i).getIcon(), getContext(), productData.get_product().get(i).getName());
+                            }
+                            updateProductDisplay(mProductData);
                         }
-                        updateProductDisplay(mProductData);
+                    } else {
+                        sp.clearString(PreferenceUtil.PRODUCT_DATA);
+                        sp.clearFloat(PreferenceUtil.PRODUCT_UPDATE);
                     }
-
                 }, throwable -> {
                     throwable.printStackTrace();
                 });
@@ -433,7 +439,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
     }
 
-    public void refresh(){
+    public void refresh() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
     }
@@ -454,7 +460,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     public void updateRecyclerView(List<BannerData> bannerDatas) {
         mMainAdapter.swapBannerData(bannerDatas);
     }
-
 
 
     @Override

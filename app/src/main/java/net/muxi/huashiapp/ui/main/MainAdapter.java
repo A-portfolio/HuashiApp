@@ -185,8 +185,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             }
             ((CommonViewHolder) holder).mTextView.setText(mItemDatas.get(position - ITEM_BANNER).getName());
             ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
-
-        } else if (holder instanceof FooterViewHolder) {
         }
     }
 

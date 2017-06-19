@@ -133,6 +133,13 @@ public class PreferenceUtil {
         return sp.getFloat(key, -1);
     }
 
+    public static void clearFloat(String key){
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(App.sContext).edit();
+        editor.remove(key);
+        editor.apply();
+
+    }
+
     public static long getLong(String key) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(App.sContext);
         return sp.getLong(key, -1);

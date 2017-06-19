@@ -9,50 +9,32 @@ public class ProductData {
 
 
     /**
-     * _products : [{"icon":"http://static.muxixyz.com/ic-xueer.png","intro":"华师课程经验挖掘机","name":"学而","nickname":null,"url":"https://xueer.muxixyz.com"}]
-     * update : 1.471793717565404E9
+     * update : 1.49760317E9
+     * _product : [{"url":"https://xueer.muxixyz.com","intro":"huashi xuanke","name":"学而","icon":"http://static.muxixyz.com/ic_xueer.png"}]
      */
 
     public double update;
-    /**
-     * icon : http://static.muxixyz.com/ic-xueer.png
-     * intro : 华师课程经验挖掘机
-     * name : 学而
-     * nickname : null
-     * url : https://xueer.muxixyz.com
-     */
+    public List<ProductEntity> _product;
 
-    public List<ProductsBean> _products;
+    public static class ProductEntity {
+        /**
+         * url : https://xueer.muxixyz.com
+         * intro : huashi xuanke
+         * name : 学而
+         * icon : http://static.muxixyz.com/ic_xueer.png
+         */
 
-    public double getUpdate() {
-        return update;
-    }
-
-    public void setUpdate(double update) {
-        this.update = update;
-    }
-
-    public List<ProductsBean> get_products() {
-        return _products;
-    }
-
-    public void set_products(List<ProductsBean> _products) {
-        this._products = _products;
-    }
-
-    public static class ProductsBean {
-        public String icon;
+        public String url;
         public String intro;
         public String name;
-        public Object nickname;
-        public String url;
+        public String icon;
 
-        public String getIcon() {
-            return icon;
+        public String getUrl() {
+            return url;
         }
 
-        public void setIcon(String icon) {
-            this.icon = icon;
+        public void setUrl(String url) {
+            this.url = url;
         }
 
         public String getIntro() {
@@ -71,20 +53,35 @@ public class ProductData {
             this.name = name;
         }
 
-        public Object getNickname() {
-            return nickname;
+        public String getIcon() {
+            return icon;
         }
 
-        public void setNickname(Object nickname) {
-            this.nickname = nickname;
+        public void setIcon(String icon) {
+            this.icon = icon;
         }
+    }
 
-        public String getUrl() {
-            return url;
-        }
 
-        public void setUrl(String url) {
-            this.url = url;
-        }
+    public ProductData(double update, List<ProductEntity> _product) {
+        this.update = update;
+        this._product = _product;
+    }
+
+
+    public double getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(double update) {
+        this.update = update;
+    }
+
+    public List<ProductEntity> get_product() {
+        return _product;
+    }
+
+    public void set_product(List<ProductEntity> _product) {
+        this._product = _product;
     }
 }
