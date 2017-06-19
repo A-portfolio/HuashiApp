@@ -25,6 +25,7 @@ import net.muxi.huashiapp.service.DownloadService;
 import net.muxi.huashiapp.ui.AboutActivity;
 import net.muxi.huashiapp.ui.SettingActivity;
 import net.muxi.huashiapp.ui.SuggestionActivity;
+import net.muxi.huashiapp.ui.main.MainActivity;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -202,7 +203,7 @@ public class MoreFragment extends BaseFragment {
         logoutDialog.setBtnLibraryLogout(new LogoutDialog.OnLibraryClickListener() {
             @Override
             public void OnLibraryClick() {
-                if (TextUtils.isEmpty(App.sUser.getSid())) {
+                if (TextUtils.isEmpty(App.sLibrarayUser.getSid())) {
                     logoutDialog.dismiss();
                     ((BaseActivity) getActivity()).showErrorSnackbarShort(
                             App.sContext.getString(R.string.not_log_in));

@@ -300,6 +300,17 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
+    public void removeFragment(String tag){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Logger.d("remove frag");
+        if (fragmentManager.findFragmentByTag(tag) != null){
+            Logger.d("remove tag");
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.remove(fragmentManager.findFragmentByTag(tag));
+            fragmentTransaction.commit();
+        }
+    }
+
     public boolean isStorgePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)

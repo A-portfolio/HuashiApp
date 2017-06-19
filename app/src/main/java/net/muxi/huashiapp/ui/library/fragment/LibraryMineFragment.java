@@ -1,12 +1,10 @@
 package net.muxi.huashiapp.ui.library.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +54,6 @@ public class LibraryMineFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_lib_mine, container, false);
         ButterKnife.bind(this, view);
         initView();
-        Logger.d("lib mine oncreateview");
         return view;
     }
 
@@ -74,6 +71,7 @@ public class LibraryMineFragment extends BaseFragment {
         mTabLayout.setupWithViewPager(mViewPager);
 
         List<Fragment> fragmentList = new ArrayList<>();
+
         if (mBooksBorrowedFragment == null) {
             mBooksBorrowedFragment = MyBookListFragment.newInstance(
                     MyBookListFragment.TYPE_BORROW);

@@ -59,6 +59,9 @@ public class ScoreActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         year = getIntent().getStringExtra("year");
         term = getIntent().getStringExtra("term");
+        if (term == null){
+            term = "0";
+        }
         if (!term.equals("0")) {
             setTitle(String.format("%s-%d学年第%d学期", year, Integer.parseInt(year) + 1,
                     getTermOrder(Constants.TERMS, term)));
@@ -108,7 +111,12 @@ public class ScoreActivity extends ToolbarActivity {
         }
         mMultiStatusView.showContent();
         mScoresList.addAll(scores);
-        mScoresAdapter = new ScoresAdapter(mScoresList);
+        try {
+            mScoresAdapter = new ScoresAdapter(mScoresList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            mScoresAdapter = new ScoresAdapter(new ArrayList<>());
+        }
         RecyclerView recyclerView = (RecyclerView) mMultiStatusView
                 .getContentView();
         recyclerView.setHasFixedSize(true);
