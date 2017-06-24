@@ -89,6 +89,7 @@
             android:layout_weight="4"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
+            android:maxLines="1"
             tools:text="学分:"/>
 
         <TextView
@@ -98,7 +99,8 @@
             android:layout_weight="4"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
-            tools:text="平时:"/>
+            android:maxLines="1"
+            tools:text="平时:3333333333"/>
 
         <TextView
             android:id="@+id/tv_ending"
@@ -107,6 +109,7 @@
             android:layout_weight="4"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
+            android:maxLines="1"
             tools:text="期末:"/>
 
     </LinearLayout>
