@@ -20,7 +20,6 @@ import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseFragment;
@@ -154,13 +153,19 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         initView();
 
 //        mProductData = new ProductData();
-        Gson gson = new Gson();
-        mProductData = gson.fromJson(sp.getString(PreferenceUtil.PRODUCT_DATA, Constants.PRODUCT_JSON), ProductData.class);
+//        getProduct();
+//        Gson gson = new Gson();
+//        mProductData = gson.fromJson(sp.getString(PreferenceUtil.PRODUCT_DATA, Constants.PRODUCT_JSON), ProductData.class);
 //        getProduct();
 //        updateProductDisplay(mProductData);
-        updateProductDisplay(mProductData);
-        getProduct();
-
+        if (mProductData == null) {
+            mProductData = new ProductData(0.0, null);
+            getProduct();
+        } else {
+            Gson gson = new Gson();
+            mProductData = gson.fromJson(sp.getString(PreferenceUtil.PRODUCT_DATA), ProductData.class);
+            getProduct();
+        }
         return view;
     }
 
@@ -377,7 +382,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                     if (productData != null) {
                         Logger.d(productData.getUpdate() + "");
                         Logger.d(productData._product.get(0).name);
-                        Logger.d(mProductData.getUpdate() +" ");
+                        Logger.d(mProductData.getUpdate() + " ");
                         if (productData.getUpdate() != mProductData.getUpdate()) {
                             mProductData = productData;
                             Gson gson = new Gson();

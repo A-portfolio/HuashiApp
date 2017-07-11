@@ -107,7 +107,7 @@ dependencies {
 
 
 def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = "app-2.0.1-0619-22-56-13"
+def baseInfo = "app-2.0.1-0625-19-35-21"
 def variantName = "release"
 
 

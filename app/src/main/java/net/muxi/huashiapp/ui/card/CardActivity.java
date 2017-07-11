@@ -1,14 +1,11 @@
 package net.muxi.huashiapp.ui.card;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -163,14 +160,14 @@ public class CardActivity extends ToolbarActivity {
      * @param day 前七天为0，今天为6
      * @return
      */
-    private float getDailySum(int day) {
+    private Double getDailySum(int day) {
         String date = DateUtil.getTheDateInYear(new Date(), -6 + day);
         Logger.d(date);
-        float sum = 0;
+        double sum = 0;
         for (int i = 0, size = mCardDatas.size(); i < size; i++) {
             if (mCardDatas.get(i).getDealTypeName().equals("消费"))
                 if (date.equals(mCardDatas.get(i).getDealDateTime().substring(0, 10))) {
-                    sum += Float.valueOf(mCardDatas.get(i).getTransMoney());
+                    sum += Double.valueOf(mCardDatas.get(i).getTransMoney());
                 }
         }
         Logger.d(sum + "");

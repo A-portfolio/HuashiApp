@@ -6,9 +6,9 @@ package net.muxi.huashiapp.common.data;
 
 public class CardSumData {
     public String time;
-    public float sum;
+    public double sum;
 
-    public CardSumData(String time, float sum) {
+    public CardSumData(String time, double sum) {
         this.time = time;
         this.sum = sum;
     }
