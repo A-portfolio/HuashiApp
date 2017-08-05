@@ -38,16 +38,14 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-//        if (!BuildConfig.DEBUG) {
-//            tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
-//
-//            TinkerPatch.init(tinkerApplicationLike)
-//                    .reflectPatchLibrary()
-//                    .setPatchRollbackOnScreenOff(true)
-//                    .setPatchRestartOnSrceenOff(true);
-//        }
+        tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
 
-//        new FetchPatchHandler().fetchPatchWithInterval(3);
+        TinkerPatch.init(tinkerApplicationLike)
+                .reflectPatchLibrary()
+                .setPatchRollbackOnScreenOff(true)
+                .setPatchRestartOnSrceenOff(true);
+
+        new FetchPatchHandler().fetchPatchWithInterval(3);
 
         sContext = getApplicationContext();
         sp = new PreferenceUtil();

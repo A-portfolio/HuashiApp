@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.antfortune.freeline'
 apply plugin: 'me.tatarka.retrolambda'
-//apply plugin: 'com.tencent.tinker.patch'
-//apply plugin: 'tinkerpatch-support'
+apply plugin: 'com.tencent.tinker.patch'
+apply plugin: 'tinkerpatch-support'
+
+import java.text.SimpleDateFormat
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 
@@ -11,6 +13,10 @@ def keystoreProperties = new Properties()
 
 // Load your keystore.properties file into the keystoreProperties object.
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+def versionMajor = 2
+def versionMinor = 1
+def versionBuild = 1
 
 android {
     compileSdkVersion 25
@@ -40,8 +46,8 @@ android {
         applicationId "net.muxi.huashiapp"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 12
-        versionName "2.0.1"
+        versionCode versionMajor * 10000 + versionMinor * 100 + versionBuild
+        versionName = "${versionMajor}.${versionMinor}.${versionBuild}"
 
         multiDexEnabled true
 
@@ -106,59 +112,64 @@ dependencies {
     testCompile 'org.mockito:mockito-core:2.7.14'
 }
 
+def buildTime() {
+    def df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
+    df.setTimeZone(TimeZone.getDefault())
+    return df.format(new Date())
+}
 
 def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = "app-2.0.1-0625-19-35-21"
+def baseInfo = "app-${versionMajor}.${versionMinor}.${versionBuild}-" + buildTime()
 def variantName = "release"
 
 
-//tinkerpatchSupport {
-//    tinkerEnable = false
-//    reflectApplication = true
-//
-//    autoBackupApkPath = "${bakPath}"
-//
-//    appKey = "15546ae78491131f"
-//
-//    appVersion = "2.0.1"
-//
-//    def pathPrefix = "${bakPath}/${baseInfo}/${variantName}/"
-//    def name = "${project.name}-${variantName}"
-//
-//    baseApkFile = "${pathPrefix}/${name}.apk"
-//    baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
-//    baseResourceRFile = "${pathPrefix}/${name}-R.txt"
-//
-//}
+tinkerpatchSupport {
+    tinkerEnable = true
+    reflectApplication = true
+
+    autoBackupApkPath = "${bakPath}"
+
+    appKey = "15546ae78491131f"
+
+    appVersion = "${versionMajor}.${versionMinor}.${versionBuild}"
+
+    def pathPrefix = "${bakPath}/${baseInfo}/${variantName}/"
+    def name = "${project.name}-${variantName}"
+
+    baseApkFile = "${pathPrefix}/${name}.apk"
+    baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
+    baseResourceRFile = "${pathPrefix}/${name}-R.txt"
+
+}
 
 
-//tinkerPatch {
-//    ignoreWarning = false
-//    useSign = true
-//    dex {
-//        dexMode = "jar"
-//        pattern = ["classes*.dex"]
-//        loader = []
-//    }
-//    lib {
-//        pattern = ["lib/*/*.so"]
-//    }
-//
-//    res {
-//        pattern = ["res/*", "r/*", "assets/*", "resources.arsc", "AndroidManifest.xml"]
-//        ignoreChange = []
-//        largeModSize = 100
-//    }
-//
-//    packageConfig {
-//    }
-//
-//    sevenZip {
-//        zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
-////        path = "/usr/local/bin/7za"
-//    }
-//    buildConfig {
-//        keepDexApply = false
-//    }
-//}
+tinkerPatch {
+    ignoreWarning = false
+    useSign = true
+    dex {
+        dexMode = "jar"
+        pattern = ["classes*.dex"]
+        loader = []
+    }
+    lib {
+        pattern = ["lib/*/*.so"]
+    }
+
+    res {
+        pattern = ["res/*", "r/*", "assets/*", "resources.arsc", "AndroidManifest.xml"]
+        ignoreChange = []
+        largeModSize = 100
+    }
+
+    packageConfig {
+    }
+
+    sevenZip {
+        zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
+//        path = "/usr/local/bin/7za"
+    }
+    buildConfig {
+        keepDexApply = false
+    }
+}
 
