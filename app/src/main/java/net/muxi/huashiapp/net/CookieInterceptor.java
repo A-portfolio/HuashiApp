@@ -33,7 +33,7 @@ public class CookieInterceptor implements Interceptor {
             if (cookie == null) {
                 throw new IOException("cookie is null");
             }
-            builder.addHeader("Bigipserverpool_Jwc_Xk", cookie.Bigipserverpool_Jwc_Xk);
+            builder.addHeader("Bigipserverpool", cookie.Bigipserverpool_Jwc_Xk);
             builder.addHeader("Jsessionid", cookie.Jsessionid);
             builder.addHeader("Sid", App.sUser.sid);
         }
