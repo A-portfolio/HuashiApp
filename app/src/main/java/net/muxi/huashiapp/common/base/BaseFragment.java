@@ -45,4 +45,9 @@ public class BaseFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
+
+    public View showErrorView(int resId,ViewGroup container){
+        View view  = LayoutInflater.from(getContext()).inflate(resId,container,false);
+        return view;
+    }
 }

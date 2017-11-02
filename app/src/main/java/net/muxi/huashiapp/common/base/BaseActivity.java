@@ -132,4 +132,6 @@ public class BaseActivity extends AppCompatActivity {
         view.setBackgroundColor(getResources().getColor(R.color.red));
         snackbar.show();
     }
+
+
 }

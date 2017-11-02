@@ -99,11 +99,16 @@ public class TimetableFragment extends BaseFragment {
         getActivity().getWindow().getDecorView().setBackgroundColor(Color.argb(255, 250, 250, 250));
         dao = new HuaShiDao();
         mContext = getActivity();
+        //这一次的更新需要检测ｌｉｓｔ是否为空如果为空的话需要弹出ｖｉｅｗ阻止用户使用
         initData();
+        if(mCourses.isEmpty()){
+            return  showErrorView(R.layout.view_show_error,container);
+        }
         initView();
         initListener();
         return view;
     }
+
     private void initData() {
         curWeek = TimeTableUtil.getCurWeek();
         selectedWeek = curWeek;
