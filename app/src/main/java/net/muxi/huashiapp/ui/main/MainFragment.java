@@ -237,7 +237,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
             @Override
             public void onItemClick(RecyclerView.ViewHolder vh) {
                 if (vh.getLayoutPosition() == 0) {
-
                 }
                 if (vh.getLayoutPosition() != 0
                         && vh.getLayoutPosition() != mItemDatas.size() + 1) {

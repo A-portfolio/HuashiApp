@@ -74,7 +74,6 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
 
     //测试用直接查询
     private String mTest = "第5周周三7号楼";
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,11 +84,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
 
         mQuery = getIntent().getStringExtra("query");
         Logger.d(mQuery + " ");
-
-
-
         mMultiStatusView.setOnRetryListener(v -> loadData());
-
         loadData();
     }
 

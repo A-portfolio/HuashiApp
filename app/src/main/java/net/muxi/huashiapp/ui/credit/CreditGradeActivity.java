@@ -61,9 +61,7 @@ public class CreditGradeActivity extends ToolbarActivity {
         start = getIntent().getIntExtra("start", 0);
         end = getIntent().getIntExtra("ending", 0);
         setTitle(String.format("%d-%d学年", start, end));
-
         loadCredit(getScoreRequest(start,end));
-
         mBtnEnter.setOnClickListener(v -> {
             showCreditGradeDialog();
         });

@@ -25,7 +25,7 @@ import net.muxi.huashiapp.util.PreferenceUtil;
 public class App extends Application {
 
     public static Context sContext;
-
+    public static boolean sError = true;
     //获取上次的已经登录的用户账号信息
     public static User sUser = new User();
     public static User sLibrarayUser = new User();

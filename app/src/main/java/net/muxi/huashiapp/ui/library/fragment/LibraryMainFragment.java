@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.ui.library.LibrarySearchActivity;
@@ -44,7 +46,12 @@ public class LibraryMainFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_lib_main, container, false);
         ButterKnife.bind(this,view);
         mToolbar.setTitle(R.string.library);
-
+        if(App.sError){
+            View errorView = showErrorView(R.layout.view_show_error,container);
+            FrameLayout layout = (FrameLayout) errorView.findViewById(R.id.title_error);
+            layout.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+            return showErrorView(R.layout.view_show_error,container);
+        }
         mEtSearch.setOnClickListener(v -> LibrarySearchActivity.start(getContext()));
         mBtnLoginLib.setOnClickListener(v -> LoginActivity.start(getContext(),"lib"));
         return view;

@@ -6,9 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.zhuge.analysis.stat.ZhugeSDK;
 
@@ -132,6 +135,14 @@ public class BaseActivity extends AppCompatActivity {
         view.setBackgroundColor(getResources().getColor(R.color.red));
         snackbar.show();
     }
+    public void showErrorView(int resId){
+        View errorView = LayoutInflater.from(this).inflate(resId,null);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams
+        .MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        addContentView(errorView,params);
+    }
 
-
+    public boolean isError(boolean isError){
+        return isError;
+    }
 }
