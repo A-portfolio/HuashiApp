@@ -26,6 +26,7 @@ public class ScheduleTimeLayout extends LinearLayout {
     public void computeScroll() {
         if (mScroller.computeScrollOffset()) {
             scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+            //本是调用onDraw
             postInvalidate();
         }
     }

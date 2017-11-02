@@ -2,7 +2,6 @@ package net.muxi.huashiapp.util;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.ColorDrawable;
@@ -23,9 +22,7 @@ public class NumberPickerHelper {
     public static final int START_LINE_WIDTH = DimensUtil.dp2px(8);
 
     public static void drawVerticalPickerBg(Canvas canvas,int width,int height){
-
         int lineColor = App.sContext.getResources().getColor(R.color.divider);
-
         Path path = new Path();
 
         path.moveTo(0,0);

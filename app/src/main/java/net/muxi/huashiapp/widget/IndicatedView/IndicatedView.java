@@ -46,14 +46,12 @@ public class IndicatedView extends FrameLayout {
 
     public IndicatedView(Context context) {
         super(context);
-
         tipView = LayoutInflater.from(context).inflate(R.layout.view_indicated, this,false);
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         this.addView(tipView, params);
         tipViewWidth = tipView.getWidth();
         tipViewHeight = tipView.getHeight();
-
         final ViewTreeObserver observer = tipView.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -72,7 +70,6 @@ public class IndicatedView extends FrameLayout {
     }
 
     public void setTipViewText(String s) {
-        Logger.d("settipview");
         ((TextView) tipView.findViewById(R.id.tv_indicate)).setText(s);
     }
 

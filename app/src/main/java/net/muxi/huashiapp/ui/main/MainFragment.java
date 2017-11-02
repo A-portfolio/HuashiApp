@@ -77,19 +77,12 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     Toolbar mToolbar;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-
     private MainAdapter mMainAdapter;
-
     private ItemTouchHelper itemTouchHelper;
-
     private List<ItemData> mItemDatas = new ArrayList<ItemData>();
-
     private List<BannerData> mBannerDatas;
-
     private HuaShiDao dao;
-
     private PreferenceUtil sp;
-
     private ProductData mProductData;
     private String mProductJson;
 
@@ -133,31 +126,17 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
         mToolbar.setTitle("华师匣子");
-
         initXGPush();
-
         sp = new PreferenceUtil();
-
-
         dao = new HuaShiDao();
         mBannerDatas = dao.loadBannerData();
-
         getBannerDatas();
         RxBus.getDefault().toObservable(RefreshBanner.class)
                 .subscribe(refreshBanner -> {
                     refresh();
                 }, throwable -> throwable.printStackTrace());
-
-
         initHintView();
         initView();
-
-//        mProductData = new ProductData();
-//        getProduct();
-//        Gson gson = new Gson();
-//        mProductData = gson.fromJson(sp.getString(PreferenceUtil.PRODUCT_DATA, Constants.PRODUCT_JSON), ProductData.class);
-//        getProduct();
-//        updateProductDisplay(mProductData);
         if (mProductData == null) {
             mProductData = new ProductData(0.0, null);
             getProduct();
@@ -228,7 +207,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     }
 
     private void initView() {
-
         final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         mMainAdapter = new MainAdapter(mItemDatas, mBannerDatas);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -268,13 +246,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                         case "成绩":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
                                 LoginActivity.start(getActivity(), "info", SCORE_ACTIVITY);
-//                                RxBus.getDefault().toObservable(LoginSuccessEvent.class)
-//                                        .filter(loginSuccessEvent -> loginSuccessEvent
-//                                                .targetActivityName.equals(
-//                                                        "score"))
-//                                        .subscribe(loginSuccessEvent -> ScoreSelectActivity.start(
-//                                                getContext())
-//                                                , Throwable::printStackTrace);
                             } else {
                                 ScoreSelectActivity.start(getActivity());
                             }
@@ -296,13 +267,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                         case "校园卡":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
                                 LoginActivity.start(getActivity(), "info", CARD_ACTIVITY);
-//                                RxBus.getDefault().toObservable(LoginSuccessEvent.class)
-//                                        .filter(loginSuccessEvent -> loginSuccessEvent
-//                                                .targetActivityName.equals(
-//                                                        "card"))
-//                                        .subscribe(loginSuccessEvent -> CardActivity.start(
-//                                                getContext())
-//                                                , Throwable::printStackTrace);
                             } else {
                                 CardActivity.start(getActivity());
                             }
@@ -311,13 +275,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                         case "算学分":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
                                 LoginActivity.start(getActivity(), "info", CREDIT_ACTIVITY);
-//                                RxBus.getDefault().toObservable(LoginSuccessEvent.class)
-//                                        .first()
-//                                        .takeFirst()
-//                                        .subscribe(loginSuccessEvent -> {
-//                                                    SelectCreditActivity.start(getContext());
-//                                                }
-//                                                , Throwable::printStackTrace);
                             } else {
                                 SelectCreditActivity.start(getActivity());
                             }
@@ -366,10 +323,11 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         if (mItemDatas.size() - 10 != productData.get_product().size()) {
             List<ItemData> itemDataList = new ArrayList<>();
             for (int i = 0; i < productData.get_product().size(); i++) {
-                itemDataList.add(new ItemData(productData.get_product().get(i).getName(), productData.get_product().get(i).getIcon(), true));
+                itemDataList.add(new ItemData(productData.get_product().get(i).getName(),
+                        productData.get_product().get(i).getIcon(), true));
             }
             mItemDatas.addAll(mItemDatas.size() - 1, itemDataList);
-            mMainAdapter.swapProduct(mItemDatas);
+            mMainAdapter.swapItems(mItemDatas);
         }
 
     }
@@ -380,9 +338,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(productData -> {
                     if (productData != null) {
-                        Logger.d(productData.getUpdate() + "");
-                        Logger.d(productData._product.get(0).name);
-                        Logger.d(mProductData.getUpdate() + " ");
                         if (productData.getUpdate() != mProductData.getUpdate()) {
                             mProductData = productData;
                             Gson gson = new Gson();
@@ -414,16 +369,13 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                         @Override
                         public void onCompleted() {
                         }
-
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
                         }
-
                         @Override
                         public void onNext(List<BannerData> bannerDatas) {
-                            Log.d("Test", "Test");
-                            if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(
+                           if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(
                                     mBannerDatas) || bannerDatas.size() != mBannerDatas.size()) {
                                 mBannerDatas.clear();
                                 mBannerDatas.addAll(bannerDatas);
@@ -432,12 +384,9 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                                     dao.insertBannerData(mBannerDatas.get(i));
                                 }
                                 updateRecyclerView(bannerDatas);
-                                Logger.d("update recyclerview");
-
                                 RxBus.getDefault().send(new RefreshBanner());
 
                             }
-                            Logger.d("get bannerdatas");
                         }
                     });
         }

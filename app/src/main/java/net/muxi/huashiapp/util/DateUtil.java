@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by ybao on 16/4/19.
@@ -27,6 +28,8 @@ public class DateUtil {
 
     public static String toDateInYear(Date date){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        TimeZone timeZone = TimeZone.getTimeZone("GMT+8");
+        format.setTimeZone(timeZone);
         return format.format(date);
     }
 
@@ -74,12 +77,14 @@ public class DateUtil {
         try{
             Date d1 = format.parse(date1);
             Date d2 = format.parse(date2);
+            long time1 = d2.getTime();
+            long time2 = d1.getTime();
             long week = (d2.getTime() - d1.getTime())/(24 * 60 * 60 * 1000 * 7);
             return week;
         }catch (ParseException e){
             e.printStackTrace();
+            return 0;
         }
-        return 0;
     }
 
     //获取指定的日期

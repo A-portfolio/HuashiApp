@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -67,17 +66,14 @@ public class LibrarySearchActivity extends BaseActivity {
     }
 
     private void initListener() {
-        mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                switch (i) {
-                    case EditorInfo.IME_ACTION_SEARCH:
-                        String query = mEtSearch.getText().toString();
-                        dao.insertSearchHistory(query);
-                        LibrarySearchResultActivity.start(LibrarySearchActivity.this, query);
-                }
-                return false;
+        mEtSearch.setOnEditorActionListener((textView, i, keyEvent) -> {
+            switch (i) {
+                case EditorInfo.IME_ACTION_SEARCH:
+                    String query = mEtSearch.getText().toString();
+                    dao.insertSearchHistory(query);
+                    LibrarySearchResultActivity.start(LibrarySearchActivity.this, query);
             }
+            return false;
         });
         mIvBack.setOnClickListener(v -> {
             finish();

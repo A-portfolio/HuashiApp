@@ -99,39 +99,40 @@ public class BookDetailFragment extends BaseFragment {
         mTvAuthor.setText(mBook.author);
         mTvInfo.setText(mBook.intro);
 
+        //设置...
         ViewTreeObserver vto = mTvInfo.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Layout l = mTvInfo.getLayout();
-                if ( l != null){
-                    int lines = l.getLineCount();
-                    if ( lines > 0) {
-                        if (l.getEllipsisCount(lines - 1) > 0) {
-                            Logger.d("text is ellips");
-                            isEllipsized = true;
-                            isLineOver = true;
-                        }else {
-                            isEllipsized = false;
-                        }
+        vto.addOnGlobalLayoutListener(() -> {
+            Layout l = mTvInfo.getLayout();
+            if ( l != null){
+
+                int lines = l.getLineCount();
+                if ( lines > 0) {
+                    //被缩略的字符数量大于0
+                    if (l.getEllipsisCount(lines - 1) > 0) {
+                        Logger.d("text is ellips");
+                        isEllipsized = true;
+                        isLineOver = true;
                     }else {
                         isEllipsized = false;
                     }
+                }
+                else {
+                    isEllipsized = false;
+                }
 
-                }
-                if (!isLineOver){
-                    mTvShowAll.setVisibility(View.GONE);
-                }else {
-                    mTvShowAll.setOnClickListener(v -> {
-                        if (isEllipsized){
-                            mTvInfo.setMaxLines(Integer.MAX_VALUE);
-                            mTvShowAll.setText(R.string.fold_all);
-                        }else {
-                            mTvInfo.setMaxLines(2);
-                            mTvShowAll.setText(R.string.expand_all);
-                        }
-                    });
-                }
+            }
+            if (!isLineOver){
+                mTvShowAll.setVisibility(View.GONE);
+            }else {
+                mTvShowAll.setOnClickListener(v -> {
+                    if (isEllipsized){
+                        mTvInfo.setMaxLines(Integer.MAX_VALUE);
+                        mTvShowAll.setText(R.string.fold_all);
+                    }else {
+                        mTvInfo.setMaxLines(2);
+                        mTvShowAll.setText(R.string.expand_all);
+                    }
+                });
             }
         });
 

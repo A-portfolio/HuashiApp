@@ -83,7 +83,6 @@ public class MainActivity extends BaseActivity implements
         AlarmUtil.register(this);
         getSplashData();
     }
-
     private void checkNewVersion() {
         CampusFactory.getRetrofitService().getLatestVersion()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -91,16 +90,10 @@ public class MainActivity extends BaseActivity implements
                 .subscribe(versionData -> {
                     if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME)) {
                         final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
-                        checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update)
-                                + versionData.getVersion());
+                        checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update) + versionData.getVersion());
                         checkUpdateDialog.setContent(
-                                App.sContext.getString(R.string.tip_update_intro)
-                                        + versionData.getIntro() + "\n" +
-                                        App.sContext.getString(R.string.tip_update_size)
-                                        + versionData.getSize());
-                        checkUpdateDialog.setOnPositiveButton(
-                                App.sContext.getString(R.string.btn_update),
-                                () -> {
+                                App.sContext.getString(R.string.tip_update_intro) + versionData.getIntro() + "\n" + App.sContext.getString(R.string.tip_update_size) + versionData.getSize());
+                        checkUpdateDialog.setOnPositiveButton(App.sContext.getString(R.string.btn_update), () -> {
                                     if (isStorgePermissionGranted()) {
                                         beginUpdate(versionData.download);
                                     }else {
@@ -108,15 +101,12 @@ public class MainActivity extends BaseActivity implements
                                     }
                                     checkUpdateDialog.dismiss();
                                 });
-                        checkUpdateDialog.setOnNegativeButton(
-                                App.sContext.getString(R.string.btn_cancel),
+                        checkUpdateDialog.setOnNegativeButton(App.sContext.getString(R.string.btn_cancel),
                                 () -> checkUpdateDialog.dismiss());
-
                         checkUpdateDialog.show(getSupportFragmentManager(), "dialog_update");
                     }
                 }, throwable -> throwable.printStackTrace());
     }
-
     private void beginUpdate(String download) {
         deleteApkBefore();
         Intent intent = new Intent(this, DownloadService.class);
@@ -127,7 +117,6 @@ public class MainActivity extends BaseActivity implements
         Logger.d("start download");
         ToastUtil.showShort(getString(R.string.tip_start_download_apk));
     }
-
     private void deleteApkBefore() {
         String path = Environment.getExternalStorageDirectory() + "/Download/" + "ccnubox.apk";
         File file = new File(path);
@@ -137,7 +126,6 @@ public class MainActivity extends BaseActivity implements
         }
         Logger.d("file not exists");
     }
-
     private void initListener() {
         RxBus.getDefault().toObservable(LibLoginEvent.class)
                 .subscribe(libLoginEvent -> {
@@ -164,7 +152,6 @@ public class MainActivity extends BaseActivity implements
                 },Throwable::printStackTrace);
         addSubscription(subscription);
     }
-
     private void getSplashData() {
         CampusFactory.getRetrofitService().getSplash()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -186,7 +173,6 @@ public class MainActivity extends BaseActivity implements
                                 && PreferenceUtil.getLong(Constants.SPLASH_UPDATE)
                                 != splashData.getUpdate()) {
                             saveSplashData(splashData);
-                            Logger.d("save splash data");
                             FrescoUtil.savePicture(splashData.getImg(), MainActivity.this,
                                     "splash.jpg");
                         }

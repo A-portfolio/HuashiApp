@@ -1,14 +1,11 @@
 package net.muxi.huashiapp.widget;
 
 import android.app.Dialog;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -19,7 +16,6 @@ import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.Logger;
 
 /**
  * Created by ybao on 17/2/13.
@@ -37,7 +33,6 @@ public class LoadingDialog extends BottomDialogFragment {
                 uri).setAutoPlayAnimations(true).build();
         ((SimpleDraweeView) view.findViewById(R.id.drawee)).setController(controller);
         dialog.setContentView(view);
-
         Window window = dialog.getWindow();
         WindowManager.LayoutParams wmlp = window.getAttributes();
         wmlp.width = WindowManager.LayoutParams.MATCH_PARENT;

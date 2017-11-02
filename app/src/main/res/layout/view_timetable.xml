@@ -22,7 +22,7 @@
         android:layout_height="100dp"
         android:visibility="gone"/>
 
-    <net.muxi.huashiapp.ui.schedule.CurweekSetView
+    <net.muxi.huashiapp.ui.schedule.AddNewCourseView
         android:id="@+id/view_curweek_set"
         android:layout_width="match_parent"
         android:layout_height="196dp"

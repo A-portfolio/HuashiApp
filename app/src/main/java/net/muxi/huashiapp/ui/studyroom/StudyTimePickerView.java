@@ -22,33 +22,25 @@ import butterknife.ButterKnife;
  */
 
 public class StudyTimePickerView extends LinearLayout {
-
-
     public static final String[] DAYS = {"周一", "周二", "周三", "周四", "周五"};
     public String[] STUDY_TIME = new String[20];
-
     @BindView(R.id.np_study_week)
     NumberPicker mNpStudyWeek;
     @BindView(R.id.np_study_day)
     NumberPicker mNpStudyDay;
 
     private OnValueChangeListener mValueChangeListener;
-
     public StudyTimePickerView(Context context) {
         this(context, null);
     }
-
     public StudyTimePickerView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         inflate(context,R.layout.view_study_time_picker, this);
         ButterKnife.bind(this);
-
         setWillNotDraw(false);
         initView();
 
     }
-
-
     private void initView() {
         setDividerColor(mNpStudyWeek, Color.TRANSPARENT);
         setDividerColor(mNpStudyDay, Color.TRANSPARENT);
@@ -62,6 +54,7 @@ public class StudyTimePickerView extends LinearLayout {
         }
         mNpStudyWeek.setDisplayedValues(STUDY_TIME);
 
+        //看到这里来了
         mNpStudyWeek.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -107,6 +100,8 @@ public class StudyTimePickerView extends LinearLayout {
                     e.printStackTrace();
                 }
                 break;
+
+
             }
         }
     }

@@ -58,12 +58,8 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         starter.putExtra("query", query);
         context.startActivity(starter);
     }
-
-
     private static final String PAY_HINT = "电费不足？查看如何微信缴费";
-
     private PreferenceUtil sp;
-
     private String mQuery;
     private List<Fragment> detailFragments;
 
@@ -73,28 +69,15 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_electricity_detail);
         ButterKnife.bind(this);
-
-
-//        mToolbar.setTitle("查询结果");
         setTitle("查询结果");
-
-
         init();
         sp = new PreferenceUtil();
-
-//        showLoading();
-
-
         mQuery = getIntent().getStringExtra("query");
-
-
         mMultiStatusView.setOnRetryListener(v -> {
             showLoading();
             loadDatas();
         });
-
         setFontType(PAY_HINT);
-
         loadDatas();
 
     }
@@ -111,14 +94,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(electricityResponse -> {
-//                        if (electricityResponse.code() == 404) {
-//                            sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
-//                            ToastUtil.showShort(getString(R.string.ele_room_not_found));
-//                            Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);
-//                            startActivity(intent);
-//                            ElectricityDetailActivity.this.finish();
-//
-//                        }
                     if (electricityResponse.code() == 200) {
 //                        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(0);
                         mMultiStatusView.showContent();
@@ -131,11 +106,14 @@ public class ElectricityDetailActivity extends ToolbarActivity {
                         mMultiStatusView.showNetError();
                         hideLoading();
                     }
+                    //onError()
+                    //throwable 是里面的一个参数
                 }, throwable -> {
                     throwable.printStackTrace();
                     mMultiStatusView.showNetError();
                     hideLoading();
 
+                    //onComplete()
                 }, () -> {
                     hideLoading();
                 });
@@ -232,7 +210,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         if (getWindow().getDecorView().equals(view)) {
             view.getAnimation().cancel();
             mEleDetailLayout.removeView(view);
-
         } else {
             super.onBackPressed();
         }

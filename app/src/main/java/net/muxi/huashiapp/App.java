@@ -85,7 +85,6 @@ public class App extends Application {
         PreferenceUtil.saveString(PreferenceUtil.LIBRARY_ID, libUser.getSid());
         PreferenceUtil.saveString(PreferenceUtil.LIBRARY_PWD, libUser.getPassword());
         sLibrarayUser = libUser;
-        Logger.d("id:" + sLibrarayUser.getSid() + "\tpwd:" + sLibrarayUser.getPassword());
     }
 
     public static void logoutLibUser() {

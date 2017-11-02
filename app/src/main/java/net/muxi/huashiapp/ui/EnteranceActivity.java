@@ -22,6 +22,7 @@ import net.muxi.huashiapp.util.PreferenceUtil;
 /**
  * Created by ybao on 16/7/30.
  */
+//这里是整个app刚刚进去的闪屏活动！
 public class EnteranceActivity extends BaseActivity implements View.OnClickListener {
 
     private SimpleDraweeView mDrawee;
@@ -39,10 +40,8 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         sp = new PreferenceUtil();
         isFirstOpen = sp.getBoolean(PreferenceUtil.APP_FIRST_OPEN, true);
-
         if (!isFirstOpen) {
             if (sp.getString(Constants.SPLASH_IMG).equals("")) {
                 startMainActivityDelay(0);
@@ -57,7 +56,6 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
 
                 mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
                 mDrawee.setImageURI(Uri.parse(sp.getString(Constants.SPLASH_IMG)));
-                Logger.d(sp.getString(Constants.SPLASH_IMG));
                 startMainActivityDelay(2500);
             }
             return;

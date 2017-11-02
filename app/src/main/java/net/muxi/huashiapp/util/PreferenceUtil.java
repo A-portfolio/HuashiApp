@@ -70,7 +70,6 @@ public class PreferenceUtil {
     //是否第一次进入主界面
     public static final String IS_FIRST_ENTER_MAIN = "is_first_enter_main";
 
-
     public static void saveBoolean(String key, boolean value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(App.sContext).edit();
         editor.putBoolean(key, value);

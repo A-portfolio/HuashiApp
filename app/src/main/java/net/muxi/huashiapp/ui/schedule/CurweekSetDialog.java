@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 /**
  * Created by ybao on 16/7/14.
  */
+//暂时没有发现在哪里使用到hhhh
 public class CurweekSetDialog extends Dialog {
 
     @BindView(R.id.gl_weeks)
@@ -37,21 +38,13 @@ public class CurweekSetDialog extends Dialog {
     private AppCompatRadioButton[] mRadioButtons;
     private int lastPos;
     private int pos;
-
     private OnDialogPostiveClickListener mOnDialogPostiveClickListener;
-
     private Context mContext;
-
     public CurweekSetDialog(Context context,int curWeek) {
         super(context,R.style.DialogStyle);
         mContext = context;
         pos = curWeek - 1;
     }
-
-    public interface OnDialogPostiveClickListener{
-        void onDialogPostiveClick(int curWeek);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,11 +67,9 @@ public class CurweekSetDialog extends Dialog {
             }
         });
     }
-
     public void setOnDialogPostiveClickListener(OnDialogPostiveClickListener dialogPostiveClickListener){
         mOnDialogPostiveClickListener = dialogPostiveClickListener;
     }
-
     private void initView() {
         weeksLayout = new LinearLayout[Constants.WEEKS_LENGTH];
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
@@ -134,6 +125,8 @@ public class CurweekSetDialog extends Dialog {
             });
         }
         mRadioButtons[pos].setChecked(true);
-
+    }
+    public interface OnDialogPostiveClickListener{
+        void onDialogPostiveClick(int curWeek);
     }
 }

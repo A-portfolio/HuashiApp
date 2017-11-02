@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import net.muxi.huashiapp.R;
@@ -16,6 +17,7 @@ import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -58,7 +60,8 @@ public class WebsiteActivity extends ToolbarActivity {
         }
 
         if (mWebsiteDatas != null && mWebsiteDatas.size() > 0) {
-            setupRecyclerView(mWebsiteDatas);
+            //学生信息服务平台暂时无法使用
+            setupRecyclerView(filterData(mWebsiteDatas));
         } else {
             showLoading();
         }
@@ -83,8 +86,13 @@ public class WebsiteActivity extends ToolbarActivity {
 
                     @Override
                     public void onNext(List<WebsiteData> websiteData) {
+                        for(WebsiteData data:websiteData){
+
+                        Log.d("websites", "onNext: "+data.getSite());
+                        }
                         if (mWebsiteDatas == null || websiteData.size() != mWebsiteDatas.size()) {
-                            setupRecyclerView(websiteData);
+                            //学生信息服务平台暂时无法使用
+                            setupRecyclerView(filterData(mWebsiteDatas));
                             mDao.deleteWebsite();
                             for (WebsiteData data : websiteData) {
                                 mDao.insertSite(data);
@@ -93,7 +101,6 @@ public class WebsiteActivity extends ToolbarActivity {
                     }
                 });
     }
-
 
     public void setupRecyclerView(List<WebsiteData> websiteData) {
         WebsiteAdapter adapter;
@@ -108,6 +115,16 @@ public class WebsiteActivity extends ToolbarActivity {
             }
         });
 
+    }
+
+    private List filterData(List<WebsiteData> dataList){
+        List<WebsiteData> filteredList = new ArrayList<>();
+        for(WebsiteData data:dataList){
+            if(!data.getSite().equals("学生信息服务平台")){
+                filteredList.add(data);
+            }
+        }
+        return filteredList;
     }
 
     @Override

@@ -43,8 +43,6 @@ public class StudyRoomCorrectView extends RelativeLayout {
     private int mYDown;
     private int mYDistance;
     private int mCurY;
-
-
     private Scroller mScroller;
 
     private VelocityTracker mVelocityTracker;
@@ -52,10 +50,7 @@ public class StudyRoomCorrectView extends RelativeLayout {
     public StudyRoomCorrectView(Context context) {
         super(context);
         mContext = context;
-
-
         Logger.d(mType);
-
         mScroller = new Scroller(context);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_study_room_correct, this, true);
         ButterKnife.bind(this, view);

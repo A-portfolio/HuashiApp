@@ -14,7 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 
 import net.muxi.huashiapp.BuildConfig;
-import net.muxi.huashiapp.util.Logger;
 
 import java.io.File;
 
@@ -45,19 +44,18 @@ public class DownloadService extends Service {
                 public void onReceive(Context context, Intent intent) {
                     intent = new Intent(Intent.ACTION_VIEW);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    File file = new File(
-                            Environment.getExternalStorageDirectory() + "/Download/" + fileName);
+                    File file = new File(Environment.getExternalStorageDirectory() + "/Download/" + fileName);
                     //N 系统以上需要 file uri 访问
                     if (Build.VERSION.SDK_INT >= 24) {
                         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        Uri apkFileUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", file);
+                        Uri apkFileUri = FileProvider.getUriForFile(context,
+                                BuildConfig.APPLICATION_ID + ".fileProvider", file);
                         intent.setDataAndType(apkFileUri, FILE_TYPE);
                     } else {
                         intent.setDataAndType(Uri.fromFile(file),
                                 FILE_TYPE);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     }
-
                     startActivity(intent);
                     stopSelf();
                 }

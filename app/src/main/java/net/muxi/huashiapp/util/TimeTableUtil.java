@@ -6,18 +6,16 @@ import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Course;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.TreeSet;
 
 /**
  * Created by ybao on 16/7/27.
  */
 public class TimeTableUtil {
-
     /**
      * 上课周数是否含有本周
      *
@@ -129,16 +127,34 @@ public class TimeTableUtil {
      */
     public static int getCurWeek() {
         PreferenceUtil sp = new PreferenceUtil();
+        SimpleDateFormat yearFormmatter = new SimpleDateFormat("yyyy");
+        Date now = new Date(System.currentTimeMillis());
+        int thisYear  = Integer.parseInt(yearFormmatter.format(now));
+        Date schoolDay = new Date(thisYear-1900,9 -1,1);
+        //获得开学的那一天是一周中的第几天
+        int dayOfSchoolDay = DateUtil.getDayInWeek(schoolDay);
+        //获得第二周的第一天是九月几号：
+        int dayOfSecondWeek = 7 - dayOfSchoolDay + 1 + 1;
+        String secondWeek = thisYear + "-" +"09"+"-"+"0"+dayOfSecondWeek;
+        int curWeek = (int) (DateUtil.getDistanceWeek(secondWeek,DateUtil
+                                .toDateInYear(new Date(System.currentTimeMillis()))))+2;
+        //计算两周之间的距离就是八周　
+        return curWeek >= 1 ? curWeek : 1;
+        /*
         int day = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
-        String defalutDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()),
+        //获取date的格式 根据 distance 定
+        String defaluteDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()),
                 1 - day);
         int curWeek;
+        String firstWeek = sp.getString(PreferenceUtil.FIRST_WEEK_DATE, defaluteDate);
+        String weekArg =  DateUtil.toDateInYear(new Date(System.currentTimeMillis()));
         curWeek = (int) DateUtil.getDistanceWeek(
-                sp.getString(PreferenceUtil.FIRST_WEEK_DATE, defalutDate),
+                sp.getString(PreferenceUtil.FIRST_WEEK_DATE, defaluteDate),
                 DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
         curWeek = curWeek <= Constants.WEEKS_LENGTH ? curWeek : Constants.WEEKS_LENGTH;
         curWeek = curWeek >= 1 ? curWeek : 1;
         return curWeek;
+        */
     }
 
     public static void saveCurWeek(int week) {

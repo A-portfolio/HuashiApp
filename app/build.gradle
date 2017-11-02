@@ -16,7 +16,7 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 def versionMajor = 2
 def versionMinor = 1
-def versionBuild = 1
+def versionBuild = 2
 
 android {
     compileSdkVersion 25

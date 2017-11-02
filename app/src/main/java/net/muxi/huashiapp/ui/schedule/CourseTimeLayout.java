@@ -18,10 +18,10 @@ import net.muxi.huashiapp.R;
  */
 
 public class CourseTimeLayout extends ScheduleTimeLayout{
-
     private Context mContext;
     private Scroller mScroller;
-
+    //侧边栏的表格
+    //竖着的表格
     private View[] views;
 
     public CourseTimeLayout(Context context) {
@@ -37,6 +37,7 @@ public class CourseTimeLayout extends ScheduleTimeLayout{
         setWillNotDraw(false);
     }
 
+    //给竖着的每一个日期的方格设置序号和逢双数设置时间
     private void initView() {
         views = new View[14];
         for (int i = 0;i < 14;i ++){

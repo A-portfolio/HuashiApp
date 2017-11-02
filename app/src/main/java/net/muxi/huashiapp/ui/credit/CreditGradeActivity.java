@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
-import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Score;
@@ -109,11 +108,22 @@ public class CreditGradeActivity extends ToolbarActivity {
 
     public void loadCredit(Observable<List<Score>>[] listObservable) {
         showLoading();
+        //使用merge将多个observable 组合到一起
         Observable.merge(listObservable,5)
                 .flatMap(Observable::from)
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                /*
+                lamdba 表达式 大概内容就是这样：
+                subscribe(new Action1<Course>() {
+                    @Override
+                    public void call(Course course) {
+                        Log.i(TAG, course.getName());
+                    }
+                });
+                 */
+                //scores 作为 new Action1 的一个参数
                 .subscribe(scores -> {
                     mScoresList = scores;
                     initRecyclerView();

@@ -9,6 +9,7 @@ import android.widget.TextView;
  * Date: 17/2/24
  */
 
+//只含有课程id
 public class CourseView extends TextView{
 
     private String cid;

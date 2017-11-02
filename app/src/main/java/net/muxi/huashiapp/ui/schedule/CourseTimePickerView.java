@@ -8,7 +8,6 @@ import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NumberPickerHelper;
 
 import butterknife.BindView;
@@ -18,6 +17,8 @@ import butterknife.ButterKnife;
  * Created by ybao on 17/2/3.
  */
 
+
+//用于添加课程中选择的的课程表
 public class CourseTimePickerView extends RelativeLayout{
 
     @BindView(R.id.np_weekday)
@@ -36,12 +37,11 @@ public class CourseTimePickerView extends RelativeLayout{
     public CourseTimePickerView(Context context) {
         this(context, null);
     }
-
     public CourseTimePickerView(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_time_picker, this);
         ButterKnife.bind(this);
-        //invoke onDraw
+        //invoke onDraw!!!
         setWillNotDraw(false);
         initView();
     }

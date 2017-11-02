@@ -15,7 +15,6 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 import butterknife.BindView;
@@ -66,7 +65,7 @@ public class ElectricityActivity extends ToolbarActivity {
 
 
     //东区对应的建筑
-    private static final String[] buildingStrings1 = {
+    private static final String[]   buildingStrings1 = {
             "东区1栋", "东区2栋", "东区3栋", "东区4栋", "东区5栋", "东区6栋", "东区7栋", "东区8栋", "东区9栋", "东区10栋", "东区11栋", "东区12栋", "东区13栋西",
             "东区13栋东", "东区14栋", "东区15栋西", "东区15栋东", "东区16栋", "东区附1栋"};
 
@@ -106,10 +105,7 @@ public class ElectricityActivity extends ToolbarActivity {
         setContentView(R.layout.activity_electricity);
         ButterKnife.bind(this);
         mToolbar.setTitle("电费查询");
-        Logger.d("ele oncreate");
-
         mArea = new TextView[]{mArea1, mArea2, mArea3, mArea4, mArea5, mArea6};
-
         initView();
     }
 
@@ -129,6 +125,7 @@ public class ElectricityActivity extends ToolbarActivity {
     }
 
 
+    //对应各个寝室
     @OnClick({R.id.area_1, R.id.area_2, R.id.area_3, R.id.area_4, R.id.area_5, R.id.area_6, R.id.tv_area, R.id.hint_choose_area, R.id.et_room, R.id.btn_search})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -158,12 +155,12 @@ public class ElectricityActivity extends ToolbarActivity {
                 break;
             case R.id.hint_choose_area:
             case R.id.tv_area:
+                //选择所在区域具体的寝室号码
                 Intent intent = new Intent(ElectricityActivity.this, ElectricityAreaOptionActivity.class);
                 intent.putExtra("buildings", mBuildings);
                 startActivityForResult(intent, 0);
                 break;
             case R.id.btn_search:
-
                 if (mTvArea.getText().length() != 0 && mEtRoom.getText().toString().length() != 0) {
                     int index = mTvArea.getText().toString().indexOf("栋");
                     if (mTvArea.getText().length() > index + 1) {
@@ -189,6 +186,10 @@ public class ElectricityActivity extends ToolbarActivity {
                     CampusFactory.getRetrofitService().getElectricity(eleLightRequest)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeOn(Schedulers.newThread())
+                            /*
+                            subscriber<T>
+                            electricityResponse是 Retrofit onSuccess()的一个参数 所以可以这样Lambda化
+                             */
                             .subscribe(electricityResponse -> {
                                         if (electricityResponse.code() == 404) {
                                             sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
@@ -210,6 +211,7 @@ public class ElectricityActivity extends ToolbarActivity {
 
     }
 
+    //选中的时候设置为绿色 其他时候为黑色
     private void setBackground(int position) {
         for (int i = 0; i < 6; i++) {
             if (i == position) {

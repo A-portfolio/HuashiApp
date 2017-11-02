@@ -29,6 +29,10 @@ public class CenterDialogFragment extends DialogFragment {
 
 
     public Dialog createCenterDialog(View view){
+        //这个style用作半透明遮罩层
+        //androiddimamount设置灰度
+        //问题：这里的match_parent 是不是在drawable中设置了insetleft和right之后就可以有距离两个`侧边的距离了？
+        //window wrap_content的值是不是view的高度？
         Dialog dialog = new Dialog(getContext(),R.style.CenterDialogStyle);
         dialog.setContentView(view);
         Window window = dialog.getWindow();

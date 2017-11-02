@@ -16,15 +16,6 @@ import net.muxi.huashiapp.common.data.Electricity;
  * Created by december on 16/7/6.
  */
 public class ElectricityDetailFragment extends BaseFragment {
-
-
-//    @BindView(R.id.card_money_left)
-//    CardView mCardMoneyLeft;
-//    @BindView(R.id.card_degree_left)
-//    CardView mCardDegreeLeft;
-//    @BindView(R.id.card_total_use)
-//    CardView mCardTotalUse;
-
     private TextView mTvDegreeLeft;
     private TextView mTvDegreeLastMonth;
     private TextView mTvDegreeCurMonth;
@@ -44,10 +35,12 @@ public class ElectricityDetailFragment extends BaseFragment {
     private static final int TYPE_AIR = 1;
 
 
+    //推荐写法！！！
     public static ElectricityDetailFragment newInstance(int type) {
         Bundle args = new Bundle();
         args.putInt("type", type);
         ElectricityDetailFragment fragment = new ElectricityDetailFragment();
+        //防止丢失数据 setArguments
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,8 +69,6 @@ public class ElectricityDetailFragment extends BaseFragment {
         mCardDegreeLeft = (CardView) view.findViewById(R.id.card_degree_left);
         mCardTotalUse = (CardView) view.findViewById(R.id.card_total_use);
 
-
-
         return view;
     }
 
@@ -99,11 +90,6 @@ public class ElectricityDetailFragment extends BaseFragment {
         }
     }
 
-    /**
-     * set the detail info of the electricity
-     *
-     * @param eleData
-     */
     public void setEleDetail(Electricity eleData) {
         int index = eleData.getDegree().getBefore().indexOf(".");
         int index2 = eleData.getDegree().getCurrent().indexOf(".");
@@ -116,9 +102,6 @@ public class ElectricityDetailFragment extends BaseFragment {
         mTvMoneyLastMonth.setText(eleData.getEle().getBefore().substring(0, index3 + 2));
         mTvMoneyCurMonth.setText(eleData.getEle().getCurrent().substring(0, index4 + 2));
     }
-
-
-
 
     @Override
     public void onDestroy() {

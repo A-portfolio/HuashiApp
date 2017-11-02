@@ -35,8 +35,6 @@ public class BaseFragment extends Fragment{
         inflater.inflate(R.menu.menu_empty,menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

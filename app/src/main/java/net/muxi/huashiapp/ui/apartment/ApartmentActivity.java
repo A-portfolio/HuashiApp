@@ -49,6 +49,7 @@ public class ApartmentActivity extends ToolbarActivity {
         setContentView(R.layout.activity_apartment);
         ButterKnife.bind(this);
         dao = new HuaShiDao();
+        //读取宿舍的信息
         mApartDatas = dao.loadApart();
         if (mApartDatas.size() > 0) {
             setupRecyclerView(mApartDatas);
@@ -57,7 +58,9 @@ public class ApartmentActivity extends ToolbarActivity {
         }
         setTitle("部门信息");
         CampusFactory.getRetrofitService().getApartment()
+                //observeOn() 在主线程上面发送通知
                 .observeOn(AndroidSchedulers.mainThread())
+                //被观察者 在新的线程上面发送通知
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<ApartmentData>>() {
                     @Override
@@ -68,10 +71,7 @@ public class ApartmentActivity extends ToolbarActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-
-
                     }
-
                     @Override
                     public void onNext(List<ApartmentData> apartmentDataList) {
                         if (apartmentDataList.size() != mApartDatas.size()) {

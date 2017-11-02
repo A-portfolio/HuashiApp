@@ -8,18 +8,12 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Scroller;
-import android.widget.TextView;
-
-
-import com.tencent.smtt.export.external.interfaces.IX5WebSettings;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.util.DimensUtil;
-import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.TimeTableUtil;
 
 import java.util.ArrayList;
@@ -30,31 +24,22 @@ import java.util.List;
  */
 
 public class TableContent extends FrameLayout {
-
     private Scroller mScroller;
     private Context mContext;
-
     private OnCourseClickListener mOnCourseClickListener;
-
     private List<Course> mCourseList = new ArrayList<>();
-    
-//    private TextView clickEventTarget = null;
-
     public TableContent(Context context) {
         this(context, null);
     }
-
     public TableContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         mScroller = new Scroller(context);
         mContext = context;
         setWillNotDraw(false);
     }
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         //绘制背景分割线
         Path path = new Path();
         for (int i = 0; i < 14; i++) {
@@ -77,7 +62,6 @@ public class TableContent extends FrameLayout {
         p.setStyle(Paint.Style.STROKE);
         canvas.drawPath(path, p);
     }
-
     @Override
     public void computeScroll() {
         super.computeScroll();
@@ -86,18 +70,13 @@ public class TableContent extends FrameLayout {
             postInvalidate();
         }
     }
-
     public void smoothScrollTo(int x,int y){
         mScroller.startScroll(mScroller.getCurrX(),mScroller.getCurrY(),x,y);
     }
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-//        getParent().requestDisallowInterceptTouchEvent(true);
-//        Logger.d(((View)getParent()).getId() + "");
         return super.dispatchTouchEvent(ev);
     }
-
     /**
      * 添加课程
      *
@@ -121,7 +100,6 @@ public class TableContent extends FrameLayout {
         CourseView tvCourse = new CourseView(mContext);
         tvCourse.setTextColor(Color.WHITE);
         tvCourse.setTextSize(TypedValue.COMPLEX_UNIT_SP,10);
-//        tvCourse.setClickable(true);
         tvCourse.setPadding(DimensUtil.dp2px(10),DimensUtil.dp2px(8),DimensUtil.dp2px(10),DimensUtil.dp2px(8));
         LayoutParams courseParams = new LayoutParams(TimeTable.COURSE_WIDTH,
                 course.during * TimeTable.COURSE_TIME_HEIGHT - DimensUtil.dp2px(3));

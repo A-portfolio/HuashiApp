@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.service.AlarmReceiver;
@@ -16,7 +15,7 @@ import java.util.Random;
 /**
  * Created by ybao on 16/5/16.
  */
-public class AlarmUtil {
+public class    AlarmUtil {
 
     public static void register(Context context) {
 
@@ -45,7 +44,6 @@ public class AlarmUtil {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i , intent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendars[i].getTimeInMillis(), pendingIntent);
-            Log.d("alarm","set alarmManager");
         }
 
     }

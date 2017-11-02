@@ -10,14 +10,13 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
-import butterknife.OnClick;
-
 /**
  * Created by ybao (ybaovv@gmail.com)
  * Date: 17/2/24
  */
 
-public class CurweekSetView extends RelativeLayout {
+//点击右上角的加号，添加新课程
+public class AddNewCourseView extends RelativeLayout {
 
     //    public
     public static final int MAX_CLICK_DISTANCE = DimensUtil.dp2px(15);
@@ -28,7 +27,7 @@ public class CurweekSetView extends RelativeLayout {
     private float endY;
     private long lastTime;
 
-    public CurweekSetView(Context context, AttributeSet attrs) {
+    public AddNewCourseView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView(context);
     }
@@ -36,6 +35,7 @@ public class CurweekSetView extends RelativeLayout {
     private void initView(Context context) {
         if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true)) {
             this.setVisibility(VISIBLE);
+            //会自动添加到布局之中去
             LayoutInflater.from(context).inflate(R.layout.view_table_guide, this);
         }
     }

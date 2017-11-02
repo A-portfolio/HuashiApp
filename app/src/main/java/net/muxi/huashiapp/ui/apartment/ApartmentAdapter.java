@@ -17,7 +17,8 @@ import butterknife.ButterKnife;
 /**
  * Created by december on 16/7/30.
  */
-public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.MyApartViewHolder> {
+public class ApartmentAdapter
+        extends RecyclerView.Adapter<ApartmentAdapter.MyApartViewHolder> {
 
     private List<ApartmentData> mApartmentDataList;
 
@@ -49,6 +50,7 @@ public class ApartmentAdapter extends RecyclerView.Adapter<ApartmentAdapter.MyAp
     }
 
 
+    //holder 只是用来绑定控件对象
     static class MyApartViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_apartment)
         TextView mTvApartment;

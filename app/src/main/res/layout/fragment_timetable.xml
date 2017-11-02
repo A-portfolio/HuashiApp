@@ -4,15 +4,6 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center_horizontal|bottom"-->
-    <!--android:layout_marginBottom="22dp"-->
-    <!--android:text="———别闹，学霸也是要睡觉的———"-->
-    <!--android:textColor="@color/grey_bottom_line"-->
-    <!--android:textSize="12sp"/>-->
-
     <net.muxi.huashiapp.ui.schedule.TimeTable
         android:id="@+id/timetable"
         android:layout_width="match_parent"

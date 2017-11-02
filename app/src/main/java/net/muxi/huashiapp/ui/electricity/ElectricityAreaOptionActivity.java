@@ -40,10 +40,7 @@ public class ElectricityAreaOptionActivity extends ToolbarActivity {
         ButterKnife.bind(this);
 
         setTitle("选择楼栋");
-
         mBuildings = getIntent().getStringArrayExtra("buildings");
-
-
         mAdapter = new AreaOptionAdapter(mBuildings);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

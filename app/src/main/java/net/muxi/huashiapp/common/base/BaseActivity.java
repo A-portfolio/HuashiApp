@@ -33,6 +33,8 @@ public class BaseActivity extends AppCompatActivity {
     private LoadingDialog mLoadingDialog;
     private CompositeSubscription mCompositeSubscription;
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +43,6 @@ public class BaseActivity extends AppCompatActivity {
             mActionBar.setDisplayHomeAsUpEnabled(true);
         }
         getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-
         sendComponentNameByZG();
     }
 
@@ -53,7 +54,6 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void showLoading() {
-        Logger.d("showloading");
         if (mLoadingDialog == null) {
             mLoadingDialog = new LoadingDialog();
         }
@@ -105,7 +105,6 @@ public class BaseActivity extends AppCompatActivity {
     public void showSnackbarLong(String msg) {
         make(getWindow().getDecorView(), msg, Snackbar.LENGTH_LONG)
                 .show();
-
     }
 
     public void showSnackbarShort(String msg) {
@@ -113,7 +112,7 @@ public class BaseActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void showSnackbarLong(int resId) {
+    public void  showSnackbarLong(int resId) {
         showSnackbarLong(getString(resId));
     }
 

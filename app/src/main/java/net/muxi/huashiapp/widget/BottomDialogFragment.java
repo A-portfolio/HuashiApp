@@ -25,9 +25,7 @@ public class BottomDialogFragment extends DialogFragment {
     }
 
     public static BottomDialogFragment newInstance() {
-
         Bundle args = new Bundle();
-
         BottomDialogFragment fragment = new BottomDialogFragment();
         fragment.setArguments(args);
         return fragment;
@@ -39,7 +37,7 @@ public class BottomDialogFragment extends DialogFragment {
         return super.onCreateDialog(savedInstanceState);
     }
 
-    public Dialog createBottomDialog(View view){
+    public Dialog  createBottomDialog(View view){
         Dialog dialog = new Dialog(getContext(),R.style.BottomDialogStyle);
         dialog.setContentView(view);
         Window window = dialog.getWindow();

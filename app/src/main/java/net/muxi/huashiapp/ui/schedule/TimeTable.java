@@ -11,15 +11,12 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.event.RefreshFinishEvent;
-import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,7 +27,6 @@ import butterknife.ButterKnife;
  * 课程表显示的类
  */
 public class TimeTable extends RelativeLayout {
-
     public static final int WEEK_DAY_WIDTH = DimensUtil.dp2px(65);
     public static final int COURSE_TIME_HEIGHT = DimensUtil.dp2px(57);
     public static final int LITTLE_VIEW_WIDTH = DimensUtil.dp2px(49);
@@ -57,52 +53,33 @@ public class TimeTable extends RelativeLayout {
     @BindView(R.id.refresh_view)
     RefreshView mRefreshView;
     @BindView(R.id.view_curweek_set)
-    CurweekSetView mViewCurweekSet;
+    AddNewCourseView mViewCurweekSet;
     @BindView(R.id.layout_table)
     TimeTableLayout mLayoutTable;
     @BindView(R.id.tv_tip)
     TextView mTvTip;
 
     private View curDownTargetView;
-
     private boolean isFirstShow = true;
-
     private Scroller mScroller;
-
     private Context mContext;
     private List<TextView> mCourseViews = new ArrayList<>();
-
     public static final boolean IS_WEEKDAY_SHOW = false;
-
     private float curX, curY;
     private float startX, startY;
-
     private long lastTime;
     private boolean isTouchCancel = true;
-
     private boolean isPulling = false;
 
     private OnClickListener mOnCourseClickListener;
-
-    public interface OnLongPressedListenr {
-        void onLongPressed(Course course);
-    }
-
-    //监听点击课程
-    public interface OnCourseClickListener {
-        void onCourseClick(Course course);
-    }
-
     public TimeTable(Context context) {
         this(context, null);
     }
-
     public TimeTable(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         mScroller = new Scroller(context);
         isFirstShow = PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true);
-        Logger.d(isFirstShow + " firstshow");
         initLayout();
         RxBus.getDefault().toObservable(RefreshFinishEvent.class)
                 .subscribe(refreshFinishEvent -> {
@@ -182,8 +159,6 @@ public class TimeTable extends RelativeLayout {
                 } else {
                     xDistance = (int) (curX - event.getX());
                 }
-
-                Logger.d("scrolly: " + scrolledY + "");
 
                 //不同情况下的区别滚动
                 if (isFirstShow) {

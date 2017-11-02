@@ -21,17 +21,15 @@ import java.util.List;
  * Created by ybao on 17/1/26.
  */
 
-public class WeekLayout extends ScheduleTimeLayout {
+//横向的周数的布局
 
+public class WeekLayout extends ScheduleTimeLayout {
     private Context mContext;
     private Scroller mScroller;
-
     private View[] views;
-
     public WeekLayout(Context context) {
         this(context, null);
     }
-
     public WeekLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
@@ -40,7 +38,6 @@ public class WeekLayout extends ScheduleTimeLayout {
         initView();
         setWillNotDraw(false);
     }
-
     private void initView() {
         List<String> dateList = DateUtil.getTheWeekDate(0);
         for (int i = 0; i < 7; i++) {
@@ -50,7 +47,6 @@ public class WeekLayout extends ScheduleTimeLayout {
             addView(views[i]);
         }
     }
-
     public void setWeekDate(int distance) {
         List<String> dateList = DateUtil.getTheWeekDate(distance);
         for (int i = 0;i < 7;i ++){

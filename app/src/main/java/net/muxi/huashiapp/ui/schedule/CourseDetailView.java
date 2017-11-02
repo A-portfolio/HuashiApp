@@ -16,7 +16,6 @@ import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.TimeTableUtil;
 
 import java.util.ArrayList;
@@ -125,8 +124,6 @@ public class CourseDetailView extends RelativeLayout {
                                 .setAction(R.string.undo, v -> {
                                     addCourse(course);
                                 }).show();
-
-                        Logger.d("send del");
                         HuaShiDao dao = new HuaShiDao();
                         dao.deleteCourse(course.id);
                         RxBus.getDefault().send(new RefreshTableEvent());
@@ -138,7 +135,6 @@ public class CourseDetailView extends RelativeLayout {
                     ((BaseActivity) mContext).showErrorSnackbarShort(R.string.tip_err_server);
                 });
     }
-
     public void addCourse(Course course) {
         CampusFactory.getRetrofitService().addCourse(course)
                 .observeOn(AndroidSchedulers.mainThread())

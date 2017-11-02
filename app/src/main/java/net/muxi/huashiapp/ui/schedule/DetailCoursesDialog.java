@@ -22,7 +22,6 @@ import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.util.DimensUtil;
-import net.muxi.huashiapp.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,13 +46,7 @@ public class DetailCoursesDialog extends DialogFragment {
 
     private List<Course> mCourseList;
     private int mSelectWeek;
-
     private Subscription mSubscription;
-
-//    private static final int MAX_CLICK_DISTANCE = DimensUtil.dp2px(15);
-//
-//    private float startX, startY;
-
     public static DetailCoursesDialog newInstance(List<Course> courseList, int selectWeek) {
         Bundle args = new Bundle();
         args.putParcelableArrayList("course_list", (ArrayList) courseList);
@@ -62,29 +55,22 @@ public class DetailCoursesDialog extends DialogFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = new Dialog(getContext(), R.style.FullScreenDialogStyle);
         mCourseList = getArguments().getParcelableArrayList("course_list");
-        for (Course course : mCourseList) {
-            Logger.d(course.course);
-        }
         mSelectWeek = getArguments().getInt("select_week", 1);
-
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_courses, null);
         ButterKnife.bind(this, view);
         addCourseViews(mCourseList, view);
         mRootLayout.setOnClickListener(v -> {
             dismiss();
         });
-
         mSubscription = RxBus.getDefault().toObservable(RefreshTableEvent.class)
                 .subscribe(deleteCourseOkEvent -> {
                     dismiss();
                 },throwable -> throwable.printStackTrace());
-
         dialog.setContentView(view);
         Window window = dialog.getWindow();
         WindowManager.LayoutParams wmlp = window.getAttributes();
@@ -99,7 +85,6 @@ public class DetailCoursesDialog extends DialogFragment {
         setCancelable(true);
         return dialog;
     }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -110,7 +95,6 @@ public class DetailCoursesDialog extends DialogFragment {
             dialog.getWindow().setLayout(width, height);
         }
     }
-
     private void addCourseViews(List<Course> courseList, View view) {
         if (courseList == null) {
             return;
@@ -118,9 +102,7 @@ public class DetailCoursesDialog extends DialogFragment {
         for (Course course : courseList) {
             CourseDetailView courseDetailView = new CourseDetailView(getContext(), course,
                     mSelectWeek);
-
             courseDetailView.setOnEditButtonClickListener(v -> dismiss());
-
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -128,7 +110,6 @@ public class DetailCoursesDialog extends DialogFragment {
             mLayoutCourses.addView(courseDetailView, params);
         }
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();

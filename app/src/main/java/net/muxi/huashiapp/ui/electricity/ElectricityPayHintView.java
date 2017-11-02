@@ -50,10 +50,7 @@ public class ElectricityPayHintView extends RelativeLayout {
     public ElectricityPayHintView(Context context) {
         super(context);
         mContext = context;
-
         mScroller = new Scroller(context);
-
-
         initView();
     }
 

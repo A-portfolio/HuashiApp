@@ -22,6 +22,7 @@ import butterknife.OnClick;
  * Created by ybao on 17/2/4.
  */
 
+//手动设置周数！
 public class TableMenuView extends FrameLayout {
 
     @BindView(R.id.btn_close)
@@ -49,13 +50,11 @@ public class TableMenuView extends FrameLayout {
             dismiss();
         });
     }
-
     public void setCurweek(int week) {
         String textStr1 = "<font color=\"#000000\">设置当前周</font>";
         String textStr2 = "<font color=\"#7B79FF\">(当前周设置为" + week + ")</font>";
         mTvSetcurweek.setText(Html.fromHtml(textStr1 + textStr2));
     }
-
     public void show() {
         this.setVisibility(VISIBLE);
         TranslateAnimation a = new TranslateAnimation(0, 0, -mMenuLayout.getHeight(), 0);
@@ -64,7 +63,6 @@ public class TableMenuView extends FrameLayout {
         mMenuLayout.startAnimation(a);
         this.setFocusable(true);
     }
-
     public void dismiss() {
         TranslateAnimation a = new TranslateAnimation(0, 0, 0, -mMenuLayout.getHeight());
         a.setDuration(Constants.ANIMATION_DURATION);
@@ -88,7 +86,6 @@ public class TableMenuView extends FrameLayout {
         });
         this.setFocusable(false);
     }
-
     @OnClick({R.id.tv_add, R.id.tv_setcurweek})
     public void onClick(View view) {
         switch (view.getId()) {

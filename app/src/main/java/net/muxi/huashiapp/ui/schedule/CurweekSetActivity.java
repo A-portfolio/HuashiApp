@@ -15,7 +15,6 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.event.CurWeekChangeEvent;
-import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.TimeTableUtil;
 
 import butterknife.BindView;
@@ -24,6 +23,8 @@ import butterknife.ButterKnife;
 /**
  * Created by ybao on 17/2/5.
  */
+
+
 
 public class CurweekSetActivity extends ToolbarActivity {
 
@@ -58,7 +59,6 @@ public class CurweekSetActivity extends ToolbarActivity {
         mLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Logger.d("set curweek pos: " + i);
                 TimeTableUtil.saveCurWeek(i + 1);
                 RxBus.getDefault().send(new CurWeekChangeEvent());
                 CurweekSetActivity.this.finish();

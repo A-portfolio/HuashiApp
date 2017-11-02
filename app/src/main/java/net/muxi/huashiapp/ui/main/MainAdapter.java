@@ -36,21 +36,12 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private static final int ITEM_TYPE_BANNER = 0;
     private static final int ITEM_TYPE_COMMON = 1;
     private static final int ITEM_TYPE_FOOTER = 2;
-
     private static final long TURNING_TIME = 4000;
-
     private List<ItemData> mItemDatas;
     private List<BannerData> mBannerDatas;
-
-
     private OnBannerItemClickListener mOnBannerItemClickListener;
-
     private Context mContext;
-
-
     private List<ViewHolder<BannerData>> mViewHolders = new ArrayList<>();
-
-
     private List<String> resUrls;
 
 
@@ -65,16 +56,12 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     public MainAdapter(List<ItemData> items, List<BannerData> bannerDatas) {
         this.mItemDatas = items;
-
         mBannerDatas = bannerDatas;
-
-
         Comparator<BannerData> comparator = (o1, o2) -> {
             Logger.d(o1.getNum() + ", " + o2.getNum());
             return Integer.parseInt(o1.getNum()) - Integer.parseInt(o2.getNum());
         };
         Collections.sort(mBannerDatas, comparator);
-
         resUrls = new ArrayList<>();
         for (int i = 0; i < bannerDatas.size(); i++) {
             resUrls.add(mBannerDatas.get(i).getImg());
@@ -94,7 +81,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
     }
 
-    public void swapProduct(List<ItemData> items) {
+    public void swapItems(List<ItemData> items) {
         this.mItemDatas = items;
         notifyDataSetChanged();
     }
@@ -156,7 +143,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         return simpleDraweeView;
                     }
                 };
-
                 mViewHolders.add(viewHolder);
             }
 
@@ -167,33 +153,22 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
         } else if (holder instanceof CommonViewHolder) {
+            //如果是动态获取的图片 就需要网络加载资源
             if (mItemDatas.get(position - ITEM_BANNER).isDynamic()) {
                 ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mItemDatas.get(position - ITEM_BANNER).getIcon()));
                 FrescoUtil.savePicture(mItemDatas.get(position - ITEM_BANNER).getIcon(), mContext, mItemDatas.get(position - ITEM_BANNER).getName());
             } else {
                 if (position > 0 && position != mItemDatas.size() + 1) {
-                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItemDatas.get(position - ITEM_BANNER).getIcon()));
+                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" +
+                            mItemDatas.get(position - ITEM_BANNER).getIcon()));
                     ((CommonViewHolder) holder).mTextView.setText(mItemDatas.get(position - ITEM_BANNER).getName());
                     ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
-//            } else if (mItemDatas.get(position - ITEM_BANNER).getName().equals("学而")) {
-//                  ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mItemDatas.get(position - ITEM_BANNER).getIcon()));
-//                  FrescoUtil.savePicture(mItemDatas.get(position - ITEM_BANNER).getIcon(), mContext, mItemDatas.get(position - ITEM_BANNER).getName());
-//                } else {
-//                    ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" + mItemDatas.get(position - ITEM_BANNER).getIcon()));
-//                }
                 }
             }
             ((CommonViewHolder) holder).mTextView.setText(mItemDatas.get(position - ITEM_BANNER).getName());
             ((CommonViewHolder) holder).itemView.setTag(position - ITEM_BANNER);
         }
     }
-
-
-    public void setOnBannerItemClickListener(OnBannerItemClickListener bannerItemClickListener) {
-        mOnBannerItemClickListener = bannerItemClickListener;
-    }
-
-
     @Override
     public int getItemCount() {
         return mItemDatas.size() + 2;
@@ -219,9 +194,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
 
         notifyItemMoved(fromPosition, toPosition);
-        Logger.d(fromPosition + "");
-        Logger.d(toPosition + "");
-
     }
 
     @Override
@@ -249,13 +221,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     public class BannerViewHolder extends RecyclerView.ViewHolder {
-
         private CardBanner mCardBanner;
-
         public BannerViewHolder(View itemView) {
             super(itemView);
             mCardBanner = (CardBanner) itemView.findViewById(R.id.card_banner);
-//            mCardBanner.
         }
     }
 
