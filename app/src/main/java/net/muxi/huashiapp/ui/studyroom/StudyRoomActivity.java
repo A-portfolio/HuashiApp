@@ -106,9 +106,7 @@ public class StudyRoomActivity extends ToolbarActivity {
                 mDialogFragment = StudyTimePickerDialogFragment.newInstance(mWeek, mDay);
                 mDialogFragment.show(getSupportFragmentManager(), "picker_time");
                 mDialogFragment.setOnPositiveButtonClickListener((week, day) -> {
-                    mWeek = week;
-                    mDay = day;
-                    mTvStudyTime.setText(String.format("第%d周周%s", mWeek + 1, Constants.WEEKDAYS[mDay]));
+                    mTvStudyTime.setText(String.format("第%d周周%s", week + 1, Constants.WEEKDAYS[day]));
                 });
                 break;
             case R.id.tv_area:
