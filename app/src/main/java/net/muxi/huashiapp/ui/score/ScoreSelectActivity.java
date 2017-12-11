@@ -10,7 +10,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.util.UserUtil;
@@ -56,11 +55,6 @@ public class ScoreSelectActivity extends ToolbarActivity {
         setContentView(R.layout.activity_score_select);
         ButterKnife.bind(this);
         setTitle("成绩查询");
-        //这个功能暂时无法使用所以需要使用errorView代替
-        if(isError(App.sError)){
-            showErrorView(R.layout.view_show_error);
-            return;
-        }
         setYear(value);
         mRbAll.setChecked(true);
         mBtnEnter.setOnClickListener(v -> {

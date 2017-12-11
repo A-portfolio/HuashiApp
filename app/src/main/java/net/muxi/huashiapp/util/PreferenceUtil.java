@@ -12,6 +12,8 @@ import net.muxi.huashiapp.App;
 public class PreferenceUtil {
 
     //上次登录的用户账号,密码
+    public static final String BIG_SERVER_POOL = "sBigipServerPool";
+    public static final String JSESSIONID = "sJid";
     public static final String STUDENT_ID = "sId";
     public static final String STUDENT_PWD = "sPwd";
     public static final String LIBRARY_ID = "libraryId";

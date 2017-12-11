@@ -23,9 +23,10 @@ public class CampusRetrofit{
                 .addInterceptor(interceptor)
                 .addInterceptor(new CookieInterceptor())
                 .addInterceptor(new AuthorizationInterceptor())
-                .readTimeout(15,TimeUnit.SECONDS)
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .writeTimeout(15,TimeUnit.SECONDS)
+            //    .addInterceptor(new CookieLogginInteceptor())
+                .readTimeout(25,TimeUnit.SECONDS)
+                .connectTimeout(25, TimeUnit.SECONDS)
+                .writeTimeout(25,TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()

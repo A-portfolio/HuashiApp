@@ -106,8 +106,10 @@ public interface RetrofitService {
     Observable<Response<VerifyResponse>> renewBook(@Header("Authorization") String verification,
             @Body RenewData renewData);
 
+    //获取用户课表
     @GET("table/")
     Observable<List<Course>> getSchedule();
+
 
     //添加课程
     @POST("table/")

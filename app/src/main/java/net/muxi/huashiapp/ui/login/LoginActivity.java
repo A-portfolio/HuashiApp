@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -20,9 +21,8 @@ import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.event.LibLoginEvent;
 import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.net.ccnu.CcnuCrawler;
+import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
 import net.muxi.huashiapp.util.Base64Util;
-import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.ZhugeUtils;
@@ -33,7 +33,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -41,7 +40,6 @@ import rx.schedulers.Schedulers;
  * Created by ybao on 16/4/18.
  */
 public class LoginActivity extends ToolbarActivity {
-
     //此处方便登录调试,到时候要删除
     public static final boolean DEBUG_VALUE = true;
 
@@ -122,27 +120,29 @@ public class LoginActivity extends ToolbarActivity {
         }
         showLoading();
         if (type.equals("info")) {
-            Observable.create(new Observable.OnSubscribe<Boolean>() {
-                @Override
-                public void call(Subscriber<? super Boolean> subscriber) {
-                    subscriber.onStart();
-                    boolean crawlerResult = CcnuCrawler.loginInfo(user.sid, user.password);
-                    if (crawlerResult) {
-                        subscriber.onNext(crawlerResult);
-                        subscriber.onCompleted();
-                        return;
-                    }
-                    boolean infoResult = false;
-                    try {
-                        infoResult = CampusFactory.getRetrofitService().mainLogin(
-                                Base64Util.createBaseStr(user)).execute().code() == 200;
-                        Logger.d(infoResult + "");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    subscriber.onNext(infoResult);
-                    subscriber.onCompleted();
+            Observable.create((Observable.OnSubscribe<Boolean>) subscriber -> {
+                subscriber.onStart();
+                //这个算不算在主线程执行耗时请求
+                boolean crawlerResult = false;
+                try {
+                    crawlerResult = CcnuCrawler2.performLogin(user.sid, user.password);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+                if (crawlerResult) {
+                    subscriber.onNext(crawlerResult);
+                    subscriber.onCompleted();
+                    return;
+                }
+                boolean infoResult = false;
+                try {
+                    infoResult = CampusFactory.getRetrofitService().mainLogin(
+                            Base64Util.createBaseStr(user)).execute().code() == 200;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                subscriber.onNext(infoResult);
+                subscriber.onCompleted();
             })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -152,6 +152,7 @@ public class LoginActivity extends ToolbarActivity {
                             App.saveUser(user);
                             String target = getIntent().hasExtra("target") ? getIntent().getStringExtra("target") : null;
                             RxBus.getDefault().send(new LoginSuccessEvent(target));
+                            Log.d("here", "onClick: "+b);
                         } else {
                             showErrorSnackbarShort(R.string.tip_err_account);
                         }

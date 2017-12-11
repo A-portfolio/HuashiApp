@@ -101,9 +101,6 @@ public class TimetableFragment extends BaseFragment {
         mContext = getActivity();
         //这一次的更新需要检测ｌｉｓｔ是否为空如果为空的话需要弹出ｖｉｅｗ阻止用户使用
         initData();
-        if(mCourses.isEmpty()){
-            return  showErrorView(R.layout.view_show_error,container);
-        }
         initView();
         initListener();
         return view;
@@ -159,6 +156,7 @@ public class TimetableFragment extends BaseFragment {
             }
 
         });
+
 
         Subscription subscription1
                 = RxBus.getDefault().toObservable(AddCourseEvent.class)

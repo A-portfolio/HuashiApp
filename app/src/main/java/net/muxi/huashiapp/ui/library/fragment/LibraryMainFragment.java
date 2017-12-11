@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
@@ -48,8 +47,6 @@ public class LibraryMainFragment extends BaseFragment {
         mToolbar.setTitle(R.string.library);
         if(App.sError){
             View errorView = showErrorView(R.layout.view_show_error,container);
-            FrameLayout layout = (FrameLayout) errorView.findViewById(R.id.title_error);
-            layout.setBackgroundColor(getResources().getColor(R.color.colorWhite));
             return showErrorView(R.layout.view_show_error,container);
         }
         mEtSearch.setOnClickListener(v -> LibrarySearchActivity.start(getContext()));

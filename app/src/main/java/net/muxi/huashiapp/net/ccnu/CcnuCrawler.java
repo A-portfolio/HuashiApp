@@ -43,6 +43,7 @@ public class CcnuCrawler {
     public static void initCrawler(){
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        //需要使用cookieJar来保存cookie
         CookieJar cookieJar = new CookieJar() {
             @Override
             public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
@@ -119,18 +120,12 @@ public class CcnuCrawler {
             return searchCookie();
         }
 
-        try {
             if (!loginInfo(App.sUser.sid, App.sUser.password)) {
                 return null;
             }
-            retrofitService.updateCookie().execute();
             InfoCookie infoCookie = searchCookie();
             sSid = App.sUser.sid;
             return infoCookie;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public static InfoCookie searchCookie() {
@@ -146,9 +141,6 @@ public class CcnuCrawler {
                 jse = cookie.value();
             }
         }
-        Logger.d("big: " + big);
-        Logger.d("jse: " + jse);
-
         InfoCookie infoCookie = new InfoCookie(big, jse);
         return infoCookie;
     }
@@ -157,6 +149,7 @@ public class CcnuCrawler {
         clearCookieStore();
         initCrawler();
         try {
+            //这个是一个okhttp的写法
             Response<ResponseBody> response = retrofitService.loginInfo(sid,
                     password).execute();
             if (response.body().string().contains("index_jg.jsp")) {

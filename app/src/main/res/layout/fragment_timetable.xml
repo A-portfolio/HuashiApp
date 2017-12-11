@@ -15,8 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#88333333"
-        android:visibility="gone"
-    />
+        android:visibility="gone" />
 
     <net.muxi.huashiapp.ui.schedule.WeekSelectedView
         android:id="@+id/week_selected_view"

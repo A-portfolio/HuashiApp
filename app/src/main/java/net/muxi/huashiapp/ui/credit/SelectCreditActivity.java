@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.util.UserUtil;
@@ -51,10 +50,6 @@ public class SelectCreditActivity extends ToolbarActivity {
         setContentView(R.layout.activity_credit);
         ButterKnife.bind(this);
         setTitle("算学分");
-        if(isError(App.sError)){
-            showErrorView(R.layout.view_show_error);
-            return;
-        }
         String[] years = UserUtil.generateYears(6);
         mEtYear.setText(String.format("%s-%s学年", years[0],years[1]));
         start = years[0];

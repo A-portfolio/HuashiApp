@@ -25,7 +25,6 @@ import net.muxi.huashiapp.service.DownloadService;
 import net.muxi.huashiapp.ui.AboutActivity;
 import net.muxi.huashiapp.ui.SettingActivity;
 import net.muxi.huashiapp.ui.SuggestionActivity;
-import net.muxi.huashiapp.ui.main.MainActivity;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -88,36 +87,33 @@ public class MoreFragment extends BaseFragment {
         mAdapter = new MoreAdapter((List<String>) Arrays.asList(titles), Arrays.asList(icons));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setItemClickListener(new MoreAdapter.ItemClickListener() {
-            @Override
-            public void OnItemClick(View view, int position) {
-                switch (position) {
-                    case 0:
-                        Intent intent = WebViewActivity.newIntent(getContext(),
-                                "https://ccnubox.muxixyz.com/qa/");
-                        startActivity(intent);
-                        break;
-                    case 1:
-                        ShareDialog shareDialog = ShareDialog.newInstance(0);
-                        shareDialog.show(getFragmentManager(), "dialog_share");
-                        break;
-                    case 2:
-                        SettingActivity.start(getContext());
-                        break;
-                    case 3:
-                        SuggestionActivity.start(getContext());
-                        break;
-                    case 4:
-                        checkUpdates();
-                        break;
-                    case 5:
-                        AboutActivity.start(getContext());
-                        break;
-                    case 6:
-                        logout();
-                        break;
+        mAdapter.setItemClickListener((view, position) -> {
+            switch (position) {
+                case 0:
+                    Intent intent = WebViewActivity.newIntent(getContext(),
+                            "https://ccnubox.muxixyz.com/qa/");
+                    startActivity(intent);
+                    break;
+                case 1:
+                    ShareDialog shareDialog = ShareDialog.newInstance(0);
+                    shareDialog.show(getFragmentManager(), "dialog_share");
+                    break;
+                case 2:
+                    SettingActivity.start(getContext());
+                    break;
+                case 3:
+                    SuggestionActivity.start(getContext());
+                    break;
+                case 4:
+                    checkUpdates();
+                    break;
+                case 5:
+                    AboutActivity.start(getContext());
+                    break;
+                case 6:
+                    logout();
+                    break;
 
-                }
             }
         });
     }

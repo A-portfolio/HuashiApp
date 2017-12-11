@@ -6,8 +6,7 @@
                 android:layout_height="match_parent" android:background="@color/colorWhite">
 
     <include
-        layout="@layout/view_toolbar"
-    />
+        layout="@layout/view_toolbar" />
 
     <ImageView
         android:id="@+id/iv_year"

@@ -15,6 +15,7 @@ import retrofit2.http.POST;
 
 public interface CcnuService {
 
+
     @POST("http://portal.ccnu.edu.cn/loginAction.do")
     @FormUrlEncoded
     Call<ResponseBody> loginInfo(@Field("userName") String name, @Field("userPass") String pass);
@@ -22,7 +23,6 @@ public interface CcnuService {
     @Headers("timeout:4")
     @GET("http://portal.ccnu.edu.cn/roamingAction.do?appId=XK")
     Call<ResponseBody> updateCookie();
-
     @Headers("timeout:4")
     @GET("http://122.204.187.6/xtgl/login_tickitLogin.html")
     Call<ResponseBody> updateFinalCookie();
