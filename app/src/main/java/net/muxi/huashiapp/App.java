@@ -98,7 +98,6 @@ public class App extends Application {
     }
 
     public static void saveUser(User user) {
-        PreferenceUtil sp = new PreferenceUtil();
         PreferenceUtil.saveString(PreferenceUtil.STUDENT_ID, user.getSid());
         PreferenceUtil.saveString(PreferenceUtil.STUDENT_PWD, user.getPassword());
         sUser = user;
@@ -110,7 +109,7 @@ public class App extends Application {
         PreferenceUtil.clearString(PreferenceUtil.STUDENT_PWD);
         PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
         PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
-        Log.d("here", "logoutUser: "+PreferenceUtil.getString(PreferenceUtil.JSESSIONID));
+
         sUser.setSid("");
         sUser.setPassword("");
         HuaShiDao dao = new HuaShiDao();

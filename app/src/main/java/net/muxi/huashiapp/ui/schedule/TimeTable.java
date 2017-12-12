@@ -12,10 +12,12 @@ import android.widget.TextView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.event.RefreshFinishEvent;
+import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +91,18 @@ public class TimeTable extends RelativeLayout {
                     } else {
                         mRefreshView.setRefreshResult(R.string.tip_refresh_fail);
                         mRefreshView.setRefreshViewBackground(R.color.red);
+                        if(refreshFinishEvent.getCode()==401){
+                            String id =PreferenceUtil.getString(PreferenceUtil.STUDENT_ID);
+                            String pwd = PreferenceUtil.getString(PreferenceUtil.STUDENT_PWD);
+                            PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
+                            PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
+                            try {
+                                CcnuCrawler2.performLogin(id,pwd);
+                                mRefreshView.setRefreshResult(R.string.tip_refresh_retry);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            };
+                        }
                     }
                     smoothScrollTo(0, -REFRESH_RESULT_VIEW_HEIGHT);
                     postDelayed(new Runnable() {

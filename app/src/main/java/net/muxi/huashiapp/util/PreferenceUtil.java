@@ -9,7 +9,7 @@ import net.muxi.huashiapp.App;
  * Created by ybao on 16/4/19.
  * SharedPreferences存储类
  */
-public class PreferenceUtil {
+public class    PreferenceUtil {
 
     //上次登录的用户账号,密码
     public static final String BIG_SERVER_POOL = "sBigipServerPool";

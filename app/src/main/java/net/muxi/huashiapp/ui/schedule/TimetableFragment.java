@@ -41,6 +41,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -96,10 +97,10 @@ public class TimetableFragment extends BaseFragment {
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timetable, container, false);
         ButterKnife.bind(this, view);
-        getActivity().getWindow().getDecorView().setBackgroundColor(Color.argb(255, 250, 250, 250));
+        getActivity().getWindow().getDecorView().setBackgroundColor
+                (Color.argb(255, 250, 250, 250));
         dao = new HuaShiDao();
         mContext = getActivity();
-        //这一次的更新需要检测ｌｉｓｔ是否为空如果为空的话需要弹出ｖｉｅｗ阻止用户使用
         initData();
         initView();
         initListener();
@@ -236,7 +237,8 @@ public class TimetableFragment extends BaseFragment {
                     throwable.printStackTrace();
                     if (handlingRefresh) {
                         handlingRefresh = false;
-                        RxBus.getDefault().send(new RefreshFinishEvent(false));
+                        int code = ((HttpException)throwable).code();
+                        RxBus.getDefault().send(new RefreshFinishEvent(false,code));
                     }
                 });
     }

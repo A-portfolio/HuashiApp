@@ -17,14 +17,17 @@ import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.net.ccnu.CcnuCrawler;
+import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
 import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.PreferenceUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observable;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -85,6 +88,16 @@ public class ScoreActivity extends ToolbarActivity {
                                 throwable.printStackTrace();
                                 mMultiStatusView.showNetError();
                                 hideLoading();
+                        if(((HttpException)throwable).code()==401){
+                            String sid = PreferenceUtil.getString(PreferenceUtil.STUDENT_ID);
+                            String pwd = PreferenceUtil.getString(PreferenceUtil.STUDENT_PWD);
+                            try {
+                                CcnuCrawler2.performLogin(sid,pwd);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            showErrorSnackbarShort(R.string.tip_refresh_retry);
+                        }
                             },
                             () -> hideLoading());
             return;

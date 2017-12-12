@@ -16,13 +16,17 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.net.CampusFactory;
+import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
 import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.util.PreferenceUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -106,29 +110,30 @@ public class CreditGradeActivity extends ToolbarActivity {
 
     public void loadCredit(Observable<List<Score>>[] listObservable) {
         showLoading();
-        //使用merge将多个observable 组合到一起
         Observable.merge(listObservable,5)
                 .flatMap(Observable::from)
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                /*
-                lamdba 表达式 大概内容就是这样：
-                subscribe(new Action1<Course>() {
-                    @Override
-                    public void call(Course course) {
-                        Log.i(TAG, course.getName());
-                    }
-                });
-                 */
-                //scores 作为 new Action1 的一个参数
                 .subscribe(scores -> {
                     mScoresList = scores;
                     initRecyclerView();
                 },throwable -> {
                     hideLoading();
                     throwable.printStackTrace();
-                    showErrorSnackbarShort(R.string.tip_school_server_error);
+                    if(((HttpException)throwable).code()==401){
+                        PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
+                        PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
+                        String sid = PreferenceUtil.getString(PreferenceUtil.STUDENT_ID);
+                        String pwd = PreferenceUtil.getString(PreferenceUtil.STUDENT_PWD);
+                        try {
+                            CcnuCrawler2.performLogin(sid,pwd);
+                            showErrorSnackbarShort(R.string.tip_refresh_retry);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }else
+                         showErrorSnackbarShort(R.string.tip_school_server_error);
                 },() -> hideLoading());
     }
 

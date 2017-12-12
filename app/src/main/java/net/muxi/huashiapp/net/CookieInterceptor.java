@@ -6,7 +6,6 @@ import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.common.data.InfoCookie;
 import net.muxi.huashiapp.net.ccnu.CcnuCrawler;
 import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
-import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,8 +34,8 @@ public class CookieInterceptor implements Interceptor {
             }
             //执行了储存
             InfoCookie cookie = CcnuCrawler2.getInfoCookie();
-            String big= PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL)
-                    ,jid=PreferenceUtil.getString(PreferenceUtil.JSESSIONID);
+            String big= cookie.Bigipserverpool_Jwc_Xk;
+            String jid= cookie.Jsessionid;
             if(big.equals("")&&jid.equals("")) {
                 builder.addHeader("Bigipserverpool", cookie.Bigipserverpool_Jwc_Xk);
                 builder.addHeader("Jsessionid", cookie.Jsessionid);

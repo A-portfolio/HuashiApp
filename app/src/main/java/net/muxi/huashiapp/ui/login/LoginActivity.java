@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -150,9 +149,9 @@ public class LoginActivity extends ToolbarActivity {
                         if (b) {
                             finish();
                             App.saveUser(user);
-                            String target = getIntent().hasExtra("target") ? getIntent().getStringExtra("target") : null;
+                            String target = getIntent().hasExtra("target") ?
+                                    getIntent().getStringExtra("target") : null;
                             RxBus.getDefault().send(new LoginSuccessEvent(target));
-                            Log.d("here", "onClick: "+b);
                         } else {
                             showErrorSnackbarShort(R.string.tip_err_account);
                         }

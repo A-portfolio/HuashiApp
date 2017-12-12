@@ -101,6 +101,15 @@ public class CcnuCrawler2 {
                 .build();
         mCcnuService = retrofit.create(CcnuService2.class);
     }
+
+    /**
+     * including two steps : first login in account.ccnu.edu.cn the login the student's affairs system
+     * to get credit and scores and table
+     * @param username
+     * @param userpassword
+     * @return
+     * @throws IOException
+     */
     public static boolean performLogin(String username,String userpassword) throws IOException {
         initCrawler();
         retrofit2.Response<ResponseBody> responseBody =mCcnuService.performCampusLogin
@@ -157,8 +166,7 @@ public class CcnuCrawler2 {
         valueOfLt = keyLine1.split("value=\"")[1].split("\" />")[0];
         valueOfExe = keyLine2.split("value=\"")[1].split("\" />")[0];
     }
-
-    //TODO 必须要先登录教务系统
+    
     public static InfoCookie getInfoCookie(){
         InfoCookie infoCookie;
         String bigServerPool = "",jsession = "";
@@ -176,11 +184,9 @@ public class CcnuCrawler2 {
         }
         if(!tempJsessionList.isEmpty()){
         jsession = tempJsessionList.get(tempJsessionList.size()-1);
-            Log.d("here", "getInfoCookie: 1"+jsession);
         infoCookie = new InfoCookie(bigServerPool,jsession);
         //顺便保存/持久化一下
         saveCookies(bigServerPool,jsession);
-        Log.d("here","fafaf"+PreferenceUtil.getString(PreferenceUtil.JSESSIONID));
         }else{
             bigServerPool = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL);
             jsession = PreferenceUtil.getString(PreferenceUtil.JSESSIONID);
@@ -192,6 +198,5 @@ public class CcnuCrawler2 {
     private static void saveCookies(String big, String jid){
         PreferenceUtil.saveString(PreferenceUtil.BIG_SERVER_POOL,big);
         PreferenceUtil.saveString(PreferenceUtil.JSESSIONID,jid);
-        Log.d("readVAlue", "saveCookies: "+PreferenceUtil.getString(PreferenceUtil.JSESSIONID));
     }
 }

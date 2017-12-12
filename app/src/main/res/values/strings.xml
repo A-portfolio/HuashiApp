@@ -178,6 +178,7 @@
     <string name="tip_refreshing">正在刷新中</string>
     <string name="tip_refresh_ok">刷新成功</string>
     <string name="tip_refresh_fail">糟糕！刷新失败</string>
+    <string name="tip_refresh_retry">请再刷新一次</string>
 
     <!--分享-->
     <string name="share_to_qq">QQ好友</string>
