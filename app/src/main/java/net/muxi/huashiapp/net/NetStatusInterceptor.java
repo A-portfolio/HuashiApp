@@ -21,6 +21,8 @@ public class NetStatusInterceptor implements Interceptor {
         Request request = chain.request();
 
         if (!NetStatus.isConnected()) {
+            //不然会抛出异常
+            //要获取Activity 然后跑在主线程
             App.sActivity.runOnUiThread(() -> ToastUtil.showShort(R.string.tip_net_error));
 
         }

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -240,16 +241,18 @@ public class TimetableFragment extends BaseFragment {
                     throwable.printStackTrace();
                     if (handlingRefresh) {
                         handlingRefresh = false;
+                        //没有联网会抛出这个异常
                         if(throwable instanceof UnknownHostException)
                             RxBus.getDefault().send(new RefreshFinishEvent(false
                                     , RefreshFinishEvent.SELF_DEFINE_CODE));
-                    }else {
+                    }
                         int code = ((HttpException) throwable).code();
-                        if (code == 403) {
+                        Log.d("here2222", "loadTable: "+code);
+                        if (code == 401) {
                             RxBus.getDefault().send(new RefreshFinishEvent(false
                                     , code));
                         }
-                    }
+
                 });
     }
 

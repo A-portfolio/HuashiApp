@@ -52,6 +52,7 @@ public class App extends Application {
         sContext = getApplicationContext();
         sp = new PreferenceUtil();
 
+        //PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
         sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, ""));
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
         sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));

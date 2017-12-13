@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.util.NetStatus;
+import net.muxi.huashiapp.util.ToastUtil;
 import net.muxi.huashiapp.util.UserUtil;
 
 import butterknife.BindView;
@@ -63,10 +65,10 @@ public class SelectCreditActivity extends ToolbarActivity {
         switch (view.getId()) {
             case R.id.tv_select_year:
             case R.id.et_year:
-                CreditYearSelectDialog creditYearSelectDialog = CreditYearSelectDialog.newInstance(start,end);
-                creditYearSelectDialog.show(getSupportFragmentManager(),"creditYearSelect");
+                CreditYearSelectDialog creditYearSelectDialog = CreditYearSelectDialog.newInstance(start, end);
+                creditYearSelectDialog.show(getSupportFragmentManager(), "creditYearSelect");
                 creditYearSelectDialog.setOnPositiveButtonClickListener((startYear, endYear) -> {
-                    mEtYear.setText(String.format("%s-%s学年",startYear,endYear));
+                    mEtYear.setText(String.format("%s-%s学年", startYear, endYear));
                     start = startYear;
                     end = endYear;
                 });
@@ -86,10 +88,16 @@ public class SelectCreditActivity extends ToolbarActivity {
                 calType = CREDIT_GRADE;
                 break;
             case R.id.btn_enter:
-                if (calType == CREDIT){
-                    CreditResultActivity.start(SelectCreditActivity.this,Integer.parseInt(start),Integer.parseInt(end));
+                if (NetStatus.isConnected()) {
+                    if (calType == CREDIT) {
+                        CreditResultActivity.start(SelectCreditActivity.this, Integer.parseInt(start)
+                                , Integer.parseInt(end));
+                    } else {
+                        CreditGradeActivity.start(SelectCreditActivity.this, Integer.parseInt(start)
+                                , Integer.parseInt(end));
+                    }
                 }else {
-                    CreditGradeActivity.start(SelectCreditActivity.this,Integer.parseInt(start),Integer.parseInt(end));
+                    ToastUtil.showShort(R.string.tip_net_error);
                 }
                 break;
         }

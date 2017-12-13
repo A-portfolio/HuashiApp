@@ -119,47 +119,24 @@ public class LoginActivity extends ToolbarActivity {
         }
         showLoading();
         if (type.equals("info")) {
-            Observable.create((Observable.OnSubscribe<Boolean>) subscriber -> {
-                subscriber.onStart();
-                //这个算不算在主线程执行耗时请求
-                boolean crawlerResult = false;
-                try {
-                    crawlerResult = CcnuCrawler2.performLogin(user.sid, user.password);
-                } catch (IOException e) {
-                    e.printStackTrace();
+           login(user)
+           .subscribe(b -> {
+               boolean result = (boolean) b;
+                if (result) {
+                    finish();
+                    App.saveUser(user);
+                    String target = getIntent().hasExtra("target") ?
+                            getIntent().getStringExtra("target") : null;
+                    RxBus.getDefault().send(new LoginSuccessEvent(target));
+                } else {
+                    showErrorSnackbarShort(R.string.tip_err_account);
                 }
-                if (crawlerResult) {
-                    subscriber.onNext(crawlerResult);
-                    subscriber.onCompleted();
-                    return;
-                }
-                boolean infoResult = false;
-                try {
-                    infoResult = CampusFactory.getRetrofitService().mainLogin(
-                            Base64Util.createBaseStr(user)).execute().code() == 200;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                subscriber.onNext(infoResult);
-                subscriber.onCompleted();
-            })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(b -> {
-                        if (b) {
-                            finish();
-                            App.saveUser(user);
-                            String target = getIntent().hasExtra("target") ?
-                                    getIntent().getStringExtra("target") : null;
-                            RxBus.getDefault().send(new LoginSuccessEvent(target));
-                        } else {
-                            showErrorSnackbarShort(R.string.tip_err_account);
-                        }
-                    }, throwable -> {
-                        throwable.printStackTrace();
-                        hideLoading();
-                        showErrorSnackbarShort(R.string.tip_check_net);
-                    },() -> hideLoading());
+            }, throwable -> {
+                Throwable e = (Throwable) throwable;
+                e.printStackTrace();
+                hideLoading();
+                showErrorSnackbarShort(R.string.tip_check_net);
+            },() -> hideLoading());
             ZhugeUtils.sendEvent("登录");
         } else {
             CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))
@@ -187,6 +164,25 @@ public class LoginActivity extends ToolbarActivity {
                             });
             ZhugeUtils.sendEvent("图书馆登录");
         }
+    }
+
+    public Observable login(User user){
+        return Observable.create((Observable.OnSubscribe<Boolean>) subscriber -> {
+            subscriber.onStart();
+            boolean crawlerResult = false;
+            try {
+                crawlerResult = CcnuCrawler2.performLogin(user.sid, user.password);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (crawlerResult) {
+                subscriber.onNext(crawlerResult);
+                subscriber.onCompleted();
+                return;
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     private void loadMyBooks() {

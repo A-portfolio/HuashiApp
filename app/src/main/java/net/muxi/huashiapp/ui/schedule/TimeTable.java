@@ -11,18 +11,20 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
+import net.muxi.huashiapp.common.data.User;
+import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.event.RefreshFinishEvent;
-import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
+import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Subscriber;
 
 /**
  * Created by ybao on 16/4/19.
@@ -88,20 +90,40 @@ public class TimeTable extends RelativeLayout {
                     if (refreshFinishEvent.isRefreshResult()) {
                         mRefreshView.setRefreshResult(R.string.tip_refresh_ok);
                         mRefreshView.setRefreshViewBackground(R.color.colorAccent);
-                    } else {
-                        mRefreshView.setRefreshResult(R.string.tip_refresh_fail);
+                    } else{
+                        mRefreshView.setRefreshResult(R.string.tip_refresh_retry);
                         mRefreshView.setRefreshViewBackground(R.color.red);
-                        if(refreshFinishEvent.getCode()==403){
+                        //说明token过期
+                        if(refreshFinishEvent.getCode()==401){
                             String id =PreferenceUtil.getString(PreferenceUtil.STUDENT_ID);
                             String pwd = PreferenceUtil.getString(PreferenceUtil.STUDENT_PWD);
+                            User user = new User();
+                            user.setPassword(pwd);
+                            user.setSid(id);
+
                             PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
                             PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
-                            try {
-                                CcnuCrawler2.performLogin(id,pwd);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            mRefreshView.setRefreshResult(R.string.tip_refresh_retry);
+                            LoginActivity loginActivity = new LoginActivity();
+                            loginActivity.login(user)
+                                    .subscribe(new Subscriber() {
+                                        @Override
+                                        public void onCompleted() {
+
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        @Override
+                                        public void onNext(Object o) {
+                                            boolean result = (boolean) o;
+                                            if(result){
+                                                RxBus.getDefault().send(LoginSuccessEvent.class);
+                                            }
+                                        }
+                                    });
                         }
                     }
                     smoothScrollTo(0, -REFRESH_RESULT_VIEW_HEIGHT);

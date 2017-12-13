@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.util.NetStatus;
+import net.muxi.huashiapp.util.ToastUtil;
 import net.muxi.huashiapp.util.UserUtil;
 
 import butterknife.BindView;
@@ -58,19 +60,23 @@ public class ScoreSelectActivity extends ToolbarActivity {
         setYear(value);
         mRbAll.setChecked(true);
         mBtnEnter.setOnClickListener(v -> {
-            int term = 0;
-            switch (mLayoutTerm.getCheckedRadioButtonId()) {
-                case R.id.rb_1:
-                    term = 3;
-                    break;
-                case R.id.rb_2:
-                    term = 12;
-                    break;
-                case R.id.rb_3:
-                    term = 16;
-                    break;
+            if(NetStatus.isConnected()) {
+                int term = 0;
+                switch (mLayoutTerm.getCheckedRadioButtonId()) {
+                    case R.id.rb_1:
+                        term = 3;
+                        break;
+                    case R.id.rb_2:
+                        term = 12;
+                        break;
+                    case R.id.rb_3:
+                        term = 16;
+                        break;
+                }
+                ScoreActivity.start(ScoreSelectActivity.this, mTvYear.getText().toString().substring(0, 4), term + "");
+            }else{
+                ToastUtil.showShort(R.string.tip_net_error);
             }
-            ScoreActivity.start(ScoreSelectActivity.this, mTvYear.getText().toString().substring(0,4), term + "");
         });
     }
 

@@ -15,19 +15,20 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.Score;
+import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.net.ccnu.CcnuCrawler;
-import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
+import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.adapter.rxjava.HttpException;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -88,19 +89,8 @@ public class ScoreActivity extends ToolbarActivity {
                                 throwable.printStackTrace();
                                 mMultiStatusView.showNetError();
                                 hideLoading();
-                                int code = ((HttpException)throwable).code();
-                        if(((HttpException)throwable).code()==403){
-                            String sid = PreferenceUtil.getString(PreferenceUtil.STUDENT_ID);
-                            String pwd = PreferenceUtil.getString(PreferenceUtil.STUDENT_PWD);
-                            try {
-                                CcnuCrawler2.performLogin(sid,pwd);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            showErrorSnackbarShort(R.string.tip_refresh_retry);
-                        }
-                            },
-                            () -> hideLoading());
+                                handleReLogin(throwable);
+                        }, () -> hideLoading());
             return;
         }
 
@@ -114,10 +104,38 @@ public class ScoreActivity extends ToolbarActivity {
                             CcnuCrawler.clearCookieStore();
                             CcnuCrawler.initCrawler();
                             hideLoading();
+                            handleReLogin(throwable);
                         },
                         () -> hideLoading());
     }
 
+    private void handleReLogin(Throwable throwable){
+        if(((HttpException)throwable).code()==403){
+            String sid = PreferenceUtil.getString(PreferenceUtil.STUDENT_ID);
+            String pwd = PreferenceUtil.getString(PreferenceUtil.STUDENT_PWD);
+            User user = new User();
+            user.setPassword(pwd);
+            user.setSid(sid);
+            LoginActivity loginActivity = new LoginActivity();
+            loginActivity.login(user).subscribe(new Subscriber() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(Object o) {
+
+                }
+            });
+            showErrorSnackbarShort(R.string.tip_refresh_retry);
+        }
+    }
     private void renderScoreList(List<Score> scores) {
         if (scores == null || scores.size() == 0) {
             mMultiStatusView.showEmpty();

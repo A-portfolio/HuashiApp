@@ -15,12 +15,12 @@ import android.widget.Button;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Score;
+import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
+import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -66,7 +67,7 @@ public class CreditGradeActivity extends ToolbarActivity {
         end = getIntent().getIntExtra("ending", 0);
         setTitle(String.format("%d-%d学年", start, end));
         loadCredit(getScoreRequest(start,end));
-        mBtnEnter.setOnClickListener(v -> {
+        mBtnEnter.setOnClickListener(v ->{
             showCreditGradeDialog();
         });
     }
@@ -121,17 +122,33 @@ public class CreditGradeActivity extends ToolbarActivity {
                 },throwable -> {
                     hideLoading();
                     throwable.printStackTrace();
+                    //说明token过期了
                     if(((HttpException)throwable).code()==403){
                         PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
                         PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
                         String sid = PreferenceUtil.getString(PreferenceUtil.STUDENT_ID);
                         String pwd = PreferenceUtil.getString(PreferenceUtil.STUDENT_PWD);
-                        try {
-                            CcnuCrawler2.performLogin(sid,pwd);
+                        User user = new User();
+                        user.setSid(sid);
+                        user.setPassword(pwd);
+                        LoginActivity activity = new LoginActivity();
+                        activity.login(user).subscribe(new Subscriber() {
+                                @Override
+                                public void onCompleted() {
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                   e.printStackTrace();
+                                }
+
+                                @Override
+                                public void onNext(Object o) {
+                                }
+                            });
                             showErrorSnackbarShort(R.string.tip_refresh_retry);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+
                     }else
                          showErrorSnackbarShort(R.string.tip_school_server_error);
                 },() -> hideLoading());

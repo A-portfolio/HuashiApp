@@ -48,7 +48,7 @@ import rx.Observable;
 public interface RetrofitService {
 
     @GET("info/login/")
-    Call<ResponseBody> mainLogin(@Header("Authorization") String verification);
+    Call<ResponseBody>  mainLogin(@Header("Authorization") String verification);
 
     @GET("lib/login/")
     Observable<Response<VerifyResponse>> libLogin(@Header("Authorization") String verification);
