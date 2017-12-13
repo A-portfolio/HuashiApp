@@ -88,7 +88,8 @@ public class ScoreActivity extends ToolbarActivity {
                                 throwable.printStackTrace();
                                 mMultiStatusView.showNetError();
                                 hideLoading();
-                        if(((HttpException)throwable).code()==401){
+                                int code = ((HttpException)throwable).code();
+                        if(((HttpException)throwable).code()==403){
                             String sid = PreferenceUtil.getString(PreferenceUtil.STUDENT_ID);
                             String pwd = PreferenceUtil.getString(PreferenceUtil.STUDENT_PWD);
                             try {

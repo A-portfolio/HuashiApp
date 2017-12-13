@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.main;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -86,6 +87,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     private ProductData mProductData;
     private String mProductJson;
 
+    public static Activity sActivity ;
     public static final int DIRECTION_DOWN = 0;
     public static final int DIRECTION_UP = 1;
     public static final String SCORE_ACTIVITY = "score";
@@ -389,7 +391,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             }
                         }
                     });
-        }
+    }
 
     }
 

@@ -91,26 +91,23 @@ public class TimeTable extends RelativeLayout {
                     } else {
                         mRefreshView.setRefreshResult(R.string.tip_refresh_fail);
                         mRefreshView.setRefreshViewBackground(R.color.red);
-                        if(refreshFinishEvent.getCode()==401){
+                        if(refreshFinishEvent.getCode()==403){
                             String id =PreferenceUtil.getString(PreferenceUtil.STUDENT_ID);
                             String pwd = PreferenceUtil.getString(PreferenceUtil.STUDENT_PWD);
                             PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
                             PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
                             try {
                                 CcnuCrawler2.performLogin(id,pwd);
-                                mRefreshView.setRefreshResult(R.string.tip_refresh_retry);
                             } catch (IOException e) {
                                 e.printStackTrace();
-                            };
+                            }
+                            mRefreshView.setRefreshResult(R.string.tip_refresh_retry);
                         }
                     }
                     smoothScrollTo(0, -REFRESH_RESULT_VIEW_HEIGHT);
-                    postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mRefreshView.setReadyToPull();
-                            smoothScrollTo(0, 0);
-                        }
+                    postDelayed(() -> {
+                        mRefreshView.setReadyToPull();
+                        smoothScrollTo(0, 0);
                     }, 1000);
                 });
     }

@@ -1,9 +1,9 @@
 package net.muxi.huashiapp;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -25,6 +25,7 @@ import net.muxi.huashiapp.util.PreferenceUtil;
  */
 public class App extends Application {
 
+    public static Activity sActivity;
     public static Context sContext;
     public static boolean sError = true;
     //获取上次的已经登录的用户账号信息
@@ -109,7 +110,6 @@ public class App extends Application {
         PreferenceUtil.clearString(PreferenceUtil.STUDENT_PWD);
         PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
         PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
-
         sUser.setSid("");
         sUser.setPassword("");
         HuaShiDao dao = new HuaShiDao();

@@ -18,4 +18,15 @@ public class ToastUtil {
         Toast.makeText(App.getContext(),message,Toast.LENGTH_SHORT).show();
     }
 
+    public static void showShort(int rid){
+        Toast.makeText(App.getContext(),App.sContext.getResources().getString(rid)
+                ,Toast.LENGTH_SHORT).show();
+    }
+
+    public static void showLong(int rid){
+        Toast.makeText(App.getContext(),App.sContext.getResources().getString(rid)
+                ,Toast.LENGTH_LONG).show();
+    }
+
+
 }

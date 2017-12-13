@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.ui.main;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -59,7 +60,7 @@ public class MainActivity extends BaseActivity implements
     FrameLayout mContentLayout;
 
     private Fragment mCurFragment;
-
+    public  static Activity sContext;
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);
         context.startActivity(starter);
@@ -68,6 +69,8 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sContext = MainActivity.this;
+        App.sActivity  = sContext;
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mNavView.setOnNavigationItemSelectedListener(this);

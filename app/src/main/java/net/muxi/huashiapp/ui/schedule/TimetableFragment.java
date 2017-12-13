@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.schedule;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -35,6 +36,7 @@ import net.muxi.huashiapp.util.TipViewUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
 import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +78,7 @@ public class TimetableFragment extends BaseFragment {
      * 本学期所有的课程
      */
     private List<Course> mCourses;
-
+    public static Activity context;
     //false表示初始状态
     private boolean selectedIvStatus = false;
     private int selectedWeek;
@@ -95,6 +97,7 @@ public class TimetableFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        context = TimetableFragment.this.getActivity();
         View view = inflater.inflate(R.layout.fragment_timetable, container, false);
         ButterKnife.bind(this, view);
         getActivity().getWindow().getDecorView().setBackgroundColor
@@ -237,8 +240,15 @@ public class TimetableFragment extends BaseFragment {
                     throwable.printStackTrace();
                     if (handlingRefresh) {
                         handlingRefresh = false;
-                        int code = ((HttpException)throwable).code();
-                        RxBus.getDefault().send(new RefreshFinishEvent(false,code));
+                        if(throwable instanceof UnknownHostException)
+                            RxBus.getDefault().send(new RefreshFinishEvent(false
+                                    , RefreshFinishEvent.SELF_DEFINE_CODE));
+                    }else {
+                        int code = ((HttpException) throwable).code();
+                        if (code == 403) {
+                            RxBus.getDefault().send(new RefreshFinishEvent(false
+                                    , code));
+                        }
                     }
                 });
     }

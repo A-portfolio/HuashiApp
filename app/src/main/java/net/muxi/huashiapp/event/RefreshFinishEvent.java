@@ -7,6 +7,9 @@ package net.muxi.huashiapp.event;
 
 public class RefreshFinishEvent {
 
+    //如果没有联网的时候就会丢出 UnknownHostException
+    //所以自定义了一个code
+    public static int SELF_DEFINE_CODE = 600;
     private boolean refreshResult;
     private int code;
     public RefreshFinishEvent(boolean refreshResult){

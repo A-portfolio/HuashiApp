@@ -121,7 +121,7 @@ public class CreditGradeActivity extends ToolbarActivity {
                 },throwable -> {
                     hideLoading();
                     throwable.printStackTrace();
-                    if(((HttpException)throwable).code()==401){
+                    if(((HttpException)throwable).code()==403){
                         PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
                         PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
                         String sid = PreferenceUtil.getString(PreferenceUtil.STUDENT_ID);
