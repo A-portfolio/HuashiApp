@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
+import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -29,6 +30,7 @@ import retrofit2.Retrofit;
 现在的情况和之前不同，然后由于和教务系统相关联的有学分和课表 所以不仅要登录进入校园系统 还需要登录录入选课系统
  */
 public class CcnuCrawler2 {
+    private static String Location  ="";
     private static String valueOfLt,valueOfExe ;
     //在这个callback中拿到相关信息 valueoflt valueofexe
     private static CcnuService2 mCcnuService ;
@@ -36,19 +38,16 @@ public class CcnuCrawler2 {
     private static List<Cookie> cookieStore = new ArrayList<>();
     //初始登录时候暂时缓存一下cookie
     //主要的cookiejar存放重要的信息
-    //TODO there is two jsessionid here and them are not persistent ; when will be the cookie expired?
-    //TODO make them stored in the xml for now
+
     public static CookieJar cookieJar = new CookieJar() {
-        List<Cookie> cookies = new ArrayList<>();
         @Override
         public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-            this.cookies.addAll(cookies);
             cookieStore.addAll(cookies);
-            Log.d("here", "saveFromResponse: "+cookies);
         }
         @Override
         public List<Cookie> loadForRequest(HttpUrl url) {
-            return cookies;
+            Log.d("herecookie", "saveFromResponse: "+cookieStore.toString());
+            return cookieStore;
         }
     };
     public static void initCrawler(){
@@ -115,15 +114,48 @@ public class CcnuCrawler2 {
         retrofit2.Response<ResponseBody> responseBody =mCcnuService.performCampusLogin
                 (JSESSIONID_LOGIN_IN,username,userpassword,valueOfLt,valueOfExe,"submit","LOGIN").execute();
         retrofit2.Response<ResponseBody> responseBody2 = mCcnuService.performSystemLogin().execute();
-        String bigString1 = responseBody.body().string();
         String bigString2 = responseBody2.body().string();
-        if(!bigString2.equals(null)&&!bigString2.equals("")
-                &&bigString1.contains(" <div id=\"msg\" class=\"success\">")
-                &&bigString2.contains("sniff")){
+        Log.d("heaven", "performLogin: "+"1");
+        performLibLogin();
+     //   if(bigString2.contains("nosniff")&&performLibLogin()){
+       //     Log.d("heaven", "performLogin: "+"2");
             return true;
-        }else{
-            return false;
-        }
+       // }else{
+         //   return false;
+       // }
+    }
+
+    private static boolean performLibLogin() throws IOException {
+        //这个client需要截断，用以获取转发的location
+        OkHttpClient client2 = new OkHttpClient.Builder()
+                .followRedirects(false)
+                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .cookieJar(cookieJar)
+                .build();
+
+        Request request = initRequestBuilder()
+                .url("http://202.114.34.15/reader/redr_info.php")
+                .get()
+                .build();
+        //获取phpsession1
+        client2.newCall(request).execute();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(client2)
+                .baseUrl("https://ccnubox.muxixyz.com/api/")
+                .build();
+        CcnuService2 mCcnuService2 = retrofit.create(CcnuService2.class);
+        retrofit2.Response<ResponseBody> responseBodyResponse = mCcnuService2.performLibLogin().execute();
+        Log.d("heaven", "performLibLogin: "+responseBodyResponse.headers());
+        storeLocation(responseBodyResponse);
+        Location = responseBodyResponse.headers().get("Location");
+
+        Request request2 = initRequestBuilder()
+                .url(Location)
+                .get()
+                .build();
+        client2.newCall(request2).execute();
+            return true;
     }
     
     //提取header的公用字段
@@ -166,7 +198,7 @@ public class CcnuCrawler2 {
         valueOfLt = keyLine1.split("value=\"")[1].split("\" />")[0];
         valueOfExe = keyLine2.split("value=\"")[1].split("\" />")[0];
     }
-    
+
     public static InfoCookie getInfoCookie(){
         InfoCookie infoCookie;
         String bigServerPool = "",jsession = "";
@@ -198,5 +230,14 @@ public class CcnuCrawler2 {
     private static void saveCookies(String big, String jid){
         PreferenceUtil.saveString(PreferenceUtil.BIG_SERVER_POOL,big);
         PreferenceUtil.saveString(PreferenceUtil.JSESSIONID,jid);
+    }
+
+    private static void storeLocation(retrofit2.Response<ResponseBody> response){
+        Headers headers = response.headers();
+        String location = headers.get("Location");
+        String url = "http://202.114.34.15/reader/login.php?ticket=",apdix = "account.ccnu.edu.cn";
+        String phpSessionId = location.substring(url.length(),location.length()-apdix.length())+"accountccnueducn";
+        PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_MORE,phpSessionId);
+        Log.d("heaven", "storeLocation: "+phpSessionId);
     }
 }

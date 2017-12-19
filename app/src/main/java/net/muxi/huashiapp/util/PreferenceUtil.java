@@ -11,7 +11,9 @@ import net.muxi.huashiapp.App;
  */
 public class    PreferenceUtil {
 
-    //上次登录的用户账号,密码
+    //phpsessionid 有两种情况 下面中的一种
+    public static final String PHPSESSION_LESS = "sPhpSessionIdLess";
+    public static final String PHPSESSION_MORE = "sPhpSessionIdMore";
     public static final String BIG_SERVER_POOL = "sBigipServerPool";
     public static final String JSESSIONID = "sJid";
     public static final String STUDENT_ID = "sId";

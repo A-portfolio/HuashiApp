@@ -25,4 +25,8 @@ public interface CcnuService2 {
     //需要携带cookie cookie没有放在header里面
     @GET("http://xk.ccnu.edu.cn/ssoserver/login?ywxt=jw&url=xtgl/index_initMenu.html")
     Call<ResponseBody> performSystemLogin();
+
+    @GET("https://account.ccnu.edu.cn/cas/login?service=http%3A%2F%2F202.114.34.15%2Freader%2Flogin.php")
+    Call<ResponseBody> performLibLogin();
+
 }
