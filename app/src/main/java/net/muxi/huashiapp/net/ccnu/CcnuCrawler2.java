@@ -30,10 +30,10 @@ import retrofit2.Retrofit;
 现在的情况和之前不同，然后由于和教务系统相关联的有学分和课表 所以不仅要登录进入校园系统 还需要登录录入选课系统
  */
 public class CcnuCrawler2 {
-    private static String Location  ="";
-    private static String valueOfLt,valueOfExe ;
+    private static String Location = "";
+    private static String valueOfLt, valueOfExe;
     //在这个callback中拿到相关信息 valueoflt valueofexe
-    private static CcnuService2 mCcnuService ;
+    private static CcnuService2 mCcnuService;
     private static String JSESSIONID_LOGIN_IN = null;
     private static List<Cookie> cookieStore = new ArrayList<>();
     //初始登录时候暂时缓存一下cookie
@@ -44,13 +44,15 @@ public class CcnuCrawler2 {
         public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
             cookieStore.addAll(cookies);
         }
+
         @Override
         public List<Cookie> loadForRequest(HttpUrl url) {
-            Log.d("herecookie", "saveFromResponse: "+cookieStore.toString());
+            Log.d("herecookie", "saveFromResponse: " + cookieStore.toString());
             return cookieStore;
         }
     };
-    public static void initCrawler(){
+
+    public static void initCrawler() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -58,11 +60,12 @@ public class CcnuCrawler2 {
                 .addInterceptor(interceptor)
                 .cookieJar(new CookieJar() {
                     List<Cookie> cookies;
+
                     @Override
                     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
                         this.cookies = cookies;
                         for (int i = 0; i < cookies.size(); i++) {
-                            if(cookies.get(i).name().equals("JSESSIONID")){
+                            if (cookies.get(i).name().equals("JSESSIONID")) {
                                 JSESSIONID_LOGIN_IN = cookies.get(i).value();
                                 break;
                             }
@@ -104,25 +107,19 @@ public class CcnuCrawler2 {
     /**
      * including two steps : first login in account.ccnu.edu.cn the login the student's affairs system
      * to get credit and scores and table
+     *
      * @param username
      * @param userpassword
      * @return
      * @throws IOException
      */
-    public static boolean performLogin(String username,String userpassword) throws IOException {
+    public static boolean performLogin(String username, String userpassword) throws IOException {
         initCrawler();
-        retrofit2.Response<ResponseBody> responseBody =mCcnuService.performCampusLogin
-                (JSESSIONID_LOGIN_IN,username,userpassword,valueOfLt,valueOfExe,"submit","LOGIN").execute();
+        retrofit2.Response<ResponseBody> responseBody = mCcnuService.performCampusLogin
+                (JSESSIONID_LOGIN_IN, username, userpassword, valueOfLt, valueOfExe, "submit", "LOGIN").execute();
         retrofit2.Response<ResponseBody> responseBody2 = mCcnuService.performSystemLogin().execute();
-        String bigString2 = responseBody2.body().string();
-        Log.d("heaven", "performLogin: "+"1");
         performLibLogin();
-     //   if(bigString2.contains("nosniff")&&performLibLogin()){
-       //     Log.d("heaven", "performLogin: "+"2");
-            return true;
-       // }else{
-         //   return false;
-       // }
+        return true;
     }
 
     private static boolean performLibLogin() throws IOException {
@@ -146,7 +143,7 @@ public class CcnuCrawler2 {
                 .build();
         CcnuService2 mCcnuService2 = retrofit.create(CcnuService2.class);
         retrofit2.Response<ResponseBody> responseBodyResponse = mCcnuService2.performLibLogin().execute();
-        Log.d("heaven", "performLibLogin: "+responseBodyResponse.headers());
+        ;
         storeLocation(responseBodyResponse);
         Location = responseBodyResponse.headers().get("Location");
 
@@ -155,12 +152,12 @@ public class CcnuCrawler2 {
                 .get()
                 .build();
         client2.newCall(request2).execute();
-            return true;
+        return true;
     }
-    
+
     //提取header的公用字段
-    private static Request.Builder initRequestBuilder(){
-        return  new Request.Builder()
+    private static Request.Builder initRequestBuilder() {
+        return new Request.Builder()
                 .addHeader("accept", "text/html,application/xhtml+xml" +
                         ",application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
                 .addHeader("accept-encoding", "gzip, deflate, br")
@@ -169,15 +166,16 @@ public class CcnuCrawler2 {
                 .addHeader("connection", "keep-alive")
                 .addHeader("pragma", "no-cache")
                 .addHeader("upgrade-insecure-requests", "1")
-                .addHeader( "user-agent",
+                .addHeader("user-agent",
                         "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.75 Safari/537.36")
                 ;
 
     }
+
     //获取字段lt 和exe
-    private static void getValue(String responseBody){
-        String str1= "<input type=\"hidden\" name=\"lt\" value=\"(.*)\" />";
-        String str2= "<input type=\"hidden\" name=\"execution\" value=\"(.*)\" />";
+    private static void getValue(String responseBody) {
+        String str1 = "<input type=\"hidden\" name=\"lt\" value=\"(.*)\" />";
+        String str2 = "<input type=\"hidden\" name=\"execution\" value=\"(.*)\" />";
         //<input type="hidden" name="lt" value="LT-31315-O4Nt1gZeHUSnmzr4DALQwyn3xNyir6-account.ccnu.edu.cn" />
         //<input type="hidden" name="execution" value="e1s1" />
         String bigString = responseBody;
@@ -189,55 +187,62 @@ public class CcnuCrawler2 {
         String keyLine1 = null;
         String keyLine2 = null;
 
-        while(m.find()){
+        while (m.find()) {
             keyLine1 = m.group();
         }
-        while(m2.find()){
+        while (m2.find()) {
             keyLine2 = m2.group();
         }
         valueOfLt = keyLine1.split("value=\"")[1].split("\" />")[0];
         valueOfExe = keyLine2.split("value=\"")[1].split("\" />")[0];
     }
 
-    public static InfoCookie getInfoCookie(){
+    public static InfoCookie getInfoCookie() {
         InfoCookie infoCookie;
-        String bigServerPool = "",jsession = "";
+        String bigServerPool = "", jsession = "";
         //临时储存多个jsession 然后选出最后一个 作为jid_3
         List<String> tempJsessionList = new ArrayList<>();
-        for(int i=0;i<cookieStore.size();i++){
-            if(cookieStore.get(i).name().equals("JSESSIONID")){
+        List<String> tempPhpList = new ArrayList<>();
+        for (int i = 0; i < cookieStore.size(); i++) {
+            if (cookieStore.get(i).name().equals("JSESSIONID")) {
                 jsession = cookieStore.get(i).value();
                 tempJsessionList.add(jsession);
-                Log.d("here", "getInfoCookie: "+jsession);
+                Log.d("here", "getInfoCookie: " + jsession);
             }
-            if(cookieStore.get(i).name().equals("BIGipServerpool_jwc_xk")){
+            if (cookieStore.get(i).name().equals("BIGipServerpool_jwc_xk")) {
                 bigServerPool = cookieStore.get(i).value();
             }
+            if (cookieStore.get(i).name().equals("PHPSESSID")) {
+                tempPhpList.add(cookieStore.get(i).value());
+            }
         }
-        if(!tempJsessionList.isEmpty()){
-        jsession = tempJsessionList.get(tempJsessionList.size()-1);
-        infoCookie = new InfoCookie(bigServerPool,jsession);
-        //顺便保存/持久化一下
-        saveCookies(bigServerPool,jsession);
-        }else{
+        if (!tempJsessionList.isEmpty()) {
+            jsession = tempJsessionList.get(tempJsessionList.size() - 1);
+            infoCookie = new InfoCookie(bigServerPool, jsession);
+            //顺便保存/持久化一下
+            saveCookies(bigServerPool, jsession);
+            PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_MORE, tempPhpList.get(0));
+            PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_LESS, tempPhpList.get(1));
+        } else {
             bigServerPool = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL);
             jsession = PreferenceUtil.getString(PreferenceUtil.JSESSIONID);
-            infoCookie = new InfoCookie(bigServerPool,jsession);
+            infoCookie = new InfoCookie(bigServerPool, jsession);
         }
         return infoCookie;
     }
 
-    private static void saveCookies(String big, String jid){
-        PreferenceUtil.saveString(PreferenceUtil.BIG_SERVER_POOL,big);
-        PreferenceUtil.saveString(PreferenceUtil.JSESSIONID,jid);
+    private static void saveCookies(String big, String jid) {
+        PreferenceUtil.saveString(PreferenceUtil.BIG_SERVER_POOL, big);
+        PreferenceUtil.saveString(PreferenceUtil.JSESSIONID, jid);
     }
 
-    private static void storeLocation(retrofit2.Response<ResponseBody> response){
+    private static void storeLocation(retrofit2.Response<ResponseBody> response) {
         Headers headers = response.headers();
         String location = headers.get("Location");
-        String url = "http://202.114.34.15/reader/login.php?ticket=",apdix = "account.ccnu.edu.cn";
-        String phpSessionId = location.substring(url.length(),location.length()-apdix.length())+"accountccnueducn";
-        PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_MORE,phpSessionId);
-        Log.d("heaven", "storeLocation: "+phpSessionId);
+        String url = "http://202.114.34.15/reader/login.php?ticket=", apdix = "account.ccnu.edu.cn";
+        String phpSessionId = location.substring(url.length(), location.length() - apdix.length()) + "accountccnueducn";
+        PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_MORE, phpSessionId);
+        Log.d("heaven", "storeLocation: " + phpSessionId);
     }
+
 }
