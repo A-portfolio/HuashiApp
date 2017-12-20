@@ -12,8 +12,7 @@ import net.muxi.huashiapp.App;
 public class    PreferenceUtil {
 
     //phpsessionid 有两种情况 下面中的一种
-    public static final String PHPSESSION_LESS = "sPhpSessionIdLess";
-    public static final String PHPSESSION_MORE = "sPhpSessionIdMore";
+    public static final String PHPSESSION_ID = "sPhpSessionId";
     public static final String BIG_SERVER_POOL = "sBigipServerPool";
     public static final String JSESSIONID = "sJid";
     public static final String STUDENT_ID = "sId";

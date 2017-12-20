@@ -24,6 +24,7 @@ import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
+import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
 import java.io.IOException;
@@ -139,6 +140,8 @@ public class LoginActivity extends ToolbarActivity {
             },() -> hideLoading());
             ZhugeUtils.sendEvent("登录");
         } else {
+            //图书馆和图书信息登录
+            String phpSessionId = PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID);
             CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

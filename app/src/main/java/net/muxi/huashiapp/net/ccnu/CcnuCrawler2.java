@@ -221,8 +221,7 @@ public class CcnuCrawler2 {
             infoCookie = new InfoCookie(bigServerPool, jsession);
             //顺便保存/持久化一下
             saveCookies(bigServerPool, jsession);
-            PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_MORE, tempPhpList.get(0));
-            PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_LESS, tempPhpList.get(1));
+            PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_ID, tempPhpList.get(tempPhpList.size()-1));
         } else {
             bigServerPool = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL);
             jsession = PreferenceUtil.getString(PreferenceUtil.JSESSIONID);
@@ -241,7 +240,7 @@ public class CcnuCrawler2 {
         String location = headers.get("Location");
         String url = "http://202.114.34.15/reader/login.php?ticket=", apdix = "account.ccnu.edu.cn";
         String phpSessionId = location.substring(url.length(), location.length() - apdix.length()) + "accountccnueducn";
-        PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_MORE, phpSessionId);
+        PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_ID, phpSessionId);
         Log.d("heaven", "storeLocation: " + phpSessionId);
     }
 
