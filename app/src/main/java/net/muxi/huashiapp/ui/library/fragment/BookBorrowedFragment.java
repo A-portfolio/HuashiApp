@@ -22,6 +22,7 @@ import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.RenewData;
 import net.muxi.huashiapp.event.RefreshBorrowedBooks;
 import net.muxi.huashiapp.net.CampusFactory;
+import net.muxi.huashiapp.ui.library.VerifyCodeView;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
 
@@ -65,6 +66,7 @@ public class BookBorrowedFragment extends BaseFragment {
 
     private Book mBook;
     private String id;
+    private String code;
     private BorrowedBook mBorrowedBook;
 
     public static BookBorrowedFragment newInstance(Book book,String id) {
@@ -157,10 +159,12 @@ public class BookBorrowedFragment extends BaseFragment {
     }
 
     private void renewBook() {
+        VerifyCodeView verifyCodeView = new VerifyCodeView(getContext());
+        code = verifyCodeView.getEditContent();
         RenewData renewData = new RenewData();
         renewData.bar_code = mBorrowedBook.bar_code;
         renewData.check = mBorrowedBook.check;
-        CampusFactory.getRetrofitService().renewBook(Base64Util.createBaseStr(App.sLibrarayUser),renewData)
+        CampusFactory.getRetrofitService().renewBook(Base64Util.createBaseStr(App.sLibrarayUser), code, renewData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {

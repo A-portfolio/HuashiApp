@@ -57,7 +57,7 @@ public interface RetrofitService {
     Observable<BookSearchResult> searchBook(@Query("keyword") String keyword,
             @Query("page") int page);
 
-    @GET("lib/")
+    @GET("lib/detail/")
     Observable<Book> getBookDetail(@Query("id") String id);
 
     @GET("lib/me/")
@@ -69,7 +69,7 @@ public interface RetrofitService {
      * 404 无关注图书
      * 502 服务器端错误
      */
-    @GET("lib/get_atten/")
+    @GET("lib/attention/")
     Observable<Response<List<AttentionBook>>> getAttentionBooks(
             @Header("Authorization") String verification);
 
@@ -79,7 +79,7 @@ public interface RetrofitService {
      * 409 已关注
      * 502 服务器端错误
      */
-    @POST("lib/create_atten/")
+    @POST("lib/create/")
     Observable<Response<VerifyResponse>> createAttentionBook(
             @Header("Authorization") String verification, @Body
             BookPost bookPost);
@@ -90,8 +90,8 @@ public interface RetrofitService {
      * 404 未找到图书
      * 502 服务器端错误
      */
-//    @DELETE("lib/del_atten/")
-    @HTTP(method = "DELETE", path = "lib/del_atten/", hasBody = true)
+//    @DELETE("lib/delete/")
+    @HTTP(method = "DELETE", path = "lib/delete/", hasBody = true)
     Observable<Response<VerifyResponse>> delAttentionBook(
             @Header("Authorization") String verification,
             @Body BookId id);
@@ -103,7 +103,7 @@ public interface RetrofitService {
      * 400 请求无效
      */
     @POST("lib/renew/")
-    Observable<Response<VerifyResponse>> renewBook(@Header("Authorization") String verification,
+    Observable<Response<VerifyResponse>> renewBook(@Header("Authorization") String verification, String captcha,
             @Body RenewData renewData);
 
     //获取用户课表

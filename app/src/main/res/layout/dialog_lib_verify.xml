@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rl_verify">
+
+    <TextView
+        android:id="@+id/txv_verify"
+        android:text="请输入验证码"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"/>
+
+    <ImageView
+        android:id="@+id/img_verify"
+        android:layout_below="@+id/txv_verify"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/et_verify"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:layout_below="@+id/img_verify"
+        android:background="@drawable/shape_disabled"
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingLeft="64dp"
+        android:paddingRight="64dp" />
+
+    <Button
+        android:id="@+id/btn_verify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_accent"
+        android:textColor="@color/colorWhite"
+        android:layout_below="@+id/et_verify"
+        android:layout_marginBottom="60dp"
+        android:text="确定"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"/>
+</RelativeLayout>
