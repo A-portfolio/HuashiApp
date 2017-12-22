@@ -31,7 +31,6 @@ public class MoreActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_more);
         ButterKnife.bind(this);
-
         setTitle("更多");
 
     }

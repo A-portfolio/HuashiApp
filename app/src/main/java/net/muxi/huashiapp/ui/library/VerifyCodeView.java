@@ -1,7 +1,6 @@
 package net.muxi.huashiapp.ui.library;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Editable;
@@ -17,18 +16,13 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import net.muxi.huashiapp.R;
 
-import butterknife.BindView;
 import butterknife.OnClick;
 
 public class VerifyCodeView extends RelativeLayout {
 
-    @BindView(R.id.et_verify)
     EditText mEtVerify;
-    @BindView(R.id.img_verify)
     ImageView mImgVerify;
-    @BindView(R.id.btn_verify)
     Button mBtnVerify;
-    @BindView(R.id.rl_verify)
     RelativeLayout mRlVerify;
 
     private static int MAX = 4;
@@ -45,12 +39,16 @@ public class VerifyCodeView extends RelativeLayout {
 
     public VerifyCodeView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        View.inflate(context, R.layout.dialog_lib_verify, this);
+        View root = View.inflate(context, R.layout.dialog_lib_verify, this);
+        mEtVerify  = (EditText) root.findViewById(R.id.et_verify);
+        mImgVerify = (ImageView) root.findViewById(R.id.img_verify);
+        mBtnVerify = (Button) root.findViewById(R.id.btn_verify);
+        mRlVerify  = (RelativeLayout) root.findViewById(R.id.rl_verify);
 
-        View view = showCaptcha(url, getContext());
+        SimpleDraweeView view = showCaptcha(url, getContext());
         view.buildDrawingCache();
-        Drawable drawable = new BitmapDrawable(view.getDrawingCache());
-        mImgVerify.setImageDrawable(drawable);
+        Drawable d = view.getDrawable();
+        mImgVerify.setImageDrawable(d);
         mEtVerify.setCursorVisible(false);
         setEditTextListener();
     }
@@ -106,7 +104,7 @@ public class VerifyCodeView extends RelativeLayout {
         return inputContent;
     }
 
-    private View showCaptcha(String url, Context context) {
+    private SimpleDraweeView showCaptcha(String url, Context context) {
         SimpleDraweeView view = new SimpleDraweeView(context);
         view.setImageURI(Uri.parse(url));
         return view;

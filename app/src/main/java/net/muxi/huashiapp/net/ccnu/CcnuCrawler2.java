@@ -192,8 +192,8 @@ public class CcnuCrawler2 {
         while (m.find()) {
             keyLine1 = m.group();
         }
-        while (m2.find()) {
-            keyLine2 = m2.group();
+            while (m2.find()) {
+                keyLine2 = m2.group();
         }
         valueOfLt = keyLine1.split("value=\"")[1].split("\" />")[0];
         valueOfExe = keyLine2.split("value=\"")[1].split("\" />")[0];
