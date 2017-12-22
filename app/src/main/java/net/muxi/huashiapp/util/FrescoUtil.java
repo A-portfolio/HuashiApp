@@ -21,13 +21,13 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.Constants;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import net.muxi.huashiapp.Constants;
 
 /**
  * Created by ybao on 16/7/24.
@@ -35,7 +35,8 @@ import net.muxi.huashiapp.Constants;
  */
 public class FrescoUtil {
 
-    public static final String IMAGE_CACHE_DIR = Constants.CACHE_DIR != null ? Constants.CACHE_DIR.getAbsolutePath() : App.getContext().getCacheDir().getAbsolutePath();
+    public static final String IMAGE_CACHE_DIR = Constants.CACHE_DIR != null ? Constants.CACHE_DIR.getAbsolutePath()
+            : App.getContext().getCacheDir().getAbsolutePath();
 
     public static void savePicture(String picUrl, Context context, String fileName) {
         File picDir = new File(IMAGE_CACHE_DIR);
@@ -109,7 +110,8 @@ public class FrescoUtil {
                 .setProgressiveRenderingEnabled(true)
                 .build();
         ImagePipeline imagePipeline = Fresco.getImagePipeline();
-        DataSource<CloseableReference<CloseableImage>> dataSource = imagePipeline.fetchDecodedImage(imageRequest, context);
+        DataSource<CloseableReference<CloseableImage>> dataSource
+                = imagePipeline.fetchDecodedImage(imageRequest, context);
         dataSource.subscribe(new BaseBitmapDataSubscriber() {
             @Override
             protected void onNewResultImpl(Bitmap bitmap) {

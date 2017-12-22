@@ -104,8 +104,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setData();
-        String big = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL);
-        String jid = PreferenceUtil.getString(PreferenceUtil.JSESSIONID);
         RxBus.getDefault().toObservable(LoginSuccessEvent.class)
                 .subscribe(loginSuccessEvent -> {
                     switch (loginSuccessEvent.targetActivityName) {

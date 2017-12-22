@@ -108,6 +108,7 @@ public class TimetableFragment extends BaseFragment {
         initData();
         initView();
         initListener();
+
         return view;
     }
 

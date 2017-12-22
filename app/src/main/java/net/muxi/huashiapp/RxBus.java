@@ -30,7 +30,6 @@ public class RxBus {
         }
         return defaultInstance ;
     }
-
     public void send (Object o) {
         bus.onNext(o);
     }

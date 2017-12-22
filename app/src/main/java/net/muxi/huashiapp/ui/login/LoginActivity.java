@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -19,20 +20,16 @@ import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.event.LibLoginEvent;
 import net.muxi.huashiapp.event.LoginSuccessEvent;
+import net.muxi.huashiapp.event.RefreshSessionEvent;
 import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
-import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
-
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -57,7 +54,7 @@ public class LoginActivity extends ToolbarActivity {
     TextInputLayout mLayoutPwd;
 
     private User mUser;
-
+    private LoginPresenter presenter = new LoginPresenter();
     private String type;
     private String pwdHint;
 
@@ -84,6 +81,7 @@ public class LoginActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         type = getIntent().getStringExtra("type");
         initViews();
+        setLoginListener();
     }
 
 
@@ -120,7 +118,7 @@ public class LoginActivity extends ToolbarActivity {
         }
         showLoading();
         if (type.equals("info")) {
-           login(user)
+           presenter.login(user)
            .subscribe(b -> {
                boolean result = (boolean) b;
                 if (result) {
@@ -141,7 +139,6 @@ public class LoginActivity extends ToolbarActivity {
             ZhugeUtils.sendEvent("登录");
         } else {
             //图书馆和图书信息登录
-            String phpSessionId = PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID);
             CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -169,24 +166,14 @@ public class LoginActivity extends ToolbarActivity {
         }
     }
 
-    public Observable login(User user){
-        return Observable.create((Observable.OnSubscribe<Boolean>) subscriber -> {
-            subscriber.onStart();
-            boolean crawlerResult = false;
-            try {
-                crawlerResult = CcnuCrawler2.performLogin(user.sid, user.password);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (crawlerResult) {
-                subscriber.onNext(crawlerResult);
-                subscriber.onCompleted();
-                return;
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+    private void setLoginListener(){
+        RxBus.getDefault().toObservable(RefreshSessionEvent.class)
+        .subscribe(refreshSessionEvent -> {
+            Log.d("send", "setLoginListener: ");
+            presenter.login(refreshSessionEvent.getUser());
+        },Throwable::printStackTrace);
     }
+
 
     private void loadMyBooks() {
         CampusFactory.getRetrofitService().getAttentionBooks(

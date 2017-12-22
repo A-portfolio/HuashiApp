@@ -1,9 +1,6 @@
 package net.muxi.huashiapp.net;
 
-import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.util.NetStatus;
-import net.muxi.huashiapp.util.ToastUtil;
 
 import java.io.IOException;
 
@@ -19,14 +16,9 @@ public class NetStatusInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-
         if (!NetStatus.isConnected()) {
-            //不然会抛出异常
-            //要获取Activity 然后跑在主线程
-            App.sActivity.runOnUiThread(() -> ToastUtil.showShort(R.string.tip_net_error));
-
+         //   RxBus.getDefault().send(new NetErrorEvent());
         }
-        Response response = chain.proceed(request);
-        return response;
+        return chain.proceed(request);
     }
 }

@@ -70,12 +70,11 @@ public class MainActivity extends BaseActivity implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sContext = MainActivity.this;
-        App.sActivity  = sContext;
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mNavView.setOnNavigationItemSelectedListener(this);
         //开启动态权限
-        if (!isStorgePermissionGranted()) {
+        if (!isStoragePermissionGranted()) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
@@ -97,7 +96,7 @@ public class MainActivity extends BaseActivity implements
                         checkUpdateDialog.setContent(
                                 App.sContext.getString(R.string.tip_update_intro) + versionData.getIntro() + "\n" + App.sContext.getString(R.string.tip_update_size) + versionData.getSize());
                         checkUpdateDialog.setOnPositiveButton(App.sContext.getString(R.string.btn_update), () -> {
-                                    if (isStorgePermissionGranted()) {
+                                    if (isStoragePermissionGranted()) {
                                         beginUpdate(versionData.download);
                                     }else {
                                         showErrorSnackbarShort(R.string.tip_require_write_permission);
@@ -300,7 +299,7 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    public boolean isStorgePermissionGranted() {
+    public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {

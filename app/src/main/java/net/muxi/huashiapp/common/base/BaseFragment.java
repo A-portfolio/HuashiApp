@@ -5,20 +5,26 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.RxBus;
+import net.muxi.huashiapp.common.data.User;
+import net.muxi.huashiapp.event.NetErrorEvent;
+import net.muxi.huashiapp.event.RefreshSessionEvent;
+import net.muxi.huashiapp.ui.login.LoginPresenter;
 
 
 /**
  * Created by ybao on 16/4/19.
  */
 public class BaseFragment extends Fragment{
-
 
     public static Fragment newInstance(){
         Fragment fragment = new Fragment();
@@ -28,6 +34,7 @@ public class BaseFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        retryObserver();
     }
 
     @Override
@@ -46,8 +53,21 @@ public class BaseFragment extends Fragment{
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    public View showErrorView(int resId,ViewGroup container){
-        View view  = LayoutInflater.from(getContext()).inflate(resId,container,false);
-        return view;
+    private void retryObserver(){
+        RxBus.getDefault()
+                .toObservable(RefreshSessionEvent.class)
+                .subscribe(event->{
+                    Log.d("received", "showToast: ");
+                    User user = new User();
+                    user.setSid(App.sUser.sid);
+                    user.setPassword(App.sUser.password);
+                    new LoginPresenter().loginRetry(user);
+                },Throwable::printStackTrace,()->{});
+        RxBus.getDefault()
+                .toObservable(NetErrorEvent.class)
+                .subscribe(netErrorEvent -> {
+                  //  ToastUtil.showShort(R.string.tip_net_error);
+                },Throwable::printStackTrace);
+
     }
 }

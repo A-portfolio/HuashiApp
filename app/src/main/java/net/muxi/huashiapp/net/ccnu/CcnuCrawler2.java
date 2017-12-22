@@ -47,7 +47,7 @@ public class CcnuCrawler2 {
 
         @Override
         public List<Cookie> loadForRequest(HttpUrl url) {
-            Log.d("herecookie", "saveFromResponse: " + cookieStore.toString());
+//            Log.d("herecookie", "saveFromResponse: " + cookieStore.toString());
             return cookieStore;
         }
     };
@@ -114,9 +114,11 @@ public class CcnuCrawler2 {
      * @throws IOException
      */
     public static boolean performLogin(String username, String userpassword) throws IOException {
+        Log.d("presenter", "performLogin: middle");
         initCrawler();
         retrofit2.Response<ResponseBody> responseBody = mCcnuService.performCampusLogin
                 (JSESSIONID_LOGIN_IN, username, userpassword, valueOfLt, valueOfExe, "submit", "LOGIN").execute();
+
         retrofit2.Response<ResponseBody> responseBody2 = mCcnuService.performSystemLogin().execute();
         performLibLogin();
         return true;
@@ -202,18 +204,17 @@ public class CcnuCrawler2 {
         String bigServerPool = "", jsession = "";
         //临时储存多个jsession 然后选出最后一个 作为jid_3
         List<String> tempJsessionList = new ArrayList<>();
-        List<String> tempPhpList = new ArrayList<>();
         for (int i = 0; i < cookieStore.size(); i++) {
             if (cookieStore.get(i).name().equals("JSESSIONID")) {
                 jsession = cookieStore.get(i).value();
                 tempJsessionList.add(jsession);
-                Log.d("here", "getInfoCookie: " + jsession);
             }
             if (cookieStore.get(i).name().equals("BIGipServerpool_jwc_xk")) {
                 bigServerPool = cookieStore.get(i).value();
             }
             if (cookieStore.get(i).name().equals("PHPSESSID")) {
-                tempPhpList.add(cookieStore.get(i).value());
+                PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_ID,
+                        cookieStore.get(i).value());
             }
         }
         if (!tempJsessionList.isEmpty()) {
@@ -221,7 +222,6 @@ public class CcnuCrawler2 {
             infoCookie = new InfoCookie(bigServerPool, jsession);
             //顺便保存/持久化一下
             saveCookies(bigServerPool, jsession);
-            PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_ID, tempPhpList.get(tempPhpList.size()-1));
         } else {
             bigServerPool = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL);
             jsession = PreferenceUtil.getString(PreferenceUtil.JSESSIONID);

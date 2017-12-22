@@ -49,8 +49,7 @@ public class CookieInterceptor implements Interceptor {
             }
         }
 
-        Response response = chain.proceed(builder.build());
-        return response;
+        return chain.proceed(builder.build());
     }
 
 }

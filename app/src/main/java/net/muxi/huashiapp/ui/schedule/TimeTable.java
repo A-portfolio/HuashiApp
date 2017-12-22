@@ -11,10 +11,7 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.common.data.User;
-import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.event.RefreshFinishEvent;
-import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -24,7 +21,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Subscriber;
 
 /**
  * Created by ybao on 16/4/19.
@@ -93,38 +89,6 @@ public class TimeTable extends RelativeLayout {
                     } else{
                         mRefreshView.setRefreshResult(R.string.tip_refresh_retry);
                         mRefreshView.setRefreshViewBackground(R.color.red);
-                        //说明token过期
-                        if(refreshFinishEvent.getCode()==401){
-                            String id =PreferenceUtil.getString(PreferenceUtil.STUDENT_ID);
-                            String pwd = PreferenceUtil.getString(PreferenceUtil.STUDENT_PWD);
-                            User user = new User();
-                            user.setPassword(pwd);
-                            user.setSid(id);
-
-                            PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
-                            PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
-                            LoginActivity loginActivity = new LoginActivity();
-                            loginActivity.login(user)
-                                    .subscribe(new Subscriber() {
-                                        @Override
-                                        public void onCompleted() {
-
-                                        }
-
-                                        @Override
-                                        public void onError(Throwable e) {
-                                            e.printStackTrace();
-                                        }
-
-                                        @Override
-                                        public void onNext(Object o) {
-                                            boolean result = (boolean) o;
-                                            if(result){
-                                                RxBus.getDefault().send(LoginSuccessEvent.class);
-                                            }
-                                        }
-                                    });
-                        }
                     }
                     smoothScrollTo(0, -REFRESH_RESULT_VIEW_HEIGHT);
                     postDelayed(() -> {
