@@ -125,7 +125,8 @@ public class App extends Application {
     }
 
     public static boolean isLibLogin() {
-        if(PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID).equals(""))
+        String phpSess = PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID);
+        if(!phpSess.equals("")||phpSess!=null)
             return true;
         else
             return false;

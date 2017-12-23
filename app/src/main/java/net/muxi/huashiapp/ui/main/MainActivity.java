@@ -135,6 +135,7 @@ public class MainActivity extends BaseActivity implements
                     Log.d("1234", "initListener: ");
                     FragmentManager fm = getSupportFragmentManager();
                     fm.beginTransaction().remove(mCurFragment).commitAllowingStateLoss();
+                    Log.d("tagaa", "initListener: "+mCurFragment.getTag());
                     if (fm.findFragmentByTag("lib_mine") != null) {
                         fm.beginTransaction()
                                 .replace(R.id.content_layout, fm.findFragmentByTag("lib_mine"))

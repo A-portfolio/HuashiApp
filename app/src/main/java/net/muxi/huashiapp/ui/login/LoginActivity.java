@@ -126,6 +126,7 @@ public class LoginActivity extends ToolbarActivity {
                             String target = getIntent().hasExtra("target") ?
                                     getIntent().getStringExtra("target") : null;
                             RxBus.getDefault().send(new LoginSuccessEvent(target));
+                            RxBus.getDefault().send(new LibLoginEvent());
                         } else {
                             showErrorSnackbarShort(R.string.tip_err_account);
                         }

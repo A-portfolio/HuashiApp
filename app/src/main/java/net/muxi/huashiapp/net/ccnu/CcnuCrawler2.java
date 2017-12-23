@@ -241,9 +241,13 @@ public class CcnuCrawler2 {
         Headers headers = response.headers();
         String location = headers.get("Location");
         String url = "http://202.114.34.15/reader/login.php?ticket=", apdix = "account.ccnu.edu.cn";
-        String phpSessionId = location.substring(url.length(), location.length() - apdix.length()) + "accountccnueducn";
-        PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_ID, phpSessionId);
-        Log.d("heaven", "storeLocation: " + phpSessionId);
+        try {
+            String phpSessionId = location.substring(url.length(), location.length() - apdix.length()) + "accountccnueducn";
+            PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_ID, phpSessionId);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+//        Log.d("heaven", "storeLocation: " + phpSessionId);
     }
 
 }
