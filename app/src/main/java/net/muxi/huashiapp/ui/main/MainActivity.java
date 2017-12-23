@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
@@ -131,6 +132,7 @@ public class MainActivity extends BaseActivity implements
     private void initListener() {
         RxBus.getDefault().toObservable(LibLoginEvent.class)
                 .subscribe(libLoginEvent -> {
+                    Log.d("1234", "initListener: ");
                     FragmentManager fm = getSupportFragmentManager();
                     fm.beginTransaction().remove(mCurFragment).commitAllowingStateLoss();
                     if (fm.findFragmentByTag("lib_mine") != null) {

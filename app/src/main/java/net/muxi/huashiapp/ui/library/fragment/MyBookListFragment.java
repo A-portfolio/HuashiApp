@@ -1,7 +1,6 @@
 package net.muxi.huashiapp.ui.library.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +8,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.muxistudio.multistatusview.MultiStatusView;
@@ -24,17 +22,15 @@ import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.AttentionBook;
 import net.muxi.huashiapp.common.data.BorrowedBook;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.event.RefreshAttenBooks;
 import net.muxi.huashiapp.event.RefreshBorrowedBooks;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.library.BookDetailActivity;
 import net.muxi.huashiapp.ui.library.adapter.AttenBookAdapter;
 import net.muxi.huashiapp.ui.library.adapter.AttenBookRemindAdapter;
 import net.muxi.huashiapp.util.Base64Util;
-import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -114,8 +110,7 @@ public class MyBookListFragment extends BaseFragment {
     }
 
     public void loadAttentionBooks() {
-        CampusFactory.getRetrofitService().getAttentionBooks(
-                Base64Util.createBaseStr(App.sLibrarayUser))
+        CampusFactory.getRetrofitService().getAttentionBooks(App.PHPSESSID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(attentionBooksResponse -> {
@@ -177,8 +172,7 @@ public class MyBookListFragment extends BaseFragment {
     }
 
     public void loadBorrowBooks() {
-        CampusFactory.getRetrofitService().getPersonalBook(
-                Base64Util.createBaseStr(App.sLibrarayUser))
+        CampusFactory.getRetrofitService().getPersonalBook(App.PHPSESSID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(personalBooks -> {

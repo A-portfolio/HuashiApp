@@ -22,7 +22,6 @@ import net.muxi.huashiapp.event.LibLoginEvent;
 import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.event.RefreshSessionEvent;
 import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -31,7 +30,6 @@ import net.muxi.huashiapp.util.ZhugeUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -118,53 +116,31 @@ public class LoginActivity extends ToolbarActivity {
             showErrorSnackbarShort(R.string.tip_input_password);
         }
         showLoading();
-        if (type.equals("info")) {
-           presenter.login(user)
-           .subscribe(b -> {
-               boolean result = (boolean) b;
-                if (result) {
-                    finish();
-                    App.saveUser(user);
-                    String target = getIntent().hasExtra("target") ?
-                            getIntent().getStringExtra("target") : null;
-                    RxBus.getDefault().send(new LoginSuccessEvent(target));
-                } else {
-                    showErrorSnackbarShort(R.string.tip_err_account);
-                }
-            }, throwable -> {
-                Throwable e = (Throwable) throwable;
-                e.printStackTrace();
-                hideLoading();
-                showErrorSnackbarShort(R.string.tip_check_net);
-            },() -> hideLoading());
-            ZhugeUtils.sendEvent("登录");
-        } else {
-            //图书馆和图书信息登录
-            if (PreferenceUtil.PHPSESSION_ID == "") {
-                CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(verifyResponseResponse -> {
-                                    if (verifyResponseResponse.code() == 200) {
-                                        App.saveLibUser(user);
-                                        loadMyBooks();
-                                        RxBus.getDefault().send(new LibLoginEvent());
-                                        finish();
-                                    } else if (verifyResponseResponse.code() == 403) {
-                                        showErrorSnackbarShort(getString(R.string.tip_err_account));
-                                    } else {
-                                        showErrorSnackbarShort(getString(R.string
-                                                .tip_school_server_error));
-                                    }
-                                }, throwable -> {
-                                    throwable.printStackTrace();
-                                    hideLoading();
-                                    showErrorSnackbarShort(getString(R.string.tip_check_net));
-                                },
-                                () -> {
-                                    hideLoading();
-                                });
+        if (type.equals("info")||type.equals("lib")) {
+            presenter.login(user)
+                    .subscribe(b -> {
+                        boolean result = (boolean) b;
+                        if (result) {
+                            finish();
+                            App.saveUser(user);
+                            String target = getIntent().hasExtra("target") ?
+                                    getIntent().getStringExtra("target") : null;
+                            RxBus.getDefault().send(new LoginSuccessEvent(target));
+                        } else {
+                            showErrorSnackbarShort(R.string.tip_err_account);
+                        }
+                    }, throwable -> {
+                        Throwable e = (Throwable) throwable;
+                        e.printStackTrace();
+                        hideLoading();
+                        showErrorSnackbarShort(R.string.tip_check_net);
+                    }, () -> hideLoading());
+            if (type.equals("info"))
+                ZhugeUtils.sendEvent("登录");
+            else {
+                Log.d("1234", "onClick: sdf");
                 ZhugeUtils.sendEvent("图书馆登录");
+                RxBus.getDefault().send(LibLoginEvent.class);
             }
         }
     }
@@ -179,8 +155,7 @@ public class LoginActivity extends ToolbarActivity {
 
 
     private void loadMyBooks() {
-        CampusFactory.getRetrofitService().getAttentionBooks(
-                Base64Util.createBaseStr(App.sLibrarayUser))
+        CampusFactory.getRetrofitService().getAttentionBooks(App.PHPSESSID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.immediate())
                 .subscribe(listResponse -> {
@@ -188,8 +163,7 @@ public class LoginActivity extends ToolbarActivity {
                         MyBooksUtils.saveAttentionBooks(listResponse.body());
                     }
                 });
-        CampusFactory.getRetrofitService().getPersonalBook(
-                Base64Util.createBaseStr(App.sLibrarayUser))
+        CampusFactory.getRetrofitService().getPersonalBook(App.PHPSESSID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(personalBooks -> {

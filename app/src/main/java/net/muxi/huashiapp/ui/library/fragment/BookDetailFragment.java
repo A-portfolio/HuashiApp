@@ -24,10 +24,9 @@ import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookId;
 import net.muxi.huashiapp.common.data.BookPost;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.event.RefreshAttenBooks;
+import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.login.LoginActivity;
-import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -193,8 +192,7 @@ public class BookDetailFragment extends BaseFragment {
     private void delAtten() {
         BookId bookId = new BookId();
         bookId.id = id;
-        CampusFactory.getRetrofitService().delAttentionBook(Base64Util.createBaseStr(
-                App.sLibrarayUser), bookId)
+        CampusFactory.getRetrofitService().delAttentionBook(App.PHPSESSID, bookId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -223,8 +221,7 @@ public class BookDetailFragment extends BaseFragment {
             mBookPost.bid = mBook.bid;
             mBookPost.id = id;
         }
-        CampusFactory.getRetrofitService().createAttentionBook(
-                Base64Util.createBaseStr(App.sLibrarayUser), mBookPost)
+        CampusFactory.getRetrofitService().createAttentionBook(App.PHPSESSID, mBookPost)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {

@@ -140,7 +140,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void checkLib() {
-        CampusFactory.getRetrofitService().getPersonalBook(Base64Util.createBaseStr(mUser))
+        CampusFactory.getRetrofitService().getPersonalBook(App.PHPSESSID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<BorrowedBook>>() {
@@ -174,7 +174,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                         }
                     }
                 });
-        CampusFactory.getRetrofitService().getAttentionBooks(Base64Util.createBaseStr(mUser))
+        CampusFactory.getRetrofitService().getAttentionBooks(App.PHPSESSID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(listResponse -> {

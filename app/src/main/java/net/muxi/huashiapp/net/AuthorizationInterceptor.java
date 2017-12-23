@@ -23,6 +23,8 @@ public class AuthorizationInterceptor implements Interceptor {
         Request.Builder builder = request.newBuilder();
         if (request.url().pathSegments().get(1).equals("lib")) {
             String s2 = request.url().pathSegments().get(2);
+            //现在的token的名字是s 不是Authorization
+            //其实现在感觉也没用上了
             if (s2 != null && s2.equals("login")) {
 
             } else {

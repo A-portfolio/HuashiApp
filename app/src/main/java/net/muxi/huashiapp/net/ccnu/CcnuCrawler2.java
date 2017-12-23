@@ -2,6 +2,7 @@ package net.muxi.huashiapp.net.ccnu;
 
 import android.util.Log;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.common.data.InfoCookie;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
@@ -215,6 +216,7 @@ public class CcnuCrawler2 {
             if (cookieStore.get(i).name().equals("PHPSESSID")) {
                 PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_ID,
                         cookieStore.get(i).value());
+                App.PHPSESSID = cookieStore.get(i).value();
             }
         }
         if (!tempJsessionList.isEmpty()) {

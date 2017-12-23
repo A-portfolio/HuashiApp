@@ -23,7 +23,6 @@ import net.muxi.huashiapp.common.data.RenewData;
 import net.muxi.huashiapp.event.RefreshBorrowedBooks;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.library.VerifyCodeView;
-import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.Logger;
 
 import butterknife.BindView;
@@ -141,8 +140,7 @@ public class BookBorrowedFragment extends BaseFragment {
     }
 
     private void loadPersonBook() {
-        CampusFactory.getRetrofitService().getPersonalBook(Base64Util.createBaseStr(
-                App.sLibrarayUser))
+        CampusFactory.getRetrofitService().getPersonalBook(App.PHPSESSID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(Observable::from)
@@ -164,7 +162,7 @@ public class BookBorrowedFragment extends BaseFragment {
         RenewData renewData = new RenewData();
         renewData.bar_code = mBorrowedBook.bar_code;
         renewData.check = mBorrowedBook.check;
-        CampusFactory.getRetrofitService().renewBook(Base64Util.createBaseStr(App.sLibrarayUser), code, renewData)
+        CampusFactory.getRetrofitService().renewBook(App.PHPSESSID, code, renewData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {

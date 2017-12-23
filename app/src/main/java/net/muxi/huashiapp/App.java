@@ -25,6 +25,7 @@ import net.muxi.huashiapp.util.PreferenceUtil;
  */
 public class App extends Application {
 
+    public static String PHPSESSID ;
     public static Context sContext;
     //获取上次的已经登录的用户账号信息
     public static User sUser = new User();
@@ -57,6 +58,7 @@ public class App extends Application {
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
         sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));
         sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
+        PHPSESSID = PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID);
 
         Fresco.initialize(this);
 
@@ -111,6 +113,7 @@ public class App extends Application {
         PreferenceUtil.clearString(PreferenceUtil.STUDENT_PWD);
         PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
         PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
+        PreferenceUtil.clearString(PreferenceUtil.PHPSESSION_ID);
         sUser.setSid("");
         sUser.setPassword("");
         HuaShiDao dao = new HuaShiDao();
@@ -122,6 +125,10 @@ public class App extends Application {
     }
 
     public static boolean isLibLogin() {
-        return !TextUtils.isEmpty(sLibrarayUser.sid);
+        if(PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID).equals(""))
+            return true;
+        else
+            return false;
+        //return !TextUtils.isEmpty();
     }
 }

@@ -48,20 +48,20 @@ import rx.Observable;
 public interface RetrofitService {
 
     @GET("info/login/")
-    Call<ResponseBody>  mainLogin(@Header("Authorization") String verification);
+    Call<ResponseBody>  mainLogin(@Header("Authorizat") String verification);
 
     @GET("lib/login/")
     Observable<Response<VerifyResponse>> libLogin(@Header("Authorization") String verification);
 
-    @GET("lib/search/")
+    @GET("http://39.108.79.110:1295/api/lib/search/")
     Observable<BookSearchResult> searchBook(@Query("keyword") String keyword,
             @Query("page") int page);
 
-    @GET("lib/detail/")
+    @GET("http://39.108.79.110:1295/api/lib/detail/")
     Observable<Book> getBookDetail(@Query("id") String id);
 
-    @GET("lib/me/")
-    Observable<List<BorrowedBook>> getPersonalBook(@Header("Authorization") String verification);
+    @GET("http://39.108.79.110:1295/api/lib/me/")
+    Observable<List<BorrowedBook>> getPersonalBook(@Header("s") String verification);
 
     /**
      * 200 OK
@@ -69,9 +69,9 @@ public interface RetrofitService {
      * 404 无关注图书
      * 502 服务器端错误
      */
-    @GET("lib/attention/")
+    @GET("http://39.108.79.110:1295/api/lib/attention/")
     Observable<Response<List<AttentionBook>>> getAttentionBooks(
-            @Header("Authorization") String verification);
+            @Header("s") String verification);
 
     /**
      * 201 添加关注成功
@@ -79,9 +79,9 @@ public interface RetrofitService {
      * 409 已关注
      * 502 服务器端错误
      */
-    @POST("lib/create/")
+    @POST("http://39.108.79.110:1295/api/lib/create/")
     Observable<Response<VerifyResponse>> createAttentionBook(
-            @Header("Authorization") String verification, @Body
+            @Header("s") String verification, @Body
             BookPost bookPost);
 
     /**
@@ -91,9 +91,9 @@ public interface RetrofitService {
      * 502 服务器端错误
      */
 //    @DELETE("lib/delete/")
-    @HTTP(method = "DELETE", path = "lib/delete/", hasBody = true)
+    @HTTP(method = "DELETE", path = "http://39.108.79.110:1295/api/lib/delete/", hasBody = true)
     Observable<Response<VerifyResponse>> delAttentionBook(
-            @Header("Authorization") String verification,
+            @Header("s") String verification,
             @Body BookId id);
 
     /**
@@ -102,8 +102,8 @@ public interface RetrofitService {
      * 403 超过最大续借次数
      * 400 请求无效
      */
-    @POST("lib/renew/")
-    Observable<Response<VerifyResponse>> renewBook(@Header("Authorization") String verification, String captcha,
+    @POST("http://39.108.79.110:1295/api/lib/renew/")
+    Observable<Response<VerifyResponse>> renewBook(@Header("s") String verification, String captcha,
             @Body RenewData renewData);
 
     //获取用户课表

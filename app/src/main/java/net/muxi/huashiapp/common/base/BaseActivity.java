@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -151,7 +150,7 @@ public class BaseActivity extends AppCompatActivity {
         RxBus.getDefault()
                 .toObservable(RefreshSessionEvent.class)
                 .subscribe(event->{
-                 Log.d("received", "showToast: ");
+//                 Log.d("received", "showToast: ");
                  User user = new User();
                  user.setSid(App.sUser.sid);
                  user.setPassword(App.sUser.password);
@@ -160,7 +159,6 @@ public class BaseActivity extends AppCompatActivity {
         RxBus.getDefault()
                 .toObservable(NetErrorEvent.class)
                 .subscribe(netErrorEvent -> {
-                  //ToastUtil.showShort("fuck");
                 },Throwable::printStackTrace);
 
     }
