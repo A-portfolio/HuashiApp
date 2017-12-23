@@ -1,24 +1,13 @@
 package net.muxi.huashiapp.ui.more;
 
-import android.app.Dialog;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-
-import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.widget.CenterDialogFragment;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by december on 17/2/26.
  */
 
 public class LogoutDialog extends CenterDialogFragment {
-
+/*
     @BindView(R.id.btn_id_logout)
     Button mBtnIdLogout;
     @BindView(R.id.btn_library_logout)
@@ -96,5 +85,6 @@ public class LogoutDialog extends CenterDialogFragment {
     public interface OnAllClickListener {
         public void OnAllClick();
     }
+    */
 }
 

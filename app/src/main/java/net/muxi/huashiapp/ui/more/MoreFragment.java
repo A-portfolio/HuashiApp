@@ -178,6 +178,17 @@ public class MoreFragment extends BaseFragment {
 
 
     private void logout() {
+        // 信息门户和图书馆登陆合并，改为共同退出登录，取消LogoutDialog
+        if (TextUtils.isEmpty(App.sUser.getSid())) {
+            ((BaseActivity) getActivity()).showErrorSnackbarShort(
+                    App.sContext.getString(R.string.not_log_in));
+        } else {
+            App.logoutUser();
+            App.logoutLibUser();
+            ((BaseActivity) getActivity()).showSnackbarShort(
+                    App.sContext.getString(R.string.tip_all_log_out));
+        }
+        /*
         LogoutDialog logoutDialog = new LogoutDialog();
         logoutDialog.show(getFragmentManager(), "dialog_logout");
         logoutDialog.setBtnIdLogout(new LogoutDialog.OnIdClickListener() {
@@ -229,6 +240,7 @@ public class MoreFragment extends BaseFragment {
                 }
             }
         });
+        */
 
     }
 

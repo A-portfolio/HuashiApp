@@ -25,6 +25,7 @@ import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
+import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
@@ -90,7 +91,7 @@ public class LoginActivity extends ToolbarActivity {
         if (type.equals("info")) {
             setTitle("登录信息门户");
             pwdHint = "输入您的密码";
-        } else {
+        } else if (PreferenceUtil.PHPSESSION_ID == ""){
             setTitle("登录图书馆");
             pwdHint = "初始密码为123456";
             mLayoutPwd.setHint(pwdHint);
@@ -139,30 +140,32 @@ public class LoginActivity extends ToolbarActivity {
             ZhugeUtils.sendEvent("登录");
         } else {
             //图书馆和图书信息登录
-            CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(verifyResponseResponse -> {
-                                if (verifyResponseResponse.code() == 200) {
-                                    App.saveLibUser(user);
-                                    loadMyBooks();
-                                    RxBus.getDefault().send(new LibLoginEvent());
-                                    finish();
-                                } else if (verifyResponseResponse.code() == 403) {
-                                    showErrorSnackbarShort(getString(R.string.tip_err_account));
-                                } else {
-                                    showErrorSnackbarShort(getString(R.string
-                                            .tip_school_server_error));
-                                }
-                            }, throwable -> {
-                                throwable.printStackTrace();
-                                hideLoading();
-                                showErrorSnackbarShort(getString(R.string.tip_check_net));
-                            },
-                            () -> {
-                                hideLoading();
-                            });
-            ZhugeUtils.sendEvent("图书馆登录");
+            if (PreferenceUtil.PHPSESSION_ID == "") {
+                CampusFactory.getRetrofitService().libLogin(Base64Util.createBaseStr(user))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(verifyResponseResponse -> {
+                                    if (verifyResponseResponse.code() == 200) {
+                                        App.saveLibUser(user);
+                                        loadMyBooks();
+                                        RxBus.getDefault().send(new LibLoginEvent());
+                                        finish();
+                                    } else if (verifyResponseResponse.code() == 403) {
+                                        showErrorSnackbarShort(getString(R.string.tip_err_account));
+                                    } else {
+                                        showErrorSnackbarShort(getString(R.string
+                                                .tip_school_server_error));
+                                    }
+                                }, throwable -> {
+                                    throwable.printStackTrace();
+                                    hideLoading();
+                                    showErrorSnackbarShort(getString(R.string.tip_check_net));
+                                },
+                                () -> {
+                                    hideLoading();
+                                });
+                ZhugeUtils.sendEvent("图书馆登录");
+            }
         }
     }
 
