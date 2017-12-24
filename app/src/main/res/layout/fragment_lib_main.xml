@@ -32,7 +32,7 @@
         android:layout_below="@+id/et_search"
         android:layout_marginLeft="54dp"
         android:layout_marginTop="95dp"
-        android:text="还在刷网页？\n一个匣子就够了"
+        android:text="我的图书馆功能还在修复中\n查询和图书详情功能仍然可以用哦!"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="20sp"
         android:textStyle="bold"/>

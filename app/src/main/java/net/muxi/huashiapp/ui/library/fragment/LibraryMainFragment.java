@@ -12,7 +12,7 @@ import android.widget.EditText;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.ui.library.LibrarySearchActivity;
-import net.muxi.huashiapp.ui.login.LoginActivity;
+import net.muxi.huashiapp.util.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +45,9 @@ public class LibraryMainFragment extends BaseFragment {
         ButterKnife.bind(this,view);
         mToolbar.setTitle(R.string.library);
         mEtSearch.setOnClickListener(v -> LibrarySearchActivity.start(getContext()));
-        mBtnLoginLib.setOnClickListener(v -> LoginActivity.start(getContext(),"lib"));
+        mBtnLoginLib.setOnClickListener(v->{
+            ToastUtil.showShort("我的图书馆功能还在修复中~尽请期待");});
+//        mBtnLoginLib.setOnClickListener(v -> LoginActivity.start(getContext(),"lib"));
         return view;
     }
 }

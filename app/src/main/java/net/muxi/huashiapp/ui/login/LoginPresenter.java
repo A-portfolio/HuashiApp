@@ -1,7 +1,5 @@
 package net.muxi.huashiapp.ui.login;
 
-import android.util.Log;
-
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
 
@@ -37,7 +35,6 @@ public class LoginPresenter {
             boolean crawlerResult = false;
             try {
                 crawlerResult = CcnuCrawler2.performLogin(user.sid, user.password);
-                Log.d("presenter", "login: "+"after");
             } catch (IOException e) {
                 e.printStackTrace();
             }

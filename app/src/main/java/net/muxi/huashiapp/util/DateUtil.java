@@ -189,5 +189,10 @@ public class DateUtil {
         return (diff % nd % nh % nm );
     }
 
+    public static String getCurYear(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy");
+        return dateFormat.format(date);
+    }
+
 
 }

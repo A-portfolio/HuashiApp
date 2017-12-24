@@ -128,9 +128,9 @@
         </RelativeLayout>
 
         <Button
+            android:id="@+id/btn_renew"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_renew"
             android:background="@drawable/ripple_accent"
             android:textColor="@color/colorWhite"
             android:layout_marginBottom="60dp"

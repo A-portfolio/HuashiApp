@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -163,7 +162,6 @@ public class LoginActivity extends ToolbarActivity {
     private void setLoginListener(){
         RxBus.getDefault().toObservable(RefreshSessionEvent.class)
         .subscribe(refreshSessionEvent -> {
-            Log.d("send", "setLoginListener: ");
             presenter.login(refreshSessionEvent.getUser());
         },Throwable::printStackTrace);
     }
