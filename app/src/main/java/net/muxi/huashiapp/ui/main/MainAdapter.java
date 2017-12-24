@@ -146,6 +146,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 mViewHolders.add(viewHolder);
             }
 
+            BannerViewHolder bannerViewHolder = (BannerViewHolder) holder;
+            ViewGroup.LayoutParams lp = bannerViewHolder.mCardBanner.getLayoutParams();
+            //banner 按宽高比布局
+            lp.height = (DimensUtil.getScreenWidth() - DimensUtil.dp2px(32)) * 300 / 750;
             ((BannerViewHolder) holder).mCardBanner.setViewHolders(mViewHolders, mBannerDatas);
             ((BannerViewHolder) holder).mCardBanner.setAutoScroll(true);
             ((BannerViewHolder) holder).mCardBanner.setScrollDuration(3000);
@@ -221,7 +225,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     public class BannerViewHolder extends RecyclerView.ViewHolder {
-        private CardBanner mCardBanner;
+        public CardBanner mCardBanner;
         public BannerViewHolder(View itemView) {
             super(itemView);
             mCardBanner = (CardBanner) itemView.findViewById(R.id.card_banner);
