@@ -16,7 +16,7 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 def versionMajor = 2
 def versionMinor = 1
-def versionBuild = 2
+def versionBuild = 4
 
 android {
     compileSdkVersion 25
@@ -91,6 +91,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.facebook.fresco:fresco:1.1.0'
     compile 'com.facebook.fresco:animated-gif:1.1.0'

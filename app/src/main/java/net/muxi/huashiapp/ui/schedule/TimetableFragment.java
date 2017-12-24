@@ -318,6 +318,7 @@ public class TimetableFragment extends BaseFragment {
                     mWeekSelectedView.slideDown();
                     ZhugeUtils.sendEvent("选择周数");
                     mWeekSelectedView.setSelectedWeek(selectedWeek);
+                    PreferenceUtil.saveInt(PreferenceUtil.CURWEEK,selectedWeek);
                     mShadeView.setVisibility(View.VISIBLE);
                 } else {
                     mWeekSelectedView.slideUp();
@@ -327,4 +328,6 @@ public class TimetableFragment extends BaseFragment {
                 break;
         }
     }
+
+
 }

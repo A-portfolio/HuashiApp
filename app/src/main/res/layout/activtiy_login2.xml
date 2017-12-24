@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
-    <include layout="@layout/view_toolbar"/>
+    android:orientation="vertical">
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/view_toolbar"/>
 
     <android.support.design.widget.TextInputLayout
+        android:layout_below="@+id/toolbar_layout"
         android:id="@+id/layout_sid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,6 +36,7 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/layout_pwd"
+        android:layout_below="@+id/layout_sid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -57,25 +60,22 @@
 
     <net.muxi.huashiapp.ui.library.VerifyCodeView
         android:id="@+id/vcv_login"
-        android:visibility="invisible"
-        android:layout_marginTop="15dp"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_height="70dp">
+        android:layout_below="@+id/layout_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     </net.muxi.huashiapp.ui.library.VerifyCodeView>
 
     <Button
         android:id="@+id/btn_login"
+        android:layout_below="@+id/vcv_login"
         android:background="@drawable/ripple_accent"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_centerHorizontal="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="64dp"
         android:text="登录"
         android:textColor="@color/colorWhite"
         />
 
-</LinearLayout>
+</RelativeLayout>

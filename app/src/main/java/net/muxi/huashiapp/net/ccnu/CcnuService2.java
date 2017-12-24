@@ -26,7 +26,14 @@ public interface CcnuService2 {
     @GET("http://xk.ccnu.edu.cn/ssoserver/login?ywxt=jw&url=xtgl/index_initMenu.html")
     Call<ResponseBody> performSystemLogin();
 
-    @GET("https://account.ccnu.edu.cn/cas/login?service=http%3A%2F%2F202.114.34.15%2Freader%2Flogin.php")
-    Call<ResponseBody> performLibLogin();
+    //模拟登录的第一步:获取第一个Location
+        @GET("http://202.114.34.15/reader/hwthau.php")
+    Call<ResponseBody> performLibLogin1();
+    //模拟登录的第二步 获取第二个Location
+    @GET("https://account.ccnu.edu.cn/cas/login?service=http%3A%2F%2F202.114.34.15%2Freader%2Fhwthau.php")
+    Call<ResponseBody> performLibLogin2();
+    //模拟登陆的第三步 获取第三个Location
+    @GET("http://202.114.34.15/reader/hwthau.php?ticket={ticket}")
+    Call<ResponseBody> performLibLogin3(@Path("ticket")String ticket);
 
 }

@@ -1,7 +1,5 @@
 package net.muxi.huashiapp.net.ccnu;
 
-import android.util.Log;
-
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.common.data.InfoCookie;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -31,7 +29,7 @@ import retrofit2.Retrofit;
 现在的情况和之前不同，然后由于和教务系统相关联的有学分和课表 所以不仅要登录进入校园系统 还需要登录录入选课系统
  */
 public class CcnuCrawler2 {
-    private static String Location = "";
+    private static String location1 = "";
     private static String valueOfLt, valueOfExe;
     //在这个callback中拿到相关信息 valueoflt valueofexe
     private static CcnuService2 mCcnuService;
@@ -48,7 +46,6 @@ public class CcnuCrawler2 {
 
         @Override
         public List<Cookie> loadForRequest(HttpUrl url) {
-//            Log.d("herecookie", "saveFromResponse: " + cookieStore.toString());
             return cookieStore;
         }
     };
@@ -105,56 +102,24 @@ public class CcnuCrawler2 {
         mCcnuService = retrofit.create(CcnuService2.class);
     }
 
-    /**
-     * including two steps : first login in account.ccnu.edu.cn the login the student's affairs system
-     * to get credit and scores and table
-     *
-     * @param username
-     * @param userpassword
-     * @return
-     * @throws IOException
-     */
     public static boolean performLogin(String username, String userpassword) throws IOException {
-        Log.d("presenter", "performLogin: middle");
         initCrawler();
         retrofit2.Response<ResponseBody> responseBody = mCcnuService.performCampusLogin
                 (JSESSIONID_LOGIN_IN, username, userpassword, valueOfLt, valueOfExe, "submit", "LOGIN").execute();
 
         retrofit2.Response<ResponseBody> responseBody2 = mCcnuService.performSystemLogin().execute();
-        performLibLogin();
-        return true;
+     //  performLibLogin();
+       return true;
     }
 
     private static boolean performLibLogin() throws IOException {
-        //这个client需要截断，用以获取转发的location
-        OkHttpClient client2 = new OkHttpClient.Builder()
-                .followRedirects(false)
+        OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .cookieJar(cookieJar)
                 .build();
-
-        Request request = initRequestBuilder()
-                .url("http://202.114.34.15/reader/redr_info.php")
-                .get()
-                .build();
-        //获取phpsession1
-        client2.newCall(request).execute();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(client2)
-                .baseUrl("https://ccnubox.muxixyz.com/api/")
-                .build();
-        CcnuService2 mCcnuService2 = retrofit.create(CcnuService2.class);
-        retrofit2.Response<ResponseBody> responseBodyResponse = mCcnuService2.performLibLogin().execute();
-        ;
-        storeLocation(responseBodyResponse);
-        Location = responseBodyResponse.headers().get("Location");
-
-        Request request2 = initRequestBuilder()
-                .url(Location)
-                .get()
-                .build();
-        client2.newCall(request2).execute();
+        //Request request1 = initRequestBuilder()
+       //         .get()
+            //    .url()
         return true;
     }
 
@@ -239,7 +204,7 @@ public class CcnuCrawler2 {
 
     private static void storeLocation(retrofit2.Response<ResponseBody> response) {
         Headers headers = response.headers();
-        String location = headers.get("Location");
+        String location = headers.get("location1");
         String url = "http://202.114.34.15/reader/login.php?ticket=", apdix = "account.ccnu.edu.cn";
         try {
             String phpSessionId = location.substring(url.length(), location.length() - apdix.length()) + "accountccnueducn";
@@ -248,6 +213,16 @@ public class CcnuCrawler2 {
             e.printStackTrace();
         }
 //        Log.d("heaven", "storeLocation: " + phpSessionId);
+    }
+
+    private static String searchCookieStore(String name){
+        String value = "";
+        for(int i=0;i<cookieStore.size();i++){
+            if(cookieStore.get(i).name().equals(name)){
+                 value= cookieStore.get(i).value();
+            }
+        }
+        return value;
     }
 
 }

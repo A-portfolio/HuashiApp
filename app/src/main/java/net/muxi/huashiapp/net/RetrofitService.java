@@ -53,14 +53,14 @@ public interface RetrofitService {
     @GET("lib/login/")
     Observable<Response<VerifyResponse>> libLogin(@Header("Authorization") String verification);
 
-    @GET("http://39.108.79.110:1295/api/lib/search/")
+    @GET("lib/search/")
     Observable<BookSearchResult> searchBook(@Query("keyword") String keyword,
             @Query("page") int page);
 
-    @GET("http://39.108.79.110:1295/api/lib/detail/")
-    Observable<Book> getBookDetail(@Query("id") String id);
+    @GET("lib/detail/{id}/")
+    Observable<Book> getBookDetail(@Path("id") String id);
 
-    @GET("http://39.108.79.110:1295/api/lib/me/")
+    @GET("lib/me/")
     Observable<List<BorrowedBook>> getPersonalBook(@Header("s") String verification);
 
     /**
@@ -69,7 +69,7 @@ public interface RetrofitService {
      * 404 无关注图书
      * 502 服务器端错误
      */
-    @GET("http://39.108.79.110:1295/api/lib/attention/")
+    @GET("lib/attention/")
     Observable<Response<List<AttentionBook>>> getAttentionBooks(
             @Header("s") String verification);
 
@@ -79,7 +79,7 @@ public interface RetrofitService {
      * 409 已关注
      * 502 服务器端错误
      */
-    @POST("http://39.108.79.110:1295/api/lib/create/")
+    @POST("lib/create/")
     Observable<Response<VerifyResponse>> createAttentionBook(
             @Header("s") String verification, @Body
             BookPost bookPost);
@@ -91,7 +91,7 @@ public interface RetrofitService {
      * 502 服务器端错误
      */
 //    @DELETE("lib/delete/")
-    @HTTP(method = "DELETE", path = "http://39.108.79.110:1295/api/lib/delete/", hasBody = true)
+    @HTTP(method = "DELETE", path = "lib/delete/", hasBody = true)
     Observable<Response<VerifyResponse>> delAttentionBook(
             @Header("s") String verification,
             @Body BookId id);
@@ -102,7 +102,7 @@ public interface RetrofitService {
      * 403 超过最大续借次数
      * 400 请求无效
      */
-    @POST("http://39.108.79.110:1295/api/lib/renew/")
+    @POST("lib/renew/")
     Observable<Response<VerifyResponse>> renewBook(@Header("s") String verification, String captcha,
             @Body RenewData renewData);
 

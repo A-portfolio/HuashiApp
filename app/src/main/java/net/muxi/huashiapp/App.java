@@ -16,7 +16,6 @@ import com.zhuge.analysis.stat.ZhugeSDK;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.ui.main.FetchPatchHandler;
-import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 
@@ -37,23 +36,22 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
+        //todo 1.查成绩有问题
         super.onCreate();
 
         tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
 
-        TinkerPatch.init(tinkerApplicationLike)
+
+                TinkerPatch.init(tinkerApplicationLike)
                 .reflectPatchLibrary()
                 .setPatchRollbackOnScreenOff(true)
                 .setPatchRestartOnSrceenOff(true);
 
         new FetchPatchHandler().fetchPatchWithInterval(3);
 
-       /// PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
         sContext = getApplicationContext();
         sp = new PreferenceUtil();
 
-        Log.d("stringss", "onCreate: "+PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL)+" "
-        + PreferenceUtil.getString(PreferenceUtil.JSESSIONID));
         sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, ""));
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
         sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));
@@ -97,15 +95,16 @@ public class App extends Application {
         PreferenceUtil.clearString(PreferenceUtil.LIBRARY_PWD);
         PreferenceUtil.clearString(PreferenceUtil.ATTENTION_BOOK_IDS);
         PreferenceUtil.clearString(PreferenceUtil.BORROW_BOOK_IDS);
+        PreferenceUtil.clearString(PreferenceUtil.PHPSESSION_ID);
         sLibrarayUser.setSid("");
         sLibrarayUser.setPassword("");
+        Log.d("fixing", "logoutLibUser: "+"phpsession"+PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID));
     }
 
     public static void saveUser(User user) {
         PreferenceUtil.saveString(PreferenceUtil.STUDENT_ID, user.getSid());
         PreferenceUtil.saveString(PreferenceUtil.STUDENT_PWD, user.getPassword());
         sUser = user;
-        Logger.d("id:" + sUser.getSid() + "\tpwd:" + sUser.getPassword());
     }
 
     public static void logoutUser() {
@@ -126,7 +125,7 @@ public class App extends Application {
 
     public static boolean isLibLogin() {
         String phpSess = PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID);
-        if(!phpSess.equals("")||phpSess!=null)
+        if(!phpSess.equals("")||!TextUtils.isEmpty(phpSess))
             return true;
         else
             return false;

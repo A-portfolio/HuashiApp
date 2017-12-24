@@ -24,8 +24,13 @@ public class RetryInterceptor implements Interceptor {
         Request request = chain.request();
         Response response = chain.proceed(request);
         int responseCode = response.code();
-        //不同的api规定的不一样
-        if (responseCode == 401||responseCode==403) {
+        String url = request.url().toString();
+        //每个api规定的不一样
+        int code = getResponseCode(url);
+        Log.d("responsecode", "intercept: "+code+" "+responseCode);
+        //只有在session过期的情况下才可以进行重试: if(url.contains("https://ccnubox.muxixyz.com/api/"))
+       // if(url.contains("lib")){
+        if (responseCode==code){
             PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
             PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
             String sid = PreferenceUtil.getString(PreferenceUtil.STUDENT_ID);
@@ -34,8 +39,21 @@ public class RetryInterceptor implements Interceptor {
             user.setSid(sid);
             user.setPassword(pwd);
             RxBus.getDefault().send(new RefreshSessionEvent(user));
-            Log.d("send", "intercept: ");
         }
         return response;
+    }
+
+    private int getResponseCode(String url){
+            if(url.contains("lib")||url.contains("table")) {
+                return 401;
+            }
+            if(url.contains("grade")){
+                return 403;
+            }
+            if(url.contains("table")){
+                return 500;
+            }
+
+            return 0;
     }
 }

@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -21,10 +22,11 @@ import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.event.LibLoginEvent;
 import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.event.RefreshSessionEvent;
+import net.muxi.huashiapp.event.VerifyCodeSuccessEvent;
 import net.muxi.huashiapp.net.CampusFactory;
+import net.muxi.huashiapp.ui.library.VerifyCodeView;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
-import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
@@ -80,19 +82,30 @@ public class LoginActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         type = getIntent().getStringExtra("type");
         initViews();
+        showCaptcha(type);
         setLoginListener();
     }
 
+    private void showCaptcha(String type) {
+        if (type.equals("lib")) {
+            showLoading();
+            RxBus.getDefault().toObservable(VerifyCodeSuccessEvent.class)
+                    .subscribe(verifyCodeSuccessEvent -> {
+                  VerifyCodeView view = (VerifyCodeView) findViewById(R.id.vcv_login);
+                  view.setVisibility(View.VISIBLE);
+                  view.setVisible();
+                    });
+            //vcvParams.setMargins();
+        }else{
+            return;
+        }
+    }
 
     private void initViews() {
 
         if (type.equals("info")) {
             setTitle("登录信息门户");
             pwdHint = "输入您的密码";
-        } else if (PreferenceUtil.PHPSESSION_ID == ""){
-            setTitle("登录图书馆");
-            pwdHint = "初始密码为123456";
-            mLayoutPwd.setHint(pwdHint);
         }
 
     }
@@ -122,11 +135,14 @@ public class LoginActivity extends ToolbarActivity {
                         boolean result = (boolean) b;
                         if (result) {
                             finish();
+                            hideLoading();
                             App.saveUser(user);
                             String target = getIntent().hasExtra("target") ?
                                     getIntent().getStringExtra("target") : null;
-                            RxBus.getDefault().send(new LoginSuccessEvent(target));
-                            RxBus.getDefault().send(new LibLoginEvent());
+                            if(type.equals("info"))
+                                RxBus.getDefault().send(new LoginSuccessEvent(target));
+                            else
+                                RxBus.getDefault().send(new LibLoginEvent());
                         } else {
                             showErrorSnackbarShort(R.string.tip_err_account);
                         }
@@ -139,9 +155,7 @@ public class LoginActivity extends ToolbarActivity {
             if (type.equals("info"))
                 ZhugeUtils.sendEvent("登录");
             else {
-                Log.d("1234", "onClick: sdf");
                 ZhugeUtils.sendEvent("图书馆登录");
-                RxBus.getDefault().send(LibLoginEvent.class);
             }
         }
     }

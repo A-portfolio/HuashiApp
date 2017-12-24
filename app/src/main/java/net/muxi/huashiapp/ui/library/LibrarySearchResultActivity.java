@@ -68,13 +68,10 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
         mLibrarySearchResultAdapter = new LibrarySearchResultAdapter(this,mBookList);
         footerView = (TextView) LayoutInflater.from(this).inflate(R.layout.view_footer, null);
 
-        mMultiStatusView.setOnRetryListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                page = 1;
-                showLoading();
-                loadBooks();
-            }
+        mMultiStatusView.setOnRetryListener(view -> {
+            page = 1;
+            showLoading();
+            loadBooks();
         });
         loadBooks();
     }
@@ -84,7 +81,11 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bookSearchResult -> {
-                    max = bookSearchResult.getMeta().getMax();
+                    try {
+                        max = bookSearchResult.getMeta().getMax();
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
                     if (page == 1) {
                         mMultiStatusView.showContent();
                         mListView = (ListView) mMultiStatusView.getContentView();
@@ -99,7 +100,7 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
                         footerView.setText("－到底啦，没有更多啦－");
                     }
                     mListView = (ListView) mMultiStatusView.getContentView();
-                    mBookList.addAll(bookSearchResult.getResults());
+                    mBookList.addAll(bookSearchResult.getResult());
                     mLibrarySearchResultAdapter.notifyDataSetChanged();
                 }, throwable -> {
                     throwable.printStackTrace();

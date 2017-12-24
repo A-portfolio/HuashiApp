@@ -244,6 +244,7 @@ public class MoreFragment extends BaseFragment {
 
     }
 
+
     public boolean isStorgePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
