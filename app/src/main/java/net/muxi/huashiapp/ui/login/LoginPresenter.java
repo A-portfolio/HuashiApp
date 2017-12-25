@@ -35,14 +35,14 @@ public class LoginPresenter {
             boolean crawlerResult = false;
             try {
                 crawlerResult = CcnuCrawler2.performLogin(user.sid, user.password);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (crawlerResult) {
+//            if (crawlerResult)
                 subscriber.onNext(crawlerResult);
                 subscriber.onCompleted();
-                return;
-            }
+//                return;
+//            }
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

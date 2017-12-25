@@ -163,6 +163,7 @@ public class TimeTableUtil {
         int distance = 1 - day - (week - 1) * 7;
         PreferenceUtil.saveString(PreferenceUtil.FIRST_WEEK_DATE,
                 DateUtil.getTheDateInYear(date, distance));
+        PreferenceUtil.saveInt(PreferenceUtil.SELECTED_WEEK,week);
     }
 
     /**

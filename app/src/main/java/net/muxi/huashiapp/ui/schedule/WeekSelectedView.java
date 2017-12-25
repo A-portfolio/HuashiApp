@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
@@ -58,15 +57,12 @@ public class WeekSelectedView extends GridLayout {
             tvWeekLayoutParams.bottomMargin = SELECTED_VIEW_MARGIN;
 
             final int selectedWeek = i;
-            mTvWeeks[i].setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mOnWeekSelectedListener != null) {
-                        mOnWeekSelectedListener.onWeekSelected(selectedWeek + 1);
-                    }
-                    setSelectedWeek(selectedWeek + 1);
-                    slideUp();
+            mTvWeeks[i].setOnClickListener(view -> {
+                if (mOnWeekSelectedListener != null) {
+                    mOnWeekSelectedListener.onWeekSelected(selectedWeek + 1);
                 }
+                setSelectedWeek(selectedWeek + 1);
+                slideUp();
             });
         }
 

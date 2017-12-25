@@ -25,6 +25,7 @@ public class    PreferenceUtil {
     //课程表
     //课表中的第一周的第一天日期
     public static final String FIRST_WEEK_DATE = "first_date";
+    public static final String SELECTED_WEEK = "mCurweek";
     //是否是第一次进入课程表
     public static final String IS_FIRST_ENTER_TABLE = "is_first_enter_table";
 

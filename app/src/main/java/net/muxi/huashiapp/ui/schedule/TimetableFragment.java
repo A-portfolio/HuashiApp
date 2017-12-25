@@ -195,8 +195,8 @@ public class TimetableFragment extends BaseFragment {
         ((BaseActivity) getContext()).addSubscription(subscription3);
         Subscription subscription4 = RxBus.getDefault().toObservable(CurWeekChangeEvent.class)
                 .subscribe(curWeekChangeEvent -> {
-                    setCurweek(TimeTableUtil.getCurWeek());
-                    setSelectedWeek(TimeTableUtil.getCurWeek());
+                   // setCurweek(PreferenceUtil.getInt(PreferenceUtil.SELECTED_WEEK));
+                    setSelectedWeek(PreferenceUtil.getInt(PreferenceUtil.SELECTED_WEEK));
                     renderCourseView(mCourses);
                 }, Throwable::printStackTrace);
         ((BaseActivity) getContext()).addSubscription(subscription4);
@@ -281,17 +281,16 @@ public class TimetableFragment extends BaseFragment {
         selectedIvStatus = !selectedIvStatus;
     }
     /**
-     * @param week 从1开始计数
+     * @param selectingWeek 从1开始计数
      */
-    public void setSelectedWeek(int week) {
-        selectedWeek = week;
-        mTvSelectWeek.setText(String.format("第%d周", week));
+    //第n周
+    public void setSelectedWeek(int selectingWeek) {
+        mTvSelectWeek.setText(String.format("第%d周", selectingWeek));
     }
     /**
      * @param week 从1开始计数
      */
     public void setCurweek(int week) {
-        curWeek = week;
         mTvCurrentWeek.setText("当前周设置为" + week);
     }
     @Override

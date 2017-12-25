@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -56,6 +57,7 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
 
                 mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
                 mDrawee.setImageURI(Uri.parse(sp.getString(Constants.SPLASH_IMG)));
+                mDrawee.setOnClickListener(this);
                 startMainActivityDelay(2500);
             }
             return;
@@ -70,7 +72,9 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == R.id.drawee) {
             Intent intent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(sp.getString(Constants.SPLASH_URL).toString()));
+                    Uri.parse(sp.getString(Constants.SPLASH_URL).toString()));;
+
+            Log.d("fixing", "onClick: "+Uri.parse(sp.getString(Constants.SPLASH_URL).toString()));
             startActivity(intent);
         }
     }

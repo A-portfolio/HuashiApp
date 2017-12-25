@@ -103,13 +103,22 @@ public class CcnuCrawler2 {
     }
 
     public static boolean performLogin(String username, String userpassword) throws IOException {
+        cookieStore.clear();
         initCrawler();
         retrofit2.Response<ResponseBody> responseBody = mCcnuService.performCampusLogin
                 (JSESSIONID_LOGIN_IN, username, userpassword, valueOfLt, valueOfExe, "submit", "LOGIN").execute();
-
         retrofit2.Response<ResponseBody> responseBody2 = mCcnuService.performSystemLogin().execute();
-     //  performLibLogin();
-       return true;
+        //     String jid =PreferenceUtil.getString(PreferenceUtil.JSESSIONID), big = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL);
+        String bigResponse1 = responseBody.body().string(), bigResponse2 = responseBody2.body().string();
+//        Log.d("fixing", "performLogin: "+header);
+        if (bigResponse1.contains("登录成功")) {
+            return true;
+        }
+        return false;
+//        if (bigResponse1.contains("登录帮助")) {
+//            return false;
+//        }
+//        return true;
     }
 
     private static boolean performLibLogin() throws IOException {

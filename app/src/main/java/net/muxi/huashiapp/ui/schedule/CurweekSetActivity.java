@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -56,13 +54,10 @@ public class CurweekSetActivity extends ToolbarActivity {
                 R.layout.item_curweek_set, s);
         mLv.setDivider(null);
         mLv.setAdapter(arrayAdapter);
-        mLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                TimeTableUtil.saveCurWeek(i + 1);
-                RxBus.getDefault().send(new CurWeekChangeEvent());
-                CurweekSetActivity.this.finish();
-            }
+        mLv.setOnItemClickListener((adapterView, view, i, l) -> {
+            TimeTableUtil.saveCurWeek(i + 1);
+            RxBus.getDefault().send(new CurWeekChangeEvent());
+            CurweekSetActivity.this.finish();
         });
     }
 }

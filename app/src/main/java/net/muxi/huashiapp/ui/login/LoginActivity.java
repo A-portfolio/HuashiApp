@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -132,7 +133,9 @@ public class LoginActivity extends ToolbarActivity {
             presenter.login(user)
                     .subscribe(b -> {
                         boolean result = (boolean) b;
+                        Log.d("fixing","onclick: ll");
                         if (result) {
+                            Log.d("fixing", "onClick:d ");
                             finish();
                             hideLoading();
                             App.saveUser(user);
@@ -143,6 +146,9 @@ public class LoginActivity extends ToolbarActivity {
                             else
                                 RxBus.getDefault().send(new LibLoginEvent());
                         } else {
+                            hideLoading();
+//                            finish();
+                            Log.d("fixing", "onClick: aa");
                             showErrorSnackbarShort(R.string.tip_err_account);
                         }
                     }, throwable -> {
