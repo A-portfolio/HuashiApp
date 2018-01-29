@@ -10,19 +10,22 @@ import android.support.v7.widget.Toolbar;
 
 import com.muxistudio.multistatusview.MultiStatusView;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.net.ccnu.CcnuCrawler;
+import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
+import net.muxi.huashiapp.ui.login.LoginPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -74,14 +77,23 @@ public class ScoreActivity extends ToolbarActivity {
     private void loadGrade(String term) {
         showLoading();
         if (term.equals("0")) {
+            //todo 在查询所有人的时候有问题
             CampusFactory.getRetrofitService().getScores(year,"")
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(scores -> renderScoreList(scores),
                             throwable -> {
-                                throwable.printStackTrace();
-                                mMultiStatusView.showNetError();
-                                hideLoading();
+                                if (((HttpException) throwable).code() == 403) {
+//                                    Logger("forbidden", "loadGrade: ");
+                                    throwable.printStackTrace();
+                                    mMultiStatusView.showNetError();
+                                    CcnuCrawler2.clearCookieStore();
+                                    LoginPresenter presenter = new LoginPresenter();
+//                                CcnuCrawler2.initCrawler();
+                                    presenter.login(App.sUser).subscribe(b-> {}
+                                            ,thowable ->{},()->{});
+                                    hideLoading();
+                                }
                         }, () -> hideLoading());
             return;
         }
@@ -91,13 +103,19 @@ public class ScoreActivity extends ToolbarActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(scores -> renderScoreList(scores),
                         throwable -> {
-                            throwable.printStackTrace();
-                            mMultiStatusView.showNetError();
-                            CcnuCrawler.clearCookieStore();
-                            CcnuCrawler.initCrawler();
-                            hideLoading();
+                            if (((HttpException) throwable).code() == 403) {
+//                                Log.d("forbidden", "loadGrade: ");
+                                throwable.printStackTrace();
+                                mMultiStatusView.showNetError();
+                                CcnuCrawler2.clearCookieStore();
+                                LoginPresenter presenter = new LoginPresenter();
+//                                CcnuCrawler2.initCrawler();
+                                presenter.login(App.sUser).subscribe(b-> {}
+                                        ,thowable ->{},()->{});
+                                hideLoading();
+                            }
                         },
-                        () -> hideLoading());
+                        ()->hideLoading());
     }
 
 

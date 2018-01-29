@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -195,8 +194,8 @@ public class TimetableFragment extends BaseFragment {
         ((BaseActivity) getContext()).addSubscription(subscription3);
         Subscription subscription4 = RxBus.getDefault().toObservable(CurWeekChangeEvent.class)
                 .subscribe(curWeekChangeEvent -> {
-                   // setCurweek(PreferenceUtil.getInt(PreferenceUtil.SELECTED_WEEK));
-                    setSelectedWeek(PreferenceUtil.getInt(PreferenceUtil.SELECTED_WEEK));
+                    setCurweek(TimeTableUtil.getCurWeek());
+                    setSelectedWeek(TimeTableUtil.getCurWeek());
                     renderCourseView(mCourses);
                 }, Throwable::printStackTrace);
         ((BaseActivity) getContext()).addSubscription(subscription4);
@@ -248,7 +247,6 @@ public class TimetableFragment extends BaseFragment {
                                     , RefreshFinishEvent.SELF_DEFINE_CODE));
                     }
                         int code = ((HttpException) throwable).code();
-                        Log.d("here2222", "loadTable: "+code);
                         if (code == 401) {
                             RxBus.getDefault().send(new RefreshFinishEvent(false
                                     , code));

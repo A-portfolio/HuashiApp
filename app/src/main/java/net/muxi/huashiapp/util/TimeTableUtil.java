@@ -6,7 +6,6 @@ import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.Course;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -127,6 +126,7 @@ public class TimeTableUtil {
      */
     public static int getCurWeek() {
         PreferenceUtil sp = new PreferenceUtil();
+        /*
         SimpleDateFormat yearFormmatter = new SimpleDateFormat("yyyy");
         Date now = new Date(System.currentTimeMillis());
         int thisYear  = Integer.parseInt(yearFormmatter.format(now));
@@ -140,7 +140,8 @@ public class TimeTableUtil {
                                 .toDateInYear(new Date(System.currentTimeMillis()))))+2;
         //计算两周之间的距离就是八周　
         return curWeek >= 1 ? curWeek : 1;
-        /*
+       */
+
         int day = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
         //获取date的格式 根据 distance 定
         String defaluteDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()),
@@ -154,7 +155,7 @@ public class TimeTableUtil {
         curWeek = curWeek <= Constants.WEEKS_LENGTH ? curWeek : Constants.WEEKS_LENGTH;
         curWeek = curWeek >= 1 ? curWeek : 1;
         return curWeek;
-        */
+
     }
 
     public static void saveCurWeek(int week) {

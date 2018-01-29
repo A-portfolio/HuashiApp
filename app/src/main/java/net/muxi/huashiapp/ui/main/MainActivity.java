@@ -16,7 +16,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
@@ -134,7 +133,6 @@ public class MainActivity extends BaseActivity implements
                 .subscribe(libLoginEvent -> {
                     FragmentManager fm = getSupportFragmentManager();
                     fm.beginTransaction().remove(mCurFragment).commitAllowingStateLoss();
-                    Log.d("tagtag", "initListener: "+mCurFragment.getTag());
                     if (fm.findFragmentByTag("lib_mine") != null) {
                         fm.beginTransaction()
                                 .replace(R.id.content_layout, fm.findFragmentByTag("lib_mine"))
@@ -150,7 +148,6 @@ public class MainActivity extends BaseActivity implements
         Subscription subscription = RxBus.getDefault().toObservable(LoginSuccessEvent.class)
                 .subscribe(loginSuccessEvent -> {
                     if (loginSuccessEvent.targetActivityName.equals("table")){
-                        Logger.d("get table event");
                         ((TimetableFragment)mCurFragment).loadTable();
                     }
                 },Throwable::printStackTrace);

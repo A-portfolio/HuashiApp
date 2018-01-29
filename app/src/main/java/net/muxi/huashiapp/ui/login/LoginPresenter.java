@@ -40,7 +40,7 @@ public class LoginPresenter {
             }
 //            if (crawlerResult)
                 subscriber.onNext(crawlerResult);
-                subscriber.onCompleted();
+                    subscriber.onCompleted();
 //                return;
 //            }
         })

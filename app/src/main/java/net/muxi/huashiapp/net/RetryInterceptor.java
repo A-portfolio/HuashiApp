@@ -53,7 +53,7 @@ public class RetryInterceptor implements Interceptor {
                 String p = " https://ccnubox.muxixyz.com/api/grade/?xnm=";
                 int curYear = Integer.parseInt(DateUtil.getCurYear(new Date(System.currentTimeMillis())));
                 int queYear = Integer.parseInt(url.substring(p.length() - 1, p.length() + 3));
-                Logger.d("current year "+curYear+" que year "+queYear   );
+                Logger.d("current year "+curYear+" que year "+queYear);
                 if (curYear >= queYear) {
                     return 0;
                 }

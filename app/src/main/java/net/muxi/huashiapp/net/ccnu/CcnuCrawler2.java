@@ -1,18 +1,21 @@
 package net.muxi.huashiapp.net.ccnu;
 
+import android.util.Log;
+
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.common.data.InfoCookie;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
-import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -29,54 +32,91 @@ import retrofit2.Retrofit;
 现在的情况和之前不同，然后由于和教务系统相关联的有学分和课表 所以不仅要登录进入校园系统 还需要登录录入选课系统
  */
 public class CcnuCrawler2 {
+    private static Cookie accountJid=null,casPrivacy=null,casTgc = null,phpSessidLib =null;
     private static String location1 = "";
     private static String valueOfLt, valueOfExe;
     //在这个callback中拿到相关信息 valueoflt valueofexe
     private static CcnuService2 mCcnuService;
     private static String JSESSIONID_LOGIN_IN = null;
+    private static HashMap<HttpUrl,List<Cookie>> cookieMap = new HashMap<>();
     private static List<Cookie> cookieStore = new ArrayList<>();
+    private static String LIB_URL = "http://202.114.34.15/reader/hwthau.php";
     //初始登录时候暂时缓存一下cookie
     //主要的cookiejar存放重要的信息
 
-    public static CookieJar cookieJar = new CookieJar() {
-        @Override
-        public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-            cookieStore.addAll(cookies);
-        }
-
-        @Override
-        public List<Cookie> loadForRequest(HttpUrl url) {
-            return cookieStore;
-        }
-    };
-
-    public static void initCrawler() {
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(interceptor)
-                .cookieJar(new CookieJar() {
-                    List<Cookie> cookies;
-
-                    @Override
-                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-                        this.cookies = cookies;
-                        for (int i = 0; i < cookies.size(); i++) {
-                            if (cookies.get(i).name().equals("JSESSIONID")) {
-                                JSESSIONID_LOGIN_IN = cookies.get(i).value();
-                                break;
-                            }
+        public static CookieJar cookieJar = new CookieJar() {
+            @Override
+            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                cookieStore.addAll(cookies);
+//                cookieMap.put(url,cookies);
+                for (int i=0;i<cookies.size();i++) {
+                    if (cookies.get(i).domain().equals("account.ccnu.edu.cn")) {
+                        if (cookies.get(i).name().equals("JSESSIONID")) {
+                            JSESSIONID_LOGIN_IN = cookies.get(i).value();
+                            accountJid = cookies.get(i);
+                        }
+                        if (cookies.get(i).name().equals("CASPRIVACY")) {
+                            casPrivacy = cookies.get(i);
+                        }
+                        if (cookies.get(i).name().equals("CASTGC")) {
+                            casTgc = cookies.get(i);
                         }
                     }
-
-                    @Override
-                    public List<Cookie> loadForRequest(HttpUrl url) {
-                        if (cookies != null)
-                            return cookies;
-                        return new ArrayList<Cookie>();
+                        //读取图书馆第一次登录的phpsessid
+                    if(url.toString().equals("http://202.114.34.15/reader/hwthau.php")&&phpSessidLib==null){
+                            phpSessidLib = cookies.get(i);
                     }
-                })
+                }
+            }
+
+            @Override
+            public List<Cookie> loadForRequest(HttpUrl url) {
+                if(url.toString().equals("https://account.ccnu.edu.cn/cas/login?service=http%3A%2F%2F202.114.34.15%2Freader%2Fhwthau.php")) {
+                    List<Cookie> list = new ArrayList<>();
+                    list.add(casPrivacy);
+                    list.add(casTgc);
+                    list.add(accountJid);
+                    return list;
+                }
+                if(url.toString().contains("http://202.114.34.15/reader/hwthau.php?ticket")){
+                    List<Cookie> list= new ArrayList<>();
+                    list.add(phpSessidLib);
+                    return  list;
+                }
+                if(url.toString().equals("http://202.114.34.15/reader/hwthau.php")) {
+                    List<Cookie> list = new ArrayList<>();
+                    for (int i = 0; i < cookieStore.size(); i++)
+                        if (cookieStore.get(i).value().contains("ST-") && cookieStore.get(i).value().contains("accountccnueducn")) {
+                            list.add(cookieStore.get(i));
+                            Log.d("rapgod", "loadForRequest: "+cookieStore.get(i).value());
+                            return list;
+                        }
+                }
+                if(url.toString().equals("http://202.114.34.15/reader/redr_info.php")){
+                    List<Cookie> list = new ArrayList<>();
+                    for (int i = 0; i < cookieStore.size(); i++)
+                        if (cookieStore.get(i).value().contains("ST-") && cookieStore.get(i).value().contains("accountccnueducn")) {
+                            list.add(cookieStore.get(i));
+                            return list;
+                        }
+                }
+                return cookieStore;
+            }
+        };
+
+    public static void initCrawler() {
+        //此处的内容详细参考这里:
+        //https://www.zybuluo.com/Humbert/note/970726
+        //登录分为三个步骤1.登录信息门户(one.ccnu.edu.cn) 2.登录教务系统 3.登录图书馆系统
+        //initCrawler()的目的是为了登录 信息门户并且获取三个重要的cookie: JSESSIONID(domain:account.ccnu.edu) CASPRIVACY CASTGC
+        //信息门户登录分为两步:第一步获取JSESSIONID(domain:account.ccnu.edu) 第二步是获取CASPRIVACY 和 CASTGC
+        //所有的cookie都维护在cookieJar中
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+//        interceptor.
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .cookieJar(cookieJar)
                 .build();
         Request request = initRequestBuilder()
                 .url("https://account.ccnu.edu.cn/cas/login")
@@ -99,37 +139,93 @@ public class CcnuCrawler2 {
                 .client(client2)
                 .baseUrl("https://ccnubox.muxixyz.com/api/")
                 .build();
+        //完成step2 的CASPRIVACY的获取
         mCcnuService = retrofit.create(CcnuService2.class);
     }
 
     public static boolean performLogin(String username, String userpassword) throws IOException {
-        cookieStore.clear();
         initCrawler();
         retrofit2.Response<ResponseBody> responseBody = mCcnuService.performCampusLogin
-                (JSESSIONID_LOGIN_IN, username, userpassword, valueOfLt, valueOfExe, "submit", "LOGIN").execute();
+                (JSESSIONID_LOGIN_IN, username, userpassword,
+                        valueOfLt, valueOfExe, "submit", "LOGIN").execute();
         retrofit2.Response<ResponseBody> responseBody2 = mCcnuService.performSystemLogin().execute();
-        //     String jid =PreferenceUtil.getString(PreferenceUtil.JSESSIONID), big = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL);
-        String bigResponse1 = responseBody.body().string(), bigResponse2 = responseBody2.body().string();
-//        Log.d("fixing", "performLogin: "+header);
-        if (bigResponse1.contains("登录成功")) {
+        String bigResponse1 = responseBody.body().string();
+        performLibLogin();
+        for(int i=0;i <cookieStore.size();i++){
+            if(cookieStore.get(i).name().equals("CASPRIVACY")) {
+                return true;
+            }
+        }
+        if (bigResponse1.contains("Successful")||bigResponse1.contains("登录成功")) {
             return true;
         }
         return false;
-//        if (bigResponse1.contains("登录帮助")) {
-//            return false;
-//        }
-//        return true;
     }
 
     private static boolean performLibLogin() throws IOException {
+        //整个步骤拆分成三个部分:获取第一个phpsessionid
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .cookieJar(cookieJar)
+                .readTimeout(25, TimeUnit.SECONDS)
+                .connectTimeout(25, TimeUnit.SECONDS)
+                .writeTimeout(25,TimeUnit.SECONDS)
+             //   .followRedirects(false)
+                .addInterceptor(interceptor)
+                .cookieJar(cookieJar).build();
+        //step1
+        Request request0 = initRequestBuilder()
+                .url("http://202.114.34.15/reader/hwthau.php")
+                .get()
                 .build();
-        //Request request1 = initRequestBuilder()
-       //         .get()
-            //    .url()
+        client.newCall(request0).execute();
+//        int responseCode = client.newCall(request0).execute().code();
+//        int size1 = cookieStore.size();
+//        //step2
+////        String castgcvalue = casTgc.value();
+//        Request request1 = initRequestBuilder()
+//                .addHeader("Cookie","CASPRIVACY=; CASTGC="+casTgc.value()+"; "+"JSESSIONID="+accountJid.value())
+//                .addHeader("host","account.ccnu.edu.cn")
+//                .url("https://account.ccnu.edu.cn/cas/login?service=http%3A%2F%2F202.114.34.15%2Freader%2Fhwthau.php")
+//                .get()
+//                .build();
+//        //这里的list大小应该为3
+//        List<Cookie> list= cookieJar.loadForRequest(request1.url());
+//        OkHttpClient client2 = new OkHttpClient.Builder()
+//                .readTimeout(25, TimeUnit.SECONDS)
+//                .connectTimeout(25, TimeUnit.SECONDS)
+//                .writeTimeout(25,TimeUnit.SECONDS)
+//             //   .followRedirects(false)
+//                .addInterceptor(interceptor)
+//                .cookieJar(cookieJar).build();
+//        Response responseResponse = client2.newCall(request1).execute();
+//        Headers headers = responseResponse.headers();
+//        String location = headers.get("Location");
+//        int size2 = cookieStore.size();
+//        //step3 使用location进行请求
+//        Request request2 = initRequestBuilder()
+//                .url(location)
+//                .get()
+//                .build();
+//        //todo 前面的东西是正确的 这里产生了一个500!
+//        List<Cookie> list1 = cookieJar.loadForRequest(request2.url());
+//        Response response2 = client.newCall(request2).execute();
+//        String phpsession = response2.header("PHPSESSID");
+//        //Step 4
+//        Request request3 = initRequestBuilder()
+//                .addHeader("host","202.114.34.15")
+//                .url("http://202.114.34.15/reader/hwthau.php")
+//                .get().build();
+//        Response response3 = client.newCall(request3).execute();
+//        //Step 5
+//        Request request4 = initRequestBuilder()
+//                .addHeader("host","202.114.34.15")
+//                .url("http://202.114.34.15/reader/redr_info.php")
+//                .get().build();
+//        Response response4 = client.newCall(request4).execute();
+//        Log.d("phpsession", "performLibLogin: "+phpsession);
         return true;
+
     }
 
     //提取header的公用字段
@@ -151,8 +247,8 @@ public class CcnuCrawler2 {
 
     //获取字段lt 和exe
     private static void getValue(String responseBody) {
-        String str1 = "<input type=\"hidden\" name=\"lt\" value=\"(.*)\" />";
-        String str2 = "<input type=\"hidden\" name=\"execution\" value=\"(.*)\" />";
+        String str1 = "((.*)(name=\"lt\" value=\")(.*)(\" />))";
+        String str2 = "((.*)(name=\"execution\" value=\")(.*)(\" />))";
         //<input type="hidden" name="lt" value="LT-31315-O4Nt1gZeHUSnmzr4DALQwyn3xNyir6-account.ccnu.edu.cn" />
         //<input type="hidden" name="execution" value="e1s1" />
         String bigString = responseBody;
@@ -161,18 +257,16 @@ public class CcnuCrawler2 {
         Pattern r2 = Pattern.compile(str2);
         Matcher m2 = r2.matcher(bigString);
 
-        String keyLine1 = null;
-        String keyLine2 = null;
-
         while (m.find()) {
-            keyLine1 = m.group();
+            valueOfLt = m.group(4);
         }
-            while (m2.find()) {
-                keyLine2 = m2.group();
+
+
+        while (m2.find()) {
+            valueOfExe = m2.group(4);
         }
-        valueOfLt = keyLine1.split("value=\"")[1].split("\" />")[0];
-        valueOfExe = keyLine2.split("value=\"")[1].split("\" />")[0];
     }
+
 
     public static InfoCookie getInfoCookie() {
         InfoCookie infoCookie;
@@ -211,27 +305,11 @@ public class CcnuCrawler2 {
         PreferenceUtil.saveString(PreferenceUtil.JSESSIONID, jid);
     }
 
-    private static void storeLocation(retrofit2.Response<ResponseBody> response) {
-        Headers headers = response.headers();
-        String location = headers.get("location1");
-        String url = "http://202.114.34.15/reader/login.php?ticket=", apdix = "account.ccnu.edu.cn";
-        try {
-            String phpSessionId = location.substring(url.length(), location.length() - apdix.length()) + "accountccnueducn";
-            PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_ID, phpSessionId);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-//        Log.d("heaven", "storeLocation: " + phpSessionId);
+//    private static void storeLocation(retrofit2.Response<ResponseBody> response) {
+    public static void clearCookieStore(){
+        cookieStore.clear();
     }
 
-    private static String searchCookieStore(String name){
-        String value = "";
-        for(int i=0;i<cookieStore.size();i++){
-            if(cookieStore.get(i).name().equals(name)){
-                 value= cookieStore.get(i).value();
-            }
-        }
-        return value;
-    }
+
 
 }

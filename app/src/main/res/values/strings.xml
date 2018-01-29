@@ -164,10 +164,10 @@
     <!--退出-->
     <string name="id_log_out">退出信息门户</string>
     <string name="library_log_out">退出图书馆</string>
-    <string name="all_log_out">全部退出</string>
+    <string name="all_log_out">退出登录</string>
     <string name="tip_id_log_out">成功退出信息门户</string>
     <string name="tip_library_log_out">成功退出图书馆</string>
-    <string name="tip_all_log_out">全部退出成功</string>
+    <string name="tip_all_log_out">退出成功</string>
 
     <string name="not_log_in">未登录账号</string>
     <string name="txt_text">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>

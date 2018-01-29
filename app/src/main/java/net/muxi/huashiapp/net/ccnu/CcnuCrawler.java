@@ -154,6 +154,7 @@ public class CcnuCrawler {
                     password).execute();
             if (response.body().string().contains("index_jg.jsp")) {
                 return true;
+
             }
             return false;
         } catch (IOException e) {

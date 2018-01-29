@@ -36,12 +36,9 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
-        //todo 1.查成绩有问题
         super.onCreate();
 
         tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
-
-
                 TinkerPatch.init(tinkerApplicationLike)
                 .reflectPatchLibrary()
                 .setPatchRollbackOnScreenOff(true)
@@ -57,7 +54,7 @@ public class App extends Application {
         sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));
         sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
         PHPSESSID = PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID);
-
+//        PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
         Fresco.initialize(this);
 
         initZhuge();

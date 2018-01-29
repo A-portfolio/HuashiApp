@@ -8,14 +8,18 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.net.CampusFactory;
+import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
+import net.muxi.huashiapp.ui.login.LoginPresenter;
 import net.muxi.huashiapp.util.Logger;
 
 import java.util.ArrayList;
@@ -23,6 +27,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -115,8 +120,17 @@ public class CreditGradeActivity extends ToolbarActivity {
                     mScoresList = scores;
                     initRecyclerView();
                 },throwable -> {
-                    hideLoading();
-                    throwable.printStackTrace();
+                    if (((HttpException) throwable).code() == 403) {
+                                Log.d("forbidden", "loadGrade: ");
+                        throwable.printStackTrace();
+//                        mMultiStatusView.showNetError();
+                        CcnuCrawler2.clearCookieStore();
+                        LoginPresenter presenter = new LoginPresenter();
+//                                CcnuCrawler2.initCrawler();
+                        presenter.  login(App.sUser).subscribe(b-> {}
+                                ,thowable ->{},()->{});
+                        hideLoading();
+                    }
                     showErrorSnackbarShort(R.string.tip_school_server_error);
                 },() -> hideLoading());
     }
