@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -21,9 +20,7 @@ import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.event.LibLoginEvent;
 import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.event.RefreshSessionEvent;
-import net.muxi.huashiapp.event.VerifyCodeSuccessEvent;
 import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.ui.library.VerifyCodeView;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
@@ -81,24 +78,10 @@ public class LoginActivity extends ToolbarActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);type = getIntent().getStringExtra("type");
         initViews();
-        showCaptcha(type);
+        //showCaptcha(type);
         setLoginListener();
     }
 
-    private void showCaptcha(String type) {
-        if (type.equals("lib")) {
-            showLoading();
-            RxBus.getDefault().toObservable(VerifyCodeSuccessEvent.class)
-                    .subscribe(verifyCodeSuccessEvent -> {
-                  VerifyCodeView view = (VerifyCodeView) findViewById(R.id.vcv_login);
-                  view.setVisibility(View.VISIBLE);
-                  view.setVisible();
-                    });
-            //vcvParams.setMargins();
-        }else{
-            return;
-        }
-    }
 
     private void initViews() {
 
@@ -138,10 +121,8 @@ public class LoginActivity extends ToolbarActivity {
                             App.saveUser(user);
                             String target = getIntent().hasExtra("target") ?
                                     getIntent().getStringExtra("target") : null;
-                            if(type.equals("info"))
-                                RxBus.getDefault().send(new LoginSuccessEvent(target));
-                            else
-                                RxBus.getDefault().send(new LibLoginEvent());
+                            RxBus.getDefault().send(new LoginSuccessEvent(target));
+                            RxBus.getDefault().send(new LibLoginEvent());
                         } else {
                             hideLoading();
                             showErrorSnackbarShort(R.string.tip_err_account);
@@ -160,6 +141,24 @@ public class LoginActivity extends ToolbarActivity {
             }
         }
     }
+
+    /*
+    // 验证码，应该在续借图书的地方
+    private void showCaptcha(String type) {
+        if (type.equals("lib")) {
+            showLoading();
+            RxBus.getDefault().toObservable(VerifyCodeSuccessEvent.class)
+                    .subscribe(verifyCodeSuccessEvent -> {
+                        VerifyCodeView view = (VerifyCodeView) findViewById(R.id.vcv_login);
+                        view.setVisibility(View.VISIBLE);
+                        view.setVisible();
+                    });
+            //vcvParams.setMargins();
+        }else{
+            return;
+        }
+    }
+    */
 
     private void setLoginListener(){
         RxBus.getDefault().toObservable(RefreshSessionEvent.class)

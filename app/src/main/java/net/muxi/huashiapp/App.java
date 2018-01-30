@@ -52,7 +52,7 @@ public class App extends Application {
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
         sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));
         sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
-        PHPSESSID = PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID);
+        PHPSESSID = sp.getString(PreferenceUtil.PHPSESSION_ID,"");
         Fresco.initialize(this);
 
         initZhuge();
@@ -117,23 +117,22 @@ public class App extends Application {
         return !TextUtils.isEmpty(sUser.sid);
     }
 
-    //todo 等到正式修复完成要消除注释
+    // 判断是否已经登陆
     public static boolean isLibLogin() {
-        /*
-        String phpSess = PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID);
-        if(!phpSess.equals("")||!TextUtils.isEmpty(phpSess))
-            return true;
-        else
-            return false;
-        //return !TextUtils.isEmpty();
 
-        */
-        return false;
+        String phpSess = PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID);
+        if(!phpSess.equals("")||!TextUtils.isEmpty(phpSess)) {
+            return true;
+        } else {
+            return false;
+        }
+        //return !TextUtils.isEmpty();
+        //return false;
     }
 
     public static void clearCookie(){
         PreferenceUtil.clearString(PreferenceUtil.PHPSESSION_ID);
-        PreferenceUtil.clearString(PreferenceUtil.PHPSESSION_ID);
+//        PreferenceUtil.clearString(PreferenceUtil.PHPSESSION_ID);
         PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
     }
 }

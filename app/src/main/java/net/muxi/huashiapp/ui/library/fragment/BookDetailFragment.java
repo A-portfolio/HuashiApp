@@ -26,10 +26,10 @@ import net.muxi.huashiapp.common.data.BookId;
 import net.muxi.huashiapp.common.data.BookPost;
 import net.muxi.huashiapp.event.RefreshAttenBooks;
 import net.muxi.huashiapp.net.CampusFactory;
+import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.ToastUtil;
 
 import java.util.List;
 
@@ -145,15 +145,12 @@ public class BookDetailFragment extends BaseFragment {
         }
         startAttenStatus = hasAttention;
         mBtnAttention.setOnClickListener(v -> {
-            //todo 修复完成时:消除这里的提示 消除注释文本
-            ToastUtil.showShort("我的图书馆功能还在修复中~敬请期待");
-            /*
+            //ToastUtil.showShort("我的图书馆功能还在修复中~敬请期待");
             if (!App.isLibLogin()){
                 LoginActivity.start(getContext(),"lib");
                 mBtnAttention.setChecked(false);
                 return;
             }
-            */
             if (hasAttention) {
                 delAtten();
                 changeAttenStatus(false);

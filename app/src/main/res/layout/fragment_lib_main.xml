@@ -35,7 +35,8 @@
         android:text="我的图书馆还在施工\n试试搜索功能吧"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/btn_login_lib"

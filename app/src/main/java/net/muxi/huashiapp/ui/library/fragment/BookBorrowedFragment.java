@@ -21,6 +21,7 @@ import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.RenewData;
 import net.muxi.huashiapp.event.RefreshBorrowedBooks;
+import net.muxi.huashiapp.event.VerifyCodeSuccessEvent;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.library.VerifyCodeView;
 import net.muxi.huashiapp.util.Logger;
@@ -59,6 +60,8 @@ public class BookBorrowedFragment extends BaseFragment {
     TextView mTvPlace;
     @BindView(R.id.btn_renew)
     Button mBtnRenew;
+    @BindView(R.id.vcv_login)
+    VerifyCodeView view;
 
     private boolean isEllipsized = false;
     private boolean isLineOver = false;
@@ -135,6 +138,7 @@ public class BookBorrowedFragment extends BaseFragment {
             }
         });
         mBtnRenew.setOnClickListener(v -> {
+            showCaptcha();
             renewBook();
         });
     }
@@ -157,33 +161,45 @@ public class BookBorrowedFragment extends BaseFragment {
     }
 
     private void renewBook() {
-        VerifyCodeView verifyCodeView = new VerifyCodeView(getContext());
-        code = verifyCodeView.getEditContent();
-        RenewData renewData = new RenewData();
-        renewData.bar_code = mBorrowedBook.bar_code;
-        renewData.check = mBorrowedBook.check;
-        CampusFactory.getRetrofitService().renewBook(App.PHPSESSID, code, renewData)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    switch (response.code()){
-                        case 200:
-                            ((BaseActivity) getActivity()).showSnackbarShort(R.string.renew_ok);
-                            RxBus.getDefault().send(new RefreshBorrowedBooks());
-                            break;
-                        case 406:
-                            ((BaseActivity)getActivity()).showErrorSnackbarShort(R.string.renew_not_in_date);
-                            break;
-                        case 403:
-                            ((BaseActivity)getActivity()).showErrorSnackbarShort(R.string.renew_already);
-                            break;
-                        default:
-                            ((BaseActivity)getActivity()).showErrorSnackbarShort(R.string.request_invalid);
-                            break;
-                    }
-                });
+        //VerifyCodeView verifyCodeView = new VerifyCodeView(getContext());
+        code = view.getEditContent();
+        if (code != null) {
+            RenewData renewData = new RenewData();
+            renewData.bar_code = mBorrowedBook.bar_code;
+            renewData.check = mBorrowedBook.check;
+            CampusFactory.getRetrofitService().renewBook(App.PHPSESSID, code, renewData)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(response -> {
+                        switch (response.code()) {
+                            case 200:
+                                ((BaseActivity) getActivity()).showSnackbarShort(R.string.renew_ok);
+                                RxBus.getDefault().send(new RefreshBorrowedBooks());
+                                break;
+                            case 406:
+                                ((BaseActivity) getActivity()).showErrorSnackbarShort(R.string.renew_not_in_date);
+                                break;
+                            case 403:
+                                ((BaseActivity) getActivity()).showErrorSnackbarShort(R.string.renew_already);
+                                break;
+                            default:
+                                ((BaseActivity) getActivity()).showErrorSnackbarShort(R.string.request_invalid);
+                                break;
+                        }
+                    });
 
+        }
     }
 
-
+    // 验证码，应该在续借图书的地方
+    private void showCaptcha() {
+            //showLoading();
+            RxBus.getDefault().toObservable(VerifyCodeSuccessEvent.class)
+                    .subscribe(verifyCodeSuccessEvent -> {
+                        //VerifyCodeView view = (VerifyCodeView) findViewById(R.id.vcv_login);
+                        view.setVisibility(View.VISIBLE);
+                        view.setVisible();
+                    });
+            //vcvParams.setMargins();
+    }
 }

@@ -55,7 +55,7 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <net.muxi.huashiapp.ui.library.VerifyCodeView
+    <!--<net.muxi.huashiapp.ui.library.VerifyCodeView
         android:id="@+id/vcv_login"
         android:visibility="invisible"
         android:layout_marginTop="15dp"
@@ -63,7 +63,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_height="70dp">
-    </net.muxi.huashiapp.ui.library.VerifyCodeView>
+    </net.muxi.huashiapp.ui.library.VerifyCodeView>-->
 
     <Button
         android:id="@+id/btn_login"
