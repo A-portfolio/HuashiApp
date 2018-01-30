@@ -14,6 +14,7 @@ import com.zhuge.analysis.stat.ZhugeSDK;
 
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.db.HuaShiDao;
+import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
 import net.muxi.huashiapp.ui.main.FetchPatchHandler;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
@@ -52,7 +53,7 @@ public class App extends Application {
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
         sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));
         sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
-        PHPSESSID = sp.getString(PreferenceUtil.PHPSESSION_ID,"");
+        PHPSESSID = sp.getString(PreferenceUtil.PHPSESSID,"");
         Fresco.initialize(this);
 
         initZhuge();
@@ -90,9 +91,10 @@ public class App extends Application {
         PreferenceUtil.clearString(PreferenceUtil.LIBRARY_PWD);
         PreferenceUtil.clearString(PreferenceUtil.ATTENTION_BOOK_IDS);
         PreferenceUtil.clearString(PreferenceUtil.BORROW_BOOK_IDS);
-        PreferenceUtil.clearString(PreferenceUtil.PHPSESSION_ID);
+        PreferenceUtil.clearString(PreferenceUtil.PHPSESSID);
         sLibrarayUser.setSid("");
         sLibrarayUser.setPassword("");
+        CcnuCrawler2.clearCookieStore();
     }
 
     public static void saveUser(User user) {
@@ -106,11 +108,12 @@ public class App extends Application {
         PreferenceUtil.clearString(PreferenceUtil.STUDENT_PWD);
         PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
         PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
-        PreferenceUtil.clearString(PreferenceUtil.PHPSESSION_ID);
+        PreferenceUtil.clearString(PreferenceUtil.PHPSESSID);
         sUser.setSid("");
         sUser.setPassword("");
         HuaShiDao dao = new HuaShiDao();
         dao.deleteAllCourse();
+        CcnuCrawler2.clearCookieStore();
     }
 
     public static boolean isInfoLogin() {
@@ -119,20 +122,11 @@ public class App extends Application {
 
     // 判断是否已经登陆
     public static boolean isLibLogin() {
-
-        String phpSess = PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID);
+        String phpSess = PreferenceUtil.getString(PreferenceUtil.PHPSESSID);
         if(!phpSess.equals("")||!TextUtils.isEmpty(phpSess)) {
             return true;
         } else {
             return false;
         }
-        //return !TextUtils.isEmpty();
-        //return false;
-    }
-
-    public static void clearCookie(){
-        PreferenceUtil.clearString(PreferenceUtil.PHPSESSION_ID);
-//        PreferenceUtil.clearString(PreferenceUtil.PHPSESSION_ID);
-        PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
     }
 }

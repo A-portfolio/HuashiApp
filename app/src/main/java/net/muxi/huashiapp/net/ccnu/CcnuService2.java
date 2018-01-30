@@ -5,6 +5,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -34,6 +35,6 @@ public interface CcnuService2 {
     Call<ResponseBody> performLibLogin2();
     //模拟登陆的第三步 获取第三个Location
     @GET("http://202.114.34.15/reader/hwthau.php?ticket={ticket}")
-    Call<ResponseBody> performLibLogin3(@Path("ticket")String ticket);
+    Call<ResponseBody> performLibLogin3(@Path("ticket")String ticket, @Header("token")String tokjne);
 
 }

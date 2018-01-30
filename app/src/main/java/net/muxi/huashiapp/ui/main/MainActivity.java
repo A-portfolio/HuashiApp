@@ -128,8 +128,7 @@ public class MainActivity extends BaseActivity implements
         }
         Logger.d("file not exists");
     }
-    private void initListener() {
-        RxBus.getDefault().toObservable(LibLoginEvent.class)
+    private void initListener() {RxBus.getDefault().toObservable(LibLoginEvent.class)
                 .subscribe(libLoginEvent -> {
                     FragmentManager fm = getSupportFragmentManager();
                     fm.beginTransaction().remove(mCurFragment).commitAllowingStateLoss();
@@ -276,7 +275,7 @@ public class MainActivity extends BaseActivity implements
                 showFragment(TimetableFragment.newInstance(), tag);
                 break;
             case "lib_main":
-                showFragment(LibraryMainFragment.newInstance(), tag);
+                showFragment(   LibraryMainFragment.newInstance(), tag);
                 break;
             case "lib_mine":
                 showFragment(LibraryMineFragment.newInstance(), tag);

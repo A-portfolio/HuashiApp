@@ -121,8 +121,10 @@ public class LoginActivity extends ToolbarActivity {
                             App.saveUser(user);
                             String target = getIntent().hasExtra("target") ?
                                     getIntent().getStringExtra("target") : null;
-                            RxBus.getDefault().send(new LoginSuccessEvent(target));
-                            RxBus.getDefault().send(new LibLoginEvent());
+//                            if(type.equals("info"))
+                                RxBus.getDefault().send(new LoginSuccessEvent(target));
+//                            else
+                                RxBus.getDefault().send(new LibLoginEvent());
                         } else {
                             hideLoading();
                             showErrorSnackbarShort(R.string.tip_err_account);

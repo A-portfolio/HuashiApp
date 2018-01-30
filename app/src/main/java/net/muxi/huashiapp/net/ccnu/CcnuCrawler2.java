@@ -1,12 +1,10 @@
 package net.muxi.huashiapp.net.ccnu;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.common.data.InfoCookie;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -36,7 +34,7 @@ public class CcnuCrawler2 {
     //在这个callback中拿到相关信息 valueoflt valueofexe
     private static CcnuService2 mCcnuService;
     private static String JSESSIONID_LOGIN_IN = null;
-    private static HashMap<HttpUrl,List<Cookie>> cookieMap = new HashMap<>();
+//    private static HashMap<HttpUrl,List<Cookie>> cookieMap = new HashMap<>();
     private static List<Cookie> cookieStore = new ArrayList<>();
     private static String LIB_URL = "http://202.114.34.15/reader/hwthau.php";
     //初始登录时候暂时缓存一下cookie
@@ -87,7 +85,7 @@ public class CcnuCrawler2 {
                         if (cookieStore.get(i).value().contains("ST-") && cookieStore.get(i).value().contains("accountccnueducn")) {
                             list.add(cookieStore.get(i));
                             if(cookieStore.get(i).value()!=null||cookieStore.get(i).value().equals(""))
-                                PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_ID,cookieStore.get(i).value());
+                                PreferenceUtil.saveString(PreferenceUtil.PHPSESSID,cookieStore.get(i).value());
                             return list;
                         }
                 }
@@ -112,7 +110,6 @@ public class CcnuCrawler2 {
         //所有的cookie都维护在cookieJar中
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-//        interceptor.
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .cookieJar(cookieJar)
@@ -135,6 +132,7 @@ public class CcnuCrawler2 {
                 .cookieJar(cookieJar)
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
+//                .addConverterFactory(GsonConverterFactory.create())
                 .client(client2)
                 .baseUrl("https://ccnubox.muxixyz.com/api/")
                 .build();
@@ -147,18 +145,12 @@ public class CcnuCrawler2 {
         retrofit2.Response<ResponseBody> responseBody = mCcnuService.performCampusLogin
                 (JSESSIONID_LOGIN_IN, username, userpassword,
                         valueOfLt, valueOfExe, "submit", "LOGIN").execute();
+
         retrofit2.Response<ResponseBody> responseBody2 = mCcnuService.performSystemLogin().execute();
         String bigResponse1 = responseBody.body().string();
         performLibLogin();
-        for(int i=0;i <cookieStore.size();i++){
-            if(cookieStore.get(i).name().equals("CASPRIVACY")) {
-                return true;
-            }
-        }
-        if (bigResponse1.contains("Successful")||bigResponse1.contains("登录成功")) {
-            return true;
-        }
-        return false;
+        //三重验证确保登录成功
+        return isSuccessful();
     }
 
     private static boolean performLibLogin() throws IOException {
@@ -169,7 +161,6 @@ public class CcnuCrawler2 {
                 .readTimeout(25, TimeUnit.SECONDS)
                 .connectTimeout(25, TimeUnit.SECONDS)
                 .writeTimeout(25,TimeUnit.SECONDS)
-             //   .followRedirects(false)
                 .addInterceptor(interceptor)
                 .cookieJar(cookieJar).build();
         //step1
@@ -235,11 +226,6 @@ public class CcnuCrawler2 {
             if (cookieStore.get(i).name().equals("BIGipServerpool_jwc_xk")) {
                 bigServerPool = cookieStore.get(i).value();
             }
-            if (cookieStore.get(i).name().equals("PHPSESSID")) {
-                PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_ID,
-                        cookieStore.get(i).value());
-                App.PHPSESSID = cookieStore.get(i).value();
-            }
         }
         if (!tempJsessionList.isEmpty()) {
             jsession = tempJsessionList.get(tempJsessionList.size() - 1);
@@ -265,5 +251,25 @@ public class CcnuCrawler2 {
     }
 
 
-
+    private static boolean isSuccessful(){
+        boolean flag1 = false,flag2 = true, flag3 = false;
+        for(int i=0;i <cookieStore.size();i++){
+            if(cookieStore.get(i).name().equals("CASPRIVACY")) {
+                flag1 = true;
+            }
+//            if(!PreferenceUtil.getString(PreferenceUtil.JSESSIONID).equals("")){
+//                flag2 = true;
+//            }
+            if(!PreferenceUtil.getString(PreferenceUtil.PHPSESSID).equals("")){
+                flag3 =true;
+            }
+        }
+        if(flag1&&flag2&&flag3){
+           // cookieStore.clear();
+            return true;
+        }else{
+            cookieStore.clear();
+            return false;
+        }
+    }
 }
