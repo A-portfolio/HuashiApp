@@ -1,7 +1,5 @@
 package net.muxi.huashiapp.net.ccnu;
 
-import android.util.Log;
-
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.common.data.InfoCookie;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -88,7 +86,8 @@ public class CcnuCrawler2 {
                     for (int i = 0; i < cookieStore.size(); i++)
                         if (cookieStore.get(i).value().contains("ST-") && cookieStore.get(i).value().contains("accountccnueducn")) {
                             list.add(cookieStore.get(i));
-                            Log.d("rapgod", "loadForRequest: "+cookieStore.get(i).value());
+                            if(cookieStore.get(i).value()!=null||cookieStore.get(i).value().equals(""))
+                                PreferenceUtil.saveString(PreferenceUtil.PHPSESSION_ID,cookieStore.get(i).value());
                             return list;
                         }
                 }
@@ -179,51 +178,6 @@ public class CcnuCrawler2 {
                 .get()
                 .build();
         client.newCall(request0).execute();
-//        int responseCode = client.newCall(request0).execute().code();
-//        int size1 = cookieStore.size();
-//        //step2
-////        String castgcvalue = casTgc.value();
-//        Request request1 = initRequestBuilder()
-//                .addHeader("Cookie","CASPRIVACY=; CASTGC="+casTgc.value()+"; "+"JSESSIONID="+accountJid.value())
-//                .addHeader("host","account.ccnu.edu.cn")
-//                .url("https://account.ccnu.edu.cn/cas/login?service=http%3A%2F%2F202.114.34.15%2Freader%2Fhwthau.php")
-//                .get()
-//                .build();
-//        //这里的list大小应该为3
-//        List<Cookie> list= cookieJar.loadForRequest(request1.url());
-//        OkHttpClient client2 = new OkHttpClient.Builder()
-//                .readTimeout(25, TimeUnit.SECONDS)
-//                .connectTimeout(25, TimeUnit.SECONDS)
-//                .writeTimeout(25,TimeUnit.SECONDS)
-//             //   .followRedirects(false)
-//                .addInterceptor(interceptor)
-//                .cookieJar(cookieJar).build();
-//        Response responseResponse = client2.newCall(request1).execute();
-//        Headers headers = responseResponse.headers();
-//        String location = headers.get("Location");
-//        int size2 = cookieStore.size();
-//        //step3 使用location进行请求
-//        Request request2 = initRequestBuilder()
-//                .url(location)
-//                .get()
-//                .build();
-//        //todo 前面的东西是正确的 这里产生了一个500!
-//        List<Cookie> list1 = cookieJar.loadForRequest(request2.url());
-//        Response response2 = client.newCall(request2).execute();
-//        String phpsession = response2.header("PHPSESSID");
-//        //Step 4
-//        Request request3 = initRequestBuilder()
-//                .addHeader("host","202.114.34.15")
-//                .url("http://202.114.34.15/reader/hwthau.php")
-//                .get().build();
-//        Response response3 = client.newCall(request3).execute();
-//        //Step 5
-//        Request request4 = initRequestBuilder()
-//                .addHeader("host","202.114.34.15")
-//                .url("http://202.114.34.15/reader/redr_info.php")
-//                .get().build();
-//        Response response4 = client.newCall(request4).execute();
-//        Log.d("phpsession", "performLibLogin: "+phpsession);
         return true;
 
     }

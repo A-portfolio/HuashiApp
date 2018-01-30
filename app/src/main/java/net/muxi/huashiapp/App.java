@@ -3,7 +3,6 @@ package net.muxi.huashiapp;
 import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -54,7 +53,6 @@ public class App extends Application {
         sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));
         sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
         PHPSESSID = PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID);
-//        PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
         Fresco.initialize(this);
 
         initZhuge();
@@ -95,7 +93,6 @@ public class App extends Application {
         PreferenceUtil.clearString(PreferenceUtil.PHPSESSION_ID);
         sLibrarayUser.setSid("");
         sLibrarayUser.setPassword("");
-        Log.d("fixing", "logoutLibUser: "+"phpsession"+PreferenceUtil.getString(PreferenceUtil.PHPSESSION_ID));
     }
 
     public static void saveUser(User user) {
