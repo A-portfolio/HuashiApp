@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.net.ccnu;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.common.data.InfoCookie;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
@@ -261,11 +262,11 @@ public class CcnuCrawler2 {
 //                flag2 = true;
 //            }
             if(!PreferenceUtil.getString(PreferenceUtil.PHPSESSID).equals("")){
+                App.PHPSESSID = PreferenceUtil.getString(PreferenceUtil.PHPSESSID);
                 flag3 =true;
             }
         }
         if(flag1&&flag2&&flag3){
-           // cookieStore.clear();
             return true;
         }else{
             cookieStore.clear();
