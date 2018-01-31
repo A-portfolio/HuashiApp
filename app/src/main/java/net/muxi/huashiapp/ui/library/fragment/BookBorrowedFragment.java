@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.RenewData;
 import net.muxi.huashiapp.event.RefreshBorrowedBooks;
+import net.muxi.huashiapp.event.VerifyCodeSuccessEvent;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.library.VerifyCodeDialog;
 import net.muxi.huashiapp.util.Logger;
@@ -28,6 +30,7 @@ import net.muxi.huashiapp.util.Logger;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -67,6 +70,7 @@ public class BookBorrowedFragment extends BaseFragment {
     private String id;
     private String mInputContent;
     private BorrowedBook mBorrowedBook;
+    private VerifyCodeSuccessEvent event;
 
     public static BookBorrowedFragment newInstance(Book book,String id) {
 
@@ -159,11 +163,20 @@ public class BookBorrowedFragment extends BaseFragment {
     private void renewBook() {
         VerifyCodeDialog fragment = VerifyCodeDialog.newInstance();
         fragment.show(getActivity().getSupportFragmentManager(), "inputContent");
+//        mInputContent = fragment.getEditContent();
         //fragment.setOnPositiveButtonClickListener((inputContent) -> {
         //    mInputContent = inputContent;
         //});
-        Bundle bundle = this.getArguments();
-        mInputContent = bundle.getString("inputContent", null);
+        //Bundle bundle = this.getArguments();
+        //mInputContent = bundle.getString("inputContent", null);
+//        String code = "";
+        Subscription subscription = RxBus.getDefault().toObservable(VerifyCodeSuccessEvent.class)
+                .subscribe(verifyCodeSuccessEvent -> {
+                    mInputContent = verifyCodeSuccessEvent.code;
+                            Log.d("content", "renewBook: "+mInputContent);
+                },
+                        Throwable::printStackTrace);
+//        ((BaseActivity) getContext()).addSubscription(subscription);
         if (mInputContent != null) {
             RenewData renewData = new RenewData();
             renewData.bar_code = mBorrowedBook.bar_code;

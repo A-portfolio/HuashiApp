@@ -5,4 +5,9 @@ package net.muxi.huashiapp.event;
  */
 
 public class VerifyCodeSuccessEvent {
+
+    public String code;
+    public VerifyCodeSuccessEvent(String code){
+        this.code = code;
+    }
 }

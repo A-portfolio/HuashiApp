@@ -20,6 +20,8 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.RxBus;
+import net.muxi.huashiapp.event.VerifyCodeSuccessEvent;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.widget.CenterDialogFragment;
 
@@ -75,6 +77,7 @@ public class VerifyCodeDialog extends CenterDialogFragment {
             if (mOnPositiveButtonClickListener != null) {
                 mOnPositiveButtonClickListener.onPositiveButtonClick(getEditContent());
             }
+            RxBus.getDefault().send(new VerifyCodeSuccessEvent(inputContent));
             dismiss();
         });
 
@@ -145,7 +148,6 @@ public class VerifyCodeDialog extends CenterDialogFragment {
             @Override
             public void onSuccess() {
                 Logger.d("验证码图片加载成功");
-                //RxBus.getDefault().send(new VerifyCodeSuccessEvent());
             }
 
             @Override
