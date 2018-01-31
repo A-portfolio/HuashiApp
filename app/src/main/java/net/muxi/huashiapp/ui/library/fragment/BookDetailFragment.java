@@ -69,7 +69,6 @@ public class BookDetailFragment extends BaseFragment {
     private BookPost mBookPost;
 
     public static BookDetailFragment newInstance(Book book, String id) {
-
         Bundle args = new Bundle();
         args.putParcelable("book", book);
         args.putString("id", id);
@@ -153,10 +152,10 @@ public class BookDetailFragment extends BaseFragment {
             }
             if (hasAttention) {
                 delAtten();
-                changeAttenStatus(false);
+//                changeAttenStatus(false);
             } else {
                 createAtten();
-                changeAttenStatus(true);
+//                changeAttenStatus(true);
             }
         });
 
@@ -199,13 +198,17 @@ public class BookDetailFragment extends BaseFragment {
                 .subscribe(response -> {
                     switch (response.code()) {
                         case 200:
-//                            changeAttenStatus(false);
+                            changeAttenStatus(false);
                             RxBus.getDefault().send(new RefreshAttenBooks());
                             break;
-                        case 403:
-                            ((BaseActivity) getActivity()).showErrorSnackbarShort(
-                                    R.string.request_invalid);
-                            break;
+                        case 404:
+                                ((BaseActivity) getActivity()).showErrorSnackbarShort(
+                                        R.string.request_invalid);
+                                break;
+                        //case 403:
+                        //    ((BaseActivity) getActivity()).showErrorSnackbarShort(
+                        //            R.string.request_invalid);
+                        //    break;
                         default:
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(
                                     R.string.tip_err_server);
@@ -227,16 +230,20 @@ public class BookDetailFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     switch (response.code()) {
-                        case 201:
-//                            changeAttenStatus(true);
+                        case 200:
+                            changeAttenStatus(true);
                             RxBus.getDefault().send(new RefreshAttenBooks());
                             break;
-                        case 403:
+                        case 401:
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(
                                     R.string.request_invalid);
                             break;
-                        case 409:
-                            break;
+                        //case 403:
+                        //    ((BaseActivity) getActivity()).showErrorSnackbarShort(
+                        //            R.string.request_invalid);
+                        //    break;
+                        //case 409:
+                        //    break;
                         default:
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(
                                     R.string.tip_err_server);

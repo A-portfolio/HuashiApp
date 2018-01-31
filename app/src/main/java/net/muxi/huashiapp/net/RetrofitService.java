@@ -74,10 +74,8 @@ public interface RetrofitService {
             @Header("s") String verification);
 
     /**
-     * 201 添加关注成功
-     * 403 禁止访问
-     * 409 已关注
-     * 502 服务器端错误
+     * 200 添加关注成功
+     * 401 已关注
      */
     @POST("lib/create/")
     Observable<Response<VerifyResponse>> createAttentionBook(
@@ -86,9 +84,7 @@ public interface RetrofitService {
 
     /**
      * 200 OK
-     * 403 禁止访问
      * 404 未找到图书
-     * 502 服务器端错误
      */
 //    @DELETE("lib/delete/")
     @HTTP(method = "DELETE", path = "lib/delete/", hasBody = true)
