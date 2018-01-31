@@ -16,15 +16,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"/>
 
-    <TextView
-        android:id="@+id/tv_retry"
-        android:text="请重试"
-        android:layout_marginTop="90dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/colorAccent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <ImageView
         android:id="@+id/img_verify"
         android:layout_below="@+id/txv_verify"
@@ -33,16 +24,35 @@
         android:layout_height="70dp"
         android:layout_marginTop="20dp"/>
 
+    <Button
+        android:id="@+id/btn_retry"
+        android:text="重新加载"
+        android:layout_below="@id/img_verify"
+        android:layout_marginRight="16dp"
+        android:layout_alignRight="@id/img_verify"
+        android:layout_alignEnd="@id/img_verify"
+        android:textColor="@color/colorAccent"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/et_verify"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_margin="16dp"
-        android:layout_below="@+id/img_verify"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_below="@+id/btn_retry"
         android:background="@drawable/shape_disabled"
         android:lines="1"
         android:maxLines="1"
         android:paddingLeft="64dp"
-        android:paddingRight="64dp" />
+        android:paddingRight="64dp"
+        android:textAlignment="center"/>
+
+    <include layout="@layout/view_bottom_dialog_btns"
+        android:layout_below="@+id/et_verify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

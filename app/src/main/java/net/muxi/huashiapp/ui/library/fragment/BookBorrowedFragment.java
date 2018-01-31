@@ -21,9 +21,8 @@ import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.RenewData;
 import net.muxi.huashiapp.event.RefreshBorrowedBooks;
-import net.muxi.huashiapp.event.VerifyCodeSuccessEvent;
 import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.ui.library.VerifyCodeView;
+import net.muxi.huashiapp.ui.library.VerifyCodeDialog;
 import net.muxi.huashiapp.util.Logger;
 
 import butterknife.BindView;
@@ -60,15 +59,13 @@ public class BookBorrowedFragment extends BaseFragment {
     TextView mTvPlace;
     @BindView(R.id.btn_renew)
     Button mBtnRenew;
-    @BindView(R.id.vcv_login)
-    VerifyCodeView view;
 
     private boolean isEllipsized = false;
     private boolean isLineOver = false;
 
     private Book mBook;
     private String id;
-    private String code;
+    private String mInputContent;
     private BorrowedBook mBorrowedBook;
 
     public static BookBorrowedFragment newInstance(Book book,String id) {
@@ -138,7 +135,6 @@ public class BookBorrowedFragment extends BaseFragment {
             }
         });
         mBtnRenew.setOnClickListener(v -> {
-            showCaptcha();
             renewBook();
         });
     }
@@ -161,13 +157,18 @@ public class BookBorrowedFragment extends BaseFragment {
     }
 
     private void renewBook() {
-        //VerifyCodeView verifyCodeView = new VerifyCodeView(getContext());
-        code = view.getEditContent();
-        if (code != null) {
+        VerifyCodeDialog fragment = VerifyCodeDialog.newInstance();
+        fragment.show(getActivity().getSupportFragmentManager(), "inputContent");
+        //fragment.setOnPositiveButtonClickListener((inputContent) -> {
+        //    mInputContent = inputContent;
+        //});
+        Bundle bundle = this.getArguments();
+        mInputContent = bundle.getString("inputContent", null);
+        if (mInputContent != null) {
             RenewData renewData = new RenewData();
             renewData.bar_code = mBorrowedBook.bar_code;
             renewData.check = mBorrowedBook.check;
-            CampusFactory.getRetrofitService().renewBook(App.PHPSESSID, code, renewData)
+            CampusFactory.getRetrofitService().renewBook(App.PHPSESSID, mInputContent, renewData)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(response -> {
@@ -189,17 +190,5 @@ public class BookBorrowedFragment extends BaseFragment {
                     });
 
         }
-    }
-
-    // 验证码，应该在续借图书的地方
-    private void showCaptcha() {
-            //showLoading();
-            RxBus.getDefault().toObservable(VerifyCodeSuccessEvent.class)
-                    .subscribe(verifyCodeSuccessEvent -> {
-                        //VerifyCodeView view = (VerifyCodeView) findViewById(R.id.vcv_login);
-                        view.setVisibility(View.VISIBLE);
-                        view.setVisible();
-                    });
-            //vcvParams.setMargins();
     }
 }
