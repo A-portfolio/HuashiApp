@@ -105,6 +105,7 @@ public class VerifyCodeDialog extends CenterDialogFragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 inputContent = mEtVerify.getText().toString();
+//                RxBus.getDefault().send();
                 if (inputCompleteListener != null) {
                     if (inputContent.length() >= MAX) {
                         inputCompleteListener.inputComplete();

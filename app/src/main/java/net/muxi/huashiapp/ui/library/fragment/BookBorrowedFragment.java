@@ -159,9 +159,6 @@ public class BookBorrowedFragment extends BaseFragment {
     private void renewBook() {
         VerifyCodeDialog fragment = VerifyCodeDialog.newInstance();
         fragment.show(getActivity().getSupportFragmentManager(), "inputContent");
-        //fragment.setOnPositiveButtonClickListener((inputContent) -> {
-        //    mInputContent = inputContent;
-        //});
         Bundle bundle = this.getArguments();
         mInputContent = bundle.getString("inputContent", null);
         if (mInputContent != null) {
