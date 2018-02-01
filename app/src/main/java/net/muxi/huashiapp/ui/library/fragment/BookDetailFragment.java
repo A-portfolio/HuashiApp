@@ -225,7 +225,7 @@ public class BookDetailFragment extends BaseFragment {
             mBookPost.bid = mBook.bid;
             mBookPost.id = id;
         }
-        CampusFactory.getRetrofitService().createAttentionBook(App.PHPSESSID, mBookPost)
+        CampusFactory.getRetrofitService().createAttentionBook(App.sUser.sid, mBookPost)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {

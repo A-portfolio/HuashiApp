@@ -79,7 +79,7 @@ public interface RetrofitService {
      */
     @POST("lib/create/")
     Observable<Response<VerifyResponse>> createAttentionBook(
-            @Header("s") String verification, @Body
+            @Header("sid") String verification, @Body
             BookPost bookPost);
 
     /**
