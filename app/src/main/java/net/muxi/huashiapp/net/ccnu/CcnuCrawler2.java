@@ -85,8 +85,10 @@ public class CcnuCrawler2 {
                     for (int i = 0; i < cookieStore.size(); i++)
                         if (cookieStore.get(i).value().contains("ST-") && cookieStore.get(i).value().contains("accountccnueducn")) {
                             list.add(cookieStore.get(i));
-                            if(cookieStore.get(i).value()!=null||cookieStore.get(i).value().equals(""))
+                            if(cookieStore.get(i).value()!=null||cookieStore.get(i).value().equals("")){
                                 PreferenceUtil.saveString(PreferenceUtil.PHPSESSID,cookieStore.get(i).value());
+                                App.PHPSESSID = cookieStore.get(i).value();
+                            }
                             return list;
                         }
                 }
@@ -94,6 +96,7 @@ public class CcnuCrawler2 {
                     List<Cookie> list = new ArrayList<>();
                     for (int i = 0; i < cookieStore.size(); i++)
                         if (cookieStore.get(i).value().contains("ST-") && cookieStore.get(i).value().contains("accountccnueducn")) {
+//                           cookieStore.get(i).per
                             list.add(cookieStore.get(i));
                             return list;
                         }
@@ -164,7 +167,6 @@ public class CcnuCrawler2 {
                 .writeTimeout(25,TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .cookieJar(cookieJar).build();
-        //step1
         Request request0 = initRequestBuilder()
                 .url("http://202.114.34.15/reader/hwthau.php")
                 .get()
@@ -172,6 +174,47 @@ public class CcnuCrawler2 {
         client.newCall(request0).execute();
         return true;
 
+    }
+
+    //带上Cookie请求验证码
+    public static byte[] getVerifyCode() throws Exception{
+        List<Cookie > list = new ArrayList<>();
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .cookieJar(new CookieJar() {
+                    @Override
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        list.addAll(cookies);
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        if(url.toString().equals("http://202.114.34.15/reader/captcha.php")){
+                            Cookie cookie = new Cookie.Builder()
+                                    .name("PHPSESSID")
+                                    .value(App.PHPSESSID)
+                                    .domain("202.114.34.15")
+                                    .path("/")
+                                    .httpOnly()
+                                    .secure()
+                                    .build();
+                            List<Cookie> list1 = new ArrayList<>();
+                            list1.add(cookie);
+                            return list1;
+
+                        }
+                        return null;
+                    }
+                })
+                .build();
+        Request request = initRequestBuilder()
+                .get()
+                .url("http://202.114.34.15/reader/captcha.php")
+                .build();
+
+        return client.newCall(request).execute().body().bytes();
     }
 
     //提取header的公用字段

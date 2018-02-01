@@ -2,6 +2,8 @@ package net.muxi.huashiapp.ui.library;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
@@ -16,13 +18,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.event.VerifyCodeSuccessEvent;
-import net.muxi.huashiapp.util.Logger;
+import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
 import net.muxi.huashiapp.widget.CenterDialogFragment;
 
 import butterknife.BindView;
@@ -68,7 +67,6 @@ public class VerifyCodeDialog extends CenterDialogFragment {
         setInputCompleteListener(inputCompleteListener);
         setEditTextListener();
         mBtnRetry.setOnClickListener(v -> {
-            Picasso.with(getContext()).invalidate(url);
             showCaptcha(url, getContext());
         });
         mBtnCancel.setOnClickListener(v -> {
@@ -146,17 +144,21 @@ public class VerifyCodeDialog extends CenterDialogFragment {
     }
 
     private View showCaptcha(String url, Context context) {
-        Picasso.with(context).load(url).into(mImgVerify, new Callback() {
+        new Thread(){
             @Override
-            public void onSuccess() {
-                Logger.d("验证码图片加载成功");
+            public void run() {
+                super.run();
+                try {
+                    byte[] bytes = CcnuCrawler2.getVerifyCode();
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                    mImgVerify.setImageBitmap(bitmap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-
-            @Override
-            public void onError() {
-                Logger.d("验证码图片加载失败");
-            }
-        });
+        }.start();
         return mImgVerify;
     }
+
+//    private  static class Custom
 }

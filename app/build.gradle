@@ -106,6 +106,7 @@ dependencies {
     compile 'com.tencent.tinker:tinker-android-anno:1.7.7'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.github.Muxi-Studio:YAJB-Android:1.0'
+//    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     testCompile 'org.robolectric:shadows-support-v4:3.3'
     testCompile 'org.robolectric:robolectric:3.3.1'
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
