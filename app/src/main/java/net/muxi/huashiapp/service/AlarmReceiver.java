@@ -180,7 +180,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     List<String> books = new ArrayList<String>();
                     boolean isRemind = false;
                     for (AttentionBook book : listResponse.body()) {
-                        if (book.avbl.equals("y")) {
+                        if (book.avb.equals("y")) {
                             isRemind = true;
                             books.add(book.book);
                         }

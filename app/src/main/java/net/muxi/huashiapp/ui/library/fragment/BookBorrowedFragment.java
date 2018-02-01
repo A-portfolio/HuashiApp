@@ -181,7 +181,8 @@ public class BookBorrowedFragment extends BaseFragment {
                     public void onNext(VerifyCodeSuccessEvent verifyCodeSuccessEvent) {
                         mInputContent = verifyCodeSuccessEvent.getCode();
                         if (mInputContent != null) {
-                            RenewData renewData = new RenewData();
+                            RenewData renewData = new
+                                    RenewData();
                             renewData.bar_code = mBorrowedBook.bar_code;
                             renewData.check = mBorrowedBook.check;
                             CampusFactory.getRetrofitService().renewBook(App.PHPSESSID, mInputContent, renewData)
