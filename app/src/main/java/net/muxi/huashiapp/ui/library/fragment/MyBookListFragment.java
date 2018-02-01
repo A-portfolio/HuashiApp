@@ -28,7 +28,6 @@ import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.library.BookDetailActivity;
 import net.muxi.huashiapp.ui.library.adapter.AttenBookAdapter;
 import net.muxi.huashiapp.ui.library.adapter.AttenBookRemindAdapter;
-import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.Collections;
@@ -110,7 +109,7 @@ public class MyBookListFragment extends BaseFragment {
     }
 
     public void loadAttentionBooks() {
-        CampusFactory.getRetrofitService().getAttentionBooks(App.PHPSESSID)
+        CampusFactory.getRetrofitService().getAttentionBooks(App.sUser.sid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(attentionBooksResponse -> {

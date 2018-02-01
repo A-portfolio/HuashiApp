@@ -71,7 +71,7 @@ public interface RetrofitService {
      */
     @GET("lib/attention/")
     Observable<Response<List<AttentionBook>>> getAttentionBooks(
-            @Header("s") String verification);
+            @Header("Authorization") String verification);
 
     /**
      * 200 添加关注成功
@@ -79,7 +79,7 @@ public interface RetrofitService {
      */
     @POST("lib/create/")
     Observable<Response<VerifyResponse>> createAttentionBook(
-            @Header("s") String verification, @Body
+            @Header("Authorization") String verification, @Body
             BookPost bookPost);
 
     /**
@@ -89,7 +89,7 @@ public interface RetrofitService {
 //    @DELETE("lib/delete/")
     @HTTP(method = "DELETE", path = "lib/delete/", hasBody = true)
     Observable<Response<VerifyResponse>> delAttentionBook(
-            @Header("s") String verification,
+            @Header("Authorization") String verification,
             @Body BookId id);
 
     /**

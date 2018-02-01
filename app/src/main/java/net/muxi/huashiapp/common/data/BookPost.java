@@ -8,6 +8,6 @@ public class BookPost {
 
     public String bid;
     public String book;
-    public String id;
+    public String book_id;
     public String author;
 }

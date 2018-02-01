@@ -11,9 +11,9 @@ import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.AttentionBook;
+import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.CardData;
 import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.db.HuaShiDao;
@@ -21,7 +21,6 @@ import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.card.CardActivity;
 import net.muxi.huashiapp.ui.main.MainActivity;
 import net.muxi.huashiapp.ui.score.ScoreActivity;
-import net.muxi.huashiapp.util.Base64Util;
 import net.muxi.huashiapp.util.DateUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NotifyUtil;
@@ -174,7 +173,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                         }
                     }
                 });
-        CampusFactory.getRetrofitService().getAttentionBooks(App.PHPSESSID)
+        CampusFactory.getRetrofitService().getAttentionBooks(App.sUser.sid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(listResponse -> {

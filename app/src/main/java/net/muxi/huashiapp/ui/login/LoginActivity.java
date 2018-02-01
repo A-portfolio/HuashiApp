@@ -171,7 +171,7 @@ public class LoginActivity extends ToolbarActivity {
 
 
     private void loadMyBooks() {
-        CampusFactory.getRetrofitService().getAttentionBooks(App.PHPSESSID)
+        CampusFactory.getRetrofitService().getAttentionBooks(App.sUser.sid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.immediate())
                 .subscribe(listResponse -> {
