@@ -68,6 +68,7 @@ public class VerifyCodeDialog extends CenterDialogFragment {
         setInputCompleteListener(inputCompleteListener);
         setEditTextListener();
         mBtnRetry.setOnClickListener(v -> {
+            Picasso.with(getContext()).invalidate(url);
             showCaptcha(url, getContext());
         });
         mBtnCancel.setOnClickListener(v -> {
