@@ -192,7 +192,7 @@ public class BookDetailFragment extends BaseFragment {
     private void delAtten() {
         BookId bookId = new BookId();
         bookId.id = id;
-        CampusFactory.getRetrofitService().delAttentionBook(App.PHPSESSID, bookId)
+        CampusFactory.getRetrofitService().delAttentionBook(App.sUser.sid, bookId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -202,6 +202,7 @@ public class BookDetailFragment extends BaseFragment {
                             RxBus.getDefault().send(new RefreshAttenBooks());
                             break;
                         case 404:
+                            mBtnAttention.setChecked(true);
                                 ((BaseActivity) getActivity()).showErrorSnackbarShort(
                                         R.string.request_invalid);
                                 break;
@@ -210,6 +211,7 @@ public class BookDetailFragment extends BaseFragment {
                         //            R.string.request_invalid);
                         //    break;
                         default:
+                            mBtnAttention.setChecked(true);
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(
                                     R.string.tip_err_server);
                             break;
@@ -223,7 +225,7 @@ public class BookDetailFragment extends BaseFragment {
             mBookPost.book = mBook.book;
             mBookPost.author = mBook.author;
             mBookPost.bid = mBook.bid;
-            mBookPost.id = id;
+            mBookPost.book_id = id;
         }
         CampusFactory.getRetrofitService().createAttentionBook(App.sUser.sid, mBookPost)
                 .subscribeOn(Schedulers.io())
@@ -235,6 +237,7 @@ public class BookDetailFragment extends BaseFragment {
                             RxBus.getDefault().send(new RefreshAttenBooks());
                             break;
                         case 401:
+                            mBtnAttention.setChecked(false);
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(
                                     R.string.request_invalid);
                             break;
@@ -245,6 +248,7 @@ public class BookDetailFragment extends BaseFragment {
                         //case 409:
                         //    break;
                         default:
+                            mBtnAttention.setChecked(false);
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(
                                     R.string.tip_err_server);
                             break;
@@ -255,8 +259,10 @@ public class BookDetailFragment extends BaseFragment {
     public void changeAttenStatus(boolean b) {
         if (b) {
             mBtnAttention.setText(R.string.has_atten);
+            mBtnAttention.setChecked(true);
         } else {
             mBtnAttention.setText(R.string.atten);
+            mBtnAttention.setChecked(false);
         }
         hasAttention = b;
     }

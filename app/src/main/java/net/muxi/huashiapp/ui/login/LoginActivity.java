@@ -122,11 +122,11 @@ public class LoginActivity extends ToolbarActivity {
                             String target = getIntent().hasExtra("target") ?
                                     getIntent().getStringExtra("target") : null;
                             if(type.equals("info")) {
-                                RxBus.getDefault().send(new LibLoginEvent());
+//                                RxBus.getDefault().send(new LibLoginEvent());
                                 RxBus.getDefault().send(new LoginSuccessEvent(target));
                             }
                             else{
-                                RxBus.getDefault().send(new LoginSuccessEvent(target));
+//                                RxBus.getDefault().send(new LoginSuccessEvent(target));
                                 RxBus.getDefault().send(new LibLoginEvent());
                                 }
                         } else {
@@ -175,7 +175,7 @@ public class LoginActivity extends ToolbarActivity {
 
 
     private void loadMyBooks() {
-        CampusFactory.getRetrofitService().getAttentionBooks(App.PHPSESSID)
+        CampusFactory.getRetrofitService().getAttentionBooks(App.sUser.sid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.immediate())
                 .subscribe(listResponse -> {
