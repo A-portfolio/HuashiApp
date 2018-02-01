@@ -99,7 +99,7 @@ public interface RetrofitService {
      * 400 请求无效
      */
     @POST("lib/renew/")
-    Observable<Response<VerifyResponse>> renewBook(@Header("s") String verification, String captcha,
+    Observable<Response<VerifyResponse>> renewBook(@Header("s") String verification,@Header("captcha") String captcha,
             @Body RenewData renewData);
 
     //获取用户课表

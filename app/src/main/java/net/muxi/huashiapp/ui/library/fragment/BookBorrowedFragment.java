@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -181,9 +180,7 @@ public class BookBorrowedFragment extends BaseFragment {
                     @Override
                     public void onNext(VerifyCodeSuccessEvent verifyCodeSuccessEvent) {
                         mInputContent = verifyCodeSuccessEvent.getCode();
-                        Log.d("content", "onNext: "+verifyCodeSuccessEvent.getCode() );
                         if (mInputContent != null) {
-                            Log.d("fucking you", "renewBook: ");
                             RenewData renewData = new RenewData();
                             renewData.bar_code = mBorrowedBook.bar_code;
                             renewData.check = mBorrowedBook.check;
