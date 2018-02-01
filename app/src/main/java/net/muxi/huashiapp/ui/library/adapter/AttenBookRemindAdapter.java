@@ -30,7 +30,7 @@ public class AttenBookRemindAdapter implements ItemViewDelegate<AttentionBook> {
 
     @Override
     public boolean isForViewType(AttentionBook item, int position) {
-        return item.avbl.equals("y");
+        return item.avb.equals("y");
     }
 
     @Override

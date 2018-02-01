@@ -71,7 +71,7 @@ public interface RetrofitService {
      */
     @GET("lib/attention/")
     Observable<Response<List<AttentionBook>>> getAttentionBooks(
-            @Header("Authorization") String verification);
+            @Header("sid") String verification);
 
     /**
      * 200 添加关注成功
@@ -79,7 +79,7 @@ public interface RetrofitService {
      */
     @POST("lib/create/")
     Observable<Response<VerifyResponse>> createAttentionBook(
-            @Header("Authorization") String verification, @Body
+            @Header("sid") String verification, @Body
             BookPost bookPost);
 
     /**
@@ -89,7 +89,7 @@ public interface RetrofitService {
 //    @DELETE("lib/delete/")
     @HTTP(method = "DELETE", path = "lib/delete/", hasBody = true)
     Observable<Response<VerifyResponse>> delAttentionBook(
-            @Header("Authorization") String verification,
+            @Header("sid") String verification,
             @Body BookId id);
 
     /**
@@ -99,7 +99,7 @@ public interface RetrofitService {
      * 400 请求无效
      */
     @POST("lib/renew/")
-    Observable<Response<VerifyResponse>> renewBook(@Header("s") String verification,@Header("captcha") String captcha,
+    Observable<Response<VerifyResponse>> renewBook(@Header("s") String verification, @Header("captcha") String captcha,
             @Body RenewData renewData);
 
     //获取用户课表

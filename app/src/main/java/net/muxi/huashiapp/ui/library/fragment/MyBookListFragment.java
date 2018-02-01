@@ -122,8 +122,8 @@ public class MyBookListFragment extends BaseFragment {
                             mAttentionBookList = attentionBooks;
                             Observable.from(attentionBooks)
                                     .toSortedList((attentionBook, attentionBook2) -> {
-                                        if (!attentionBook.avbl.equals(attentionBook2.avbl)) {
-                                            if (attentionBook.avbl.equals("n")) {
+                                        if (!attentionBook.avb.equals(attentionBook2.avb)) {
+                                            if (attentionBook.avb.equals("n")) {
                                                 return 1;
                                             } else {
                                                 return -1;

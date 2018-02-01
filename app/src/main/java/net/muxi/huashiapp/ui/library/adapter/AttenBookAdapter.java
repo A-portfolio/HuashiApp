@@ -5,7 +5,6 @@ import android.content.Context;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.AttentionBook;
 import net.muxi.huashiapp.ui.library.BookDetailActivity;
@@ -29,7 +28,7 @@ public class AttenBookAdapter implements ItemViewDelegate<AttentionBook>{
 
     @Override
     public boolean isForViewType(AttentionBook item, int position) {
-        return item.avbl.equals("n");
+        return item.avb.equals("n");
     }
 
     @Override
