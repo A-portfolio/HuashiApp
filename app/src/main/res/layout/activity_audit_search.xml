@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context="net.muxi.huashiapp.ui.schedule.CourseEditActivity">
+
+
+    <include
+        layout="@layout/view_toolbar"/>
+
+    <EditText
+        android:id="@+id/et_course"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="72dp"
+        android:background="@null"
+        android:hint="请输入课程名称"
+        android:inputType="text"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="28sp"
+        android:textStyle="bold"/>
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/et_course"
+        android:layout_margin="16dp"
+        android:background="@color/divider"/>
+
+
+    <ImageView
+        android:id="@+id/iv_course_teacher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider1"
+        android:layout_marginLeft="16dp"
+        android:src="@drawable/ic_course_teacher"/>
+
+    <EditText
+        android:id="@+id/et_course_teacher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider1"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="6dp"
+        android:layout_toRightOf="@+id/iv_course_teacher"
+        android:background="@null"
+        android:inputType="text"
+        android:scrollHorizontally="true"
+        android:hint="输入教师(非必须填写)"
+        android:maxLines="1"/>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/et_course_teacher"
+        android:layout_margin="16dp"
+        android:background="@color/divider"/>
+
+
+    <!--todo 修改这里的图片-->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_below="@+id/divider2"
+        android:src="@drawable/ic_course_teacher"/>
+
+    <EditText
+        android:id="@+id/et_course_subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider2"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="6dp"
+        android:layout_toRightOf="@+id/iv_course_teacher"
+        android:background="@null"
+        android:inputType="text"
+        android:scrollHorizontally="true"
+        android:hint="输入授课年级(非必须填写)"
+        android:maxLines="1"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/et_course_subject"
+        android:layout_margin="16dp"
+        android:background="@color/divider"/>
+
+
+    <TextView
+        android:id="@+id/btn_ensure"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/divider2"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="124dp"
+        android:background="@drawable/ripple_accent"
+        android:gravity="center"
+        android:text="搜索课程"
+        android:textColor="@color/colorWhite"/>
+
+</RelativeLayout>
+

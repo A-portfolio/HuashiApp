@@ -11,7 +11,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.muxistudio.jsbridge.BridgeHandler;
 import com.muxistudio.jsbridge.BridgeWebView;
+import com.muxistudio.jsbridge.CallbackFunc;
 import com.muxistudio.multistatusview.MultiStatusView;
 import com.tencent.smtt.sdk.WebSettings;
 
@@ -137,6 +139,14 @@ public class CardActivity extends ToolbarActivity {
 
                         mConsumeView.setInitData(data);
                         mConsumeView.loadUrl("http://123.56.41.13:4088");
+
+                        //event ? 事件名?
+                        mConsumeView.register("fafafafa", new BridgeHandler() {
+                            @Override
+                            public void handle(String s, CallbackFunc callbackFunc) {
+
+                            }
+                        });
 
                     }
                 });

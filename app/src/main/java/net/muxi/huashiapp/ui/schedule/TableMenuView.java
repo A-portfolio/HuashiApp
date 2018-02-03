@@ -22,7 +22,6 @@ import butterknife.OnClick;
  * Created by ybao on 17/2/4.
  */
 
-//手动设置周数！
 public class TableMenuView extends FrameLayout {
 
     @BindView(R.id.btn_close)
@@ -86,9 +85,13 @@ public class TableMenuView extends FrameLayout {
         });
         this.setFocusable(false);
     }
-    @OnClick({R.id.tv_add, R.id.tv_setcurweek})
+    //这里有添加新课程和修改当前周设置的入口
+    @OnClick({R.id.tv_add, R.id.tv_setcurweek,R.id.tv_audit_class})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.tv_audit_class:
+                CourseAuditSearchActivity.start(getContext());
+                break;
             case R.id.tv_add:
                 CourseEditActivity.start(getContext(), true, null);
                 dismiss();

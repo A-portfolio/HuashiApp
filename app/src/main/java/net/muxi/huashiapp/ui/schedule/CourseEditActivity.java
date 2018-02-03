@@ -1,9 +1,5 @@
 package net.muxi.huashiapp.ui.schedule;
 
-import static net.muxi.huashiapp.util.TimeTableUtil.isContinuOusWeeks;
-import static net.muxi.huashiapp.util.TimeTableUtil.isDoubleWeeks;
-import static net.muxi.huashiapp.util.TimeTableUtil.isSingleWeeks;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,9 +29,14 @@ import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static net.muxi.huashiapp.util.TimeTableUtil.isContinuOusWeeks;
+import static net.muxi.huashiapp.util.TimeTableUtil.isDoubleWeeks;
+import static net.muxi.huashiapp.util.TimeTableUtil.isSingleWeeks;
+
 /**
  * Created by ybao on 16/5/1.
  */
+//添加新课程也是这个Activity
 public class CourseEditActivity extends ToolbarActivity {
 
     @BindView(R.id.et_course)
@@ -48,7 +49,7 @@ public class CourseEditActivity extends ToolbarActivity {
     TextView mEtTime;
     @BindView(R.id.et_place)
     EditText mEtPlace;
-    @BindView(R.id.et_teacher)
+    @BindView(R.id.et_course_teacher)
     EditText mEtTeacher;
     @BindView(R.id.btn_ensure)
     TextView mBtnEnsure;

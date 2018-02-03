@@ -9,6 +9,7 @@ import android.text.TextUtils;
  */
 public class Course implements Parcelable {
 
+    //id :自定义课程储存id
     public String id;
     public String course;
     public String teacher;

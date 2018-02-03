@@ -24,7 +24,9 @@ import net.muxi.huashiapp.common.data.SplashData;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.data.VersionData;
 import net.muxi.huashiapp.common.data.WebsiteData;
+import net.muxi.huashiapp.ui.schedule.AuditCourse;
 
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -39,6 +41,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 
@@ -134,10 +137,15 @@ public interface RetrofitService {
     @POST("ele/")
     Observable<Response<Electricity>> getElectricity(@Body EleRequestData requestData);
 
+    //蹭课 搜索蹭课结果:
+    @GET("http://120.77.246.73:1295/api/lesson/")
+    Observable<AuditCourse> getAuditCourse(@QueryMap HashMap<String,String >map);
+
     //查询余额  除了学号其他传固定值 http://console.ccnu.edu
     // .cn/ecard/getTrans?userId=2013211389&days=90&startNum=0&num=200
     @GET("http://console.ccnu.edu.cn/ecard/getTrans")
-    Observable<List<CardData>> getCardBalance(@Query("userId") String sid,
+    Observable<List<CardData>> getCardBalance(
+            @Query("userId") String sid,
             @Query("days") String day,
             @Query("startNum") String start,
             @Query("num") String num);

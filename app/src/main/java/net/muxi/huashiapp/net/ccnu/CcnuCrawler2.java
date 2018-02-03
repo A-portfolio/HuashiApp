@@ -80,6 +80,7 @@ public class CcnuCrawler2 {
                     list.add(phpSessidLib);
                     return  list;
                 }
+                //todo 后续登录的时候还是有问题
                 if(url.toString().equals("http://202.114.34.15/reader/hwthau.php")) {
                     List<Cookie> list = new ArrayList<>();
                     for (int i = 0; i < cookieStore.size(); i++)
