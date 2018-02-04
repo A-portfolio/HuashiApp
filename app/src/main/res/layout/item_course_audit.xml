@@ -1,65 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/iv_course_marker"
-        android:layout_margin="19dp"
-        android:layout_width="56dp"
-        android:layout_height="56dp" />
+        android:layout_margin="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/tv_course_name_teacher"
-        android:layout_marginTop="13dp"
-        android:textColor="?android:attr/textColorPrimary"
         android:layout_toRightOf="@id/iv_course_marker"
-        android:layout_marginLeft="18dp"
-        android:text="音乐鉴赏(xx)"
-        android:textSize="20dp"
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="18sp"
+        tools:text="音乐鉴赏(xx)"/>
 
     <TextView
         android:id="@+id/tv_course_week"
-        android:layout_marginTop="15dp"
         android:layout_below="@+id/tv_course_name_teacher"
         android:layout_toRightOf="@id/iv_course_marker"
         android:layout_marginLeft="16dp"
-        android:text="1-17周"
-        android:textColor="?android:attr/textColorSecondary"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"/>
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="12sp"
+        tools:text="1-17周"/>
+
     <TextView
         android:id="@+id/tv_course_period"
         android:layout_below="@+id/tv_course_name_teacher"
-        android:layout_marginTop="15dp"
-        android:text="星期一1-2节"
-        android:textColor="?android:attr/textColorSecondary"
         android:layout_toRightOf="@+id/tv_course_week"
-        android:layout_width="80dp"
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"/>
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="12sp"
+        tools:text="星期一1-2节"/>
+
     <TextView
         android:id="@+id/tv_course_site"
-        android:layout_toRightOf="@id/tv_course_period"
         android:layout_below="@+id/tv_course_name_teacher"
-        android:layout_marginTop="15dp"
-        android:text="12121"
+        android:layout_toRightOf="@id/tv_course_period"
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textSize="12sp"
         android:textColor="?android:attr/textColorSecondary"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content" />
+        tools:text="12121"/>
 
     <Button
         android:id="@+id/btn_choose_course"
-        android:layout_toRightOf="@id/tv_course_site"
-        android:background="@drawable/bg_couse_audit_btn"
-        android:layout_marginTop="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@+id/tv_course_site"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_course_audit_btn"
+        android:layout_width="64dp"
+        android:layout_height="32dp"
         android:text="添加"
-        android:layout_width="60dp"
-        android:layout_height="30dp" />
+        android:textColor="@color/colorWhite"/>
 
     <View
         android:layout_width="match_parent"

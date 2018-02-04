@@ -203,8 +203,8 @@ public class BookDetailFragment extends BaseFragment {
                             break;
                         case 404:
                             mBtnAttention.setChecked(true);
-                                ((BaseActivity) getActivity()).showErrorSnackbarShort(
-                                        R.string.request_invalid);
+                            ((BaseActivity) getActivity()).showErrorSnackbarShort(
+                                    R.string.request_invalid);
                                 break;
                         //case 403:
                         //    ((BaseActivity) getActivity()).showErrorSnackbarShort(

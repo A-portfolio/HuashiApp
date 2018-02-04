@@ -9,7 +9,7 @@ import net.muxi.huashiapp.App;
  * Created by ybao on 16/4/19.
  * SharedPreferences存储类
  */
-public class    PreferenceUtil {
+public class PreferenceUtil {
 
     //phpsessionid 有两种情况 下面中的一种
     public static final String CURWEEK = "sCurWeek";
