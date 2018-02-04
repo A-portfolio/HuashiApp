@@ -136,7 +136,8 @@ public class CourseDetailView extends RelativeLayout {
                 });
     }
     public void addCourse(Course course) {
-        CampusFactory.getRetrofitService().addCourse(course)
+        CampusFactory.getRetrofitService()
+                .addCourse(course)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(courseId -> {

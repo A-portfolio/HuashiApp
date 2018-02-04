@@ -264,7 +264,6 @@ public class CourseEditActivity extends ToolbarActivity {
         }
         Collections.sort(lists);
         return String.valueOf(lists.get(lists.size() - 1) + 1);
-
     }
 
     private void updateCourse() {

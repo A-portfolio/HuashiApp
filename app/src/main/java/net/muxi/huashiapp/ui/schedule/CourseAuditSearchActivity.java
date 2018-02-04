@@ -18,7 +18,6 @@ import butterknife.OnClick;
  * Created by kolibreath on 18-2-2.
  */
 
-//todo 注册这些活动
 public class CourseAuditSearchActivity extends ToolbarActivity{
 
     @BindView(R.id.et_course)

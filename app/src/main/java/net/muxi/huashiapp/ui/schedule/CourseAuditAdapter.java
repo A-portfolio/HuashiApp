@@ -1,6 +1,6 @@
 package net.muxi.huashiapp.ui.schedule;
 
-import inandroid.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +17,7 @@ import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.ToastUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +33,6 @@ import rx.schedulers.Schedulers;
 
 public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.AuditViewHolder> {
 
-//    private List<AuditCourse.ResBean> selectedList = new ArrayList<>();
     private List<Integer> positions = new ArrayList<>();
     private List<Course> mCourses;
     private HuaShiDao dao;
@@ -86,6 +86,8 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                                 .subscribe(courseId -> {;
                                     ToastUtil.showShort("课程已经加入");
                                     holder.mBtnChooseCourse.setText("已添加");
+                                    Course c = convertCourse(course);
+                                    c.setId(String.valueOf(courseId));
                                     dao.insertCourse(convertCourse(course));
                                 },throwable -> {
                                     throwable.printStackTrace();
@@ -97,6 +99,20 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                 positions.remove((Integer)(position));
             }
         });
+    }
+
+    private String generateId() {
+        List<Integer> lists = new ArrayList<>();
+        for (Course course : dao.loadAllCourses()) {
+            if (Integer.valueOf(course.id) < 1000) {
+                lists.add(Integer.valueOf(course.id));
+            }
+        }
+        if (lists.size() == 0) {
+            return "1";
+        }
+        Collections.sort(lists);
+        return String.valueOf(lists.get(lists.size() - 1) + 1);
     }
 
     //true 表示 冲突 false 表示不冲突 默认情况下返回冲突
@@ -124,20 +140,21 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         Course course = new Course();
         int size = mCourses.size();
         int color = (size-1)%3;
-        course.setColor(color);
+        course.setColor(2);
         //课程名称
         course.setCourse(auditCourse.getName());
         course.setTeacher(auditCourse.getTeacher());
         //todo 对于多个地点或者是多个周的有点问题
         String info[] = AuditCourse.getCourseTime(auditCourse.getWw().get(0).getWhen());
-        course.setWeeks(info[1]);
+        course.setWeeks(getWeekString(info[1]));
         //auditCourse 格式 :星期一7-8节
-        course.setDay(getDayDuring(info[0])[0]+"");
+        course.setDay(getDay(getDayDuring(info[0])[0]));
         course.setStart(getDayDuring(info[0])[1]);
         course.setDuring(getDayDuring(info[0])[2]);
         //todo buggy 多个地点可能会错误
         course.setPlace(auditCourse.getWw().get(0).getWhere());
         course.setRemind("false");
+        course.setId(generateId());
         return course;
     }
 
@@ -154,10 +171,9 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
             end   =   Integer.parseInt(matcher.group(4));
         }
         int dayN = getDay(day);
-        int during = end - start;
+        int during = end - start + 1;
         return new int[]{dayN,start,during};
     }
-
     //通过星期几输出相应的值
     private int getDay(String day){
         if(day.equals("星期一")){
@@ -182,6 +198,47 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
             return 7;
         }
         return  0;
+    }
+
+    //通过相应的数字输出星期几
+    private String getDay(int day){
+        switch (day){
+            case 1:
+                return "星期一";
+            case 2:
+                return "星期二";
+            case 3:
+                return "星期三";
+            case 4:
+                return "星期四";
+            case 5:
+                return "星期五";
+            case 6:
+                return "星期六";
+            case 7:
+                return "星期日";
+        }
+        return  "";
+    }
+    //eg : audit class 的课程周数格式为 1-7 周 要改成课表的格式 1,2,3,4,5,6,7
+    private String getWeekString(String week){
+        String patter = "((\\d+)-(\\d+))";
+        Pattern pattern = Pattern.compile(patter);
+        Matcher matcher = pattern.matcher(week);
+        int start  = 0  ,end = 0;
+        while (matcher.find()){
+            start = Integer.parseInt(matcher.group(2));
+            end   = Integer.parseInt(matcher.group(3));
+        }
+        String weekString  = "";
+        for(int i = start;i<=end;i++){
+            if(i!=end){
+                weekString += i + ",";
+            }else{
+                weekString += i+ "";
+            }
+        }
+        return weekString;
     }
     @Override
     public int getItemCount(){

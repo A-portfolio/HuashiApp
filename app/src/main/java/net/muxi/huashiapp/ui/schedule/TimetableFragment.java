@@ -224,8 +224,6 @@ public class TimetableFragment extends BaseFragment {
         }
         return courseList;
     }
-
-    //todo 调试 找到color数据
     public void loadTable() {
         CampusFactory.getRetrofitService().getSchedule()
                 .observeOn(AndroidSchedulers.mainThread())
