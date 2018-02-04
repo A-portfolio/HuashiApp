@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -28,6 +30,8 @@ import rx.schedulers.Schedulers;
 public class CourseAuditResultActivity extends ToolbarActivity {
     @BindView(R.id.rv_audit_course)
     RecyclerView rvCourse;
+    @BindView(R.id.iv_error_view)
+    ImageView ivErrorView;
 
     //针对选课部分的监听
     private View.OnClickListener listener = v -> {
@@ -79,11 +83,17 @@ public class CourseAuditResultActivity extends ToolbarActivity {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(auditCourse -> {
-                    renderCourse(auditCourse);
-                    hideLoading();
+                        if(!auditCourse.getRes().isEmpty()) {
+                            renderCourse(auditCourse);
+                            hideLoading();
+                        }
                     }
-                        ,e->{
-                    e.printStackTrace();
+                        ,throwable->{
+                    if(((HttpException)throwable).code()==500) {
+                        hideLoading();
+                        ivErrorView.setImageResource(R.mipmap.ic_launcher);
+                        ivErrorView.setVisibility(View.VISIBLE);
+                    }
                         },()->{});
     }
 

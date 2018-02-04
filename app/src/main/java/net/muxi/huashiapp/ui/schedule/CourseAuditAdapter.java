@@ -122,10 +122,11 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
             //格式: 星期一1-2
             int infos[]  =getDayDuring(period);
             int day = infos[0], start = infos[1], during = infos[2];
-
             if (getDay(course.getDay())==day){
-                if (!((course.getStart() != start) && ((course.getStart() + course.getDuring()) != (start + during))))
+                if (!((course.getStart() != start) && ((course.getStart() + course.getDuring()) != (start + during)))) {
                     flag = true;
+                    return flag;
+                }
                 else
                     flag = false;
             }else{
@@ -148,7 +149,6 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         String info[] = AuditCourse.getCourseTime(auditCourse.getWw().get(0).getWhen());
         course.setWeeks(getWeekString(info[1]));
         //auditCourse 格式 :星期一7-8节
-        course.setDay(getDay(getDayDuring(info[0])[0]));
         course.setStart(getDayDuring(info[0])[1]);
         course.setDuring(getDayDuring(info[0])[2]);
         //todo buggy 多个地点可能会错误

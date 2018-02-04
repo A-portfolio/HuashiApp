@@ -77,7 +77,6 @@ public class ScoreActivity extends ToolbarActivity {
     private void loadGrade(String term) {
         showLoading();
         if (term.equals("0")) {
-            //todo 在查询所有人的时候有问题
             CampusFactory.getRetrofitService().getScores(year,"")
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())

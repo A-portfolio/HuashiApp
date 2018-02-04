@@ -140,11 +140,6 @@ public class BaseActivity extends AppCompatActivity {
         snackbar.show();
     }
 
-    public boolean isError(boolean isError){
-        return isError;
-    }
-
-
     //包括联网和重试请求的observer
     private void retryObserver(){
         RxBus.getDefault()
