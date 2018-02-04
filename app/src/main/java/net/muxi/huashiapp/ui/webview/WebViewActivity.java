@@ -121,6 +121,12 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
             }
         });
         initRegisterInterface();
+
+        // 消费账单
+        if (url == "http://consume.muxixyz.com") {
+            mWebview.setInitData(App.sUser.sid);
+        }
+
         mWebview.loadUrl(url);
 
         api = WXAPIFactory.createWXAPI(getApplicationContext(), APP_ID, false);
@@ -146,6 +152,15 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
             @Override
             public void handle(String s, CallbackFunc callbackFunc) {
                 callbackFunc.onCallback(new Gson().toJson(App.sLibrarayUser));
+            }
+        });
+        // 消费账单
+        mWebview.register("share", new BridgeHandler() {
+            @Override
+            public void handle(String s, CallbackFunc callbackFunc) {
+                ShareDialog shareDialog = ShareDialog.newInstance(0);
+                shareDialog.show(getSupportFragmentManager(), "dialog_share");
+                //callbackFunc.onCallback(App.sUser.sid); // 返回给web端的结果
             }
         });
     }

@@ -68,13 +68,12 @@
         android:background="@color/divider"/>
 
 
-    <!--todo 修改这里的图片-->
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_below="@+id/divider2"
-        android:src="@drawable/ic_course_teacher"/>
+        android:src="@drawable/ic_course_academy"/>
 
     <EditText
         android:id="@+id/et_course_subject"
@@ -92,6 +91,7 @@
         android:maxLines="1"/>
 
     <View
+        android:id="@+id/divider3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/et_course_subject"
@@ -103,10 +103,10 @@
         android:id="@+id/btn_ensure"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/divider2"
+        android:layout_below="@+id/divider3"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="172dp"
         android:background="@drawable/ripple_accent"
         android:gravity="center"
         android:text="搜索课程"

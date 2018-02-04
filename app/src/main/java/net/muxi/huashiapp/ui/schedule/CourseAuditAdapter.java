@@ -64,9 +64,17 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
             whenPeriod += p[0]+"\n";
             whenWeek  += p[1]+"\n";
         }
-        //todo  replace  the holder 加载根据课程编号加载正确的图片
-        //格式 是这样子的 : "no" : "48740002.0"已经取出来了编号
-        String number = course.getNo();
+        String kind = course.getKind();
+        if (kind == "专业课") {
+            holder.mIvCourseMarker.setImageResource(R.drawable.audit_professional);
+            ToastUtil.showLong("hh");
+        } else if(kind == "公共课"){
+            holder.mIvCourseMarker.setImageResource(R.drawable.audit_public);
+        } else if(kind == "通核课"){
+            holder.mIvCourseMarker.setImageResource(R.drawable.audit_core);
+        } else if(kind == "通选课"){
+            holder.mIvCourseMarker.setImageResource(R.drawable.audit_elective);
+        }
         holder.mTvCourseWeek.setText(whenWeek);
         holder.mTVCoursePeriod.setText(whenPeriod);
         holder.mTvCourseSite.setText(where);
@@ -255,6 +263,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         //同时包含老师和课程名称
         @BindView(R.id.tv_course_name_teacher)
         TextView mTvCourseNameTeacher;
+        @BindView(R.id.tv_course_week)
         TextView mTvCourseWeek;
         @BindView(R.id.tv_course_period)
         TextView mTVCoursePeriod;

@@ -69,6 +69,8 @@
     <color name="course_widget_start">#289AA4</color>
     <color name="course_widget_end">#52B2A3</color>
 
+    <color name="course_audit_red">#F97266</color>
+
     <!--成绩查询-->
     <color name="colorScore">#E91E63</color>
     <color name="secondTitle">#666666</color>
