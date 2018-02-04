@@ -88,8 +88,7 @@
         <activity
             android:name=".ui.schedule.CourseAuditResultActivity" />
 
-        <activity android:name=".ui.schedule.CourseAuditSearchActivity"
-            android:launchMode="singleTask"/>
+        <activity android:name=".ui.schedule.CourseAuditSearchActivity" />
 
         <activity android:name=".ui.schedule.CurweekSetActivity"/>
 

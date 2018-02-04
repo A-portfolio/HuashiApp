@@ -33,11 +33,6 @@ public class CourseAuditResultActivity extends ToolbarActivity {
     @BindView(R.id.iv_error_view)
     ImageView ivErrorView;
 
-    //针对选课部分的监听
-    private View.OnClickListener listener = v -> {
-
-    };
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +81,10 @@ public class CourseAuditResultActivity extends ToolbarActivity {
                         if(!auditCourse.getRes().isEmpty()) {
                             renderCourse(auditCourse);
                             hideLoading();
+                        }else{
+                            hideLoading();
+                            ivErrorView.setImageResource(R.mipmap.ic_launcher);
+                            ivErrorView.setVisibility(View.VISIBLE);
                         }
                     }
                         ,throwable->{
@@ -95,8 +94,13 @@ public class CourseAuditResultActivity extends ToolbarActivity {
                         ivErrorView.setImageResource(R.mipmap.ic_launcher);
                         ivErrorView.setVisibility(View.VISIBLE);
                     }
+                    throwable.printStackTrace();
                         },()->{});
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

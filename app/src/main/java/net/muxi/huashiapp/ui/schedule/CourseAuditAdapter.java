@@ -255,6 +255,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         //同时包含老师和课程名称
         @BindView(R.id.tv_course_name_teacher)
         TextView mTvCourseNameTeacher;
+        @BindView(R.id.tv_course_week)
         TextView mTvCourseWeek;
         @BindView(R.id.tv_course_period)
         TextView mTVCoursePeriod;

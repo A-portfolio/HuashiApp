@@ -214,15 +214,29 @@ public class TimeTableUtil {
      * 将 weekday 转换为 int 类型 星期一 -> 0
      */
     public static int weekday2num(String weekday) {
-        Logger.d(weekday);
         int i = 0;
-        while (!weekday.equals(Constants.WEEKDAYS_XQ[i])) {
-            i++;
-            if (i >= 7) {
-                break;
+        Logger.d(weekday);
+        if (isNumeric(weekday)) {
+                i = Integer.parseInt(weekday);
+        }
+        if(i==0) {
+            while (!weekday.equals(Constants.WEEKDAYS_XQ[i])) {
+                i++;
+                if (i >= 7) {
+                    break;
+                }
             }
         }
         return i;
+    }
+
+    public static boolean isNumeric(String str){
+            for (int i = str.length();--i>=0;){
+            if (!Character.isDigit(str.charAt(i))){
+                return false;
+            }
+        }
+        return true;
     }
 
     public static boolean isSingleWeeks(List<Integer> weekList) {
