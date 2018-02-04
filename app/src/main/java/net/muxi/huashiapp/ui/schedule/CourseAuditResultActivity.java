@@ -91,6 +91,7 @@ public class CourseAuditResultActivity extends ToolbarActivity {
                         ,throwable->{
                     if(((HttpException)throwable).code()==500) {
                         hideLoading();
+                        //todo replace the holder
                         ivErrorView.setImageResource(R.mipmap.ic_launcher);
                         ivErrorView.setVisibility(View.VISIBLE);
                     }
