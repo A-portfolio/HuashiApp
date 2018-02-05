@@ -123,8 +123,12 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         initRegisterInterface();
 
         // 消费账单
-        if (url == "http://consume.muxixyz.com") {
-            mWebview.setInitData(App.sUser.sid);
+        if (url.equals( "http://consume.muxixyz.com")) {
+            if (App.sUser.sid.equals("")) {
+                ToastUtil.showLong("请先登录再查看您的年度账单哟");
+            } else {
+                mWebview.setInitData(App.sUser.sid);
+            }
         }
 
         mWebview.loadUrl(url);
@@ -160,7 +164,6 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
             public void handle(String s, CallbackFunc callbackFunc) {
                 ShareDialog shareDialog = ShareDialog.newInstance(0);
                 shareDialog.show(getSupportFragmentManager(), "dialog_share");
-                //callbackFunc.onCallback(App.sUser.sid); // 返回给web端的结果
             }
         });
     }
@@ -186,56 +189,60 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         int itemId = item.getItemId();
         switch (itemId) {
             case R.id.action_option:
-                ShareToDialog shareToDialog = new ShareToDialog();
-                shareToDialog.show(getSupportFragmentManager(), "");
+                if (url.equals( "http://consume.muxixyz.com")) {
+                    ToastUtil.showLong("暂不支持将本网页分享出去哟");
+                } else {
+                    ShareToDialog shareToDialog = new ShareToDialog();
+                    shareToDialog.show(getSupportFragmentManager(), "");
 
-                shareToDialog.setOnItemClickListener(new ShareToDialog.OnItemClick() {
-                    @Override
-                    public void onItemClick(int position) {
-                        switch (position) {
-                            case 0:
-                                shareToQQ(title, intro, url, iconUrl);
-                                shareToDialog.dismiss();
-                                break;
-                            case 1:
-                                shareTOWXSceneSession();
-                                shareToDialog.dismiss();
-                                break;
-                            case 2:
-                                sendMultiMessage(true, false, false, false, false, false);
-                                shareToDialog.dismiss();
-                                break;
-                            case 3:
-                                shareToQzone(title, intro, url, iconUrl);
-                                shareToDialog.dismiss();
-                                break;
-                            case 4:
-                                shareTOWXSceneTimeline();
-                                shareToDialog.dismiss();
-                                break;
-                            case 6:
-                                mWebview.reload();
-                                shareToDialog.dismiss();
-                                break;
+                    shareToDialog.setOnItemClickListener(new ShareToDialog.OnItemClick() {
+                        @Override
+                        public void onItemClick(int position) {
+                            switch (position) {
+                                case 0:
+                                    shareToQQ(title, intro, url, iconUrl);
+                                    shareToDialog.dismiss();
+                                    break;
+                                case 1:
+                                    shareTOWXSceneSession();
+                                    shareToDialog.dismiss();
+                                    break;
+                                case 2:
+                                    sendMultiMessage(true, false, false, false, false, false);
+                                    shareToDialog.dismiss();
+                                    break;
+                                case 3:
+                                    shareToQzone(title, intro, url, iconUrl);
+                                    shareToDialog.dismiss();
+                                    break;
+                                case 4:
+                                    shareTOWXSceneTimeline();
+                                    shareToDialog.dismiss();
+                                    break;
+                                case 6:
+                                    mWebview.reload();
+                                    shareToDialog.dismiss();
+                                    break;
 
-                            case 7:
-                                AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
-                                showSnackbarShort(
-                                        getResources().getString(R.string.tip_copy_success));
-                                shareToDialog.dismiss();
-                                break;
+                                case 7:
+                                    AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
+                                    showSnackbarShort(
+                                            getResources().getString(R.string.tip_copy_success));
+                                    shareToDialog.dismiss();
+                                    break;
 
-                            case 8:
-                                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                        Uri.parse(mWebview.getUrl()));
-                                startActivity(browserIntent);
-                                shareToDialog.dismiss();
-                                break;
+                                case 8:
+                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                            Uri.parse(mWebview.getUrl()));
+                                    startActivity(browserIntent);
+                                    shareToDialog.dismiss();
+                                    break;
 
 
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 break;
 //            case R.id.action_refresh:
 //                mWebview.reload();
