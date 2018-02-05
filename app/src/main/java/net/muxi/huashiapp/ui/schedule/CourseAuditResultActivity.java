@@ -75,7 +75,7 @@ public class CourseAuditResultActivity extends ToolbarActivity {
         //api文档中只有name teacher subject三个部分
         showLoading();
         CampusFactory.getRetrofitService().getAuditCourse(map)
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(auditCourse -> {
                         if(!auditCourse.getRes().isEmpty()) {
@@ -83,15 +83,21 @@ public class CourseAuditResultActivity extends ToolbarActivity {
                             hideLoading();
                         }else{
                             hideLoading();
-                            ivErrorView.setImageResource(R.mipmap.ic_launcher);
+                            ivErrorView.setImageResource(R.drawable.audit_not_found);
                             ivErrorView.setVisibility(View.VISIBLE);
                         }
-                    }
-                        ,throwable->{
-                    if(((HttpException)throwable).code()==500) {
+                    },throwable->{
+                    try {
+                        if (((HttpException) throwable).code() == 500) {
+                            hideLoading();
+                            ivErrorView.setImageResource(R.drawable.audit_not_found);
+                            ivErrorView.setVisibility(View.VISIBLE);
+                        }
+                    }catch (Exception e){
                         hideLoading();
                         ivErrorView.setImageResource(R.drawable.audit_not_found);
                         ivErrorView.setVisibility(View.VISIBLE);
+                        e.printStackTrace();
                     }
                     throwable.printStackTrace();
                         },()->{});

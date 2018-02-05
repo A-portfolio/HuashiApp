@@ -9,7 +9,7 @@ import android.text.TextUtils;
  */
 public class Course implements Parcelable {
 
-    //id :自定义课程储存id
+    //id :自定义课程储存id 我们这边在匣子2.1.8 版本之后不再上传 id 从服务器拉回来的数据服务器会给一个id!
     public String id;
     public String course;
     public String teacher;

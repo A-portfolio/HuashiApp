@@ -23,6 +23,7 @@ import java.util.List;
  * Created by ybao on 17/1/27.
  */
 
+//在这里设置是否有 非本周字段
 public class TableContent extends FrameLayout {
     private Scroller mScroller;
     private Context mContext;

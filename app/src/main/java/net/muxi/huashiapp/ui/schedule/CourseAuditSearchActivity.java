@@ -38,6 +38,7 @@ public class CourseAuditSearchActivity extends ToolbarActivity{
         intent.putExtra("courseTeacher",teacher);
         intent.putExtra("courseSubject",subject);
         CourseAuditResultActivity.start(this,intent);
+        finish();
     }
 
 

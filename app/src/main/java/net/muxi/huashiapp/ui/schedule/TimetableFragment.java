@@ -22,6 +22,7 @@ import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.event.AddCourseEvent;
+import net.muxi.huashiapp.event.AuditCourseEvent;
 import net.muxi.huashiapp.event.CurWeekChangeEvent;
 import net.muxi.huashiapp.event.DeleteCourseOkEvent;
 import net.muxi.huashiapp.event.RefreshFinishEvent;
@@ -199,6 +200,8 @@ public class TimetableFragment extends BaseFragment {
                     renderCourseView(mCourses);
                 }, Throwable::printStackTrace);
         ((BaseActivity) getContext()).addSubscription(subscription4);
+        RxBus.getDefault().toObservable(AuditCourseEvent.class)
+        .subscribe(auditCourseEvent -> {loadTable();});
         mTimetable.setOnRefreshListener(() -> {
             handlingRefresh = true;
             loadTable();
