@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.umeng.analytics.MobclickAgent;
+
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
@@ -135,7 +137,7 @@ public class MoreFragment extends BaseFragment {
                         checkUpdateDialog.setOnPositiveButton(
                                 App.sContext.getString(R.string.btn_update),
                                 () -> {
-                                    if (isStorgePermissionGranted()) {
+                                    if (isStoragePermissionGranted()) {
                                         beginUpdate(versionData.download);
                                     }else {
                                         ((BaseActivity)getActivity()).showErrorSnackbarShort(R.string.tip_require_write_permission);
@@ -185,67 +187,16 @@ public class MoreFragment extends BaseFragment {
         } else {
             App.logoutUser();
             App.logoutLibUser();
+            MobclickAgent.onProfileSignOff();
             ((BaseActivity) getActivity()).showSnackbarShort(
                     App.sContext.getString(R.string.tip_all_log_out));
         }
-        /*
-        LogoutDialog logoutDialog = new LogoutDialog();
-        logoutDialog.show(getFragmentManager(), "dialog_logout");
-        logoutDialog.setBtnIdLogout(new LogoutDialog.OnIdClickListener() {
-            @Override
-            public void OnIdClick() {
-                if (TextUtils.isEmpty(App.sUser.getSid())) {
-                    logoutDialog.dismiss();
-                    ((BaseActivity) getActivity()).showErrorSnackbarShort(
-                            App.sContext.getString(R.string.not_log_in));
-                } else {
-                    App.logoutUser();
-                    logoutDialog.dismiss();
-                    ((BaseActivity) getActivity()).showSnackbarShort(
-                            App.sContext.getString(R.string.tip_id_log_out));
-                }
-            }
-        });
 
-        logoutDialog.setBtnLibraryLogout(new LogoutDialog.OnLibraryClickListener() {
-            @Override
-            public void OnLibraryClick() {
-                if (TextUtils.isEmpty(App.sLibrarayUser.getSid())) {
-                    logoutDialog.dismiss();
-                    ((BaseActivity) getActivity()).showErrorSnackbarShort(
-                            App.sContext.getString(R.string.not_log_in));
-                } else {
-                    App.logoutLibUser();
-                    logoutDialog.dismiss();
-                    ((BaseActivity) getActivity()).showSnackbarShort(
-                            App.sContext.getString(R.string.tip_library_log_out));
-                }
-            }
-
-        });
-
-        logoutDialog.setBtnAllLogout(new LogoutDialog.OnAllClickListener() {
-            @Override
-            public void OnAllClick() {
-                if (TextUtils.isEmpty(App.sUser.getSid())) {
-                    logoutDialog.dismiss();
-                    ((BaseActivity) getActivity()).showErrorSnackbarShort(
-                            App.sContext.getString(R.string.not_log_in));
-                } else {
-                    App.logoutUser();
-                    App.logoutLibUser();
-                    logoutDialog.dismiss();
-                    ((BaseActivity) getActivity()).showSnackbarShort(
-                            App.sContext.getString(R.string.tip_all_log_out));
-                }
-            }
-        });
-        */
 
     }
 
 
-    public boolean isStorgePermissionGranted() {
+    public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {

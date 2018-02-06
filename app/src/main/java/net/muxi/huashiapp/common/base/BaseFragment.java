@@ -66,7 +66,6 @@ public class BaseFragment extends Fragment{
         RxBus.getDefault()
                 .toObservable(NetErrorEvent.class)
                 .subscribe(netErrorEvent -> {
-                  //  ToastUtil.showShort(R.string.tip_net_error);
                 },Throwable::printStackTrace);
 
     }

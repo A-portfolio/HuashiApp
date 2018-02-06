@@ -1,7 +1,6 @@
 package net.muxi.huashiapp.ui;
 
 
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
 import net.muxi.huashiapp.util.AppUtil;
-import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,57 +57,25 @@ public class AboutActivity extends ToolbarActivity {
     }
 
 
-
     @OnClick({R.id.tv_muxi_link, R.id.tv_copy, R.id.tv_copy2})
     public void onClick(View view) {
-        ClipboardManager manager;
         switch (view.getId()) {
             case R.id.tv_muxi_link:
-                ZhugeUtils.sendEvent("打开木犀官网", "打开木犀官网");
                 Intent intent = WebViewActivity.newIntent(AboutActivity.this, "http://muxistudio.com");
                 startActivity(intent);
                 break;
             case R.id.tv_copy:
-//                manager = (ClipboardManager) this
-//                        .getSystemService(Context.CLIPBOARD_SERVICE);
-//                manager.setPrimaryClip(ClipData.newPlainText(null,mTvCcnuboxGroup.getText()));
-//                if (manager.hasPrimaryClip()){
-//                    manager.getPrimaryClip().getItemAt(0).getText();
-//                }
-                AppUtil.clipToClipBoard(this,"576225292");
+                AppUtil.clipToClipBoard(this, "576225292");
                 showSnackbarShort("成功复制到粘贴板");
                 break;
             case R.id.tv_copy2:
-//                manager = (ClipboardManager) this
-//                        .getSystemService(Context.CLIPBOARD_SERVICE);
-//                manager.setPrimaryClip(ClipData.newPlainText(null,mTvMuxiGroup.getText()));
-//                if (manager.hasPrimaryClip()){
-//                    manager.getPrimaryClip().getItemAt(0).getText();
-//                }
-                AppUtil.clipToClipBoard(this,"534239958");
+                AppUtil.clipToClipBoard(this, "534239958");
                 showSnackbarShort("成功复制到粘贴板");
                 break;
         }
     }
-
-
-
-//    public static class NoUnderlineSpan extends UnderlineSpan {
-//
-//        public NoUnderlineSpan() {
-//        }
-//
-//        public NoUnderlineSpan(Parcel src) {
-//        }
-//
-//        @Override
-//        public void updateDrawState(TextPaint ds) {
-//            super.updateDrawState(ds);
-//            ds.setUnderlineText(false);
-//        }
-//    }
-
 }
+
 
 
 

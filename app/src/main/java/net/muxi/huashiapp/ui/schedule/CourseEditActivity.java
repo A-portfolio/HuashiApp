@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
@@ -17,7 +19,6 @@ import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
-import net.muxi.huashiapp.util.ZhugeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -244,10 +245,10 @@ public class CourseEditActivity extends ToolbarActivity {
             return;
         }
         if (isAdd) {
-            ZhugeUtils.sendEvent("课程添加");
+            MobclickAgent.onEvent(this,"课程添加");
             addCourse();
         } else {
-            ZhugeUtils.sendEvent("课程修改");
+            MobclickAgent.onEvent(this,"课程修改");
             updateCourse();
         }
     }

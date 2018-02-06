@@ -3,7 +3,7 @@ package net.muxi.huashiapp.util;
 import android.content.ComponentName;
 import android.content.res.Resources;
 
-import com.zhuge.analysis.stat.ZhugeSDK;
+//import com.zhuge.analysis.stat.ZhugeSDK;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
@@ -20,7 +20,7 @@ public class ZhugeUtils {
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put(title,detail);
-            ZhugeSDK.getInstance().track(App.sContext,title,jsonObject);
+           // ZhugeSDK.getInstance().track(App.sContext,title,jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();
         }

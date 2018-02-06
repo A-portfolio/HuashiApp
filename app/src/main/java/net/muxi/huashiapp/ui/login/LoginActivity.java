@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.umeng.analytics.MobclickAgent;
+
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
@@ -24,7 +26,6 @@ import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
-import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -119,14 +120,15 @@ public class LoginActivity extends ToolbarActivity {
                             finish();
                             hideLoading();
                             App.saveUser(user);
+                            //统计用户数据
+                            MobclickAgent.onProfileSignIn(user.getSid());
                             String target = getIntent().hasExtra("target") ?
                                     getIntent().getStringExtra("target") : null;
                             if(type.equals("info")) {
-//                                RxBus.getDefault().send(new LibLoginEvent());
                                 RxBus.getDefault().send(new LoginSuccessEvent(target));
                             }
                             else{
-//                                RxBus.getDefault().send(new LoginSuccessEvent(target));
+
                                 RxBus.getDefault().send(new LibLoginEvent());
                                 }
                         } else {
@@ -141,10 +143,9 @@ public class LoginActivity extends ToolbarActivity {
                         showErrorSnackbarShort(R.string.tip_check_net);
                     }, () -> hideLoading());
             if (type.equals("info"))
-                ZhugeUtils.sendEvent("登录");
+                MobclickAgent.onEvent(this,"登录");
             else {
-                ZhugeUtils.sendEvent("图书馆登录");
-            }
+                MobclickAgent.onEvent(this,"图书馆登录");}
         }
     }
 

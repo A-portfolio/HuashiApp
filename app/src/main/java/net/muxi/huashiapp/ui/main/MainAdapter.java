@@ -126,18 +126,15 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (holder instanceof BannerViewHolder) {
 
             for (int i = 0; i < mBannerDatas.size(); i++) {
-                ViewHolder<BannerData> viewHolder = new ViewHolder<BannerData>() {
-                    @Override
-                    public View getView(Context context, BannerData bannerDatas) {
-                        SimpleDraweeView simpleDraweeView = new SimpleDraweeView(mContext);
-                        simpleDraweeView.setImageURI(Uri.parse(bannerDatas.getImg()));
-                        simpleDraweeView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                        simpleDraweeView.setOnClickListener(v -> {
-                            Intent intent = WebViewActivity.newIntent(mContext, bannerDatas.getUrl());
-                            mContext.startActivity(intent);
-                        });
-                        return simpleDraweeView;
-                    }
+                ViewHolder<BannerData> viewHolder = (context, bannerDatas) -> {
+                    SimpleDraweeView simpleDraweeView = new SimpleDraweeView(mContext);
+                    simpleDraweeView.setImageURI(Uri.parse(bannerDatas.getImg()));
+                    simpleDraweeView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    simpleDraweeView.setOnClickListener(v -> {
+                        Intent intent = WebViewActivity.newIntent(mContext, bannerDatas.getUrl());
+                        mContext.startActivity(intent);
+                    });
+                    return simpleDraweeView;
                 };
                 mViewHolders.add(viewHolder);
             }

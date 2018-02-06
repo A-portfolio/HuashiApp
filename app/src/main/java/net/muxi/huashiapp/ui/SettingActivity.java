@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,10 +70,6 @@ public class SettingActivity extends ToolbarActivity {
     @Override
     public void onBackPressed() {
         saveAllValue();
-        ZhugeUtils.sendEvent("各消息提醒状态", "课程提醒" + mSwitchCourseRemind.isChecked() +
-                "图书馆消息提醒" + mSwitchLibraryRemind.isChecked() +
-                "学生卡消息提醒" + mSwitchCardRemind.isChecked() +
-                "成绩消息提醒" + mSwitchScoreRemind.isChecked());
         super.onBackPressed();
     }
 

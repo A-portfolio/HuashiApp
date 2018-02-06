@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.zhuge.analysis.stat.ZhugeSDK;
+import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
@@ -20,7 +20,6 @@ import net.muxi.huashiapp.event.NetErrorEvent;
 import net.muxi.huashiapp.event.RefreshSessionEvent;
 import net.muxi.huashiapp.ui.login.LoginPresenter;
 import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.ZhugeUtils;
 import net.muxi.huashiapp.widget.LoadingDialog;
 
 import rx.Subscription;
@@ -49,13 +48,13 @@ public class BaseActivity extends AppCompatActivity {
             mActionBar.setDisplayHomeAsUpEnabled(true);
         }
         getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-        sendComponentNameByZG();
+        //sendComponentNameByZG();
         retryObserver();
     }
 
     private void sendComponentNameByZG() {
          if (getComponentName() != null) {
-             ZhugeUtils.sendEvent(getComponentName());
+             //ZhugeUtils.sendEvent(getComponentName());
          }
         Logger.d(getComponentName().getClassName());
     }
@@ -95,8 +94,8 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //初始化分析跟踪
-        ZhugeSDK.getInstance().init(getApplicationContext());
+        //初始化友盟统计
+        MobclickAgent.onResume(this);
     }
 
 
@@ -106,7 +105,12 @@ public class BaseActivity extends AppCompatActivity {
         if (mCompositeSubscription != null) {
             mCompositeSubscription.unsubscribe();
         }
-        ZhugeSDK.getInstance().flush(getApplicationContext());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     public void showSnackbarLong(String msg) {

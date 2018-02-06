@@ -14,12 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.ui.more.FeedbackDialog;
 import net.muxi.huashiapp.util.NetStatus;
-import net.muxi.huashiapp.util.ZhugeUtils;
+//import net.muxi.huashiapp.util.ZhugeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -129,7 +131,7 @@ public class SuggestionActivity extends ToolbarActivity {
 //
     public void sendSuggestion(String str) {
         if (NetStatus.isConnected()) {
-            ZhugeUtils.sendEvent("意见提交", str);
+            MobclickAgent.onEvent(this,"意见提交");
             FeedbackDialog feedbackDialog = new FeedbackDialog();
             feedbackDialog.show(getSupportFragmentManager(), "feedback_dialog");
             feedbackDialog.setOnClickListener(new FeedbackDialog.OnClickListener() {

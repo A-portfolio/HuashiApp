@@ -1,7 +1,6 @@
 package net.muxi.huashiapp.ui.schedule;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.CourseId;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.event.AuditCourseEvent;
-import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.ToastUtil;
 
@@ -85,15 +83,34 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
             if(!positions.contains(position)){
                 positions.add(position);
                 String p[] = holder.mTVCoursePeriod.getText().toString().split("\n");
-                for(int i=0;i<p.length;i++) {
-                    //todo 这里有点问题! buggy!
-                    if (isConflict(p[i])) {
+                //如果是两门课程的话都要不冲突才可以
+                // 关于两门课程的解释 同一周的不同时间的同一门课程 教务处作为两门课程处理
+                //只用有一门课的情况:
+                if(p.length==1){
+                    if(isConflict(p[0])){ ToastUtil.showShort("课程冲突");
+                        holder.mBtnChooseCourse.setText("添加");
+                        positions.remove((Integer) (position));
+                        return;
+                    } else {
+                        addCourse(holder.mTVCoursePeriod.getText().toString(),auditCourse,holder);
+                        return;
+                    }
+                }
+                //如果是两门课
+                boolean bothConflict = false;
+                for(int i=0;i<p.length;i++){
+                    if(isConflict(p[i])){
+                        //只要一门冲突就都冲突
+                        bothConflict = true;
                         ToastUtil.showShort("课程冲突");
                         holder.mBtnChooseCourse.setText("添加");
                         positions.remove((Integer) (position));
-                    } else {
-                        addCourse(holder.mTVCoursePeriod.getText().toString(),auditCourse,holder);
+                        break;
                     }
+                }
+                if(!bothConflict){
+
+                    addCourse(holder.mTVCoursePeriod.getText().toString(),auditCourse,holder);
                 }
             }else {
                 //还需要删除这门课
@@ -106,7 +123,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
     //如果有两个时间的话需要上传两次时间和地点
     //todo 减少点击两次
     private void addCourse(String period,AuditCourse.ResBean auditCourse, AuditViewHolder holder){
-        if(period.contains("\n")){
+        if(isTwoClassWeek(period)){
             String peroids[] = period.split("\n");
             //week 如果没有修改的格式是 1-17周"\n"1-17周 这两个是一样的 所以在下面的week参数中选取一样的
             String week = holder.mTvCourseWeek.getText().toString().split("\n")[0];
@@ -117,11 +134,13 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
             mergeObservable.subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(courseId -> {
-                        RxBus.getDefault().send(new RefreshTableEvent());
-                        Log.d("AddSuccess", "addCourseNetWork: /");
                         ToastUtil.showShort("课程已经加入");
                         holder.mBtnChooseCourse.setText("已添加");
                         RxBus.getDefault().send(new AuditCourseEvent());
+                        Course c = convertCourse(auditCourse);
+                        //必须要在服务端发送回来的时候在本地放置id!
+                        c.setId(String.valueOf(courseId));
+                        dao.insertCourse(convertCourse(auditCourse));
                     },throwable -> {
                         throwable.printStackTrace();
                     },()->{});
@@ -131,6 +150,19 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         }
     }
 
+    //判断是不是一周两节课 是的话返回true
+    private boolean isTwoClassWeek(String week){
+        int counter = 0;
+        for(int i=0;i<week.length();i++){
+            if(week.charAt(i)=='\n')
+                counter++;
+        }
+        if(counter==2){
+            return true;
+        }else{
+            return false;
+        }
+    }
     //生成一个请求中使用的AuditCourse 在网络请求中会进行转化
     private List<AuditCourse.ResBean> createRequestCourse(AuditCourse.ResBean auditCourse,String[] period,String whenWeek){
         List<AuditCourse.ResBean>  courseList = new ArrayList<>();
@@ -160,9 +192,9 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(courseId -> {
-                    Log.d("AddSuccess", "addCourseNetWork: /");
-                    ToastUtil.showShort("课程已经加入");
+                    RxBus.getDefault().send(new AuditCourseEvent());
                     holder.mBtnChooseCourse.setText("已添加");
+                    ToastUtil.showShort("课程已经加入");
                     Course c = convertCourse(auditCourse);
                     //必须要在服务端发送回来的时候在本地放置id!
                     c.setId(String.valueOf(courseId));
@@ -199,6 +231,8 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
          */
         course.setColor(2);
         //课程名称
+        //随机给一个课程
+        course.id = mCourses.size()%3+"";
         course.setCourse(auditCourse.getName());
         course.setTeacher(auditCourse.getTeacher());
         String info[] = AuditCourse.getCourseTime(auditCourse.getWw().get(0).getWhen());

@@ -10,7 +10,7 @@ import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.tinker.loader.app.ApplicationLike;
 import com.tinkerpatch.sdk.TinkerPatch;
 import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike;
-import com.zhuge.analysis.stat.ZhugeSDK;
+import com.umeng.commonsdk.UMConfigure;
 
 import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.db.HuaShiDao;
@@ -24,6 +24,7 @@ import net.muxi.huashiapp.util.PreferenceUtil;
  */
 public class App extends Application {
 
+    public static String UMENG_APP_KEY = "58b55d3d8f4a9d21ce0013ed";
     public static String PHPSESSID ;
     public static Context sContext;
     //获取上次的已经登录的用户账号信息
@@ -55,9 +56,8 @@ public class App extends Application {
         sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
         PHPSESSID = sp.getString(PreferenceUtil.PHPSESSID,"");
         Fresco.initialize(this);
-
-        initZhuge();
         initBugly();
+        initUMeng();
     }
 
     private void initBugly() {
@@ -65,15 +65,8 @@ public class App extends Application {
             CrashReport.initCrashReport(getApplicationContext(), "900043675", BuildConfig.DEBUG);
         }
     }
-
-    private void initZhuge() {
-        //禁止收集用户手机号码默认为收集
-        ZhugeSDK.getInstance().disablePhoneNumber();
-        //禁止收集用户个人账户信息默认为收集
-        ZhugeSDK.getInstance().disableAccounts();
-        if (BuildConfig.DEBUG) {
-            ZhugeSDK.getInstance().openLog();
-        }
+    private void initUMeng(){
+        UMConfigure.init(this,UMENG_APP_KEY,null,UMConfigure.DEVICE_TYPE_PHONE,null);
     }
 
     public static Context getContext() {

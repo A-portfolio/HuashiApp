@@ -97,7 +97,6 @@ dependencies {
     compile 'com.facebook.fresco:animated-gif:1.1.0'
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
     compile 'com.tencent.bugly:crashreport:2.2.0'
-    //    compile 'com.zhuge.analysis:zhugeio:latest.integration'
     compile 'me.biubiubiu.justifytext:library:1.1'
     compile 'com.github.fengminchao:MultiStatusView:0.6'
     compile 'com.zhy:base-rvadapter:3.0.3'
@@ -112,6 +111,8 @@ dependencies {
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.7.14'
+    compile 'com.umeng.sdk:common:latest.integration'
+    compile 'com.umeng.sdk:analytics:latest.integration'
 }
 
 def buildTime() {

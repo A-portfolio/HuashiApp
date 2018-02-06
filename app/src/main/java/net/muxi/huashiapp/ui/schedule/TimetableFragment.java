@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseActivity;
@@ -34,7 +36,6 @@ import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.TimeTableUtil;
 import net.muxi.huashiapp.util.TipViewUtil;
-import net.muxi.huashiapp.util.ZhugeUtils;
 import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 
 import java.net.UnknownHostException;
@@ -315,7 +316,7 @@ public class TimetableFragment extends BaseFragment {
             case R.id.iv_select_week:
                 if (!selectedIvStatus) {
                     mWeekSelectedView.slideDown();
-                    ZhugeUtils.sendEvent("选择周数");
+                    MobclickAgent.onEvent(getActivity(),"选择周数");
                     mWeekSelectedView.setSelectedWeek(selectedWeek);
                     PreferenceUtil.saveInt(PreferenceUtil.CURWEEK,selectedWeek);
                     mShadeView.setVisibility(View.VISIBLE);

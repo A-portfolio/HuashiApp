@@ -18,13 +18,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.muxistudio.multistatusview.MultiStatusView;
+import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.ZhugeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -175,7 +175,7 @@ public class ElectricityDetailActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_change_room) {
-            ZhugeUtils.sendEvent("电费查询更换寝室", "更换寝室");
+            MobclickAgent.onEvent(this,"电费查询更换寝室");
             PreferenceUtil sp = new PreferenceUtil();
             sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
             Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);

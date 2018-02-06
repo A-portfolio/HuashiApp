@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
+import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
@@ -53,7 +54,6 @@ import net.muxi.huashiapp.util.NetStatus;
 import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.TipViewUtil;
 import net.muxi.huashiapp.util.VibratorUtil;
-import net.muxi.huashiapp.util.ZhugeUtils;
 import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 
 import java.util.ArrayList;
@@ -247,11 +247,11 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 ScoreSelectActivity.start(getActivity());
                             }
-                            ZhugeUtils.sendEvent("成绩查询", "成绩查询");
+                            MobclickAgent.onEvent(getActivity(),"成绩查询");;
                             break;
                         case "校园通知":
                             NewsActivity.start(getActivity());
-                            ZhugeUtils.sendEvent("通知公告", "通知公告");
+                            MobclickAgent.onEvent(getActivity(),"通知公告");
                             break;
                         case "电费":
                             String eleQuery = sp.getString(PreferenceUtil.ELE_QUERY_STRING);
@@ -260,7 +260,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 ElectricityDetailActivity.start(getActivity(), eleQuery);
                             }
-                            ZhugeUtils.sendEvent("电费查询", "电费查询");
+                            MobclickAgent.onEvent(getActivity(),"电费查询");
                             break;
                         case "校园卡":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
@@ -268,7 +268,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 CardActivity.start(getActivity());
                             }
-                            ZhugeUtils.sendEvent("学生卡查询", "学生卡查询");
+                            MobclickAgent.onEvent(getActivity(),"学生卡查询");
                             break;
                         case "算学分":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
@@ -276,7 +276,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 SelectCreditActivity.start(getActivity());
                             }
-                            ZhugeUtils.sendEvent("平均学分绩查询", "平均学分绩查询");
+                            MobclickAgent.onEvent(getActivity(),"平均学分绩查询");
                             break;
                         case "空闲教室":
                             String today = DateUtil.getWeek(new Date());
@@ -285,19 +285,19 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 StudyRoomActivity.start(getActivity());
                             }
-                            ZhugeUtils.sendEvent("空闲教室查询", "空闲教室查询");
+                            MobclickAgent.onEvent(getActivity(),"空闲教室查询");
                             break;
                         case "部门信息":
                             ApartmentActivity.start(getActivity());
-                            ZhugeUtils.sendEvent("部门信息查询", "部门信息查询");
+                            MobclickAgent.onEvent(getActivity(),"部门信息查询");
                             break;
                         case "校历":
                             CalendarActivity.start(getActivity());
-                            ZhugeUtils.sendEvent("校历查询", "校历查询");
+                            MobclickAgent.onEvent(getActivity(),"校历查询");
                             break;
                         case "常用网站":
                             WebsiteActivity.start(getActivity());
-                            ZhugeUtils.sendEvent("常用网站查询", "常用网站查询");
+                            MobclickAgent.onEvent(getActivity(),"查常用网站查询");
                             break;
                         case "学而":
                             Intent intent = WebViewActivity.newIntent(getActivity(), mProductData.get_product().get(0).getUrl(),
@@ -305,7 +305,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                                     mProductData.get_product().get(0).getIntro(),
                                     mProductData.get_product().get(0).getIcon());
                             startActivity(intent);
-                            ZhugeUtils.sendEvent("学而", "学而");
+                            MobclickAgent.onEvent(getActivity(),"学而");
                             break;
                         case "更多":
                             MoreActivity.start(getActivity());
