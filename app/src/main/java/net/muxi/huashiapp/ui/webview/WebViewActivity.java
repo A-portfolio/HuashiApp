@@ -19,6 +19,7 @@ import android.view.View;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.google.gson.Gson;
 import com.muxistudio.jsbridge.BridgeHandler;
+import com.muxistudio.jsbridge.BridgeWebClient;
 import com.muxistudio.jsbridge.BridgeWebView;
 import com.muxistudio.jsbridge.CallbackFunc;
 import com.sina.weibo.sdk.api.TextObject;
@@ -39,7 +40,6 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
 import com.tencent.tauth.Tencent;
 
 import net.muxi.huashiapp.App;
@@ -111,7 +111,8 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAppCacheEnabled(true);
         mWebview.setWebChromeClient(new BrowserClient());
-        mWebview.setWebViewClient(new WebViewClient() {
+        mWebview.setWebViewClient(new BridgeWebClient(mWebview) {
+        // mWebview.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView webView, String s) {
                 super.onPageFinished(webView, s);
