@@ -47,10 +47,9 @@
 -keep class com.daimajia.numberprogressbar.**{ *; }
 -keep class com.alipay.euler.**{ *; }
 -keep class com.tencent.bugly.**{ *; }
--keep class com.zhuge.analysis.**{ *;}
 -keep class me.biubiubiu.justifytext.**{ *;}
 -keep class com.muxistudio.jsbridge.** { *; }
--keep class com.umeng.commonsdk.** {*;}
+#-keep class com.umeng.commonsdk.** {*;}
 
 # rxjava
 -keep class rx.schedulers.Schedulers {
@@ -586,7 +585,6 @@
 -keep class com.tencent.tinker.loader.**
 
 -keepattributes SourceFile,LineNumberTable
-
 
 
 

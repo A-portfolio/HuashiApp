@@ -138,7 +138,7 @@ public interface RetrofitService {
     Observable<Response<Electricity>> getElectricity(@Body EleRequestData requestData);
 
     //蹭课 搜索蹭课结果:
-    @GET("http://120.77.246.73:1295/api/lesson/")
+    @GET("lesson/")
     Observable<AuditCourse> getAuditCourse(@QueryMap HashMap<String,String >map);
 
     //查询余额  除了学号其他传固定值 http://console.ccnu.edu

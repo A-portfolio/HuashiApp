@@ -35,6 +35,7 @@ public class LoginPresenter {
             boolean crawlerResult = false;
             try {
                 crawlerResult = CcnuCrawler2.performLogin(user.sid, user.password);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

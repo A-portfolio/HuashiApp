@@ -10,17 +10,19 @@ import java.util.regex.Pattern;
 //这个是一个很大很大的list
 public class AuditCourse {
     private List<ResBean> res;
+//    private List<ResBean> res;
+
     //获取(上课的时间和上课的节数)和(上课的周数)
-    public static String[] getCourseTime(String when){
-      String s = "((.*)\\{(.*)\\})";
-      Pattern pattern = Pattern.compile(s);
-      Matcher m = pattern.matcher(when);
-      String pieces [] = new String[2] ;
-      while(m.find()){
-          pieces[0] = m.group(2);
-          pieces[1] = m.group(3);
-      }
-      return pieces;
+    public static String[] getCourseTime(String when) {
+        String s = "((.*)\\{(.*)\\})";
+        Pattern pattern = Pattern.compile(s);
+        Matcher m = pattern.matcher(when);
+        String pieces[] = new String[2];
+        while (m.find()) {
+            pieces[0] = m.group(2);
+            pieces[1] = m.group(3);
+        }
+        return pieces;
     }
 
     public List<ResBean> getRes() {
@@ -31,15 +33,16 @@ public class AuditCourse {
         this.res = res;
     }
 
+
     public static class ResBean {
         /**
-         * name : 高级语言程序设计
-         * teacher : 魏开平
-         * ww : [{"where":"9201.0","when":"星期一第7-8节{1-17周(单)}"}]
-         * forwho : 计算机类
+         * name : 大学物理1
+         * teacher : 詹璇
+         * ww : [{"when":"星期一第3-4节{1-17周}","where":"9302.0"},{"when":"星期四第3-4节{1-17周(单)}","where":"9302.0"}]
+         * forwho : 电子信息类
          * rank : 2017
          * kind : 专业课
-         * no : 48740002.0
+         * no : 21110034.0
          */
 
         private String name;
@@ -108,20 +111,12 @@ public class AuditCourse {
 
         public static class WwBean {
             /**
-             * where : 9201.0
-             * when : 星期一第7-8节{1-17周(单)}
+             * when : 星期一第3-4节{1-17周}
+             * where : 9302.0
              */
 
-            private String where;
             private String when;
-
-            public String getWhere() {
-                return where;
-            }
-
-            public void setWhere(String where) {
-                this.where = where;
-            }
+            private String where;
 
             public String getWhen() {
                 return when;
@@ -129,6 +124,14 @@ public class AuditCourse {
 
             public void setWhen(String when) {
                 this.when = when;
+            }
+
+            public String getWhere() {
+                return where;
+            }
+
+            public void setWhere(String where) {
+                this.where = where;
             }
         }
     }

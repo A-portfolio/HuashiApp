@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="net.muxi.huashiapp">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="net.muxi.huashiapp">
+
+
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -35,6 +38,7 @@
     <uses-permission android:name="android.permission.BATTERY_STATS"/>
 
     <application
+
         android:name="net.muxi.huashiapp.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

@@ -28,18 +28,11 @@ android {
 
     signingConfigs {
         release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+            keyAlias 'huashiapp'
+            keyPassword 'ccnumuxi'
+            storeFile file('HuashiApp.jks')
+            storePassword 'ccnumuxi'
         }
-//        release {
-//
-//            keyAlias "huashiapp"
-//            keyPassword System.console() != null ? System.console().readLine("\nKey password: ") : ""
-//            storeFile file('/Users/HuashiApp.jks')
-//            storePassword System.console() != null ? System.console().readLine("\nKeystore password: ") : ""
-//        }
     }
 
     defaultConfig {
@@ -56,18 +49,22 @@ android {
 
     buildTypes {
         release {
+            //显示log
+//            debuggable true
             // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
             //Zipalign优化
             zipAlignEnabled true
             // 移除无用的resource文件
             shrinkResources true
-
             //混淆
             minifyEnabled true
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-
+        }
+        debug {
+            signingConfig signingConfigs.release
         }
     }
 
@@ -105,7 +102,7 @@ dependencies {
     compile 'com.tencent.tinker:tinker-android-anno:1.7.7'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.github.Muxi-Studio:YAJB-Android:1.0'
-//    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    //    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     testCompile 'org.robolectric:shadows-support-v4:3.3'
     testCompile 'org.robolectric:robolectric:3.3.1'
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'

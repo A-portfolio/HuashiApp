@@ -20,6 +20,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by kolibreath on 17-12-10.
@@ -35,7 +36,6 @@ public class CcnuCrawler2 {
     //在这个callback中拿到相关信息 valueoflt valueofexe
     private static CcnuService2 mCcnuService;
     private static String JSESSIONID_LOGIN_IN = null;
-//    private static HashMap<HttpUrl,List<Cookie>> cookieMap = new HashMap<>();
     private static List<Cookie> cookieStore = new ArrayList<>();
     private static String LIB_URL = "http://202.114.34.15/reader/hwthau.php";
     //初始登录时候暂时缓存一下cookie
@@ -45,7 +45,6 @@ public class CcnuCrawler2 {
             @Override
             public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
                 cookieStore.addAll(cookies);
-//                cookieMap.put(url,cookies);
                 for (int i=0;i<cookies.size();i++) {
                     if (cookies.get(i).domain().equals("account.ccnu.edu.cn")) {
                         if (cookies.get(i).name().equals("JSESSIONID")) {
@@ -137,7 +136,7 @@ public class CcnuCrawler2 {
                 .cookieJar(cookieJar)
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
-//                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .client(client2)
                 .baseUrl("https://ccnubox.muxixyz.com/api/")
                 .build();
