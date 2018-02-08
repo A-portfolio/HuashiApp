@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -80,8 +79,6 @@ public class CourseAuditResultActivity extends ToolbarActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(auditCourse -> {
-                    Log.d("wtf", "auditCourse"+auditCourse.toString());
-                    Log.d("wtf", "auditCourse.res "+auditCourse.getRes().toString());
                         if(!auditCourse.getRes().isEmpty()) {
                             renderCourse(auditCourse);
                             hideLoading();
