@@ -131,7 +131,7 @@ public class SuggestionActivity extends ToolbarActivity {
 //
     public void sendSuggestion(String str) {
         if (NetStatus.isConnected()) {
-            MobclickAgent.onEvent(this,"意见提交");
+            MobclickAgent.onEvent(this,"suggestion_hand_in");
             FeedbackDialog feedbackDialog = new FeedbackDialog();
             feedbackDialog.show(getSupportFragmentManager(), "feedback_dialog");
             feedbackDialog.setOnClickListener(new FeedbackDialog.OnClickListener() {

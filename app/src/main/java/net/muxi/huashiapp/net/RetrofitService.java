@@ -24,7 +24,7 @@ import net.muxi.huashiapp.common.data.SplashData;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.data.VersionData;
 import net.muxi.huashiapp.common.data.WebsiteData;
-import net.muxi.huashiapp.ui.schedule.AuditCourse;
+import net.muxi.huashiapp.common.data.AuditCourse;
 
 import java.util.HashMap;
 import java.util.List;

@@ -14,7 +14,6 @@ import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.DetailScores;
 import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
@@ -41,8 +40,6 @@ public class ScoreActivity extends ToolbarActivity {
 
     private ScoresAdapter mScoresAdapter;
     private List<Score> mScoresList = new ArrayList<>();
-    private List<DetailScores> mDetailScores = new ArrayList<>();
-
     private String year;
     private String term;
 
@@ -83,12 +80,10 @@ public class ScoreActivity extends ToolbarActivity {
                     .subscribe(scores -> renderScoreList(scores),
                             throwable -> {
                                 if (((HttpException) throwable).code() == 403) {
-//                                    Logger("forbidden", "loadGrade: ");
                                     throwable.printStackTrace();
                                     mMultiStatusView.showNetError();
                                     CcnuCrawler2.clearCookieStore();
                                     LoginPresenter presenter = new LoginPresenter();
-//                                CcnuCrawler2.initCrawler();
                                     presenter.login(App.sUser).subscribe(b-> {}
                                             ,thowable ->{},()->{});
                                     hideLoading();
@@ -103,12 +98,10 @@ public class ScoreActivity extends ToolbarActivity {
                 .subscribe(scores -> renderScoreList(scores),
                         throwable -> {
                             if (((HttpException) throwable).code() == 403) {
-//                                Log.d("forbidden", "loadGrade: ");
                                 throwable.printStackTrace();
                                 mMultiStatusView.showNetError();
                                 CcnuCrawler2.clearCookieStore();
                                 LoginPresenter presenter = new LoginPresenter();
-//                                CcnuCrawler2.initCrawler();
                                 presenter.login(App.sUser).subscribe(b-> {}
                                         ,thowable ->{},()->{});
                                 hideLoading();

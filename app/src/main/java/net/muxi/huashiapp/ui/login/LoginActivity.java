@@ -120,7 +120,6 @@ public class LoginActivity extends ToolbarActivity {
                             finish();
                             hideLoading();
                             App.saveUser(user);
-                            //统计用户数据
                             MobclickAgent.onProfileSignIn(user.getSid());
                             String target = getIntent().hasExtra("target") ?
                                     getIntent().getStringExtra("target") : null;
@@ -128,7 +127,6 @@ public class LoginActivity extends ToolbarActivity {
                                 RxBus.getDefault().send(new LoginSuccessEvent(target));
                             }
                             else{
-
                                 RxBus.getDefault().send(new LibLoginEvent());
                                 }
                         } else {
@@ -143,9 +141,9 @@ public class LoginActivity extends ToolbarActivity {
                         showErrorSnackbarShort(R.string.tip_check_net);
                     }, () -> hideLoading());
             if (type.equals("info"))
-                MobclickAgent.onEvent(this,"登录");
+                MobclickAgent.onEvent(this,"login");
             else {
-                MobclickAgent.onEvent(this,"图书馆登录");}
+                MobclickAgent.onEvent(this,"lib_login");}
         }
     }
 

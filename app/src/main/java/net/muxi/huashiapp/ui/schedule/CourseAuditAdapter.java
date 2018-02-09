@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
+import net.muxi.huashiapp.common.data.AuditCourse;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.CourseId;
 import net.muxi.huashiapp.common.db.HuaShiDao;
@@ -90,6 +91,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                     if(isConflict(p[0])){ ToastUtil.showShort("课程冲突");
                         holder.mBtnChooseCourse.setText("添加");
                         positions.remove((Integer) (position));
+                        //上传事件
                         return;
                     } else {
                         addCourse(holder.mTVCoursePeriod.getText().toString(),auditCourse,holder);
@@ -109,7 +111,6 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                     }
                 }
                 if(!bothConflict){
-
                     addCourse(holder.mTVCoursePeriod.getText().toString(),auditCourse,holder);
                 }
             }else {
@@ -120,8 +121,9 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         });
     }
 
+    //设置不同课程的提示
     //如果有两个时间的话需要上传两次时间和地点
-    //todo 减少点击两次
+
     private void addCourse(String period,AuditCourse.ResBean auditCourse, AuditViewHolder holder){
         if(isTwoClassWeek(period)){
             String peroids[] = period.split("\n");
@@ -139,6 +141,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                         RxBus.getDefault().send(new AuditCourseEvent());
                         Course c = convertCourse(auditCourse);
                         //必须要在服务端发送回来的时候在本地放置id!
+                        //todo 这里的策略有可能须要更改
                         c.setId(String.valueOf(courseId));
                         dao.insertCourse(convertCourse(auditCourse));
                     },throwable -> {
@@ -231,8 +234,6 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
          */
         course.setColor(2);
         //课程名称
-        //随机给一个课程
-        course.id = mCourses.size()%3+"";
         course.setCourse(auditCourse.getName());
         course.setTeacher(auditCourse.getTeacher());
         String info[] = AuditCourse.getCourseTime(auditCourse.getWw().get(0).getWhen());

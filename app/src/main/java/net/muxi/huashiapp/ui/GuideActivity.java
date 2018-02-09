@@ -42,7 +42,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener{
     private List<View> mViews;
     private ImageView[] indicatorImgs;
     private static final int GUIDE_PAGE_COUNT = 3;
-    private int[] imgs = new int[]{R.drawable.bg_guide_1, R.drawable.bg_guide_2,R.drawable.bg_guide_3};
+    private int[] imgs = new int[]{R.drawable.bg_guide_4 , R.drawable.bg_guide_5};
 
     private Button mButton;
 
@@ -56,20 +56,18 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
         ButterKnife.bind(this);
-
-
         initData();
         initView();
     }
 
     public void initData() {
-        indicatorImgs = new ImageView[GUIDE_PAGE_COUNT];
-        mViews = new ArrayList<View>(GUIDE_PAGE_COUNT);
-        for (int i = 0; i < GUIDE_PAGE_COUNT; i++) {
+        indicatorImgs = new ImageView[imgs.length];
+        mViews = new ArrayList<View>(imgs.length);
+        for (int i = 0; i < imgs.length; i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.item_gudie, null);
             view.setBackgroundResource(R.color.colorWhite);
             ((SimpleDraweeView) view.findViewById(R.id.guide_image)).setImageURI(Uri.parse("res:/" + imgs[i]));
-            if ( i == 2){
+            if ( i == imgs.length-1){
                 mButton = (Button) view.findViewById(R.id.btn_enter);
                 mButton.setVisibility(View.VISIBLE);
                 mButton.setTag("enter");

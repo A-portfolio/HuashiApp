@@ -49,7 +49,7 @@
 -keep class com.tencent.bugly.**{ *; }
 -keep class me.biubiubiu.justifytext.**{ *;}
 -keep class com.muxistudio.jsbridge.** { *; }
-#-keep class com.umeng.commonsdk.** {*;}
+-keep class com.umeng.commonsdk.** {*;}
 
 # rxjava
 -keep class rx.schedulers.Schedulers {

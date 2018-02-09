@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.data.AuditCourse;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.net.CampusFactory;
 

@@ -38,8 +38,6 @@ import rx.schedulers.Schedulers;
 public class CalendarActivity extends ToolbarActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    //    @BindView(R.id.img_calendar)
-//    ImageView mImgCalendar;
     @BindView(R.id.img_empty)
     ImageView mImgEmpty;
     @BindView(R.id.tv_empty)

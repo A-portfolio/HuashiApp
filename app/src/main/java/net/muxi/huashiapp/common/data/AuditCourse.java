@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.schedule;
+package net.muxi.huashiapp.common.data;
 
 import java.util.List;
 import java.util.regex.Matcher;

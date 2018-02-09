@@ -40,6 +40,7 @@ import net.muxi.huashiapp.ui.electricity.ElectricityActivity;
 import net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.news.NewsActivity;
+import net.muxi.huashiapp.ui.schedule.CourseAuditSearchActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomBlankActivity;
@@ -90,6 +91,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     public static final String SCORE_ACTIVITY = "score";
     public static final String CARD_ACTIVITY = "card";
     public static final String CREDIT_ACTIVITY = "credit";
+    public static final String COURSE_AUDIT_SEARCH_ACTIVITY = "course_search";
 
 
     public static MainFragment newInstance() {
@@ -112,6 +114,9 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             break;
                         case CREDIT_ACTIVITY:
                             SelectCreditActivity.start(getContext());
+                            break;
+                        case COURSE_AUDIT_SEARCH_ACTIVITY:
+                            CourseAuditSearchActivity.start(getContext());
                             break;
                     }
                 }, Throwable::printStackTrace);
@@ -179,6 +184,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
             mItemDatas.add(new ItemData("校园卡", R.drawable.ic_card + "", false));
             mItemDatas.add(new ItemData("算学分", R.drawable.ic_credit + "", false));
             mItemDatas.add(new ItemData("空闲教室", R.drawable.ic_empty_room + "", false));
+            mItemDatas.add(new ItemData("蹭课",R.drawable.ic_course_audit+"",false));
             mItemDatas.add(new ItemData("部门信息", R.drawable.ic_apartment + "", false));
             mItemDatas.add(new ItemData("校历", R.drawable.ic_calendar + "", false));
             mItemDatas.add(new ItemData("常用网站", R.drawable.ic_net + "", false));
@@ -190,16 +196,16 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     private void initHintView() {
         if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN, true)) {
             IndicatedView indicatedView = new IndicatedView(getContext());
-            indicatedView.setTipViewText("快看看底部都有什么功能吧!");
+            indicatedView.setTipViewText("试试图书馆功能吧!");
             TipViewUtil.addToContent(getContext(), indicatedView, DIRECTION_UP,
                     DimensUtil.getScreenWidth() / 4,
                     DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight()
                             - DimensUtil.dp2px(98));
             IndicatedView indicatedView1 = new IndicatedView(getContext());
-            indicatedView1.setTipViewText("长按可以任意挪动位置噢");
+            indicatedView1.setTipViewText("新加入了蹭课功能哟!");
             TipViewUtil.addToContent(getContext(), indicatedView1, DIRECTION_UP,
                     DimensUtil.getScreenWidth() / 4,
-                    (DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight()) / 3);
+                    (DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight())/2);
             sp.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN, false);
             return;
         }
@@ -247,11 +253,11 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 ScoreSelectActivity.start(getActivity());
                             }
-                            MobclickAgent.onEvent(getActivity(),"成绩查询");;
+                            MobclickAgent.onEvent(getActivity(),"score_query");;
                             break;
                         case "校园通知":
                             NewsActivity.start(getActivity());
-                            MobclickAgent.onEvent(getActivity(),"通知公告");
+                            MobclickAgent.onEvent(getActivity(),"notice_info_query");
                             break;
                         case "电费":
                             String eleQuery = sp.getString(PreferenceUtil.ELE_QUERY_STRING);
@@ -260,7 +266,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 ElectricityDetailActivity.start(getActivity(), eleQuery);
                             }
-                            MobclickAgent.onEvent(getActivity(),"电费查询");
+                            MobclickAgent.onEvent(getActivity(),"ele_fee_query");
                             break;
                         case "校园卡":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
@@ -268,7 +274,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 CardActivity.start(getActivity());
                             }
-                            MobclickAgent.onEvent(getActivity(),"学生卡查询");
+                            MobclickAgent.onEvent(getActivity(),"card_query");
                             break;
                         case "算学分":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
@@ -276,7 +282,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 SelectCreditActivity.start(getActivity());
                             }
-                            MobclickAgent.onEvent(getActivity(),"平均学分绩查询");
+                            MobclickAgent.onEvent(getActivity(),"average_credit_query");
                             break;
                         case "空闲教室":
                             String today = DateUtil.getWeek(new Date());
@@ -285,19 +291,19 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 StudyRoomActivity.start(getActivity());
                             }
-                            MobclickAgent.onEvent(getActivity(),"空闲教室查询");
+                            MobclickAgent.onEvent(getActivity(),"spare_room_query");
                             break;
                         case "部门信息":
                             ApartmentActivity.start(getActivity());
-                            MobclickAgent.onEvent(getActivity(),"部门信息查询");
+                            MobclickAgent.onEvent(getActivity(),"apartment_info_query");
                             break;
                         case "校历":
                             CalendarActivity.start(getActivity());
-                            MobclickAgent.onEvent(getActivity(),"校历查询");
+                            MobclickAgent.onEvent(getActivity(),"calendar_hand_in");
                             break;
                         case "常用网站":
                             WebsiteActivity.start(getActivity());
-                            MobclickAgent.onEvent(getActivity(),"查常用网站查询");
+                            MobclickAgent.onEvent(getActivity(),"frequent_web_query");
                             break;
                         case "学而":
                             Intent intent = WebViewActivity.newIntent(getActivity(), mProductData.get_product().get(0).getUrl(),
@@ -305,11 +311,20 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                                     mProductData.get_product().get(0).getIntro(),
                                     mProductData.get_product().get(0).getIcon());
                             startActivity(intent);
-                            MobclickAgent.onEvent(getActivity(),"学而");
+                            MobclickAgent.onEvent(getActivity(),"xueer");
+                            break;
+                        case "蹭课":
+                            if(TextUtils.isEmpty(App.sUser.getSid())){
+                                LoginActivity.start(getActivity(),"info",COURSE_AUDIT_SEARCH_ACTIVITY);
+                            }else {
+                                CourseAuditSearchActivity.start(getActivity());
+                                MobclickAgent.onEvent(getActivity(), "course_audit");
+                            }
                             break;
                         case "更多":
                             MoreActivity.start(getActivity());
                             break;
+
                     }
                 }
             }

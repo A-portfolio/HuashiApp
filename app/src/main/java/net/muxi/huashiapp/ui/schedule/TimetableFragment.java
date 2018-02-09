@@ -316,7 +316,7 @@ public class TimetableFragment extends BaseFragment {
             case R.id.iv_select_week:
                 if (!selectedIvStatus) {
                     mWeekSelectedView.slideDown();
-                    MobclickAgent.onEvent(getActivity(),"选择周数");
+                    MobclickAgent.onEvent(getActivity(),"week_select");
                     mWeekSelectedView.setSelectedWeek(selectedWeek);
                     PreferenceUtil.saveInt(PreferenceUtil.CURWEEK,selectedWeek);
                     mShadeView.setVisibility(View.VISIBLE);

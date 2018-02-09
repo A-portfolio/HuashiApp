@@ -245,10 +245,10 @@ public class CourseEditActivity extends ToolbarActivity {
             return;
         }
         if (isAdd) {
-            MobclickAgent.onEvent(this,"课程添加");
+            MobclickAgent.onEvent(this,"course_add");
             addCourse();
         } else {
-            MobclickAgent.onEvent(this,"课程修改");
+            MobclickAgent.onEvent(this,"course_edit");
             updateCourse();
         }
     }

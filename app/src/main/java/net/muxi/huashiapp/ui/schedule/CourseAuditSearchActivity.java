@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 
@@ -18,7 +20,7 @@ import butterknife.OnClick;
  * Created by kolibreath on 18-2-2.
  */
 
-public class CourseAuditSearchActivity extends ToolbarActivity{
+public class  CourseAuditSearchActivity extends ToolbarActivity{
 
     @BindView(R.id.et_course)
     EditText mEtSearch;
@@ -38,6 +40,7 @@ public class CourseAuditSearchActivity extends ToolbarActivity{
         intent.putExtra("courseTeacher",teacher);
         intent.putExtra("courseSubject",subject);
         CourseAuditResultActivity.start(this,intent);
+        MobclickAgent.onEvent(this,"course_audit");
         finish();
     }
 

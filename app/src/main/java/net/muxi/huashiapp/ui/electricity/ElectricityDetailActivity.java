@@ -175,7 +175,8 @@ public class ElectricityDetailActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_change_room) {
-            MobclickAgent.onEvent(this,"电费查询更换寝室");
+            //其实我也不知道这个事件有什么作用
+            MobclickAgent.onEvent(this,"ele_fee_change_dom_query");
             PreferenceUtil sp = new PreferenceUtil();
             sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
             Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);
