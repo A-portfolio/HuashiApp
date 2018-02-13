@@ -40,10 +40,10 @@ import net.muxi.huashiapp.ui.electricity.ElectricityActivity;
 import net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.news.NewsActivity;
-import net.muxi.huashiapp.ui.schedule.CourseAuditSearchActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomBlankActivity;
+import net.muxi.huashiapp.ui.timeTable.CourseAuditSearchActivity;
 import net.muxi.huashiapp.ui.website.WebsiteActivity;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
 import net.muxi.huashiapp.util.ACache;
@@ -174,7 +174,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
     private void setData() {
         ArrayList<ItemData> items = (ArrayList<ItemData>) ACache.get(getContext()).getAsObject("items");
-
         if (items != null) {
             mItemDatas.addAll(items);
         } else {
@@ -207,6 +206,10 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                     DimensUtil.getScreenWidth() / 4,
                     (DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight())/2);
             sp.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN, false);
+
+            //提示教务系统坏掉了
+            BulletinDialog dialog = BulletinDialog.newInstance();
+            dialog.show(getActivity().getSupportFragmentManager(),"bulletin_fragment");
             return;
         }
     }
@@ -315,7 +318,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             break;
                         case "蹭课":
                             if(TextUtils.isEmpty(App.sUser.getSid())){
-                                LoginActivity.start(getActivity(),"info",COURSE_AUDIT_SEARCH_ACTIVITY);
+                                LoginActivity.start(getActivity(),"info",COURSE_AUDIT_SEARCH_ACTIVITY   );
                             }else {
                                 CourseAuditSearchActivity.start(getActivity());
                                 MobclickAgent.onEvent(getActivity(), "course_audit");

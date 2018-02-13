@@ -26,6 +26,7 @@ import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
+import net.muxi.huashiapp.util.PreferenceUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -114,11 +115,15 @@ public class LoginActivity extends ToolbarActivity {
         showLoading();
         if (type.equals("info")||type.equals("lib")) {
             presenter.login(user)
-                    .subscribe(b -> {
-                        boolean result = (boolean) b;
-                        if (result) {
+                    .subscribe(s -> {
+                        int loginCode = Integer.parseInt((String)s);
+                        //0 表示只登陆成功了信息门户
+                        if (loginCode>=0) {
                             finish();
                             hideLoading();
+                            //保存登录状态
+                            PreferenceUtil.saveString(PreferenceUtil.LOGIN_STATUS,loginCode+"");
+                            App.sLoginStatus = loginCode+"";
                             App.saveUser(user);
                             MobclickAgent.onProfileSignIn(user.getSid());
                             String target = getIntent().hasExtra("target") ?
@@ -147,23 +152,6 @@ public class LoginActivity extends ToolbarActivity {
         }
     }
 
-    /*
-    // 验证码，应该在续借图书的地方
-    private void showCaptcha(String type) {
-        if (type.equals("lib")) {
-            showLoading();
-            RxBus.getDefault().toObservable(VerifyCodeSuccessEvent.class)
-                    .subscribe(verifyCodeSuccessEvent -> {
-                        VerifyCodeView view = (VerifyCodeView) findViewById(R.id.vcv_login);
-                        view.setVisibility(View.VISIBLE);
-                        view.setVisible();
-                    });
-            //vcvParams.setMargins();
-        }else{
-            return;
-        }
-    }
-    */
 
     private void setLoginListener(){
         RxBus.getDefault().toObservable(RefreshSessionEvent.class)

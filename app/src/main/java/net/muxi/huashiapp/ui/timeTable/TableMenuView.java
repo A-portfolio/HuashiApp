@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.schedule;
+package net.muxi.huashiapp.ui.timeTable;
 
 import android.content.Context;
 import android.text.Html;

@@ -1,8 +1,6 @@
-package net.muxi.huashiapp.ui.schedule;
+package net.muxi.huashiapp.ui.timeTable;
 
 import net.muxi.huashiapp.common.data.Course;
-
-import java.util.List;
 
 /**
  * Created by ybao on 17/1/27.

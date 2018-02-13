@@ -1,8 +1,7 @@
-package net.muxi.huashiapp.ui.schedule;
+package net.muxi.huashiapp.ui.timeTable;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;

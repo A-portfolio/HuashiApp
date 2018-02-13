@@ -15,20 +15,20 @@
         android:textColor="@color/grey"
         android:textSize="10sp"/>
 
-    <net.muxi.huashiapp.ui.schedule.RefreshView
+    <net.muxi.huashiapp.ui.timeTable.RefreshView
         android:id="@+id/refresh_view"
         android:layout_width="match_parent"
         android:layout_marginTop="-100dp"
         android:layout_height="100dp"
         android:visibility="gone"/>
 
-    <net.muxi.huashiapp.ui.schedule.AddNewCourseView
+    <net.muxi.huashiapp.ui.timeTable.AddNewCourseView
         android:id="@+id/view_curweek_set"
         android:layout_width="match_parent"
         android:layout_height="196dp"
         android:visibility="gone"/>
 
-    <net.muxi.huashiapp.ui.schedule.TimeTableLayout
+    <net.muxi.huashiapp.ui.timeTable.TimeTableLayout
         android:id="@+id/layout_table"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             android:layout_below="@+id/divider"
             android:background="@color/colorWhite"/>
 
-        <net.muxi.huashiapp.ui.schedule.TableContent
+        <net.muxi.huashiapp.ui.timeTable.TableContent
             android:id="@+id/timetable_content"
             android:layout_width="455dp"
             android:layout_height="798dp"
@@ -70,7 +70,7 @@
             android:layout_marginTop="41dp"
             />
 
-        <net.muxi.huashiapp.ui.schedule.WeekLayout
+        <net.muxi.huashiapp.ui.timeTable.WeekLayout
             android:id="@+id/week_layout"
             android:layout_width="455dp"
             android:layout_height="41dp"
@@ -78,7 +78,7 @@
             android:layout_marginLeft="49dp"
             />
 
-        <net.muxi.huashiapp.ui.schedule.CourseTimeLayout
+        <net.muxi.huashiapp.ui.timeTable.CourseTimeLayout
             android:id="@+id/course_time_layout"
             android:layout_width="49dp"
             android:layout_height="798dp"
@@ -86,7 +86,7 @@
             android:layout_marginTop="41dp"
             />
 
-    </net.muxi.huashiapp.ui.schedule.TimeTableLayout>
+    </net.muxi.huashiapp.ui.timeTable.TimeTableLayout>
 
 
 </merge>

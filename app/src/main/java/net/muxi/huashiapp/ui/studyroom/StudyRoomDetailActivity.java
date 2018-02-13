@@ -91,7 +91,8 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     private void loadData() {
         showLoading();
         CampusFactory.getRetrofitService()
-                .getClassRoom(getWeek(mQuery), getDayValue(mQuery), getBuidingValue(mQuery))
+                .getClassRoom(getWeek(mQuery), getDayValue(mQuery)
+                        , getBuidingValue(mQuery))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(classRoom -> {
@@ -161,8 +162,6 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context1.setTextColor(getResources().getColor(R.color.colorBlack));
                 context1.setText(mClassRoom.getValue1().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-//                params.rightMargin = DimensUtil.dp2px(68f);
-//                params.width = DimensUtil.getScreenWidth() / 4;
                 params.width = 2 * mGridClassroomEight.getWidth() / 7;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomEight.addView(context1, params);
@@ -211,7 +210,6 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context4.setTextColor(getResources().getColor(R.color.colorBlack));
                 context4.setText(mClassRoom.getValue7().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-//                params.width = DimensUtil.dp2px(42f);
                 params.width = 2 * mGridClassroomEight.getWidth() / 7;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomFourteen.addView(context4, params);

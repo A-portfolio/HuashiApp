@@ -29,21 +29,20 @@ public class LoginPresenter {
             }.start();
 
     }
+    //在完成登陆之后无论是否成功都清除了 cookieStore
     public Observable login(User user){
-        return Observable.create((Observable.OnSubscribe<Boolean>) subscriber -> {
+        return Observable.create((Observable.OnSubscribe<String>) subscriber -> {
             subscriber.onStart();
-            boolean crawlerResult = false;
+            String crawlerResult = "-1";
             try {
                 crawlerResult = CcnuCrawler2.performLogin(user.sid, user.password);
-
+                CcnuCrawler2.clearCookieStore();
+                CcnuCrawler2.loginCode = "-1";
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//            if (crawlerResult)
-                subscriber.onNext(crawlerResult);
-                    subscriber.onCompleted();
-//                return;
-//            }
+            subscriber.onNext(crawlerResult);
+            subscriber.onCompleted();
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

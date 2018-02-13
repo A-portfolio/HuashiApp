@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context="net.muxi.huashiapp.ui.schedule.CourseEditActivity">
+    tools:context="net.muxi.huashiapp.ui.timeTable.CourseEditActivity">
 
 
     <include

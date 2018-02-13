@@ -45,8 +45,6 @@ public class LibraryMainFragment extends BaseFragment {
         ButterKnife.bind(this,view);
         mToolbar.setTitle(R.string.library);
         mEtSearch.setOnClickListener(v -> LibrarySearchActivity.start(getContext()));
-//        mBtnLoginLib.setOnClickListener(v->{
-//            ToastUtil.showShort("我的图书馆功能还在修复中~尽请期待");});
         mBtnLoginLib.setOnClickListener(v -> LoginActivity.start(getContext(),"lib"));
         return view;
     }

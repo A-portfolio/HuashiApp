@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.schedule;
+package net.muxi.huashiapp.ui.timeTable;
 
 /**
  * Created by ybao on 16/5/10.

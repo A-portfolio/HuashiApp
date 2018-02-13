@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.schedule;
+package net.muxi.huashiapp.ui.timeTable;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseActivity;
@@ -31,6 +32,7 @@ import net.muxi.huashiapp.event.RefreshFinishEvent;
 import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
+import net.muxi.huashiapp.ui.login.LoginPresenter;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -229,7 +231,33 @@ public class TimetableFragment extends BaseFragment {
         return courseList;
     }
     public void loadTable() {
-        CampusFactory.getRetrofitService().getSchedule()
+        //如果教务系统在先前的情况下没有的登录成功时:
+        //如果教务系统没有异常的话loginCode 将会是 3 或者 2
+        int loginStatus  = Integer.parseInt(App.sLoginStatus);
+        if(loginStatus==0||loginStatus==1){
+            rx.Observable o = new LoginPresenter().login(App.sUser);
+            o.subscribe(s->{
+                int loginCode = Integer.parseInt((String)s);
+                handlingRefresh = false;
+                if(loginCode!=-1) {
+                    if (loginCode == 0 || loginCode == 1) {
+                        showSnackBarShort(getResources().getString(R.string.error_xk));
+                        RxBus.getDefault().send(new RefreshFinishEvent(false));
+                    } else {
+                        getTable();
+                        PreferenceUtil.saveString(PreferenceUtil.LOGIN_STATUS, (String) s);
+                        App.sLoginStatus = "-1";
+                    }
+                }
+            },throwable -> {},
+                    ()->{});
+        }else {
+           getTable();
+        }
+    }
+
+    private void getTable(){
+        CampusFactory.getRetrofitService().getTimeTable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(courseList -> {
@@ -245,15 +273,15 @@ public class TimetableFragment extends BaseFragment {
                     if (handlingRefresh) {
                         handlingRefresh = false;
                         //没有联网会抛出这个异常
-                        if(throwable instanceof UnknownHostException)
+                        if (throwable instanceof UnknownHostException)
                             RxBus.getDefault().send(new RefreshFinishEvent(false
                                     , RefreshFinishEvent.SELF_DEFINE_CODE));
                     }
-                        int code = ((HttpException) throwable).code();
-                        if (code == 401) {
-                            RxBus.getDefault().send(new RefreshFinishEvent(false
-                                    , code));
-                        }
+                    int code = ((HttpException) throwable).code();
+                    if (code == 401) {
+                        RxBus.getDefault().send(new RefreshFinishEvent(false
+                                , code));
+                    }
 
                 });
     }

@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.schedule;
+package net.muxi.huashiapp.ui.timeTable;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -87,7 +87,7 @@ public class TimeTable extends RelativeLayout {
                         mRefreshView.setRefreshResult(R.string.tip_refresh_ok);
                         mRefreshView.setRefreshViewBackground(R.color.colorAccent);
                     } else{
-                        mRefreshView.setRefreshResult(R.string.tip_refresh_retry);
+                        mRefreshView.setRefreshResult(R.string.tip_refresh_fail);
                         mRefreshView.setRefreshViewBackground(R.color.red);
                     }
                     smoothScrollTo(0, -REFRESH_RESULT_VIEW_HEIGHT);
@@ -230,7 +230,6 @@ public class TimeTable extends RelativeLayout {
                 } else if (mRefreshView.status == RefreshView.Status.RELEASE_TO_REFRESH) {
                     mRefreshView.setRefreshing();
                     smoothScrollTo(0, -REFRESHING_VIEW_HEIGHT);
-//                    RxBus.getDefault().send(new RefreshTableEvent());
                     if (mOnRefreshListener != null){
                         mOnRefreshListener.onRefresh();
                     }

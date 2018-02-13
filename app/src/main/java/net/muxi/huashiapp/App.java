@@ -24,6 +24,7 @@ import net.muxi.huashiapp.util.PreferenceUtil;
  */
 public class App extends Application {
 
+    public static String sLoginStatus = "-1";
     public static String UMENG_APP_KEY = "58b55d3d8f4a9d21ce0013ed";
     public static String PHPSESSID ;
     public static Context sContext;

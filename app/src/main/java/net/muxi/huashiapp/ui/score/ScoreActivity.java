@@ -18,13 +18,13 @@ import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
 import net.muxi.huashiapp.ui.login.LoginPresenter;
+import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -73,41 +73,47 @@ public class ScoreActivity extends ToolbarActivity {
 
     private void loadGrade(String term) {
         showLoading();
+        int loginStatus = Integer.parseInt(PreferenceUtil.getString(PreferenceUtil.LOGIN_STATUS));
+        if(loginStatus==0||loginStatus==1) {
+            showErrorSnackbarShort(getResources().getString(R.string.error_xk));
+            hideLoading();
+        }
         if (term.equals("0")) {
-            CampusFactory.getRetrofitService().getScores(year,"")
+            CampusFactory.getRetrofitService().getScores(year, "")
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
-                    .subscribe(scores -> renderScoreList(scores),
+                    .subscribe(this::renderScoreList,
                             throwable -> {
-                                if (((HttpException) throwable).code() == 403) {
+                                throwable.printStackTrace();
+                                    mMultiStatusView.showNetError();
+                                    CcnuCrawler2.clearCookieStore();
+                                    LoginPresenter presenter = new LoginPresenter();
+                                    presenter.login(App.sUser).subscribe(s ->
+                                            {App.sLoginStatus = (String)s;
+                                    PreferenceUtil.saveString(PreferenceUtil.LOGIN_STATUS,(String)s);}
+                                        , thowable -> {}, () -> {});
+                                    hideLoading();
+                            }, this::hideLoading);
+        } else {
+            CampusFactory.getRetrofitService().getScores(year, term)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::renderScoreList,
+                            throwable -> {
+//                                if (((HttpException) throwable).code() == 403) {
                                     throwable.printStackTrace();
                                     mMultiStatusView.showNetError();
                                     CcnuCrawler2.clearCookieStore();
                                     LoginPresenter presenter = new LoginPresenter();
-                                    presenter.login(App.sUser).subscribe(b-> {}
-                                            ,thowable ->{},()->{});
+                                    presenter.login(App.sUser).subscribe(s ->
+                                            {App.sLoginStatus = (String)s;
+                                                PreferenceUtil.saveString(PreferenceUtil.LOGIN_STATUS,(String)s);}
+                                            , thowable -> {}, () -> {});
                                     hideLoading();
-                                }
-                        }, () -> hideLoading());
-            return;
+//                                }
+                            },
+                            this::hideLoading);
         }
-
-        CampusFactory.getRetrofitService().getScores(year, term)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(scores -> renderScoreList(scores),
-                        throwable -> {
-                            if (((HttpException) throwable).code() == 403) {
-                                throwable.printStackTrace();
-                                mMultiStatusView.showNetError();
-                                CcnuCrawler2.clearCookieStore();
-                                LoginPresenter presenter = new LoginPresenter();
-                                presenter.login(App.sUser).subscribe(b-> {}
-                                        ,thowable ->{},()->{});
-                                hideLoading();
-                            }
-                        },
-                        ()->hideLoading());
     }
 
 

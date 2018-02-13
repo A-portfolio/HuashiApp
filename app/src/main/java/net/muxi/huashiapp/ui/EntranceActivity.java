@@ -24,7 +24,7 @@ import net.muxi.huashiapp.util.PreferenceUtil;
  * Created by ybao on 16/7/30.
  */
 //这里是整个app刚刚进去的闪屏活动！
-public class EnteranceActivity extends BaseActivity implements View.OnClickListener {
+public class EntranceActivity extends BaseActivity implements View.OnClickListener {
 
     private SimpleDraweeView mDrawee;
     private long mSplashUpdate;
@@ -81,8 +81,8 @@ public class EnteranceActivity extends BaseActivity implements View.OnClickListe
 
     public void startMainActivityDelay(long delayMills){
         new Handler().postDelayed(() ->{
-            MainActivity.start(EnteranceActivity.this);
-            EnteranceActivity.this.finish();
+            MainActivity.start(EntranceActivity.this);
+            EntranceActivity.this.finish();
         },delayMills);
     }
 

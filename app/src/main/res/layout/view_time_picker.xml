@@ -5,7 +5,7 @@
                 android:paddingLeft="24dp"
                 android:paddingRight="24dp">
 
-    <net.muxi.huashiapp.ui.schedule.LargeSizeNumberPicker
+    <net.muxi.huashiapp.ui.timeTable.LargeSizeNumberPicker
         android:id="@+id/np_weekday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,7 +13,7 @@
         android:descendantFocusability="blocksDescendants"
         android:theme="@style/AppTheme.Picker"/>
 
-    <net.muxi.huashiapp.ui.schedule.LargeSizeNumberPicker
+    <net.muxi.huashiapp.ui.timeTable.LargeSizeNumberPicker
         android:id="@+id/np_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:layout_toRightOf="@+id/np_start"
         android:text="至"/>
 
-    <net.muxi.huashiapp.ui.schedule.LargeSizeNumberPicker
+    <net.muxi.huashiapp.ui.timeTable.LargeSizeNumberPicker
         android:id="@+id/np_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

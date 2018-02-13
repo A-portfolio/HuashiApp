@@ -7,6 +7,9 @@ import java.io.File;
  */
 public class Constants {
 
+    //数字后面是成功登录的网站的名称
+    //3: 信息门户 教务系统 图书馆  2:信息门户 教务系统 1:信息门户 图书馆 0:信息门户 -1:全部登录失败
+    public static final String LOGIN_CODE[] = {"3","2","1","0","-1"};
     public static final String LIBRARY_QUERY_TEXT = "queryText";
     public static final String TIP_CHECK_NET = "当前网络不可用,请检查网络连接";
     public static final String ALARMTIME = "alarmTime";

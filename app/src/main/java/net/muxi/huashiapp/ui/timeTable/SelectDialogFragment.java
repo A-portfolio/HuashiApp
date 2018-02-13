@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.schedule;
+package net.muxi.huashiapp.ui.timeTable;
 
 import static net.muxi.huashiapp.util.TimeTableUtil.isContinuOusWeeks;
 import static net.muxi.huashiapp.util.TimeTableUtil.isDoubleWeeks;
@@ -14,7 +14,6 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.TextView;
@@ -23,7 +22,6 @@ import android.widget.TextView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.widget.BottomDialogFragment;
-import net.muxi.huashiapp.widget.HorPickerPager.HorizontalPickPager;
 
 import java.util.ArrayList;
 import java.util.List;
