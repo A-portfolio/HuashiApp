@@ -11,6 +11,7 @@ import net.muxi.huashiapp.App;
  */
 public class PreferenceUtil {
 
+    public static final String DATE_TODAY   = "sTodayDate";
     //一共定义了五种登录状态 详情参考Constants LOGIN_CODE
     public static final String LOGIN_STATUS = "sLoginStatus";
     //phpsessionid 有两种情况 下面中的一种

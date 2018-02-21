@@ -72,7 +72,7 @@
     <string name="cancel">取消</string>
     <string name="edit">编辑</string>
     <string name="undo">撤销</string>
-    <string name="tip_xk_error">提醒匣客们:因近期学校教务系统故障,查成绩算学分,课程表功能暂时无法使用QAQ\n" +
+    <string name="tip_xk_error">提醒匣客们:因近期学校教务系统故障,查成绩算学分,课程表,蹭课功能暂时无法使用QAQ\n" +
                             "匣子将和你一起等待学校教务系统的恢复~</string>
     <!--library-->
     <string name="lib_search_tip">请输入要搜索的图书或作者</string>

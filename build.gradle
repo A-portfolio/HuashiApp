@@ -11,10 +11,10 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'com.antfortune.freeline:gradle:0.8.7'
         classpath 'me.tatarka:gradle-retrolambda:3.5.0'
-        classpath 'com.tinkerpatch.sdk:tinkerpatch-gradle-plugin:1.1.4'
+        classpath "com.tinkerpatch.sdk:tinkerpatch-gradle-plugin:1.2.2"
     }
 //        classpath 'com.jakewharton:butterknife-gradle-plugin:8.5.1'
 

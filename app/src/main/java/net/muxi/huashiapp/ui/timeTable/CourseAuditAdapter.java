@@ -60,7 +60,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         String where ="", whenPeriod = "",whenWeek = "";
         for(AuditCourse.ResBean.WwBean wwBean:wwBeanList){
             if(!wwBean.getWhere().equals(where)){
-                where += wwBean.getWhere()+"\n";
+                where += getProperSite(wwBean.getWhere())+"\n";
             }
             String p[] = AuditCourse.getCourseTime(wwBean.getWhen());
             whenPeriod += p[0]+"\n";
@@ -69,7 +69,6 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         String kind = auditCourse.getKind();
         if (kind.equals("专业课")) {
             holder.mIvCourseMarker.setImageResource(R.drawable.audit_professional);
-//            ToastUtil.showLong("hh");
         } else if(kind.equals("公共课")){
             holder.mIvCourseMarker.setImageResource(R.drawable.audit_public);
         } else if(kind.equals("通核课")){
@@ -81,6 +80,10 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         holder.mTVCoursePeriod.setText(whenPeriod);
         holder.mTvCourseSite.setText(where);
         holder.mBtnChooseCourse.setOnClickListener(v->{
+            if(mCourses.size()==0||mCourses==null){
+                ToastUtil.showShort("课程表为空,请先添加课程哟~");
+                return;
+            }
             if(!positions.contains(position)){
                 positions.add(position);
                 String p[] = holder.mTVCoursePeriod.getText().toString().split("\n");
@@ -88,7 +91,8 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                 // 关于两门课程的解释 同一周的不同时间的同一门课程 教务处作为两门课程处理
                 //只用有一门课的情况:
                 if(p.length==1){
-                    if(isConflict(p[0])){ ToastUtil.showShort("课程冲突");
+                    if(isConflict(p[0])){
+                        ToastUtil.showShort("课程冲突");
                         holder.mBtnChooseCourse.setText("添加");
                         positions.remove((Integer) (position));
                         //上传事件
@@ -121,9 +125,18 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         });
     }
 
+    //学校返回的数据格式会在教学楼后面加点 比如0910.0
+    private String getProperSite(String site){
+        if(site.contains(".")){
+            int index = site.indexOf(".");
+            return site.substring(0,index);
+        }else{
+            return site;
+        }
+    }
+
     //设置不同课程的提示
     //如果有两个时间的话需要上传两次时间和地点
-
     private void addCourse(String period,AuditCourse.ResBean auditCourse, AuditViewHolder holder){
         if(isTwoClassWeek(period)){
             String peroids[] = period.split("\n");
@@ -141,7 +154,6 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                         RxBus.getDefault().send(new AuditCourseEvent());
                         Course c = convertCourse(auditCourse);
                         //必须要在服务端发送回来的时候在本地放置id!
-                        //todo 这里的策略有可能须要更改
                         c.setId(String.valueOf(courseId));
                         dao.insertCourse(convertCourse(auditCourse));
                     },throwable -> {
@@ -189,7 +201,6 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         return courseList;
     }
     public void addCourseNetWork(AuditCourse.ResBean auditCourse,AuditViewHolder holder){
-//        RxBus.getDefault().send(new RefreshTableEvent());
         CampusFactory.getRetrofitService()
                 .addCourse(convertCourse(auditCourse))
                 .subscribeOn(Schedulers.newThread())

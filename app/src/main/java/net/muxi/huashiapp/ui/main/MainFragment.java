@@ -140,6 +140,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                     refresh();
                 }, throwable -> throwable.printStackTrace());
         initHintView();
+        initBulletin();
         initView();
         if (mProductData == null) {
             mProductData = new ProductData(0.0, null);
@@ -206,11 +207,20 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                     DimensUtil.getScreenWidth() / 4,
                     (DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight())/2);
             sp.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN, false);
+            return;
+        }
+    }
 
+
+    private void initBulletin(){
+        String today = DateUtil.getTheDate(new Date(System.currentTimeMillis()),0);
+        if(PreferenceUtil.getString(PreferenceUtil.DATE_TODAY).equals("")
+                ||!PreferenceUtil.getString(PreferenceUtil.DATE_TODAY).equals(today)){
             //提示教务系统坏掉了
             BulletinDialog dialog = BulletinDialog.newInstance();
             dialog.show(getActivity().getSupportFragmentManager(),"bulletin_fragment");
-            return;
+
+            PreferenceUtil.saveString(PreferenceUtil.DATE_TODAY,today);
         }
     }
 

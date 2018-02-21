@@ -44,8 +44,6 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener{
     private static final int GUIDE_PAGE_COUNT = 3;
     private int[] imgs = new int[]{R.drawable.bg_guide_4 , R.drawable.bg_guide_5};
 
-    private Button mButton;
-
     public static void start(Context context) {
         Intent intent = new Intent(context, GuideActivity.class);
         context.startActivity(intent);
@@ -68,7 +66,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener{
             view.setBackgroundResource(R.color.colorWhite);
             ((SimpleDraweeView) view.findViewById(R.id.guide_image)).setImageURI(Uri.parse("res:/" + imgs[i]));
             if ( i == imgs.length-1){
-                mButton = (Button) view.findViewById(R.id.btn_enter);
+                Button mButton = (Button) view.findViewById(R.id.btn_enter);
                 mButton.setVisibility(View.VISIBLE);
                 mButton.setTag("enter");
                 mButton.setOnClickListener(this);

@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -30,11 +29,8 @@ public class EntranceActivity extends BaseActivity implements View.OnClickListen
     private long mSplashUpdate;
     private String mSplashUrl;
     private String mSplashImg;
-
     private static final int SPLASH_TIME = 200;
-
     private PreferenceUtil sp;
-
     private boolean isFirstOpen;
 
 
@@ -47,7 +43,7 @@ public class EntranceActivity extends BaseActivity implements View.OnClickListen
             if (sp.getString(Constants.SPLASH_IMG).equals("")) {
                 startMainActivityDelay(0);
             } else {
-                setContentView(R.layout.activity_enterance);
+                setContentView(R.layout.activity_entrance);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     getWindow().setStatusBarColor(Color.TRANSPARENT);
@@ -72,9 +68,7 @@ public class EntranceActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         if (v.getId() == R.id.drawee) {
             Intent intent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(sp.getString(Constants.SPLASH_URL).toString()));;
-
-            Log.d("fixing", "onClick: "+Uri.parse(sp.getString(Constants.SPLASH_URL).toString()));
+                    Uri.parse(sp.getString(Constants.SPLASH_URL).toString()));
             startActivity(intent);
         }
     }

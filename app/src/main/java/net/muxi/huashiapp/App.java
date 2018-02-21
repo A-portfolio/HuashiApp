@@ -35,7 +35,6 @@ public class App extends Application {
     private PreferenceUtil sp;
 
     private ApplicationLike tinkerApplicationLike;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -86,6 +85,7 @@ public class App extends Application {
         PreferenceUtil.clearString(PreferenceUtil.ATTENTION_BOOK_IDS);
         PreferenceUtil.clearString(PreferenceUtil.BORROW_BOOK_IDS);
         PreferenceUtil.clearString(PreferenceUtil.PHPSESSID);
+        PreferenceUtil.clearString(PreferenceUtil.LOGIN_STATUS);
         sLibrarayUser.setSid("");
         sLibrarayUser.setPassword("");
         CcnuCrawler2.clearCookieStore();
@@ -103,6 +103,7 @@ public class App extends Application {
         PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
         PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
         PreferenceUtil.clearString(PreferenceUtil.PHPSESSID);
+        PreferenceUtil.clearString(PreferenceUtil.LOGIN_STATUS);
         sUser.setSid("");
         sUser.setPassword("");
         HuaShiDao dao = new HuaShiDao();
