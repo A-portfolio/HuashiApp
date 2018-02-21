@@ -45,7 +45,11 @@ android {
 
         multiDexEnabled true
 
-//        buildConfigField "boolean", "TINKER_ENABLE", "${tinkerpatchSupport.tinkerEnable}"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath false
+            }
+        }
     }
 
     buildTypes {
@@ -96,7 +100,6 @@ dependencies {
     compile 'com.zhy:base-rvadapter:3.0.3'
     compile 'com.github.fengminchao:CardBanner:1.0'
     provided("com.tinkerpatch.tinker:tinker-android-anno:1.9.2")
-    compile("com.tinkerpatch.tinker:tinker-android-anno:1.9.2")
     compile("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.2")
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.github.Muxi-Studio:YAJB-Android:1.0'
@@ -111,7 +114,7 @@ dependencies {
 }
 
 def buildTime() {
-    def df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
+    def df = new SimpleDateFormat("MMdd-HH-mm-ss")
     df.setTimeZone(TimeZone.getDefault())
     return df.format(new Date())
 }
@@ -131,7 +134,7 @@ tinkerpatchSupport {
 
     appVersion = "${versionMajor}.${versionMinor}.${versionBuild}"
 
-    def pathPrefix = "${bakPath}/${baseInfo}/${variantName}/"
+    def pathPrefix = "${bakPath}/${baseInfo}/${variantName}"
     def name = "${project.name}-${variantName}"
 
     baseApkFile = "${pathPrefix}/${name}.apk"

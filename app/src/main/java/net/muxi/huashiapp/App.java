@@ -16,7 +16,10 @@ import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
 import net.muxi.huashiapp.ui.main.FetchPatchHandler;
+import net.muxi.huashiapp.util.DateUtil;
 import net.muxi.huashiapp.util.PreferenceUtil;
+
+import java.util.Date;
 
 
 /**
@@ -49,6 +52,9 @@ public class App extends Application {
 
         sContext = getApplicationContext();
         sp = new PreferenceUtil();
+
+        //todo delete this in new version
+        PreferenceUtil.saveString(PreferenceUtil.DATE_TODAY, DateUtil.getTheDate(new Date(System.currentTimeMillis()),0));
 
         sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, ""));
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
