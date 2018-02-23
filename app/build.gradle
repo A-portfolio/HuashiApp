@@ -18,6 +18,9 @@ def versionMajor = 2
 def versionMinor = 1
 def versionBuild = 8
 
+def bakPath = file("${buildDir}/bakApk/")
+def baseInfo = "app-2.1.8-0222-21-58-32"
+def variantName = "release"
 android {
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
@@ -119,9 +122,7 @@ def buildTime() {
     return df.format(new Date())
 }
 
-def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = "app-${versionMajor}.${versionMinor}.${versionBuild}-" + buildTime()
-def variantName = "release"
+
 
 
 tinkerpatchSupport {
@@ -134,9 +135,10 @@ tinkerpatchSupport {
 
     appVersion = "${versionMajor}.${versionMinor}.${versionBuild}"
 
-    def pathPrefix = "${bakPath}/${baseInfo}/${variantName}"
     def name = "${project.name}-${variantName}"
 
+
+    def pathPrefix = "${bakPath}/${baseInfo}/${variantName}"
     baseApkFile = "${pathPrefix}/${name}.apk"
     baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
     baseResourceRFile = "${pathPrefix}/${name}-R.txt"
@@ -145,7 +147,7 @@ tinkerpatchSupport {
 
 
 tinkerPatch {
-    ignoreWarning = false
+    ignoreWarning = true
     useSign = true
     dex {
         dexMode = "jar"
