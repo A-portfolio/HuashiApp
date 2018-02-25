@@ -72,6 +72,8 @@
     <string name="cancel">取消</string>
     <string name="edit">编辑</string>
     <string name="undo">撤销</string>
+    <string name="tip_xk_error">提醒匣客们:因近期学校教务系统故障,查成绩算学分,课程表,蹭课功能暂时无法使用QAQ\n" +
+                            "匣子将和你一起等待学校教务系统的恢复~</string>
     <!--library-->
     <string name="lib_search_tip">请输入要搜索的图书或作者</string>
     <string name="lib_mybook_overdue">过期</string>
@@ -178,7 +180,7 @@
     <string name="tip_refreshing">正在刷新中</string>
     <string name="tip_refresh_ok">刷新成功</string>
     <string name="tip_refresh_fail">糟糕！刷新失败</string>
-    <string name="tip_refresh_retry">请再刷新一次</string>
+        <string name="tip_refresh_retry">请再刷新一次</string>
 
     <!--分享-->
     <string name="share_to_qq">QQ好友</string>
@@ -207,6 +209,9 @@
     <string name="tip_input_password">请输入密码</string>
     <string name="tip_require_write_permission">请在设置中对本应用开启读写文件的权限</string>
 
+    <!--错误提示-->
+    <string name="error_xk">教务系统异常</string>
+    <string name="error_lib">图书馆系统异常</string>
 
 </resources>
 

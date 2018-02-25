@@ -14,7 +14,7 @@
         android:layout_marginBottom="16dp"
         android:layout_centerHorizontal="true"/>
 
-    <net.muxi.huashiapp.ui.schedule.CourseTimePickerView
+    <net.muxi.huashiapp.ui.timeTable.CourseTimePickerView
         android:id="@+id/course_time_picker_view"
         android:layout_below="@+id/tv_title"
         android:layout_marginRight="16dp"

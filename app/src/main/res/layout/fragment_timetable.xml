@@ -4,7 +4,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <net.muxi.huashiapp.ui.schedule.TimeTable
+    <net.muxi.huashiapp.ui.timeTable.TimeTable
         android:id="@+id/timetable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +17,7 @@
         android:background="#88333333"
         android:visibility="gone" />
 
-    <net.muxi.huashiapp.ui.schedule.WeekSelectedView
+    <net.muxi.huashiapp.ui.timeTable.WeekSelectedView
         android:id="@+id/week_selected_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
 
     </RelativeLayout>
 
-    <net.muxi.huashiapp.ui.schedule.TableMenuView
+    <net.muxi.huashiapp.ui.timeTable.TableMenuView
         android:id="@+id/table_menu_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

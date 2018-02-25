@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 
 import com.muxistudio.multistatusview.MultiStatusView;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
@@ -24,7 +23,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -74,40 +72,32 @@ public class ScoreActivity extends ToolbarActivity {
     private void loadGrade(String term) {
         showLoading();
         if (term.equals("0")) {
-            CampusFactory.getRetrofitService().getScores(year,"")
+            CampusFactory.getRetrofitService().getScores(year, "")
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
-                    .subscribe(scores -> renderScoreList(scores),
+                    .subscribe(this::renderScoreList,
                             throwable -> {
-                                if (((HttpException) throwable).code() == 403) {
-                                    throwable.printStackTrace();
+                                throwable.printStackTrace();
                                     mMultiStatusView.showNetError();
                                     CcnuCrawler2.clearCookieStore();
                                     LoginPresenter presenter = new LoginPresenter();
-                                    presenter.login(App.sUser).subscribe(b-> {}
-                                            ,thowable ->{},()->{});
                                     hideLoading();
-                                }
-                        }, () -> hideLoading());
-            return;
+                            }, this::hideLoading);
+        } else {
+            CampusFactory.getRetrofitService().getScores(year, term)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::renderScoreList,
+                            throwable -> {
+//                                if (((HttpException) throwable).code() == 403) {
+                                    throwable.printStackTrace();
+                                    mMultiStatusView.showNetError();
+                                    CcnuCrawler2.clearCookieStore();
+                                    hideLoading();
+//                                }
+                            },
+                            this::hideLoading);
         }
-
-        CampusFactory.getRetrofitService().getScores(year, term)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(scores -> renderScoreList(scores),
-                        throwable -> {
-                            if (((HttpException) throwable).code() == 403) {
-                                throwable.printStackTrace();
-                                mMultiStatusView.showNetError();
-                                CcnuCrawler2.clearCookieStore();
-                                LoginPresenter presenter = new LoginPresenter();
-                                presenter.login(App.sUser).subscribe(b-> {}
-                                        ,thowable ->{},()->{});
-                                hideLoading();
-                            }
-                        },
-                        ()->hideLoading());
     }
 
 

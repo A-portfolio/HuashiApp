@@ -229,7 +229,7 @@ public class TimetableFragment extends BaseFragment {
         return courseList;
     }
     public void loadTable() {
-        CampusFactory.getRetrofitService().getSchedule()
+        CampusFactory.getRetrofitService().getTimeTable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(courseList -> {

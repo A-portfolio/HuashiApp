@@ -1,7 +1,6 @@
 package net.muxi.huashiapp.ui.main;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -35,7 +34,7 @@ import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.more.CheckUpdateDialog;
 import net.muxi.huashiapp.ui.more.MoreFragment;
-import net.muxi.huashiapp.ui.schedule.TimetableFragment;
+import net.muxi.huashiapp.ui.timeTable.TimetableFragment;
 import net.muxi.huashiapp.util.AlarmUtil;
 import net.muxi.huashiapp.util.FrescoUtil;
 import net.muxi.huashiapp.util.Logger;
@@ -60,7 +59,6 @@ public class MainActivity extends BaseActivity implements
     FrameLayout mContentLayout;
 
     private Fragment mCurFragment;
-    public  static Activity sContext;
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);
         context.startActivity(starter);
@@ -69,7 +67,6 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sContext = MainActivity.this;
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mNavView.setOnNavigationItemSelectedListener(this);
@@ -173,8 +170,10 @@ public class MainActivity extends BaseActivity implements
                                 && PreferenceUtil.getLong(Constants.SPLASH_UPDATE)
                                 != splashData.getUpdate()) {
                             saveSplashData(splashData);
-                            FrescoUtil.savePicture(splashData.getImg(), MainActivity.this,
-                                    "splash.jpg");
+                            if (!splashData.getImg().equals("")) {
+                                FrescoUtil.savePicture(splashData.getImg(), MainActivity.this,
+                                        "splash.jpg");
+                            }
                         }
                     }
                 });

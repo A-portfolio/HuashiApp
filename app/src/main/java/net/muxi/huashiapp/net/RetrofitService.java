@@ -109,7 +109,7 @@ public interface RetrofitService {
 
     //获取用户课表
     @GET("table/")
-    Observable<List<Course>> getSchedule();
+    Observable<List<Course>> getTimeTable();
 
 
     //添加课程

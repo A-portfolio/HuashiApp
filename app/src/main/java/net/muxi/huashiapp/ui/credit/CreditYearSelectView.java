@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.ui.schedule.LargeSizeNumberPicker;
+import net.muxi.huashiapp.ui.timeTable.LargeSizeNumberPicker;
 import net.muxi.huashiapp.util.NumberPickerHelper;
 import net.muxi.huashiapp.util.UserUtil;
 

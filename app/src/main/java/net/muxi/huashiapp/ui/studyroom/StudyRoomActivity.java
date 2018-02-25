@@ -120,7 +120,6 @@ public class StudyRoomActivity extends ToolbarActivity {
                     mQuery = mTvStudyTime.getText().toString() + mTvStudyArea.getText().toString();
                     sp.saveString(PreferenceUtil.STUDY_ROOM_QUERY_STRING, mQuery);
                     StudyRoomDetailActivity.start(StudyRoomActivity.this, mQuery);
-              //      this.finish();
                     break;
                 } else {
                     showErrorSnackbarShort("请填写完整信息");

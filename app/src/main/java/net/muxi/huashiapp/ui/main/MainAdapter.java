@@ -54,7 +54,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     //banner 和 error（hint） 一共所占的 item 数量
-    private static  int ITEM = 1;
+    public static  int ITEM = 1;
 
 
     public interface OnBannerItemClickListener {
@@ -210,7 +210,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mItemDatas.get(position - ITEM).getIcon()));
                 FrescoUtil.savePicture(mItemDatas.get(position - ITEM).getIcon(), mContext, mItemDatas.get(position - ITEM).getName());
             } else {
-                if (position > 0 && position != mItemDatas.size() + 1) {
+                if (position > 0 && position != mItemDatas.size() + ITEM) {
                     ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse("res:/" +
                             mItemDatas.get(position - ITEM).getIcon()));
                     ((CommonViewHolder) holder).mTextView.setText(mItemDatas.get(position - ITEM).getName());

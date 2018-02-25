@@ -41,10 +41,10 @@ import net.muxi.huashiapp.ui.electricity.ElectricityActivity;
 import net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.news.NewsActivity;
-import net.muxi.huashiapp.ui.schedule.CourseAuditSearchActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomBlankActivity;
+import net.muxi.huashiapp.ui.timeTable.CourseAuditSearchActivity;
 import net.muxi.huashiapp.ui.website.WebsiteActivity;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
 import net.muxi.huashiapp.util.ACache;
@@ -142,6 +142,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                     refresh();
                 }, throwable -> throwable.printStackTrace());
         initHintView();
+        initBulletin();
         initView();
         getHint();
         if (mProductData == null) {
@@ -177,7 +178,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
     private void setData() {
         ArrayList<ItemData> items = (ArrayList<ItemData>) ACache.get(getContext()).getAsObject("items");
-
         if (items != null) {
             mItemDatas.addAll(items);
         } else {
@@ -214,6 +214,19 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         }
     }
 
+
+    private void initBulletin(){
+        String today = DateUtil.getTheDate(new Date(System.currentTimeMillis()),0);
+        if(PreferenceUtil.getString(PreferenceUtil.DATE_TODAY).equals("")
+                ||!PreferenceUtil.getString(PreferenceUtil.DATE_TODAY).equals(today)){
+            //提示教务系统坏掉了
+            BulletinDialog dialog = BulletinDialog.newInstance();
+            dialog.show(getActivity().getSupportFragmentManager(),"bulletin_fragment");
+
+            PreferenceUtil.saveString(PreferenceUtil.DATE_TODAY,today);
+        }
+    }
+
     private void initView() {
         final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         mMainAdapter = new MainAdapter(mItemDatas, mBannerDatas, mHint);
@@ -245,11 +258,9 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
             @Override
             public void onItemClick(RecyclerView.ViewHolder vh) {
-                if (vh.getLayoutPosition() == 0) {
-                }
                 if (vh.getLayoutPosition() != 0
                         && vh.getLayoutPosition() != mItemDatas.size() + 1) {
-                    ItemData itemData = mItemDatas.get(vh.getLayoutPosition() - 1);
+                    ItemData itemData = mItemDatas.get(vh.getLayoutPosition() - mMainAdapter.ITEM);
                     switch (itemData.getName()) {
                         case "成绩":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
@@ -319,7 +330,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             break;
                         case "蹭课":
                             if(TextUtils.isEmpty(App.sUser.getSid())){
-                                LoginActivity.start(getActivity(),"info",COURSE_AUDIT_SEARCH_ACTIVITY);
+                                LoginActivity.start(getActivity(),"info",COURSE_AUDIT_SEARCH_ACTIVITY   );
                             }else {
                                 CourseAuditSearchActivity.start(getActivity());
                                 MobclickAgent.onEvent(getActivity(), "course_audit");

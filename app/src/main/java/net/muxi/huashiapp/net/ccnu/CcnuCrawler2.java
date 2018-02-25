@@ -1,7 +1,9 @@
 package net.muxi.huashiapp.net.ccnu;
 
 import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.common.data.InfoCookie;
+import net.muxi.huashiapp.net.CookieInterceptor;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.io.IOException;
@@ -29,7 +31,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 现在的情况和之前不同，然后由于和教务系统相关联的有学分和课表 所以不仅要登录进入校园系统 还需要登录录入选课系统
  */
 public class CcnuCrawler2 {
-    public static String loginCode = "-1";
     private static Cookie accountJid=null,casPrivacy=null,casTgc = null,phpSessidLib =null;
     private static String location1 = "";
     private static String valueOfLt, valueOfExe;
@@ -297,7 +298,6 @@ public class CcnuCrawler2 {
 
 
     private static boolean loginCode(boolean flag2){
-        //flag1 表示信息门户登录 flag3 表示图书馆
         boolean flag1 = false, flag3 = false;
         for(int i=0;i <cookieStore.size();i++) {
             if (cookieStore.get(i).name().equals("CASPRIVACY")) {

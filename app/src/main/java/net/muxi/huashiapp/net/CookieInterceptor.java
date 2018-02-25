@@ -35,26 +35,25 @@ public class CookieInterceptor implements Interceptor {
                 CcnuCrawler.clearCookieStore();
             }
             //执行了储存
-             InfoCookie cookie = CcnuCrawler2.getInfoCookie();
-            String big= PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL);
-            String jid= PreferenceUtil.getString(PreferenceUtil.JSESSIONID);
-            Log.d("fixing", "intercept: "+cookie.Bigipserverpool_Jwc_Xk+"\n"+jid);
-            if(big.equals("")&&jid.equals("")) {
+            InfoCookie cookie = CcnuCrawler2.getInfoCookie();
+            String big = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL);
+            String jid = PreferenceUtil.getString(PreferenceUtil.JSESSIONID);
+            Log.d("fixing", "intercept: " + cookie.Bigipserverpool_Jwc_Xk + "\n" + jid);
+            if (big.equals("") && jid.equals("")) {
                 builder.addHeader("Bigipserverpool", cookie.Bigipserverpool_Jwc_Xk);
                 builder.addHeader("Jsessionid", cookie.Jsessionid);
                 builder.addHeader("Sid", App.sUser.sid);
                 builder.addHeader("Authorization", Base64Util.createBaseStr(App.sUser));
-                Log.d("crypt", "intercept: "+Base64Util.createBaseStr(App.sUser));
-            }else{
+                Log.d("crypt", "intercept: " + Base64Util.createBaseStr(App.sUser));
+            } else {
                 builder.addHeader("Bigipserverpool", big);
                 builder.addHeader("Jsessionid", jid);
                 builder.addHeader("Sid", App.sUser.sid);
                 builder.addHeader("Authorization", Base64Util.createBaseStr(App.sUser));
-                Log.d("crypt", "intercept: "+Base64Util.createBaseStr(App.sUser));
+                Log.d("crypt", "intercept: " + Base64Util.createBaseStr(App.sUser));
             }
         }
 
         return chain.proceed(builder.build());
     }
-
 }

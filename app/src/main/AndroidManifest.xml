@@ -49,7 +49,7 @@
         <meta-data android:value="校园通" android:name="UMENG_CHANNEL"/>
 
         <activity
-            android:name=".ui.EnteranceActivity"
+            android:name=".ui.EntranceActivity"
             android:theme="@style/Theme.Transparent"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -89,15 +89,15 @@
         <activity android:name=".ui.credit.CreditGradeActivity"/>
 
         <activity
-            android:name="net.muxi.huashiapp.ui.schedule.CourseEditActivity"
+            android:name="net.muxi.huashiapp.ui.timeTable.CourseEditActivity"
             android:launchMode="singleTask"/>
 
         <activity
-            android:name=".ui.schedule.CourseAuditResultActivity" />
+            android:name=".ui.timeTable.CourseAuditResultActivity" />
 
-        <activity android:name=".ui.schedule.CourseAuditSearchActivity" />
+        <activity android:name=".ui.timeTable.CourseAuditSearchActivity" />
 
-        <activity android:name=".ui.schedule.CurweekSetActivity"/>
+        <activity android:name=".ui.timeTable.CurweekSetActivity"/>
 
         <activity android:name=".ui.score.ScoreSelectActivity"/>
 

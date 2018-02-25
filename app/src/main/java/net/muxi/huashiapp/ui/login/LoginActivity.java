@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -25,6 +24,8 @@ import net.muxi.huashiapp.event.LibLoginEvent;
 import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.event.RefreshSessionEvent;
 import net.muxi.huashiapp.net.CampusFactory;
+import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
+import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NetStatus;
 
 import butterknife.BindView;
@@ -101,55 +102,59 @@ public class LoginActivity extends ToolbarActivity {
         final User user = new User();
         user.sid = mEtSid.getText().toString();
         user.password = mEtPwd.getText().toString();
-        if (TextUtils.isEmpty(user.sid) && TextUtils.isEmpty(user.password)){
+        if (TextUtils.isEmpty(user.sid) && TextUtils.isEmpty(user.password)) {
             showErrorSnackbarShort(getString(R.string.tip_input_id_password));
             return;
-        }else if (TextUtils.isEmpty(user.sid)){
+        } else if (TextUtils.isEmpty(user.sid)) {
             showErrorSnackbarShort(R.string.tip_input_id);
             return;
-        }else if (TextUtils.isEmpty(user.password)){
+        } else if (TextUtils.isEmpty(user.password)) {
             showErrorSnackbarShort(R.string.tip_input_password);
         }
         showLoading();
-        if (type.equals("info")||type.equals("lib")) {
+        if (type.equals("info") || type.equals("lib")) {
             presenter.login(user)
                     .flatMap(result -> {
-                        if(result) {
-                            finish();
+                        if (result) {
                             hideLoading();
+                            //保存登录状态
                             App.saveUser(user);
                             MobclickAgent.onProfileSignIn(user.getSid());
                             String target = getIntent().hasExtra("target") ?
                                     getIntent().getStringExtra("target") : null;
-                            if(type.equals("info")) {
+                            if (type.equals("info")) {
                                 RxBus.getDefault().send(new LoginSuccessEvent(target));
-                            }
-                            else{
+                            } else {
                                 RxBus.getDefault().send(new LibLoginEvent());
                             }
+                            finish();
+                            CcnuCrawler2.getInfoCookie();
                             return CampusFactory.getRetrofitService()
                                     .postUserInfo(new
-                                            UserInfo(Integer.parseInt(user.sid),user.password))
+                                            UserInfo(Integer.parseInt(user.sid), user.password))
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread());
                         } else {
                             hideLoading();
                             showErrorSnackbarShort(R.string.tip_err_account);
-                            return rx.Observable.error(new Exception());}})
+                            return rx.Observable.error(new Exception());
+                        }
+                    })
                     .subscribe(msg -> {
-                        Log.d("postusername", "onClick: ");
-                    },e->{
-                        Log.d("postusername", "onClick: failed");
-                    },()->{
-                        Log.d("postusername", "onClick: ");
+                        Logger.d("信息上传完成");
+                    }, e -> {
+                        Logger.d("信息上传失败");
+                    }, () -> {
+                        Logger.d("信息上传完成");
                     });
             if (type.equals("info"))
-                MobclickAgent.onEvent(this,"login");
+                MobclickAgent.onEvent(this, "login");
             else {
-                MobclickAgent.onEvent(this,"lib_login");}
+                MobclickAgent.onEvent(this, "lib_login");
+            }
         }
-
     }
+
 
     private void setLoginListener(){
         RxBus.getDefault().toObservable(RefreshSessionEvent.class)

@@ -4,6 +4,7 @@ package net.muxi.huashiapp.common.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,4 +70,23 @@ public class BaseFragment extends Fragment{
                 },Throwable::printStackTrace);
 
     }
+
+    public void showSnackBarShort(String word){
+        Snackbar.make(getActivity().findViewById(android.R.id.content),
+                word, Snackbar.LENGTH_SHORT).show();
+    }
+
+    public void showErrorSnackBarShort(String word){
+        Snackbar snackbar;
+        snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content),
+                word, Snackbar.LENGTH_SHORT);
+        View view = snackbar.getView();
+        view.setBackgroundColor(getResources().getColor(R.color.red));
+        snackbar.show();
+    }
+    public void showSnackBarLong(String word){
+        Snackbar.make(getActivity().findViewById(android.R.id.content),
+                word, Snackbar.LENGTH_LONG).show();
+    }
+
 }
