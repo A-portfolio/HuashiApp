@@ -29,13 +29,12 @@ public class LoginPresenter {
             }.start();
 
     }
-    public Observable login(User user){
+    public Observable<Boolean> login(User user){
         return Observable.create((Observable.OnSubscribe<Boolean>) subscriber -> {
             subscriber.onStart();
             boolean crawlerResult = false;
             try {
                 crawlerResult = CcnuCrawler2.performLogin(user.sid, user.password);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

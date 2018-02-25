@@ -7,6 +7,7 @@ import java.io.File;
  */
 public class Constants {
 
+    public static final String QQ_GROUP_NUMBER = "576225292";
     public static final String LIBRARY_QUERY_TEXT = "queryText";
     public static final String TIP_CHECK_NET = "当前网络不可用,请检查网络连接";
     public static final String ALARMTIME = "alarmTime";

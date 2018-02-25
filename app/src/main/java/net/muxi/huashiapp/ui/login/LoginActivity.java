@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -19,17 +20,17 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.User;
+import net.muxi.huashiapp.common.data.UserInfo;
 import net.muxi.huashiapp.event.LibLoginEvent;
 import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.event.RefreshSessionEvent;
 import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.MyBooksUtils;
 import net.muxi.huashiapp.util.NetStatus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -52,10 +53,9 @@ public class LoginActivity extends ToolbarActivity {
     @BindView(R.id.layout_pwd)
     TextInputLayout mLayoutPwd;
 
-    private User mUser;
     private LoginPresenter presenter = new LoginPresenter();
     private String type;
-    private String pwdHint;
+    private boolean isShownPassword = false;
 
     /**
      * @param loginType 分为 lib 和 info
@@ -88,7 +88,6 @@ public class LoginActivity extends ToolbarActivity {
 
         if (type.equals("info")) {
             setTitle("登录信息门户");
-            pwdHint = "输入您的密码";
         }
 
     }
@@ -114,9 +113,8 @@ public class LoginActivity extends ToolbarActivity {
         showLoading();
         if (type.equals("info")||type.equals("lib")) {
             presenter.login(user)
-                    .subscribe(b -> {
-                        boolean result = (boolean) b;
-                        if (result) {
+                    .flatMap(result -> {
+                        if(result) {
                             finish();
                             hideLoading();
                             App.saveUser(user);
@@ -128,42 +126,30 @@ public class LoginActivity extends ToolbarActivity {
                             }
                             else{
                                 RxBus.getDefault().send(new LibLoginEvent());
-                                }
+                            }
+                            return CampusFactory.getRetrofitService()
+                                    .postUserInfo(new
+                                            UserInfo(Integer.parseInt(user.sid),user.password))
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread());
                         } else {
                             hideLoading();
                             showErrorSnackbarShort(R.string.tip_err_account);
-                        }
-                    }, throwable -> {
-                        Logger.d("登录失败");
-                        Throwable e = (Throwable) throwable;
-                        e.printStackTrace();
-                        hideLoading();
-                        showErrorSnackbarShort(R.string.tip_check_net);
-                    }, () -> hideLoading());
+                            return rx.Observable.error(new Exception());}})
+                    .subscribe(msg -> {
+                        Log.d("postusername", "onClick: ");
+                    },e->{
+                        Log.d("postusername", "onClick: failed");
+                    },()->{
+                        Log.d("postusername", "onClick: ");
+                    });
             if (type.equals("info"))
                 MobclickAgent.onEvent(this,"login");
             else {
                 MobclickAgent.onEvent(this,"lib_login");}
         }
-    }
 
-    /*
-    // 验证码，应该在续借图书的地方
-    private void showCaptcha(String type) {
-        if (type.equals("lib")) {
-            showLoading();
-            RxBus.getDefault().toObservable(VerifyCodeSuccessEvent.class)
-                    .subscribe(verifyCodeSuccessEvent -> {
-                        VerifyCodeView view = (VerifyCodeView) findViewById(R.id.vcv_login);
-                        view.setVisibility(View.VISIBLE);
-                        view.setVisible();
-                    });
-            //vcvParams.setMargins();
-        }else{
-            return;
-        }
     }
-    */
 
     private void setLoginListener(){
         RxBus.getDefault().toObservable(RefreshSessionEvent.class)
@@ -172,25 +158,6 @@ public class LoginActivity extends ToolbarActivity {
         },Throwable::printStackTrace);
     }
 
-
-    private void loadMyBooks() {
-        CampusFactory.getRetrofitService().getAttentionBooks(App.sUser.sid)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.immediate())
-                .subscribe(listResponse -> {
-                    if (listResponse.code() == 200) {
-                        MyBooksUtils.saveAttentionBooks(listResponse.body());
-                    }
-                });
-        CampusFactory.getRetrofitService().getPersonalBook(App.PHPSESSID)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(personalBooks -> {
-                    if (personalBooks != null) {
-                        MyBooksUtils.saveBorrowedBooks(personalBooks);
-                    }
-                });
-    }
 
     @Override
     protected void onResume() {

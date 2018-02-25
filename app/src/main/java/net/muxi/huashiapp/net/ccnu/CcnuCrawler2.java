@@ -17,7 +17,6 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -30,6 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 现在的情况和之前不同，然后由于和教务系统相关联的有学分和课表 所以不仅要登录进入校园系统 还需要登录录入选课系统
  */
 public class CcnuCrawler2 {
+    public static String loginCode = "-1";
     private static Cookie accountJid=null,casPrivacy=null,casTgc = null,phpSessidLib =null;
     private static String location1 = "";
     private static String valueOfLt, valueOfExe;
@@ -79,7 +79,6 @@ public class CcnuCrawler2 {
                     list.add(phpSessidLib);
                     return  list;
                 }
-                //todo 后续登录的时候还是有问题
                 if(url.toString().equals("http://202.114.34.15/reader/hwthau.php")) {
                     List<Cookie> list = new ArrayList<>();
                     for (int i = 0; i < cookieStore.size(); i++)
@@ -96,7 +95,6 @@ public class CcnuCrawler2 {
                     List<Cookie> list = new ArrayList<>();
                     for (int i = 0; i < cookieStore.size(); i++)
                         if (cookieStore.get(i).value().contains("ST-") && cookieStore.get(i).value().contains("accountccnueducn")) {
-//                           cookieStore.get(i).per
                             list.add(cookieStore.get(i));
                             return list;
                         }
@@ -146,15 +144,18 @@ public class CcnuCrawler2 {
 
     public static boolean performLogin(String username, String userpassword) throws IOException {
         initCrawler();
-        retrofit2.Response<ResponseBody> responseBody = mCcnuService.performCampusLogin
-                (JSESSIONID_LOGIN_IN, username, userpassword,
+        mCcnuService.performCampusLogin(JSESSIONID_LOGIN_IN, username, userpassword,
                         valueOfLt, valueOfExe, "submit", "LOGIN").execute();
-
-        retrofit2.Response<ResponseBody> responseBody2 = mCcnuService.performSystemLogin().execute();
-        String bigResponse1 = responseBody.body().string();
+        boolean flag2  = true;
+        try {
+            mCcnuService.performSystemLogin().execute();
+        }catch (Exception e){
+            e.printStackTrace();
+            flag2 = false;
+        }
         performLibLogin();
         //三重验证确保登录成功
-        return isSuccessful();
+        return loginCode(flag2);
     }
 
     private static boolean performLibLogin() throws IOException {
@@ -257,6 +258,7 @@ public class CcnuCrawler2 {
     }
 
 
+
     public static InfoCookie getInfoCookie() {
         InfoCookie infoCookie;
         String bigServerPool = "", jsession = "";
@@ -289,31 +291,24 @@ public class CcnuCrawler2 {
         PreferenceUtil.saveString(PreferenceUtil.JSESSIONID, jid);
     }
 
-//    private static void storeLocation(retrofit2.Response<ResponseBody> response) {
     public static void clearCookieStore(){
         cookieStore.clear();
     }
 
 
-    private static boolean isSuccessful(){
-        boolean flag1 = false,flag2 = true, flag3 = false;
-        for(int i=0;i <cookieStore.size();i++){
-            if(cookieStore.get(i).name().equals("CASPRIVACY")) {
+    private static boolean loginCode(boolean flag2){
+        //flag1 表示信息门户登录 flag3 表示图书馆
+        boolean flag1 = false, flag3 = false;
+        for(int i=0;i <cookieStore.size();i++) {
+            if (cookieStore.get(i).name().equals("CASPRIVACY")) {
                 flag1 = true;
             }
-//            if(!PreferenceUtil.getString(PreferenceUtil.JSESSIONID).equals("")){
-//                flag2 = true;
-//            }
-            if(!PreferenceUtil.getString(PreferenceUtil.PHPSESSID).equals("")){
+            if (!PreferenceUtil.getString(PreferenceUtil.PHPSESSID).equals("")) {
                 App.PHPSESSID = PreferenceUtil.getString(PreferenceUtil.PHPSESSID);
-                flag3 =true;
+                flag3 = true;
             }
         }
-        if(flag1&&flag2&&flag3){
-            return true;
-        }else{
-            cookieStore.clear();
-            return false;
-        }
+        //假设其他几种情况
+        return flag1&&flag2&&flag3 ||flag1 ||flag1&&flag2 || flag1&&flag3;
     }
 }

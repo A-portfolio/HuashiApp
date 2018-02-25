@@ -27,8 +27,7 @@
             android:inputType="number"
             android:lines="1"
             android:textSize="28sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -41,6 +40,7 @@
         android:hint="输入您的密码"
         android:theme="@style/TextNormal"
         app:hintAnimationEnabled="true"
+        app:passwordToggleEnabled="true"
         app:hintEnabled="true">
 
         <EditText
@@ -50,10 +50,11 @@
             android:inputType="textPassword"
             android:lines="1"
             android:textSize="28sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
     </android.support.design.widget.TextInputLayout>
+
+
 
     <!--<net.muxi.huashiapp.ui.library.VerifyCodeView
         android:id="@+id/vcv_login"

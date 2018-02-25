@@ -16,11 +16,14 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 def versionMajor = 2
 def versionMinor = 1
-def versionBuild = 7
+def versionBuild = 8
 
+def bakPath = file("${buildDir}/bakApk/")
+def baseInfo = "app-2.1.8-0222-21-58-32"
+def variantName = "release"
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion '26.0.2'
 
     dexOptions {
         jumboMode = true
@@ -32,6 +35,7 @@ android {
             keyPassword 'ccnumuxi'
             storeFile file('HuashiApp.jks')
             storePassword 'ccnumuxi'
+
         }
     }
 
@@ -44,14 +48,15 @@ android {
 
         multiDexEnabled true
 
-//        buildConfigField "boolean", "TINKER_ENABLE", "${tinkerpatchSupport.tinkerEnable}"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath false
+            }
+        }
     }
 
     buildTypes {
         release {
-            //显示log
-//            debuggable true
-            // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
             //Zipalign优化
             zipAlignEnabled true
@@ -63,7 +68,6 @@ android {
             signingConfig signingConfigs.release
         }
         debug {
-//            signingConfig signingConfigs.release
             minifyEnabled false
         }
     }
@@ -98,8 +102,8 @@ dependencies {
     compile 'com.github.fengminchao:MultiStatusView:0.6'
     compile 'com.zhy:base-rvadapter:3.0.3'
     compile 'com.github.fengminchao:CardBanner:1.0'
-    compile 'com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.1.4'
-    compile 'com.tencent.tinker:tinker-android-anno:1.7.7'
+    provided("com.tinkerpatch.tinker:tinker-android-anno:1.9.2")
+    compile("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.2")
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.github.Muxi-Studio:YAJB-Android:1.0'
     //    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
@@ -113,14 +117,12 @@ dependencies {
 }
 
 def buildTime() {
-    def df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
+    def df = new SimpleDateFormat("MMdd-HH-mm-ss")
     df.setTimeZone(TimeZone.getDefault())
     return df.format(new Date())
 }
 
-def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = "app-${versionMajor}.${versionMinor}.${versionBuild}-" + buildTime()
-def variantName = "release"
+
 
 
 tinkerpatchSupport {
@@ -133,9 +135,10 @@ tinkerpatchSupport {
 
     appVersion = "${versionMajor}.${versionMinor}.${versionBuild}"
 
-    def pathPrefix = "${bakPath}/${baseInfo}/${variantName}/"
     def name = "${project.name}-${variantName}"
 
+
+    def pathPrefix = "${bakPath}/${baseInfo}/${variantName}"
     baseApkFile = "${pathPrefix}/${name}.apk"
     baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
     baseResourceRFile = "${pathPrefix}/${name}-R.txt"
@@ -144,7 +147,7 @@ tinkerpatchSupport {
 
 
 tinkerPatch {
-    ignoreWarning = false
+    ignoreWarning = true
     useSign = true
     dex {
         dexMode = "jar"
@@ -171,4 +174,3 @@ tinkerPatch {
         keepDexApply = false
     }
 }
-

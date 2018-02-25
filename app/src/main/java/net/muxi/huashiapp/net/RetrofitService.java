@@ -2,6 +2,7 @@ package net.muxi.huashiapp.net;
 
 import net.muxi.huashiapp.common.data.ApartmentData;
 import net.muxi.huashiapp.common.data.AttentionBook;
+import net.muxi.huashiapp.common.data.AuditCourse;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.Book;
 import net.muxi.huashiapp.common.data.BookId;
@@ -15,16 +16,18 @@ import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.CourseId;
 import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.common.data.Electricity;
+import net.muxi.huashiapp.common.data.Hint;
+import net.muxi.huashiapp.common.data.Msg;
 import net.muxi.huashiapp.common.data.News;
 import net.muxi.huashiapp.common.data.PatchData;
 import net.muxi.huashiapp.common.data.ProductData;
 import net.muxi.huashiapp.common.data.RenewData;
 import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.common.data.SplashData;
+import net.muxi.huashiapp.common.data.UserInfo;
 import net.muxi.huashiapp.common.data.VerifyResponse;
 import net.muxi.huashiapp.common.data.VersionData;
 import net.muxi.huashiapp.common.data.WebsiteData;
-import net.muxi.huashiapp.common.data.AuditCourse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,14 +54,14 @@ import rx.Observable;
 public interface RetrofitService {
 
     @GET("info/login/")
-    Call<ResponseBody>  mainLogin(@Header("Authorizat") String verification);
+    Call<ResponseBody> mainLogin(@Header("Authorizat") String verification);
 
     @GET("lib/login/")
     Observable<Response<VerifyResponse>> libLogin(@Header("Authorization") String verification);
 
     @GET("lib/search/")
     Observable<BookSearchResult> searchBook(@Query("keyword") String keyword,
-            @Query("page") int page);
+                                            @Query("page") int page);
 
     @GET("lib/detail/{id}/")
     Observable<Book> getBookDetail(@Path("id") String id);
@@ -89,7 +92,6 @@ public interface RetrofitService {
      * 200 OK
      * 404 未找到图书
      */
-//    @DELETE("lib/delete/")
     @HTTP(method = "DELETE", path = "lib/delete/", hasBody = true)
     Observable<Response<VerifyResponse>> delAttentionBook(
             @Header("sid") String verification,
@@ -103,7 +105,7 @@ public interface RetrofitService {
      */
     @POST("lib/renew/")
     Observable<Response<VerifyResponse>> renewBook(@Header("s") String verification, @Header("captcha") String captcha,
-            @Body RenewData renewData);
+                                                   @Body RenewData renewData);
 
     //获取用户课表
     @GET("table/")
@@ -120,10 +122,17 @@ public interface RetrofitService {
 
     @PUT("table/{id}/")
     Observable<Response<VerifyResponse>> updateCourse(@Path("id") String id,
-            @Body Course course);
+                                                      @Body Course course);
 
     @GET("webview_info/")
     Observable<List<News>> getNews();
+
+    @GET("http://120.77.246.73:8888/api/msg/")
+    Observable<Hint> getHint();
+
+
+    @POST("http://39.108.79.110:5710/api/userinfo/")
+    Observable<Msg> postUserInfo(@Body UserInfo user);
 
     @GET("calendar/")
     Observable<CalendarData> getCalendar();
@@ -139,7 +148,7 @@ public interface RetrofitService {
 
     //蹭课 搜索蹭课结果:
     @GET("lesson/")
-    Observable<AuditCourse> getAuditCourse(@QueryMap HashMap<String,String >map);
+    Observable<AuditCourse> getAuditCourse(@QueryMap HashMap<String, String> map);
 
     //查询余额  除了学号其他传固定值 http://console.ccnu.edu
     // .cn/ecard/getTrans?userId=2013211389&days=90&startNum=0&num=200
@@ -167,12 +176,12 @@ public interface RetrofitService {
 
     @GET("classroom/get_classroom/")
     Observable<ClassRoom> getClassRoom(@Query("weekno") String week,
-            @Query("weekday") String day,
-            @Query("building") String area);
+                                       @Query("weekday") String day,
+                                       @Query("building") String area);
 
     @GET("grade/")
     Observable<List<Score>> getScores(@Query("xnm") String year,
-            @Query("xqm") String term);
+                                      @Query("xqm") String term);
 
 
 }

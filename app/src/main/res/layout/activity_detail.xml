@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_detail_title"
+            android:text="公告:"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="30dp"
+            android:textColor="@color/card_text_color"
+            android:textSize="35sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_detail_content"
+            android:layout_below="@id/tv_detail_title"
+            android:textSize="20sp"
+            android:textColor="@color/textColor"
+            android:text="dafafafa"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!--<TextView-->
+        <TextView
+            android:text="华师匣子交流群"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="140dp"
+            android:layout_marginLeft="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_detail_qq_group"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="110dp"
+            android:layout_marginLeft="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <Button
+            android:text="我知道了"
+            android:textColor="@color/colorWhite"
+            android:id="@+id/btn_detail_confirm"
+            android:background="@drawable/ripple_accent"
+            android:layout_marginRight="80dp"
+            android:layout_marginBottom="80dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+</RelativeLayout>

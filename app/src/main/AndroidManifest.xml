@@ -71,6 +71,8 @@
 
         </activity>
 
+        <activity android:name=".ui.main.DetailActivity"/>
+
         <activity
             android:name="net.muxi.huashiapp.ui.login.LoginActivity"
             android:launchMode="singleTask"

@@ -25,6 +25,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.common.data.BannerData;
+import net.muxi.huashiapp.common.data.Hint;
 import net.muxi.huashiapp.common.data.ItemData;
 import net.muxi.huashiapp.common.data.ProductData;
 import net.muxi.huashiapp.common.db.HuaShiDao;
@@ -86,6 +87,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     private PreferenceUtil sp;
     private ProductData mProductData;
     private String mProductJson;
+    private Hint mHint = new Hint();
 
     public static final int DIRECTION_UP = 1;
     public static final String SCORE_ACTIVITY = "score";
@@ -141,6 +143,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                 }, throwable -> throwable.printStackTrace());
         initHintView();
         initView();
+        getHint();
         if (mProductData == null) {
             mProductData = new ProductData(0.0, null);
             getProduct();
@@ -213,11 +216,12 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
     private void initView() {
         final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
-        mMainAdapter = new MainAdapter(mItemDatas, mBannerDatas);
+        mMainAdapter = new MainAdapter(mItemDatas, mBannerDatas, mHint);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return (mMainAdapter.isBannerPosition(position) || mMainAdapter.isFooterPosition(
+                return (mMainAdapter.isHintPosition(position)
+                        ||mMainAdapter.isBannerPosition(position) || mMainAdapter.isFooterPosition(
                         position) ? layoutManager.getSpanCount() : 1);
             }
         });
@@ -401,10 +405,26 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             }
                         }
                     });
+        }
     }
 
+    private void getHint() {
+        if (NetStatus.isConnected()) {
+            CampusFactory.getRetrofitService()
+                    .getHint()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(hint -> {
+                        mHint = hint;
+                        mMainAdapter.setHint(hint);
+                        initView();
+                        mRecyclerView.invalidate();
+                    }, Throwable::printStackTrace, () -> {
+                    });
+        }else{
+            initView();
+        }
     }
-
     public void refresh() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();

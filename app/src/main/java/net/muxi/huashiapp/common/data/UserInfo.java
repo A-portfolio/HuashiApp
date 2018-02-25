@@ -1,18 +1,25 @@
 package net.muxi.huashiapp.common.data;
 
 /**
- * Created by ybao on 16/4/28.
+ * Created by kolibreath on 18-2-25.
  */
-public class User {
 
-    public String sid;
-    public String password;
 
-    public String getSid() {
+//后台缓存用户信息
+public class UserInfo {
+    /**
+     * sid : 0
+     * password : string
+     */
+
+    private int sid;
+    private String password;
+
+    public int getSid() {
         return sid;
     }
 
-    public void setSid(String sid) {
+    public void setSid(int sid) {
         this.sid = sid;
     }
 
@@ -24,8 +31,7 @@ public class User {
         this.password = password;
     }
 
-    public User(){}
-    public User(String sid,String password){
+    public UserInfo(int sid,String password){
         this.sid = sid;
         this.password = password;
     }
