@@ -127,11 +127,11 @@ public interface RetrofitService {
     @GET("webview_info/")
     Observable<List<News>> getNews();
 
-    @GET("http://120.77.246.73:8888/api/msg/")
+    @GET("msg/")
     Observable<Hint> getHint();
 
 
-    @POST("http://39.108.79.110:5710/api/userinfo/")
+    @POST("cache/userinfo/")
     Observable<Msg> postUserInfo(@Body UserInfo user);
 
     @GET("calendar/")

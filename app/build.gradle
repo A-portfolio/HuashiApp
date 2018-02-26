@@ -15,8 +15,8 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 def versionMajor = 2
-def versionMinor = 1
-def versionBuild = 8
+def versionMinor = 2
+def versionBuild = 0
 
 def bakPath = file("${buildDir}/bakApk/")
 def baseInfo = "app-2.1.8-0222-21-58-32"
@@ -31,11 +31,10 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'huashiapp'
-            keyPassword 'ccnumuxi'
-            storeFile file('HuashiApp.jks')
-            storePassword 'ccnumuxi'
-
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
         }
     }
 

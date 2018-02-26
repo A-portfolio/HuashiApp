@@ -1,7 +1,5 @@
 package net.muxi.huashiapp.net;
 
-import android.util.Log;
-
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.common.data.InfoCookie;
 import net.muxi.huashiapp.net.ccnu.CcnuCrawler;
@@ -21,6 +19,13 @@ import okhttp3.Response;
  * Date: 17/4/24
  */
 
+
+
+//这个类的用法非常的tricky 也可能是我水平太差的原因(kolibreath) 这个在真正需要保存cookie的地方 在教务系统的请求中并没有
+//保存cookie，没有在那个OkhttpClient中携带上这个截断器， 而是在cookieStore（cookieJar）中临时储存（内存），在之后的一个请求中
+//携带这个截断器在设置cookie到header的同时保存cookie
+    //网络请求步骤：信息门户 和教务系统https://www.zybuluo.com/Humbert/note/970726
+    //图书馆 ：https://www.zybuluo.com/Humbert/note/1032966
 public class CookieInterceptor implements Interceptor {
 
     @Override
@@ -38,19 +43,16 @@ public class CookieInterceptor implements Interceptor {
             InfoCookie cookie = CcnuCrawler2.getInfoCookie();
             String big = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL);
             String jid = PreferenceUtil.getString(PreferenceUtil.JSESSIONID);
-            Log.d("fixing", "intercept: " + cookie.Bigipserverpool_Jwc_Xk + "\n" + jid);
             if (big.equals("") && jid.equals("")) {
                 builder.addHeader("Bigipserverpool", cookie.Bigipserverpool_Jwc_Xk);
                 builder.addHeader("Jsessionid", cookie.Jsessionid);
                 builder.addHeader("Sid", App.sUser.sid);
                 builder.addHeader("Authorization", Base64Util.createBaseStr(App.sUser));
-                Log.d("crypt", "intercept: " + Base64Util.createBaseStr(App.sUser));
             } else {
                 builder.addHeader("Bigipserverpool", big);
                 builder.addHeader("Jsessionid", jid);
                 builder.addHeader("Sid", App.sUser.sid);
                 builder.addHeader("Authorization", Base64Util.createBaseStr(App.sUser));
-                Log.d("crypt", "intercept: " + Base64Util.createBaseStr(App.sUser));
             }
         }
 

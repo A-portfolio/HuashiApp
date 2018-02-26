@@ -24,7 +24,6 @@ public class CampusRetrofit{
                 .addInterceptor(new CookieInterceptor())
                 .addInterceptor(new NetStatusInterceptor())
                 .addInterceptor(new AuthorizationInterceptor())
-//                .addInterceptor(new RetryInterceptor())
                 .readTimeout(25,TimeUnit.SECONDS)
                 .connectTimeout(25, TimeUnit.SECONDS)
                 .writeTimeout(25,TimeUnit.SECONDS)

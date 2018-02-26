@@ -33,7 +33,6 @@ public class CourseAuditResultActivity extends ToolbarActivity {
     RecyclerView rvCourse;
     @BindView(R.id.iv_error_view)
     ImageView ivErrorView;
-    @BindView(R.id.tv_error_view)
     TextView tvErrorView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

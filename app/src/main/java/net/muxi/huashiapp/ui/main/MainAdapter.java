@@ -16,6 +16,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.muxistudio.cardbanner.CardBanner;
 import com.muxistudio.cardbanner.ViewHolder;
 
+import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.data.BannerData;
 import net.muxi.huashiapp.common.data.Hint;
@@ -92,24 +93,24 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     public boolean isBannerPosition(int position) {
         if(isHintShown()){
-            return position == 1 ? true : false;
+            return position == 1;
         }else{
-            return position == 0 ? true : false;
+            return position == 0;
         }
     }
 
     public boolean isHintPosition(int position){
         if(isHintShown()){
-            return position == 0 ? true : false;
+            return position == 0;
         }else{
             return false;
         }
     }
     public boolean isFooterPosition(int position) {
         if(isHintShown()){
-            return position == mItemDatas.size() + 2 ? true : false;
+            return position == mItemDatas.size() + 2;
         }else{
-            return position == mItemDatas.size() + 1 ? true : false;
+            return position == mItemDatas.size() + 1;
         }
     }
 
@@ -180,7 +181,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         .setBackgroundColor(mContext.getResources().getColor(R.color.red));
             }else{
                 ((HintViewHolder) holder).mRlContent
-                        .setBackgroundColor(mContext.getResources().getColor(R.color.yellow));
+                        .setBackgroundColor(mContext.getResources().getColor(R.color.hint_yellow));
             }
         }else if (holder instanceof BannerViewHolder) {
             for (int i = 0; i < mBannerDatas.size(); i++) {
@@ -258,7 +259,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     //判断有没有hint信息的包装函数
     private boolean isHintShown(){
         boolean b = UPDATE_TIME!=hint.getUpdate();
-        return !TextUtils.isEmpty(hint.getMsg())&&b;
+        boolean a = BuildConfig.VERSION_NAME.equals(hint.getVersion());
+        return !TextUtils.isEmpty(hint.getMsg())&&a&&b;
     }
 
 

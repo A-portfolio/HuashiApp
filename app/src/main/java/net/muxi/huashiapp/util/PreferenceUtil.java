@@ -12,7 +12,7 @@ import net.muxi.huashiapp.App;
 public class PreferenceUtil {
 
     public static final String HINT_UPDATE_TIME = "sHintUpdateTime";
-    public static final String DATE_TODAY   = "sTodayDate";;
+//    public static final String DATE_TODAY   = "sTodayDate";;
     //phpsessionid 有两种情况 下面中的一种
     public static final String CURWEEK = "sCurWeek";
     public static final String PHPSESSID = "sPhpSessId";

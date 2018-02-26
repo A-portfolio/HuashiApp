@@ -7,8 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
@@ -87,8 +85,6 @@ public class WebsiteActivity extends ToolbarActivity {
                     @Override
                     public void onNext(List<WebsiteData> websiteData) {
                         for(WebsiteData data:websiteData){
-
-                        Log.d("websites", "onNext: "+data.getSite());
                         }
                         if (mWebsiteDatas == null || websiteData.size() != mWebsiteDatas.size()) {
                             //学生信息服务平台暂时无法使用
@@ -107,12 +103,9 @@ public class WebsiteActivity extends ToolbarActivity {
         adapter = new WebsiteAdapter(websiteData);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter.setOnItemClickListener(new WebsiteAdapter.OnItemClickListener() {
-            @Override
-            public void OnItemClick(View view, List<WebsiteData> websiteData, int position) {
-                Intent intent = WebViewActivity.newIntent(WebsiteActivity.this, websiteData.get(position).getUrl());
-                startActivity(intent);
-            }
+        adapter.setOnItemClickListener((view, websiteData1, position) -> {
+            Intent intent = WebViewActivity.newIntent(WebsiteActivity.this, websiteData1.get(position).getUrl());
+            startActivity(intent);
         });
 
     }

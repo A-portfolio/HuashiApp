@@ -82,24 +82,31 @@
             android:name="net.muxi.huashiapp.ui.SettingActivity"
             android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.credit.SelectCreditActivity"/>
+        <activity android:name=".ui.credit.SelectCreditActivity"
+            android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.credit.CreditResultActivity"/>
+        <activity android:name=".ui.credit.CreditResultActivity"
+            android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.credit.CreditGradeActivity"/>
+        <activity android:name=".ui.credit.CreditGradeActivity"
+            android:launchMode="singleTask"/>
 
         <activity
             android:name="net.muxi.huashiapp.ui.timeTable.CourseEditActivity"
             android:launchMode="singleTask"/>
 
         <activity
-            android:name=".ui.timeTable.CourseAuditResultActivity" />
+            android:name=".ui.timeTable.CourseAuditResultActivity"
+            android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.timeTable.CourseAuditSearchActivity" />
+        <activity android:name=".ui.timeTable.CourseAuditSearchActivity"
+            android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.timeTable.CurweekSetActivity"/>
+        <activity android:name=".ui.timeTable.CurweekSetActivity"
+            android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.score.ScoreSelectActivity"/>
+        <activity android:name=".ui.score.ScoreSelectActivity"
+            android:launchMode="singleTask"/>
 
         <activity
             android:name="net.muxi.huashiapp.ui.score.ScoreActivity"
@@ -144,7 +151,8 @@
         <activity android:name="net.muxi.huashiapp.ui.AboutActivity"
             android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.MoreActivity"/>
+        <activity android:name=".ui.MoreActivity"
+            android:launchMode="singleTask"/>
 
         <activity android:name="net.muxi.huashiapp.ui.electricity.ElectricityActivity"
             android:launchMode="singleTask"/>
@@ -162,9 +170,11 @@
             android:name=".ui.studyroom.StudyRoomActivity"
             android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.studyroom.StudyRoomDetailActivity"/>
+        <activity android:name=".ui.studyroom.StudyRoomDetailActivity"
+            android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.studyroom.StudyAreaOptionActivity"/>
+        <activity android:name=".ui.studyroom.StudyAreaOptionActivity"
+            android:launchMode="singleTask"/>
 
         <activity
             android:name=".ui.studyroom.StudyRoomBlankActivity"
@@ -173,7 +183,6 @@
 
         <activity
             android:name="net.muxi.huashiapp.ui.wxapi.WXEntryActivity"
-
             android:exported="true"
             android:launchMode="singleInstance"/>
 

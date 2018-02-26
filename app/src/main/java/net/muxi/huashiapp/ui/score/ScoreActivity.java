@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.muxistudio.multistatusview.MultiStatusView;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
@@ -55,7 +56,7 @@ public class ScoreActivity extends ToolbarActivity {
         ButterKnife.bind(this);
         year = getIntent().getStringExtra("year");
         term = getIntent().getStringExtra("term");
-        if (term == null){
+        if (term == null) {
             term = "0";
         }
         if (!term.equals("0")) {
@@ -64,40 +65,51 @@ public class ScoreActivity extends ToolbarActivity {
         } else {
             setTitle(String.format("%s-%d学年", year, Integer.parseInt(year) + 1));
         }
-
-        mMultiStatusView.setOnRetryListener(v -> loadGrade(term));
+        mMultiStatusView.setOnRetryListener(v -> retryLoadGrade(term));
         loadGrade(term);
+    }
+
+
+    private void retryLoadGrade(String term) {
+        String termTemp = "";
+        if (term.equals("0"))
+            termTemp = "";
+         else
+            termTemp = term;
+        String finalTermTemp = termTemp;
+        showLoading();
+        new LoginPresenter().login(App.sUser)
+                .flatMap(aBoolean -> CampusFactory.getRetrofitService()
+                        .getScores(year, finalTermTemp)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::renderScoreList,
+                        throwable -> {
+                            throwable.printStackTrace();
+                            mMultiStatusView.showNetError();
+                            CcnuCrawler2.clearCookieStore();
+                        }, this::hideLoading);
     }
 
     private void loadGrade(String term) {
         showLoading();
-        if (term.equals("0")) {
-            CampusFactory.getRetrofitService().getScores(year, "")
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(this::renderScoreList,
-                            throwable -> {
-                                throwable.printStackTrace();
-                                    mMultiStatusView.showNetError();
-                                    CcnuCrawler2.clearCookieStore();
-                                    LoginPresenter presenter = new LoginPresenter();
-                                    hideLoading();
-                            }, this::hideLoading);
-        } else {
-            CampusFactory.getRetrofitService().getScores(year, term)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::renderScoreList,
-                            throwable -> {
-//                                if (((HttpException) throwable).code() == 403) {
-                                    throwable.printStackTrace();
-                                    mMultiStatusView.showNetError();
-                                    CcnuCrawler2.clearCookieStore();
-                                    hideLoading();
-//                                }
-                            },
-                            this::hideLoading);
-        }
+        String termTemp = "";
+        if (term.equals("0"))
+            termTemp = "";
+        else
+            termTemp = term;
+        CampusFactory.getRetrofitService().getScores(year, termTemp)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::renderScoreList,
+                        throwable -> {
+                            throwable.printStackTrace();
+                            mMultiStatusView.showNetError();
+                            CcnuCrawler2.clearCookieStore();
+                            hideLoading();
+                        }, this::hideLoading);
     }
 
 

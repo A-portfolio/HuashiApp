@@ -29,6 +29,7 @@
         <!--<TextView-->
         <TextView
             android:text="华师匣子交流群"
+            android:layout_above="@+id/tv_detail_qq_group"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="140dp"
             android:layout_marginLeft="40dp"

@@ -40,7 +40,6 @@ public class CreditGradeActivity extends ToolbarActivity {
     RecyclerView mRecyclerView;
     @BindView(R.id.btn_enter)
     Button mBtnEnter;
-
     private List<Score> mScoresList = new ArrayList<>();
     private CreditGradeAdapter mCreditGradeAdapter;
 
@@ -120,6 +119,7 @@ public class CreditGradeActivity extends ToolbarActivity {
                 },throwable -> {
                     throwable.printStackTrace();
                     CcnuCrawler2.clearCookieStore();
+//                    mMultistatusView.showError();
                 },() -> hideLoading());
     }
 

@@ -142,7 +142,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                     refresh();
                 }, throwable -> throwable.printStackTrace());
         initHintView();
-        initBulletin();
+//        initBulletin();
         initView();
         getHint();
         if (mProductData == null) {
@@ -215,18 +215,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     }
 
 
-    private void initBulletin(){
-        String today = DateUtil.getTheDate(new Date(System.currentTimeMillis()),0);
-        if(PreferenceUtil.getString(PreferenceUtil.DATE_TODAY).equals("")
-                ||!PreferenceUtil.getString(PreferenceUtil.DATE_TODAY).equals(today)){
-            //提示教务系统坏掉了
-            BulletinDialog dialog = BulletinDialog.newInstance();
-            dialog.show(getActivity().getSupportFragmentManager(),"bulletin_fragment");
-
-            PreferenceUtil.saveString(PreferenceUtil.DATE_TODAY,today);
-        }
-    }
-
     private void initView() {
         final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         mMainAdapter = new MainAdapter(mItemDatas, mBannerDatas, mHint);
@@ -260,7 +248,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
             public void onItemClick(RecyclerView.ViewHolder vh) {
                 if (vh.getLayoutPosition() != 0
                         && vh.getLayoutPosition() != mItemDatas.size() + 1) {
-                    ItemData itemData = mItemDatas.get(vh.getLayoutPosition() - mMainAdapter.ITEM);
+                    ItemData itemData = mItemDatas.get(vh.getLayoutPosition() - MainAdapter.ITEM);
                     switch (itemData.getName()) {
                         case "成绩":
                             if (TextUtils.isEmpty(App.sUser.getSid())) {
@@ -355,7 +343,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                         productData.get_product().get(i).getIcon(), true));
             }
             mItemDatas.addAll(mItemDatas.size() - 1, itemDataList);
-            mMainAdapter.swapItems(mItemDatas);
+            mMainAdapter.swapItems( mItemDatas);
         }
 
     }
