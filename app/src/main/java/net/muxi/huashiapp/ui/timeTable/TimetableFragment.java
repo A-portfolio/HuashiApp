@@ -203,6 +203,7 @@ public class TimetableFragment extends BaseFragment {
         ((BaseActivity) getContext()).addSubscription(subscription4);
         RxBus.getDefault().toObservable(AuditCourseEvent.class)
         .subscribe(auditCourseEvent -> {loadTable();});
+
         mTimetable.setOnRefreshListener(() -> {
             handlingRefresh = true;
             loadTable();
@@ -229,8 +230,6 @@ public class TimetableFragment extends BaseFragment {
         return courseList;
     }
     public void loadTable() {
-        //如果教务系统在先前的情况下没有的登录成功时:
-        //如果教务系统没有异常的话loginCode 将会是 3 或者 2
            getTable();
     }
 

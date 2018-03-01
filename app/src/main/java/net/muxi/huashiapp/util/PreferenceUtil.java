@@ -16,7 +16,7 @@ public class PreferenceUtil {
     //phpsessionid 有两种情况 下面中的一种
     public static final String CURWEEK = "sCurWeek";
     public static final String PHPSESSID = "sPhpSessId";
-    public static final String PHPSESSION_ID = "sPhpSessionId";
+    public static final String PHPSESSION_ID = "buisPhpSessionId";
     public static final String BIG_SERVER_POOL = "sBigipServerPool";
     public static final String JSESSIONID = "sJid";
     public static final String STUDENT_ID = "sId";

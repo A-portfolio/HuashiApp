@@ -9,11 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.AuditCourse;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.common.data.AuditCourse;
 import net.muxi.huashiapp.net.CampusFactory;
 
 import java.util.HashMap;
@@ -33,7 +32,6 @@ public class CourseAuditResultActivity extends ToolbarActivity {
     RecyclerView rvCourse;
     @BindView(R.id.iv_error_view)
     ImageView ivErrorView;
-    TextView tvErrorView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +99,6 @@ public class CourseAuditResultActivity extends ToolbarActivity {
         hideLoading();
         ivErrorView.setImageResource(R.drawable.audit_not_found);
         ivErrorView.setVisibility(View.VISIBLE);
-        tvErrorView.setVisibility(View.VISIBLE);
     }
 
     @Override

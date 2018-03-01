@@ -19,7 +19,7 @@ def versionMinor = 2
 def versionBuild = 0
 
 def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = "app-2.1.8-0222-21-58-32"
+def baseInfo = "app-2.2.0-0226-13-18-25"
 def variantName = "release"
 android {
     compileSdkVersion 25
