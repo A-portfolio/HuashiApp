@@ -37,5 +37,13 @@
 
     </LinearLayout>
 
+    <com.muxistudio.multistatusview.MultiStatusView
+        android:id="@+id/multi_status_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:contentView="@layout/view_content_recycler"
+        app:emptyView="@layout/view_empty_score"
+        app:netErrorView="@layout/view_error"/>
+
 
 </RelativeLayout>

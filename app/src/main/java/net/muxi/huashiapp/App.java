@@ -49,12 +49,12 @@ public class App extends Application {
         sContext = getApplicationContext();
         sp = new PreferenceUtil();
 
-//        PreferenceUtil.saveString(PreferenceUtil.BIG_SERVER_POOL,"");
+        PreferenceUtil.saveString(PreferenceUtil.BIG_SERVER_POOL,"");
         sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, ""));
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
         sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));
         sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
-        PHPSESSID = sp.getString(PreferenceUtil.PHPSESSID,"");
+//        PHPSESSID = sp.getString(PreferenceUtil.PHPSESSID,"");
         Fresco.initialize(this);
         initBugly();
         initUMeng();

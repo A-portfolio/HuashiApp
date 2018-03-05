@@ -28,6 +28,7 @@ import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.library.BookDetailActivity;
 import net.muxi.huashiapp.ui.library.adapter.AttenBookAdapter;
 import net.muxi.huashiapp.ui.library.adapter.AttenBookRemindAdapter;
+import net.muxi.huashiapp.ui.login.LoginPresenter;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.Collections;
@@ -109,7 +110,8 @@ public class MyBookListFragment extends BaseFragment {
     }
 
     public void loadAttentionBooks() {
-        CampusFactory.getRetrofitService().getAttentionBooks(App.sUser.sid)
+        CampusFactory.getRetrofitService()
+                .getAttentionBooks(App.sUser.sid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(attentionBooksResponse -> {
@@ -135,7 +137,6 @@ public class MyBookListFragment extends BaseFragment {
                                         renderAttentionBooks(attentionBooks1);
                                     }, throwable -> throwable.printStackTrace());
 
-                            //关注的图书 id 存储到本地
                             Observable.from(attentionBooks).map(attentionBook -> attentionBook.id)
                                     .toList()
                                     .subscribe(strings -> PreferenceUtil.saveString(
@@ -171,7 +172,8 @@ public class MyBookListFragment extends BaseFragment {
     }
 
     public void loadBorrowBooks() {
-        CampusFactory.getRetrofitService().getPersonalBook(App.PHPSESSID)
+        CampusFactory.getRetrofitService()
+                .getPersonalBook(App.PHPSESSID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(personalBooks -> {
@@ -188,6 +190,24 @@ public class MyBookListFragment extends BaseFragment {
                 }, throwable -> {
                     throwable.printStackTrace();
                     mMultiStatusView.showEmpty();
+                    retryLoadBooks();
+                });
+    }
+
+    public void retryLoadBooks(){
+        new LoginPresenter().login(App.sUser)
+                .flatMap(aBoolean -> CampusFactory.getRetrofitService()
+                        .getPersonalBook(App.PHPSESSID)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread()))
+                .subscribe(personalBooks -> {
+                    mBorrowedBookList = personalBooks;
+                    renderBorrowedBooks(personalBooks);
+                    //借阅的 ids 存储到本地
+                    Observable.from(personalBooks).map(personalBook -> personalBook.id)
+                            .toList()
+                            .subscribe(strings -> PreferenceUtil.saveString(
+                                    PreferenceUtil.BORROW_BOOK_IDS, TextUtils.join(",", strings)));
                 });
     }
 
@@ -236,9 +256,14 @@ public class MyBookListFragment extends BaseFragment {
         String s = borrowedBook.time < 10 ? "0" + borrowedBook.time : String.valueOf(
                 borrowedBook.time);
         holder.setText(R.id.tv_remind, String.format("时间剩余%s天", s));
-        if (borrowedBook.time < 3) {
+        if ( borrowedBook.time < 3&&borrowedBook.time>0 ) {
             ((TextView) holder.getView(R.id.tv_remind)).setTextColor(
                     getResources().getColor(R.color.red));
+        }else{
+            ((TextView) holder.getView(R.id.tv_remind)).setText
+                    (String.format("已经超期%s天",Math.abs(borrowedBook.time)));
+            ((TextView)holder.getView(R.id.tv_remind)).setTextColor
+                    (getResources().getColor(R.color.red));
         }
         holder.getView(R.id.layout_item).setOnClickListener(v -> {
             BookDetailActivity.start(getContext(), borrowedBook.id);

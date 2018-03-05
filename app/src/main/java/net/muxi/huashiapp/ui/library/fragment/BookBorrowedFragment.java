@@ -104,38 +104,35 @@ public class BookBorrowedFragment extends BaseFragment {
 
         loadPersonBook();
         ViewTreeObserver vto = mTvInfo.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Layout l = mTvInfo.getLayout();
-                if ( l != null){
-                    int lines = l.getLineCount();
-                    if ( lines > 0) {
-                        if (l.getEllipsisCount(lines - 1) > 0) {
-                            Logger.d("text is ellips");
-                            isEllipsized = true;
-                            isLineOver = true;
-                        }else {
-                            isEllipsized = false;
-                        }
+        vto.addOnGlobalLayoutListener(() -> {
+            Layout l = mTvInfo.getLayout();
+            if ( l != null){
+                int lines = l.getLineCount();
+                if ( lines > 0) {
+                    if (l.getEllipsisCount(lines - 1) > 0) {
+                        Logger.d("text is ellips");
+                        isEllipsized = true;
+                        isLineOver = true;
                     }else {
                         isEllipsized = false;
                     }
-
-                }
-                if (!isLineOver){
-                    mTvShowAll.setVisibility(View.GONE);
                 }else {
-                    mTvShowAll.setOnClickListener(v -> {
-                        if (isEllipsized){
-                            mTvInfo.setMaxLines(Integer.MAX_VALUE);
-                            mTvShowAll.setText(R.string.fold_all);
-                        }else {
-                            mTvInfo.setMaxLines(2);
-                            mTvShowAll.setText(R.string.expand_all);
-                        }
-                    });
+                    isEllipsized = false;
                 }
+
+            }
+            if (!isLineOver){
+                mTvShowAll.setVisibility(View.GONE);
+            }else {
+                mTvShowAll.setOnClickListener(v -> {
+                    if (isEllipsized){
+                        mTvInfo.setMaxLines(Integer.MAX_VALUE);
+                        mTvShowAll.setText(R.string.fold_all);
+                    }else {
+                        mTvInfo.setMaxLines(2);
+                        mTvShowAll.setText(R.string.expand_all);
+                    }
+                });
             }
         });
         mBtnRenew.setOnClickListener(v -> {
@@ -157,8 +154,14 @@ public class BookBorrowedFragment extends BaseFragment {
                         mTvPlace.setText(personalBooks.get(0).room);
                         mBorrowedBook = personalBooks.get(0);
                     }
+                },error->{
+
+                },()->{
+
                 });
     }
+
+
 
     private void renewBook() {
         VerifyCodeDialog fragment = VerifyCodeDialog.newInstance();

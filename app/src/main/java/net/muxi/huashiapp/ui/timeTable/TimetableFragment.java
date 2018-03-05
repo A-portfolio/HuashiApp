@@ -1,6 +1,5 @@
 package net.muxi.huashiapp.ui.timeTable;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -80,7 +79,6 @@ public class TimetableFragment extends BaseFragment {
      * 本学期所有的课程
      */
     private List<Course> mCourses;
-    public static Activity context;
     //false表示初始状态
     private boolean selectedIvStatus = false;
     private int selectedWeek;
@@ -99,7 +97,6 @@ public class TimetableFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        context = TimetableFragment.this.getActivity();
         View view = inflater.inflate(R.layout.fragment_timetable, container, false);
         ButterKnife.bind(this, view);
         getActivity().getWindow().getDecorView().setBackgroundColor

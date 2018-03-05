@@ -191,6 +191,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
             mItemDatas.add(new ItemData("部门信息", R.drawable.ic_apartment + "", false));
             mItemDatas.add(new ItemData("校历", R.drawable.ic_calendar + "", false));
             mItemDatas.add(new ItemData("常用网站", R.drawable.ic_net + "", false));
+//            mItemDatas.add(new ItemData("学而",R.drawable.ic_xueer+"",false));
             mItemDatas.add(new ItemData("更多", R.drawable.ic_more + "", false));
         }
 
@@ -336,7 +337,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
 
     //更新首页视图
     public void updateProductDisplay(ProductData productData) {
-        if (mItemDatas.size() - 10 != productData.get_product().size()) {
+        if (mItemDatas.size() - 11 != productData.get_product().size()) {
             List<ItemData> itemDataList = new ArrayList<>();
             for (int i = 0; i < productData.get_product().size(); i++) {
                 itemDataList.add(new ItemData(productData.get_product().get(i).getName(),

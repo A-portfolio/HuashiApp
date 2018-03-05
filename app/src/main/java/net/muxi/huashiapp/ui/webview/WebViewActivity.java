@@ -18,10 +18,8 @@ import android.view.View;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.google.gson.Gson;
-import com.muxistudio.jsbridge.BridgeHandler;
 import com.muxistudio.jsbridge.BridgeWebClient;
 import com.muxistudio.jsbridge.BridgeWebView;
-import com.muxistudio.jsbridge.CallbackFunc;
 import com.sina.weibo.sdk.api.TextObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
 import com.sina.weibo.sdk.api.share.BaseResponse;
@@ -147,25 +145,12 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
     //初始化暴露给 web 端的本地接口
     public void initRegisterInterface() {
-        mWebview.register("obtainInfoUser", new BridgeHandler() {
-            @Override
-            public void handle(String s, CallbackFunc callbackFunc) {
-                callbackFunc.onCallback(new Gson().toJson(App.sUser));
-            }
-        });
-        mWebview.register("obtainLibUser", new BridgeHandler() {
-            @Override
-            public void handle(String s, CallbackFunc callbackFunc) {
-                callbackFunc.onCallback(new Gson().toJson(App.sLibrarayUser));
-            }
-        });
+        mWebview.register("obtainInfoUser", (s, callbackFunc) -> callbackFunc.onCallback(new Gson().toJson(App.sUser)));
+        mWebview.register("obtainLibUser", (s, callbackFunc) -> callbackFunc.onCallback(new Gson().toJson(App.sLibrarayUser)));
         // 消费账单
-        mWebview.register("share", new BridgeHandler() {
-            @Override
-            public void handle(String s, CallbackFunc callbackFunc) {
-                ShareDialog shareDialog = ShareDialog.newInstance(0);
-                shareDialog.show(getSupportFragmentManager(), "dialog_share");
-            }
+        mWebview.register("share", (s, callbackFunc) -> {
+            ShareDialog shareDialog = ShareDialog.newInstance(0);
+            shareDialog.show(getSupportFragmentManager(), "dialog_share");
         });
     }
 
@@ -196,51 +181,48 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
                     ShareToDialog shareToDialog = new ShareToDialog();
                     shareToDialog.show(getSupportFragmentManager(), "");
 
-                    shareToDialog.setOnItemClickListener(new ShareToDialog.OnItemClick() {
-                        @Override
-                        public void onItemClick(int position) {
-                            switch (position) {
-                                case 0:
-                                    shareToQQ(title, intro, url, iconUrl);
-                                    shareToDialog.dismiss();
-                                    break;
-                                case 1:
-                                    shareTOWXSceneSession();
-                                    shareToDialog.dismiss();
-                                    break;
-                                case 2:
-                                    sendMultiMessage(true, false, false, false, false, false);
-                                    shareToDialog.dismiss();
-                                    break;
-                                case 3:
-                                    shareToQzone(title, intro, url, iconUrl);
-                                    shareToDialog.dismiss();
-                                    break;
-                                case 4:
-                                    shareTOWXSceneTimeline();
-                                    shareToDialog.dismiss();
-                                    break;
-                                case 6:
-                                    mWebview.reload();
-                                    shareToDialog.dismiss();
-                                    break;
+                    shareToDialog.setOnItemClickListener(position -> {
+                        switch (position) {
+                            case 0:
+                                shareToQQ(title, intro, url, iconUrl);
+                                shareToDialog.dismiss();
+                                break;
+                            case 1:
+                                shareTOWXSceneSession();
+                                shareToDialog.dismiss();
+                                break;
+                            case 2:
+                                sendMultiMessage(true, false, false, false, false, false);
+                                shareToDialog.dismiss();
+                                break;
+                            case 3:
+                                shareToQzone(title, intro, url, iconUrl);
+                                shareToDialog.dismiss();
+                                break;
+                            case 4:
+                                shareTOWXSceneTimeline();
+                                shareToDialog.dismiss();
+                                break;
+                            case 6:
+                                mWebview.reload();
+                                shareToDialog.dismiss();
+                                break;
 
-                                case 7:
-                                    AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
-                                    showSnackbarShort(
-                                            getResources().getString(R.string.tip_copy_success));
-                                    shareToDialog.dismiss();
-                                    break;
+                            case 7:
+                                AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
+                                showSnackbarShort(
+                                        getResources().getString(R.string.tip_copy_success));
+                                shareToDialog.dismiss();
+                                break;
 
-                                case 8:
-                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                            Uri.parse(mWebview.getUrl()));
-                                    startActivity(browserIntent);
-                                    shareToDialog.dismiss();
-                                    break;
+                            case 8:
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                        Uri.parse(mWebview.getUrl()));
+                                startActivity(browserIntent);
+                                shareToDialog.dismiss();
+                                break;
 
 
-                            }
                         }
                     });
                 }
@@ -435,7 +417,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         mWeiboShareAPI.handleWeiboResponse(intent, this); //当前应用唤起微博分享后，返回当前应用
-        ToastUtil.showShort(getString(R.string.tip_share_success));
+//        ToastUtil.showShort(getString(R.string.tip_share_success));
     }
 
     @Override

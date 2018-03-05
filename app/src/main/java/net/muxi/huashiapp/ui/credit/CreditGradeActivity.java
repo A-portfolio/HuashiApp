@@ -12,11 +12,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import com.muxistudio.multistatusview.MultiStatusView;
+
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
+import net.muxi.huashiapp.ui.login.LoginPresenter;
 import net.muxi.huashiapp.util.Logger;
 
 import java.util.ArrayList;
@@ -26,6 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -40,6 +45,8 @@ public class CreditGradeActivity extends ToolbarActivity {
     RecyclerView mRecyclerView;
     @BindView(R.id.btn_enter)
     Button mBtnEnter;
+    @BindView(R.id.multi_status_view)
+    MultiStatusView mMultiStatusView;
     private List<Score> mScoresList = new ArrayList<>();
     private CreditGradeAdapter mCreditGradeAdapter;
 
@@ -62,9 +69,12 @@ public class CreditGradeActivity extends ToolbarActivity {
         end = getIntent().getIntExtra("ending", 0);
         setTitle(String.format("%d-%d学年", start, end));
         loadCredit(getScoreRequest(start,end));
+
         mBtnEnter.setOnClickListener(v ->{
             showCreditGradeDialog();
         });
+
+//        mMultiStatusView.setOnRetryListener(v->{retryLoadCredit(getScoreRequest(start,end));});
     }
 
     private void showCreditGradeDialog() {
@@ -119,8 +129,27 @@ public class CreditGradeActivity extends ToolbarActivity {
                 },throwable -> {
                     throwable.printStackTrace();
                     CcnuCrawler2.clearCookieStore();
-//                    mMultistatusView.showError();
-                },() -> hideLoading());
+                    mMultiStatusView.showError();
+                }, this::hideLoading);
+    }
+
+    public void retryLoadCredit(Observable<List<Score>>[] listObservables){
+        new LoginPresenter().login(App.sUser)
+                .flatMap((Func1<Boolean, Observable<?>>) aBoolean
+                        -> Observable.merge(listObservables,5)
+                        .flatMap(Observable::from)
+                        .toList()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread()))
+                .subscribe(scores -> {
+                    mScoresList = (List<Score>) scores;
+                    initRecyclerView();
+                },throwable -> {
+                    throwable.printStackTrace();
+                    CcnuCrawler2.clearCookieStore();
+                    mMultiStatusView.showError();
+                    hideLoading();
+                }, this::hideLoading);
     }
 
     public Observable<List<Score>>[] getScoreRequest(int start,int end){
