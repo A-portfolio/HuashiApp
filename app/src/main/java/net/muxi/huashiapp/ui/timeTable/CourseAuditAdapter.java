@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.ui.timeTable;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.ToastUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -90,8 +92,9 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                 //如果是两门课程的话都要不冲突才可以
                 // 关于两门课程的解释 同一周的不同时间的同一门课程 教务处作为两门课程处理
                 //只用有一门课的情况:
+                String formerWeeks[] = getWeek(holder.mTvCourseWeek.getText().toString());
                 if(p.length==1){
-                    if(isConflict(p[0])){
+                    if(isConflict(p[0],formerWeeks)){
                         ToastUtil.showShort("课程冲突");
                         holder.mBtnChooseCourse.setText("添加");
                         positions.remove((Integer) (position));
@@ -105,7 +108,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                 //如果是两门课
                 boolean bothConflict = false;
                 for(int i=0;i<p.length;i++){
-                    if(isConflict(p[i])){
+                    if(isConflict(p[i],formerWeeks)){
                         //只要一门冲突就都冲突
                         bothConflict = true;
                         ToastUtil.showShort("课程冲突");
@@ -123,6 +126,21 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                 positions.remove((Integer) (position));
             }
         });
+    }
+    //转换格式1-17周 -- 1,2,3,4,5,6,7 String数组
+    //有些课程如果两周的话格式是: 1-17周\n1-17周
+    private String[] getWeek(String string){
+        String stringCopy = string;
+        if(string.contains("\n")){
+            stringCopy = string.split("\n")[0];
+        }
+        String pieces[] = stringCopy.substring(0,stringCopy.length()-1).split("-");
+        String stater = pieces[0],end = pieces[1];
+        String array[] = new String[Integer.parseInt(end)-Integer.parseInt(stater)+1];
+        for(int i=Integer.parseInt(stater),index =0;i<=Integer.parseInt(end);i++,index++){
+            array[index] = i + "";
+        }
+        return array;
     }
 
     //学校返回的数据格式会在教学楼后面加点 比如0910.0
@@ -219,21 +237,28 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
     }
 
     //true 表示 冲突 false 表示不冲突 默认情况下返回冲突
-    private boolean isConflict(String period){
+    private boolean isConflict(String period,String[] courseArray){
         boolean flag = false;
+        //之所以要这样表示是因为mcourses 不能很快的根据星期几查询到那天的课表内容
         for (Course course: mCourses) {
             //格式: 星期一1-2
-            int infos[]  =getDayDuring(period);
+            int infos[] = getDayDuring(period);
             int day = infos[0], start = infos[1], during = infos[2];
-            if (getDay(course.getDay())==day){
-                if (!((course.getStart() != start) && ((course.getStart() + course.getDuring()) != (start + during)))) {
-                    flag = true;
-                    return flag;
-                }
-                else
+            //原来在课表中的周数表示
+            String array[] = TextUtils.split(course.getWeeks(), ",");
+            List<String> formerWeek = Arrays.asList(array), auditWeek = Arrays.asList(courseArray);
+            //false 没有交集: true 有交集
+            if (isIntersection(formerWeek, auditWeek)) {
+                if (getDay(course.getDay()) == day) {
+                    if (!((course.getStart() != start)
+                            && ((course.getStart() + course.getDuring()) != (start + during)))) {
+                        flag = true;
+                        return flag;
+                    } else
+                        flag = false;
+                } else {
                     flag = false;
-            }else{
-                flag = false;
+                }
             }
         }
         return flag;
@@ -256,6 +281,23 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         course.setPlace(getCorrectPlace(auditCourse.getWw().get(0).getWhere()));
         course.setRemind("false");
         return course;
+    }
+
+    //判断两个集合是否有交集
+    private <T> boolean isIntersection(List<T> list1, List<T> list2){
+        int size1 = list1.size(), size2 = list2.size();
+        int size;
+        if(size1>size2){
+            size = size2;
+        }else{
+            size = size1;
+        }
+        for(int i=0;i<size;i++){
+            if(list1.contains(list2.get(i))){
+                return true;
+            }
+        }
+        return false;
     }
 
     //对于这样的地点信息会进行一个处理 : @9302.0 -> @9302

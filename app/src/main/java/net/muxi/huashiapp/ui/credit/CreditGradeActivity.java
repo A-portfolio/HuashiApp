@@ -118,19 +118,28 @@ public class CreditGradeActivity extends ToolbarActivity {
 
     public void loadCredit(Observable<List<Score>>[] listObservable) {
         showLoading();
-        Observable.merge(listObservable,5)
+        Observable<List<Score>> creditObservable = Observable.merge(listObservable,5)
                 .flatMap(Observable::from)
                 .toList()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(scores -> {
-                    mScoresList = scores;
+                .observeOn(AndroidSchedulers.mainThread());
+
+                creditObservable
+                        .subscribe(scores -> {
+                    mScoresList = ((List<Score>)scores);
                     initRecyclerView();
+                    this.hideLoading();
                 },throwable -> {
-                    throwable.printStackTrace();
                     CcnuCrawler2.clearCookieStore();
-                    mMultiStatusView.showError();
-                }, this::hideLoading);
+                    new LoginPresenter().login(App.sUser)
+                            .flatMap(aBoolean -> creditObservable).subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(o -> {
+                                mScoresList = ((List<Score>)o);
+                                initRecyclerView();
+                                hideLoading();
+                            });
+                }, ()->{});
     }
 
     public void retryLoadCredit(Observable<List<Score>>[] listObservables){

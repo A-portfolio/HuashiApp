@@ -259,7 +259,8 @@ public class MyBookListFragment extends BaseFragment {
         if ( borrowedBook.time < 3&&borrowedBook.time>0 ) {
             ((TextView) holder.getView(R.id.tv_remind)).setTextColor(
                     getResources().getColor(R.color.red));
-        }else{
+        }
+        if(borrowedBook.time<0){
             ((TextView) holder.getView(R.id.tv_remind)).setText
                     (String.format("已经超期%s天",Math.abs(borrowedBook.time)));
             ((TextView)holder.getView(R.id.tv_remind)).setTextColor

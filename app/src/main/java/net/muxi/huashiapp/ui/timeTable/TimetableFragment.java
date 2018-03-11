@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.BaseActivity;
@@ -30,6 +31,7 @@ import net.muxi.huashiapp.event.RefreshFinishEvent;
 import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
+import net.muxi.huashiapp.ui.login.LoginPresenter;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -226,6 +228,24 @@ public class TimetableFragment extends BaseFragment {
         }
         return courseList;
     }
+
+    public void retryLoadTable(){
+        new LoginPresenter()
+                .login(App.sUser)
+                .flatMap(booleans->CampusFactory.getRetrofitService().
+                getTimeTable().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(courses -> {
+                    updateDB(courses);
+                    mCourses = courses;
+                    renderCourseView(courses);
+                    if(handlingRefresh){
+                        handlingRefresh = false;
+                        RxBus.getDefault().send(new RefreshFinishEvent(courses.size()!=0));
+                    }
+                });
+    }
     public void loadTable() {
            getTable();
     }
@@ -247,9 +267,11 @@ public class TimetableFragment extends BaseFragment {
                     if (handlingRefresh) {
                         handlingRefresh = false;
                         //没有联网会抛出这个异常
-                        if (throwable instanceof UnknownHostException)
+                        if (throwable instanceof UnknownHostException) {
                             RxBus.getDefault().send(new RefreshFinishEvent(false
                                     , RefreshFinishEvent.SELF_DEFINE_CODE));
+//                            retryLoadTable();
+                        }
                     }
                     int code = ((HttpException) throwable).code();
                     if (code == 401) {
