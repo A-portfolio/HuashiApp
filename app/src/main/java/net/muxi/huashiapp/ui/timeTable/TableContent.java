@@ -87,17 +87,28 @@ public class TableContent extends FrameLayout {
         mCourseList.addAll(courseList);
         for (int i = 0; i < courseList.size(); i++) {
             if (!TimeTableUtil.isThisWeek(selectWeek,courseList.get(i).weeks)) {
-                addCourseView(courseList.get(i),selectWeek);
+                    addCourseView(courseList.get(i),selectWeek,courseList.get(i).weeks);
             }
         }
         for (int i = 0;i < courseList.size();i ++){
             if (TimeTableUtil.isThisWeek(selectWeek,courseList.get(i).weeks)){
-                addCourseView(courseList.get(i),selectWeek);
+                    addCourseView(courseList.get(i),selectWeek,courseList.get(i).weeks);
             }
         }
     }
 
-    public void addCourseView(Course course,int selectWeek) {
+    private List<String> convert(String[] weeks){
+        List<String > list = new ArrayList<>();
+        for(int i=Integer.parseInt(weeks[0]);i<=Integer.parseInt(weeks[weeks.length-1]);i++){
+            list.add(String.valueOf(i));
+        }
+        return list;
+    }
+
+
+    public void addCourseView(Course course,int selectWeek,String weekStr) {
+
+        List<String > weekList = convert(weekStr.split(","));
         CourseView tvCourse = new CourseView(mContext);
         tvCourse.setTextColor(Color.WHITE);
         tvCourse.setTextSize(TypedValue.COMPLEX_UNIT_SP,10);
@@ -121,12 +132,19 @@ public class TableContent extends FrameLayout {
         tvCourse.setCourseId(course.id);
         this.addView(tvCourse, courseParams);
 
+        if(selectWeek>Integer.parseInt(weekList.get(0))) {
+            if (!weekList.contains(String.valueOf(selectWeek))) {
+                tvCourse.setVisibility(GONE);
+                return;
+            }
+        }
         tvCourse.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN){
                 ((TimeTable) getParent().getParent()).setCurDownTarget(view);
             }
             return false;
         });
+
     }
 
 

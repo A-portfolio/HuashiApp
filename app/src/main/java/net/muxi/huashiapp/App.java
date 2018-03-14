@@ -3,6 +3,7 @@ package net.muxi.huashiapp;
 import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -54,6 +55,9 @@ public class App extends Application {
         sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));
         sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
 
+        Log.d("somethign", "big "+PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL)+"\n"+"" +
+                "jid "+PreferenceUtil.getString(PreferenceUtil.JSESSIONID
+        ));
         Fresco.initialize(this);
         initBugly();
         initUMeng();

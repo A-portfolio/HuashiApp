@@ -39,7 +39,6 @@ import net.muxi.huashiapp.util.TimeTableUtil;
 import net.muxi.huashiapp.util.TipViewUtil;
 import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -217,7 +216,7 @@ public class TimetableFragment extends BaseFragment {
             if (course.id.equals(id)) {
                 start = course.start;
                 duration = course.during;
-                weekday = course.day;
+                    weekday = course.day;
                 break;
             }
         }
@@ -267,11 +266,10 @@ public class TimetableFragment extends BaseFragment {
                     if (handlingRefresh) {
                         handlingRefresh = false;
                         //没有联网会抛出这个异常
-                        if (throwable instanceof UnknownHostException) {
                             RxBus.getDefault().send(new RefreshFinishEvent(false
                                     , RefreshFinishEvent.SELF_DEFINE_CODE));
-//                            retryLoadTable();
-                        }
+                            retryLoadTable();
+
                     }
                     int code = ((HttpException) throwable).code();
                     if (code == 401) {

@@ -21,6 +21,12 @@ public class TimeTableUtil {
      * @param week    当前周
      * @param weekStr 周数字符串
      */
+
+    public static final int IN_RANGE = 0;
+    public static final int OUT_RANGE = 3;
+    public static final int IN_WEEK = 1;
+    public static final int NOT_WEEK = 2;
+    //引入这个四个变量为了解决一个问题 , 一些素质课的courseView会挡住一些 本来课表的课
     public static boolean isThisWeek(int week, String weekStr) {
         if (TextUtils.isEmpty(weekStr)) {
             return false;
@@ -33,6 +39,8 @@ public class TimeTableUtil {
         }
         return false;
     }
+
+
 
     /**
      * 获取某个位置的所有的课程
@@ -183,23 +191,13 @@ public class TimeTableUtil {
         return selectWeek;
     }
 
-    public static List<Course> getCurWeekCourse(List<Course> allCourseList) {
-        List<Course> courseList = new ArrayList<>();
-        for (int i = 0; i < allCourseList.size(); i++) {
-            String weeks = allCourseList.get(i).getWeeks();
-            if (isThisWeek(getCurWeek(), weeks)) {
-                courseList.add(allCourseList.get(i));
-            }
-        }
-        return courseList;
-    }
 
     public static List<Course> getTodayCourse(List<Course> allCourseList) {
         List<Course> courseList = new ArrayList<>();
         for (int i = 0; i < allCourseList.size(); i++) {
             String weeks = allCourseList.get(i).getWeeks();
             String day = allCourseList.get(i).getDay();
-            if (isThisWeek(getCurWeek(), weeks) && day.equals(
+            if (isThisWeek(getCurWeek(), weeks)&& day.equals(
                     Constants.WEEKDAYS_XQ[
                             DateUtil.getDayInWeek(new Date(System.currentTimeMillis()))
                                     - 1])) {

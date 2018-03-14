@@ -28,7 +28,7 @@
         android:ellipsize="end"
         android:textSize="14dp"
         android:maxLines="1"
-        android:maxLength="14"
+        android:maxLength="16"
         android:textColor="?android:attr/textColorPrimary"
         tools:text=""/>
 

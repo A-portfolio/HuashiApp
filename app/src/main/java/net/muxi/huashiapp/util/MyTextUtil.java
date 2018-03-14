@@ -12,4 +12,8 @@ public class MyTextUtil {
         boolean isEllipsize = !((textView.getLayout().getText().toString()).equals(str));
         return isEllipsize;
     }
+
+//    public <T> static void List<T>(T[] t){
+
+///    }
 }

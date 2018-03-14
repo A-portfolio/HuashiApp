@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.Score;
 import net.muxi.huashiapp.net.CampusFactory;
+import net.muxi.huashiapp.ui.login.LoginPresenter;
 
 import java.util.List;
 
@@ -69,12 +71,14 @@ public class CreditResultActivity extends ToolbarActivity {
 
     public void loadCredit(Observable<List<Score>>[] listObservable) {
         showLoading();
-        Observable.merge(listObservable, 5)
+        Observable<List<Score>> scoreObservable = Observable.merge(listObservable, 5)
                 .flatMap(Observable::from)
                 .toList()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(scores -> {
+                .observeOn(AndroidSchedulers.mainThread());
+
+
+                scoreObservable.subscribe(scores -> {
                     addCredit(scores);
                     float all = zb + zx + tb + tx + th;
                     mTvZb.setText(String.valueOf(zb));
@@ -83,11 +87,24 @@ public class CreditResultActivity extends ToolbarActivity {
                     mTvTx.setText(String.valueOf(tx));
                     mTvTh.setText(String.valueOf(th));
                     mTvCreditAll.setText(String.valueOf(all));
+                    hideLoading();
                 }, throwable -> {
                     hideLoading();
                     throwable.printStackTrace();
-                    showErrorSnackbarShort(R.string.tip_school_server_error);
-                }, () -> hideLoading());
+                    new LoginPresenter().login(App.sUser)
+                            .flatMap(aubBoolean -> scoreObservable)
+                            .subscribe(scores -> {
+                                    addCredit(scores);
+                                    float all = zb + zx + tb + tx + th;
+                                    mTvZb.setText(String.valueOf(zb));
+                                    mTvZx.setText(String.valueOf(zx));
+                                    mTvTb.setText(String.valueOf(tb));
+                                    mTvTx.setText(String.valueOf(tx));
+                                    mTvTh.setText(String.valueOf(th));
+                                    mTvCreditAll.setText(String.valueOf(all));
+                                    hideLoading();
+                            });
+                }, () -> {});
     }
 
     public Observable<List<Score>>[] getScoreRequest(int start, int end) {

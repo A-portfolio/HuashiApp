@@ -103,6 +103,7 @@ public class TimeTable extends RelativeLayout {
         ButterKnife.bind(this);
     }
 
+
     public TableContent getTableContent() {
         return mTimetableContent;
     }

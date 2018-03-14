@@ -86,15 +86,26 @@ public class TableContent extends FrameLayout {
     public void addCourses(List<Course> courseList,int selectWeek) {
         mCourseList.addAll(courseList);
         for (int i = 0; i < courseList.size(); i++) {
-            if (!TimeTableUtil.isThisWeek(selectWeek,courseList.get(i).weeks)) {
-                addCourseView(courseList.get(i),selectWeek);
+            //selectweek 当前周
+            if (TimeTableUtil.isThisWeek(selectWeek,courseList.get(i).weeks )) {
+                //fixme here
+                List<String> weeklist = new ArrayList<>();
+                weeklist = convert(courseList.get(i).weeks.split(","));
+                if (weeklist.contains(selectWeek)) {
+                    addCourseView(courseList.get(i), selectWeek);
+                }
             }
         }
-        for (int i = 0;i < courseList.size();i ++){
-            if (TimeTableUtil.isThisWeek(selectWeek,courseList.get(i).weeks)){
-                addCourseView(courseList.get(i),selectWeek);
-            }
+    }
+
+
+
+    private List<String> convert(String[] weeks){
+        List<String > list = new ArrayList<>();
+        for(int i=0;i<weeks.length;i++){
+            list.add(weeks[i]);
         }
+        return list;
     }
 
     public void addCourseView(Course course,int selectWeek) {
