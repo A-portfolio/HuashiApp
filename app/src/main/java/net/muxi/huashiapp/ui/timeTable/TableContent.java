@@ -89,7 +89,6 @@ public class TableContent extends FrameLayout {
      */
     public void addCourses(List<Course> courseList,int selectWeek) {
         mCourseList.addAll(courseList);
-
         //查有没有重叠的课程
         generateMap(courseList);
         for (int i = 0; i < courseList.size(); i++) {
@@ -195,7 +194,6 @@ public class TableContent extends FrameLayout {
            courseview.setIsTipOn(true);
        }
     }
-
 
 
     public void setOnCourseClickListener(OnCourseClickListener courseClickListener){

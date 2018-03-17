@@ -191,7 +191,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
             mItemDatas.add(new ItemData("部门信息", R.drawable.ic_apartment + "", false));
             mItemDatas.add(new ItemData("校历", R.drawable.ic_calendar + "", false));
             mItemDatas.add(new ItemData("常用网站", R.drawable.ic_net + "", false));
-//            mItemDatas.add(new ItemData("学而",R.drawable.ic_xueer+"",false));
             mItemDatas.add(new ItemData("更多", R.drawable.ic_more + "", false));
         }
 
