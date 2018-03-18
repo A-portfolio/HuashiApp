@@ -21,9 +21,10 @@ def versionBuild = 0
 def bakPath = file("${buildDir}/bakApk/")
 def baseInfo = "app-2.2.0-0226-13-18-25"
 def variantName = "release"
+
 android {
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.2'
 
     dexOptions {
         jumboMode = true
@@ -41,7 +42,7 @@ android {
     defaultConfig {
         applicationId "net.muxi.huashiapp"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode versionMajor * 10000 + versionMinor * 100 + versionBuild
         versionName = "${versionMajor}.${versionMinor}.${versionBuild}"
 
@@ -120,8 +121,6 @@ def buildTime() {
     df.setTimeZone(TimeZone.getDefault())
     return df.format(new Date())
 }
-
-
 
 
 tinkerpatchSupport {
