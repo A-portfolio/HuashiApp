@@ -74,7 +74,7 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
             loadBooks();
         });
         loadBooks();
-    }
+                                     }
 
     private void loadBooks() {
         CampusFactory.getRetrofitService().searchBook(query, page)
@@ -91,7 +91,7 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
                         mListView = (ListView) mMultiStatusView.getContentView();
                         mListView.setOnScrollListener(this);
                         mListView.setAdapter(mLibrarySearchResultAdapter);
-                        mListView.addFooterView(footerView);
+                        mListView.addFooterView(footerView, null, false);
                         mListView.setOnItemClickListener((adapterView, view, i, l) -> {
                             BookSearchResult.ResultsBean book = mBookList.get(i);
                             BookDetailActivity.start(LibrarySearchResultActivity.this,book.id);
