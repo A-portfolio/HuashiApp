@@ -11,9 +11,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.muxistudio.common.util.DimensUtil;
+import com.muxistudio.common.util.Logger;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.DimensUtil;
-import net.muxi.huashiapp.util.Logger;
 
 /**
  * Created by ybao (ybaovv@gmail.com)

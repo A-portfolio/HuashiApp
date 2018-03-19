@@ -7,11 +7,10 @@ import android.util.AttributeSet;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.NumberPickerHelper;
+import com.muxistudio.appcommon.utils.NumberPickerHelper;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import net.muxi.huashiapp.R;
+
 
 /**
  * Created by ybao on 17/2/3.
@@ -19,34 +18,33 @@ import butterknife.ButterKnife;
 
 
 //用于添加课程中选择的的课程表
-public class CourseTimePickerView extends RelativeLayout{
-
-    @BindView(R.id.np_weekday)
-    LargeSizeNumberPicker mNpWeekday;
-    @BindView(R.id.np_start)
-    LargeSizeNumberPicker mNpStart;
-    @BindView(R.id.np_end)
-    LargeSizeNumberPicker mNpEnd;
+public class CourseTimePickerView extends RelativeLayout {
 
     private OnValueChangeListener mOnValueChangeListener;
 
     public static final int START_LINE_WIDTH = 8 * 3;
     public static final String[] WEEKDAYS = {"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
     public String[] COURSE_TIME = new String[14];
+    private LargeSizeNumberPicker mNpWeekday;
+    private LargeSizeNumberPicker mNpStart;
+    private LargeSizeNumberPicker mNpEnd;
 
     public CourseTimePickerView(Context context) {
         this(context, null);
     }
+
     public CourseTimePickerView(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_time_picker, this);
-        ButterKnife.bind(this);
         //invoke onDraw!!!
         setWillNotDraw(false);
         initView();
     }
 
     private void initView() {
+        mNpWeekday = findViewById(R.id.np_weekday);
+        mNpStart = findViewById(R.id.np_start);
+        mNpEnd = findViewById(R.id.np_end);
         NumberPickerHelper.setDividerColor(mNpWeekday, Color.TRANSPARENT);
         NumberPickerHelper.setDividerColor(mNpStart, Color.TRANSPARENT);
         NumberPickerHelper.setDividerColor(mNpEnd, Color.TRANSPARENT);

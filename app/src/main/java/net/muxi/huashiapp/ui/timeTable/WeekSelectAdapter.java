@@ -7,13 +7,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.Constants;
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.Logger;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by ybao on 16/7/11.
@@ -39,7 +37,7 @@ public class WeekSelectAdapter extends RecyclerView.Adapter<WeekSelectAdapter.Vi
         } else {
             holder.mTvNumber.setText("" + (position + 1));
         }
-        setTvNumberBg(position,holder.mTvNumber);
+        setTvNumberBg(position, holder.mTvNumber);
         holder.mTvCurweek.setVisibility(View.GONE);
 
         holder.mTvWeek.setText(Constants.WEEKS[position]);
@@ -57,15 +55,16 @@ public class WeekSelectAdapter extends RecyclerView.Adapter<WeekSelectAdapter.Vi
 
     /**
      * 更新RecycelrView 的数据
+     *
      * @param curWeek 当前周
      */
-    public void swap(int curWeek){
+    public void swap(int curWeek) {
         this.curWeek = curWeek;
         notifyDataSetChanged();
     }
 
-    private void setTvNumberBg(int position,TextView tv) {
-        switch (position % 4){
+    private void setTvNumberBg(int position, TextView tv) {
+        switch (position % 4) {
             case 0:
                 tv.setBackgroundResource(R.drawable.shape_round_orange);
                 break;
@@ -92,29 +91,28 @@ public class WeekSelectAdapter extends RecyclerView.Adapter<WeekSelectAdapter.Vi
         return Constants.WEEKS_LENGTH;
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_number)
-        TextView mTvNumber;
-        @BindView(R.id.tv_week)
-        TextView mTvWeek;
-        @BindView(R.id.tv_curweek)
-        TextView mTvCurweek;
-        @BindView(R.id.root_layout)
-        LinearLayout mRootLayout;
+        private LinearLayout mRootLayout;
+        private TextView mTvNumber;
+        private TextView mTvWeek;
+        private TextView mTvCurweek;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            mRootLayout = itemView.findViewById(R.id.root_layout);
+            mTvNumber = itemView.findViewById(R.id.tv_number);
+            mTvWeek = itemView.findViewById(R.id.tv_week);
+            mTvCurweek = itemView.findViewById(R.id.tv_curweek);
         }
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(int position);
     }
 

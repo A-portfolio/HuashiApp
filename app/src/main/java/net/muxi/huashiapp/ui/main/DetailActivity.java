@@ -7,57 +7,59 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.Constants;
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.util.CopyBoardUtil;
-import net.muxi.huashiapp.util.ToastUtil;
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.appcommon.appbase.BaseAppActivity;
+import com.muxistudio.appcommon.utils.CopyBoardUtil;
+import com.muxistudio.common.util.ToastUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import net.muxi.huashiapp.R;
+
 
 /**
  * Created by kolibreath on 18-2-25.
  */
 
-public class DetailActivity extends BaseActivity {
+public class DetailActivity extends BaseAppActivity {
 
+    private TextView mTvDetailTitle;
+    private TextView mTvDetailContent;
+    private TextView mTvDetailQqGroup;
+    private Button mBtnDetailConfirm;
 
-    @BindView(R.id.tv_detail_qq_group)
-    TextView mTvDetailQQ;
-    @BindView(R.id.tv_detail_content)
-    TextView mTVDetailContent;
-    @BindView(R.id.btn_detail_confirm)
-    Button mBtnDetailConfirm;
-    @OnClick({R.id.btn_detail_confirm,R.id.tv_detail_qq_group})
-    void submit(View view){
-        switch (view.getId()){
-            case R.id.btn_detail_confirm:
-                finish();
-                break;
-            case R.id.tv_detail_qq_group:
-                CopyBoardUtil.copy(Constants.QQ_GROUP_NUMBER);
-                ToastUtil.showShort("已复制到剪贴板");
-                break;
+    void submit(View view) {
+        int id = view.getId();
+        if (id == R.id.btn_detail_confirm){
+            finish();
+        }else if (id == R.id.tv_detail_qq_group){
+            CopyBoardUtil.copy(Constants.QQ_GROUP_NUMBER);
+            ToastUtil.showShort("已复制到剪贴板");
         }
     }
+
     private String mDetailString;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        ButterKnife.bind(this);
-        mDetailString  = getIntent().getStringExtra("detail");
+        initView();
+        mDetailString = getIntent().getStringExtra("detail");
         setDetailFormat();
     }
 
-    private void setDetailFormat(){
-        mTvDetailQQ.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        mTvDetailQQ.setText(Constants.QQ_GROUP_NUMBER);
-        mTvDetailQQ.setTextColor(getResources().getColor(R.color.blue));
-        mTVDetailContent.setText(mDetailString);
+    private void setDetailFormat() {
+        mTvDetailQqGroup.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        mTvDetailQqGroup.setText(Constants.QQ_GROUP_NUMBER);
+        mTvDetailQqGroup.setTextColor(getResources().getColor(R.color.blue));
+        mTvDetailContent.setText(mDetailString);
     }
 
+    private void initView() {
+        mTvDetailTitle = findViewById(R.id.tv_detail_title);
+        mTvDetailContent = findViewById(R.id.tv_detail_content);
+        mTvDetailQqGroup = findViewById(R.id.tv_detail_qq_group);
+        mBtnDetailConfirm = findViewById(R.id.btn_detail_confirm);
+        mBtnDetailConfirm.setOnClickListener(v -> submit(v));
+        mTvDetailQqGroup.setOnClickListener(v -> submit(v));
+    }
 }

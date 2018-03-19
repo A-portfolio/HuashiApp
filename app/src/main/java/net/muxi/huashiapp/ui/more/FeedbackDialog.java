@@ -10,8 +10,6 @@ import android.widget.Button;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.widget.CenterDialogFragment;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by december on 17/2/23.
@@ -19,17 +17,17 @@ import butterknife.ButterKnife;
 
 public class FeedbackDialog extends CenterDialogFragment {
 
-
-    @BindView(R.id.btn_exit)
-    Button mBtnExit;
-
     private OnClickListener mOnClickListener;
+    private android.widget.TextView mTitleSugg;
+    private View mDivider;
+    private android.widget.TextView mContentSugg;
+    private Button mBtnExit;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_feedback, null);
-        ButterKnife.bind(this, view);
+        initView(view);
 
         Dialog dialog = createCenterDialog(view);
         mBtnExit.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +44,13 @@ public class FeedbackDialog extends CenterDialogFragment {
 
     public void setOnClickListener(OnClickListener onClickListener) {
         mOnClickListener = onClickListener;
+    }
+
+    private void initView(View view) {
+        mTitleSugg = view.findViewById(R.id.title_sugg);
+        mDivider = view.findViewById(R.id.divider);
+        mContentSugg = view.findViewById(R.id.content_sugg);
+        mBtnExit = view.findViewById(R.id.btn_exit);
     }
 
 

@@ -8,26 +8,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.muxistudio.appcommon.widgets.BottomDialogFragment;
+
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.main.OnRecyclerItemClickListener;
-import net.muxi.huashiapp.widget.BottomDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by december on 17/4/5.
  */
 
 public class ShareToDialog extends BottomDialogFragment {
-
-
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
 
     private Integer [] pics = {R.drawable.ic_share_toqq,R.drawable.ic_share_towx ,R.drawable.ic_share_toweibo,
                                R.drawable.ic_share_toqzone,R.drawable.ic_share_tomoments,0,
@@ -38,17 +33,18 @@ public class ShareToDialog extends BottomDialogFragment {
     private List<Integer> mpic;
     private List<String> mdesc;
 
-
     private ShareAdapter mShareAdapter;
 
     private OnItemClick mOnItemClick;
+    private android.widget.TextView mTvShare;
+    private RecyclerView mRecyclerView;
 
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_shareto, null);
-        ButterKnife.bind(this, view);
+        initView(view);
         Dialog dialog = createBottomDialog(view);
 
         mpic = new ArrayList<>();
@@ -81,6 +77,11 @@ public class ShareToDialog extends BottomDialogFragment {
 
     public void setOnItemClickListener(OnItemClick onItemClick){
         mOnItemClick = onItemClick;
+    }
+
+    private void initView(View view) {
+        mTvShare = view.findViewById(R.id.tv_share);
+        mRecyclerView = view.findViewById(R.id.recycler_view);
     }
 
     public interface OnItemClick{

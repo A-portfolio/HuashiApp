@@ -6,26 +6,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.common.util.NetStatus;
 import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.ui.more.FeedbackDialog;
-import net.muxi.huashiapp.util.NetStatus;
-//import net.muxi.huashiapp.util.ZhugeUtils;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
+//import net.muxi.huashiapp.util.ZhugeUtils;
 
 /**
  * Created by december on 16/8/1.
@@ -33,22 +31,15 @@ import butterknife.OnClick;
 public class SuggestionActivity extends ToolbarActivity {
 
     private static final int MAX_WORD_NUM = 400;
-
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.et_suggestion)
-    EditText mEtSuggestion;
-    @BindView(R.id.btn_submit)
-    Button mBtnSubmit;
-    @BindView(R.id.tv_word_length)
-    TextView mTvWordLength;
-    @BindView(R.id.et_contact)
-    EditText mEtContact;
-    @BindView(R.id.group_ccnubox)
-    TextView mGroupCcnubox;
-    @BindView(R.id.tv_copy)
-    TextView mTvCopy;
-
+    private EditText mEtSuggestion;
+    private TextView mTvWordLength;
+    private ImageView mIvEdit;
+    private EditText mEtContact;
+    private View mDivider2;
+    private TextView mGroupCcnubox;
+    private TextView mTvCopy;
+    private View mDivider3;
+    private Button mBtnSubmit;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, SuggestionActivity.class);
@@ -59,7 +50,7 @@ public class SuggestionActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suggestion);
-        ButterKnife.bind(this);
+        initView();
         setSupportActionBar(mToolbar);
         mToolbar.setTitle("意见反馈");
         mEtSuggestion.addTextChangedListener(new TextWatcher() {
@@ -131,7 +122,7 @@ public class SuggestionActivity extends ToolbarActivity {
 //
     public void sendSuggestion(String str) {
         if (NetStatus.isConnected()) {
-            MobclickAgent.onEvent(this,"suggestion_hand_in");
+            MobclickAgent.onEvent(this, "suggestion_hand_in");
             FeedbackDialog feedbackDialog = new FeedbackDialog();
             feedbackDialog.show(getSupportFragmentManager(), "feedback_dialog");
             feedbackDialog.setOnClickListener(new FeedbackDialog.OnClickListener() {
@@ -161,14 +152,26 @@ public class SuggestionActivity extends ToolbarActivity {
         this.finish();
     }
 
-    @OnClick(R.id.tv_copy)
     public void onClick() {
         ClipboardManager manager = (ClipboardManager) this
                 .getSystemService(Context.CLIPBOARD_SERVICE);
-        manager.setPrimaryClip(ClipData.newPlainText(null,mGroupCcnubox.getText()));
-        if (manager.hasPrimaryClip()){
+        manager.setPrimaryClip(ClipData.newPlainText(null, mGroupCcnubox.getText()));
+        if (manager.hasPrimaryClip()) {
             manager.getPrimaryClip().getItemAt(0).getText();
         }
         showSnackbarShort("成功复制到粘贴板");
+    }
+
+    private void initView() {
+        mEtSuggestion = findViewById(R.id.et_suggestion);
+        mTvWordLength = findViewById(R.id.tv_word_length);
+        mIvEdit = findViewById(R.id.iv_edit);
+        mEtContact = findViewById(R.id.et_contact);
+        mDivider2 = findViewById(R.id.divider2);
+        mGroupCcnubox = findViewById(R.id.group_ccnubox);
+        mTvCopy = findViewById(R.id.tv_copy);
+        mDivider3 = findViewById(R.id.divider3);
+        mBtnSubmit = findViewById(R.id.btn_submit);
+        mTvCopy.setOnClickListener(v -> onClick());
     }
 }

@@ -3,12 +3,9 @@ package net.muxi.huashiapp.service;
 import android.content.Intent;
 import android.widget.RemoteViewsService;
 
-import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.widget.AppWidgetFactory;
+import com.muxistudio.common.util.Logger;
 
-import java.util.ArrayList;
+import net.muxi.huashiapp.widget.AppWidgetFactory;
 
 
 /**

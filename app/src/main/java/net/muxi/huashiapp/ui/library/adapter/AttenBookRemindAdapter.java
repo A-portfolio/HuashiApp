@@ -8,7 +8,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.AttentionBook;
+import com.muxistudio.appcommon.data.AttentionBook;
 import net.muxi.huashiapp.ui.library.BookDetailActivity;
 
 /**

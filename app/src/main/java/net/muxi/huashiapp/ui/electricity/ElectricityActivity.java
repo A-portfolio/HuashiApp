@@ -5,21 +5,21 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.EleRequestData;
-import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.util.PreferenceUtil;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.EleRequestData;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.common.util.PreferenceUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import net.muxi.huashiapp.R;
+
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -28,29 +28,21 @@ import rx.schedulers.Schedulers;
  */
 public class ElectricityActivity extends ToolbarActivity {
 
-
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.area_1)
-    TextView mArea1;
-    @BindView(R.id.area_2)
-    TextView mArea2;
-    @BindView(R.id.area_3)
-    TextView mArea3;
-    @BindView(R.id.area_4)
-    TextView mArea4;
-    @BindView(R.id.area_5)
-    TextView mArea5;
-    @BindView(R.id.area_6)
-    TextView mArea6;
-    @BindView(R.id.tv_area)
-    TextView mTvArea;
-    @BindView(R.id.et_room)
-    EditText mEtRoom;
-    @BindView(R.id.btn_search)
-    Button mBtnSearch;
-    @BindView(R.id.hint_choose_area)
-    TextView mHintChooseArea;
+    private RelativeLayout mEleRelativeLayout;
+    private TextView mText;
+    private LinearLayout mAreaLayout;
+    private TextView mArea1;
+    private TextView mArea2;
+    private TextView mArea3;
+    private TextView mArea4;
+    private TextView mArea5;
+    private TextView mArea6;
+    private ImageView mIvChooseArea;
+    private TextView mHintChooseArea;
+    private TextView mTvArea;
+    private ImageView mIvChooseRoom;
+    private EditText mEtRoom;
+    private Button mBtnSearch;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, ElectricityActivity.class);
@@ -65,7 +57,7 @@ public class ElectricityActivity extends ToolbarActivity {
 
 
     //东区对应的建筑
-    private static final String[]   buildingStrings1 = {
+    private static final String[] buildingStrings1 = {
             "东区1栋", "东区2栋", "东区3栋", "东区4栋", "东区5栋", "东区6栋", "东区7栋", "东区8栋", "东区9栋", "东区10栋", "东区11栋", "东区12栋", "东区13栋西",
             "东区13栋东", "东区14栋", "东区15栋西", "东区15栋东", "东区16栋", "东区附1栋"};
 
@@ -103,17 +95,42 @@ public class ElectricityActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_electricity);
-        ButterKnife.bind(this);
+
         mToolbar.setTitle("电费查询");
         mArea = new TextView[]{mArea1, mArea2, mArea3, mArea4, mArea5, mArea6};
         initView();
     }
 
     private void initView() {
+        mEleRelativeLayout = findViewById(R.id.ele_relative_layout);
+        mText = findViewById(R.id.text);
+        mAreaLayout = findViewById(R.id.area_layout);
+        mArea1 = findViewById(R.id.area_1);
+        mArea2 = findViewById(R.id.area_2);
+        mArea3 = findViewById(R.id.area_3);
+        mArea4 = findViewById(R.id.area_4);
+        mArea5 = findViewById(R.id.area_5);
+        mArea6 = findViewById(R.id.area_6);
+        mIvChooseArea = findViewById(R.id.iv_choose_area);
+        mHintChooseArea = findViewById(R.id.hint_choose_area);
+        mTvArea = findViewById(R.id.tv_area);
+        mIvChooseRoom = findViewById(R.id.iv_choose_room);
+        mEtRoom = findViewById(R.id.et_room);
+        mBtnSearch = findViewById(R.id.btn_search);
+        mArea1.setOnClickListener(v -> onClick(v));
+        mArea2.setOnClickListener(v -> onClick(v));
+        mArea3.setOnClickListener(v -> onClick(v));
+        mArea4.setOnClickListener(v -> onClick(v));
+        mArea5.setOnClickListener(v -> onClick(v));
+        mArea6.setOnClickListener(v -> onClick(v));
+        mTvArea.setOnClickListener(v -> onClick(v));
+        mHintChooseArea.setOnClickListener(v -> onClick(v));
+        mBtnSearch.setOnClickListener(v -> onClick(v));
         mArea1.setBackgroundResource(R.drawable.shape_green);
         mArea1.setTextColor(Color.WHITE);
         mTvArea.setText("东区2栋");
         mBuildings = buildingStrings1;
+
     }
 
     @Override
@@ -124,89 +141,83 @@ public class ElectricityActivity extends ToolbarActivity {
         }
     }
 
-
     //对应各个寝室
-    @OnClick({R.id.area_1, R.id.area_2, R.id.area_3, R.id.area_4, R.id.area_5, R.id.area_6, R.id.tv_area, R.id.hint_choose_area, R.id.et_room, R.id.btn_search})
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.area_1:
-                setBackground(0);
-                mBuildings = buildingStrings1;
-                break;
-            case R.id.area_2:
-                setBackground(1);
-                mBuildings = buildingStrings2;
-                break;
-            case R.id.area_3:
-                setBackground(2);
-                mBuildings = buildingStrings3;
-                break;
-            case R.id.area_4:
-                setBackground(3);
-                mBuildings = buildingStrings4;
-                break;
-            case R.id.area_5:
-                setBackground(4);
-                mBuildings = buildingStrings5;
-                break;
-            case R.id.area_6:
-                setBackground(5);
-                mBuildings = buildingStrings6;
-                break;
-            case R.id.hint_choose_area:
-            case R.id.tv_area:
-                //选择所在区域具体的寝室号码
-                Intent intent = new Intent(ElectricityActivity.this, ElectricityAreaOptionActivity.class);
-                intent.putExtra("buildings", mBuildings);
-                startActivityForResult(intent, 0);
-                break;
-            case R.id.btn_search:
-                if (mTvArea.getText().length() != 0 && mEtRoom.getText().toString().length() != 0) {
-                    int index = mTvArea.getText().toString().indexOf("栋");
-                    if (mTvArea.getText().length() > index + 1) {
-                        mQuery = mTvArea.getText().toString().substring(0, 1) + mTvArea.getText().toString().substring(2, index) + "-" + mTvArea.getText().toString().substring(index + 1) + mEtRoom.getText().toString();
+        int id = view.getId();
+        if (id == R.id.area_1) {
+            setBackground(0);
+            mBuildings = buildingStrings1;
+        } else if (id == R.id.area_2) {
+            setBackground(1);
+            mBuildings = buildingStrings2;
+
+        } else if (id == R.id.area_3) {
+            setBackground(2);
+            mBuildings = buildingStrings3;
+
+        } else if (id == R.id.area_4) {
+            setBackground(3);
+            mBuildings = buildingStrings4;
+        } else if (id == R.id.area_5) {
+            setBackground(4);
+            mBuildings = buildingStrings5;
+        } else if (id == R.id.area_6) {
+            setBackground(5);
+            mBuildings = buildingStrings6;
+        } else if (id == R.id.tv_area || id == R.id.hint_choose_area) {
+
+            //选择所在区域具体的寝室号码
+            Intent intent = new Intent(ElectricityActivity.this, ElectricityAreaOptionActivity.class);
+            intent.putExtra("buildings", mBuildings);
+            startActivityForResult(intent, 0);
+        } else if (id == R.id.et_room) {
+        } else if (id == R.id.btn_search) {
+
+            if (mTvArea.getText().length() != 0 && mEtRoom.getText().toString().length() != 0) {
+                int index = mTvArea.getText().toString().indexOf("栋");
+                if (mTvArea.getText().length() > index + 1) {
+                    mQuery = mTvArea.getText().toString().substring(0, 1) + mTvArea.getText().toString().substring(2, index) + "-" + mTvArea.getText().toString().substring(index + 1) + mEtRoom.getText().toString();
+                } else {
+                    if (mTvArea.getText().toString().substring(0, 3).equals("元宝山")) {
+                        mQuery = mTvArea.getText().toString().substring(0, 1) + mTvArea.getText().toString().substring(index - 1, index) + "-" + mEtRoom.getText().toString();
                     } else {
-                        if (mTvArea.getText().toString().substring(0,3).equals("元宝山")) {
-                            mQuery = mTvArea.getText().toString().substring(0, 1) + mTvArea.getText().toString().substring(index - 1, index) + "-" + mEtRoom.getText().toString();
-                        } else {
-                            mQuery = mTvArea.getText().toString().substring(0, 1) + mTvArea.getText().toString().substring(2, index) + "-" + mEtRoom.getText().toString();
-                        }
+                        mQuery = mTvArea.getText().toString().substring(0, 1) + mTvArea.getText().toString().substring(2, index) + "-" + mEtRoom.getText().toString();
                     }
-                    PreferenceUtil sp = new PreferenceUtil();
-                    sp.saveString(PreferenceUtil.ELE_QUERY_STRING, mQuery);
+                }
+                PreferenceUtil sp = new PreferenceUtil();
+                sp.saveString(PreferenceUtil.ELE_QUERY_STRING, mQuery);
 
-
-                    EleRequestData eleAirRequest = new EleRequestData();
-                    eleAirRequest.setDor(mQuery);
-                    eleAirRequest.setType("air");
-                    EleRequestData eleLightRequest = new EleRequestData();
-                    eleLightRequest.setDor(mQuery);
-                    eleLightRequest.setType("light");
-                    showLoading();
-                    CampusFactory.getRetrofitService().getElectricity(eleLightRequest)
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribeOn(Schedulers.newThread())
+                EleRequestData eleAirRequest = new EleRequestData();
+                eleAirRequest.setDor(mQuery);
+                eleAirRequest.setType("air");
+                EleRequestData eleLightRequest = new EleRequestData();
+                eleLightRequest.setDor(mQuery);
+                eleLightRequest.setType("light");
+                showLoading();
+                CampusFactory.getRetrofitService().getElectricity(eleLightRequest)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.newThread())
                             /*
                             subscriber<T>
                             electricityResponse是 Retrofit onSuccess()的一个参数 所以可以这样Lambda化
                              */
-                            .subscribe(electricityResponse -> {
-                                        if (electricityResponse.code() == 404) {
-                                            sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
-                                            showErrorSnackbarShort(getString(R.string.ele_room_not_found));
-                                        } else {
-                                            ElectricityDetailActivity.start(this, mQuery);
-                                            this.finish();
-
-                                        }
-                                    }, throwable -> {
-                                        throwable.printStackTrace();
-                                    }, () -> {
-                                        hideLoading();
+                        .subscribe(electricityResponse -> {
+                                    if (electricityResponse.code() == 404) {
+                                        sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
+                                        showErrorSnackbarShort(getString(R.string.ele_room_not_found));
+                                    } else {
+                                        ElectricityDetailActivity.start(this, mQuery);
+                                        this.finish();
 
                                     }
-                            );
-                }
+                                }, throwable -> {
+                                    throwable.printStackTrace();
+                                }, () -> {
+                                    hideLoading();
+
+                                }
+                        );
+            }
         }
 
     }

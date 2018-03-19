@@ -4,22 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.Book;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.common.util.PreferenceUtil;
 import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.Book;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.library.fragment.BookBorrowedFragment;
 import net.muxi.huashiapp.ui.library.fragment.BookDetailFragment;
-import net.muxi.huashiapp.util.PreferenceUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -30,12 +28,9 @@ import rx.schedulers.Schedulers;
 
 public class BookDetailActivity extends ToolbarActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.multi_status_view)
-    MultiStatusView mMultiStatusView;
-
     private String id;
+    private MultiStatusView mMultiStatusView;
+    private FrameLayout mContentLayout;
 
     public static void start(Context context, String id) {
         Intent starter = new Intent(context, BookDetailActivity.class);
@@ -47,7 +42,6 @@ public class BookDetailActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
-        ButterKnife.bind(this);
         setTitle("");
         id = getIntent().getStringExtra("id");
 
@@ -55,6 +49,7 @@ public class BookDetailActivity extends ToolbarActivity {
             loadData();
         });
         loadData();
+        initView();
     }
 
     private void loadData() {
@@ -65,9 +60,9 @@ public class BookDetailActivity extends ToolbarActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(book -> {
                     mMultiStatusView.showContent();
-                    if (PreferenceUtil.getString(PreferenceUtil.BORROW_BOOK_IDS).contains(id)){
+                    if (PreferenceUtil.getString(PreferenceUtil.BORROW_BOOK_IDS).contains(id)) {
                         showBorrowedBookFragment(book);
-                    }else{
+                    } else {
                         showDetailFragment(book);
                     }
                 }, throwable -> {
@@ -101,11 +96,15 @@ public class BookDetailActivity extends ToolbarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_close:
-                finish();
-                break;
+        int id = item.getItemId();
+        if (id == R.id.action_close){
+            finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initView() {
+        mMultiStatusView = findViewById(R.id.multi_status_view);
+        mContentLayout = findViewById(R.id.content_layout);
     }
 }

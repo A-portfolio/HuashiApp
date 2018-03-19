@@ -20,10 +20,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.muxistudio.common.util.AnimationUtil;
+import com.muxistudio.common.util.Logger;
+
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.AnimationUtil;
-import net.muxi.huashiapp.util.Logger;
 
 /**
  * Created by ybao on 16/5/16.
@@ -63,7 +64,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
     }
 
     public MySearchView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs,defStyleAttr);
+        super(context, attrs, defStyleAttr);
         mContext = context;
         initView();
         initStyle(attrs, defStyleAttr);
@@ -202,7 +203,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
         mEditSearch.setTextColor(color);
     }
 
-    public void setTintViewBackground(int color){
+    public void setTintViewBackground(int color) {
         mTintView.setBackgroundColor(color);
     }
 
@@ -247,7 +248,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
 
         if (isAnimation) {
             setVisibleWithAnimation();
-        }else {
+        } else {
             this.setVisibility(VISIBLE);
             if (mOnSearchViewListener != null) {
                 mOnSearchViewListener.onSearchShown();
@@ -306,26 +307,22 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
         mSearchListview.setVisibility(VISIBLE);
     }
 
-
     public void hideSuggestions() {
         mSearchListview.setVisibility(INVISIBLE);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_search:
-                onSubmitQuery(mEditSearch.getText().toString());
-                if (isSearchOpen()) {
-                    closeSearchView();
-                }
-                break;
-            case R.id.btn_back:
+        final int id = v.getId();
+        if (id == R.id.btn_search) {
+            onSubmitQuery(mEditSearch.getText().toString());
+            if (isSearchOpen()) {
                 closeSearchView();
-                break;
-            case R.id.tint_view:
-                closeSearchView();
-                break;
+            }
+        } else if (id == R.id.btn_back) {
+            closeSearchView();
+        } else if (id == R.id.tint_view) {
+            closeSearchView();
         }
     }
 

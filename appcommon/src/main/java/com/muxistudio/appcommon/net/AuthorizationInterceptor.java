@@ -1,0 +1,38 @@
+package com.muxistudio.appcommon.net;
+
+import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.appcommon.utils.Base64Util;
+
+import java.io.IOException;
+
+import okhttp3.Interceptor;
+import okhttp3.Request;
+import okhttp3.Response;
+
+/**
+ * Created by ybao (ybaovv@gmail.com)
+ * Date: 17/4/29
+ * 增加 base64 加密认证
+ */
+
+public class AuthorizationInterceptor implements Interceptor {
+
+    @Override
+    public Response intercept(Chain chain) throws IOException {
+        Request request = chain.request();
+        Request.Builder builder = request.newBuilder();
+        if (request.url().pathSegments().get(1).equals("lib")) {
+            String s2 = request.url().pathSegments().get(2);
+            if (s2 != null && s2.equals("login")) {
+
+            } else {
+                builder.header("Authorization", Base64Util.createBaseStr(UserAccountManager.getInstance().getLibUser()));
+            }
+        } else {
+            if (!request.url().pathSegments().get(1).equals("info")) {
+                builder.header("Authorization", Base64Util.createBaseStr(UserAccountManager.getInstance().getInfoUser()));
+            }
+        }
+        return chain.proceed(builder.build());
+    }
+}

@@ -7,20 +7,18 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.data.WebsiteData;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.WebsiteData;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by december on 16/11/2.
  */
 
 public class WebsiteAdapter extends RecyclerView.Adapter<WebsiteAdapter.MySiteViewHolder> {
-
 
     private List<WebsiteData> mWebsiteDataList;
     private OnItemClickListener mOnItemClickListener;
@@ -66,15 +64,13 @@ public class WebsiteAdapter extends RecyclerView.Adapter<WebsiteAdapter.MySiteVi
 
     static class MySiteViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.website_site)
-        TextView mWebsiteSite;
-        @BindView(R.id.website_layout)
-        RelativeLayout mWebsiteLayout;
+        private RelativeLayout mWebsiteLayout;
+        private TextView mWebsiteSite;
 
         public MySiteViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
-
+            mWebsiteLayout = itemView.findViewById(R.id.website_layout);
+            mWebsiteSite = itemView.findViewById(R.id.website_site);
         }
     }
 }

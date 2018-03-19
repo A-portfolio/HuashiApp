@@ -28,7 +28,7 @@
         android:textColor="?android:attr/textColorPrimary"/>
 
     <TextView
-        android:id="@+id/et_year"
+        android:id="@+id/tv_year"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_select_year"

@@ -8,14 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.appbase.BaseAppFragment;
+import com.muxistudio.appcommon.data.Electricity;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.BaseFragment;
-import net.muxi.huashiapp.common.data.Electricity;
 
 /**
  * Created by december on 16/7/6.
  */
-public class ElectricityDetailFragment extends BaseFragment {
+public class ElectricityDetailFragment extends BaseAppFragment {
     private TextView mTvDegreeLeft;
     private TextView mTvDegreeLastMonth;
     private TextView mTvDegreeCurMonth;

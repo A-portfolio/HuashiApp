@@ -1,7 +1,7 @@
 package net.muxi.huashiapp.net;
 
 import net.muxi.huashiapp.BuildConfig;
-import net.muxi.huashiapp.common.data.User;
+import com.muxistudio.appcommon.data.User;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -6,20 +6,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.WebsiteData;
+import com.muxistudio.appcommon.db.HuaShiDao;
+import com.muxistudio.appcommon.net.CampusFactory;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.WebsiteData;
-import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -29,14 +27,11 @@ import rx.schedulers.Schedulers;
  */
 
 public class WebsiteActivity extends ToolbarActivity {
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
 
+    private RecyclerView mRecyclerView;
 
-    public static void start(Context context){
-        Intent starter = new Intent(context,WebsiteActivity.class);
+    public static void start(Context context) {
+        Intent starter = new Intent(context, WebsiteActivity.class);
         context.startActivity(starter);
     }
 
@@ -48,8 +43,7 @@ public class WebsiteActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_website);
-        ButterKnife.bind(this);
-
+        initView();
         mDao = new HuaShiDao();
         try {
             mWebsiteDatas = mDao.loadSite();
@@ -84,7 +78,7 @@ public class WebsiteActivity extends ToolbarActivity {
 
                     @Override
                     public void onNext(List<WebsiteData> websiteData) {
-                        for(WebsiteData data:websiteData){
+                        for (WebsiteData data : websiteData) {
                         }
                         if (mWebsiteDatas == null || websiteData.size() != mWebsiteDatas.size()) {
                             //学生信息服务平台暂时无法使用
@@ -110,10 +104,10 @@ public class WebsiteActivity extends ToolbarActivity {
 
     }
 
-    private List filterData(List<WebsiteData> dataList){
+    private List filterData(List<WebsiteData> dataList) {
         List<WebsiteData> filteredList = new ArrayList<>();
-        for(WebsiteData data:dataList){
-            if(!data.getSite().equals("学生信息服务平台")){
+        for (WebsiteData data : dataList) {
+            if (!data.getSite().equals("学生信息服务平台")) {
                 filteredList.add(data);
             }
         }
@@ -124,5 +118,9 @@ public class WebsiteActivity extends ToolbarActivity {
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
+    }
+
+    private void initView() {
+        mRecyclerView = findViewById(R.id.recycler_view);
     }
 }

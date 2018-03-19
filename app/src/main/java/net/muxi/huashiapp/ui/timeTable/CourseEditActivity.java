@@ -6,54 +6,37 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.appcommon.RxBus;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.Course;
+import com.muxistudio.appcommon.db.HuaShiDao;
+import com.muxistudio.appcommon.event.RefreshTableEvent;
+import com.muxistudio.appcommon.net.CampusFactory;
 import com.umeng.analytics.MobclickAgent;
 
-import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.event.RefreshTableEvent;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static net.muxi.huashiapp.util.TimeTableUtil.isContinuOusWeeks;
-import static net.muxi.huashiapp.util.TimeTableUtil.isDoubleWeeks;
-import static net.muxi.huashiapp.util.TimeTableUtil.isSingleWeeks;
+import static net.muxi.huashiapp.utils.TimeTableUtil.isContinuOusWeeks;
+import static net.muxi.huashiapp.utils.TimeTableUtil.isDoubleWeeks;
+import static net.muxi.huashiapp.utils.TimeTableUtil.isSingleWeeks;
 
 /**
  * Created by ybao on 16/5/1.
  */
 //添加新课程也是这个Activity
 public class CourseEditActivity extends ToolbarActivity {
-
-    @BindView(R.id.et_course)
-    EditText mEtCourse;
-    @BindView(R.id.et_week)
-    TextView mEtWeek;
-    @BindView(R.id.tv_time)
-    TextView mTvTime;
-    @BindView(R.id.et_time)
-    TextView mEtTime;
-    @BindView(R.id.et_place)
-    EditText mEtPlace;
-    @BindView(R.id.et_course_teacher)
-    EditText mEtTeacher;
-    @BindView(R.id.btn_ensure)
-    TextView mBtnEnsure;
 
     private Course mCourse;
     private HuaShiDao dao;
@@ -68,6 +51,18 @@ public class CourseEditActivity extends ToolbarActivity {
     private int duration;
 
     private String[] days = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};
+    private EditText mEtCourse;
+    private ImageView mIvWeekSelect;
+    private TextView mTvWeek;
+    private TextView mEtWeek;
+    private ImageView mIvCourseTime;
+    private TextView mTvTime;
+    private TextView mEtTime;
+    private ImageView mIvCoursePlace;
+    private EditText mEtPlace;
+    private ImageView mIvCourseTeacher;
+    private EditText mEtCourseTeacher;
+    private TextView mBtnEnsure;
 
     public static void start(Context context, boolean isAdd, Course course) {
         Intent starter = new Intent(context, CourseEditActivity.class);
@@ -80,7 +75,6 @@ public class CourseEditActivity extends ToolbarActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
-        ButterKnife.bind(this);
         setTitle("");
         isAdd = getIntent().getBooleanExtra("is_add", true);
         if (!isAdd) {
@@ -122,8 +116,25 @@ public class CourseEditActivity extends ToolbarActivity {
             mEtWeek.setText(getDisplayWeeks());
             mEtTime.setText(String.format("周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
                     start + duration - 1));
-            mEtTeacher.setText(mCourse.teacher);
+            mEtCourseTeacher.setText(mCourse.teacher);
         }
+        mEtCourse = findViewById(R.id.et_course);
+        mIvWeekSelect = findViewById(R.id.iv_week_select);
+        mTvWeek = findViewById(R.id.tv_week);
+        mEtWeek = findViewById(R.id.et_week);
+        mIvCourseTime = findViewById(R.id.iv_course_time);
+        mTvTime = findViewById(R.id.tv_time);
+        mEtTime = findViewById(R.id.et_time);
+        mIvCoursePlace = findViewById(R.id.iv_course_place);
+        mEtPlace = findViewById(R.id.et_place);
+        mIvCourseTeacher = findViewById(R.id.iv_course_teacher);
+        mEtCourseTeacher = findViewById(R.id.et_course_teacher);
+        mBtnEnsure = findViewById(R.id.btn_ensure);
+        mTvWeek.setOnClickListener(v -> onClick(v));
+        mTvTime.setOnClickListener(v -> onClick(v));
+        mEtTime.setOnClickListener(v -> onClick(v));
+        mEtWeek.setOnClickListener(v -> onClick(v));
+        mBtnEnsure.setOnClickListener(v -> onClick(v));
     }
 
     public void addCourse() {
@@ -131,7 +142,7 @@ public class CourseEditActivity extends ToolbarActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(courseId -> {
-                    if (courseId.id != 0){
+                    if (courseId.id != 0) {
                         mCourse.id = String.valueOf(courseId.id);
                         dao.insertCourse(mCourse);
                         showSnackbarShort("添加课程成功");
@@ -141,7 +152,7 @@ public class CourseEditActivity extends ToolbarActivity {
                         RxBus.getDefault().send(new RefreshTableEvent());
                         finish();
                     }
-                },throwable -> {
+                }, throwable -> {
                     throwable.printStackTrace();
                     showErrorSnackbarShort(R.string.tip_school_server_error);
                 });
@@ -173,21 +184,17 @@ public class CourseEditActivity extends ToolbarActivity {
         return false;
     }
 
-    @OnClick({R.id.tv_week, R.id.et_week, R.id.tv_time, R.id.et_time})
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_week:
-            case R.id.et_week:
-                SelectDialogFragment selectDialogFragment = SelectDialogFragment.newInstance(
-                        mWeeks);
-                selectDialogFragment.show(getSupportFragmentManager(), "select_weeks");
-                selectDialogFragment.setOnPositiveButtonClickListener((weeks, displayWeeks) -> {
-                    mEtWeek.setText(displayWeeks);
-                    mWeeks = weeks;
-                });
-                break;
-            case R.id.tv_time:
-            case R.id.et_time:
+        int id = view.getId();
+        if (id == R.id.tv_week || id == R.id.et_week){
+            SelectDialogFragment selectDialogFragment = SelectDialogFragment.newInstance(
+                    mWeeks);
+            selectDialogFragment.show(getSupportFragmentManager(), "select_weeks");
+            selectDialogFragment.setOnPositiveButtonClickListener((weeks, displayWeeks) -> {
+                mEtWeek.setText(displayWeeks);
+                mWeeks = weeks;
+            });
+        }else if (id == R.id.tv_time || id == R.id.et_time){
                 CourseTimePickerDialogFragment pickerDialogFragment =
                         CourseTimePickerDialogFragment.newInstance(mWeekday, start - 1,
                                 start + duration - 2);
@@ -199,7 +206,29 @@ public class CourseEditActivity extends ToolbarActivity {
                     mEtTime.setText(String.format("周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
                             start + duration - 1));
                 });
-                break;
+        }else if (id == R.id.btn_ensure){
+            mCourse.course = mEtCourse.getText().toString();
+            mCourse.teacher = mEtCourseTeacher.getText().toString();
+            mCourse.place = mEtPlace.getText().toString();
+            mCourse.weeks = TextUtils.join(",", mWeeks);
+            mCourse.day = Constants.WEEKDAYS_XQ[mWeekday];
+            mCourse.start = start;
+            mCourse.during = duration;
+            mCourse.remind = "false";
+            if (TextUtils.isEmpty(mCourse.id)) {
+                mCourse.id = generateId();
+            }
+            if (mCourse.hasNullValue()) {
+                showSnackbarShort(R.string.course_complete_course);
+                return;
+            }
+            if (isAdd) {
+                MobclickAgent.onEvent(this, "course_add");
+                addCourse();
+            } else {
+                MobclickAgent.onEvent(this, "course_edit");
+                updateCourse();
+            }
         }
     }
 
@@ -225,32 +254,6 @@ public class CourseEditActivity extends ToolbarActivity {
             s += "周";
         }
         return s;
-    }
-
-    @OnClick(R.id.btn_ensure)
-    public void onClick() {
-        mCourse.course = mEtCourse.getText().toString();
-        mCourse.teacher = mEtTeacher.getText().toString();
-        mCourse.place = mEtPlace.getText().toString();
-        mCourse.weeks = TextUtils.join(",", mWeeks);
-        mCourse.day = Constants.WEEKDAYS_XQ[mWeekday];
-        mCourse.start = start;
-        mCourse.during = duration;
-        mCourse.remind = "false";
-        if (TextUtils.isEmpty(mCourse.id)) {
-            mCourse.id = generateId();
-        }
-        if (mCourse.hasNullValue()) {
-            showSnackbarShort(R.string.course_complete_course);
-            return;
-        }
-        if (isAdd) {
-            MobclickAgent.onEvent(this,"course_add");
-            addCourse();
-        } else {
-            MobclickAgent.onEvent(this,"course_edit");
-            updateCourse();
-        }
     }
 
     private String generateId() {

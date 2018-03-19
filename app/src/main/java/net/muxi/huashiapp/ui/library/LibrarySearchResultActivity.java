@@ -4,25 +4,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.BookSearchResult;
+import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.BookSearchResult;
-import net.muxi.huashiapp.net.CampusFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -32,11 +29,6 @@ import rx.schedulers.Schedulers;
 
 public class LibrarySearchResultActivity extends ToolbarActivity implements
         AbsListView.OnScrollListener {
-
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.multi_status_view)
-    MultiStatusView mMultiStatusView;
 
     private ListView mListView;
     private List<BookSearchResult.ResultsBean> mBookList;
@@ -48,6 +40,7 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
     private int preLastItem = 0;
 
     private TextView footerView;
+    private MultiStatusView mMultiStatusView;
 
     public static void start(Context context, String query) {
         Intent starter = new Intent(context, LibrarySearchResultActivity.class);
@@ -59,13 +52,13 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lib_result);
-        ButterKnife.bind(this);
+        initView();
         setTitle("搜索结果");
         showLoading();
 
         query = getIntent().getStringExtra("query");
         mBookList = new ArrayList<>();
-        mLibrarySearchResultAdapter = new LibrarySearchResultAdapter(this,mBookList);
+        mLibrarySearchResultAdapter = new LibrarySearchResultAdapter(this, mBookList);
         footerView = (TextView) LayoutInflater.from(this).inflate(R.layout.view_footer, null);
 
         mMultiStatusView.setOnRetryListener(view -> {
@@ -83,7 +76,7 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
                 .subscribe(bookSearchResult -> {
                     try {
                         max = bookSearchResult.getMeta().getMax();
-                    }catch(Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     if (page == 1) {
@@ -94,7 +87,7 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
                         mListView.addFooterView(footerView);
                         mListView.setOnItemClickListener((adapterView, view, i, l) -> {
                             BookSearchResult.ResultsBean book = mBookList.get(i);
-                            BookDetailActivity.start(LibrarySearchResultActivity.this,book.id);
+                            BookDetailActivity.start(LibrarySearchResultActivity.this, book.id);
                         });
                     } else if (page >= max) {
                         footerView.setText("－到底啦，没有更多啦－");
@@ -135,5 +128,9 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
                 }
             }
         }
+    }
+
+    private void initView() {
+        mMultiStatusView = findViewById(R.id.multi_status_view);
     }
 }

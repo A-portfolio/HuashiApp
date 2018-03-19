@@ -11,12 +11,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.Constants;
+import com.muxistudio.appcommon.Constants;
+
 import net.muxi.huashiapp.R;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by ybao on 17/2/4.
@@ -24,23 +22,20 @@ import butterknife.OnClick;
 
 public class TableMenuView extends FrameLayout {
 
-    @BindView(R.id.btn_close)
-    ImageView mBtnClose;
-    @BindView(R.id.tv_add)
-    TextView mTvAdd;
-    @BindView(R.id.tv_setcurweek)
-    TextView mTvSetcurweek;
-    @BindView(R.id.menu_layout)
-    LinearLayout mMenuLayout;
+    private LinearLayout mMenuLayout;
+    private ImageView mBtnClose;
+    private TextView mTvAuditClass;
+    private TextView mTvAdd;
+    private TextView mTvSetcurweek;
 
     public TableMenuView(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public TableMenuView(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_table_menu, this);
-        ButterKnife.bind(this);
+        initView();
         this.setVisibility(INVISIBLE);
         this.setOnClickListener(v -> {
             dismiss();
@@ -49,11 +44,13 @@ public class TableMenuView extends FrameLayout {
             dismiss();
         });
     }
+
     public void setCurweek(int week) {
         String textStr1 = "<font color=\"#000000\">设置当前周</font>";
         String textStr2 = "<font color=\"#7B79FF\">(当前周设置为" + week + ")</font>";
         mTvSetcurweek.setText(Html.fromHtml(textStr1 + textStr2));
     }
+
     public void show() {
         this.setVisibility(VISIBLE);
         TranslateAnimation a = new TranslateAnimation(0, 0, -mMenuLayout.getHeight(), 0);
@@ -62,6 +59,7 @@ public class TableMenuView extends FrameLayout {
         mMenuLayout.startAnimation(a);
         this.setFocusable(true);
     }
+
     public void dismiss() {
         TranslateAnimation a = new TranslateAnimation(0, 0, 0, -mMenuLayout.getHeight());
         a.setDuration(Constants.ANIMATION_DURATION);
@@ -85,21 +83,29 @@ public class TableMenuView extends FrameLayout {
         });
         this.setFocusable(false);
     }
+
     //这里有添加新课程和修改当前周设置的入口
-    @OnClick({R.id.tv_add, R.id.tv_setcurweek,R.id.tv_audit_class})
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_audit_class:
-                CourseAuditSearchActivity.start(getContext());
-                break;
-            case R.id.tv_add:
-                CourseEditActivity.start(getContext(), true, null);
-                dismiss();
-                break;
-            case R.id.tv_setcurweek:
-                CurweekSetActivity.start(getContext());
-                dismiss();
-                break;
+        int id = view.getId();
+        if (id == R.id.tv_audit_class){
+            CourseAuditSearchActivity.start(getContext());
+        }else if (id == R.id.tv_add){
+            CourseEditActivity.start(getContext(), true, null);
+            dismiss();
+        }else if (id == R.id.tv_setcurweek){
+            CurweekSetActivity.start(getContext());
+            dismiss();
         }
+    }
+
+    private void initView() {
+        mMenuLayout = findViewById(R.id.menu_layout);
+        mBtnClose = findViewById(R.id.btn_close);
+        mTvAuditClass = findViewById(R.id.tv_audit_class);
+        mTvAdd = findViewById(R.id.tv_add);
+        mTvSetcurweek = findViewById(R.id.tv_setcurweek);
+        mTvAdd.setOnClickListener(v -> onClick(v));
+        mTvSetcurweek.setOnClickListener(v -> onClick(v));
+        mTvAuditClass.setOnClickListener(v -> onClick(v));
     }
 }

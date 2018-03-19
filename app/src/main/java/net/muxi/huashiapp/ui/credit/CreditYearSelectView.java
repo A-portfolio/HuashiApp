@@ -6,15 +6,14 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.muxistudio.appcommon.utils.NumberPickerHelper;
+import com.muxistudio.appcommon.utils.UserUtil;
+
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.timeTable.LargeSizeNumberPicker;
-import net.muxi.huashiapp.util.NumberPickerHelper;
-import net.muxi.huashiapp.util.UserUtil;
 
 import java.util.Arrays;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by ybao on 17/2/9.
@@ -22,14 +21,11 @@ import butterknife.ButterKnife;
 
 public class CreditYearSelectView extends RelativeLayout {
 
-    @BindView(R.id.start_year)
-    LargeSizeNumberPicker mNpStartYear;
-    @BindView(R.id.end_year)
-    LargeSizeNumberPicker mNpEndYear;
-
     private String[] years = UserUtil.generateYears(6);
 
     private OnValueChangeListener mOnValueChangeListener;
+    private LargeSizeNumberPicker mNpStartYear;
+    private LargeSizeNumberPicker mNpEndYear;
 
     public CreditYearSelectView(Context context) {
         super(context);
@@ -38,7 +34,7 @@ public class CreditYearSelectView extends RelativeLayout {
     public CreditYearSelectView(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_credit_year_select, this);
-        ButterKnife.bind(this);
+        initView();
         setWillNotDraw(false);
         mNpStartYear.setMinValue(0);
         mNpStartYear.setMaxValue(5);
@@ -49,36 +45,36 @@ public class CreditYearSelectView extends RelativeLayout {
         NumberPickerHelper.setDividerColor(mNpStartYear, Color.TRANSPARENT);
         NumberPickerHelper.setDividerColor(mNpEndYear, Color.TRANSPARENT);
         mNpStartYear.setOnValueChangedListener((numberPicker, i, i1) -> {
-            if (i1 > mNpEndYear.getValue() - 1){
+            if (i1 > mNpEndYear.getValue() - 1) {
                 mNpEndYear.setValue(i1 + 1);
             }
-            if (mOnValueChangeListener != null){
-                mOnValueChangeListener.onValueChange(UserUtil.generateYears(6)[i1],UserUtil.generateYears(6)[mNpEndYear.getValue()]);
+            if (mOnValueChangeListener != null) {
+                mOnValueChangeListener.onValueChange(UserUtil.generateYears(6)[i1], UserUtil.generateYears(6)[mNpEndYear.getValue()]);
             }
         });
         mNpEndYear.setOnValueChangedListener((numberPicker, i, i1) -> {
-            if (i1 <= mNpStartYear.getValue()){
+            if (i1 <= mNpStartYear.getValue()) {
                 mNpEndYear.setValue(mNpStartYear.getValue() + 1);
             }
-            if (mOnValueChangeListener != null){
-                mOnValueChangeListener.onValueChange(UserUtil.generateYears(6)[mNpStartYear.getValue()],UserUtil.generateYears(6)[i1]);
+            if (mOnValueChangeListener != null) {
+                mOnValueChangeListener.onValueChange(UserUtil.generateYears(6)[mNpStartYear.getValue()], UserUtil.generateYears(6)[i1]);
             }
         });
     }
 
-    public void setStartYear(String start){
-        mNpStartYear.setValue(Arrays.binarySearch(years,start));
+    public void setNpStartYear(String start) {
+        mNpStartYear.setValue(Arrays.binarySearch(years, start));
     }
 
-    public void setEndYear(String end){
-        mNpEndYear.setValue(Arrays.binarySearch(years,end));
+    public void setNpEndYear(String end) {
+        mNpEndYear.setValue(Arrays.binarySearch(years, end));
     }
 
-    public String getStartYear(){
+    public String getNpStartYear() {
         return years[mNpStartYear.getValue()];
     }
 
-    public String getEndYear(){
+    public String getNpEndYear() {
         return years[mNpEndYear.getValue()];
     }
 
@@ -90,6 +86,11 @@ public class CreditYearSelectView extends RelativeLayout {
 
     public void setOnValueChangeListener(OnValueChangeListener onValueChangeListener) {
         mOnValueChangeListener = onValueChangeListener;
+    }
+
+    private void initView() {
+        mNpStartYear = findViewById(R.id.start_year);
+        mNpEndYear = findViewById(R.id.end_year);
     }
 
     public interface OnValueChangeListener {

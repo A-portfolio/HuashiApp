@@ -39,10 +39,8 @@
 
     <application
 
-        android:name="net.muxi.huashiapp.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
         <meta-data android:value="58b55d3d8f4a9d21ce0013ed" android:name="UMENG_APPKEY"/>

@@ -6,24 +6,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.Score;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
+import com.muxistudio.appcommon.presenter.LoginPresenter;
+import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.multistatusview.MultiStatusView;
 
-import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.Score;
-import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
-import net.muxi.huashiapp.ui.login.LoginPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -32,15 +29,11 @@ import rx.schedulers.Schedulers;
  */
 public class ScoreActivity extends ToolbarActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.multi_status_view)
-    MultiStatusView mMultiStatusView;
-
     private ScoresAdapter mScoresAdapter;
     private List<Score> mScoresList = new ArrayList<>();
     private String year;
     private String term;
+    private MultiStatusView mMultiStatusView;
 
     public static void start(Context context, String year, String term) {
         Intent starter = new Intent(context, ScoreActivity.class);
@@ -53,7 +46,7 @@ public class ScoreActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
-        ButterKnife.bind(this);
+        initView();
         year = getIntent().getStringExtra("year");
         term = getIntent().getStringExtra("term");
         if (term == null) {
@@ -74,11 +67,11 @@ public class ScoreActivity extends ToolbarActivity {
         String termTemp = "";
         if (term.equals("0"))
             termTemp = "";
-         else
+        else
             termTemp = term;
         String finalTermTemp = termTemp;
         showLoading();
-        new LoginPresenter().login(App.sUser)
+        new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
                 .flatMap(aBoolean -> CampusFactory.getRetrofitService()
                         .getScores(year, finalTermTemp)
                         .subscribeOn(Schedulers.io())
@@ -144,5 +137,8 @@ public class ScoreActivity extends ToolbarActivity {
         return 1;
     }
 
+    private void initView() {
+        mMultiStatusView = findViewById(R.id.multi_status_view);
+    }
 }
 

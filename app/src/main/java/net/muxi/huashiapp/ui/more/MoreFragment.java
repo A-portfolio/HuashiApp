@@ -15,29 +15,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.muxistudio.appcommon.appbase.BaseAppActivity;
+import com.muxistudio.appcommon.appbase.BaseAppFragment;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.common.util.Logger;
+import com.muxistudio.common.util.PreferenceUtil;
+import com.muxistudio.common.util.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.common.base.BaseFragment;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.service.DownloadService;
 import net.muxi.huashiapp.ui.AboutActivity;
 import net.muxi.huashiapp.ui.SettingActivity;
 import net.muxi.huashiapp.ui.SuggestionActivity;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.ToastUtil;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -45,12 +44,7 @@ import rx.schedulers.Schedulers;
  * Created by ybao on 17/2/16.
  */
 
-public class MoreFragment extends BaseFragment {
-
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+public class MoreFragment extends BaseAppFragment {
 
     private MoreAdapter mAdapter;
 
@@ -64,6 +58,8 @@ public class MoreFragment extends BaseFragment {
                     R.drawable.ic_more_feedback,
                     R.drawable.ic_more_update, R.drawable.ic_more_about,
                     R.drawable.ic_more_sign_out};
+    private Toolbar mToolbar;
+    private RecyclerView mRecyclerView;
 
 
     public static MoreFragment newInstance() {
@@ -74,9 +70,10 @@ public class MoreFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_more, container, false);
-        ButterKnife.bind(this, view);
+        mToolbar = view.findViewById(R.id.toolbar);
+        mRecyclerView = view.findViewById(R.id.recycler_view);
 
         sp = new PreferenceUtil();
 
@@ -118,6 +115,7 @@ public class MoreFragment extends BaseFragment {
 
             }
         });
+
     }
 
     private void checkUpdates() {
@@ -125,6 +123,10 @@ public class MoreFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(versionData -> {
+                    if (versionData == null){
+                        ((BaseAppActivity)getActivity()).showSnackbarShort(R.string.title_not_have_to_update);
+                        return;
+                    }
                     if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME)) {
                         final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
                         checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update)
@@ -139,8 +141,8 @@ public class MoreFragment extends BaseFragment {
                                 () -> {
                                     if (isStoragePermissionGranted()) {
                                         beginUpdate(versionData.download);
-                                    }else {
-                                        ((BaseActivity)getActivity()).showErrorSnackbarShort(R.string.tip_require_write_permission);
+                                    } else {
+                                        ((BaseAppActivity) getActivity()).showErrorSnackbarShort(R.string.tip_require_write_permission);
                                     }
                                     checkUpdateDialog.dismiss();
                                 });
@@ -150,7 +152,7 @@ public class MoreFragment extends BaseFragment {
 
                         checkUpdateDialog.show(getFragmentManager(), "dialog_update");
                     } else {
-                        ((BaseActivity) getActivity()).showSnackbarShort(
+                        ((BaseAppActivity) getActivity()).showSnackbarShort(
                                 R.string.title_not_have_to_update);
                     }
                 }, throwable -> throwable.printStackTrace());
@@ -181,14 +183,14 @@ public class MoreFragment extends BaseFragment {
 
     private void logout() {
         // 信息门户和图书馆登陆合并，改为共同退出登录，取消LogoutDialog
-        if (TextUtils.isEmpty(App.sUser.getSid())) {
-            ((BaseActivity) getActivity()).showErrorSnackbarShort(
+        if (TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().getSid())) {
+            ((BaseAppActivity) getActivity()).showErrorSnackbarShort(
                     App.sContext.getString(R.string.not_log_in));
         } else {
-            App.logoutUser();
-            App.logoutLibUser();
+            UserAccountManager.getInstance().logoutInfoUser();
+            UserAccountManager.getInstance().logoutLibUser();
             MobclickAgent.onProfileSignOff();
-            ((BaseActivity) getActivity()).showSnackbarShort(
+            ((BaseAppActivity) getActivity()).showSnackbarShort(
                     App.sContext.getString(R.string.tip_all_log_out));
         }
 

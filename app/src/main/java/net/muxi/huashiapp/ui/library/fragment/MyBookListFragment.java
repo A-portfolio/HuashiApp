@@ -10,6 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.RxBus;
+import com.muxistudio.appcommon.appbase.BaseAppActivity;
+import com.muxistudio.appcommon.appbase.BaseAppFragment;
+import com.muxistudio.appcommon.data.AttentionBook;
+import com.muxistudio.appcommon.data.BorrowedBook;
+import com.muxistudio.appcommon.event.RefreshAttenBooks;
+import com.muxistudio.appcommon.event.RefreshBorrowedBooks;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.presenter.LoginPresenter;
+import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.common.util.PreferenceUtil;
 import com.muxistudio.multistatusview.MultiStatusView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -17,25 +28,13 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.common.base.BaseFragment;
-import net.muxi.huashiapp.common.data.AttentionBook;
-import net.muxi.huashiapp.common.data.BorrowedBook;
-import net.muxi.huashiapp.event.RefreshAttenBooks;
-import net.muxi.huashiapp.event.RefreshBorrowedBooks;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.library.BookDetailActivity;
 import net.muxi.huashiapp.ui.library.adapter.AttenBookAdapter;
 import net.muxi.huashiapp.ui.library.adapter.AttenBookRemindAdapter;
-import net.muxi.huashiapp.ui.login.LoginPresenter;
-import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -45,10 +44,8 @@ import rx.schedulers.Schedulers;
  * Created by ybao on 17/2/18.
  */
 
-public class MyBookListFragment extends BaseFragment {
+public class MyBookListFragment extends BaseAppFragment {
 
-    @BindView(R.id.multi_status_view)
-    MultiStatusView mMultiStatusView;
 
     private RecyclerView mRecyclerView;
 
@@ -61,6 +58,7 @@ public class MyBookListFragment extends BaseFragment {
 
     private List<AttentionBook> mAttentionBookList;
     private List<BorrowedBook> mBorrowedBookList;
+    private MultiStatusView mMultiStatusView;
 
     public static MyBookListFragment newInstance(int type) {
 
@@ -80,9 +78,9 @@ public class MyBookListFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mybooks, container, false);
-        ButterKnife.bind(this, view);
+        mMultiStatusView = view.findViewById(R.id.multi_status_view);
 
         if (TYPE_BORROW == type) {
             initBorrowView();
@@ -111,7 +109,7 @@ public class MyBookListFragment extends BaseFragment {
 
     public void loadAttentionBooks() {
         CampusFactory.getRetrofitService()
-                .getAttentionBooks(App.sUser.sid)
+                .getAttentionBooks(UserAccountManager.getInstance().getInfoUser().sid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(attentionBooksResponse -> {
@@ -144,11 +142,11 @@ public class MyBookListFragment extends BaseFragment {
                                             TextUtils.join(",", strings)));
                             break;
                         case 403:
-                            ((BaseActivity) getActivity()).showErrorSnackbarShort(
+                            ((BaseAppActivity) getActivity()).showErrorSnackbarShort(
                                     getString(R.string.tip_err_account));
                             throw new RuntimeException();
                         case 502:
-                            ((BaseActivity) getActivity()).showErrorSnackbarShort(
+                            ((BaseAppActivity) getActivity()).showErrorSnackbarShort(
                                     getString(R.string.tip_err_server));
                             throw new RuntimeException();
                         case 404:
@@ -173,7 +171,7 @@ public class MyBookListFragment extends BaseFragment {
 
     public void loadBorrowBooks() {
         CampusFactory.getRetrofitService()
-                .getPersonalBook(App.PHPSESSID)
+                .getPersonalBook(UserAccountManager.getInstance().getPHPSESSID())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(personalBooks -> {
@@ -194,10 +192,10 @@ public class MyBookListFragment extends BaseFragment {
                 });
     }
 
-    public void retryLoadBooks(){
-        new LoginPresenter().login(App.sUser)
+    public void retryLoadBooks() {
+        new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
                 .flatMap(aBoolean -> CampusFactory.getRetrofitService()
-                        .getPersonalBook(App.PHPSESSID)
+                        .getPersonalBook(UserAccountManager.getInstance().getPHPSESSID())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread()))
                 .subscribe(personalBooks -> {
@@ -227,7 +225,7 @@ public class MyBookListFragment extends BaseFragment {
                 R.layout.item_my_book_remind, borrowedBookList) {
             @Override
             protected void convert(ViewHolder holder, BorrowedBook borrowedBook,
-                    int position) {
+                                   int position) {
                 setBorrowItem(holder, borrowedBook, position);
             }
         });
@@ -256,14 +254,14 @@ public class MyBookListFragment extends BaseFragment {
         String s = borrowedBook.time < 10 ? "0" + borrowedBook.time : String.valueOf(
                 borrowedBook.time);
         holder.setText(R.id.tv_remind, String.format("时间剩余%s天", s));
-        if ( borrowedBook.time < 3&&borrowedBook.time>0 ) {
+        if (borrowedBook.time < 3 && borrowedBook.time > 0) {
             ((TextView) holder.getView(R.id.tv_remind)).setTextColor(
                     getResources().getColor(R.color.red));
         }
-        if(borrowedBook.time<0){
+        if (borrowedBook.time < 0) {
             ((TextView) holder.getView(R.id.tv_remind)).setText
-                    (String.format("已经超期%s天",Math.abs(borrowedBook.time)));
-            ((TextView)holder.getView(R.id.tv_remind)).setTextColor
+                    (String.format("已经超期%s天", Math.abs(borrowedBook.time)));
+            ((TextView) holder.getView(R.id.tv_remind)).setTextColor
                     (getResources().getColor(R.color.red));
         }
         holder.getView(R.id.layout_item).setOnClickListener(v -> {

@@ -11,34 +11,27 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.appbase.BaseAppActivity;
+import com.muxistudio.appcommon.db.HuaShiDao;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.common.db.HuaShiDao;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by ybao on 16/5/14.
  */
-public class LibrarySearchActivity extends BaseActivity {
-
-    @BindView(R.id.et_search)
-    EditText mEtSearch;
-    @BindView(R.id.tv_clear)
-    TextView mTvClear;
-    @BindView(R.id.lv)
-    ListView mLv;
-    @BindView(R.id.iv_back)
-    ImageView mIvBack;
-    @BindView(R.id.iv_close)
-    ImageView mIvClose;
+public class LibrarySearchActivity extends BaseAppActivity {
 
     private HuaShiDao dao;
     private List<String> list;
     private ArrayAdapter<String> mArrayList;
+    private EditText mEtSearch;
+    private ImageView mIvBack;
+    private ImageView mIvClose;
+    private TextView mTvClear;
+    private ListView mLv;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, LibrarySearchActivity.class);
@@ -49,7 +42,11 @@ public class LibrarySearchActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library_search);
-        ButterKnife.bind(this);
+        mEtSearch = findViewById(R.id.et_search);
+        mIvBack = findViewById(R.id.iv_back);
+        mIvClose = findViewById(R.id.iv_close);
+        mTvClear = findViewById(R.id.tv_clear);
+        mLv = findViewById(R.id.lv);
         initView();
         initListener();
     }
@@ -63,6 +60,7 @@ public class LibrarySearchActivity extends BaseActivity {
         mArrayList = new ArrayAdapter<String>(this, R.layout.item_search_history, R.id.tv_book,
                 list);
         mLv.setAdapter(mArrayList);
+
     }
 
     private void initListener() {

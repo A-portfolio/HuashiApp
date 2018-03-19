@@ -11,14 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.util.AppUtil;
-import net.muxi.huashiapp.util.DimensUtil;
+import com.muxistudio.appcommon.appbase.BaseAppActivity;
+import com.muxistudio.appcommon.utils.AppUtil;
+import com.muxistudio.common.util.DimensUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import net.muxi.huashiapp.R;
 
 import static net.muxi.huashiapp.widget.BaseDetailLayout.DISTANCE_TO_SLIDE;
 
@@ -28,12 +25,6 @@ import static net.muxi.huashiapp.widget.BaseDetailLayout.DISTANCE_TO_SLIDE;
 
 public class ElectricityPayHintView extends RelativeLayout {
 
-    @BindView(R.id.view_close_btn)
-    ImageView mViewCloseBtn;
-    @BindView(R.id.tv_copy)
-    TextView mTvCopy;
-    @BindView(R.id.tv_name)
-    TextView mTvName;
 
     private Context mContext;
 
@@ -46,6 +37,12 @@ public class ElectricityPayHintView extends RelativeLayout {
     private VelocityTracker mVelocityTracker;
 
     private ElectricityPayHintView mView;
+    private ImageView mViewCloseBtn;
+    private TextView mTvTitle;
+    private TextView mTvContent;
+    private RelativeLayout mRelativeLayout;
+    private TextView mTvName;
+    private TextView mTvCopy;
 
     public ElectricityPayHintView(Context context) {
         super(context);
@@ -56,8 +53,15 @@ public class ElectricityPayHintView extends RelativeLayout {
 
     private void initView() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_electricity_pay_hint, this, true);
-        ButterKnife.bind(this, view);
 
+        mViewCloseBtn = findViewById(R.id.view_close_btn);
+        mTvTitle = findViewById(R.id.tv_title);
+        mTvContent = findViewById(R.id.tv_content);
+        mRelativeLayout = findViewById(R.id.relative_layout);
+        mTvName = findViewById(R.id.tv_name);
+        mTvCopy = findViewById(R.id.tv_copy);
+        mViewCloseBtn.setOnClickListener(v -> onClick(v));
+        mTvCopy.setOnClickListener(v -> onClick(v));
     }
 
     public void smoothScrollTo(int y) {
@@ -67,25 +71,13 @@ public class ElectricityPayHintView extends RelativeLayout {
         invalidate();
     }
 
-    @OnClick({R.id.view_close_btn, R.id.tv_copy})
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.view_close_btn:
-                removeAllViews();
-//                ((ElectricityDetailActivity) mContext).onBackPressed();
-//                String eleQuery = PreferenceUtil.getString(PreferenceUtil.ELE_QUERY_STRING);
-//                ElectricityDetailActivity.start(getContext(),eleQuery);
-                break;
-            case R.id.tv_copy:
-//                ClipboardManager manager = (ClipboardManager) getContext()
-//                        .getSystemService(Context.CLIPBOARD_SERVICE);
-//                manager.setPrimaryClip(ClipData.newPlainText(null, mTvName.getText()));
-//                if (manager.hasPrimaryClip()) {
-//                    manager.getPrimaryClip().getItemAt(0).getText();
-//                }
-                AppUtil.clipToClipBoard(getContext(),mTvName.getText());
-                ((BaseActivity) mContext).showSnackbarShort("成功复制到粘贴板");
-                break;
+        int id = view.getId();
+        if (id == R.id.view_close_btn){
+            removeAllViews();
+        }else if (id == R.id.tv_copy){
+            AppUtil.clipToClipBoard(getContext(), mTvName.getText());
+            ((BaseAppActivity) mContext).showSnackbarShort("成功复制到粘贴板");
         }
     }
 
@@ -124,7 +116,7 @@ public class ElectricityPayHintView extends RelativeLayout {
                     break;
                 } else if (this.getScrollY() < -DISTANCE_TO_SLIDE) {
                     this.smoothScrollTo(-DimensUtil.getScreenHeight());
-                   removeAllViews();
+                    removeAllViews();
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:

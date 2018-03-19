@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 
+import com.muxistudio.appcommon.utils.NumberPickerHelper;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.NumberPickerHelper;
 
 /**
  * Created by ybao on 17/2/9.

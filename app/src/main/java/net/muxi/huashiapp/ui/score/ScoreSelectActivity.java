@@ -6,19 +6,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.util.NetStatus;
-import net.muxi.huashiapp.util.ToastUtil;
-import net.muxi.huashiapp.util.UserUtil;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.utils.UserUtil;
+import com.muxistudio.common.util.NetStatus;
+import com.muxistudio.common.util.ToastUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import net.muxi.huashiapp.R;
+
 
 /**
  * Created by ybao on 17/2/11.
@@ -26,25 +25,19 @@ import butterknife.OnClick;
 
 public class ScoreSelectActivity extends ToolbarActivity {
 
-    @BindView(R.id.layout_term)
-    RadioGroup mLayoutTerm;
-    @BindView(R.id.btn_enter)
-    Button mBtnEnter;
-    @BindView(R.id.rb_all)
-    RadioButton mRbAll;
-    @BindView(R.id.rb_1)
-    RadioButton mRb1;
-    @BindView(R.id.rb_2)
-    RadioButton mRb2;
-    @BindView(R.id.rb_3)
-    RadioButton mRb3;
-    @BindView(R.id.tv_select_year)
-    TextView mTvSelectYear;
-    @BindView(R.id.et_year)
-    TextView mTvYear;
-
     private int value = 0;
     private String[] years = UserUtil.generateHyphenYears(4);
+    private ImageView mIvYear;
+    private TextView mTvSelectYear;
+    private TextView mTvYear;
+    private View mDivider;
+    private TextView mTvType;
+    private RadioGroup mLayoutTerm;
+    private RadioButton mRbAll;
+    private RadioButton mRb1;
+    private RadioButton mRb2;
+    private RadioButton mRb3;
+    private Button mBtnEnter;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, ScoreSelectActivity.class);
@@ -55,38 +48,32 @@ public class ScoreSelectActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_select);
-        ButterKnife.bind(this);
+        initView();
         setTitle("成绩查询");
         setYear(value);
         mRbAll.setChecked(true);
         mBtnEnter.setOnClickListener(v -> {
-            if(NetStatus.isConnected()) {
+            if (NetStatus.isConnected()) {
                 int term = 0;
-                switch (mLayoutTerm.getCheckedRadioButtonId()) {
-                    case R.id.rb_1:
-                        term = 3;
-                        break;
-                    case R.id.rb_2:
-                        term = 12;
-                        break;
-                    case R.id.rb_3:
-                        term = 16;
-                        break;
+                int bid = mLayoutTerm.getCheckedRadioButtonId();
+                if (bid == R.id.rb_1){
+                    term = 3;
+                }else if (bid == R.id.rb_2){
+                    term = 12;
+                }else if (bid == R.id.rb_3){
+                    term = 16;
                 }
                 ScoreActivity.start(ScoreSelectActivity.this, mTvYear.getText().toString().substring(0, 4), term + "");
-            }else{
+            } else {
                 ToastUtil.showShort(R.string.tip_net_error);
             }
         });
     }
 
-    @OnClick({R.id.tv_select_year, R.id.et_year})
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_select_year:
-            case R.id.et_year:
-                showSelectDialog();
-                break;
+        int id = view.getId();
+        if (id == R.id.tv_select_year || id == R.id.tv_year){
+            showSelectDialog();
         }
     }
 
@@ -102,4 +89,19 @@ public class ScoreSelectActivity extends ToolbarActivity {
         mTvYear.setText(String.format("%s学年", UserUtil.generateHyphenYears(4)[value]));
     }
 
+    private void initView() {
+        mIvYear = findViewById(R.id.iv_year);
+        mTvSelectYear = findViewById(R.id.tv_select_year);
+        mDivider = findViewById(R.id.divider);
+        mTvType = findViewById(R.id.tv_type);
+        mTvYear = findViewById(R.id.tv_year);
+        mLayoutTerm = findViewById(R.id.layout_term);
+        mRbAll = findViewById(R.id.rb_all);
+        mRb1 = findViewById(R.id.rb_1);
+        mRb2 = findViewById(R.id.rb_2);
+        mRb3 = findViewById(R.id.rb_3);
+        mBtnEnter = findViewById(R.id.btn_enter);
+        mTvSelectYear.setOnClickListener(v -> onClick(v));
+        mTvYear.setOnClickListener(v -> onClick(v));
+    }
 }

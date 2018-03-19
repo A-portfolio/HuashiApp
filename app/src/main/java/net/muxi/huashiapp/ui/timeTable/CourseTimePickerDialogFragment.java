@@ -8,12 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.Constants;
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.widget.BottomDialogFragment;
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.appcommon.widgets.BottomDialogFragment;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import net.muxi.huashiapp.R;
+
 
 /**
  * Created by ybao on 17/2/5.
@@ -21,15 +20,11 @@ import butterknife.ButterKnife;
 
 public class CourseTimePickerDialogFragment extends BottomDialogFragment {
 
-    @BindView(R.id.tv_title)
-    TextView mTvTitle;
-    @BindView(R.id.course_time_picker_view)
-    CourseTimePickerView mCourseTimePickerView;
-    @BindView(R.id.btn_cancel)
-    Button mBtnCancel;
-    @BindView(R.id.btn_enter)
-    Button mBtnEnter;
     private OnPositiveButtonClickListener mOnPositiveButtonClickListener;
+    private TextView mTvTitle;
+    private CourseTimePickerView mCourseTimePickerView;
+    private Button mBtnCancel;
+    private Button mBtnEnter;
 
     public static CourseTimePickerDialogFragment newInstance(int weekday, int start, int end) {
         Bundle args = new Bundle();
@@ -46,7 +41,7 @@ public class CourseTimePickerDialogFragment extends BottomDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_select_course_time,
                 null);
-        ButterKnife.bind(this, view);
+        initView(view);
         mCourseTimePickerView.setWeekday(getArguments().getInt("weekday", 0));
         mCourseTimePickerView.setStartTime(getArguments().getInt("start", 0));
         mCourseTimePickerView.setEndTime(getArguments().getInt("ending", 1));
@@ -75,6 +70,13 @@ public class CourseTimePickerDialogFragment extends BottomDialogFragment {
     public void setOnPositiveButtonClickListener(
             OnPositiveButtonClickListener onPositiveButtonClickListener) {
         mOnPositiveButtonClickListener = onPositiveButtonClickListener;
+    }
+
+    private void initView(View view) {
+        mTvTitle = view.findViewById(R.id.tv_title);
+        mCourseTimePickerView = view.findViewById(R.id.course_time_picker_view);
+        mBtnCancel = view.findViewById(R.id.btn_cancel);
+        mBtnEnter = view.findViewById(R.id.btn_enter);
     }
 
     public interface OnPositiveButtonClickListener {

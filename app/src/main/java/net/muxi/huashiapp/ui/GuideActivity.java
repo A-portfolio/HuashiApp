@@ -14,35 +14,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.muxistudio.appcommon.appbase.BaseAppActivity;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.ui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-import static net.muxi.huashiapp.R.id.viewpager;
-
 /**
  * Created by december on 17/3/2.
  */
 
-public class GuideActivity extends BaseActivity implements View.OnClickListener{
-
-    @BindView(viewpager)
-    ViewPager mViewpager;
-    @BindView(R.id.indicator)
-    LinearLayout mIndicator;
-
+public class GuideActivity extends BaseAppActivity implements View.OnClickListener {
 
     private List<View> mViews;
     private ImageView[] indicatorImgs;
     private static final int GUIDE_PAGE_COUNT = 3;
-    private int[] imgs = new int[]{R.drawable.bg_guide_4 , R.drawable.bg_guide_5};
+    private int[] imgs = new int[]{R.drawable.bg_guide_4, R.drawable.bg_guide_5};
+    private ViewPager mViewpager;
+    private LinearLayout mIndicator;
 
     public static void start(Context context) {
         Intent intent = new Intent(context, GuideActivity.class);
@@ -53,7 +44,8 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
-        ButterKnife.bind(this);
+        mViewpager = findViewById(R.id.viewpager);
+        mIndicator = findViewById(R.id.indicator);
         initData();
         initView();
     }
@@ -65,7 +57,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener{
             View view = LayoutInflater.from(this).inflate(R.layout.item_gudie, null);
             view.setBackgroundResource(R.color.colorWhite);
             ((SimpleDraweeView) view.findViewById(R.id.guide_image)).setImageURI(Uri.parse("res:/" + imgs[i]));
-            if ( i == imgs.length-1){
+            if (i == imgs.length - 1) {
                 Button mButton = (Button) view.findViewById(R.id.btn_enter);
                 mButton.setVisibility(View.VISIBLE);
                 mButton.setTag("enter");
@@ -137,7 +129,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if (v.getTag().equals("enter")){
+        if (v.getTag().equals("enter")) {
             MainActivity.start(this);
             this.finish();
         }

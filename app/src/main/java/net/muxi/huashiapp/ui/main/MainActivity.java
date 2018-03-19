@@ -18,16 +18,22 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.appcommon.RxBus;
+import com.muxistudio.appcommon.appbase.BaseAppActivity;
+import com.muxistudio.appcommon.data.SplashData;
+import com.muxistudio.appcommon.event.LibLoginEvent;
+import com.muxistudio.appcommon.event.LoginSuccessEvent;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.appcommon.utils.FrescoUtil;
+import com.muxistudio.common.util.Logger;
+import com.muxistudio.common.util.PreferenceUtil;
+import com.muxistudio.common.util.ToastUtil;
+
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.BuildConfig;
-import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.common.data.SplashData;
-import net.muxi.huashiapp.event.LibLoginEvent;
-import net.muxi.huashiapp.event.LoginSuccessEvent;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.service.DownloadService;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMainFragment;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
@@ -35,30 +41,23 @@ import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.more.CheckUpdateDialog;
 import net.muxi.huashiapp.ui.more.MoreFragment;
 import net.muxi.huashiapp.ui.timeTable.TimetableFragment;
-import net.muxi.huashiapp.util.AlarmUtil;
-import net.muxi.huashiapp.util.FrescoUtil;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.ToastUtil;
+import net.muxi.huashiapp.utils.AlarmUtil;
 
 import java.io.File;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MainActivity extends BaseActivity implements
+public class MainActivity extends BaseAppActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.nav_view)
-    BottomNavigationView mNavView;
-    @BindView(R.id.content_layout)
-    FrameLayout mContentLayout;
 
     private Fragment mCurFragment;
+    private BottomNavigationView mNavView;
+    private FrameLayout mContentLayout;
+
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);
         context.startActivity(starter);
@@ -68,7 +67,8 @@ public class MainActivity extends BaseActivity implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        mNavView = findViewById(R.id.nav_view);
+        mContentLayout = findViewById(R.id.content_layout);
         mNavView.setOnNavigationItemSelectedListener(this);
         //开启动态权限
         if (!isStoragePermissionGranted()) {
@@ -82,30 +82,35 @@ public class MainActivity extends BaseActivity implements
         AlarmUtil.register(this);
         getSplashData();
     }
+
     private void checkNewVersion() {
         CampusFactory.getRetrofitService().getLatestVersion()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(versionData -> {
+                    if (versionData == null){
+                        return;
+                    }
                     if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME)) {
                         final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
                         checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update) + versionData.getVersion());
                         checkUpdateDialog.setContent(
                                 App.sContext.getString(R.string.tip_update_intro) + versionData.getIntro() + "\n" + App.sContext.getString(R.string.tip_update_size) + versionData.getSize());
                         checkUpdateDialog.setOnPositiveButton(App.sContext.getString(R.string.btn_update), () -> {
-                                    if (isStoragePermissionGranted()) {
-                                        beginUpdate(versionData.download);
-                                    }else {
-                                        showErrorSnackbarShort(R.string.tip_require_write_permission);
-                                    }
-                                    checkUpdateDialog.dismiss();
-                                });
+                            if (isStoragePermissionGranted()) {
+                                beginUpdate(versionData.download);
+                            } else {
+                                showErrorSnackbarShort(R.string.tip_require_write_permission);
+                            }
+                            checkUpdateDialog.dismiss();
+                        });
                         checkUpdateDialog.setOnNegativeButton(App.sContext.getString(R.string.btn_cancel),
                                 () -> checkUpdateDialog.dismiss());
                         checkUpdateDialog.show(getSupportFragmentManager(), "dialog_update");
                     }
                 }, throwable -> throwable.printStackTrace());
     }
+
     private void beginUpdate(String download) {
         deleteApkBefore();
         Intent intent = new Intent(this, DownloadService.class);
@@ -116,6 +121,7 @@ public class MainActivity extends BaseActivity implements
         Logger.d("start download");
         ToastUtil.showShort(getString(R.string.tip_start_download_apk));
     }
+
     private void deleteApkBefore() {
         String path = Environment.getExternalStorageDirectory() + "/Download/" + "ccnubox.apk";
         File file = new File(path);
@@ -125,7 +131,9 @@ public class MainActivity extends BaseActivity implements
         }
         Logger.d("file not exists");
     }
-    private void initListener() {RxBus.getDefault().toObservable( LibLoginEvent.class)
+
+    private void initListener() {
+        RxBus.getDefault().toObservable(LibLoginEvent.class)
                 .subscribe(libLoginEvent -> {
                     FragmentManager fm = getSupportFragmentManager();
                     fm.beginTransaction().remove(mCurFragment).commitAllowingStateLoss();
@@ -143,12 +151,13 @@ public class MainActivity extends BaseActivity implements
                 }, Throwable::printStackTrace);
         Subscription subscription = RxBus.getDefault().toObservable(LoginSuccessEvent.class)
                 .subscribe(loginSuccessEvent -> {
-                    if (loginSuccessEvent.targetActivityName.equals("table")){
-                        ((TimetableFragment)mCurFragment).loadTable();
+                    if (loginSuccessEvent.targetActivityName.equals("table")) {
+                        ((TimetableFragment) mCurFragment).loadTable();
                     }
-                },Throwable::printStackTrace);
+                }, Throwable::printStackTrace);
         addSubscription(subscription);
     }
+
     private void getSplashData() {
         CampusFactory.getRetrofitService().getSplash()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -212,30 +221,27 @@ public class MainActivity extends BaseActivity implements
     private void initView() {
         showFragment("main");
         BottomNavigationHelper.disableShiftMode(mNavView);
+
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_main:
-                showFragment("main");
-                break;
-            case R.id.action_timetable:
-                if (TextUtils.isEmpty(App.sUser.sid)) {
-                    LoginActivity.start(MainActivity.this, "info", "table");
-                }
-                showFragment("table");
-                break;
-            case R.id.action_library:
-                if (App.isLibLogin()) {
-                    showFragment("lib_mine");
-                } else {
-                    showFragment("lib_main");
-                }
-                break;
-            case R.id.action_more:
-                showFragment("more");
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_main){
+            showFragment("main");
+        }else if (itemId == R.id.action_timetable){
+            if (TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().sid)) {
+                LoginActivity.start(MainActivity.this, "info", "table");
+            }
+            showFragment("table");
+        }else if (itemId == R.id.action_library){
+            if (UserAccountManager.getInstance().isLibLogin()){
+                showFragment("lib_mine");
+            }else {
+                showFragment("lib_main");
+            }
+        }else if (itemId == R.id.action_more){
+            showFragment("more");
         }
         return true;
     }
@@ -274,7 +280,7 @@ public class MainActivity extends BaseActivity implements
                 showFragment(TimetableFragment.newInstance(), tag);
                 break;
             case "lib_main":
-                showFragment(   LibraryMainFragment.newInstance(), tag);
+                showFragment(LibraryMainFragment.newInstance(), tag);
                 break;
             case "lib_mine":
                 showFragment(LibraryMineFragment.newInstance(), tag);
@@ -285,10 +291,10 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    public void removeFragment(String tag){
+    public void removeFragment(String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Logger.d("remove frag");
-        if (fragmentManager.findFragmentByTag(tag) != null){
+        if (fragmentManager.findFragmentByTag(tag) != null) {
             Logger.d("remove tag");
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(fragmentManager.findFragmentByTag(tag));

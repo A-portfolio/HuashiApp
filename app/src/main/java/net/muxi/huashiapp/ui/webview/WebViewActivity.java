@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -18,6 +17,12 @@ import android.view.View;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.google.gson.Gson;
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.appcommon.utils.AppUtil;
+import com.muxistudio.common.util.Logger;
+import com.muxistudio.common.util.ToastUtil;
 import com.muxistudio.jsbridge.BridgeWebClient;
 import com.muxistudio.jsbridge.BridgeWebView;
 import com.sina.weibo.sdk.api.TextObject;
@@ -41,19 +46,11 @@ import com.tencent.smtt.sdk.WebView;
 import com.tencent.tauth.Tencent;
 
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.listener.BaseUiListener;
+import net.muxi.huashiapp.listeners.BaseUiListener;
 import net.muxi.huashiapp.ui.more.ShareDialog;
-import net.muxi.huashiapp.util.AppUtil;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.ToastUtil;
 
 import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by ybao on 16/5/18.
@@ -64,14 +61,6 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     private static final String WEB_TITLE = "title";
     private static final String WEB_INTRO = "intro";
     private static final String WEB_ICON_URL = "icon_url";
-
-
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.custom_progress_bar)
-    NumberProgressBar mCustomProgressBar;
-    @BindView(R.id.webview)
-    BridgeWebView mWebview;
 
     public static Tencent mTencent;
 
@@ -90,12 +79,14 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
 
     private RecyclerView mRecyclerView;
+    private NumberProgressBar mCustomProgressBar;
+    private BridgeWebView mWebview;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
-        ButterKnife.bind(this);
+        initView();
 
         title = getIntent().hasExtra(WEB_TITLE) ? getIntent().getStringExtra(WEB_TITLE)
                 : getIntent().getStringExtra(WEB_URL);
@@ -110,7 +101,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         webSettings.setAppCacheEnabled(true);
         mWebview.setWebChromeClient(new BrowserClient());
         mWebview.setWebViewClient(new BridgeWebClient(mWebview) {
-        // mWebview.setWebViewClient(new WebViewClient() {
+            // mWebview.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView webView, String s) {
                 super.onPageFinished(webView, s);
@@ -122,11 +113,11 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         initRegisterInterface();
 
         // 消费账单
-        if (url.equals( "http://consume.muxixyz.com")) {
-            if (App.sUser.sid.equals("")) {
+        if (url.equals("http://consume.muxixyz.com")) {
+            if (UserAccountManager.getInstance().isInfoLogin()){
                 ToastUtil.showLong("请先登录再查看您的年度账单哟");
             } else {
-                mWebview.setInitData(App.sUser.sid);
+                mWebview.setInitData(UserAccountManager.getInstance().getInfoUser().sid);
             }
         }
 
@@ -145,8 +136,8 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
     //初始化暴露给 web 端的本地接口
     public void initRegisterInterface() {
-        mWebview.register("obtainInfoUser", (s, callbackFunc) -> callbackFunc.onCallback(new Gson().toJson(App.sUser)));
-        mWebview.register("obtainLibUser", (s, callbackFunc) -> callbackFunc.onCallback(new Gson().toJson(App.sLibrarayUser)));
+        mWebview.register("obtainInfoUser", (s, callbackFunc) -> callbackFunc.onCallback(new Gson().toJson(UserAccountManager.getInstance().getInfoUser())));
+        mWebview.register("obtainLibUser", (s, callbackFunc) -> callbackFunc.onCallback(new Gson().toJson(UserAccountManager.getInstance().getLibUser())));
         // 消费账单
         mWebview.register("share", (s, callbackFunc) -> {
             ShareDialog shareDialog = ShareDialog.newInstance(0);
@@ -155,7 +146,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     }
 
     public static Intent newIntent(Context context, String url, String title, String intro,
-            String iconUrl) {
+                                   String iconUrl) {
         Intent intent = new Intent(context, WebViewActivity.class);
         intent.putExtra(WEB_URL, url);
         intent.putExtra(WEB_TITLE, title);
@@ -173,80 +164,58 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        switch (itemId) {
-            case R.id.action_option:
-                if (url.equals( "http://consume.muxixyz.com")) {
-                    ToastUtil.showLong("暂不支持将本网页分享出去哟");
-                } else {
-                    ShareToDialog shareToDialog = new ShareToDialog();
-                    shareToDialog.show(getSupportFragmentManager(), "");
+        if (itemId == R.id.action_option) {
+            if (url.equals("http://consume.muxixyz.com")) {
+                ToastUtil.showLong("暂不支持将本网页分享出去哟");
+            } else {
+                ShareToDialog shareToDialog = new ShareToDialog();
+                shareToDialog.show(getSupportFragmentManager(), "");
 
-                    shareToDialog.setOnItemClickListener(position -> {
-                        switch (position) {
-                            case 0:
-                                shareToQQ(title, intro, url, iconUrl);
-                                shareToDialog.dismiss();
-                                break;
-                            case 1:
-                                shareTOWXSceneSession();
-                                shareToDialog.dismiss();
-                                break;
-                            case 2:
-                                sendMultiMessage(true, false, false, false, false, false);
-                                shareToDialog.dismiss();
-                                break;
-                            case 3:
-                                shareToQzone(title, intro, url, iconUrl);
-                                shareToDialog.dismiss();
-                                break;
-                            case 4:
-                                shareTOWXSceneTimeline();
-                                shareToDialog.dismiss();
-                                break;
-                            case 6:
-                                mWebview.reload();
-                                shareToDialog.dismiss();
-                                break;
+                shareToDialog.setOnItemClickListener(position -> {
+                    switch (position) {
+                        case 0:
+                            shareToQQ(title, intro, url, iconUrl);
+                            shareToDialog.dismiss();
+                            break;
+                        case 1:
+                            shareTOWXSceneSession();
+                            shareToDialog.dismiss();
+                            break;
+                        case 2:
+                            sendMultiMessage(true, false, false, false, false, false);
+                            shareToDialog.dismiss();
+                            break;
+                        case 3:
+                            shareToQzone(title, intro, url, iconUrl);
+                            shareToDialog.dismiss();
+                            break;
+                        case 4:
+                            shareTOWXSceneTimeline();
+                            shareToDialog.dismiss();
+                            break;
+                        case 6:
+                            mWebview.reload();
+                            shareToDialog.dismiss();
+                            break;
 
-                            case 7:
-                                AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
-                                showSnackbarShort(
-                                        getResources().getString(R.string.tip_copy_success));
-                                shareToDialog.dismiss();
-                                break;
+                        case 7:
+                            AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
+                            showSnackbarShort(
+                                    getResources().getString(R.string.tip_copy_success));
+                            shareToDialog.dismiss();
+                            break;
 
-                            case 8:
-                                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                        Uri.parse(mWebview.getUrl()));
-                                startActivity(browserIntent);
-                                shareToDialog.dismiss();
-                                break;
+                        case 8:
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse(mWebview.getUrl()));
+                            startActivity(browserIntent);
+                            shareToDialog.dismiss();
+                            break;
 
 
-                        }
-                    });
-                }
-                break;
-//            case R.id.action_refresh:
-//                mWebview.reload();
-//                return true;
-//            case R.id.action_copy_url:
-//                AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
-//                break;
-//            case R.id.action_open_browser:
-//                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mWebview.getUrl
-// ()));
-//                startActivity(browserIntent);
-//                break;
-//            case R.id.action_share_qq:
-//                shareToQzone(title, intro, url, iconUrl);
-//                break;
-//            case R.id.action_share_wechat:
-//                shareTOWeixin();
-//                break;
-//            case R.id.action_share_weibo:
-//                sendMultiMessage(true, false, false, false, false, false);
-//                break;
+                    }
+                });
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -282,6 +251,11 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         mWebview.destroy();
     }
 
+    private void initView() {
+        mCustomProgressBar = findViewById(R.id.custom_progress_bar);
+        mWebview = findViewById(R.id.webview);
+    }
+
 
     private class BrowserClient extends WebChromeClient {
         @Override
@@ -300,6 +274,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
         }
+
     }
 
 
@@ -403,7 +378,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     }
 
     private void sendMultiMessage(boolean hasText, boolean hasImage, boolean hasWebpage,
-            boolean hasMusic, boolean hasVideo, boolean hasVoice) {
+                                  boolean hasMusic, boolean hasVideo, boolean hasVoice) {
         WeiboMultiMessage weiboMessage = new WeiboMultiMessage();//初始化微博的分享消息
         if (hasText) {
             weiboMessage.textObject = getTextObj();

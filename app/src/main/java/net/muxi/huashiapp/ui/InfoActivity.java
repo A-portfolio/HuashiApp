@@ -3,10 +3,10 @@ package net.muxi.huashiapp.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
 
-import butterknife.ButterKnife;
+import net.muxi.huashiapp.R;
+
 
 /**
  * Created by ybao on 16/8/4.
@@ -27,7 +27,6 @@ public class InfoActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-        ButterKnife.bind(this);
     }
 
 

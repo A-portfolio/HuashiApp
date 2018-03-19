@@ -5,32 +5,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.muxistudio.appcommon.RxBus;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.User;
+import com.muxistudio.appcommon.data.UserInfo;
+import com.muxistudio.appcommon.event.LibLoginEvent;
+import com.muxistudio.appcommon.event.LoginSuccessEvent;
+import com.muxistudio.appcommon.event.RefreshSessionEvent;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
+import com.muxistudio.appcommon.presenter.LoginPresenter;
+import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.common.util.Logger;
+import com.muxistudio.common.util.NetStatus;
 import com.umeng.analytics.MobclickAgent;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.User;
-import net.muxi.huashiapp.common.data.UserInfo;
-import net.muxi.huashiapp.event.LibLoginEvent;
-import net.muxi.huashiapp.event.LoginSuccessEvent;
-import net.muxi.huashiapp.event.RefreshSessionEvent;
-import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.NetStatus;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -41,22 +39,14 @@ public class LoginActivity extends ToolbarActivity {
     //此处方便登录调试,到时候要删除
     public static final boolean DEBUG_VALUE = true;
 
-    @BindView(R.id.btn_login)
-    Button mBtnLogin;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.et_sid)
-    EditText mEtSid;
-    @BindView(R.id.layout_sid)
-    TextInputLayout mLayoutSid;
-    @BindView(R.id.et_pwd)
-    EditText mEtPwd;
-    @BindView(R.id.layout_pwd)
-    TextInputLayout mLayoutPwd;
-
     private LoginPresenter presenter = new LoginPresenter();
     private String type;
     private boolean isShownPassword = false;
+    private TextInputLayout mLayoutSid;
+    private EditText mEtSid;
+    private TextInputLayout mLayoutPwd;
+    private EditText mEtPwd;
+    private Button mBtnLogin;
 
     /**
      * @param loginType 分为 lib 和 info
@@ -67,10 +57,10 @@ public class LoginActivity extends ToolbarActivity {
         context.startActivity(starter);
     }
 
-    public static void start(Context context, String loginType,String target) {
+    public static void start(Context context, String loginType, String target) {
         Intent starter = new Intent(context, LoginActivity.class);
         starter.putExtra("type", loginType);
-        starter.putExtra("target",target);
+        starter.putExtra("target", target);
         context.startActivity(starter);
     }
 
@@ -78,22 +68,15 @@ public class LoginActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);type = getIntent().getStringExtra("type");
-        initViews();
+        initView();
+        type = getIntent().getStringExtra("type");
+        if (type.equals("info")) {
+            setTitle("登录信息门户");
+        }
         //showCaptcha(type);
         setLoginListener();
     }
 
-
-    private void initViews() {
-
-        if (type.equals("info")) {
-            setTitle("登录信息门户");
-        }
-
-    }
-
-    @OnClick(R.id.btn_login)
     public void onClick() {
         if (!NetStatus.isConnected()) {
             showErrorSnackbarShort(R.string.tip_check_net);
@@ -118,7 +101,7 @@ public class LoginActivity extends ToolbarActivity {
                         if (result) {
                             hideLoading();
                             //保存登录状态
-                            App.saveUser(user);
+                            UserAccountManager.getInstance().saveInfoUser(user);
                             MobclickAgent.onProfileSignIn(user.getSid());
                             String target = getIntent().hasExtra("target") ?
                                     getIntent().getStringExtra("target") : null;
@@ -137,7 +120,7 @@ public class LoginActivity extends ToolbarActivity {
                         } else {
                             hideLoading();
                             showErrorSnackbarShort(R.string.tip_err_account);
-                            return rx.Observable.error(new Exception());
+                            return Observable.error(new Exception());
                         }
                     })
                     .subscribe(msg -> {
@@ -156,11 +139,11 @@ public class LoginActivity extends ToolbarActivity {
     }
 
 
-    private void setLoginListener(){
+    private void setLoginListener() {
         RxBus.getDefault().toObservable(RefreshSessionEvent.class)
-        .subscribe(refreshSessionEvent -> {
-            presenter.login(refreshSessionEvent.getUser());
-        },Throwable::printStackTrace);
+                .subscribe(refreshSessionEvent -> {
+                    presenter.login(refreshSessionEvent.getUser());
+                }, Throwable::printStackTrace);
     }
 
 
@@ -182,10 +165,8 @@ public class LoginActivity extends ToolbarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_close:
-                finish();
-                break;
+        if (item.getItemId() == R.id.action_close){
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -193,5 +174,14 @@ public class LoginActivity extends ToolbarActivity {
     @Override
     protected boolean canBack() {
         return false;
+    }
+
+    private void initView() {
+        mLayoutSid = findViewById(R.id.layout_sid);
+        mEtSid = findViewById(R.id.et_sid);
+        mLayoutPwd = findViewById(R.id.layout_pwd);
+        mEtPwd = findViewById(R.id.et_pwd);
+        mBtnLogin = findViewById(R.id.btn_login);
+        mBtnLogin.setOnClickListener(v -> onClick());
     }
 }

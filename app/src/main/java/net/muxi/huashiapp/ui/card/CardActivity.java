@@ -6,11 +6,19 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.CardData;
+import com.muxistudio.appcommon.data.CardSumData;
+import com.muxistudio.appcommon.data.User;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.common.util.DateUtil;
+import com.muxistudio.common.util.Logger;
+import com.muxistudio.common.util.PreferenceUtil;
 import com.muxistudio.jsbridge.BridgeHandler;
 import com.muxistudio.jsbridge.BridgeWebView;
 import com.muxistudio.jsbridge.CallbackFunc;
@@ -18,20 +26,10 @@ import com.muxistudio.multistatusview.MultiStatusView;
 import com.tencent.smtt.sdk.WebSettings;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.CardData;
-import net.muxi.huashiapp.common.data.CardSumData;
-import net.muxi.huashiapp.common.data.User;
-import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.util.DateUtil;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.Date;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -41,17 +39,14 @@ import rx.schedulers.Schedulers;
  */
 public class CardActivity extends ToolbarActivity {
 
-    @BindView(R.id.tv_date)
-    TextView mDate;
-    @BindView(R.id.money)
-    TextView mMoney;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.consume_view)
-    BridgeWebView mConsumeView;
-    @BindView(R.id.multi_status_view)
-    MultiStatusView mMultiStatusView;
-
+    private MultiStatusView mMultiStatusView;
+    private RelativeLayout mCoordinatorLayout;
+    private TextView mMoneySign;
+    private TextView mMoney;
+    private TextView mTxt2;
+    private TextView mTvDate;
+    private View mDivider;
+    private BridgeWebView mConsumeView;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, CardActivity.class);
@@ -69,8 +64,7 @@ public class CardActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
-
-        ButterKnife.bind(this);
+        initView();
         setTitle("校园卡");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -123,7 +117,7 @@ public class CardActivity extends ToolbarActivity {
                     public void onNext(List<CardData> cardDatas) {
                         Logger.d("id card");
                         mMultiStatusView.showContent();
-                        mDate.setText("截止" + cardDatas.get(0).getDealDateTime());
+                        mTvDate.setText("截止" + cardDatas.get(0).getDealDateTime());
                         mMoney.setText(cardDatas.get(0).getOutMoney());
                         mCardDatas = cardDatas;
 
@@ -172,6 +166,17 @@ public class CardActivity extends ToolbarActivity {
         Logger.d(sum + "");
         return sum;
 
+    }
+
+    private void initView() {
+        mMultiStatusView = findViewById(R.id.multi_status_view);
+        mCoordinatorLayout = findViewById(R.id.coordinator_layout);
+        mMoneySign = findViewById(R.id.money_sign);
+        mMoney = findViewById(R.id.money);
+        mTxt2 = findViewById(R.id.txt2);
+        mTvDate = findViewById(R.id.tv_date);
+        mDivider = findViewById(R.id.divider);
+        mConsumeView = findViewById(R.id.consume_view);
     }
 }
 

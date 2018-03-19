@@ -1,6 +1,6 @@
 package net.muxi.huashiapp.ui.timeTable;
 
-import net.muxi.huashiapp.common.data.Course;
+import com.muxistudio.appcommon.data.Course;
 
 /**
  * Created by ybao on 17/1/27.

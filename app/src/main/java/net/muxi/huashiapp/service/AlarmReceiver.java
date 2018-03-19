@@ -7,25 +7,27 @@ import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.appcommon.data.AttentionBook;
+import com.muxistudio.appcommon.data.BorrowedBook;
+import com.muxistudio.appcommon.data.CardData;
+import com.muxistudio.appcommon.data.Course;
+import com.muxistudio.appcommon.data.Score;
+import com.muxistudio.appcommon.data.User;
+import com.muxistudio.appcommon.db.HuaShiDao;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.appcommon.utils.NotifyUtil;
+import com.muxistudio.common.util.DateUtil;
+import com.muxistudio.common.util.Logger;
+import com.muxistudio.common.util.PreferenceUtil;
+
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.AttentionBook;
-import net.muxi.huashiapp.common.data.BorrowedBook;
-import net.muxi.huashiapp.common.data.CardData;
-import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.data.Score;
-import net.muxi.huashiapp.common.data.User;
-import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.card.CardActivity;
 import net.muxi.huashiapp.ui.main.MainActivity;
 import net.muxi.huashiapp.ui.score.ScoreActivity;
-import net.muxi.huashiapp.util.DateUtil;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.NotifyUtil;
-import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.TimeTableUtil;
+import net.muxi.huashiapp.utils.TimeTableUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -139,7 +141,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void checkLib() {
-        CampusFactory.getRetrofitService().getPersonalBook(App.PHPSESSID)
+        CampusFactory.getRetrofitService().getPersonalBook(UserAccountManager.getInstance().getPHPSESSID())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<BorrowedBook>>() {
@@ -173,7 +175,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                         }
                     }
                 });
-        CampusFactory.getRetrofitService().getAttentionBooks(App.sUser.sid)
+        CampusFactory.getRetrofitService().getAttentionBooks(UserAccountManager.getInstance().getInfoUser().sid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(listResponse -> {

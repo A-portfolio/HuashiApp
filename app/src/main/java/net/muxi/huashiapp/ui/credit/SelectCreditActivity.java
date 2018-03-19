@@ -6,32 +6,22 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.util.NetStatus;
-import net.muxi.huashiapp.util.ToastUtil;
-import net.muxi.huashiapp.util.UserUtil;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.utils.UserUtil;
+import com.muxistudio.common.util.NetStatus;
+import com.muxistudio.common.util.ToastUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import net.muxi.huashiapp.R;
+
 
 /**
  * Created by ybao on 17/2/9.
  */
 
 public class SelectCreditActivity extends ToolbarActivity {
-
-    @BindView(R.id.et_year)
-    TextView mEtYear;
-    @BindView(R.id.tv_credit)
-    TextView mTvCredit;
-    @BindView(R.id.tv_credit_grade)
-    TextView mTvCreditGrade;
-    @BindView(R.id.btn_enter)
-    Button mBtnEnter;
 
     private String start;
     private String end;
@@ -40,6 +30,14 @@ public class SelectCreditActivity extends ToolbarActivity {
     public static final int CREDIT_GRADE = 2;
 
     private int calType = 2;
+    private ImageView mIvYear;
+    private TextView mTvSelectYear;
+    private TextView mEtYear;
+    private View mDivider;
+    private TextView mTvType;
+    private TextView mTvCredit;
+    private TextView mTvCreditGrade;
+    private Button mBtnEnter;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, SelectCreditActivity.class);
@@ -50,56 +48,66 @@ public class SelectCreditActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit);
-        ButterKnife.bind(this);
+        initView();
         setTitle("算学分");
         String[] years = UserUtil.generateYears(6);
-        mEtYear.setText(String.format("%s-%s学年", years[0],years[1]));
+        mEtYear.setText(String.format("%s-%s学年", years[0], years[1]));
         start = years[0];
         end = years[1];
 
     }
 
-    @OnClick({R.id.tv_select_year, R.id.et_year, R.id.tv_credit, R.id.tv_credit_grade,
-            R.id.btn_enter})
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_select_year:
-            case R.id.et_year:
-                CreditYearSelectDialog creditYearSelectDialog = CreditYearSelectDialog.newInstance(start, end);
-                creditYearSelectDialog.show(getSupportFragmentManager(), "creditYearSelect");
-                creditYearSelectDialog.setOnPositiveButtonClickListener((startYear, endYear) -> {
-                    mEtYear.setText(String.format("%s-%s学年", startYear, endYear));
-                    start = startYear;
-                    end = endYear;
-                });
-                break;
-            case R.id.tv_credit:
-                mTvCredit.setBackgroundResource(R.drawable.shape_green);
-                mTvCredit.setTextColor(Color.WHITE);
-                mTvCreditGrade.setBackgroundResource(R.drawable.shape_disabled);
-                mTvCreditGrade.setTextColor(getResources().getColor(R.color.disable_color));
-                calType = CREDIT;
-                break;
-            case R.id.tv_credit_grade:
-                mTvCreditGrade.setBackgroundResource(R.drawable.shape_green);
-                mTvCreditGrade.setTextColor(Color.WHITE);
-                mTvCredit.setBackgroundResource(R.drawable.shape_disabled);
-                mTvCredit.setTextColor(getResources().getColor(R.color.disable_color));
-                calType = CREDIT_GRADE;
-                break;
-            case R.id.btn_enter:
-                if (NetStatus.isConnected()) {
-                    if (calType == CREDIT) {
-                        CreditResultActivity.start(SelectCreditActivity.this, Integer.parseInt(start)
-                                , Integer.parseInt(end));
-                    } else {
-                        CreditGradeActivity.start(SelectCreditActivity.this, Integer.parseInt(start)
-                                , Integer.parseInt(end));
-                    }
-                }else {
-                    ToastUtil.showShort(R.string.tip_net_error);
+        int id = view.getId();
+        if (id == R.id.tv_select_year || id == R.id.tv_year) {
+            CreditYearSelectDialog creditYearSelectDialog = CreditYearSelectDialog.newInstance(start, end);
+            creditYearSelectDialog.show(getSupportFragmentManager(), "creditYearSelect");
+            creditYearSelectDialog.setOnPositiveButtonClickListener((startYear, endYear) -> {
+                mEtYear.setText(String.format("%s-%s学年", startYear, endYear));
+                start = startYear;
+                end = endYear;
+
+            });
+        } else if (id == R.id.tv_credit) {
+            mTvCredit.setBackgroundResource(R.drawable.shape_green);
+            mTvCredit.setTextColor(Color.WHITE);
+            mTvCreditGrade.setBackgroundResource(R.drawable.shape_disabled);
+            mTvCreditGrade.setTextColor(getResources().getColor(R.color.disable_color));
+            calType = CREDIT;
+        } else if (id == R.id.tv_credit_grade) {
+            mTvCreditGrade.setBackgroundResource(R.drawable.shape_green);
+            mTvCreditGrade.setTextColor(Color.WHITE);
+            mTvCredit.setBackgroundResource(R.drawable.shape_disabled);
+            mTvCredit.setTextColor(getResources().getColor(R.color.disable_color));
+            calType = CREDIT_GRADE;
+        } else if (id == R.id.btn_enter) {
+            if (NetStatus.isConnected()) {
+                if (calType == CREDIT) {
+                    CreditResultActivity.start(SelectCreditActivity.this, Integer.parseInt(start)
+                            , Integer.parseInt(end));
+                } else {
+                    CreditGradeActivity.start(SelectCreditActivity.this, Integer.parseInt(start)
+                            , Integer.parseInt(end));
                 }
-                break;
+            } else {
+                ToastUtil.showShort(R.string.tip_net_error);
+            }
         }
+    }
+
+    private void initView() {
+        mIvYear = findViewById(R.id.iv_year);
+        mTvSelectYear = findViewById(R.id.tv_select_year);
+        mEtYear = findViewById(R.id.tv_year);
+        mDivider = findViewById(R.id.divider);
+        mTvType = findViewById(R.id.tv_type);
+        mTvCredit = findViewById(R.id.tv_credit);
+        mTvCreditGrade = findViewById(R.id.tv_credit_grade);
+        mBtnEnter = findViewById(R.id.btn_enter);
+        mTvSelectYear.setOnClickListener(v -> onClick(v));
+        mEtYear.setOnClickListener(v -> onClick(v));
+        mTvCredit.setOnClickListener(v -> onClick(v));
+        mTvCreditGrade.setOnClickListener(v -> onClick(v));
+        mBtnEnter.setOnClickListener(v -> onClick(v));
     }
 }

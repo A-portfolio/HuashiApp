@@ -12,8 +12,6 @@ import net.muxi.huashiapp.R;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by december on 17/4/7.
@@ -24,7 +22,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.MyShareViewH
 
     private List<Integer> mpics;
     private List<String> mdesc;
-    private int type ;
+    private int type;
 
     private static final int TYPE_SHARE_TO = 0;
     private static final int TYPE_SHARE = 1;
@@ -35,7 +33,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.MyShareViewH
         void OnItemClick(View view, int position);
     }
 
-    public ShareAdapter(List<Integer> mpics, List<String> mdesc,int type) {
+    public ShareAdapter(List<Integer> mpics, List<String> mdesc, int type) {
         this.mpics = mpics;
         this.mdesc = mdesc;
         this.type = type;
@@ -58,17 +56,17 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.MyShareViewH
                     holder.mDivider.setVisibility(View.VISIBLE);
                 }
             }
-        } else if (type  == TYPE_SHARE){
+        } else if (type == TYPE_SHARE) {
             holder.mDivider.setVisibility(View.GONE);
         }
-            holder.mItemLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mOnItemClickListener != null) {
-                        mOnItemClickListener.OnItemClick(v, position);
-                    }
+        holder.mItemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.OnItemClick(v, position);
                 }
-            });
+            }
+        });
     }
 
     @Override
@@ -82,22 +80,17 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.MyShareViewH
 
     public class MyShareViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.item_layout)
-        RelativeLayout mItemLayout;
-
-        @BindView(R.id.divider)
-        View mDivider;
-
-        @BindView(R.id.share_image)
-        ImageView mShareImage;
-        @BindView(R.id.share_way)
-        TextView mShareWay;
-
+        private RelativeLayout mItemLayout;
+        private ImageView mShareImage;
+        private TextView mShareWay;
+        private View mDivider;
 
         public MyShareViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
-
+            mItemLayout = itemView.findViewById(R.id.item_layout);
+            mShareImage = itemView.findViewById(R.id.share_image);
+            mShareWay = itemView.findViewById(R.id.share_way);
+            mDivider = itemView.findViewById(R.id.divider);
         }
     }
 }

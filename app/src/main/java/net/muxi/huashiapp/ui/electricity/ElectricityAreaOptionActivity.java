@@ -5,15 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.ui.studyroom.AreaOptionAdapter;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by december on 17/3/1.
@@ -21,24 +19,19 @@ import butterknife.ButterKnife;
 
 public class ElectricityAreaOptionActivity extends ToolbarActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-
 
     private String[] mBuildings;
 
     private String area;
 
     private AreaOptionAdapter mAdapter;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_electricity_area);
-        ButterKnife.bind(this);
-
+        initView();
         setTitle("选择楼栋");
         mBuildings = getIntent().getStringArrayExtra("buildings");
         mAdapter = new AreaOptionAdapter(mBuildings);
@@ -59,7 +52,11 @@ public class ElectricityAreaOptionActivity extends ToolbarActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
-        setResult(0,intent);
+        setResult(0, intent);
         ElectricityAreaOptionActivity.this.finish();
+    }
+
+    private void initView() {
+        mRecyclerView = findViewById(R.id.recycler_view);
     }
 }

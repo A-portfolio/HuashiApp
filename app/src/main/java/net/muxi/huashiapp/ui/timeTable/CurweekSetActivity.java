@@ -4,32 +4,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import net.muxi.huashiapp.Constants;
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.event.CurWeekChangeEvent;
-import net.muxi.huashiapp.util.TimeTableUtil;
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.appcommon.RxBus;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.event.CurWeekChangeEvent;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.utils.TimeTableUtil;
+
 
 /**
  * Created by ybao on 17/2/5.
  */
 
 
-
 public class CurweekSetActivity extends ToolbarActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.lv)
-    ListView mLv;
+    private ListView mLv;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, CurweekSetActivity.class);
@@ -40,7 +34,7 @@ public class CurweekSetActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_curweek_set);
-        ButterKnife.bind(this);
+        initView();
         setTitle("选择当前周");
         String[] s = new String[Constants.WEEKS_LENGTH];
         for (int i = 0; i < Constants.WEEKS_LENGTH; i++) {
@@ -59,5 +53,9 @@ public class CurweekSetActivity extends ToolbarActivity {
             RxBus.getDefault().send(new CurWeekChangeEvent());
             CurweekSetActivity.this.finish();
         });
+    }
+
+    private void initView() {
+        mLv = findViewById(R.id.lv);
     }
 }

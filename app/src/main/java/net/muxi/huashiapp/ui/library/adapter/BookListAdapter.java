@@ -7,12 +7,11 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.data.Book;
+
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.Book;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by ybao on 16/7/2.
@@ -53,27 +52,26 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book_state, parent,
+        View convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book_state, parent,
                 false);
-        return new ViewHolder(v);
+        return new ViewHolder(convertView);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.item_layout)
-        RelativeLayout mItemLayout;
-        @BindView(R.id.tv_state)
-        TextView mTvState;
-        @BindView(R.id.tv_tid)
-        TextView mTvTid;
-        @BindView(R.id.tv_bid)
-        TextView mTvBid;
-        @BindView(R.id.tv_place)
-        TextView mTvPlace;
+        private RelativeLayout mItemLayout;
+        private TextView mTvState;
+        private TextView mTvTid;
+        private TextView mTvBid;
+        private TextView mTvPlace;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            mItemLayout = itemView.findViewById(R.id.item_layout);
+            mTvState = itemView.findViewById(R.id.tv_state);
+            mTvTid = itemView.findViewById(R.id.tv_tid);
+            mTvBid = itemView.findViewById(R.id.tv_bid);
+            mTvPlace = itemView.findViewById(R.id.tv_place);
         }
     }
 

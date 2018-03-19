@@ -8,12 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.Constants;
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.widget.BottomDialogFragment;
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.appcommon.widgets.BottomDialogFragment;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import net.muxi.huashiapp.R;
+
 
 /**
  * Created by december on 17/2/9.
@@ -21,17 +20,12 @@ import butterknife.ButterKnife;
 
 public class StudyTimePickerDialogFragment extends BottomDialogFragment {
 
-
-    @BindView(R.id.tv_title)
-    TextView mTvTitle;
-    @BindView(R.id.study_time_picker_view)
-    StudyTimePickerView mStudyTimePickerView;
-    @BindView(R.id.btn_cancel)
-    Button mBtnCancel;
-    @BindView(R.id.btn_enter)
-    Button mBtnEnter;
-
     private OnPositiveButtonClickListener mOnPositiveButtonClickListener;
+    private TextView mTvTitle;
+    private StudyTimePickerView mStudyTimePickerView;
+    private Button mBtnCancel;
+    private Button mBtnEnter;
+
     //例如第十周周三　传入的就是１０／３则需要减去一作为索引值
     public static StudyTimePickerDialogFragment newInstance(int week,int day){
         Bundle args = new Bundle();
@@ -45,7 +39,7 @@ public class StudyTimePickerDialogFragment extends BottomDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_select_study_time, null);
-        ButterKnife.bind(this,view);
+        initView(view);
         int week,day;
         week = getArguments().getInt("week",0);
         day = getArguments().getInt("day",0);
@@ -80,6 +74,13 @@ public class StudyTimePickerDialogFragment extends BottomDialogFragment {
     public void setOnPositiveButtonClickListener(OnPositiveButtonClickListener onPositiveButtonClickListener){
         mOnPositiveButtonClickListener = onPositiveButtonClickListener;
 
+    }
+
+    private void initView(View view) {
+        mTvTitle = view.findViewById(R.id.tv_title);
+        mStudyTimePickerView = view.findViewById(R.id.study_time_picker_view);
+        mBtnCancel = view.findViewById(R.id.btn_cancel);
+        mBtnEnter = view.findViewById(R.id.btn_enter);
     }
 
     public interface OnPositiveButtonClickListener{

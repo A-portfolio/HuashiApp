@@ -12,22 +12,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.common.base.BaseFragment;
-import net.muxi.huashiapp.common.data.Book;
-import net.muxi.huashiapp.common.data.BorrowedBook;
-import net.muxi.huashiapp.common.data.RenewData;
-import net.muxi.huashiapp.event.RefreshBorrowedBooks;
-import net.muxi.huashiapp.event.VerifyCodeSuccessEvent;
-import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.ui.library.VerifyCodeDialog;
-import net.muxi.huashiapp.util.Logger;
+import com.muxistudio.appcommon.RxBus;
+import com.muxistudio.appcommon.appbase.BaseAppActivity;
+import com.muxistudio.appcommon.appbase.BaseAppFragment;
+import com.muxistudio.appcommon.data.Book;
+import com.muxistudio.appcommon.data.BorrowedBook;
+import com.muxistudio.appcommon.data.RenewData;
+import com.muxistudio.appcommon.event.RefreshBorrowedBooks;
+import com.muxistudio.appcommon.event.VerifyCodeSuccessEvent;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.common.util.Logger;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.ui.library.VerifyCodeDialog;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -38,30 +37,7 @@ import rx.schedulers.Schedulers;
  * Created by ybao  17/2/21.
  */
 
-public class BookBorrowedFragment extends BaseFragment {
-
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.tv_title)
-    TextView mTvTitle;
-    @BindView(R.id.tv_author)
-    TextView mTvAuthor;
-    @BindView(R.id.tv_info)
-    TextView mTvInfo;
-    @BindView(R.id.tv_show_all)
-    TextView mTvShowAll;
-    @BindView(R.id.tv_day)
-    TextView mTvDay;
-    @BindView(R.id.tv_bid)
-    TextView mTvBid;
-    @BindView(R.id.tv_tid)
-    TextView mTvTid;
-    @BindView(R.id.iv_place)
-    ImageView mIvPlace;
-    @BindView(R.id.tv_place)
-    TextView mTvPlace;
-    @BindView(R.id.btn_renew)
-    Button mBtnRenew;
+public class BookBorrowedFragment extends BaseAppFragment {
 
     private boolean isEllipsized = false;
     private boolean isLineOver = false;
@@ -71,12 +47,23 @@ public class BookBorrowedFragment extends BaseFragment {
     private String mInputContent;
     private BorrowedBook mBorrowedBook;
     private VerifyCodeSuccessEvent event;
+    private Toolbar mToolbar;
+    private TextView mTvTitle;
+    private TextView mTvAuthor;
+    private TextView mTvInfo;
+    private TextView mTvShowAll;
+    private TextView mTvDay;
+    private TextView mTvBid;
+    private TextView mTvTid;
+    private ImageView mIvPlace;
+    private TextView mTvPlace;
+    private Button mBtnRenew;
 
-    public static BookBorrowedFragment newInstance(Book book,String id) {
+    public static BookBorrowedFragment newInstance(Book book, String id) {
 
         Bundle args = new Bundle();
         args.putParcelable("book", book);
-        args.putString("id",id);
+        args.putString("id", id);
         BookBorrowedFragment fragment = new BookBorrowedFragment();
         fragment.setArguments(args);
         return fragment;
@@ -85,18 +72,28 @@ public class BookBorrowedFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_borrowed, container, false);
-        ButterKnife.bind(this, view);
+        initView(view);
 
         mBook = getArguments().getParcelable("book");
         id = getArguments().getString("id");
 
-        initView();
         return view;
     }
 
-    private void initView() {
+    private void initView(View view) {
+        mToolbar = view.findViewById(R.id.toolbar);
+        mTvTitle = view.findViewById(R.id.tv_title);
+        mTvAuthor = view.findViewById(R.id.tv_author);
+        mTvInfo = view.findViewById(R.id.tv_info);
+        mTvShowAll = view.findViewById(R.id.tv_show_all);
+        mTvDay = view.findViewById(R.id.tv_day);
+        mTvBid = view.findViewById(R.id.tv_bid);
+        mTvTid = view.findViewById(R.id.tv_tid);
+        mIvPlace = view.findViewById(R.id.iv_place);
+        mTvPlace = view.findViewById(R.id.tv_place);
+        mBtnRenew = view.findViewById(R.id.btn_renew);
         mTvTitle.setText(mBook.book);
         mTvAuthor.setText(mBook.author);
         mTvInfo.setText(mBook.intro);
@@ -106,29 +103,29 @@ public class BookBorrowedFragment extends BaseFragment {
         ViewTreeObserver vto = mTvInfo.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(() -> {
             Layout l = mTvInfo.getLayout();
-            if ( l != null){
+            if (l != null) {
                 int lines = l.getLineCount();
-                if ( lines > 0) {
+                if (lines > 0) {
                     if (l.getEllipsisCount(lines - 1) > 0) {
                         Logger.d("text is ellips");
                         isEllipsized = true;
                         isLineOver = true;
-                    }else {
+                    } else {
                         isEllipsized = false;
                     }
-                }else {
+                } else {
                     isEllipsized = false;
                 }
 
             }
-            if (!isLineOver){
+            if (!isLineOver) {
                 mTvShowAll.setVisibility(View.GONE);
-            }else {
+            } else {
                 mTvShowAll.setOnClickListener(v -> {
-                    if (isEllipsized){
+                    if (isEllipsized) {
                         mTvInfo.setMaxLines(Integer.MAX_VALUE);
                         mTvShowAll.setText(R.string.fold_all);
-                    }else {
+                    } else {
                         mTvInfo.setMaxLines(2);
                         mTvShowAll.setText(R.string.expand_all);
                     }
@@ -138,29 +135,29 @@ public class BookBorrowedFragment extends BaseFragment {
         mBtnRenew.setOnClickListener(v -> {
             renewBook();
         });
+
     }
 
     private void loadPersonBook() {
-        CampusFactory.getRetrofitService().getPersonalBook(App.PHPSESSID)
+        CampusFactory.getRetrofitService().getPersonalBook(UserAccountManager.getInstance().getPHPSESSID())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(Observable::from)
                 .filter(personalBook -> personalBook.id.equals(id))
                 .toList()
                 .subscribe(personalBooks -> {
-                    if (personalBooks != null && personalBooks.size() > 0){
+                    if (personalBooks != null && personalBooks.size() > 0) {
                         mTvTid.setText("条码号" + personalBooks.get(0).bar_code);
-                        mTvDay.setText(String.format("当前借阅（剩余%d天）",personalBooks.get(0).time));
+                        mTvDay.setText(String.format("当前借阅（剩余%d天）", personalBooks.get(0).time));
                         mTvPlace.setText(personalBooks.get(0).room);
                         mBorrowedBook = personalBooks.get(0);
                     }
-                },error->{
+                }, error -> {
 
-                },()->{
+                }, () -> {
 
                 });
     }
-
 
 
     private void renewBook() {
@@ -188,23 +185,23 @@ public class BookBorrowedFragment extends BaseFragment {
                                     RenewData();
                             renewData.bar_code = mBorrowedBook.bar_code;
                             renewData.check = mBorrowedBook.check;
-                            CampusFactory.getRetrofitService().renewBook(App.PHPSESSID, mInputContent, renewData)
+                            CampusFactory.getRetrofitService().renewBook(UserAccountManager.getInstance().getPHPSESSID(), mInputContent, renewData)
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(response -> {
                                         switch (response.code()) {
                                             case 200:
-                                                ((BaseActivity) getActivity()).showSnackbarShort(R.string.renew_ok);
+                                                ((BaseAppActivity) getActivity()).showSnackbarShort(R.string.renew_ok);
                                                 RxBus.getDefault().send(new RefreshBorrowedBooks());
                                                 break;
                                             case 406:
-                                                ((BaseActivity) getActivity()).showErrorSnackbarShort(R.string.renew_not_in_date);
+                                                ((BaseAppActivity) getActivity()).showErrorSnackbarShort(R.string.renew_not_in_date);
                                                 break;
                                             case 403:
-                                                ((BaseActivity) getActivity()).showErrorSnackbarShort(R.string.renew_already);
+                                                ((BaseAppActivity) getActivity()).showErrorSnackbarShort(R.string.renew_already);
                                                 break;
                                             default:
-                                                ((BaseActivity) getActivity()).showErrorSnackbarShort(R.string.request_invalid);
+                                                ((BaseAppActivity) getActivity()).showErrorSnackbarShort(R.string.request_invalid);
                                                 break;
                                         }
                                     });

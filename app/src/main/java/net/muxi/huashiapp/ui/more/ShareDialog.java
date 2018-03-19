@@ -12,6 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.appcommon.appbase.BaseAppActivity;
+import com.muxistudio.appcommon.utils.AppUtil;
+import com.muxistudio.appcommon.widgets.BottomDialogFragment;
+import com.muxistudio.common.util.Logger;
+import com.muxistudio.common.util.ToastUtil;
 import com.sina.weibo.sdk.api.TextObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
 import com.sina.weibo.sdk.api.share.BaseResponse;
@@ -30,34 +36,20 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
 
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.common.listener.BaseUiListener;
+import net.muxi.huashiapp.listeners.BaseUiListener;
 import net.muxi.huashiapp.ui.main.OnRecyclerItemClickListener;
 import net.muxi.huashiapp.ui.webview.ShareAdapter;
-import net.muxi.huashiapp.util.AppUtil;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.ToastUtil;
-import net.muxi.huashiapp.widget.BottomDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by december on 17/2/26.
  */
 
 public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.Response {
-
-
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-
 
     private static final String APP_TITLE = "华师匣子";
     private static final String APP_INTRO = "具有成绩查询、图书查询、图书追踪等功能，轻松解决你的在校难题";
@@ -92,6 +84,8 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
     private int category;
     public static final int TYPE_SHARE_APP = 0;
     public static final int TYPE_SHARE_CALENDAR = 1;
+    private android.widget.TextView mTvShare;
+    private RecyclerView mRecyclerView;
 
     public static ShareDialog newInstance(int category) {
 
@@ -106,8 +100,8 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_shareto, null);
-        ButterKnife.bind(this, view);
-
+        mTvShare = view.findViewById(R.id.tv_share);
+        mRecyclerView = view.findViewById(R.id.recycler_view);
         Dialog dialog = createBottomDialog(view);
 
 
@@ -162,7 +156,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
                             break;
                         case 5:
                             AppUtil.clipToClipBoard(getContext(), APP_URL);
-                            ((BaseActivity) getActivity()).showSnackbarShort(getResources().getString(R.string.tip_copy_success));
+                            ((BaseAppActivity) getActivity()).showSnackbarShort(getResources().getString(R.string.tip_copy_success));
                             dialog.dismiss();
                             break;
 
@@ -197,7 +191,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
                             break;
                         case 5:
                             AppUtil.clipToClipBoard(getContext(), CAL_URL);
-                            ((BaseActivity) getActivity()).showSnackbarShort(getResources().getString(R.string.tip_copy_success));
+                            ((BaseAppActivity) getActivity()).showSnackbarShort(getResources().getString(R.string.tip_copy_success));
                             dialog.dismiss();
                             break;
 
@@ -382,6 +376,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Tencent.onActivityResultData(requestCode, requestCode, data, mBaseUiListener);
     }
+
 }
 
 
