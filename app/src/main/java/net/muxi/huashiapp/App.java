@@ -38,13 +38,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
-                TinkerPatch.init(tinkerApplicationLike)
-                .reflectPatchLibrary()
-                .setPatchRollbackOnScreenOff(true)
-                .setPatchRestartOnSrceenOff(true);
-
-        new FetchPatchHandler().fetchPatchWithInterval(3);
+        initTinker();
 
         sContext = getApplicationContext();
         sp = new PreferenceUtil();
@@ -58,6 +52,19 @@ public class App extends Application {
         Fresco.initialize(this);
         initBugly();
         initUMeng();
+    }
+
+    private void initTinker() {
+        if (!Env.isRelease()) {
+            return;
+        }
+        tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
+        TinkerPatch.init(tinkerApplicationLike)
+                .reflectPatchLibrary()
+                .setPatchRollbackOnScreenOff(true)
+                .setPatchRestartOnSrceenOff(true);
+
+        new FetchPatchHandler().fetchPatchWithInterval(3);
     }
 
     private void initBugly() {

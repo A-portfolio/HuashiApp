@@ -1,0 +1,64 @@
+// apply tinker only in release mode
+apply from: rootProject.file('./buildscripts/utils.gradle')
+if (!isRelease()) {
+    return
+}
+
+
+// handle the logical of tinker
+apply plugin: 'com.tencent.tinker.patch'
+apply plugin: 'tinkerpatch-support'
+
+def bakPath = file("${buildDir}/bakApk/")
+def baseInfo = "app-2.2.0-0226-13-18-25"
+def variantName = "release"
+
+tinkerpatchSupport {
+    tinkerEnable = true
+    reflectApplication = true
+
+    autoBackupApkPath = "${bakPath}"
+
+    appKey = "15546ae78491131f"
+
+    appVersion = "${versionMajor}.${versionMinor}.${versionBuild}"
+
+    def name = "${project.name}-${variantName}"
+
+
+    def pathPrefix = "${bakPath}/${baseInfo}/${variantName}"
+    baseApkFile = "${pathPrefix}/${name}.apk"
+    baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
+    baseResourceRFile = "${pathPrefix}/${name}-R.txt"
+
+}
+
+
+tinkerPatch {
+    ignoreWarning = true
+    useSign = true
+    dex {
+        dexMode = "jar"
+        pattern = ["classes*.dex"]
+        loader = []
+    }
+    lib {
+        pattern = ["lib/*/*.so"]
+    }
+
+    res {
+        pattern = ["res/*", "r/*", "assets/*", "resources.arsc", "AndroidManifest.xml"]
+        ignoreChange = []
+        largeModSize = 100
+    }
+
+    packageConfig {
+    }
+
+    sevenZip {
+        zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
+    }
+    buildConfig {
+        keepDexApply = false
+    }
+}
