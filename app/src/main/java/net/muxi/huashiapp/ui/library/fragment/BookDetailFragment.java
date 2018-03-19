@@ -206,17 +206,13 @@ public class BookDetailFragment extends BaseFragment {
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(
                                     R.string.request_invalid);
                                 break;
-                        //case 403:
-                        //    ((BaseActivity) getActivity()).showErrorSnackbarShort(
-                        //            R.string.request_invalid);
-                        //    break;
                         default:
                             mBtnAttention.setChecked(true);
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(
                                     R.string.tip_err_server);
                             break;
                     }
-                });
+                },Throwable::printStackTrace,()->{});
     }
 
     public void createAtten() {
@@ -241,19 +237,13 @@ public class BookDetailFragment extends BaseFragment {
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(
                                     R.string.request_invalid);
                             break;
-                        //case 403:
-                        //    ((BaseActivity) getActivity()).showErrorSnackbarShort(
-                        //            R.string.request_invalid);
-                        //    break;
-                        //case 409:
-                        //    break;
                         default:
                             mBtnAttention.setChecked(false);
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(
                                     R.string.tip_err_server);
                             break;
                     }
-                });
+                },Throwable::printStackTrace,()->{});
     }
 
     public void changeAttenStatus(boolean b) {

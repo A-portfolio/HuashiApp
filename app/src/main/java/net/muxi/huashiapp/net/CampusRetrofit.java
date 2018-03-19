@@ -22,7 +22,6 @@ public class CampusRetrofit{
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .addInterceptor(new CookieInterceptor())
-                .addInterceptor(new NetStatusInterceptor())
                 .addInterceptor(new AuthorizationInterceptor())
                 .readTimeout(25,TimeUnit.SECONDS)
                 .connectTimeout(25, TimeUnit.SECONDS)

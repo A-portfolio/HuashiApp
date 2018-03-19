@@ -207,7 +207,7 @@ public class BookBorrowedFragment extends BaseFragment {
                                                 ((BaseActivity) getActivity()).showErrorSnackbarShort(R.string.request_invalid);
                                                 break;
                                         }
-                                    });
+                                    },Throwable::printStackTrace,()->{});
                         }
                     }
                 });

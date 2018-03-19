@@ -28,9 +28,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -126,39 +126,23 @@ public class CreditGradeActivity extends ToolbarActivity {
 
                 creditObservable
                         .subscribe(scores -> {
-                    mScoresList = ((List<Score>)scores);
+                    mScoresList = scores;
                     initRecyclerView();
                     this.hideLoading();
                 },throwable -> {
-                    CcnuCrawler2.clearCookieStore();
-                    new LoginPresenter().login(App.sUser)
-                            .flatMap(aBoolean -> creditObservable).subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(o -> {
-                                mScoresList = ((List<Score>)o);
-                                initRecyclerView();
-                                hideLoading();
-                            });
+                            if(throwable instanceof HttpException) {
+                                CcnuCrawler2.clearCookieStore();
+                                new LoginPresenter().login(App.sUser)
+                                        .flatMap(aBoolean -> creditObservable).subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(o -> {
+                                            mScoresList = o;
+                                            initRecyclerView();
+                                            hideLoading();
+                                        });
+                                throwable.printStackTrace();
+                            }
                 }, ()->{});
-    }
-
-    public void retryLoadCredit(Observable<List<Score>>[] listObservables){
-        new LoginPresenter().login(App.sUser)
-                .flatMap((Func1<Boolean, Observable<?>>) aBoolean
-                        -> Observable.merge(listObservables,5)
-                        .flatMap(Observable::from)
-                        .toList()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread()))
-                .subscribe(scores -> {
-                    mScoresList = (List<Score>) scores;
-                    initRecyclerView();
-                },throwable -> {
-                    throwable.printStackTrace();
-                    CcnuCrawler2.clearCookieStore();
-                    mMultiStatusView.showError();
-                    hideLoading();
-                }, this::hideLoading);
     }
 
     public Observable<List<Score>>[] getScoreRequest(int start,int end){

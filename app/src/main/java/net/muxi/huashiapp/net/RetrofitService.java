@@ -32,8 +32,6 @@ import net.muxi.huashiapp.common.data.WebsiteData;
 import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -52,13 +50,6 @@ import rx.Observable;
  * Created by ybao on 16/4/28.
  */
 public interface RetrofitService {
-
-    @GET("info/login/")
-    Call<ResponseBody> mainLogin(@Header("Authorizat") String verification);
-
-    @GET("lib/login/")
-    Observable<Response<VerifyResponse>> libLogin(@Header("Authorization") String verification);
-
     @GET("lib/search/")
     Observable<BookSearchResult> searchBook(@Query("keyword") String keyword,
                                             @Query("page") int page);
@@ -75,6 +66,7 @@ public interface RetrofitService {
      * 404 无关注图书
      * 502 服务器端错误
      */
+    //fixme different from doc in libary, hard to fix the bug
     @GET("lib/attention/")
     Observable<Response<List<AttentionBook>>> getAttentionBooks(
             @Header("sid") String verification);

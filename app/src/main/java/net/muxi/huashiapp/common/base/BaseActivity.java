@@ -48,7 +48,6 @@ public class BaseActivity extends AppCompatActivity {
             mActionBar.setDisplayHomeAsUpEnabled(true);
         }
         getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-        //sendComponentNameByZG();
         retryObserver();
     }
 

@@ -87,22 +87,24 @@ public class MainActivity extends BaseActivity implements
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(versionData -> {
-                    if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME)) {
-                        final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
-                        checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update) + versionData.getVersion());
-                        checkUpdateDialog.setContent(
-                                App.sContext.getString(R.string.tip_update_intro) + versionData.getIntro() + "\n" + App.sContext.getString(R.string.tip_update_size) + versionData.getSize());
-                        checkUpdateDialog.setOnPositiveButton(App.sContext.getString(R.string.btn_update), () -> {
-                                    if (isStoragePermissionGranted()) {
-                                        beginUpdate(versionData.download);
-                                    }else {
-                                        showErrorSnackbarShort(R.string.tip_require_write_permission);
-                                    }
-                                    checkUpdateDialog.dismiss();
-                                });
-                        checkUpdateDialog.setOnNegativeButton(App.sContext.getString(R.string.btn_cancel),
-                                () -> checkUpdateDialog.dismiss());
-                        checkUpdateDialog.show(getSupportFragmentManager(), "dialog_update");
+                    if(versionData.getVersion()!=null) {
+                        if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME)) {
+                            final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
+                            checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update) + versionData.getVersion());
+                            checkUpdateDialog.setContent(
+                                    App.sContext.getString(R.string.tip_update_intro) + versionData.getIntro() + "\n" + App.sContext.getString(R.string.tip_update_size) + versionData.getSize());
+                            checkUpdateDialog.setOnPositiveButton(App.sContext.getString(R.string.btn_update), () -> {
+                                if (isStoragePermissionGranted()) {
+                                    beginUpdate(versionData.download);
+                                } else {
+                                    showErrorSnackbarShort(R.string.tip_require_write_permission);
+                                }
+                                checkUpdateDialog.dismiss();
+                            });
+                            checkUpdateDialog.setOnNegativeButton(App.sContext.getString(R.string.btn_cancel),
+                                    () -> checkUpdateDialog.dismiss());
+                            checkUpdateDialog.show(getSupportFragmentManager(), "dialog_update");
+                        }
                     }
                 }, throwable -> throwable.printStackTrace());
     }

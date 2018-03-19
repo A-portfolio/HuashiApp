@@ -85,7 +85,6 @@ public class ScoreActivity extends ToolbarActivity {
                         .observeOn(AndroidSchedulers.mainThread()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                //todo 下次版本更新注意这里 发送登录成功消息
                 .subscribe(this::renderScoreList,
                         throwable -> {
                             throwable.printStackTrace();
@@ -101,16 +100,16 @@ public class ScoreActivity extends ToolbarActivity {
             termTemp = "";
         else
             termTemp = term;
-        CampusFactory.getRetrofitService().getScores(year, termTemp)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::renderScoreList,
-                        throwable -> {
-                            throwable.printStackTrace();
-                            mMultiStatusView.showNetError();
-                            CcnuCrawler2.clearCookieStore();
-                            hideLoading();
-                        }, this::hideLoading);
+            CampusFactory.getRetrofitService().getScores(year, termTemp)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(this::renderScoreList,
+                            throwable -> {
+                                mMultiStatusView.showNetError();
+                                CcnuCrawler2.clearCookieStore();
+                                throwable.printStackTrace();
+                                hideLoading();
+                            }, this::hideLoading);
     }
 
 

@@ -271,10 +271,15 @@ public class TimetableFragment extends BaseFragment {
                             retryLoadTable();
 
                     }
-                    int code = ((HttpException) throwable).code();
-                    if (code == 401) {
-                        RxBus.getDefault().send(new RefreshFinishEvent(false
-                                , code));
+                    //在没有联网的时候 会有一个unknownhost异常
+                    try {
+                     int code = ((HttpException) throwable).code();
+                        if (code == 401) {
+                            RxBus.getDefault().send(new RefreshFinishEvent(false
+                                    , code));
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
 
                 });
