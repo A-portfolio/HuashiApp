@@ -1,0 +1,106 @@
+/**
+ * 通过解析 Gradle 键入命令判断是否要打 Debug 版本
+ * @return 是否是 Debug 版本
+ */
+boolean isDebug() {
+    if(gradle.startParameter.getTaskNames().size() == 0) {
+        return true
+    }
+
+    List<String> tasks = gradle.startParameter.getTaskNames()
+    for (String s : tasks) {
+        if (s.contains("Debug")) {
+            return true
+        }
+    }
+
+    return false
+}
+
+/**
+ * 通过解析 Gradle 键入命令判断是否要打 Release 版本
+ * @return 是否是 Release 版本
+ */
+boolean isRelease() {
+    if(gradle.startParameter.getTaskNames().size() == 0) {
+        return true
+    }
+
+    List<String> tasks = gradle.startParameter.getTaskNames()
+    for (String s : tasks) {
+        if (s.contains("Release")) {
+            return true
+        }
+    }
+
+    return false
+}
+
+
+/**
+ * 获取构建时间
+ * @return 粗略的构建时间
+ */
+String getBuildTime() {
+    return new Date().format("MM.dd HH:mm", TimeZone.getTimeZone("GMT+8:00"))
+}
+
+/**
+ * 读取 Gradle -P 输入的参数（Project 级别）
+ * @param key
+ * @param defValue
+ * @return
+ */
+String getProjectEnvValue(key, defValue) {
+    def val = project.getProperties().get(key)
+    if (null != val) {
+        return val
+    }
+    return defValue
+}
+
+/**
+ * 读取 Gradle —D 输入的参数和系统环境变量（Java 系统变量级别）
+ * @param key
+ * @param defValue
+ * @return
+ */
+String getJavaEnvValue(key, defValue) {
+    def val = System.getProperty(key)
+    if (null != val) {
+        return val
+    }
+    val = System.getenv(key)
+    if (null != val) {
+        return val
+    }
+    return defValue
+}
+
+/**
+ * 设置系统变量（Java 系统变量级别）
+ * @param key
+ * @param value
+ */
+def setJavaEnvValue(key, value) {
+    if (null == getJavaEnvValue(key, null)) {
+        System.getProperties().put(key, String.valueOf(value))
+        println('setJavaEnvValue: ' + key + ", " + value)
+    }
+}
+
+boolean isMacOS() {
+    def osName = System.getProperty("os.name")
+    return osName.contains("Mac") || osName.contains("mac")
+}
+
+
+ext {
+    isDebug = this.&isDebug
+    isRelease = this.&isRelease
+    getBuildTime = this.&getBuildTime
+    getProjectEnvValue = this.&getProjectEnvValue
+    getJavaEnvValue = this.&getJavaEnvValue
+    setJavaEnvValue = this.&setJavaEnvValue
+    isMacOS = this.&isMacOS
+}

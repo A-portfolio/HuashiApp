@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.antfortune.freeline'
-//apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.tencent.tinker.patch'
-apply plugin: 'tinkerpatch-support'
+
+apply from: '../buildscripts/tinker.gradle'
+apply from: '../buildscripts/monitor.gradle'
+//apply from: '../buildscripts/icon.gradle'
 
 import java.text.SimpleDateFormat
 
@@ -13,14 +13,6 @@ def keystoreProperties = new Properties()
 
 // Load your keystore.properties file into the keystoreProperties object.
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
-def versionMajor = 2
-def versionMinor = 2
-def versionBuild = 0
-
-def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = "app-2.2.0-0226-13-18-25"
-def variantName = "release"
 
 android {
     compileSdkVersion 27
@@ -44,7 +36,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 27
         versionCode versionMajor * 10000 + versionMinor * 100 + versionBuild
-        versionName = "${versionMajor}.${versionMinor}.${versionBuild}"
+        versionName "${versionMajor}.${versionMinor}.${versionBuild}"
 
         multiDexEnabled true
 
@@ -84,7 +76,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:27.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.android.support:design:27.1.0'
-    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'io.reactivex:rxjava:1.1.1'
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     compile 'com.android.support:cardview-v7:27.1.0'
@@ -120,55 +112,4 @@ def buildTime() {
     def df = new SimpleDateFormat("MMdd-HH-mm-ss")
     df.setTimeZone(TimeZone.getDefault())
     return df.format(new Date())
-}
-
-
-tinkerpatchSupport {
-    tinkerEnable = true
-    reflectApplication = true
-
-    autoBackupApkPath = "${bakPath}"
-
-    appKey = "15546ae78491131f"
-
-    appVersion = "${versionMajor}.${versionMinor}.${versionBuild}"
-
-    def name = "${project.name}-${variantName}"
-
-
-    def pathPrefix = "${bakPath}/${baseInfo}/${variantName}"
-    baseApkFile = "${pathPrefix}/${name}.apk"
-    baseProguardMappingFile = "${pathPrefix}/${name}-mapping.txt"
-    baseResourceRFile = "${pathPrefix}/${name}-R.txt"
-
-}
-
-
-tinkerPatch {
-    ignoreWarning = true
-    useSign = true
-    dex {
-        dexMode = "jar"
-        pattern = ["classes*.dex"]
-        loader = []
-    }
-    lib {
-        pattern = ["lib/*/*.so"]
-    }
-
-    res {
-        pattern = ["res/*", "r/*", "assets/*", "resources.arsc", "AndroidManifest.xml"]
-        ignoreChange = []
-        largeModSize = 100
-    }
-
-    packageConfig {
-    }
-
-    sevenZip {
-        zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
-    }
-    buildConfig {
-        keepDexApply = false
-    }
 }

@@ -1,0 +1,14 @@
+/**
+ * To add some text above the app's icon when it is debug mode
+ */
+apply plugin: 'icon-cover'
+
+def buildTime = new Date().format("MM.dd HH:mm", TimeZone.getTimeZone("GMT+8:00"))
+
+iconCoverConfig {
+    textSize = 16
+    textColor = "#FFFFFF"
+    verticalLinePadding = 4
+    backgroundColor = "#CC000000"
+    extraInfo = buildTime
+}
