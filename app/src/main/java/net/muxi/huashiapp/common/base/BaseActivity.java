@@ -64,6 +64,7 @@ public class BaseActivity extends AppCompatActivity {
             mLoadingDialog = new LoadingDialog();
         }
         mLoadingDialog.show(getSupportFragmentManager(), "loading");
+        mLoadingDialog.setRetainInstance(true);
     }
 
     public void hideLoading() {
