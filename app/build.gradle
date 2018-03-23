@@ -47,17 +47,16 @@ android {
 
     buildTypes {
         release {
+            buildConfigField "boolean", "DEBUG_MODE", "false"
             buildConfigField "boolean", "LOG_DEBUG", "false"
-            //Zipalign优化
             zipAlignEnabled true
-            // 移除无用的resource文件
             shrinkResources true
-            //混淆
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
         debug {
+            buildConfigField "boolean", "DEBUG_MODE", "true"
             minifyEnabled false
         }
     }
