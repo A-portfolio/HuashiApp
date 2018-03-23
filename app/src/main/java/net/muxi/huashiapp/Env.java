@@ -5,13 +5,14 @@ package net.muxi.huashiapp;
  */
 
 public class Env {
-    // todo
+
     public static boolean isDebug() {
-        return false;
+        return BuildConfig.DEBUG_MODE;
     }
 
     public static boolean isRelease() {
-        return false;
+        // todo: if it should add a special build config param
+        return !BuildConfig.DEBUG_MODE;
     }
 
 }
