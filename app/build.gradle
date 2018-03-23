@@ -1,11 +1,8 @@
 apply plugin: 'com.android.application'
-
+//apply from: 'build.gradle'
 apply from: '../buildscripts/tinker.gradle'
 apply from: '../buildscripts/monitor.gradle'
 //apply from: '../buildscripts/icon.gradle'
-
-import java.text.SimpleDateFormat
-
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 
 // Initialize a new Properties() object called keystoreProperties.
@@ -35,6 +32,7 @@ android {
         applicationId "net.muxi.huashiapp"
         minSdkVersion 16
         targetSdkVersion 27
+
         versionCode versionMajor * 10000 + versionMinor * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionBuild}"
 
@@ -106,10 +104,4 @@ dependencies {
     testCompile 'org.mockito:mockito-core:2.7.14'
     compile 'com.umeng.sdk:common:latest.integration'
     compile 'com.umeng.sdk:analytics:latest.integration'
-}
-
-def buildTime() {
-    def df = new SimpleDateFormat("MMdd-HH-mm-ss")
-    df.setTimeZone(TimeZone.getDefault())
-    return df.format(new Date())
 }

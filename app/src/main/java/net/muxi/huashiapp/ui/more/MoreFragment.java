@@ -14,9 +14,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.umeng.analytics.MobclickAgent;
-
+import java.io.File;
+import java.util.Arrays;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
@@ -31,13 +33,6 @@ import net.muxi.huashiapp.ui.webview.WebViewActivity;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
 import net.muxi.huashiapp.util.ToastUtil;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -53,9 +48,6 @@ public class MoreFragment extends BaseFragment {
     RecyclerView mRecyclerView;
 
     private MoreAdapter mAdapter;
-
-    private String downloadUrl;
-
     private PreferenceUtil sp;
 
     private String[] titles = {"常见问题Q&A", "分享App给好友", "通知栏提醒", "意见反馈", "检查更新 ", "关于", "退出账号"};
@@ -64,6 +56,8 @@ public class MoreFragment extends BaseFragment {
                     R.drawable.ic_more_feedback,
                     R.drawable.ic_more_update, R.drawable.ic_more_about,
                     R.drawable.ic_more_sign_out};
+    private Integer[] colors = {R.color.blue,R.color.green,R.color.yellow
+        ,R.color.grey,R.color.color_light_green,R.color.red,R.color.red};
 
 
     public static MoreFragment newInstance() {
@@ -86,7 +80,8 @@ public class MoreFragment extends BaseFragment {
     }
 
     public void initView() {
-        mAdapter = new MoreAdapter((List<String>) Arrays.asList(titles), Arrays.asList(icons));
+        mAdapter = new MoreAdapter(Arrays.asList(titles), Arrays.asList(icons)
+        ,Arrays.asList(colors));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setItemClickListener((view, position) -> {
@@ -114,6 +109,7 @@ public class MoreFragment extends BaseFragment {
                     break;
                 case 6:
                     logout();
+                    mRecyclerView.invalidate();
                     break;
 
             }
@@ -184,6 +180,7 @@ public class MoreFragment extends BaseFragment {
         if (TextUtils.isEmpty(App.sUser.getSid())) {
             ((BaseActivity) getActivity()).showErrorSnackbarShort(
                     App.sContext.getString(R.string.not_log_in));
+
         } else {
             App.logoutUser();
             App.logoutLibUser();

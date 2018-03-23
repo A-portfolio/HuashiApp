@@ -21,18 +21,9 @@ public class AuthorizationInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         Request.Builder builder = request.newBuilder();
-        //fixme 针对不同的加入不同的token
-        if (request.url().pathSegments().get(1).equals("lib")) {
-            String s2 = request.url().pathSegments().get(2);
-            if (s2 != null && s2.equals("login")) {
-
-            } else {
+        String urlPath = request.url().pathSegments().get(1);
+        if (urlPath.equals("grade")) {
                 builder.header("Authorization", Base64Util.createBaseStr(App.sLibrarayUser));
-            }
-        } else {
-            if (!request.url().pathSegments().get(1).equals("info")) {
-                builder.header("Authorization", Base64Util.createBaseStr(App.sUser));
-            }
         }
         return chain.proceed(builder.build());
     }

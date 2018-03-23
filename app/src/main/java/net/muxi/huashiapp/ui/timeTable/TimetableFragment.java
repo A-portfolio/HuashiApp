@@ -232,7 +232,9 @@ public class TimetableFragment extends BaseFragment {
         new LoginPresenter()
                 .login(App.sUser)
                 .flatMap(booleans->CampusFactory.getRetrofitService().
-                getTimeTable().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()))
+                getTimeTable()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(courses -> {
@@ -333,7 +335,8 @@ public class TimetableFragment extends BaseFragment {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.detach(this);
             ft.attach(this);
-            ft.commitNowAllowingStateLoss();
+
+            ft.commitAllowingStateLoss();
         }
     }
     @OnClick({R.id.tv_select_week, R.id.iv_select_week})

@@ -33,6 +33,7 @@
     <color name="primary_text_color">#333333</color>
     <color name="bottom_nav_enable">#333333</color>
     <color name="bottom_nav_disable">#33333333</color>
+    <color name="hint_overlap_course">#ff3142</color>
 
     <color name="shadow_dialog">#99333333</color>
     <!--闪屏-->
@@ -107,5 +108,9 @@
     
     <!--校园通知-->
     <color name="color_link_layout">#FAFAFA</color>
+
+    <!--更多-->
+    <color name="color_light_green">#c6ff00</color>
+    <color name="color_light_cyan">#18ffff</color>
 
 </resources>

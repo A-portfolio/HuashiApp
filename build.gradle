@@ -1,7 +1,6 @@
 apply from: "./buildscripts/deps.gradle"
 
 buildscript {
-
     repositories {
         jcenter()
         maven { url "https://maven.google.com" }
@@ -35,5 +34,5 @@ task clean(type: Delete) {
 ext {
     versionMajor = 2
     versionMinor = 2
-    versionBuild = 0
+    versionBuild = 1
 }

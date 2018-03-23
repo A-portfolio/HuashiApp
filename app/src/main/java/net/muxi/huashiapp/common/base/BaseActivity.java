@@ -51,12 +51,6 @@ public class BaseActivity extends AppCompatActivity {
         retryObserver();
     }
 
-    private void sendComponentNameByZG() {
-         if (getComponentName() != null) {
-             //ZhugeUtils.sendEvent(getComponentName());
-         }
-        Logger.d(getComponentName().getClassName());
-    }
 
     public void showLoading() {
         if (mLoadingDialog == null) {
@@ -68,7 +62,7 @@ public class BaseActivity extends AppCompatActivity {
     public void hideLoading() {
         Logger.d("hideloading");
         if (mLoadingDialog != null) {
-            mLoadingDialog.dismiss();
+            mLoadingDialog.dismissAllowingStateLoss();
         }
     }
 

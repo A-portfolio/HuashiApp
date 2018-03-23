@@ -132,7 +132,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
         mToolbar.setTitle("华师匣子");
-        initXGPush();
+        //initXGPush();
         sp = new PreferenceUtil();
         dao = new HuaShiDao();
         mBannerDatas = dao.loadBannerData();
@@ -142,7 +142,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                     refresh();
                 }, throwable -> throwable.printStackTrace());
         initHintView();
-//        initBulletin();
         initView();
         getHint();
         if (mProductData == null) {

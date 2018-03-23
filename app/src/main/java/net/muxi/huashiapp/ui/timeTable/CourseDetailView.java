@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import java.util.ArrayList;
+import java.util.List;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
@@ -17,12 +20,6 @@ import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.TimeTableUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -81,7 +78,9 @@ public class CourseDetailView extends RelativeLayout {
         mTvTime.setTextColor(color);
         mTvPlace.setTextColor(color);
 
-        mTvCourse.setText(course.course);
+        //对于过长的课程名称 缩短一点
+
+        mTvCourse.setText(getPrettifiedText(course.course));
         mTvTeacher.setText(course.teacher);
         mTvPlace.setText(course.place);
         mTvTime.setText(String.format("周%s%d-%d节",
@@ -112,6 +111,17 @@ public class CourseDetailView extends RelativeLayout {
         });
     }
 
+    //如果课程名称是 桂子山植物鉴赏(网络课)(素质课) 会转化为-> 桂子山植物鉴赏\n(网络课)\n(素质课)
+    private String getPrettifiedText(String courseName){
+        if(courseName.contains("(素质课)")&&courseName.contains("(网络课)")){
+            int start = courseName.indexOf("(网络课)");
+            String courseName2 = courseName.substring(0,start) + "\n"
+                + courseName.substring(start,courseName.length());
+            return courseName2;
+        }else{
+            return courseName;
+        }
+    }
     private void delCourse(Course course) {
         CampusFactory.getRetrofitService().deleteCourse(course.id)
                 .subscribeOn(Schedulers.io())
