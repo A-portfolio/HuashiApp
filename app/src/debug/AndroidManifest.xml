@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="net.muxi.huashiapp">
+
+
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <!--获取设备唯一标识-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!--获取访问用户账户名的权限用以精准匹配标签(可选)-->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!--微信权限-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- 【必须】 信鸽SDK所需权限 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RESTART_PACKAGES"/>
+    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <!-- 【可选】 信鸽SDK所需权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BATTERY_STATS"/>
+
+    <application
+
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@style/AppTheme">
+
+        <meta-data android:value="58b55d3d8f4a9d21ce0013ed" android:name="UMENG_APPKEY"/>
+        <meta-data android:value="校园通" android:name="UMENG_CHANNEL"/>
+
+        <activity
+            android:name=".ui.EntranceActivity"
+            android:theme="@style/Theme.Transparent"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.GuideActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity android:name="net.muxi.huashiapp.ui.main.MainActivity"
+                  android:launchMode="singleTask"
+                  android:windowSoftInputMode="adjustResize">
+
+
+        </activity>
+
+        <activity android:name=".ui.main.DetailActivity"/>
+
+        <activity
+            android:name="net.muxi.huashiapp.ui.login.LoginActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name="net.muxi.huashiapp.ui.SettingActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".ui.credit.SelectCreditActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".ui.credit.CreditResultActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".ui.credit.CreditGradeActivity"
+            android:launchMode="singleTask"/>
+
+        <activity
+            android:name="net.muxi.huashiapp.ui.timeTable.CourseEditActivity"
+            android:launchMode="singleTask"/>
+
+        <activity
+            android:name=".ui.timeTable.CourseAuditResultActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".ui.timeTable.CourseAuditSearchActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".ui.timeTable.CurweekSetActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".ui.score.ScoreSelectActivity"
+            android:launchMode="singleTask"/>
+
+        <activity
+            android:name="net.muxi.huashiapp.ui.score.ScoreActivity"
+            android:launchMode="singleTask"/>
+
+        <activity
+            android:name="net.muxi.huashiapp.ui.news.NewsActivity"
+            android:launchMode="singleTask"/>
+
+
+        <activity
+            android:name="net.muxi.huashiapp.ui.library.LibrarySearchActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".ui.library.LibrarySearchResultActivity"/>
+
+        <activity android:name=".ui.library.BookDetailActivity"/>
+
+        <activity
+            android:name="net.muxi.huashiapp.ui.card.CardActivity"
+            android:launchMode="singleTask"/>
+
+        <activity
+            android:name="net.muxi.huashiapp.ui.webview.WebViewActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="net.muxi.huashiapp.ui.website.WebsiteActivity"
+            android:launchMode="singleTask"/>
+
+        <activity
+            android:name="net.muxi.huashiapp.ui.apartment.ApartmentActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name="net.muxi.huashiapp.ui.CalendarActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name="net.muxi.huashiapp.ui.AboutActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".ui.MoreActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name="net.muxi.huashiapp.ui.electricity.ElectricityActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name="net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity"/>
+
+        <activity android:name=".ui.electricity.ElectricityAreaOptionActivity"/>
+
+        <activity android:name="net.muxi.huashiapp.ui.InfoActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".ui.SuggestionActivity"/>
+
+        <activity
+            android:name=".ui.studyroom.StudyRoomActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".ui.studyroom.StudyRoomDetailActivity"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".ui.studyroom.StudyAreaOptionActivity"
+            android:launchMode="singleTask"/>
+
+        <activity
+            android:name=".ui.studyroom.StudyRoomBlankActivity"
+            android:launchMode="singleTask"/>
+
+
+        <activity
+            android:name="net.muxi.huashiapp.ui.wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleInstance"/>
+
+        <receiver android:name="net.muxi.huashiapp.service.AlarmLiveReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="net.muxi.huashiapp.service.AlarmReceiver">
+            <intent-filter>
+                <action android:name="net.muxi.huashiapp.alarm"/>
+            </intent-filter>
+        </receiver>
+
+        <service android:name="net.muxi.huashiapp.service.DownloadService"/>
+
+        <!--第三方开放平台-->
+
+        <meta-data
+            android:name="ZHUGE_APPKEY"
+            android:value="9197e7dd1e5c40cab4556a8b7c3145d3"/>
+        <meta-data
+            android:name="ZHUGE_CHANNEL"
+            android:value="校园通"/>
+
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="tencent1105548375"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+        <activity
+            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+
+        <!-- 【必须】 (2.30及以上版新增)展示通知的activity -->
+        <!-- 【注意】 如果被打开的activity是启动模式为SingleTop，SingleTask或SingleInstance，请根据通知的异常自查列表第8点处理-->
+        <activity
+            android:name="com.tencent.android.tpush.XGPushActivity"
+            android:exported="true">
+            <intent-filter>
+                <!-- 若使用AndroidStudio，请设置android:name="android.intent.action"-->
+                <action android:name="android.intent.action"/>
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="net.muxi.huashiapp.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
+        <receiver android:name="net.muxi.huashiapp.provider.ScheduleWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name="android.intent.action.WidgetProvider"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/schedule_widget_provider"/>
+        </receiver>
+
+        <!-- 【必须】 信鸽receiver广播接收 -->
+        <receiver
+            android:name="com.tencent.android.tpush.XGPushReceiver"
+            android:process=":xg_service_v2">
+            <intent-filter android:priority="0x7fffffff">
+
+                <!-- 【必须】 信鸽SDK的内部广播 -->
+                <action android:name="com.tencent.android.tpush.action.SDK"/>
+                <action android:name="com.tencent.android.tpush.action.INTERNAL_PUSH_MESSAGE"/>
+                <!-- 【必须】 系统广播：开屏和网络切换 -->
+                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+
+                <!-- 【可选】 一些常用的系统广播，增强信鸽service的复活机会，请根据需要选择。当然，你也可以添加APP自定义的一些广播让启动service -->
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED"/>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="net.muxi.huashiapp.service.WidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS">
+        </service>
+
+        <!-- 【必须】 信鸽service -->
+        <service
+            android:name="com.tencent.android.tpush.service.XGPushService"
+            android:exported="true"
+            android:persistent="true"
+            android:process=":xg_service_v2"/>
+
+        <!-- 【必须】 通知service，此选项有助于提高抵达率 -->
+        <service
+            android:name="com.tencent.android.tpush.rpc.XGRemoteService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="net.muxi.huashiapp.PUSH_ACTION"/>
+            </intent-filter>
+        </service>
+
+        <!-- 【必须】 请将YOUR_ACCESS_ID修改为APP的AccessId，“21”开头的10位数字，中间没空格 -->
+        <meta-data
+            android:name="XG_V2_ACCESS_ID"
+            android:value="2100216051"/>
+        <!-- 【必须】 请将YOUR_ACCESS_KEY修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 -->
+        <meta-data
+            android:name="XG_V2_ACCESS_KEY"
+            android:value="AE3232GC4CVI"/>
+
+    </application>
+
+</manifest>

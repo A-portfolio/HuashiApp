@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.muxistudio.appcommon.data.User;
@@ -58,6 +59,7 @@ public class App extends Application {
         Fresco.initialize(this);
         initBugly();
         initUMeng();
+        initARouter(this);
     }
 
     private void initBugly() {
@@ -67,6 +69,18 @@ public class App extends Application {
     }
     private void initUMeng(){
         UMConfigure.init(this,UMENG_APP_KEY,null,UMConfigure.DEVICE_TYPE_PHONE,null);
+    }
+
+    private void initARouter(Application app){
+        if(BuildConfig.DEBUG){
+            ARouter.openLog();
+            //开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
+            ARouter.openDebug();
+            ARouter.printStackTrace();
+        }
+
+        ARouter.init(app);
+
     }
 
     public static Context getContext() {

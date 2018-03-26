@@ -11,6 +11,12 @@ android {
         versionCode 1
         versionName "1.0"
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ moduleName : project.getName() ]
+            }
+    }
+
     }
 
     buildTypes {
@@ -29,6 +35,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 //    implementation 'com.android.support:appcompat-v7:26.1.0'
+    compile rootProject.ext.dependencies["arouterapi"]
+    annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
     compile 'com.facebook.fresco:fresco:1.1.0'
     compile 'com.facebook.fresco:animated-gif:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
@@ -36,6 +44,7 @@ dependencies {
     compile 'com.android.support:design:27.1.0'
     compile 'com.android.support:cardview-v7:27.1.0'
     compile 'com.android.support:recyclerview-v7:27.1.0'
+
 
 
     implementation rootProject.ext.dependencies.appcompat_v7

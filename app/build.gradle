@@ -1,6 +1,8 @@
-apply plugin: 'com.android.library'
-//apply plugin: 'com.tencent.tinker.patch'
-//apply plugin: 'tinkerpatch-support'
+if (rootProject.ext.isAppDebug){
+    apply plugin: 'com.android.library'
+} else {
+    apply plugin: 'com.android.application'
+}
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 
@@ -46,11 +48,18 @@ android {
 
         multiDexEnabled true
 
+        if (!rootProject.ext.isAppDebug) {
+            applicationId "net.muxi.huashiapp"
+        }
+
         javaCompileOptions {
             annotationProcessorOptions {
                 includeCompileClasspath true
+                arguments = [moduleName: project.getName()]
             }
         }
+
+
     }
 
     buildTypes {
@@ -75,11 +84,24 @@ android {
         sourceCompatibility 1.8
     }
 
+    sourceSets {
+        main {
+            if (!rootProject.ext.isAppDebug) {
+                manifest.srcFile 'src/debug/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java {
+                    exclude '**/debug/**'
+                }
+            }
+        }
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project (":appcommon")
+    compile project(":appcommon")
+    annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
     compile 'me.biubiubiu.justifytext:library:1.1'
     compile 'com.github.fengminchao:MultiStatusView:0.6'
     compile 'com.daimajia.numberprogressbar:library:1.4@aar'
@@ -94,7 +116,6 @@ dependencies {
     testCompile 'org.mockito:mockito-core:2.7.14'
 
 }
-
 
 //tinkerpatchSupport {
 //
@@ -117,7 +138,6 @@ dependencies {
 //    baseResourceRFile = "${pathPrefix}/${name}-R.txt"
 //
 //}
-
 
 //tinkerPatch {
 //    ignoreWarning = true

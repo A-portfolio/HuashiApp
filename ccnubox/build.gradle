@@ -82,7 +82,5 @@ gradle.startParameter.taskNames.each({
 })
 
 dependencies {
-    compile project(':app',{lib ->
-        lib.ext.buildType = currentBuildType
-    })
+    implementation project(':app')
 }
