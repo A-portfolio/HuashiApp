@@ -39,6 +39,7 @@ public class ApartmentActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apartment);
+        initView();
         dao = new HuaShiDao();
         //读取宿舍的信息
         mApartDatas = dao.loadApart();
@@ -75,7 +76,6 @@ public class ApartmentActivity extends ToolbarActivity {
                         }
                     }
                 });
-        initView();
     }
 
     public void setupRecyclerView(List<ApartmentData> apartmentDataList) {
