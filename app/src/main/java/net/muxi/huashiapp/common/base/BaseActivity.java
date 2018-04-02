@@ -9,9 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.umeng.analytics.MobclickAgent;
-
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
@@ -19,9 +16,9 @@ import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.event.NetErrorEvent;
 import net.muxi.huashiapp.event.RefreshSessionEvent;
 import net.muxi.huashiapp.ui.login.LoginPresenter;
+import net.muxi.huashiapp.util.AppStaticUtils;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.widget.LoadingDialog;
-
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -89,7 +86,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //初始化友盟统计
-        MobclickAgent.onResume(this);
+        AppStaticUtils.onResume(this);
     }
 
 
@@ -104,7 +101,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPause(this);
+        AppStaticUtils.onPause(this);
     }
 
     public void showSnackbarLong(String msg) {

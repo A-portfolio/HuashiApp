@@ -24,6 +24,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.EleRequestData;
 import net.muxi.huashiapp.net.CampusFactory;
+import net.muxi.huashiapp.util.AppStaticUtils;
 import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.ArrayList;
@@ -176,7 +177,7 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         int itemId = item.getItemId();
         if (itemId == R.id.action_change_room) {
             //其实我也不知道这个事件有什么作用
-            MobclickAgent.onEvent(this,"ele_fee_change_dom_query");
+            AppStaticUtils.onEvent(this,"ele_fee_change_dom_query");
             PreferenceUtil sp = new PreferenceUtil();
             sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
             Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);

@@ -11,9 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-
-import com.umeng.analytics.MobclickAgent;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
@@ -25,12 +25,9 @@ import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.event.RefreshSessionEvent;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
+import net.muxi.huashiapp.util.AppStaticUtils;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NetStatus;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -119,7 +116,7 @@ public class LoginActivity extends ToolbarActivity {
                             hideLoading();
                             //保存登录状态
                             App.saveUser(user);
-                            MobclickAgent.onProfileSignIn(user.getSid());
+                            //MobclickAgent.onProfileSignIn(user.getSid());
                             String target = getIntent().hasExtra("target") ?
                                     getIntent().getStringExtra("target") : null;
                             if (type.equals("info")) {
@@ -148,9 +145,9 @@ public class LoginActivity extends ToolbarActivity {
                         Logger.d("信息上传完成");
                     });
             if (type.equals("info"))
-                MobclickAgent.onEvent(this, "login");
+                AppStaticUtils.onEvent(this, "login");
             else {
-                MobclickAgent.onEvent(this, "lib_login");
+                AppStaticUtils.onEvent(this, "lib_login");
             }
         }
     }

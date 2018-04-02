@@ -22,6 +22,7 @@ public class AuthorizationInterceptor implements Interceptor {
         Request request = chain.request();
         Request.Builder builder = request.newBuilder();
         String urlPath = request.url().pathSegments().get(1);
+        //其余的地方是不需要验证的
         if (urlPath.equals("grade")) {
                 builder.header("Authorization", Base64Util.createBaseStr(App.sLibrarayUser));
         }

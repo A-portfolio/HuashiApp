@@ -10,7 +10,7 @@ apply plugin: 'com.tencent.tinker.patch'
 apply plugin: 'tinkerpatch-support'
 
 def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = "app-2.2.1-0324-08-31-21"
+def baseInfo = "app-2.2.1-0324-09-12-59"
 def variantName = "release"
 
 tinkerpatchSupport {

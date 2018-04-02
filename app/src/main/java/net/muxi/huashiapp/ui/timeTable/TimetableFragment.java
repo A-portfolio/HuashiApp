@@ -32,6 +32,7 @@ import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
 import net.muxi.huashiapp.ui.login.LoginPresenter;
+import net.muxi.huashiapp.util.AppStaticUtils;
 import net.muxi.huashiapp.util.DimensUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -346,7 +347,7 @@ public class TimetableFragment extends BaseFragment {
             case R.id.iv_select_week:
                 if (!selectedIvStatus) {
                     mWeekSelectedView.slideDown();
-                    MobclickAgent.onEvent(getActivity(),"week_select");
+                    AppStaticUtils.onEvent(getActivity(),"week_select");
                     mWeekSelectedView.setSelectedWeek(selectedWeek);
                     PreferenceUtil.saveInt(PreferenceUtil.CURWEEK,selectedWeek);
                     mShadeView.setVisibility(View.VISIBLE);

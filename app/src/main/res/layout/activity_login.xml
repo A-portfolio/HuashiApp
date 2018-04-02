@@ -18,7 +18,8 @@
         android:hint="输入学号"
         android:theme="@style/TextNormal"
         app:hintAnimationEnabled="true"
-        app:hintEnabled="true">
+        app:hintEnabled="true"
+        >
 
         <EditText
             android:id="@+id/et_sid"
@@ -27,7 +28,8 @@
             android:inputType="number"
             android:lines="1"
             android:textSize="28sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -40,8 +42,9 @@
         android:hint="输入您的密码"
         android:theme="@style/TextNormal"
         app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
         app:passwordToggleEnabled="true"
-        app:hintEnabled="true">
+        >
 
         <EditText
             android:id="@+id/et_pwd"
@@ -50,10 +53,10 @@
             android:inputType="textPassword"
             android:lines="1"
             android:textSize="28sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
 
     </android.support.design.widget.TextInputLayout>
-
 
 
     <!--<net.muxi.huashiapp.ui.library.VerifyCodeView
@@ -68,13 +71,13 @@
 
     <Button
         android:id="@+id/btn_login"
-        android:background="@drawable/ripple_accent"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="14dp"
+        android:background="@drawable/ripple_accent"
         android:text="登录"
         android:textColor="@color/colorWhite"
         />

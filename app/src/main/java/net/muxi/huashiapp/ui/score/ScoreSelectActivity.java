@@ -73,7 +73,8 @@ public class ScoreSelectActivity extends ToolbarActivity {
                         term = 16;
                         break;
                 }
-                ScoreActivity.start(ScoreSelectActivity.this, mTvYear.getText().toString().substring(0, 4), term + "");
+                ScoreActivity.start(ScoreSelectActivity.this,
+                    mTvYear.getText().toString().substring(0, 4), term + "");
             }else{
                 ToastUtil.showShort(R.string.tip_net_error);
             }

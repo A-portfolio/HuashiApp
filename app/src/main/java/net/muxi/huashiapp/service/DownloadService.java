@@ -36,6 +36,9 @@ public class DownloadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if(intent == null){
+            return START_REDELIVER_INTENT;
+        }
         String fileType = intent.getStringExtra("fileType");
         final String fileName = intent.getStringExtra("fileName");
         if (fileType.equals("apk")) {

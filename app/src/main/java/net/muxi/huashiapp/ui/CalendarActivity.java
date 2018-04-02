@@ -148,11 +148,13 @@ public class CalendarActivity extends ToolbarActivity {
     }
 
     public void getImgSize(String size) {
-        int index = size.indexOf("x");
-        String heightStr = size.substring(index + 1, size.length());
-        String widthStr = size.substring(0, index);
-        imgWidth = Integer.valueOf(widthStr);
-        imgHeight = Integer.valueOf(heightStr);
+        if (size.contains("x")) {
+            int index = size.indexOf("x");
+            String heightStr = size.substring(index + 1, size.length());
+            String widthStr = size.substring(0, index);
+            imgWidth = Integer.valueOf(widthStr);
+            imgHeight = Integer.valueOf(heightStr);
+        }
     }
 
     @Override

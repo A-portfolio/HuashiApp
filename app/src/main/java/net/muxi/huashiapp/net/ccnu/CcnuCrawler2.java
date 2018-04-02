@@ -1,18 +1,14 @@
 package net.muxi.huashiapp.net.ccnu;
 
-import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.Constants;
-import net.muxi.huashiapp.common.data.InfoCookie;
-import net.muxi.huashiapp.net.CookieInterceptor;
-import net.muxi.huashiapp.util.PreferenceUtil;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.common.data.InfoCookie;
+import net.muxi.huashiapp.util.PreferenceUtil;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
@@ -145,21 +141,30 @@ public class CcnuCrawler2 {
 
     public static boolean performLogin(String username, String userpassword) throws IOException {
         initCrawler();
+        boolean flag2  = false;
+        try {
         mCcnuService.performCampusLogin(JSESSIONID_LOGIN_IN, username, userpassword,
                         valueOfLt, valueOfExe, "submit", "LOGIN").execute();
-        boolean flag2  = true;
+        flag2 = true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         try {
             mCcnuService.performSystemLogin().execute();
         }catch (Exception e){
             e.printStackTrace();
             flag2 = false;
         }
-        performLibLogin();
+        try {
+            performLibLogin();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         //三重验证确保登录成功
         return loginCode(flag2);
     }
 
-    private static boolean performLibLogin() throws IOException {
+    private static boolean performLibLogin() throws Exception {
         //整个步骤拆分成三个部分:获取第一个phpsessionid
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -173,7 +178,11 @@ public class CcnuCrawler2 {
                 .url("http://202.114.34.15/reader/hwthau.php")
                 .get()
                 .build();
-        client.newCall(request0).execute();
+        //try {
+            client.newCall(request0).execute();
+        //} catch (IOException e) {
+        //    e.printStackTrace();
+        //}
         return true;
 
     }

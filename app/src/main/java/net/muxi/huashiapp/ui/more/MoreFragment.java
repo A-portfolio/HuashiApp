@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.umeng.analytics.MobclickAgent;
 import java.io.File;
 import java.util.Arrays;
 import net.muxi.huashiapp.App;
@@ -184,7 +183,7 @@ public class MoreFragment extends BaseFragment {
         } else {
             App.logoutUser();
             App.logoutLibUser();
-            MobclickAgent.onProfileSignOff();
+            //MobclickAgent.onProfileSignOff();
             ((BaseActivity) getActivity()).showSnackbarShort(
                     App.sContext.getString(R.string.tip_all_log_out));
         }

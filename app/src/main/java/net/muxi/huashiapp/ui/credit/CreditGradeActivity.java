@@ -86,7 +86,8 @@ public class CreditGradeActivity extends ToolbarActivity {
     private float calculateResult() {
         float sum = 0;
         float credits = 0;
-        if(mCreditGradeAdapter.getCheckedList()!=null) {
+        //如果用户操作太快 mCreditGradeAdapter有可能尚未来得及初始化
+        if(mCreditGradeAdapter.getCheckedList()!=null&&mCreditGradeAdapter!=null) {
             for (int pos : mCreditGradeAdapter.getCheckedList()) {
                 float credit = Float.parseFloat(mScoresList.get(pos).credit);
                 credits += credit;
