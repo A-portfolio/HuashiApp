@@ -11,9 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.muxistudio.jsbridge.BridgeHandler;
 import com.muxistudio.jsbridge.BridgeWebView;
-import com.muxistudio.jsbridge.CallbackFunc;
 import com.muxistudio.multistatusview.MultiStatusView;
 import com.tencent.smtt.sdk.WebSettings;
 
@@ -32,6 +30,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -100,6 +101,14 @@ public class CardActivity extends ToolbarActivity {
         sp = new PreferenceUtil();
         user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
         user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build();
+        Request request = new Request.Builder()
+                .addHeader()
+
         CampusFactory.getRetrofitService()
                 .getCardBalance(user.getSid(), "90", "0", "60")
                 .observeOn(AndroidSchedulers.mainThread())
@@ -140,13 +149,6 @@ public class CardActivity extends ToolbarActivity {
                         mConsumeView.setInitData(data);
                         mConsumeView.loadUrl("http://123.56.41.13:4088");
 
-                        //event ? 事件名?
-                        mConsumeView.register("fafafafa", new BridgeHandler() {
-                            @Override
-                            public void handle(String s, CallbackFunc callbackFunc) {
-
-                            }
-                        });
 
                     }
                 });
