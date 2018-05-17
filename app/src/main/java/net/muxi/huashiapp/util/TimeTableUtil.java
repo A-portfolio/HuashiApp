@@ -273,7 +273,8 @@ public class TimeTableUtil {
         }
     }
 
-    public static boolean isContinuOusWeeks(List<Integer> weekList) {
+    public static boolean
+    isContinuOusWeeks(List<Integer> weekList) {
         if (weekList.size() < 2) {
             return false;
         }
