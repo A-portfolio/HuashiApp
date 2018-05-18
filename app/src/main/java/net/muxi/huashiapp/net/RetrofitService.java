@@ -11,6 +11,7 @@ import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.data.CardData;
+import net.muxi.huashiapp.common.data.CardDataEtp;
 import net.muxi.huashiapp.common.data.ClassRoom;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.CourseId;
@@ -174,6 +175,7 @@ public interface RetrofitService {
     @GET("grade/")
     Observable<List<Score>> getScores(@Query("xnm") String year,
         @Query("xqm") String term);
+
 
 
 }

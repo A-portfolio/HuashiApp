@@ -7,10 +7,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.muxistudio.jsbridge.BridgeWebView;
 import com.muxistudio.multistatusview.MultiStatusView;
 import com.tencent.smtt.sdk.WebSettings;
@@ -18,9 +18,8 @@ import com.tencent.smtt.sdk.WebSettings;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.CardData;
-import net.muxi.huashiapp.common.data.CardSumData;
+import net.muxi.huashiapp.common.data.CardDataPresenter;
 import net.muxi.huashiapp.common.data.User;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.util.DateUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -30,10 +29,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.logging.HttpLoggingInterceptor;
-import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -101,55 +97,37 @@ public class CardActivity extends ToolbarActivity {
         sp = new PreferenceUtil();
         user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
         user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(interceptor)
-                .build();
-        Request request = new Request.Builder()
-                .addHeader()
 
-        CampusFactory.getRetrofitService()
-                .getCardBalance(user.getSid(), "90", "0", "60")
+        CardDataPresenter cardDataPresenter = new CardDataPresenter();
+        cardDataPresenter.getData()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<List<CardData>>() {
+                .subscribe(new Subscriber() {
                     @Override
-                    public void onCompleted() {
-                        hideLoading();
-
-                    }
-
+                    public void onCompleted() { }
                     @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mMultiStatusView.showNetError();
-                        hideLoading();
-
-                    }
-
+                    public void onError(Throwable e) { }
                     @Override
-                    public void onNext(List<CardData> cardDatas) {
-                        Logger.d("id card");
-                        mMultiStatusView.showContent();
-                        mDate.setText("截止" + cardDatas.get(0).getDealDateTime());
-                        mMoney.setText(cardDatas.get(0).getOutMoney());
-                        mCardDatas = cardDatas;
+                    public void onNext(Object o) {
 
-                        CardSumData[] data = new CardSumData[7];
-                        for (int i = 0; i < data.length; i++) {
-                            data[i] = new CardSumData(DateUtil.getTheDateInYear(new Date(), -6 + i), getDailySum(i));
-                        }
-
-                        Gson gson = new Gson();
-                        String json = gson.toJson(data);
-                        Logger.d(json);
-                        Logger.d("get json");
-
-                        mConsumeView.setInitData(data);
-                        mConsumeView.loadUrl("http://123.56.41.13:4088");
-
-
+                        Log.d("fuck card data", "onNext: " + o.toString());
+//                        mMultiStatusView.showContent();
+//                        mDate.setText("截止" + cardDatas.get(0).getDealDateTime());
+//                        mMoney.setText(cardDatas.get(0).getOutMoney());
+//                        mCardDatas = cardDatas;
+//
+//                        CardSumData[] data = new CardSumData[7];
+//                        for (int i = 0; i < data.length; i++) {
+//                            data[i] = new CardSumData(DateUtil.getTheDateInYear(new Date(), -6 + i), getDailySum(i));
+//                        }
+//
+//                        Gson gson = new Gson();
+//                        String json = gson.toJson(data);
+//                        Logger.d(json);
+//                        Logger.d("get json");
+//
+//                        mConsumeView.setInitData(data);
+//                        mConsumeView.loadUrl("http://123.56.41.13:4088");
                     }
                 });
 
@@ -175,6 +153,7 @@ public class CardActivity extends ToolbarActivity {
         return sum;
 
     }
+
 }
 
 

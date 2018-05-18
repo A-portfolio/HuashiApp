@@ -1,14 +1,16 @@
 package net.muxi.huashiapp.net.ccnu;
 
+import net.muxi.huashiapp.App;
+import net.muxi.huashiapp.common.data.InfoCookie;
+import net.muxi.huashiapp.util.PreferenceUtil;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.common.data.InfoCookie;
-import net.muxi.huashiapp.util.PreferenceUtil;
+
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
@@ -178,11 +180,7 @@ public class CcnuCrawler2 {
                 .url("http://202.114.34.15/reader/hwthau.php")
                 .get()
                 .build();
-        //try {
             client.newCall(request0).execute();
-        //} catch (IOException e) {
-        //    e.printStackTrace();
-        //}
         return true;
 
     }
