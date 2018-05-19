@@ -50,6 +50,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+
 public class MainActivity extends BaseActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -276,7 +277,7 @@ public class MainActivity extends BaseActivity implements
                 showFragment(TimetableFragment.newInstance(), tag);
                 break;
             case "lib_main":
-                showFragment(   LibraryMainFragment.newInstance(), tag);
+                showFragment(LibraryMainFragment.newInstance(), tag);
                 break;
             case "lib_mine":
                 showFragment(LibraryMineFragment.newInstance(), tag);

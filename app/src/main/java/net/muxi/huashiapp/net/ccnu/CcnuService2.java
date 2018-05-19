@@ -48,7 +48,6 @@ public interface CcnuService2 {
     @GET("http://weixin.ccnu.edu.cn/App/weixin/CardInfoAjax")
     rx.Observable<CardDataEtp> getCardData(@HeaderMap Map<String, String> headers );
 
-
     /**
      *
      * @param headers

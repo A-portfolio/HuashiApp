@@ -35,7 +35,7 @@ public class CourseView extends TextView{
         super.onDraw(canvas);
         if(isTipOn){
             //默认的颜色是绿色
-            int color = context.getResources().getColor(R.color.green);
+            int color = context.getResources().getColor(R.color.hint_overlap_course);
             setTip(color,canvas);
         }
     }

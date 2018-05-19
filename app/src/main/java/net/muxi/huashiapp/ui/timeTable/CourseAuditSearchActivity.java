@@ -6,15 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.umeng.analytics.MobclickAgent;
-
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.common.base.ToolbarActivity;
+import net.muxi.huashiapp.util.AppStaticUtils;
 
 /**
  * Created by kolibreath on 18-2-2.
@@ -40,7 +37,7 @@ public class  CourseAuditSearchActivity extends ToolbarActivity{
         intent.putExtra("courseTeacher",teacher);
         intent.putExtra("courseSubject",subject);
         CourseAuditResultActivity.start(this,intent);
-        MobclickAgent.onEvent(this,"course_audit");
+        AppStaticUtils.onEvent(this,"course_audit");
         finish();
     }
 

@@ -207,6 +207,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             ((BannerViewHolder) holder).mCardBanner.setScrollTime(500);
         } else if (holder instanceof CommonViewHolder) {
             //如果是动态获取的图片 就需要网络加载资源
+            int index = position - ITEM;
+            if(index < 0 ) return;
             if (mItemDatas.get(position - ITEM).isDynamic()) {
                 ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mItemDatas.get(position - ITEM).getIcon()));
                 FrescoUtil.savePicture(mItemDatas.get(position - ITEM).getIcon(), mContext, mItemDatas.get(position - ITEM).getName());

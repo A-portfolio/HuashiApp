@@ -7,9 +7,12 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.umeng.analytics.MobclickAgent;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
@@ -19,14 +22,7 @@ import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.event.RefreshTableEvent;
 import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import net.muxi.huashiapp.util.AppStaticUtils;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -245,10 +241,10 @@ public class CourseEditActivity extends ToolbarActivity {
             return;
         }
         if (isAdd) {
-            MobclickAgent.onEvent(this,"course_add");
+            AppStaticUtils.onEvent(this,"course_add");
             addCourse();
         } else {
-            MobclickAgent.onEvent(this,"course_edit");
+            AppStaticUtils.onEvent(this,"course_edit");
             updateCourse();
         }
     }

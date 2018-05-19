@@ -47,8 +47,7 @@ public class App extends Application {
         sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
         sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));
         sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
-        //fixme
-        PreferenceUtil.saveString(PreferenceUtil.JSESSIONID,"");
+
         Fresco.initialize(this);
         initBugly();
         initUMeng();
@@ -123,7 +122,7 @@ public class App extends Application {
     // 判断是否已经登陆
     public static boolean isLibLogin() {
         String phpSess = PreferenceUtil.getString(PreferenceUtil.PHPSESSID);
-        if(!phpSess.equals("")||!TextUtils.isEmpty(phpSess)) {
+        if(!TextUtils.isEmpty(phpSess)) {
             return true;
         } else {
             return false;

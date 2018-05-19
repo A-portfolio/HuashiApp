@@ -11,6 +11,7 @@ import net.muxi.huashiapp.common.data.BookSearchResult;
 import net.muxi.huashiapp.common.data.BorrowedBook;
 import net.muxi.huashiapp.common.data.CalendarData;
 import net.muxi.huashiapp.common.data.CardData;
+import net.muxi.huashiapp.common.data.CardDataEtp;
 import net.muxi.huashiapp.common.data.ClassRoom;
 import net.muxi.huashiapp.common.data.Course;
 import net.muxi.huashiapp.common.data.CourseId;
@@ -52,13 +53,13 @@ import rx.Observable;
 public interface RetrofitService {
     @GET("lib/search/")
     Observable<BookSearchResult> searchBook(@Query("keyword") String keyword,
-                                            @Query("page") int page);
+        @Query("page") int page);
 
     @GET("lib/detail/{id}/")
     Observable<Book> getBookDetail(@Path("id") String id);
 
     @GET("lib/me/")
-    Observable<List<BorrowedBook>> getPersonalBook(@Header("s") String verification);
+    Observable<List<BorrowedBook>> getPersonalBook(@Header("s") String phpsessid);
 
     /**
      * 200 OK
@@ -66,10 +67,9 @@ public interface RetrofitService {
      * 404 无关注图书
      * 502 服务器端错误
      */
-    //fixme different from doc in libary, hard to fix the bug
     @GET("lib/attention/")
     Observable<Response<List<AttentionBook>>> getAttentionBooks(
-            @Header("sid") String verification);
+        @Header("sid") String verification);
 
     /**
      * 200 添加关注成功
@@ -77,8 +77,8 @@ public interface RetrofitService {
      */
     @POST("lib/create/")
     Observable<Response<VerifyResponse>> createAttentionBook(
-            @Header("sid") String verification, @Body
-            BookPost bookPost);
+        @Header("sid") String verification, @Body
+        BookPost bookPost);
 
     /**
      * 200 OK
@@ -86,8 +86,8 @@ public interface RetrofitService {
      */
     @HTTP(method = "DELETE", path = "lib/delete/", hasBody = true)
     Observable<Response<VerifyResponse>> delAttentionBook(
-            @Header("sid") String verification,
-            @Body BookId id);
+        @Header("sid") String verification,
+        @Body BookId id);
 
     /**
      * 200
@@ -96,25 +96,29 @@ public interface RetrofitService {
      * 400 请求无效
      */
     @POST("lib/renew/")
-    Observable<Response<VerifyResponse>> renewBook(@Header("s") String verification, @Header("captcha") String captcha,
-                                                   @Body RenewData renewData);
+    Observable<Response<VerifyResponse>> renewBook(@Header("s") String phpsessid
+        , @Header("captcha") String captcha,
+        @Body RenewData renewData);
 
     //获取用户课表
+
     @GET("api/table/")
     Observable<List<Course>> getTimeTable();
 
 
-    //添加课程
+
     @POST("api/table/")
     Observable<CourseId> addCourse(@Body Course course);
 
+
+
     //删除课程
-    @DELETE("api/table/{id}/")
+    @DELETE("table/{id}/")
     Observable<Response<VerifyResponse>> deleteCourse(@Path("id") String id);
 
     @PUT("table/{id}/")
     Observable<Response<VerifyResponse>> updateCourse(@Path("id") String id,
-                                                      @Body Course course);
+        @Body Course course);
 
     @GET("webview_info/")
     Observable<List<News>> getNews();
@@ -146,10 +150,10 @@ public interface RetrofitService {
     // .cn/ecard/getTrans?userId=2013211389&days=90&startNum=0&num=200
     @GET("http://console.ccnu.edu.cn/ecard/getTrans")
     Observable<List<CardData>> getCardBalance(
-            @Query("userId") String sid,
-            @Query("days") String day,
-            @Query("startNum") String start,
-            @Query("num") String num);
+        @Query("userId") String sid,
+        @Query("days") String day,
+        @Query("startNum") String start,
+        @Query("num") String num);
 
     @GET("app/latest/")
     Observable<VersionData> getLatestVersion();
@@ -168,12 +172,13 @@ public interface RetrofitService {
 
     @GET("classroom/get_classroom/")
     Observable<ClassRoom> getClassRoom(@Query("weekno") String week,
-                                       @Query("weekday") String day,
-                                       @Query("building") String area);
+        @Query("weekday") String day,
+        @Query("building") String area);
 
     @GET("api/grade/")
     Observable<List<Score>> getScores(@Query("xnm") String year,
-                                      @Query("xqm") String term);
+        @Query("xqm") String term);
+
 
 
 }

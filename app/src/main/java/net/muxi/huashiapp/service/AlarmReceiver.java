@@ -217,13 +217,15 @@ public class AlarmReceiver extends BroadcastReceiver {
         List<Course> allCourses = dao.loadAllCourses();
         List<String> courses = new ArrayList<>();
 
-        for (int i = 0;i < allCourses.size();i ++){
+        for (int i = 0;i < allCourses.size();i ++) {
             Logger.d(allCourses.get(i).id);
-            if (Integer.parseInt(allCourses.get(i).id) < 1000
-                    && allCourses.get(i).day.equals(Constants.WEEKDAYS_XQ[day - 1])
-                    && !allCourses.get(i).getCourse().equals(Constants.INIT_COURSE)
-                    && TimeTableUtil.isThisWeek(curWeek,allCourses.get(i).weeks)){
-                courses.add(allCourses.get(i).course);
+            if (allCourses.get(i).id != null) {
+                if (Integer.parseInt(allCourses.get(i).id) < 1000
+                        && allCourses.get(i).day.equals(Constants.WEEKDAYS_XQ[day - 1])
+                        && !allCourses.get(i).getCourse().equals(Constants.INIT_COURSE)
+                        && TimeTableUtil.isThisWeek(curWeek, allCourses.get(i).weeks)) {
+                    courses.add(allCourses.get(i).course);
+                }
             }
         }
         Logger.d(courses.size() + "");

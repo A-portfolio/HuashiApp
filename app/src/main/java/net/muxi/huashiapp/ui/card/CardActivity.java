@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import net.muxi.huashiapp.common.data.CardDailyUse;
 import net.muxi.huashiapp.common.data.CardDataEtp;
 import net.muxi.huashiapp.common.data.CardSumData;
 import net.muxi.huashiapp.common.data.ICardView;
+import net.muxi.huashiapp.common.data.User;
 import net.muxi.huashiapp.util.DateUtil;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.PreferenceUtil;
@@ -88,9 +90,7 @@ public class CardActivity extends ToolbarActivity implements ICardView {
             mPresenter.getData();
         });
 
-
     }
-
 
     @Override
     public void initView(CardDailyUse dailyUse, CardDataEtp etp) {
@@ -107,11 +107,7 @@ public class CardActivity extends ToolbarActivity implements ICardView {
         }
         Gson gson = new Gson();
         String json = gson.toJson(data);
-
-        mConsumeView.setInitData(data);
-        mConsumeView.loadUrl("http://123.56.41.13:4088");
     }
-
 
 
     /**
@@ -135,7 +131,6 @@ public class CardActivity extends ToolbarActivity implements ICardView {
         return sum;
 
     }
-
 
 }
 

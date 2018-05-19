@@ -232,6 +232,7 @@ public class BookDetailFragment extends BaseFragment {
                             changeAttenStatus(true);
                             RxBus.getDefault().send(new RefreshAttenBooks());
                             break;
+
                         case 401:
                             mBtnAttention.setChecked(false);
                             ((BaseActivity) getActivity()).showErrorSnackbarShort(
