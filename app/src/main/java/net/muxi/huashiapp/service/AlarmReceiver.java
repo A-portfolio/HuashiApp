@@ -102,7 +102,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             }
         }
     }
-
+//todo
     private void checkCard() {
         CampusFactory.getRetrofitService().getCardBalance(mUser.getSid(), "60", "0", "10")
                 .subscribeOn(Schedulers.newThread())

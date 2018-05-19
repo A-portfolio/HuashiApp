@@ -12,27 +12,21 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.umeng.analytics.MobclickAgent;
-
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.RxBus;
 import net.muxi.huashiapp.common.base.ToolbarActivity;
 import net.muxi.huashiapp.common.data.User;
-import net.muxi.huashiapp.common.data.UserInfo;
 import net.muxi.huashiapp.event.LibLoginEvent;
 import net.muxi.huashiapp.event.LoginSuccessEvent;
 import net.muxi.huashiapp.event.RefreshSessionEvent;
-import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
+import net.muxi.huashiapp.util.AppStaticUtils;
 import net.muxi.huashiapp.util.Logger;
 import net.muxi.huashiapp.util.NetStatus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by ybao on 16/4/18.
@@ -114,43 +108,37 @@ public class LoginActivity extends ToolbarActivity {
         showLoading();
         if (type.equals("info") || type.equals("lib")) {
             presenter.login(user)
-                    .flatMap(result -> {
+                    .subscribe(b -> {
+                        boolean result = (boolean) b;
                         if (result) {
+                            finish();
                             hideLoading();
-                            //保存登录状态
                             App.saveUser(user);
-                            MobclickAgent.onProfileSignIn(user.getSid());
                             String target = getIntent().hasExtra("target") ?
                                     getIntent().getStringExtra("target") : null;
-                            if (type.equals("info")) {
+                            if(type.equals("info")) {
+//                                RxBus.getDefault().send(new LibLoginEvent());
                                 RxBus.getDefault().send(new LoginSuccessEvent(target));
-                            } else {
+                            }
+                            else{
+//                                RxBus.getDefault().send(new LoginSuccessEvent(target));
                                 RxBus.getDefault().send(new LibLoginEvent());
                             }
-                            finish();
-                            CcnuCrawler2.getInfoCookie();
-                            return CampusFactory.getRetrofitService()
-                                    .postUserInfo(new
-                                            UserInfo(Integer.parseInt(user.sid), user.password))
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread());
                         } else {
                             hideLoading();
                             showErrorSnackbarShort(R.string.tip_err_account);
-                            return rx.Observable.error(new Exception());
                         }
-                    })
-                    .subscribe(msg -> {
-                        Logger.d("信息上传完成");
-                    }, e -> {
-                        Logger.d("信息上传失败");
-                    }, () -> {
-                        Logger.d("信息上传完成");
-                    });
+                    }, throwable -> {
+                        Logger.d("登录失败");
+                        Throwable e = (Throwable) throwable;
+                        e.printStackTrace();
+                        hideLoading();
+                        showErrorSnackbarShort(R.string.tip_check_net);
+                    }, () -> hideLoading());
             if (type.equals("info"))
-                MobclickAgent.onEvent(this, "login");
+                AppStaticUtils.onEvent(this, "login");
             else {
-                MobclickAgent.onEvent(this, "lib_login");
+                AppStaticUtils.onEvent(this, "lib_login");
             }
         }
     }
@@ -158,9 +146,9 @@ public class LoginActivity extends ToolbarActivity {
 
     private void setLoginListener(){
         RxBus.getDefault().toObservable(RefreshSessionEvent.class)
-        .subscribe(refreshSessionEvent -> {
-            presenter.login(refreshSessionEvent.getUser());
-        },Throwable::printStackTrace);
+                .subscribe(refreshSessionEvent -> {
+                    presenter.login(refreshSessionEvent.getUser());
+                },Throwable::printStackTrace);
     }
 
 
