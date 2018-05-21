@@ -108,16 +108,16 @@ public interface RetrofitService {
                                                    @Body RenewData renewData);
 
     //获取用户课表
-    @GET("http://120.77.246.73:5588/api/table/")
+    @GET("table/")
     Observable<List<Course>> getTimeTable();
 
 
     //添加课程
-    @POST("http://120.77.246.73:5588/api/table/")
+    @POST("table/")
     Observable<CourseId> addCourse(@Body Course course);
 
     //删除课程
-    @DELETE("http://120.77.246.73:5588/api/table/{id}/")
+    @DELETE("table/{id}/")
     Observable<Response<VerifyResponse>> deleteCourse(@Path("id") String id);
 
     @PUT("table/{id}/")
@@ -180,7 +180,7 @@ public interface RetrofitService {
                                        @Query("building") String area);
 
     //todo fix this!
-    @GET("http://120.77.246.73:8090/api/grade/")
+    @GET("grade/")
     Observable<List<Score>> getScores(@Query("xnm") String year,
                                       @Query("xqm") String term);
 
