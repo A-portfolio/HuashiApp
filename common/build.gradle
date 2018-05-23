@@ -34,15 +34,15 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compile rootProject.ext.dependencies["arouterapi"]
+    implementation rootProject.ext.dependencies["arouterapi"]
     annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
-    compile 'com.facebook.fresco:fresco:1.1.0'
-    compile 'com.facebook.fresco:animated-gif:1.1.0'
-    compile rootProject.ext.dependencies["rxjava"]
-    compile rootProject.ext.dependencies["appcompat"]
-    compile rootProject.ext.dependencies["design"]
-    compile rootProject.ext.dependencies["cardview"]
-    compile group: 'com.android.support', name: 'recyclerview-v7', version: '27.1.1'
+    implementation 'com.facebook.fresco:fresco:1.9.0'
+    implementation 'com.facebook.fresco:animated-gif:1.9.0'
+    implementation rootProject.ext.dependencies["rxjava"]
+    implementation rootProject.ext.dependencies["appcompat"]
+    implementation rootProject.ext.dependencies["design"]
+    implementation rootProject.ext.dependencies["cardview"]
+    implementation rootProject.ext.dependencies["recyclerview-7"]
 
 
 

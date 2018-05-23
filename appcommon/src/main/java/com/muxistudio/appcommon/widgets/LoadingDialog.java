@@ -16,6 +16,8 @@ import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.muxistudio.appcommon.R;
 
+import rx.Observable;
+
 
 /**
  * Created by ybao on 17/2/13.

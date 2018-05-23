@@ -37,17 +37,17 @@ dependencies {
     compile project (":common")
     annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
 
-    compile rootProject.ext.dependencies["retrofit"]
-    compile rootProject.ext.dependencies["converter-gson"]
-    compile rootProject.ext.dependencies["adapter-rxjava"]
-    compile rootProject.ext.dependencies["logging-interceptor"]
-    compile rootProject.ext.dependencies["rxandroid"]
+    implementation rootProject.ext.dependencies["retrofit"]
+    implementation rootProject.ext.dependencies["converter-gson"]
+    implementation rootProject.ext.dependencies["adapter-rxjava"]
+    implementation rootProject.ext.dependencies["logging-interceptor"]
+    implementation rootProject.ext.dependencies["rxandroid"]
 
-    compile rootProject.ext.dependencies["bugly"]
-    compile rootProject.ext.dependencies["umeng-sdk"]
-    compile rootProject.ext.dependencies["umeng-analytics"]
+    implementation rootProject.ext.dependencies["bugly"]
+    implementation rootProject.ext.dependencies["umeng-sdk"]
+    implementation rootProject.ext.dependencies["umeng-analytics"]
 
-    compile("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.6")
+    implementation("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.6")
 
 
 

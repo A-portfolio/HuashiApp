@@ -11,7 +11,7 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
 
     compileSdkVersion 27
-    buildToolsVersion '27.0.2'
+    buildToolsVersion '27.0.3'
 
     dexOptions {
         jumboMode = true
@@ -49,22 +49,22 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project (":appcommon")
-    compile 'me.biubiubiu.justifytext:library:1.1'
-    compile 'com.github.fengminchao:MultiStatusView:0.6'
-    compile 'com.daimajia.numberprogressbar:library:1.4@aar'
-    compile 'com.zhy:base-rvadapter:3.0.3'
-    compile 'com.github.fengminchao:CardBanner:1.0'
-    compile 'com.android.support:multidex:1.0.3'
-    compile 'com.github.Muxi-Studio:YAJB-Android:1.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project (":appcommon")
+    implementation 'me.biubiubiu.justifytext:library:1.1'
+    implementation 'com.github.fengminchao:MultiStatusView:0.6'
+    implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
+    implementation 'com.zhy:base-rvadapter:3.0.3'
+    implementation 'com.github.fengminchao:CardBanner:1.0'
+    implementation 'com.android.support:multidex:1.0.2'
+    implementation 'com.github.Muxi-Studio:YAJB-Android:1.0'
 
 
-    testCompile 'org.robolectric:shadows-support-v4:3.3'
-    testCompile 'org.robolectric:robolectric:3.3.1'
-    testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.7.14'
+    testImplementation 'org.robolectric:shadows-support-v4:3.3'
+    testImplementation 'org.robolectric:robolectric:3.3.1'
+    testImplementation 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.7.14'
 
 
 
