@@ -48,6 +48,16 @@ public class App extends Application {
         sContext = getApplicationContext();
         Global.setApplication(this);
         UserAccountManager.getInstance().initUser();
+<<<<<<< HEAD
+=======
+//        sp = new PreferenceUtil();
+//
+//        sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, ""));
+//        sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
+//        sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));
+//        sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
+
+>>>>>>> 05a9cd9e936c8328a28c13516833568b62dee30b
         Fresco.initialize(this);
         initBugly();
         initUMeng();

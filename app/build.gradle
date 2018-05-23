@@ -27,7 +27,6 @@ android {
     }
 
     defaultConfig {
-//        applicationId "net.muxi.huashiapp"
         minSdkVersion 16
         targetSdkVersion 27
 
@@ -86,5 +85,4 @@ dependencies {
 
 
 }
-
 
