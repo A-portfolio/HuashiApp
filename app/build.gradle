@@ -39,22 +39,7 @@ android {
         }
     }
 
-    buildTypes {
-        release {
-            buildConfigField "boolean", "LOG_DEBUG", "false"
-            //Zipalign优化
-            zipAlignEnabled true
-            // 移除无用的resource文件
-            shrinkResources true
-            //混淆
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
-        }
-        debug {
-            minifyEnabled false
-        }
-    }
+
 
     compileOptions {
         targetCompatibility 1.8
@@ -73,7 +58,6 @@ dependencies {
     compile 'com.github.fengminchao:CardBanner:1.0'
     compile 'com.android.support:multidex:1.0.3'
     compile 'com.github.Muxi-Studio:YAJB-Android:1.0'
-
 
 
     testCompile 'org.robolectric:shadows-support-v4:3.3'

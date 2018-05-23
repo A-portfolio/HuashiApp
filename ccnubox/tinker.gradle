@@ -7,16 +7,18 @@ def versionMinor = 2
 def versionBuild = 0
 
 def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = rootProject.ext.baseInfo
+//def baseInfo = rootProject.ext.baseInfo
+def baseInfo = ''
 def variantName = "release"
 
 tinkerpatchSupport {
 
-    tinkerEnable = false
+    tinkerEnable = true
 
     reflectApplication = true
 
     autoBackupApkPath = "${bakPath}"
+    supportComponent = false
 
     appKey = "15546ae78491131f"
 
@@ -33,31 +35,31 @@ tinkerpatchSupport {
 }
 
 
-tinkerPatch {
-    ignoreWarning = true
-    useSign = true
-    dex {
-        dexMode = "jar"
-        pattern = ["classes*.dex"]
-        loader = []
-    }
-    lib {
-        pattern = ["lib/*/*.so"]
-    }
-
-    res {
-        pattern = ["res/*", "r/*", "assets/*", "resources.arsc", "AndroidManifest.xml"]
-        ignoreChange = []
-        largeModSize = 100
-    }
-
-    packageConfig {
-    }
-
-    sevenZip {
-        zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
-    }
-    buildConfig {
-        keepDexApply = false
-    }
-}
+//tinkerPatch {
+//    ignoreWarning = true
+//    useSign = true
+//    dex {
+//        dexMode = "jar"
+//        pattern = ["classes*.dex"]
+//        loader = []
+//    }
+//    lib {
+//        pattern = ["lib/*/*.so"]
+//    }
+//
+//    res {
+//        pattern = ["res/*", "r/*", "assets/*", "resources.arsc", "AndroidManifest.xml"]
+//        ignoreChange = []
+//        largeModSize = 100
+//    }
+//
+//    packageConfig {
+//    }
+//
+//    sevenZip {
+//        zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
+//    }
+//    buildConfig {
+//        keepDexApply = false
+//    }
+//}

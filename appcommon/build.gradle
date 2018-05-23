@@ -47,9 +47,8 @@ dependencies {
     compile rootProject.ext.dependencies["umeng-sdk"]
     compile rootProject.ext.dependencies["umeng-analytics"]
 
-    provided('com.tencent.tinker:tinker-android-anno:1.9.1')
-    //tinker的核心库
-    compile('com.tencent.tinker:tinker-android-lib:1.9.1')
+    compile("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.6")
+
 
 
 }

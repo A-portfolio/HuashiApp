@@ -4,7 +4,7 @@ ext {
     def versionMinor = 2
     def versionBuild = 0
 
-    def baseInfo
+    def baseInfo = ''
 
     android = [compileSdkVersion: 27,
                buildToolsVersion: "27.0.2",

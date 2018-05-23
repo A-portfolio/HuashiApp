@@ -37,27 +37,11 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        ApplicationLike tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
-                TinkerPatch.init(tinkerApplicationLike)
-                .reflectPatchLibrary()
-                .setPatchRollbackOnScreenOff(true)
-                .setPatchRestartOnSrceenOff(true);
 
-        new FetchPatchHandler().fetchPatchWithInterval(3);
 
         sContext = getApplicationContext();
         Global.setApplication(this);
         UserAccountManager.getInstance().initUser();
-<<<<<<< HEAD
-=======
-//        sp = new PreferenceUtil();
-//
-//        sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, ""));
-//        sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
-//        sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));
-//        sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
-
->>>>>>> 05a9cd9e936c8328a28c13516833568b62dee30b
         Fresco.initialize(this);
         initBugly();
         initUMeng();
@@ -69,12 +53,13 @@ public class App extends Application {
             CrashReport.initCrashReport(getApplicationContext(), "900043675", BuildConfig.DEBUG);
         }
     }
-    private void initUMeng(){
-        UMConfigure.init(this,UMENG_APP_KEY,null,UMConfigure.DEVICE_TYPE_PHONE,null);
+
+    private void initUMeng() {
+        UMConfigure.init(this, UMENG_APP_KEY, null, UMConfigure.DEVICE_TYPE_PHONE, null);
     }
 
-    private void initARouter(Application app){
-        if(BuildConfig.DEBUG){
+    private void initARouter(Application app) {
+        if (BuildConfig.DEBUG) {
             ARouter.openLog();
             //开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
             ARouter.openDebug();
