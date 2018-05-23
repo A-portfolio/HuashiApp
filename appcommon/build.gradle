@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
@@ -37,21 +36,20 @@ dependencies {
     implementation rootProject.ext.dependencies.appcompat_v7
     compile project (":common")
     annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
-    compile 'com.squareup.retrofit2:retrofit:2.4.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.10.0'
-//    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'io.reactivex:rxandroid:1.1.0'
+
+    compile rootProject.ext.dependencies["retrofit"]
+    compile rootProject.ext.dependencies["converter-gson"]
+    compile rootProject.ext.dependencies["adapter-rxjava"]
+    compile rootProject.ext.dependencies["logging-interceptor"]
+    compile rootProject.ext.dependencies["rxandroid"]
+
+    compile rootProject.ext.dependencies["bugly"]
+    compile rootProject.ext.dependencies["umeng-sdk"]
+    compile rootProject.ext.dependencies["umeng-analytics"]
+
+    provided('com.tencent.tinker:tinker-android-anno:1.9.1')
+    //tinker的核心库
+    compile('com.tencent.tinker:tinker-android-lib:1.9.1')
 
 
-    compile 'com.tencent.bugly:crashreport:2.2.0'
-    compile 'com.umeng.sdk:common:1.5.1'
-    compile 'com.umeng.sdk:analytics:7.5.1'
-    provided("com.tinkerpatch.tinker:tinker-android-anno:1.9.2")
-    compile("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.2")
-//    implementation 'com.android.support:appcompat-v7:26.1.0'
-//    testImplementation 'junit:junit:4.12'
-//    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }

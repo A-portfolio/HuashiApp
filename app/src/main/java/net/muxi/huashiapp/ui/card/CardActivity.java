@@ -11,17 +11,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.muxistudio.appcommon.appbase.ICardView;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.CardDailyUse;
 import com.muxistudio.appcommon.data.CardData;
+import com.muxistudio.appcommon.data.CardDataEtp;
 import com.muxistudio.appcommon.data.CardSumData;
-import com.muxistudio.appcommon.data.User;
-import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.presenter.CardDataPresenter;
 import com.muxistudio.common.util.DateUtil;
 import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.PreferenceUtil;
-import com.muxistudio.jsbridge.BridgeHandler;
 import com.muxistudio.jsbridge.BridgeWebView;
-import com.muxistudio.jsbridge.CallbackFunc;
 import com.muxistudio.multistatusview.MultiStatusView;
 import com.tencent.smtt.sdk.WebSettings;
 
@@ -30,14 +30,10 @@ import net.muxi.huashiapp.R;
 import java.util.Date;
 import java.util.List;
 
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-
 /**
  * Created by december on 16/7/18.
  */
-public class CardActivity extends ToolbarActivity {
+public class CardActivity extends ToolbarActivity implements ICardView {
 
     private MultiStatusView mMultiStatusView;
     private RelativeLayout mCoordinatorLayout;
@@ -47,6 +43,9 @@ public class CardActivity extends ToolbarActivity {
     private TextView mTvDate;
     private View mDivider;
     private BridgeWebView mConsumeView;
+
+    private CardDataPresenter mPresenter;
+    private CardDailyUse mDailyUse;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, CardActivity.class);
@@ -71,7 +70,8 @@ public class CardActivity extends ToolbarActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-        loadDatas();
+        mPresenter = new CardDataPresenter(this);
+        mPresenter.getData();
 
         WebSettings settings = mConsumeView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -82,70 +82,33 @@ public class CardActivity extends ToolbarActivity {
 
         mMultiStatusView.setOnRetryListener(v -> {
             showLoading();
-            loadDatas();
+            mPresenter = new CardDataPresenter(this);
+            mPresenter.getData();
         });
 
-
     }
 
+    @Override
+    public void initView(CardDailyUse dailyUse, CardDataEtp etp) {
+        mMultiStatusView.showContent();
+        mTvDate.setText("截止" + etp.getModel().getSmtDealdatetimeTxt());
+        mMoney.setText(etp.getModel().getBalance());
+        mDailyUse = dailyUse;
 
-    private void loadDatas() {
-        User user = new User();
-        sp = new PreferenceUtil();
-        user.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
-        user.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
-        CampusFactory.getRetrofitService()
-                .getCardBalance(user.getSid(), "90", "0", "60")
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<List<CardData>>() {
-                    @Override
-                    public void onCompleted() {
-                        hideLoading();
 
-                    }
+        CardSumData[] data = new CardSumData[7];
+        for (int i = 0; i < data.length; i++) {
+            data[i] = new CardSumData(DateUtil.getTheDateInYear(new Date(), i - 6), getDailySum(i));
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mMultiStatusView.showNetError();
-                        hideLoading();
+        }
+        Gson gson = new Gson();
+        String json = gson.toJson(data);
 
-                    }
-
-                    @Override
-                    public void onNext(List<CardData> cardDatas) {
-                        Logger.d("id card");
-                        mMultiStatusView.showContent();
-                        mTvDate.setText("截止" + cardDatas.get(0).getDealDateTime());
-                        mMoney.setText(cardDatas.get(0).getOutMoney());
-                        mCardDatas = cardDatas;
-
-                        CardSumData[] data = new CardSumData[7];
-                        for (int i = 0; i < data.length; i++) {
-                            data[i] = new CardSumData(DateUtil.getTheDateInYear(new Date(), -6 + i), getDailySum(i));
-                        }
-
-                        Gson gson = new Gson();
-                        String json = gson.toJson(data);
-                        Logger.d(json);
-                        Logger.d("get json");
-
-                        mConsumeView.setInitData(data);
-                        mConsumeView.loadUrl("http://123.56.41.13:4088");
-
-                        //event ? 事件名?
-                        mConsumeView.register("fafafafa", new BridgeHandler() {
-                            @Override
-                            public void handle(String s, CallbackFunc callbackFunc) {
-
-                            }
-                        });
-
-                    }
-                });
-
+        Logger.d(json);
+        mConsumeView.setInitData(data);
+        mConsumeView.loadUrl("http://123.56.41.13:4088");
     }
+
 
     /**
      * 获取指定日的消费总额
@@ -157,10 +120,12 @@ public class CardActivity extends ToolbarActivity {
         String date = DateUtil.getTheDateInYear(new Date(), -6 + day);
         Logger.d(date);
         double sum = 0;
-        for (int i = 0, size = mCardDatas.size(); i < size; i++) {
-            if (mCardDatas.get(i).getDealTypeName().equals("消费"))
-                if (date.equals(mCardDatas.get(i).getDealDateTime().substring(0, 10))) {
-                    sum += Double.valueOf(mCardDatas.get(i).getTransMoney());
+        List<CardDailyUse.ListBean.DataBean> list=      mDailyUse.getList().get(0).getData();
+        if(list.size()==0 || list == null) return Double.valueOf(0);
+        for (int i = 0, size = list.size(); i < size; i++) {
+            if (list.get(i).getSmtDealName().equals("消费"))
+                if (date.equals(list.get(i).getSmtDealDateTimeTxt().substring(0, 10))) {
+                    sum += Double.valueOf(list.get(i).getSmtTransMoney());
                 }
         }
         Logger.d(sum + "");
@@ -178,7 +143,8 @@ public class CardActivity extends ToolbarActivity {
         mDivider = findViewById(R.id.divider);
         mConsumeView = findViewById(R.id.consume_view);
     }
+
+
+
 }
-
-
 

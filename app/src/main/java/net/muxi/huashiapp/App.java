@@ -12,7 +12,11 @@ import com.muxistudio.common.base.Global;
 import com.muxistudio.common.util.PreferenceUtil;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.tinker.loader.app.ApplicationLike;
+import com.tinkerpatch.sdk.TinkerPatch;
+import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike;
 import com.umeng.commonsdk.UMConfigure;
+
+import net.muxi.huashiapp.ui.main.FetchPatchHandler;
 
 
 /**
@@ -29,29 +33,21 @@ public class App extends Application {
 
     private PreferenceUtil sp;
 
-    private ApplicationLike tinkerApplicationLike;
     @Override
     public void onCreate() {
         super.onCreate();
 
-//        tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
-//                TinkerPatch.init(tinkerApplicationLike)
-//                .reflectPatchLibrary()
-//                .setPatchRollbackOnScreenOff(true)
-//                .setPatchRestartOnSrceenOff(true);
+        ApplicationLike tinkerApplicationLike = TinkerPatchApplicationLike.getTinkerPatchApplicationLike();
+                TinkerPatch.init(tinkerApplicationLike)
+                .reflectPatchLibrary()
+                .setPatchRollbackOnScreenOff(true)
+                .setPatchRestartOnSrceenOff(true);
 
-//        new FetchPatchHandler().fetchPatchWithInterval(3);
+        new FetchPatchHandler().fetchPatchWithInterval(3);
 
         sContext = getApplicationContext();
         Global.setApplication(this);
         UserAccountManager.getInstance().initUser();
-//        sp = new PreferenceUtil();
-//
-//        sUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID, ""));
-//        sUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD, ""));
-//        sLibrarayUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID, ""));
-//        sLibrarayUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD, ""));
-
         Fresco.initialize(this);
         initBugly();
         initUMeng();

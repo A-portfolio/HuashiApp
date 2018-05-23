@@ -1,8 +1,4 @@
-if (rootProject.ext.isAppDebug){
-    apply plugin: 'com.android.library'
-} else {
-    apply plugin: 'com.android.application'
-}
+apply plugin: 'com.android.library'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 
@@ -11,15 +7,6 @@ def keystoreProperties = new Properties()
 
 // Load your keystore.properties file into the keystoreProperties object.
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
-def versionMajor = 2
-def versionMinor = 2
-def versionBuild = 0
-
-def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = "app-2.2.0-0226-13-18-25"
-def variantName = "release"
-
 
 android {
 
@@ -40,38 +27,30 @@ android {
     }
 
     defaultConfig {
+//        applicationId "net.muxi.huashiapp"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode versionMajor * 10000 + versionMinor * 100 + versionBuild
-        versionName = "${versionMajor}.${versionMinor}.${versionBuild}"
 
         multiDexEnabled true
-
-        if (!rootProject.ext.isAppDebug) {
-            applicationId "net.muxi.huashiapp"
-        }
 
         javaCompileOptions {
             annotationProcessorOptions {
                 includeCompileClasspath true
-                arguments = [moduleName: project.getName()]
             }
         }
-
-
     }
 
     buildTypes {
         release {
-//            buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField "boolean", "LOG_DEBUG", "false"
             //Zipalign优化
-//            zipAlignEnabled true
+            zipAlignEnabled true
             // 移除无用的resource文件
-//            shrinkResources true
+            shrinkResources true
             //混淆
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
         }
         debug {
             minifyEnabled false
@@ -83,24 +62,11 @@ android {
         sourceCompatibility 1.8
     }
 
-    sourceSets {
-        main {
-            if (!rootProject.ext.isAppDebug) {
-                manifest.srcFile 'src/debug/AndroidManifest.xml'
-            } else {
-                manifest.srcFile 'src/main/AndroidManifest.xml'
-                java {
-                    exclude '**/debug/**'
-                }
-            }
-        }
-    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(":appcommon")
-    annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
+    compile project (":appcommon")
     compile 'me.biubiubiu.justifytext:library:1.1'
     compile 'com.github.fengminchao:MultiStatusView:0.6'
     compile 'com.daimajia.numberprogressbar:library:1.4@aar'
@@ -108,11 +74,17 @@ dependencies {
     compile 'com.github.fengminchao:CardBanner:1.0'
     compile 'com.android.support:multidex:1.0.3'
     compile 'com.github.Muxi-Studio:YAJB-Android:1.0'
+
+
+
     testCompile 'org.robolectric:shadows-support-v4:3.3'
     testCompile 'org.robolectric:robolectric:3.3.1'
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.7.14'
 
+
+
 }
+
 

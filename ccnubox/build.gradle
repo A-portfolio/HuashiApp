@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.tencent.tinker.patch'
+
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 // Initialize a new Properties() object called keystoreProperties.
@@ -84,3 +86,5 @@ gradle.startParameter.taskNames.each({
 dependencies {
     implementation project(':app')
 }
+
+apply from :'tinker.gradle'
