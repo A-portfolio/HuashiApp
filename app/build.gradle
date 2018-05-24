@@ -49,15 +49,15 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project (":appcommon")
-    compile 'me.biubiubiu.justifytext:library:1.1'
-    compile 'com.github.fengminchao:MultiStatusView:0.6'
-    compile 'com.daimajia.numberprogressbar:library:1.4@aar'
-    compile 'com.zhy:base-rvadapter:3.0.3'
-    compile 'com.github.fengminchao:CardBanner:1.0'
-    compile 'com.android.support:multidex:1.0.3'
-    compile 'com.github.Muxi-Studio:YAJB-Android:1.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    api project (":appcommon")
+    implementation 'me.biubiubiu.justifytext:library:1.1'
+    implementation 'com.github.fengminchao:MultiStatusView:0.6'
+    implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
+    implementation 'com.zhy:base-rvadapter:3.0.3'
+    implementation 'com.github.fengminchao:CardBanner:1.0'
+    implementation 'com.android.support:multidex:1.0.2'
+    implementation 'com.github.Muxi-Studio:YAJB-Android:1.0'
 
 }
 

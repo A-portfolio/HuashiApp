@@ -31,19 +31,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile rootProject.ext.dependencies["arouterapi"]
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api rootProject.ext.dependencies["arouterapi"]
     annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
 
-    compile rootProject.ext.dependencies.fresco
-    compile rootProject.ext.dependencies.fresco_animated_gif
-
-    compile rootProject.ext.dependencies["rxjava"]
-    compile rootProject.ext.dependencies.appcompat_v7
-    compile rootProject.ext.dependencies["design"]
-    compile rootProject.ext.dependencies["cardview"]
-
-    compile rootProject.ext.dependencies.appcompat_v7
+    api rootProject.ext.dependencies.fresco
+    api rootProject.ext.dependencies.fresco_animated_gif
+    api rootProject.ext.dependencies["rxjava"]
+    api rootProject.ext.dependencies.recyclerview
+    api rootProject.ext.dependencies["design"]
+    api rootProject.ext.dependencies["cardview"]
+    api rootProject.ext.dependencies.appcompat_v7
 //    testImplementation 'junit:junit:4.12'
 //    androidTestImplementation 'com.android.support.test:runner:1.0.1'
 //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
