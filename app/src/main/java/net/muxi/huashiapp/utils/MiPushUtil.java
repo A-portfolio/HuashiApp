@@ -2,8 +2,8 @@ package net.muxi.huashiapp.utils;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.util.Log;
 
+import com.muxistudio.common.util.Logger;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
@@ -20,14 +20,12 @@ public class MiPushUtil {
 
             @Override
             public void log(String s) {
-//                Logger.d(s);
-                Log.d("fuck u", "log: ");
+                Logger.d(s);
             }
 
             @Override
             public void log(String s, Throwable throwable) {
-//                Logger.d(s);
-                Log.d("fuck u", "log: ");
+                Logger.d(s);
             }
         };
 

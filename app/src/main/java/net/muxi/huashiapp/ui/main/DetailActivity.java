@@ -3,6 +3,7 @@ package net.muxi.huashiapp.ui.main;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public class DetailActivity extends BaseAppActivity {
     }
 
     private String mDetailString;
+    private String mPushContentDetail;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class DetailActivity extends BaseAppActivity {
         setContentView(R.layout.activity_detail);
         initView();
         mDetailString = getIntent().getStringExtra("detail");
+        mPushContentDetail = getIntent().getStringExtra("push_content");
         setDetailFormat();
     }
 
@@ -51,7 +54,8 @@ public class DetailActivity extends BaseAppActivity {
         mTvDetailQqGroup.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         mTvDetailQqGroup.setText(Constants.QQ_GROUP_NUMBER);
         mTvDetailQqGroup.setTextColor(getResources().getColor(R.color.blue));
-        mTvDetailContent.setText(mDetailString);
+        String content = TextUtils.isEmpty(mDetailString)?mPushContentDetail : mDetailString;
+        mTvDetailContent.setText(content);
     }
 
     private void initView() {

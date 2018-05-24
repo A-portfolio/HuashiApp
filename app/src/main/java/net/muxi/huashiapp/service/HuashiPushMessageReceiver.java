@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.service;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -9,6 +10,8 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
 import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
+
+import net.muxi.huashiapp.ui.main.DetailActivity;
 
 import java.util.List;
 
@@ -51,6 +54,11 @@ public class HuashiPushMessageReceiver extends PushMessageReceiver {
         } else if(!TextUtils.isEmpty(message.getUserAccount())) {
             mUserAccount=message.getUserAccount();
         }
+        //todo 可以在后台要发送数据的时候 定义一下发送的规则,比如某一些前缀
+        String content = message.getContent();
+        Intent i = new Intent(context, DetailActivity.class);
+        i.putExtra("push_content",content);
+        context.startActivity(i);
     }
     @Override
     public void onNotificationMessageArrived(Context context, MiPushMessage message) {
