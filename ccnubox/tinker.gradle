@@ -1,7 +1,5 @@
 apply plugin: 'tinkerpatch-support'
 
-
-
 def versionMajor = 2
 def versionMinor = 2
 def versionBuild = 0

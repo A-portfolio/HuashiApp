@@ -8,10 +8,12 @@ def keystoreProperties = new Properties()
 // Load your keystore.properties file into the keystoreProperties object.
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
+def androidCompileVersion = rootProject.ext.android
+
 android {
 
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion androidCompileVersion.compileSdkVersion
+    buildToolsVersion androidCompileVersion.buildToolsVersion
 
     dexOptions {
         jumboMode = true
@@ -27,8 +29,8 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion androidCompileVersion.minSdkVersion
+        targetSdkVersion androidCompileVersion.targetSdkversion
 
         multiDexEnabled true
 
@@ -39,8 +41,6 @@ android {
         }
     }
 
-
-
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
@@ -50,7 +50,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation project (":appcommon")
+    api project (":appcommon")
     implementation 'me.biubiubiu.justifytext:library:1.1'
     implementation 'com.github.fengminchao:MultiStatusView:0.6'
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
@@ -58,15 +58,6 @@ dependencies {
     implementation 'com.github.fengminchao:CardBanner:1.0'
     implementation 'com.android.support:multidex:1.0.2'
     implementation 'com.github.Muxi-Studio:YAJB-Android:1.0'
-
-
-    testImplementation 'org.robolectric:shadows-support-v4:3.3'
-    testImplementation 'org.robolectric:robolectric:3.3.1'
-    testImplementation 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.7.14'
-
-
 
 }
 

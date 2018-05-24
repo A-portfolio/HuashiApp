@@ -33,22 +33,18 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation rootProject.ext.dependencies.appcompat_v7
-    compile project (":common")
+    api project (":common")
     annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
 
-    implementation rootProject.ext.dependencies["retrofit"]
-    implementation rootProject.ext.dependencies["converter-gson"]
-    implementation rootProject.ext.dependencies["adapter-rxjava"]
-    implementation rootProject.ext.dependencies["logging-interceptor"]
-    implementation rootProject.ext.dependencies["rxandroid"]
-
-    implementation rootProject.ext.dependencies["bugly"]
-    implementation rootProject.ext.dependencies["umeng-sdk"]
-    implementation rootProject.ext.dependencies["umeng-analytics"]
-
-    implementation("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.6")
-
-
+    api rootProject.ext.dependencies["retrofit"]
+    api rootProject.ext.dependencies["converter_gson"]
+    api rootProject.ext.dependencies["adapter_rxjava"]
+    api rootProject.ext.dependencies["logging_interceptor"]
+    api rootProject.ext.dependencies["rxandroid"]
+    api rootProject.ext.dependencies["bugly"]
+    api rootProject.ext.dependencies["umeng_sdk"]
+    api rootProject.ext.dependencies["umeng_analytics"]
+    provided rootProject.ext.dependencies.tinker_android_anno
+    api rootProject.ext.dependencies.tinker_patch
 
 }

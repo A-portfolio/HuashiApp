@@ -50,7 +50,7 @@ public class NewsDetailView extends RelativeLayout {
         mScroller = new Scroller(context);
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_news_detail, this, true);
-        initView();
+        initView(view);
 //        mNewsTitle.setText(mNewsList.get(mPosition).getTitle());
 //
 //        mNewsDate.setText(mNewsList.get(mPosition).getDate());
@@ -138,10 +138,10 @@ public class NewsDetailView extends RelativeLayout {
         return true;
     }
 
-    private void initView() {
-        mBackgroundLayout = findViewById(R.id.background_layout);
-        mNewsFloatBtn = findViewById(R.id.news_float_btn);
-        mNewsContent = findViewById(R.id.news_content);
+    private void initView(View view) {
+        mBackgroundLayout = view.findViewById(R.id.background_layout);
+        mNewsFloatBtn = view.findViewById(R.id.news_float_btn);
+        mNewsContent = view.findViewById(R.id.news_content);
     }
 
 //    private void addAppendix() {
