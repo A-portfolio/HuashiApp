@@ -19,7 +19,6 @@ android {
             applicationId "com.muxistudio.jielong"
         }
 
-
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [ moduleName : project.getName() ]
@@ -51,8 +50,9 @@ android {
 
 
 dependencies {
+    def depends = rootProject.ext.dependencies
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compile project (":appcommon")
+    implementation project (":appcommon")
     annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
-    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation depends["appcompat_v7"]
 }

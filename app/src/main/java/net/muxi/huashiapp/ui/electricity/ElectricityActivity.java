@@ -97,8 +97,8 @@ public class ElectricityActivity extends ToolbarActivity {
         setContentView(R.layout.activity_electricity);
 
         mToolbar.setTitle("电费查询");
-        mArea = new TextView[]{mArea1, mArea2, mArea3, mArea4, mArea5, mArea6};
         initView();
+        mArea = new TextView[]{mArea1, mArea2, mArea3, mArea4, mArea5, mArea6};
     }
 
     private void initView() {

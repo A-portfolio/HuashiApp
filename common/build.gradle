@@ -3,8 +3,6 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
-
-
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
@@ -13,9 +11,9 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [ moduleName : project.getName() ]
+                arguments = [moduleName: project.getName()]
             }
-    }
+        }
 
     }
 
@@ -33,20 +31,19 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation rootProject.ext.dependencies["arouterapi"]
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile rootProject.ext.dependencies["arouterapi"]
     annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
-    implementation 'com.facebook.fresco:fresco:1.9.0'
-    implementation 'com.facebook.fresco:animated-gif:1.9.0'
-    implementation rootProject.ext.dependencies["rxjava"]
-    implementation rootProject.ext.dependencies["appcompat"]
-    implementation rootProject.ext.dependencies["design"]
-    implementation rootProject.ext.dependencies["cardview"]
-    implementation rootProject.ext.dependencies["recyclerview-7"]
 
+    compile rootProject.ext.dependencies.fresco
+    compile rootProject.ext.dependencies.fresco_animated_gif
 
+    compile rootProject.ext.dependencies["rxjava"]
+    compile rootProject.ext.dependencies.appcompat_v7
+    compile rootProject.ext.dependencies["design"]
+    compile rootProject.ext.dependencies["cardview"]
 
-    implementation rootProject.ext.dependencies.appcompat_v7
+    compile rootProject.ext.dependencies.appcompat_v7
 //    testImplementation 'junit:junit:4.12'
 //    androidTestImplementation 'com.android.support.test:runner:1.0.1'
 //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
