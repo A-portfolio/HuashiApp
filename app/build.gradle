@@ -59,5 +59,6 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.2'
     implementation 'com.github.Muxi-Studio:YAJB-Android:1.0'
 
+    implementation files('libs/MiPush_SDK_Client_3_6_2.jar')
 }
 

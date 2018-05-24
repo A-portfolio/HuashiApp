@@ -10,9 +10,9 @@ import java.io.File;
 public class Constants {
 
     public static final String UMENG_APP_KEY = "58b55d3d8f4a9d21ce0013ed";
-    public static final String XM_PUSH_APPID = "2882303761517505217";
-    public static final String XM_PUSH_APPKEY = "5981750541217";
-    public static final String XM_PUSH_APP_SECRET = "SAa6GxYItJjLPNEW/LC5Vg==";
+    public static final String MI_PUSH_APPID = "2882303761517505217";
+    public static final String MI_PUSH_APPKEY = "5981750541217";
+    public static final String MI_PUSH_APP_SECRET = "SAa6GxYItJjLPNEW/LC5Vg==";
 
     public static final String QQ_GROUP_NUMBER = "576225292";
     public static final String LIBRARY_QUERY_TEXT = "queryText";

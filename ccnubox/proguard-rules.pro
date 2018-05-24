@@ -601,5 +601,10 @@
 #-keep class * implements com.alibaba.android.arouter.facade.template.IProvider
 
 
+#----------------------------------------------------------------------------
+
+#---------------------------------MiPush------------------------------------
+
+ -keep class net.muxi.huashiapp.HuashiPushMessageReceiver {*;}
 
 

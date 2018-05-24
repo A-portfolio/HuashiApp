@@ -11,6 +11,8 @@ import com.muxistudio.common.base.Global;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.commonsdk.UMConfigure;
 
+import net.muxi.huashiapp.utils.MiPushUtil;
+
 import static com.muxistudio.appcommon.Constants.UMENG_APP_KEY;
 
 /**
@@ -24,8 +26,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-
-
         sContext = getApplicationContext();
         Global.setApplication(this);
         UserAccountManager.getInstance().initUser();
@@ -33,6 +33,7 @@ public class App extends Application {
         initBugly();
         initUMeng();
         initARouter(this);
+        MiPushUtil.initMiPush(this);
     }
 
     private void initBugly() {

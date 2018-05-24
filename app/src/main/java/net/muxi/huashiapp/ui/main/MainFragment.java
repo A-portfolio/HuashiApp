@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,12 +33,8 @@ import com.muxistudio.common.util.DimensUtil;
 import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.NetStatus;
 import com.muxistudio.common.util.PreferenceUtil;
-import com.tencent.android.tpush.XGIOperateCallback;
-import com.tencent.android.tpush.XGPushConfig;
-import com.tencent.android.tpush.XGPushManager;
 import com.umeng.analytics.MobclickAgent;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.CalendarActivity;
 import net.muxi.huashiapp.ui.MoreActivity;
@@ -130,7 +125,6 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
         mToolbar = view.findViewById(R.id.toolbar);
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mToolbar.setTitle("华师匣子");
-        initXGPush();
         sp = new PreferenceUtil();
         dao = new HuaShiDao();
         mBannerDatas = dao.loadBannerData();
@@ -152,25 +146,6 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
             getProduct();
         }
         return view;
-    }
-
-    private void initXGPush() {
-        XGPushConfig.enableDebug(getActivity(), true);
-        XGPushConfig.getToken(getActivity());
-        XGPushManager.registerPush(App.sContext, "users"
-                , new XGIOperateCallback() {
-                    @Override
-                    public void onSuccess(Object data, int i) {
-                        Log.d("TPush", "注册成功，设备token为：" + data);
-
-                    }
-
-                    @Override
-                    public void onFail(Object data, int errCode, String msg) {
-                        Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
-
-                    }
-                });
     }
 
     private void setData() {
