@@ -6,32 +6,19 @@ import android.content.Context;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.muxistudio.appcommon.data.User;
 import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.common.base.Global;
-import com.muxistudio.common.util.PreferenceUtil;
 import com.tencent.bugly.crashreport.CrashReport;
-import com.tencent.tinker.loader.app.ApplicationLike;
-import com.tinkerpatch.sdk.TinkerPatch;
-import com.tinkerpatch.sdk.loader.TinkerPatchApplicationLike;
 import com.umeng.commonsdk.UMConfigure;
 
-import net.muxi.huashiapp.ui.main.FetchPatchHandler;
-
+import static com.muxistudio.appcommon.Constants.UMENG_APP_KEY;
 
 /**
  * Created by ybao on 16/4/18.
  */
 public class App extends Application {
 
-    public static String UMENG_APP_KEY = "58b55d3d8f4a9d21ce0013ed";
-    public static String PHPSESSID;
     public static Context sContext;
-    //获取上次的已经登录的用户账号信息
-    public static User sUser = new User();
-//    public static User sLibrarayUser = new User();
-
-    private PreferenceUtil sp;
 
     @Override
     public void onCreate() {
@@ -55,7 +42,7 @@ public class App extends Application {
     }
 
     private void initUMeng() {
-        UMConfigure.init(this, UMENG_APP_KEY, null, UMConfigure.DEVICE_TYPE_PHONE, null);
+        UMConfigure.init(this, UMENG_APP_KEY , null, UMConfigure.DEVICE_TYPE_PHONE, null);
     }
 
     private void initARouter(Application app) {

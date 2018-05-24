@@ -13,6 +13,7 @@ android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
+        //the old package name is net.muxistudio.huashiapp
         applicationId "com.muxistudio.ccnubox"
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetVersion
