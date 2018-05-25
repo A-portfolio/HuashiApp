@@ -29,6 +29,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 现在的情况和之前不同，然后由于和教务系统相关联的有学分和课表 所以不仅要登录进入校园系统 还需要登录录入选课系统
  */
 public class CcnuCrawler2 {
+
+    private static String mJessionCookie, mBigServerpoolCookie;
+
     private static Cookie accountJid=null,casPrivacy=null,casTgc = null,phpSessidLib =null;
     private static String location1 = "";
     private static String valueOfLt, valueOfExe;
@@ -276,7 +279,8 @@ public class CcnuCrawler2 {
             jsession = tempJsessionList.get(tempJsessionList.size() - 1);
             infoCookie = new InfoCookie(bigServerPool, jsession);
             //顺便保存/持久化一下
-            saveCookies(bigServerPool, jsession);
+            mBigServerpoolCookie = bigServerPool;
+            mJessionCookie = jsession;
         } else {
             bigServerPool = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL);
             jsession = PreferenceUtil.getString(PreferenceUtil.JSESSIONID);
@@ -285,9 +289,10 @@ public class CcnuCrawler2 {
         return infoCookie;
     }
 
-    private static void saveCookies(String big, String jid) {
-        PreferenceUtil.saveString(PreferenceUtil.BIG_SERVER_POOL, big);
-        PreferenceUtil.saveString(PreferenceUtil.JSESSIONID, jid);
+    public static void saveCookies() {
+        getInfoCookie();
+        PreferenceUtil.saveString(PreferenceUtil.BIG_SERVER_POOL, mBigServerpoolCookie);
+        PreferenceUtil.saveString(PreferenceUtil.JSESSIONID, mJessionCookie);
     }
 
     public static void clearCookieStore(){

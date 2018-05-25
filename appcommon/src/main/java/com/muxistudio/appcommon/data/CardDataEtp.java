@@ -54,6 +54,7 @@ public class CardDataEtp {
         private String name;
         private String img;
         private String deptName;
+        //余额
         private String balance;
         //最后一次消费
         private String smtDealdatetimeTxt;

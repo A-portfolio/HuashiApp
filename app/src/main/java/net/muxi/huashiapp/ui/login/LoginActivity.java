@@ -15,14 +15,10 @@ import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.User;
 import com.muxistudio.appcommon.data.UserInfo;
-import com.muxistudio.appcommon.event.LibLoginEvent;
-import com.muxistudio.appcommon.event.LoginSuccessEvent;
 import com.muxistudio.appcommon.event.RefreshSessionEvent;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
 import com.muxistudio.appcommon.presenter.LoginPresenter;
-import com.muxistudio.appcommon.user.UserAccountManager;
-import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.NetStatus;
 import com.umeng.analytics.MobclickAgent;
 
@@ -97,39 +93,26 @@ public class LoginActivity extends ToolbarActivity {
         showLoading();
         if (type.equals("info") || type.equals("lib")) {
             presenter.login(user)
+                    .subscribeOn(Schedulers.io())
                     .flatMap(result -> {
                         if (result) {
                             hideLoading();
                             //保存登录状态
-                            UserAccountManager.getInstance().saveInfoUser(user);
-                            MobclickAgent.onProfileSignIn(user.getSid());
-                            String target = getIntent().hasExtra("target") ?
-                                    getIntent().getStringExtra("target") : null;
-                            if (type.equals("info")) {
-                                RxBus.getDefault().send(new LoginSuccessEvent(target));
-                            } else {
-                                RxBus.getDefault().send(new LibLoginEvent());
-                            }
+                            presenter.saveLoginState(getIntent(),user,type);
                             finish();
-                            CcnuCrawler2.getInfoCookie();
                             return CampusFactory.getRetrofitService()
                                     .postUserInfo(new
-                                            UserInfo(Integer.parseInt(user.sid), user.password))
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread());
+                                            UserInfo(Integer.parseInt(user.sid), user.password));
                         } else {
                             hideLoading();
+                            CcnuCrawler2.clearCookieStore();
                             showErrorSnackbarShort(R.string.tip_err_account);
                             return Observable.error(new Exception());
                         }
                     })
-                    .subscribe(msg -> {
-                        Logger.d("信息上传完成");
-                    }, e -> {
-                        Logger.d("信息上传失败");
-                    }, () -> {
-                        Logger.d("信息上传完成");
-                    });
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe();
+
             if (type.equals("info"))
                 MobclickAgent.onEvent(this, "login");
             else {

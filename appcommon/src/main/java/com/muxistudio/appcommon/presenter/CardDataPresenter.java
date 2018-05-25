@@ -53,7 +53,7 @@ public class CardDataPresenter {
     private static final String ASP_NET_SESSION =   "ASP.NET_SessionId";
     private List<Cookie> mCookieStore = new ArrayList<>();
 
-    public void getData() {
+    public Observable getCardObservable(){
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
@@ -91,8 +91,8 @@ public class CardDataPresenter {
             }
         });
 
-        sessionIdObservable
-                .subscribeOn(Schedulers.newThread())
+        return sessionIdObservable
+                .subscribeOn(Schedulers.io())
                 .flatMap((Func1<Response, Observable<CardDataEtp>>) response ->
                 {
                     //cookie 分为两个部分: 一个部分是 User-Agent 另外的一个部分是Cookie 和 wxqyuserid 组合起来的一个字段
@@ -124,7 +124,11 @@ public class CardDataPresenter {
 
 
                     return cardDailyUseObservable;
-                })
+                });
+    }
+
+    public void setCardView() {
+        getCardObservable()
                  .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Object>() {
                     @Override
@@ -135,11 +139,15 @@ public class CardDataPresenter {
                     @Override
                     public void onNext(Object o) {
                         CardDailyUse use = (CardDailyUse) o;
-                        iCardView.initView(use,mCardDataEtp);
+                        if(iCardView !=  null)
+                            iCardView.initView(use,mCardDataEtp);
                     }
                 });
     }
 
+    public CardDataEtp getCardDataEtp(){
+        return  mCardDataEtp;
+    }
 
     private class CardCookieJar implements CookieJar {
 

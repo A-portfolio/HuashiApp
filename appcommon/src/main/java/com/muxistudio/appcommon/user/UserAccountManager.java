@@ -100,7 +100,6 @@ public class UserAccountManager {
 
     @Deprecated
     public boolean isLibLogin() {
-//        return (mLibUser != null && !TextUtils.isEmpty(mLibUser.sid));
         String phpSess = PreferenceUtil.getString(PreferenceUtil.PHPSESSID);
         if (!TextUtils.isEmpty(phpSess)) {
             return true;

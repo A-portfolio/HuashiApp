@@ -7,20 +7,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.muxistudio.appcommon.appbase.ICardView;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.CardDailyUse;
-import com.muxistudio.appcommon.data.CardData;
 import com.muxistudio.appcommon.data.CardDataEtp;
 import com.muxistudio.appcommon.data.CardSumData;
 import com.muxistudio.appcommon.presenter.CardDataPresenter;
 import com.muxistudio.common.util.DateUtil;
 import com.muxistudio.common.util.Logger;
-import com.muxistudio.common.util.PreferenceUtil;
 import com.muxistudio.jsbridge.BridgeWebView;
 import com.muxistudio.multistatusview.MultiStatusView;
 import com.tencent.smtt.sdk.WebSettings;
@@ -36,12 +33,8 @@ import java.util.List;
 public class CardActivity extends ToolbarActivity implements ICardView {
 
     private MultiStatusView mMultiStatusView;
-    private RelativeLayout mCoordinatorLayout;
-    private TextView mMoneySign;
     private TextView mMoney;
-    private TextView mTxt2;
     private TextView mTvDate;
-    private View mDivider;
     private BridgeWebView mConsumeView;
 
     private CardDataPresenter mPresenter;
@@ -51,13 +44,6 @@ public class CardActivity extends ToolbarActivity implements ICardView {
         Intent starter = new Intent(context, CardActivity.class);
         context.startActivity(starter);
     }
-
-
-    private final int itemcount = 7;
-    private List<CardData> mCardDatas;
-    private float sum;
-    private PreferenceUtil sp;
-    private static final int REQUEST_READ_PHONE_STATE = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,7 +57,7 @@ public class CardActivity extends ToolbarActivity implements ICardView {
         }
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         mPresenter = new CardDataPresenter(this);
-        mPresenter.getData();
+        mPresenter.setCardView();
 
         WebSettings settings = mConsumeView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -83,7 +69,7 @@ public class CardActivity extends ToolbarActivity implements ICardView {
         mMultiStatusView.setOnRetryListener(v -> {
             showLoading();
             mPresenter = new CardDataPresenter(this);
-            mPresenter.getData();
+            mPresenter.setCardView();
         });
 
     }
@@ -135,12 +121,8 @@ public class CardActivity extends ToolbarActivity implements ICardView {
 
     private void initView() {
         mMultiStatusView = findViewById(R.id.multi_status_view);
-        mCoordinatorLayout = findViewById(R.id.coordinator_layout);
-        mMoneySign = findViewById(R.id.money_sign);
         mMoney = findViewById(R.id.money);
-        mTxt2 = findViewById(R.id.txt2);
         mTvDate = findViewById(R.id.tv_date);
-        mDivider = findViewById(R.id.divider);
         mConsumeView = findViewById(R.id.consume_view);
     }
 

@@ -41,6 +41,7 @@ public class CookieInterceptor implements Interceptor {
             }
             //执行了储存
             InfoCookie cookie = CcnuCrawler2.getInfoCookie();
+            CcnuCrawler2.   saveCookies();
             String big = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL);
             String jid = PreferenceUtil.getString(PreferenceUtil.JSESSIONID);
             if (big.equals("") && jid.equals("")) {
