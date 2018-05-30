@@ -2,9 +2,11 @@ package com.muxistudio.appcommon.net.ccnu;
 
 import com.muxistudio.appcommon.data.CardDailyUse;
 import com.muxistudio.appcommon.data.CardDataEtp;
+import com.muxistudio.appcommon.data.FlowUserInfo;
 
 import java.util.Map;
 
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -63,4 +65,10 @@ public interface CcnuService2 {
                                               @Query("pageSize") int pageSize,
                                               @Query("startTime") String startTime,
                                               @Query("endTime") String endTime);
+
+    @GET("http://self.ccnu.edu.cn:8080/Self/login/")
+    Observable<Object> getUserFlowCookie();
+
+    @GET("http://self.ccnu.edu.cn:8080/Self/login/verify")
+    Observable<Response> getUserFlowResponse(FlowUserInfo info);
 }

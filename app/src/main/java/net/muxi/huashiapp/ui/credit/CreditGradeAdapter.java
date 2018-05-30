@@ -50,30 +50,33 @@ public class CreditGradeAdapter extends RecyclerView.Adapter<CreditGradeAdapter.
         holder.mTvScore.setText(String.format("总成绩：%s", mScoresList.get(position).grade));
         if (checkedList.contains(position)) {
             holder.mIvChecked.setVisibility(View.VISIBLE);
-            if (Float.parseFloat(mScoresList.get(position).grade) >= 60.0) {
-                holder.mTvProperty.setBackgroundResource(R.drawable.shape_green);
-            } else {
-                holder.mTvProperty.setBackgroundResource(R.drawable.shape_red);
-            }
-        } else {
-            holder.mIvChecked.setVisibility(View.INVISIBLE);
-            holder.mTvProperty.setBackgroundResource(R.drawable.shape_unchecked);
-        }
-        holder.mLayoutItem.setOnClickListener(v -> {
-            if (checkedList.contains(position)) {
-                checkedList.remove((Object) position);
-                holder.mIvChecked.setVisibility(View.INVISIBLE);
-                holder.mTvProperty.setBackgroundResource(R.drawable.shape_unchecked);
-            } else {
-                checkedList.add(position);
-                holder.mIvChecked.setVisibility(View.VISIBLE);
+            //成绩有可能出现"缓考" 字段 而不是正常的float变量
+            if (Character.isDigit(mScoresList.get(position).grade.charAt(0))) {
                 if (Float.parseFloat(mScoresList.get(position).grade) >= 60.0) {
                     holder.mTvProperty.setBackgroundResource(R.drawable.shape_green);
                 } else {
                     holder.mTvProperty.setBackgroundResource(R.drawable.shape_red);
                 }
+            } else {
+                holder.mIvChecked.setVisibility(View.INVISIBLE);
+                holder.mTvProperty.setBackgroundResource(R.drawable.shape_unchecked);
             }
-        });
+            holder.mLayoutItem.setOnClickListener(v -> {
+                if (checkedList.contains(position)) {
+                    checkedList.remove((Object) position);
+                    holder.mIvChecked.setVisibility(View.INVISIBLE);
+                    holder.mTvProperty.setBackgroundResource(R.drawable.shape_unchecked);
+                } else {
+                    checkedList.add(position);
+                    holder.mIvChecked.setVisibility(View.VISIBLE);
+                    if (Float.parseFloat(mScoresList.get(position).grade) >= 60.0) {
+                        holder.mTvProperty.setBackgroundResource(R.drawable.shape_green);
+                    } else {
+                        holder.mTvProperty.setBackgroundResource(R.drawable.shape_red);
+                    }
+                }
+            });
+        }
     }
 
     public List<Integer> getCheckedList() {

@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
-import com.muxistudio.common.util.NetStatus;
+import com.muxistudio.common.util.NetUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.App;
@@ -121,7 +121,7 @@ public class SuggestionActivity extends ToolbarActivity {
 //    }
 //
     public void sendSuggestion(String str) {
-        if (NetStatus.isConnected()) {
+        if (NetUtil.isConnected()) {
             MobclickAgent.onEvent(this, "suggestion_hand_in");
             FeedbackDialog feedbackDialog = new FeedbackDialog();
             feedbackDialog.show(getSupportFragmentManager(), "feedback_dialog");

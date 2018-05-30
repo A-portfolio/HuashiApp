@@ -1,7 +1,7 @@
 package com.muxistudio.appcommon.net;
 
 
-import com.muxistudio.common.util.NetStatus;
+import com.muxistudio.common.util.NetUtil;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ public class NetStatusInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        if (!NetStatus.isConnected()) {
+        if (!NetUtil.isConnected()) {
          //   RxBus.getDefault().send(new NetErrorEvent());
         }
         return chain.proceed(request);

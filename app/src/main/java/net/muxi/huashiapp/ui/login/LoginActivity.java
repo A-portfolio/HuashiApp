@@ -19,7 +19,7 @@ import com.muxistudio.appcommon.event.RefreshSessionEvent;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
 import com.muxistudio.appcommon.presenter.LoginPresenter;
-import com.muxistudio.common.util.NetStatus;
+import com.muxistudio.common.util.NetUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.R;
@@ -74,7 +74,7 @@ public class LoginActivity extends ToolbarActivity {
     }
 
     public void onClick() {
-        if (!NetStatus.isConnected()) {
+        if (!NetUtil.isConnected()) {
             showErrorSnackbarShort(R.string.tip_check_net);
             return;
         }

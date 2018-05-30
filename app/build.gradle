@@ -10,6 +10,8 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 def androidCompileVersion = rootProject.ext.android
 
+
+
 android {
 
     compileSdkVersion androidCompileVersion.compileSdkVersion
@@ -31,6 +33,8 @@ android {
     defaultConfig {
         minSdkVersion androidCompileVersion.minSdkVersion
         targetSdkVersion androidCompileVersion.targetSdkversion
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
 
         multiDexEnabled true
 

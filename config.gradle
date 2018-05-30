@@ -1,10 +1,9 @@
 ext {
 
     def versionMajor = 2
-    def versionMinor = 2
+    def versionMinor = 3
     def versionBuild = 0
 
-    def baseInfo = ''
 
     android = [compileSdkVersion: 27,
                buildToolsVersion: "27.0.2",
@@ -45,7 +44,6 @@ ext {
     ]
 
     //app是否是作为模板，true的时候是，false的时候可以独立运行
-    //todo
     isAppDebug = true
     //梦境接龙是否是作为模板
     isJieLongDebug = true

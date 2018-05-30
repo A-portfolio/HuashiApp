@@ -1,6 +1,6 @@
 package com.muxistudio.appcommon.presenter;
 
-import com.muxistudio.appcommon.appbase.ICardView;
+import com.muxistudio.appcommon.view.ICardView;
 import com.muxistudio.appcommon.data.CardDailyUse;
 import com.muxistudio.appcommon.data.CardDataEtp;
 import com.muxistudio.appcommon.net.ccnu.CcnuService2;

@@ -2,6 +2,7 @@ package net.muxi.huashiapp.ui.score;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,19 +50,32 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mTvCourse.setText(mScoresList.get(position).course);
         holder.mTvProperty.setText(mScoresList.get(position).type);
-        holder.mTvCate1.setText(ScoreUtil.toCate1(mScoresList.get(position).kcxzmc));
-        holder.mTvCate2.setText(ScoreUtil.toCate2(mScoresList.get(position).kcxzmc));
+        String cate1 = ScoreUtil.toCate1(mScoresList.get(position).kcxzmc);
+        String cate2 = ScoreUtil.toCate2(mScoresList.get(position).kcxzmc);
+        holder.mTvCate1.setText(cate1);
+        holder.mTvCate2.setText(cate2);
+
+        if(TextUtils.isEmpty(cate1))
+            holder.mTvCate1.setVisibility(View.INVISIBLE);
+        if (TextUtils.isEmpty(cate2))
+            holder.mTvCate2.setVisibility(View.INVISIBLE);
+
         holder.mTvScore.setText("总成绩:" + mScoresList.get(position).grade);
         holder.mTvCredit.setText("学分:" + mScoresList.get(position).credit);
         holder.mTvUsual.setText("平时:" + (mScoresList.get(position).usual.equals("") ? "无" : mScoresList.get(position).usual));
         holder.mTvEnding.setText("期末:" + (mScoresList.get(position).ending.equals("") ? "无" : mScoresList.get(position).ending));
 
-        if (Float.parseFloat(mScoresList.get(position).grade) < 60) {
+        if(Character.isDigit(mScoresList.get(position).grade.charAt(0))) {
+            if (Float.parseFloat(mScoresList.get(position).grade) < 60) {
+                holder.mTvProperty.setBackgroundResource(R.drawable.shape_red);
+                holder.mTvScore.setTextColor(App.sContext.getResources().getColor(R.color.red));
+            } else {
+                holder.mTvProperty.setBackgroundResource(R.drawable.shape_green);
+                holder.mTvScore.setTextColor(App.sContext.getResources().getColor(android.R.color.primary_text_light));
+            }
+        }else{
             holder.mTvProperty.setBackgroundResource(R.drawable.shape_red);
             holder.mTvScore.setTextColor(App.sContext.getResources().getColor(R.color.red));
-        } else {
-            holder.mTvProperty.setBackgroundResource(R.drawable.shape_green);
-            holder.mTvScore.setTextColor(App.sContext.getResources().getColor(android.R.color.primary_text_light));
         }
 
     }

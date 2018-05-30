@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.muxistudio.appcommon.appbase.ICardView;
+import com.muxistudio.appcommon.view.ICardView;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.CardDailyUse;
 import com.muxistudio.appcommon.data.CardDataEtp;

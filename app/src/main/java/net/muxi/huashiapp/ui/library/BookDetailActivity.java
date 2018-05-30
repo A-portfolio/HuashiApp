@@ -43,13 +43,13 @@ public class BookDetailActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
         setTitle("");
+        initView();
         id = getIntent().getStringExtra("id");
 
         mMultiStatusView.setOnRetryListener(v -> {
             loadData();
         });
         loadData();
-        initView();
     }
 
     private void loadData() {

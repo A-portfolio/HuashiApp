@@ -26,7 +26,6 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.library.BookDetailActivity;
 import net.muxi.huashiapp.ui.library.adapter.AttenBookAdapter;
@@ -36,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -198,14 +198,24 @@ public class MyBookListFragment extends BaseAppFragment {
                         .getPersonalBook(UserAccountManager.getInstance().getPHPSESSID())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread()))
-                .subscribe(personalBooks -> {
-                    mBorrowedBookList = personalBooks;
-                    renderBorrowedBooks(personalBooks);
-                    //借阅的 ids 存储到本地
-                    Observable.from(personalBooks).map(personalBook -> personalBook.id)
-                            .toList()
-                            .subscribe(strings -> PreferenceUtil.saveString(
-                                    PreferenceUtil.BORROW_BOOK_IDS, TextUtils.join(",", strings)));
+                .subscribe(new Subscriber<List<BorrowedBook>>() {
+                    @Override
+                    public void onCompleted() {}
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace(); }
+
+                    @Override
+                    public void onNext(List<BorrowedBook> personalBooks) {
+                        mBorrowedBookList = personalBooks;
+                        renderBorrowedBooks(personalBooks);
+                        //借阅的 ids 存储到本地
+                        Observable.from(personalBooks).map(personalBook -> personalBook.id)
+                                .toList()
+                                .subscribe(strings -> PreferenceUtil.saveString(
+                                        PreferenceUtil.BORROW_BOOK_IDS, TextUtils.join(",", strings)));
+                    }
                 });
     }
 

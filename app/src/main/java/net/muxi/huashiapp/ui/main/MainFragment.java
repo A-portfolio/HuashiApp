@@ -31,7 +31,7 @@ import com.muxistudio.common.util.ACache;
 import com.muxistudio.common.util.DateUtil;
 import com.muxistudio.common.util.DimensUtil;
 import com.muxistudio.common.util.Logger;
-import com.muxistudio.common.util.NetStatus;
+import com.muxistudio.common.util.NetUtil;
 import com.muxistudio.common.util.PreferenceUtil;
 import com.umeng.analytics.MobclickAgent;
 
@@ -97,6 +97,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setData();
+
         RxBus.getDefault().toObservable(LoginSuccessEvent.class)
                 .subscribe(loginSuccessEvent -> {
                     switch (loginSuccessEvent.targetActivityName) {
@@ -349,7 +350,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
     }
 
     private void getBannerData() {
-        if (NetStatus.isConnected()) {
+        if (NetUtil.isConnected()) {
             CampusFactory.getRetrofitService().getBanner()
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.newThread())
@@ -383,7 +384,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
     }
 
     private void getHint() {
-        if (NetStatus.isConnected()) {
+        if (NetUtil.isConnected()) {
             CampusFactory.getRetrofitService()
                     .getHint()
                     .subscribeOn(Schedulers.io())

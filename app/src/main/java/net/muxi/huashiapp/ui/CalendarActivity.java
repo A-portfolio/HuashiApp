@@ -19,7 +19,7 @@ import com.muxistudio.appcommon.data.CalendarData;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.utils.FrescoUtil;
 import com.muxistudio.common.util.Logger;
-import com.muxistudio.common.util.NetStatus;
+import com.muxistudio.common.util.NetUtil;
 import com.muxistudio.common.util.PreferenceUtil;
 
 import net.muxi.huashiapp.R;
@@ -76,7 +76,7 @@ public class CalendarActivity extends ToolbarActivity {
                 setCalendarDrawee(sp.getString(PreferenceUtil.CALENDAR_ADDRESS));
             }
         }
-        if (NetStatus.isConnected()) {
+        if (NetUtil.isConnected()) {
             updateImage();
         } else {
             if (lastTime == DEFAULT_TIME) {

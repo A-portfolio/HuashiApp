@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.utils.UserUtil;
-import com.muxistudio.common.util.NetStatus;
+import com.muxistudio.common.util.NetUtil;
 import com.muxistudio.common.util.ToastUtil;
 
 import net.muxi.huashiapp.R;
@@ -53,7 +53,7 @@ public class ScoreSelectActivity extends ToolbarActivity {
         setYear(value);
         mRbAll.setChecked(true);
         mBtnEnter.setOnClickListener(v -> {
-            if (NetStatus.isConnected()) {
+            if (NetUtil.isConnected()) {
                 int term = 0;
                 int bid = mLayoutTerm.getCheckedRadioButtonId();
                 if (bid == R.id.rb_1){

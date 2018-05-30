@@ -78,7 +78,6 @@ public class ScoreActivity extends ToolbarActivity {
                         .observeOn(AndroidSchedulers.mainThread()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                //todo 下次版本更新注意这里 发送登录成功消息
                 .subscribe(this::renderScoreList,
                         throwable -> {
                             throwable.printStackTrace();

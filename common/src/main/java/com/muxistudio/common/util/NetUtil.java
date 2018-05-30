@@ -7,11 +7,7 @@ import android.net.NetworkInfo;
 import com.muxistudio.common.base.Global;
 
 
-/**
- * Created by ybao on 16/4/19.
- * 获取网络状态
- */
-public class NetStatus {
+public class NetUtil {
 
     private static NetworkInfo getNetworkInfo(){
         ConnectivityManager cm = (ConnectivityManager) Global.getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -29,4 +25,5 @@ public class NetStatus {
         NetworkInfo netInfo = getNetworkInfo();
         return netInfo != null && netInfo.getType() == ConnectivityManager.TYPE_WIFI;
     }
+
 }

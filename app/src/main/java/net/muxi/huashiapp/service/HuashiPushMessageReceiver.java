@@ -16,7 +16,6 @@ import net.muxi.huashiapp.ui.main.DetailActivity;
 import java.util.List;
 
 //代码运行在非ui线程上
-//MaybeError 看看release在混淆之后有没有出现问题!
 public class HuashiPushMessageReceiver extends PushMessageReceiver {
 
     private String mRegId;

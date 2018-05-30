@@ -53,11 +53,7 @@ import rx.Observable;
  */
 public interface RetrofitService {
 
-    @GET("info/login/")
-    Call<ResponseBody> mainLogin(@Header("Authorizat") String verification);
 
-    @GET("lib/login/")
-    Observable<Response<VerifyResponse>> libLogin(@Header("Authorization") String verification);
 
     @GET("lib/search/")
     Observable<BookSearchResult> searchBook(@Query("keyword") String keyword,
@@ -179,7 +175,6 @@ public interface RetrofitService {
                                        @Query("weekday") String day,
                                        @Query("building") String area);
 
-    //todo fix this!
     @GET("grade/")
     Observable<List<Score>> getScores(@Query("xnm") String year,
                                       @Query("xqm") String term);

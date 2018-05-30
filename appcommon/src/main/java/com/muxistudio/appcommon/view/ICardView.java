@@ -1,4 +1,4 @@
-package com.muxistudio.appcommon.appbase;
+package com.muxistudio.appcommon.view;
 
 import com.muxistudio.appcommon.data.CardDailyUse;
 import com.muxistudio.appcommon.data.CardDataEtp;

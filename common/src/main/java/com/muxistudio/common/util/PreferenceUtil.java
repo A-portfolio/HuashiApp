@@ -166,7 +166,6 @@ public class PreferenceUtil {
      * 清楚所有的数据,在注销时使用
      */
     public void clearAllData() {
-        // TODO: 17/1/27 clear data
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Global.getApplication());
     }
 

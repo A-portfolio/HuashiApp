@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.utils.UserUtil;
-import com.muxistudio.common.util.NetStatus;
+import com.muxistudio.common.util.NetUtil;
 import com.muxistudio.common.util.ToastUtil;
 
 import net.muxi.huashiapp.R;
@@ -81,7 +81,7 @@ public class SelectCreditActivity extends ToolbarActivity {
             mTvCredit.setTextColor(getResources().getColor(R.color.disable_color));
             calType = CREDIT_GRADE;
         } else if (id == R.id.btn_enter) {
-            if (NetStatus.isConnected()) {
+            if (NetUtil.isConnected()) {
                 if (calType == CREDIT) {
                     CreditResultActivity.start(SelectCreditActivity.this, Integer.parseInt(start)
                             , Integer.parseInt(end));

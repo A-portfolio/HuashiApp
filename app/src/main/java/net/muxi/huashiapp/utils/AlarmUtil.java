@@ -19,7 +19,6 @@ import java.util.Random;
  */
 public class AlarmUtil {
 
-    //todo update!
     public static void register(Context context) {
 
         //提醒时间点

@@ -52,6 +52,9 @@ public class MoreFragment extends BaseAppFragment {
 
     private PreferenceUtil sp;
 
+    private Integer[] colors = {R.color.blue,R.color.green,R.color.yellow
+            ,R.color.grey,R.color.color_light_green,R.color.red,R.color.red};
+
     private String[] titles = {"常见问题Q&A", "分享App给好友", "通知栏提醒", "意见反馈", "检查更新 ", "关于", "退出账号"};
     private Integer[] icons =
             {R.drawable.ic_more_qa, R.drawable.ic_more_share, R.drawable.ic_more_notice,
@@ -83,7 +86,7 @@ public class MoreFragment extends BaseAppFragment {
     }
 
     public void initView() {
-        mAdapter = new MoreAdapter((List<String>) Arrays.asList(titles), Arrays.asList(icons));
+        mAdapter = new MoreAdapter((List<String>) Arrays.asList(titles), Arrays.asList(icons),Arrays.asList(colors));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setItemClickListener((view, position) -> {
