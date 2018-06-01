@@ -105,19 +105,7 @@ public class CourseEditActivity extends ToolbarActivity {
     }
 
     private void initView() {
-        if (isAdd) {
-            mBtnEnsure.setText("添加课程");
-            mEtWeek.setText("1-18周");
-            mEtTime.setText("周一1-2节");
-        } else {
-            mBtnEnsure.setText("完成编辑");
-            mEtCourse.setText(mCourse.course);
-            mEtPlace.setText(mCourse.place);
-            mEtWeek.setText(getDisplayWeeks());
-            mEtTime.setText(String.format("周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
-                    start + duration - 1));
-            mEtCourseTeacher.setText(mCourse.teacher);
-        }
+
         mEtCourse = findViewById(R.id.et_course);
         mIvWeekSelect = findViewById(R.id.iv_week_select);
         mTvWeek = findViewById(R.id.tv_week);
@@ -135,6 +123,20 @@ public class CourseEditActivity extends ToolbarActivity {
         mEtTime.setOnClickListener(v -> onClick(v));
         mEtWeek.setOnClickListener(v -> onClick(v));
         mBtnEnsure.setOnClickListener(v -> onClick(v));
+
+        if (isAdd) {
+            mBtnEnsure.setText("添加课程");
+            mEtWeek.setText("1-18周");
+            mEtTime.setText("周一1-2节");
+        } else {
+            mBtnEnsure.setText("完成编辑");
+            mEtCourse.setText(mCourse.course);
+            mEtPlace.setText(mCourse.place);
+            mEtWeek.setText(getDisplayWeeks());
+            mEtTime.setText(String.format("周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
+                    start + duration - 1));
+            mEtCourseTeacher.setText(mCourse.teacher);
+        }
     }
 
     public void addCourse() {

@@ -146,10 +146,10 @@ public class CcnuCrawler2 {
 
     public static boolean performLogin(String username, String userpassword) throws IOException {
         initCrawler();
-        mCcnuService.performCampusLogin(JSESSIONID_LOGIN_IN, username, userpassword,
-                        valueOfLt, valueOfExe, "submit", "LOGIN").execute();
         boolean flag2  = true;
         try {
+        mCcnuService.performCampusLogin(JSESSIONID_LOGIN_IN, username, userpassword,
+                        valueOfLt, valueOfExe, "submit", "LOGIN").execute();
             mCcnuService.performSystemLogin().execute();
         }catch (Exception e){
             e.printStackTrace();

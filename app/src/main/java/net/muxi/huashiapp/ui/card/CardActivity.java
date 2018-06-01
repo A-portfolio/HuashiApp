@@ -87,6 +87,8 @@ public class CardActivity extends ToolbarActivity implements ICardView {
             data[i] = new CardSumData(DateUtil.getTheDateInYear(new Date(), i - 6), getDailySum(i));
 
         }
+
+
         Gson gson = new Gson();
         String json = gson.toJson(data);
 
@@ -94,7 +96,6 @@ public class CardActivity extends ToolbarActivity implements ICardView {
         mConsumeView.setInitData(data);
         mConsumeView.loadUrl("http://123.56.41.13:4088");
     }
-
 
     /**
      * 获取指定日的消费总额
@@ -106,6 +107,7 @@ public class CardActivity extends ToolbarActivity implements ICardView {
         String date = DateUtil.getTheDateInYear(new Date(), -6 + day);
         Logger.d(date);
         double sum = 0;
+        if(mDailyUse.getList().get(0) == null ) return Double.valueOf(0);
         List<CardDailyUse.ListBean.DataBean> list=      mDailyUse.getList().get(0).getData();
         if(list.size()==0 || list == null) return Double.valueOf(0);
         for (int i = 0, size = list.size(); i < size; i++) {

@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 
@@ -51,6 +52,15 @@ public class DownloadService extends Service {
                         Uri apkFileUri = FileProvider.getUriForFile(context,
                                 BuildConfig.APPLICATION_ID + ".fileProvider", file);
                         intent.setDataAndType(apkFileUri, FILE_TYPE);
+                        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+                            boolean hasInstallPermission = context.getPackageManager().canRequestPackageInstalls();
+                            if(!hasInstallPermission){
+                                //注意这个是8.0新API
+                                Intent intent1 = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(intent1);
+                            }
+                        }
                     } else {
                         intent.setDataAndType(Uri.fromFile(file),
                                 FILE_TYPE);

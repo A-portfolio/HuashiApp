@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.Msg;
 import com.muxistudio.appcommon.data.User;
 import com.muxistudio.appcommon.data.UserInfo;
 import com.muxistudio.appcommon.event.RefreshSessionEvent;
@@ -25,6 +26,7 @@ import com.umeng.analytics.MobclickAgent;
 import net.muxi.huashiapp.R;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -111,7 +113,16 @@ public class LoginActivity extends ToolbarActivity {
                         }
                     })
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe();
+                    //the error handling show be added, if not the Observalbe.error() will propagate properly
+                    .subscribe(new Subscriber<Msg>() {
+                        @Override
+                        public void onCompleted() { }
+
+                        @Override
+                        public void onError(Throwable e) { e.printStackTrace();}
+
+                        @Override
+                        public void onNext(Msg msg) { }});
 
             if (type.equals("info"))
                 MobclickAgent.onEvent(this, "login");

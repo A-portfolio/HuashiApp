@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.muxistudio.appcommon.appbase.BaseAppFragment;
+import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.library.LibrarySearchActivity;
@@ -82,6 +83,7 @@ public class LibraryMineFragment extends BaseAppFragment {
                 titleList);
         mViewPager.setAdapter(mPagerAdapter);
 
+        MobclickAgent.onEvent(this.getActivity(),"lib_mine");
     }
 
     @Override

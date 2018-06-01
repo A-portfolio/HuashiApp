@@ -85,8 +85,8 @@ public class MainActivity extends BaseAppActivity implements
 
     private void checkNewVersion() {
         CampusFactory.getRetrofitService().getLatestVersion()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
                 .subscribe(versionData -> {
                     if (versionData == null){
                         return;

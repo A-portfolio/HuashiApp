@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -111,15 +113,6 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
             }
         });
         initRegisterInterface();
-
-        // 消费账单
-        if (url.equals("http://consume.muxixyz.com")) {
-            if (UserAccountManager.getInstance().isInfoLogin()){
-                ToastUtil.showLong("请先登录再查看您的年度账单哟");
-            } else {
-                mWebview.setInitData(UserAccountManager.getInstance().getInfoUser().sid);
-            }
-        }
 
         mWebview.loadUrl(url);
 

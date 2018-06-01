@@ -95,6 +95,7 @@ public class MyBookListFragment extends BaseAppFragment {
                         loadAttentionBooks();
                     });
         }
+
         return view;
     }
 

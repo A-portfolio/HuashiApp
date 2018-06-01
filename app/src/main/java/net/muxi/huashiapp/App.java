@@ -49,7 +49,7 @@ public class App extends Application {
     private void initARouter(Application app) {
         if (BuildConfig.DEBUG) {
             ARouter.openLog();
-            //开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
+            //开启调试模式(如果在InstantRun看模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
             ARouter.openDebug();
             ARouter.printStackTrace();
         }

@@ -135,7 +135,7 @@ public class CardDataPresenter {
                     public void onCompleted() { }
                     @Override
                     public void onError(Throwable e) {e.printStackTrace();
-                        Logger.d("card");}
+                         Logger.d("card");}
                     @Override
                     public void onNext(Object o) {
                         CardDailyUse use = (CardDailyUse) o;
