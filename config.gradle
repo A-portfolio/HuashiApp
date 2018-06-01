@@ -6,7 +6,7 @@ ext {
 
 
     android = [compileSdkVersion: 27,
-               buildToolsVersion: "27.0.2",
+               buildToolsVersion: "27.0.3",
                supportLibVersion: "27.1.1",
                applicationId    : "net.muxi.huashiapp",
                minSdkVersion    : 16,
@@ -40,6 +40,7 @@ ext {
             tinker_android_anno  : 'com.tinkerpatch.tinker:tinker-android-anno:1.9.6',
             fresco               : "com.facebook.fresco:fresco:${otherDepends.frescoVersion}",
             fresco_animated_gif  :  "com.facebook.fresco:animated-gif:${otherDepends.frescoVersion}",
+            gson                 : "com.google.code.gson:gson:2.8.0",
             junit                :  "junit:junit:4.12"
     ]
 

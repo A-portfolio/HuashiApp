@@ -9,6 +9,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.common.base.Global;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.commonsdk.UMConfigure;
 
 import net.muxi.huashiapp.utils.MiPushUtil;
@@ -33,7 +34,46 @@ public class App extends Application {
         initBugly();
         initUMeng();
         initARouter(this);
+        initX5();
         MiPushUtil.initMiPush(this);
+    }
+
+    private void initX5() {
+//        Observable.fromCallable(() -> {
+//            QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
+//                @Override
+//                public void onCoreInitFinished() {
+//                    Logger.d("x5 core init finished");
+//                }
+//
+//                @Override
+//                public void onViewInitFinished(boolean b) {
+//
+//                }
+//            };
+//            QbSdk.initX5Environment(this,cb);
+//            return true;
+//        })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
+                    @Override
+                    public void onCoreInitFinished() {
+
+                    }
+                    @Override
+                    public void onViewInitFinished(boolean b) {
+
+                    }
+                };
+                QbSdk.initX5Environment(getApplicationContext(),cb);
+
+            }
+        }).start();
     }
 
     private void initBugly() {

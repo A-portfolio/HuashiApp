@@ -10,15 +10,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.muxistudio.appcommon.view.ICardView;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.CardDailyUse;
 import com.muxistudio.appcommon.data.CardDataEtp;
 import com.muxistudio.appcommon.data.CardSumData;
 import com.muxistudio.appcommon.presenter.CardDataPresenter;
+import com.muxistudio.appcommon.view.ICardView;
+import com.muxistudio.common.jsbridge.BridgeWebView;
 import com.muxistudio.common.util.DateUtil;
 import com.muxistudio.common.util.Logger;
-import com.muxistudio.jsbridge.BridgeWebView;
 import com.muxistudio.multistatusview.MultiStatusView;
 import com.tencent.smtt.sdk.WebSettings;
 

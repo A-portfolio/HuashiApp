@@ -26,6 +26,7 @@ android {
                 includeCompileClasspath true
             }
         }
+        ndk{abiFilters "armeabi"}
 
 //        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
