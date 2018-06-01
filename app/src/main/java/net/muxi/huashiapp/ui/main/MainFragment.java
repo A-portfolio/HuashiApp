@@ -220,7 +220,10 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
             public void onItemClick(RecyclerView.ViewHolder vh) {
                 if (vh.getLayoutPosition() != 0
                         && vh.getLayoutPosition() != mItemDatas.size() + 1) {
-                    ItemData itemData = mItemDatas.get(vh.getLayoutPosition() - MainAdapter.ITEM);
+                    int index = vh.getLayoutPosition() - MainAdapter.ITEM;
+                    if(index < 0) return;
+
+                    ItemData itemData = mItemDatas.get(index);
                     switch (itemData.getName()) {
                         case "成绩":
                             if (TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().getSid())) {

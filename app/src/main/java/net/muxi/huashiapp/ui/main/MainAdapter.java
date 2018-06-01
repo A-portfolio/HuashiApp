@@ -174,9 +174,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                         .putExtra("detail", hint.getDetail()));
             });
             ((HintViewHolder) holder).mTvHintMsg.setText(hint.getMsg());
-            ((HintViewHolder) holder).mTvHintMsg.setOnClickListener(v -> {
+            ((HintViewHolder) holder).mIvHintClose.setOnClickListener(v -> {
                 ((HintViewHolder) holder).mRlHintContent.setVisibility(View.GONE);
                 PreferenceUtil.saveInt(PreferenceUtil.HINT_UPDATE_TIME, hint.getUpdate());
+                ITEM = 1;
             });
             if (hint.getType().equals("err")) {
                 ((HintViewHolder) holder).mRlHintContent
@@ -260,7 +261,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     //判断有没有hint信息的包装函数
-    private boolean isHintShown() {
+    public boolean isHintShown() {
         boolean b = UPDATE_TIME != hint.getUpdate();
         boolean a = BuildConfig.VERSION_NAME.equals(hint.getVersion());
         return !TextUtils.isEmpty(hint.getMsg()) && a && b;

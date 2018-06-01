@@ -140,7 +140,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         mWebview.setDrawingCacheEnabled(true);
 
         //去除QQ浏览器推广广告
-        // TODO: 18/6/1 待验证
+        //TODO: 18/6/1 待验证
         getWindow().getDecorView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
