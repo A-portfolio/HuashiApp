@@ -39,41 +39,19 @@ public class App extends Application {
     }
 
     private void initX5() {
-//        Observable.fromCallable(() -> {
-//            QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
-//                @Override
-//                public void onCoreInitFinished() {
-//                    Logger.d("x5 core init finished");
-//                }
-//
-//                @Override
-//                public void onViewInitFinished(boolean b) {
-//
-//                }
-//            };
-//            QbSdk.initX5Environment(this,cb);
-//            return true;
-//        })
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe();
-        new Thread(new Runnable() {
+        QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
             @Override
-            public void run() {
-                QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
-                    @Override
-                    public void onCoreInitFinished() {
-
-                    }
-                    @Override
-                    public void onViewInitFinished(boolean b) {
-
-                    }
-                };
-                QbSdk.initX5Environment(getApplicationContext(),cb);
+            public void onCoreInitFinished() {
 
             }
-        }).start();
+
+            @Override
+            public void onViewInitFinished(boolean b) {
+
+            }
+        };
+        QbSdk.initX5Environment(getApplicationContext(), cb);
+
     }
 
     private void initBugly() {
@@ -83,7 +61,7 @@ public class App extends Application {
     }
 
     private void initUMeng() {
-        UMConfigure.init(this, UMENG_APP_KEY , null, UMConfigure.DEVICE_TYPE_PHONE, null);
+        UMConfigure.init(this, UMENG_APP_KEY, null, UMConfigure.DEVICE_TYPE_PHONE, null);
     }
 
     private void initARouter(Application app) {
