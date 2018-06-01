@@ -23,10 +23,10 @@ import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.appcommon.utils.AppUtil;
+import com.muxistudio.common.jsbridge.BridgeWebClient;
+import com.muxistudio.common.jsbridge.BridgeWebView;
 import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.ToastUtil;
-import com.muxistudio.jsbridge.BridgeWebClient;
-import com.muxistudio.jsbridge.BridgeWebView;
 import com.sina.weibo.sdk.api.TextObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
 import com.sina.weibo.sdk.api.share.BaseResponse;
@@ -89,6 +89,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
         initView();
+        Logger.d("x5 enable" + mWebview.getX5WebViewExtension());
 
         title = getIntent().hasExtra(WEB_TITLE) ? getIntent().getStringExtra(WEB_TITLE)
                 : getIntent().getStringExtra(WEB_URL);
@@ -98,9 +99,8 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         intro = getIntent().hasExtra(WEB_INTRO) ? getIntent().getStringExtra(WEB_INTRO) : "";
         setTitle(title);
 
-        WebSettings webSettings = mWebview.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setAppCacheEnabled(true);
+        configWebSetting();
+      
         mWebview.setWebChromeClient(new BrowserClient());
         mWebview.setWebViewClient(new BridgeWebClient(mWebview) {
             // mWebview.setWebViewClient(new WebViewClient() {
@@ -125,6 +125,32 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         if (savedInstanceState != null) {
             mWeiboShareAPI.handleWeiboResponse(getIntent(), this);
         }
+    }
+
+    private void configWebSetting() {
+        WebSettings webSettings = mWebview.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setAppCacheEnabled(true);
+        webSettings.setSaveFormData(true);
+        webSettings.setDefaultTextEncodingName("utf-8");
+
+        mWebview.setDrawingCacheEnabled(true);
+
+        //去除QQ浏览器推广广告
+        // TODO: 18/6/1 待验证
+        getWindow().getDecorView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                ArrayList<View> outView = new ArrayList<View>();
+                getWindow().getDecorView().findViewsWithText(outView,"QQ浏览器",View.FIND_VIEWS_WITH_TEXT);
+                if(outView.size()>0){
+                    outView.get(0).setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     //初始化暴露给 web 端的本地接口
