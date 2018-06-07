@@ -93,6 +93,8 @@ public class CreditResultActivity extends ToolbarActivity {
             throwable.printStackTrace();
             new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
                     .flatMap(aubBoolean -> scoreObservable)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(scores -> {
                         addCredit(scores);
                         float all = zb + zx + tb + tx + th;

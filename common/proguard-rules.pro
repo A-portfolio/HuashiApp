@@ -277,11 +277,11 @@
 	public <fields>;
 	public <methods>;
 }
--keep public class * extends android.app.Application
-{
+-keep public class * extends android.app.Application{
 	public <fields>;
 	public <methods>;
 }
+
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.content.ContentProvider

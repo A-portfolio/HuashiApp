@@ -68,7 +68,7 @@ public class BaseAppActivity extends BaseActivity {
     public void hideLoading() {
         Logger.d("hideloading");
         if (mLoadingDialog != null) {
-            mLoadingDialog.dismiss();
+            mLoadingDialog.dismissAllowingStateLoss();
         }
     }
 

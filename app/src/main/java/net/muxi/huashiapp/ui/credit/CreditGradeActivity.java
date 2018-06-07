@@ -27,7 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -128,7 +130,7 @@ public class CreditGradeActivity extends ToolbarActivity {
 
         creditObservable
                 .subscribe(scores -> {
-                    mScoresList = ((List<Score>) scores);
+                    mScoresList = scores;
                     initRecyclerView();
                     this.hideLoading();
                 }, throwable -> {
@@ -136,33 +138,23 @@ public class CreditGradeActivity extends ToolbarActivity {
                     new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
                             .flatMap(aBoolean -> creditObservable).subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(o -> {
-                                mScoresList = ((List<Score>) o);
-                                initRecyclerView();
-                                hideLoading();
+                            .subscribeOn(Schedulers.io())
+                            .subscribe(new Subscriber<List<Score>>() {
+                                @Override
+                                public void onCompleted() {}
+                                @Override
+                                public void onError(Throwable e) { e.printStackTrace(); }
+                                @Override
+                                public void onNext(List<Score> scores) {
+                                    mScoresList = scores;
+                                    initRecyclerView();
+                                    hideLoading();
+                                }
                             });
                 }, () -> {
                 });
     }
 
-    public void retryLoadCredit(Observable<List<Score>>[] listObservables) {
-        new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
-                .flatMap((Func1<Boolean, Observable<?>>) aBoolean
-                        -> Observable.merge(listObservables, 5)
-                        .flatMap(Observable::from)
-                        .toList()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread()))
-                .subscribe(scores -> {
-                    mScoresList = (List<Score>) scores;
-                    initRecyclerView();
-                }, throwable -> {
-                    throwable.printStackTrace();
-                    CcnuCrawler2.clearCookieStore();
-                    mMultiStatusView.showError();
-                    hideLoading();
-                }, this::hideLoading);
-    }
 
     public Observable<List<Score>>[] getScoreRequest(int start, int end) {
         Observable<List<Score>>[] observables = new Observable[(end - start)];

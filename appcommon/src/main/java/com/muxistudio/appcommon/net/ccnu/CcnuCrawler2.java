@@ -115,6 +115,9 @@ public class CcnuCrawler2 {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(25,TimeUnit.SECONDS)
+                .connectTimeout(25, TimeUnit.SECONDS)
+                .writeTimeout(25,TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .cookieJar(cookieJar)
                 .build();
@@ -132,6 +135,9 @@ public class CcnuCrawler2 {
 
         //将相关的cookie存放到cookieJar 以便于教务系统登录
         OkHttpClient client2 = new OkHttpClient.Builder()
+                .readTimeout(25,TimeUnit.SECONDS)
+                .connectTimeout(25, TimeUnit.SECONDS)
+                .writeTimeout(25,TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .cookieJar(cookieJar)
                 .build();
@@ -185,6 +191,9 @@ public class CcnuCrawler2 {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(25,TimeUnit.SECONDS)
+                .connectTimeout(25, TimeUnit.SECONDS)
+                .writeTimeout(25,TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .cookieJar(new CookieJar() {
                     @Override

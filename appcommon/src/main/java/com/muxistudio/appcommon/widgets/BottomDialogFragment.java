@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.muxistudio.appcommon.R;
+import com.muxistudio.common.util.Logger;
 
 
 /**
@@ -58,6 +60,16 @@ public class BottomDialogFragment extends DialogFragment {
     @Override
     public int show(FragmentTransaction transaction, String tag) {
         return super.show(transaction, tag);
+    }
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        try{
+          super.show(manager, tag);
+        }catch (Exception e){
+            e.printStackTrace();
+            Logger.d("fragment exception ");
+        }
     }
 
     @Override

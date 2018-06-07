@@ -48,4 +48,5 @@ public class LoadingDialog extends BottomDialogFragment {
         return dialog;
     }
 
+
 }

@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
@@ -57,6 +58,9 @@ public class CardDataPresenter {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(25, TimeUnit.SECONDS)
+                .connectTimeout(25, TimeUnit.SECONDS)
+                .writeTimeout(25,TimeUnit.SECONDS)
                 .cookieJar(new CardCookieJar())
                 .followRedirects(false)
                 .addInterceptor(interceptor)
@@ -68,6 +72,9 @@ public class CardDataPresenter {
                 .build();
 
         OkHttpClient client1 = new OkHttpClient.Builder()
+                .readTimeout(25,TimeUnit.SECONDS)
+                .connectTimeout(25, TimeUnit.SECONDS)
+                .writeTimeout(25,TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .build();
 
