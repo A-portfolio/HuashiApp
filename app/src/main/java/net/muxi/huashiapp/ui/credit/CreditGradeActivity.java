@@ -77,8 +77,6 @@ public class CreditGradeActivity extends ToolbarActivity {
         mBtnEnter.setOnClickListener(v -> {
             showCreditGradeDialog();
         });
-
-//        mMultiStatusView.setOnRetryListener(v->{retryLoadCredit(getScoreRequest(start,end));});
     }
 
     private void showCreditGradeDialog() {
@@ -122,37 +120,23 @@ public class CreditGradeActivity extends ToolbarActivity {
 
     public void loadCredit(Observable<List<Score>>[] listObservable) {
         showLoading();
-        Observable<List<Score>> creditObservable = Observable.merge(listObservable, 5)
+        Observable<List<Score>> creditObservable = Observable.merge(listObservable,5)
                 .flatMap(Observable::from)
-                .toList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .toList();
 
         creditObservable
+                .subscribeOn(Schedulers.io())
+                .onErrorResumeNext(throwable -> {
+                    CcnuCrawler2.clearCookieStore();
+                    return new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
+                            .flatMap(aBoolean -> creditObservable);
+                })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(scores -> {
                     mScoresList = scores;
                     initRecyclerView();
                     this.hideLoading();
-                }, throwable -> {
-                    CcnuCrawler2.clearCookieStore();
-                    new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
-                            .flatMap(aBoolean -> creditObservable).subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribeOn(Schedulers.io())
-                            .subscribe(new Subscriber<List<Score>>() {
-                                @Override
-                                public void onCompleted() {}
-                                @Override
-                                public void onError(Throwable e) { e.printStackTrace(); }
-                                @Override
-                                public void onNext(List<Score> scores) {
-                                    mScoresList = scores;
-                                    initRecyclerView();
-                                    hideLoading();
-                                }
-                            });
-                }, () -> {
-                });
+                }, Throwable::printStackTrace, () -> {});
     }
 
 

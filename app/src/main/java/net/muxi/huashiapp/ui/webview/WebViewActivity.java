@@ -141,14 +141,11 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
         //去除QQ浏览器推广广告
         //TODO: 18/6/1 待验证
-        getWindow().getDecorView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                ArrayList<View> outView = new ArrayList<View>();
-                getWindow().getDecorView().findViewsWithText(outView,"QQ浏览器",View.FIND_VIEWS_WITH_TEXT);
-                if(outView.size()>0){
-                    outView.get(0).setVisibility(View.GONE);
-                }
+        getWindow().getDecorView().addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            ArrayList<View> outView = new ArrayList<View>();
+            getWindow().getDecorView().findViewsWithText(outView,"QQ浏览器",View.FIND_VIEWS_WITH_TEXT);
+            if(outView.size()>0){
+                outView.get(0).setVisibility(View.GONE);
             }
         });
     }

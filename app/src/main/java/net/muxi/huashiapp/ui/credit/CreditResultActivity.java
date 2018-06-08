@@ -11,6 +11,7 @@ import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.Score;
 import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
 import com.muxistudio.appcommon.presenter.LoginPresenter;
 import com.muxistudio.appcommon.user.UserAccountManager;
 
@@ -20,6 +21,7 @@ import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -32,7 +34,7 @@ public class CreditResultActivity extends ToolbarActivity {
     private int start;
     private int end;
 
-    private float zb, zx, tb, tx, th;
+    private float zb, zx, tb, tx, th,zz;
     private TextView mTvCreditAll;
     private TextView mTvZb;
     private TextView mZb;
@@ -45,6 +47,8 @@ public class CreditResultActivity extends ToolbarActivity {
     private TextView mZx;
     private TextView mTvTx;
     private TextView mTx;
+    private TextView mZz;
+    private TextView mTvZz;
 
     public static void start(Context context, int start, int end) {
         Intent starter = new Intent(context, CreditResultActivity.class);
@@ -73,40 +77,28 @@ public class CreditResultActivity extends ToolbarActivity {
         showLoading();
         Observable<List<Score>> scoreObservable = Observable.merge(listObservable, 5)
                 .flatMap(Observable::from)
-                .toList()
+                .toList();
+
+        scoreObservable
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-
-
-        scoreObservable.subscribe(scores -> {
-            addCredit(scores);
-            float all = zb + zx + tb + tx + th;
-            mTvZb.setText(String.valueOf(zb));
-            mTvZx.setText(String.valueOf(zx));
-            mTvTb.setText(String.valueOf(tb));
-            mTvTx.setText(String.valueOf(tx));
-            mTvTh.setText(String.valueOf(th));
-            mTvCreditAll.setText(String.valueOf(all));
-            hideLoading();
-        }, throwable -> {
-            hideLoading();
-            throwable.printStackTrace();
-            new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
-                    .flatMap(aubBoolean -> scoreObservable)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(scores -> {
-                        addCredit(scores);
-                        float all = zb + zx + tb + tx + th;
-                        mTvZb.setText(String.valueOf(zb));
-                        mTvZx.setText(String.valueOf(zx));
-                        mTvTb.setText(String.valueOf(tb));
-                        mTvTx.setText(String.valueOf(tx));
-                        mTvTh.setText(String.valueOf(th));
-                        mTvCreditAll.setText(String.valueOf(all));
-                        hideLoading();
-                    });
-        }, () -> {
+                .onErrorResumeNext(throwable -> {
+                    CcnuCrawler2.clearCookieStore();
+                    return new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
+                            .flatMap(aubBoolean -> scoreObservable);
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(scores -> {
+                    addCredit(scores);
+                    float all = zb + zx + tb + tx + th;
+                    mTvZb.setText(String.valueOf(zb));
+                    mTvZx.setText(String.valueOf(zx));
+                    mTvTb.setText(String.valueOf(tb));
+                    mTvTx.setText(String.valueOf(tx));
+                    mTvTh.setText(String.valueOf(th));
+                    mTvCreditAll.setText(String.valueOf(all));
+                    mTvZz.setText(String.valueOf(zz));
+                    hideLoading();
+             }, Throwable::printStackTrace, () -> {
         });
     }
 
@@ -139,6 +131,8 @@ public class CreditResultActivity extends ToolbarActivity {
                         case 4:
                             th += Float.parseFloat(score.credit);
                             break;
+                        case 5:
+                            zz += Float.parseFloat(score.credit);
                     }
                     break;
                 }
@@ -159,5 +153,7 @@ public class CreditResultActivity extends ToolbarActivity {
         mZx = findViewById(R.id.zx);
         mTvTx = findViewById(R.id.tv_tx);
         mTx = findViewById(R.id.tx);
+        mZz = findViewById(R.id.zz);
+        mTvZz  = findViewById(R.id.tv_zz);
     }
 }

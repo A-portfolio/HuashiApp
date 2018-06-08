@@ -21,7 +21,9 @@ import net.muxi.huashiapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -71,13 +73,11 @@ public class ScoreActivity extends ToolbarActivity {
             termTemp = term;
         String finalTermTemp = termTemp;
         showLoading();
-        new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
-                .flatMap(aBoolean -> CampusFactory.getRetrofitService()
-                        .getScores(year, finalTermTemp)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread()))
+        new LoginPresenter()
+                .login(UserAccountManager.getInstance().getInfoUser())
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(aBoolean -> CampusFactory.getRetrofitService()
+                        .getScores(year, finalTermTemp))
                 .subscribe(this::renderScoreList,
                         throwable -> {
                             throwable.printStackTrace();
@@ -93,14 +93,22 @@ public class ScoreActivity extends ToolbarActivity {
             termTemp = "";
         else
             termTemp = term;
-        CampusFactory.getRetrofitService().getScores(year, termTemp)
-                .observeOn(AndroidSchedulers.mainThread())
+        String finalTermTemp = termTemp;
+        CampusFactory
+                .getRetrofitService()
+                .getScores(year, termTemp)
                 .subscribeOn(Schedulers.io())
+                .onErrorResumeNext(throwable -> {
+                    CcnuCrawler2.clearCookieStore();
+                    return new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
+                            .flatMap(aBoolean -> CampusFactory.getRetrofitService()
+                                    .getScores(year, finalTermTemp));
+                })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::renderScoreList,
                         throwable -> {
                             throwable.printStackTrace();
                             mMultiStatusView.showNetError();
-                            CcnuCrawler2.clearCookieStore();
                             hideLoading();
                         }, this::hideLoading);
     }

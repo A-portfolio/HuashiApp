@@ -2,12 +2,14 @@ package net.muxi.huashiapp;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.common.base.Global;
+import com.muxistudio.common.util.PreferenceUtil;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.commonsdk.UMConfigure;

@@ -125,10 +125,12 @@ public class CalendarActivity extends ToolbarActivity {
      * @param url
      */
     public void setCalendarDrawee(String url) {
-        float ratio = (float) (imgWidth) / (float) (imgHeight);
-        Logger.d(ratio + "");
-        mDraweeView.setAspectRatio(ratio);
-        mDraweeView.setImageURI(Uri.parse(url));
+        if (imgHeight != 0) {
+            float ratio = (float) (imgWidth) / (float) (imgHeight);
+            Logger.d(ratio + "");
+            mDraweeView.setAspectRatio(ratio);
+            mDraweeView.setImageURI(Uri.parse(url));
+        }
     }
 
 
@@ -143,10 +145,12 @@ public class CalendarActivity extends ToolbarActivity {
 
     public void getImgSize(String size) {
         int index = size.indexOf("x");
-        String heightStr = size.substring(index + 1, size.length());
-        String widthStr = size.substring(0, index);
-        imgWidth = Integer.valueOf(widthStr);
-        imgHeight = Integer.valueOf(heightStr);
+        if(index != -1) {
+            String heightStr = size.substring(index + 1, size.length());
+            String widthStr = size.substring(0, index);
+            imgWidth = Integer.valueOf(widthStr);
+            imgHeight = Integer.valueOf(heightStr);
+        }
     }
 
     @Override

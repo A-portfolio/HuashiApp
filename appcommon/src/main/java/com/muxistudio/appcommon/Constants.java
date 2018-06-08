@@ -58,11 +58,12 @@ public class Constants {
     };
 
     public static final String[] CREDIT_CATEGORY = {
-            "专业必修课",
+            "个性发展课程",
             "专业选修课",
             "通识必修课",
             "通识选修课",
             "通识核心课",
+            "专业主干课"
     };
 
     public static final String[] TERMS = {
