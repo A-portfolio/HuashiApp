@@ -86,15 +86,9 @@
         <item name="android:scrollHorizontally">true</item>
     </style>
 
-    <style name="BottomDialogStyle" parent="@android:style/Theme.Dialog">
-        <item name="android:windowAnimationStyle">@style/BottomDialogAnimation</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
 
-    <style name="BottomDialogAnimation">
-        <item name="android:windowEnterAnimation">@anim/dialog_show</item>
-        <item name="android:windowExitAnimation">@anim/dialog_dismiss</item>
-    </style>
+
+
 
     <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="android:textColorPrimary">@color/colorAccent</item>
@@ -107,12 +101,6 @@
         <item name="android:windowIsFloating">false</item>
     </style>
 
-    <style name="FullScreenDialogStyle" parent="@style/Theme.AppCompat.Dialog.Alert">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowIsFloating">false</item>
-        <!--<item name="android:windowBackground">#7F333333</item>-->
-    </style>
 
     <style name="CenterDialogStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>

@@ -4,54 +4,48 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.Constants;
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.common.util.DateUtil;
+import com.muxistudio.common.util.PreferenceUtil;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.util.DateUtil;
-import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.TimeTableUtil;
+import net.muxi.huashiapp.utils.TimeTableUtil;
 
 import java.util.Date;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by december on 17/2/1.
  */
 
 public class StudyRoomActivity extends ToolbarActivity {
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.tv_study_time)
-    TextView mTvStudyTime;
-    @BindView(R.id.tv_study_area)
-    TextView mTvStudyArea;
-    @BindView(R.id.btn_search)
-    Button mBtnSearch;
-    @BindView(R.id.tv_time)
-    TextView mTvTime;
-    @BindView(R.id.tv_area)
-    TextView mTvArea;
-    @BindView(R.id.study_layout)
-    RelativeLayout mStudyLayout;
+
+    private RelativeLayout mStudyLayout;
+    private ImageView mIvTimeChoice;
+    private TextView mTvTime;
+    private TextView mTvStudyTime;
+    private ImageView mIvAreaChoice;
+    private TextView mTvArea;
+    private TextView mTvStudyArea;
+    private Button mBtnSearch;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, StudyRoomActivity.class);
         context.startActivity(starter);
     }
-    private static String  DAYS[]= {"周一","周二","周三","周四","周五","周六","周日"};
+
+    private static String DAYS[] = {"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
     private int mWeek;
     private int mDay;
     private String area;
@@ -64,7 +58,6 @@ public class StudyRoomActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_studyroom);
-        ButterKnife.bind(this);
         setTitle("空闲教室");
         sp = new PreferenceUtil();
         mWeek = TimeTableUtil.getCurWeek();
@@ -74,8 +67,22 @@ public class StudyRoomActivity extends ToolbarActivity {
     }
 
     private void initView() {
-        mTvStudyTime.setText("第"+mWeek+"周"+DAYS[mDay-1]);
+        mStudyLayout = findViewById(R.id.study_layout);
+        mIvTimeChoice = findViewById(R.id.iv_time_choice);
+        mTvTime = findViewById(R.id.tv_time);
+        mTvStudyTime = findViewById(R.id.tv_study_time);
+        mIvAreaChoice = findViewById(R.id.iv_area_choice);
+        mTvArea = findViewById(R.id.tv_area);
+        mTvStudyArea = findViewById(R.id.tv_study_area);
+        mBtnSearch = findViewById(R.id.btn_search);
+        mTvTime.setOnClickListener(v -> onClick(v));
+        mTvStudyTime.setOnClickListener(v -> onClick(v));
+        mTvArea.setOnClickListener(v -> onClick(v));
+        mTvStudyArea.setOnClickListener(v -> onClick(v));
+        mBtnSearch.setOnClickListener(v -> onClick(v));
+        mTvStudyTime.setText("第" + mWeek + "周" + DAYS[mDay - 1]);
         mTvStudyArea.setText("7号楼");
+
     }
 
     @Override
@@ -97,33 +104,27 @@ public class StudyRoomActivity extends ToolbarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.tv_time, R.id.tv_study_time, R.id.tv_area, R.id.tv_study_area, R.id.btn_search})
     public void onClick(View view) {
+        int id = view.getId();
         Intent intent;
-        switch (view.getId()) {
-            case R.id.tv_time:
-            case R.id.tv_study_time:
-                mDialogFragment = StudyTimePickerDialogFragment.newInstance(mWeek, mDay);
-                mDialogFragment.show(getSupportFragmentManager(), "picker_time");
-                mDialogFragment.setOnPositiveButtonClickListener((week, day) -> {
-                    mTvStudyTime.setText(String.format("第%d周周%s", week + 1, Constants.WEEKDAYS[day]));
-                });
-                break;
-            case R.id.tv_area:
-            case R.id.tv_study_area:
-                intent = new Intent();
-                intent.setClass(StudyRoomActivity.this, StudyAreaOptionActivity.class);
-                startActivityForResult(intent, 0);
-                break;
-            case R.id.btn_search:
-                if (mTvStudyTime.getText().length() != 0 && mTvStudyArea.getText().length() != 0) {
-                    mQuery = mTvStudyTime.getText().toString() + mTvStudyArea.getText().toString();
-                    sp.saveString(PreferenceUtil.STUDY_ROOM_QUERY_STRING, mQuery);
-                    StudyRoomDetailActivity.start(StudyRoomActivity.this, mQuery);
-                    break;
-                } else {
-                    showErrorSnackbarShort("请填写完整信息");
-                }
+        if (id == R.id.tv_time || id == R.id.tv_study_time) {
+            mDialogFragment = StudyTimePickerDialogFragment.newInstance(mWeek, mDay);
+            mDialogFragment.show(getSupportFragmentManager(), "picker_time");
+            mDialogFragment.setOnPositiveButtonClickListener((week, day) -> {
+                mTvStudyTime.setText(String.format("第%d周周%s", week + 1, Constants.WEEKDAYS[day]));
+            });
+        } else if (id == R.id.tv_area || id == R.id.tv_study_area) {
+            intent = new Intent();
+            intent.setClass(StudyRoomActivity.this, StudyAreaOptionActivity.class);
+            startActivityForResult(intent, 0);
+        } else if (id == R.id.btn_search) {
+            if (mTvStudyTime.getText().length() != 0 && mTvStudyArea.getText().length() != 0) {
+                mQuery = mTvStudyTime.getText().toString() + mTvStudyArea.getText().toString();
+                sp.saveString(PreferenceUtil.STUDY_ROOM_QUERY_STRING, mQuery);
+                StudyRoomDetailActivity.start(StudyRoomActivity.this, mQuery);
+            } else {
+                showErrorSnackbarShort("请填写完整信息");
+            }
         }
     }
 

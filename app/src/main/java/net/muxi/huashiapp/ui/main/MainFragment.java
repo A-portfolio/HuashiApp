@@ -9,31 +9,33 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.google.gson.Gson;
-import com.tencent.android.tpush.XGIOperateCallback;
-import com.tencent.android.tpush.XGPushConfig;
-import com.tencent.android.tpush.XGPushManager;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import net.muxi.huashiapp.App;
+import com.muxistudio.appcommon.RxBus;
+import com.muxistudio.appcommon.appbase.BaseAppFragment;
+import com.muxistudio.appcommon.data.BannerData;
+import com.muxistudio.appcommon.data.Hint;
+import com.muxistudio.appcommon.data.ItemData;
+import com.muxistudio.appcommon.data.ProductData;
+import com.muxistudio.appcommon.db.HuaShiDao;
+import com.muxistudio.appcommon.event.LoginSuccessEvent;
+import com.muxistudio.appcommon.event.RefreshBanner;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.appcommon.utils.FrescoUtil;
+import com.muxistudio.appcommon.utils.VibratorUtil;
+import com.muxistudio.common.util.ACache;
+import com.muxistudio.common.util.DateUtil;
+import com.muxistudio.common.util.DimensUtil;
+import com.muxistudio.common.util.Logger;
+import com.muxistudio.common.util.NetUtil;
+import com.muxistudio.common.util.PreferenceUtil;
+import com.umeng.analytics.MobclickAgent;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.common.base.BaseFragment;
-import net.muxi.huashiapp.common.data.BannerData;
-import net.muxi.huashiapp.common.data.Hint;
-import net.muxi.huashiapp.common.data.ItemData;
-import net.muxi.huashiapp.common.data.ProductData;
-import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.event.LoginSuccessEvent;
-import net.muxi.huashiapp.event.RefreshBanner;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.CalendarActivity;
 import net.muxi.huashiapp.ui.MoreActivity;
 import net.muxi.huashiapp.ui.apartment.ApartmentActivity;
@@ -49,17 +51,13 @@ import net.muxi.huashiapp.ui.studyroom.StudyRoomBlankActivity;
 import net.muxi.huashiapp.ui.timeTable.CourseAuditSearchActivity;
 import net.muxi.huashiapp.ui.website.WebsiteActivity;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
-import net.muxi.huashiapp.util.ACache;
-import net.muxi.huashiapp.util.AppStaticUtils;
-import net.muxi.huashiapp.util.DateUtil;
-import net.muxi.huashiapp.util.DimensUtil;
-import net.muxi.huashiapp.util.FrescoUtil;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.NetStatus;
-import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.TipViewUtil;
-import net.muxi.huashiapp.util.VibratorUtil;
+import net.muxi.huashiapp.utils.TipViewUtil;
 import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -69,12 +67,8 @@ import rx.schedulers.Schedulers;
  * Created by ybao on 17/1/25.
  */
 
-public class MainFragment extends BaseFragment implements MyItemTouchCallback.OnDragListener {
+public class MainFragment extends BaseAppFragment implements MyItemTouchCallback.OnDragListener {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
     private MainAdapter mMainAdapter;
     private ItemTouchHelper itemTouchHelper;
     private List<ItemData> mItemDatas = new ArrayList<ItemData>();
@@ -90,6 +84,8 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     public static final String CARD_ACTIVITY = "card";
     public static final String CREDIT_ACTIVITY = "credit";
     public static final String COURSE_AUDIT_SEARCH_ACTIVITY = "course_search";
+    private Toolbar mToolbar;
+    private RecyclerView mRecyclerView;
 
 
     public static MainFragment newInstance() {
@@ -101,6 +97,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setData();
+
         RxBus.getDefault().toObservable(LoginSuccessEvent.class)
                 .subscribe(loginSuccessEvent -> {
                     switch (loginSuccessEvent.targetActivityName) {
@@ -126,9 +123,9 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        ButterKnife.bind(this, view);
+        mToolbar = view.findViewById(R.id.toolbar);
+        mRecyclerView = view.findViewById(R.id.recycler_view);
         mToolbar.setTitle("华师匣子");
-        //initXGPush();
         sp = new PreferenceUtil();
         dao = new HuaShiDao();
         mBannerDatas = dao.loadBannerData();
@@ -138,6 +135,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                     refresh();
                 }, throwable -> throwable.printStackTrace());
         initHintView();
+//        initBulletin();
         initView();
         getHint();
         if (mProductData == null) {
@@ -151,26 +149,6 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
         return view;
     }
 
-    private void initXGPush() {
-        XGPushConfig.enableDebug(getActivity(), true);
-        XGPushConfig.getToken(getActivity());
-        XGPushManager.registerPush(App.sContext, "users"
-                , new XGIOperateCallback() {
-                    @Override
-                    public void onSuccess(Object data, int i) {
-                        Log.d("TPush", "注册成功，设备token为：" + data);
-
-                    }
-
-                    @Override
-                    public void onFail(Object data, int errCode, String msg) {
-                        Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
-
-                    }
-                });
-    }
-
-
     private void setData() {
         ArrayList<ItemData> items = (ArrayList<ItemData>) ACache.get(getContext()).getAsObject("items");
         if (items != null) {
@@ -182,7 +160,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
             mItemDatas.add(new ItemData("校园卡", R.drawable.ic_card + "", false));
             mItemDatas.add(new ItemData("算学分", R.drawable.ic_credit + "", false));
             mItemDatas.add(new ItemData("空闲教室", R.drawable.ic_empty_room + "", false));
-            mItemDatas.add(new ItemData("蹭课",R.drawable.ic_course_audit+"",false));
+            mItemDatas.add(new ItemData("蹭课", R.drawable.ic_course_audit + "", false));
             mItemDatas.add(new ItemData("部门信息", R.drawable.ic_apartment + "", false));
             mItemDatas.add(new ItemData("校历", R.drawable.ic_calendar + "", false));
             mItemDatas.add(new ItemData("常用网站", R.drawable.ic_net + "", false));
@@ -203,12 +181,11 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
             indicatedView1.setTipViewText("新加入了蹭课功能哟!");
             TipViewUtil.addToContent(getContext(), indicatedView1, DIRECTION_UP,
                     DimensUtil.getScreenWidth() / 4,
-                    (DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight())/2);
+                    (DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight()) / 2);
             sp.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN, false);
             return;
         }
     }
-
 
     private void initView() {
         final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
@@ -217,8 +194,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
             @Override
             public int getSpanSize(int position) {
                 return (mMainAdapter.isHintPosition(position)
-                        ||mMainAdapter.isBannerPosition(position)
-                        || mMainAdapter.isFooterPosition(
+                        || mMainAdapter.isBannerPosition(position) || mMainAdapter.isFooterPosition(
                         position) ? layoutManager.getSpanCount() : 1);
             }
         });
@@ -244,19 +220,23 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
             public void onItemClick(RecyclerView.ViewHolder vh) {
                 if (vh.getLayoutPosition() != 0
                         && vh.getLayoutPosition() != mItemDatas.size() + 1) {
-                    ItemData itemData = mItemDatas.get(vh.getLayoutPosition() - MainAdapter.ITEM);
+                    int index = vh.getLayoutPosition() - MainAdapter.ITEM;
+                    if(index < 0) return;
+
+                    ItemData itemData = mItemDatas.get(index);
                     switch (itemData.getName()) {
                         case "成绩":
-                            if (TextUtils.isEmpty(App.sUser.getSid())) {
+                            if (TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().getSid())) {
                                 LoginActivity.start(getActivity(), "info", SCORE_ACTIVITY);
                             } else {
                                 ScoreSelectActivity.start(getActivity());
                             }
-                            AppStaticUtils.onEvent(getActivity(),"score_query");
+                            MobclickAgent.onEvent(getActivity(), "score_query");
+                            ;
                             break;
                         case "校园通知":
                             NewsActivity.start(getActivity());
-                            AppStaticUtils.onEvent(getActivity(),"notice_info_query");
+                            MobclickAgent.onEvent(getActivity(), "notice_info_query");
                             break;
                         case "电费":
                             String eleQuery = sp.getString(PreferenceUtil.ELE_QUERY_STRING);
@@ -265,23 +245,23 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 ElectricityDetailActivity.start(getActivity(), eleQuery);
                             }
-                            AppStaticUtils.onEvent(getActivity(),"ele_fee_query");
+                            MobclickAgent.onEvent(getActivity(), "ele_fee_query");
                             break;
                         case "校园卡":
-                            if (TextUtils.isEmpty(App.sUser.getSid())) {
+                            if (TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().getSid())) {
                                 LoginActivity.start(getActivity(), "info", CARD_ACTIVITY);
                             } else {
                                 CardActivity.start(getActivity());
                             }
-                            AppStaticUtils.onEvent(getActivity(),"card_query");
+                            MobclickAgent.onEvent(getActivity(), "card_query");
                             break;
                         case "算学分":
-                            if (TextUtils.isEmpty(App.sUser.getSid())) {
+                            if (TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().getSid())) {
                                 LoginActivity.start(getActivity(), "info", CREDIT_ACTIVITY);
                             } else {
                                 SelectCreditActivity.start(getActivity());
                             }
-                            AppStaticUtils.onEvent(getActivity(),"average_credit_query");
+                            MobclickAgent.onEvent(getActivity(), "average_credit_query");
                             break;
                         case "空闲教室":
                             String today = DateUtil.getWeek(new Date());
@@ -290,19 +270,19 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                             } else {
                                 StudyRoomActivity.start(getActivity());
                             }
-                            AppStaticUtils.onEvent(getActivity(),"spare_room_query");
+                            MobclickAgent.onEvent(getActivity(), "spare_room_query");
                             break;
                         case "部门信息":
                             ApartmentActivity.start(getActivity());
-                            AppStaticUtils.onEvent(getActivity(),"apartment_info_query");
+                            MobclickAgent.onEvent(getActivity(), "apartment_info_query");
                             break;
                         case "校历":
                             CalendarActivity.start(getActivity());
-                            AppStaticUtils.onEvent(getActivity(),"calendar_hand_in");
+                            MobclickAgent.onEvent(getActivity(), "calendar_hand_in");
                             break;
                         case "常用网站":
                             WebsiteActivity.start(getActivity());
-                            AppStaticUtils.onEvent(getActivity(),"frequent_web_query");
+                            MobclickAgent.onEvent(getActivity(), "frequent_web_query");
                             break;
                         case "学而":
                             Intent intent = WebViewActivity.newIntent(getActivity(), mProductData.get_product().get(0).getUrl(),
@@ -310,14 +290,14 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                                     mProductData.get_product().get(0).getIntro(),
                                     mProductData.get_product().get(0).getIcon());
                             startActivity(intent);
-                            AppStaticUtils.onEvent(getActivity(),"xueer");
+                            MobclickAgent.onEvent(getActivity(), "xueer");
                             break;
                         case "蹭课":
-                            if(TextUtils.isEmpty(App.sUser.getSid())){
-                                LoginActivity.start(getActivity(),"info",COURSE_AUDIT_SEARCH_ACTIVITY   );
-                            }else {
+                            if (TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().getSid())) {
+                                LoginActivity.start(getActivity(), "info", COURSE_AUDIT_SEARCH_ACTIVITY);
+                            } else {
                                 CourseAuditSearchActivity.start(getActivity());
-                                AppStaticUtils.onEvent(getActivity(), "course_audit");
+                                MobclickAgent.onEvent(getActivity(), "course_audit");
                             }
                             break;
                         case "更多":
@@ -328,6 +308,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                 }
             }
         });
+
     }
 
     //更新首页视图
@@ -339,7 +320,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                         productData.get_product().get(i).getIcon(), true));
             }
             mItemDatas.addAll(mItemDatas.size() - 1, itemDataList);
-            mMainAdapter.swapItems( mItemDatas);
+            mMainAdapter.swapItems(mItemDatas);
         }
 
     }
@@ -372,7 +353,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     }
 
     private void getBannerData() {
-        if (NetStatus.isConnected()) {
+        if (NetUtil.isConnected()) {
             CampusFactory.getRetrofitService().getBanner()
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.newThread())
@@ -380,13 +361,15 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                         @Override
                         public void onCompleted() {
                         }
+
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
                         }
+
                         @Override
                         public void onNext(List<BannerData> bannerDatas) {
-                           if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(
+                            if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(
                                     mBannerDatas) || bannerDatas.size() != mBannerDatas.size()) {
                                 mBannerDatas.clear();
                                 mBannerDatas.addAll(bannerDatas);
@@ -404,7 +387,7 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
     }
 
     private void getHint() {
-        if (NetStatus.isConnected()) {
+        if (NetUtil.isConnected()) {
             CampusFactory.getRetrofitService()
                     .getHint()
                     .subscribeOn(Schedulers.io())
@@ -416,10 +399,11 @@ public class MainFragment extends BaseFragment implements MyItemTouchCallback.On
                         mRecyclerView.invalidate();
                     }, Throwable::printStackTrace, () -> {
                     });
-        }else{
+        } else {
             initView();
         }
     }
+
     public void refresh() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();

@@ -1,32 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="72dp"
               android:layout_marginLeft="16dp"
               android:layout_marginRight="16dp"
               android:background="?android:attr/selectableItemBackground"
               android:orientation="vertical"
-              android:paddingRight="16dp"
-              android:paddingLeft="72dp">
+              >
 
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_book_search_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <TextView
+        android:layout_marginTop="10dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="72dp"
         android:id="@+id/tv_book"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:paddingTop="18dp"
         android:lines="1"
         android:ellipsize="end"
         android:text="feng"
         android:textColor="?android:attr/textColorPrimary"/>
 
     <TextView
+        android:layout_marginTop="10dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="72dp"
         android:id="@+id/tv_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:paddingTop="2dp"
         android:text="feng"
         android:lines="1"
         android:textSize="10sp"
     />
 
-</LinearLayout>
+</RelativeLayout>

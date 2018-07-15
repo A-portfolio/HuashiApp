@@ -11,15 +11,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
+import android.widget.TextView;
+
+import com.muxistudio.common.util.DimensUtil;
+import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.SuggestionActivity;
-import net.muxi.huashiapp.util.DimensUtil;
-import net.muxi.huashiapp.util.Logger;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static net.muxi.huashiapp.widget.BaseDetailLayout.DISTANCE_TO_SLIDE;
 
@@ -28,13 +26,6 @@ import static net.muxi.huashiapp.widget.BaseDetailLayout.DISTANCE_TO_SLIDE;
  */
 
 public class StudyRoomCorrectView extends RelativeLayout {
-
-
-    @BindView(R.id.btn_feedback)
-    Button mBtnFeedback;
-    @BindView(R.id.view_close_btn)
-    ImageView mViewCloseBtn;
-
 
     private Context mContext;
 
@@ -46,6 +37,10 @@ public class StudyRoomCorrectView extends RelativeLayout {
     private Scroller mScroller;
 
     private VelocityTracker mVelocityTracker;
+    private ImageView mViewCloseBtn;
+    private TextView mTvTitle;
+    private TextView mTvContent;
+    private Button mBtnFeedback;
 
     public StudyRoomCorrectView(Context context) {
         super(context);
@@ -53,22 +48,18 @@ public class StudyRoomCorrectView extends RelativeLayout {
         Logger.d(mType);
         mScroller = new Scroller(context);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_study_room_correct, this, true);
-        ButterKnife.bind(this, view);
-
+        initView(view);
     }
 
-    @OnClick({R.id.view_close_btn, R.id.btn_feedback})
     public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.view_close_btn:
-                removeAllViews();
-                break;
-            case R.id.btn_feedback:
-                Intent intent = new Intent();
-                intent.setClass(mContext, SuggestionActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
-                break;
+        int id = view.getId();
+        if (id == R.id.view_close_btn) {
+            removeAllViews();
+        } else if (id == R.id.btn_feedback) {
+            Intent intent = new Intent();
+            intent.setClass(mContext, SuggestionActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
         }
     }
 
@@ -129,4 +120,12 @@ public class StudyRoomCorrectView extends RelativeLayout {
     }
 
 
+    private void initView(View view) {
+        mViewCloseBtn = view.findViewById(R.id.view_close_btn);
+        mTvTitle = view.findViewById(R.id.tv_title);
+        mTvContent = view.findViewById(R.id.tv_content);
+        mBtnFeedback = view.findViewById(R.id.btn_feedback);
+        mViewCloseBtn.setOnClickListener(v -> onViewClicked(v));
+        mBtnFeedback.setOnClickListener(v -> onViewClicked(v));
+    }
 }

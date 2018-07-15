@@ -19,25 +19,17 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Scroller;
 
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.util.DimensUtil;
+import com.muxistudio.appcommon.appbase.BaseAppActivity;
+import com.muxistudio.common.util.DimensUtil;
 
-import butterknife.BindView;
+import net.muxi.huashiapp.R;
 
 /**
  * Created by ybao on 16/5/20.
  */
 public class BaseDetailLayout extends FrameLayout {
 
-    @BindView(R.id.bg_layout)
-    RelativeLayout mBgLayout;
-    @BindView(R.id.scroll_view)
-    ScrollView mScrollView;
-    @BindView(R.id.detail_content_layout)
-    ContentLayout mDetailContentLayout;
-
-    private BaseActivity mContext;
+    private BaseAppActivity mContext;
 
     private View view;
 
@@ -63,23 +55,26 @@ public class BaseDetailLayout extends FrameLayout {
     public static final int DURATION_ANIMATION = 250;
     //能够下拉的的最小滑动距离
     public static final int DISTANCE_TO_SLIDE = DimensUtil.dp2px(80);
+    private ScrollView mScrollView;
+    private RelativeLayout mBgLayout;
+    private ContentLayout mDetailContentLayout;
 
-    public BaseDetailLayout(BaseActivity context) {
+    public BaseDetailLayout(BaseAppActivity context) {
         this(context, null);
     }
 
-    public BaseDetailLayout(BaseActivity context, AttributeSet attrs) {
+    public BaseDetailLayout(BaseAppActivity context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
 
         view = LayoutInflater.from(context).inflate(R.layout.view_base_detail, this, false);
         this.addView(view);
+        mScrollView = view.findViewById(R.id.scroll_view);
+        mDetailContentLayout = view.findViewById(R.id.detail_content_layout);
 
         initToolbar(context);
 
         mScroller = new Scroller(context);
-        mScrollView = (ScrollView) view.findViewById(R.id.scroll_view);
-        mDetailContentLayout = (ContentLayout) view.findViewById(R.id.detail_content_layout);
 
         mScrollView.setVerticalScrollBarEnabled(false);
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -123,7 +118,7 @@ public class BaseDetailLayout extends FrameLayout {
 
 
     public void addToolbar() {
-        FrameLayout.LayoutParams barParams = new FrameLayout.LayoutParams(
+        LayoutParams barParams = new LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 DimensUtil.getActionbarHeight()
         );
@@ -147,7 +142,7 @@ public class BaseDetailLayout extends FrameLayout {
         toolbarState = TOOLBAR_APPEAR;
     }
 
-    public void setContentBackground(Drawable drawable){
+    public void setContentBackground(Drawable drawable) {
         mDetailContentLayout.setBackground(drawable);
     }
 
@@ -171,7 +166,7 @@ public class BaseDetailLayout extends FrameLayout {
                 mContext.onBackPressed();
             }
         });
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+        LayoutParams layoutParams = new LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
@@ -179,9 +174,9 @@ public class BaseDetailLayout extends FrameLayout {
 
     }
 
-    public void setCustomToolbar(Toolbar toolbar){
+    public void setCustomToolbar(Toolbar toolbar) {
         mToolbar = toolbar;
-        if (mToolbar != null){
+        if (mToolbar != null) {
             mToolbar.setNavigationIcon(R.drawable.ic_add_black_24dp);
             mToolbar.setNavigationOnClickListener(new OnClickListener() {
                 @Override
@@ -192,19 +187,19 @@ public class BaseDetailLayout extends FrameLayout {
                         public void run() {
                             BaseDetailLayout.this.removeView(mToolbar);
                         }
-                    },DURATION_ANIMATION);
+                    }, DURATION_ANIMATION);
                     mContext.onBackPressed();
                 }
             });
         }
     }
 
-    public void setToolbarTitle(String title){
+    public void setToolbarTitle(String title) {
         mToolbar.setTitle(title);
     }
 
-    public void setToolbarNavIcon(Drawable icon){
-        if (mToolbar != null){
+    public void setToolbarNavIcon(Drawable icon) {
+        if (mToolbar != null) {
             mToolbar.setNavigationIcon(icon);
         }
     }
@@ -317,4 +312,9 @@ public class BaseDetailLayout extends FrameLayout {
         }
     }
 
+    private void initView(View view) {
+        mScrollView = view.findViewById(R.id.scroll_view);
+        mBgLayout = view.findViewById(R.id.bg_layout);
+        mDetailContentLayout = view.findViewById(R.id.detail_content_layout);
+    }
 }

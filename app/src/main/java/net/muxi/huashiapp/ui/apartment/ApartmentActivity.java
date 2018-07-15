@@ -6,18 +6,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.ApartmentData;
+import com.muxistudio.appcommon.db.HuaShiDao;
+import com.muxistudio.appcommon.net.CampusFactory;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.ApartmentData;
-import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.net.CampusFactory;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -27,18 +25,12 @@ import rx.schedulers.Schedulers;
  */
 public class ApartmentActivity extends ToolbarActivity {
 
-
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-
+    private RecyclerView mRecyclerView;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, ApartmentActivity.class);
         context.startActivity(starter);
     }
-
 
     private HuaShiDao dao;
     private List<ApartmentData> mApartDatas;
@@ -47,7 +39,7 @@ public class ApartmentActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apartment);
-        ButterKnife.bind(this);
+        initView();
         dao = new HuaShiDao();
         //读取宿舍的信息
         mApartDatas = dao.loadApart();
@@ -72,6 +64,7 @@ public class ApartmentActivity extends ToolbarActivity {
                     public void onError(Throwable e) {
                         e.printStackTrace();
                     }
+
                     @Override
                     public void onNext(List<ApartmentData> apartmentDataList) {
                         if (apartmentDataList.size() != mApartDatas.size()) {
@@ -90,5 +83,9 @@ public class ApartmentActivity extends ToolbarActivity {
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+    }
+
+    private void initView() {
+        mRecyclerView = findViewById(R.id.recycler_view);
     }
 }

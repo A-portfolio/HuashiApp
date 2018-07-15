@@ -7,8 +7,9 @@ import android.graphics.Paint;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 
+import com.muxistudio.common.util.DimensUtil;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.DimensUtil;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,9 +1,5 @@
 package net.muxi.huashiapp.ui.timeTable;
 
-import static net.muxi.huashiapp.util.TimeTableUtil.isContinuOusWeeks;
-import static net.muxi.huashiapp.util.TimeTableUtil.isDoubleWeeks;
-import static net.muxi.huashiapp.util.TimeTableUtil.isSingleWeeks;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -18,36 +14,24 @@ import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.widgets.BottomDialogFragment;
+import com.muxistudio.common.util.DimensUtil;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.DimensUtil;
-import net.muxi.huashiapp.widget.BottomDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
+import static net.muxi.huashiapp.utils.TimeTableUtil.isContinuOusWeeks;
+import static net.muxi.huashiapp.utils.TimeTableUtil.isDoubleWeeks;
+import static net.muxi.huashiapp.utils.TimeTableUtil.isSingleWeeks;
 
 /**
  * Created by ybao on 17/2/1.
  */
 
 public class SelectDialogFragment extends BottomDialogFragment {
-
-    @BindView(R.id.tv_single_week)
-    TextView mTvSingleWeek;
-    @BindView(R.id.tv_double_week)
-    TextView mTvDoubleWeek;
-    @BindView(R.id.tv_all_week)
-    TextView mTvAllWeek;
-    @BindView(R.id.grid_layout)
-    GridLayout mGridLayout;
-    @BindView(R.id.btn_cancel)
-    TextView mBtnCancel;
-    @BindView(R.id.btn_enter)
-    TextView mBtnEnter;
 
     private Context mContext;
 
@@ -63,6 +47,12 @@ public class SelectDialogFragment extends BottomDialogFragment {
     public static final int WEEK_MARGIN_HORIZONTAL = DimensUtil.dp2px(12);
 
     public static final int WEEK_LENGTH = 21;
+    private TextView mTvSingleWeek;
+    private TextView mTvDoubleWeek;
+    private TextView mTvAllWeek;
+    private GridLayout mGridLayout;
+    private TextView mBtnCancel;
+    private TextView mBtnEnter;
 
     public static SelectDialogFragment newInstance(ArrayList<Integer> weekList) {
         Bundle args = new Bundle();
@@ -89,10 +79,10 @@ public class SelectDialogFragment extends BottomDialogFragment {
                 if (mTvSingleWeek.getBackground() == null) {
                     setSingleWeeks();
                     setMultiSelectButtonBg();
-                    setMultiWeekTextChecked(mTvSingleWeek,true);
+                    setMultiWeekTextChecked(mTvSingleWeek, true);
                 } else {
                     setAllWeeks(false);
-                    setMultiWeekTextChecked(mTvSingleWeek,false);
+                    setMultiWeekTextChecked(mTvSingleWeek, false);
                 }
             }
         });
@@ -103,10 +93,10 @@ public class SelectDialogFragment extends BottomDialogFragment {
                 if (mTvDoubleWeek.getBackground() == null) {
                     setDoubleWeeks();
                     setMultiSelectButtonBg();
-                    setMultiWeekTextChecked(mTvDoubleWeek,true);
+                    setMultiWeekTextChecked(mTvDoubleWeek, true);
                 } else {
                     setAllWeeks(false);
-                    setMultiWeekTextChecked(mTvDoubleWeek,false);
+                    setMultiWeekTextChecked(mTvDoubleWeek, false);
                 }
             }
         });
@@ -116,10 +106,10 @@ public class SelectDialogFragment extends BottomDialogFragment {
                 if (mTvAllWeek.getBackground() == null) {
                     setAllWeeks(true);
                     setMultiSelectButtonBg();
-                    setMultiWeekTextChecked(mTvAllWeek,true);
+                    setMultiWeekTextChecked(mTvAllWeek, true);
                 } else {
                     setAllWeeks(false);
-                    setMultiWeekTextChecked(mTvAllWeek,false);
+                    setMultiWeekTextChecked(mTvAllWeek, false);
                 }
             }
         });
@@ -152,9 +142,9 @@ public class SelectDialogFragment extends BottomDialogFragment {
                         view.setBackground(null);
                         ((TextView) view).setTextColor(getResources().getColor(R.color.hintColor));
                     }
-                    setMultiWeekTextChecked(mTvSingleWeek,false);
-                    setMultiWeekTextChecked(mTvAllWeek,false);
-                    setMultiWeekTextChecked(mTvDoubleWeek,false);
+                    setMultiWeekTextChecked(mTvSingleWeek, false);
+                    setMultiWeekTextChecked(mTvAllWeek, false);
+                    setMultiWeekTextChecked(mTvDoubleWeek, false);
                 }
             });
         }
@@ -165,7 +155,7 @@ public class SelectDialogFragment extends BottomDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         weekList = getArguments().getIntegerArrayList("weeks");
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_multi_week, null);
-        ButterKnife.bind(this, view);
+        initView(view);
         initWeekLayout();
         Dialog dialog = createBottomDialog(view);
         return dialog;
@@ -177,19 +167,16 @@ public class SelectDialogFragment extends BottomDialogFragment {
         mContext = context;
     }
 
-    @OnClick({R.id.btn_cancel, R.id.btn_enter})
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_cancel:
-                this.dismiss();
-                break;
-            case R.id.btn_enter:
-                this.dismiss();
-                if (mPositiveButtonClickListener != null) {
-                    mPositiveButtonClickListener.onPositiveButtonClickListener(getWeekList(),
-                            getDisplayWeeks());
-                }
-                break;
+        int id = view.getId();
+        if (id == R.id.btn_cancel) {
+            this.dismiss();
+        } else if (id == R.id.btn_enter) {
+            this.dismiss();
+            if (mPositiveButtonClickListener != null) {
+                mPositiveButtonClickListener.onPositiveButtonClickListener(getWeekList(),
+                        getDisplayWeeks());
+            }
         }
     }
 
@@ -201,17 +188,17 @@ public class SelectDialogFragment extends BottomDialogFragment {
         if (isSingleWeeks(weekList)) {
             start = weekList.get(0);
             end = weekList.get(weekList.size() - 1) + 1;
-            s = String.format("%d-%d周单",start,end);
+            s = String.format("%d-%d周单", start, end);
         } else if (isDoubleWeeks(weekList)) {
             start = weekList.get(0) - 1;
             end = weekList.get(weekList.size() - 1);
-            s = String.format("%d-%d周双",start,end);
+            s = String.format("%d-%d周双", start, end);
         } else if (isContinuOusWeeks(weekList)) {
             start = weekList.get(0);
             end = weekList.get(weekList.size() - 1);
-            s = String.format("%d-%d周",start,end);
-        }else {
-            s = TextUtils.join(",",weekList);
+            s = String.format("%d-%d周", start, end);
+        } else {
+            s = TextUtils.join(",", weekList);
             s += "周";
         }
         return s;
@@ -231,17 +218,17 @@ public class SelectDialogFragment extends BottomDialogFragment {
      * 设置所有多选按钮的背景
      */
     public void setMultiSelectButtonBg() {
-        setMultiWeekTextChecked(mTvSingleWeek,false);
-        setMultiWeekTextChecked(mTvDoubleWeek,false);
-        setMultiWeekTextChecked(mTvAllWeek,false);
+        setMultiWeekTextChecked(mTvSingleWeek, false);
+        setMultiWeekTextChecked(mTvDoubleWeek, false);
+        setMultiWeekTextChecked(mTvAllWeek, false);
     }
 
     public void setSingleWeeks() {
         for (int i = 0; i < 21; i++) {
             if (i % 2 == 0) {
-                setWeekTextChecked(mTvWeeks[i],true);
+                setWeekTextChecked(mTvWeeks[i], true);
             } else {
-                setWeekTextChecked(mTvWeeks[i],false);
+                setWeekTextChecked(mTvWeeks[i], false);
             }
         }
     }
@@ -249,9 +236,9 @@ public class SelectDialogFragment extends BottomDialogFragment {
     public void setDoubleWeeks() {
         for (int i = 0; i < WEEK_LENGTH; i++) {
             if (i % 2 == 0) {
-                setWeekTextChecked(mTvWeeks[i],false);
+                setWeekTextChecked(mTvWeeks[i], false);
             } else {
-                setWeekTextChecked(mTvWeeks[i],true);
+                setWeekTextChecked(mTvWeeks[i], true);
             }
         }
     }
@@ -259,23 +246,24 @@ public class SelectDialogFragment extends BottomDialogFragment {
     public void setAllWeeks(boolean b) {
         for (int i = 0; i < WEEK_LENGTH; i++) {
             if (b) {
-                setWeekTextChecked(mTvWeeks[i],true);
+                setWeekTextChecked(mTvWeeks[i], true);
             } else {
-                setWeekTextChecked(mTvWeeks[i],false);
+                setWeekTextChecked(mTvWeeks[i], false);
             }
         }
     }
 
     /**
      * 设置周 tv 的颜色和背景
+     *
      * @param textView
      * @param checked
      */
-    public void setWeekTextChecked(TextView textView,boolean checked){
-        if (checked){
+    public void setWeekTextChecked(TextView textView, boolean checked) {
+        if (checked) {
             textView.setBackgroundResource(R.drawable.bg_selected_week);
             textView.setTextColor(Color.WHITE);
-        }else {
+        } else {
             textView.setBackground(null);
             textView.setTextColor(getResources().getColor(R.color.hintColor));
         }
@@ -283,14 +271,15 @@ public class SelectDialogFragment extends BottomDialogFragment {
 
     /**
      * 设置多选周tv 的颜色和背景
+     *
      * @param textView
      * @param checked
      */
-    public void setMultiWeekTextChecked(TextView textView,boolean checked){
-        if (checked){
+    public void setMultiWeekTextChecked(TextView textView, boolean checked) {
+        if (checked) {
             textView.setBackgroundResource(R.drawable.bg_multi_select);
             textView.setTextColor(Color.WHITE);
-        }else {
+        } else {
             textView.setBackground(null);
             textView.setTextColor(getResources().getColor(R.color.hintColor));
         }
@@ -299,6 +288,17 @@ public class SelectDialogFragment extends BottomDialogFragment {
     public void setOnPositiveButtonClickListener(
             PositiveButtonClickListener positiveButtonClickListener) {
         mPositiveButtonClickListener = positiveButtonClickListener;
+    }
+
+    private void initView(View view) {
+        mTvSingleWeek = view.findViewById(R.id.tv_single_week);
+        mTvDoubleWeek = view.findViewById(R.id.tv_double_week);
+        mTvAllWeek = view.findViewById(R.id.tv_all_week);
+        mGridLayout = view.findViewById(R.id.grid_layout);
+        mBtnCancel = view.findViewById(R.id.btn_cancel);
+        mBtnEnter = view.findViewById(R.id.btn_enter);
+        mBtnCancel.setOnClickListener(v -> onClick(v));
+        mBtnEnter.setOnClickListener(v -> onClick(v));
     }
 
     public interface PositiveButtonClickListener {

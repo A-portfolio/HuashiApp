@@ -11,10 +11,11 @@ import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.Scroller;
 
+import com.muxistudio.appcommon.data.Course;
+import net.muxi.huashiapp.utils.TimeTableUtil;
+import com.muxistudio.common.util.DimensUtil;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.util.DimensUtil;
-import net.muxi.huashiapp.util.TimeTableUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

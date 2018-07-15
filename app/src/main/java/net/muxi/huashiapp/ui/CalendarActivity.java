@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,19 +14,17 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.CalendarData;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.utils.FrescoUtil;
+import com.muxistudio.common.util.Logger;
+import com.muxistudio.common.util.NetUtil;
+import com.muxistudio.common.util.PreferenceUtil;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.CalendarData;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.more.ShareDialog;
-import net.muxi.huashiapp.util.FrescoUtil;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.NetStatus;
-import net.muxi.huashiapp.util.PreferenceUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -36,18 +33,14 @@ import rx.schedulers.Schedulers;
  * Created by ybao on 16/7/24.
  */
 public class CalendarActivity extends ToolbarActivity {
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.img_empty)
-    ImageView mImgEmpty;
-    @BindView(R.id.tv_empty)
-    TextView mTvEmpty;
-    @BindView(R.id.scroll_view)
-    ScrollView mScrollView;
 
+    private ScrollView mScrollView;
+    private SimpleDraweeView mDrawee;
+    private ImageView mImgEmpty;
+    private TextView mTvEmpty;
 
-    public static void start(Context context){
-        Intent starter = new Intent(context,CalendarActivity.class);
+    public static void start(Context context) {
+        Intent starter = new Intent(context, CalendarActivity.class);
         context.startActivity(starter);
     }
 
@@ -69,7 +62,7 @@ public class CalendarActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-        ButterKnife.bind(this);
+        initView();
         mDraweeView = (SimpleDraweeView) findViewById(R.id.drawee);
 
         sp = new PreferenceUtil();
@@ -83,7 +76,7 @@ public class CalendarActivity extends ToolbarActivity {
                 setCalendarDrawee(sp.getString(PreferenceUtil.CALENDAR_ADDRESS));
             }
         }
-        if (NetStatus.isConnected()) {
+        if (NetUtil.isConnected()) {
             updateImage();
         } else {
             if (lastTime == DEFAULT_TIME) {
@@ -128,13 +121,16 @@ public class CalendarActivity extends ToolbarActivity {
 
     /**
      * 设置校历的图片
+     *
      * @param url
      */
-    public void setCalendarDrawee(String url){
-        float ratio = (float) (imgWidth) / (float) (imgHeight);
-        Logger.d(ratio + "");
-        mDraweeView.setAspectRatio(ratio);
-        mDraweeView.setImageURI(Uri.parse(url));
+    public void setCalendarDrawee(String url) {
+        if (imgHeight != 0) {
+            float ratio = (float) (imgWidth) / (float) (imgHeight);
+            Logger.d(ratio + "");
+            mDraweeView.setAspectRatio(ratio);
+            mDraweeView.setImageURI(Uri.parse(url));
+        }
     }
 
 
@@ -148,8 +144,8 @@ public class CalendarActivity extends ToolbarActivity {
     }
 
     public void getImgSize(String size) {
-        if (size.contains("x")) {
-            int index = size.indexOf("x");
+        int index = size.indexOf("x");
+        if(index != -1) {
             String heightStr = size.substring(index + 1, size.length());
             String widthStr = size.substring(0, index);
             imgWidth = Integer.valueOf(widthStr);
@@ -160,16 +156,23 @@ public class CalendarActivity extends ToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.action_option){
+        if (itemId == R.id.action_option) {
             ShareDialog shareDialog = ShareDialog.newInstance(1);
-            shareDialog.show(getSupportFragmentManager(),"share_dialog");
+            shareDialog.show(getSupportFragmentManager(), "share_dialog");
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_webview,menu);
+        getMenuInflater().inflate(R.menu.menu_webview, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void initView() {
+        mScrollView = findViewById(R.id.scroll_view);
+        mDrawee = findViewById(R.id.drawee);
+        mImgEmpty = findViewById(R.id.img_empty);
+        mTvEmpty = findViewById(R.id.tv_empty);
     }
 }

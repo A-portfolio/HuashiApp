@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -17,22 +18,18 @@ import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.EleRequestData;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.common.util.PreferenceUtil;
 import com.muxistudio.multistatusview.MultiStatusView;
 import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.EleRequestData;
-import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.util.AppStaticUtils;
-import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -41,24 +38,19 @@ import rx.schedulers.Schedulers;
  */
 public class ElectricityDetailActivity extends ToolbarActivity {
 
-
-    @BindView(R.id.tabLayout)
-    TabLayout mTabLayout;
-    @BindView(R.id.viewPager)
-    ViewPager mViewPager;
-    @BindView(R.id.pay_hint)
-    TextView mPayHint;
-    @BindView(R.id.multi_status_view)
-    MultiStatusView mMultiStatusView;
-    @BindView(R.id.ele_detail_layout)
-    RelativeLayout mEleDetailLayout;
-
+    private RelativeLayout mEleDetailLayout;
+    private AppBarLayout mAppBar;
+    private TabLayout mTabLayout;
+    private MultiStatusView mMultiStatusView;
+    private ViewPager mViewPager;
+    private TextView mPayHint;
 
     public static void start(Context context, String query) {
         Intent starter = new Intent(context, ElectricityDetailActivity.class);
         starter.putExtra("query", query);
         context.startActivity(starter);
     }
+
     private static final String PAY_HINT = "电费不足？查看如何微信缴费";
     private PreferenceUtil sp;
     private String mQuery;
@@ -69,7 +61,7 @@ public class ElectricityDetailActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_electricity_detail);
-        ButterKnife.bind(this);
+        initView();
         setTitle("查询结果");
         init();
         sp = new PreferenceUtil();
@@ -177,7 +169,7 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         int itemId = item.getItemId();
         if (itemId == R.id.action_change_room) {
             //其实我也不知道这个事件有什么作用
-            AppStaticUtils.onEvent(this,"ele_fee_change_dom_query");
+            MobclickAgent.onEvent(this, "ele_fee_change_dom_query");
             PreferenceUtil sp = new PreferenceUtil();
             sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
             Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);
@@ -195,7 +187,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         mPayHint.setText(spannableString);
     }
 
-    @OnClick(R.id.pay_hint)
     public void onClick() {
         ElectricityPayHintView view = new ElectricityPayHintView(this);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.view_show);
@@ -216,5 +207,15 @@ public class ElectricityDetailActivity extends ToolbarActivity {
             super.onBackPressed();
         }
 
+    }
+
+    private void initView() {
+        mEleDetailLayout = findViewById(R.id.ele_detail_layout);
+        mAppBar = findViewById(R.id.app_bar);
+        mTabLayout = findViewById(R.id.tabLayout);
+        mMultiStatusView = findViewById(R.id.multi_status_view);
+        mViewPager = findViewById(R.id.viewPager);
+        mPayHint = findViewById(R.id.pay_hint);
+        mPayHint.setOnClickListener(v -> onClick());
     }
 }

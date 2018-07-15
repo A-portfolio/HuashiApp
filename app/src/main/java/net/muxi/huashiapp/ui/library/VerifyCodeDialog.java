@@ -18,37 +18,28 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.RxBus;
+import com.muxistudio.appcommon.event.VerifyCodeSuccessEvent;
+import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.event.VerifyCodeSuccessEvent;
-import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
 import net.muxi.huashiapp.widget.CenterDialogFragment;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class VerifyCodeDialog extends CenterDialogFragment {
-
-    @BindView(R.id.txv_verify)
-    TextView mTxvVerify;
-    @BindView(R.id.btn_retry)
-    Button mBtnRetry;
-    @BindView(R.id.img_verify)
-    ImageView mImgVerify;
-    @BindView(R.id.et_verify)
-    EditText mEtVerify;
-    @BindView(R.id.rl_verify)
-    RelativeLayout mRlVerify;
-    @BindView(R.id.btn_cancel)
-    Button mBtnCancel;
-    @BindView(R.id.btn_enter)
-    Button mBtnEnter;
 
     private static int MAX = 4;
     private static String inputContent;
     private String url = "http://202.114.34.15/reader/captcha.php";
     private InputCompleteListener inputCompleteListener;
     private VerifyCodeDialog.OnPositiveButtonClickListener mOnPositiveButtonClickListener;
+    private RelativeLayout mRlVerify;
+    private TextView mTxvVerify;
+    private ImageView mImgVerify;
+    private Button mBtnRetry;
+    private EditText mEtVerify;
+    private Button mBtnCancel;
+    private Button mBtnEnter;
 
     public static VerifyCodeDialog newInstance() {
         VerifyCodeDialog fragment = new VerifyCodeDialog();
@@ -62,7 +53,7 @@ public class VerifyCodeDialog extends CenterDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_lib_verify, null);
-        ButterKnife.bind(this, view);
+        initView(view);
         showCaptcha(url, getContext());
         setInputCompleteListener(inputCompleteListener);
         setEditTextListener();
@@ -121,6 +112,16 @@ public class VerifyCodeDialog extends CenterDialogFragment {
 
     public void setInputCompleteListener(InputCompleteListener inputCompleteListener) {
         this.inputCompleteListener = inputCompleteListener;
+    }
+
+    private void initView(View view) {
+        mRlVerify = view.findViewById(R.id.rl_verify);
+        mTxvVerify = view.findViewById(R.id.txv_verify);
+        mImgVerify = view.findViewById(R.id.img_verify);
+        mBtnRetry = view.findViewById(R.id.btn_retry);
+        mEtVerify = view.findViewById(R.id.et_verify);
+        mBtnCancel = view.findViewById(R.id.btn_cancel);
+        mBtnEnter = view.findViewById(R.id.btn_enter);
     }
 
     public interface InputCompleteListener {

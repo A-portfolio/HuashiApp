@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="divider">#f5f5f5</color>
+    <color name="colorAccent">#7b79ff</color>
+    <color name="light_dialog_background">#CCFFFFFF</color>
+    <color name="red">#fa3f40</color>
+    <color name="colorBottomDialogText">#B2B2B2</color>
+    <color name="colorWhite">#ffffff</color>
+</resources>

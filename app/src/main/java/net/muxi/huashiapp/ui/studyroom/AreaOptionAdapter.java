@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by december on 17/2/6.
@@ -61,12 +59,11 @@ public class AreaOptionAdapter extends RecyclerView.Adapter<AreaOptionAdapter.My
 
     static class MyOptionViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.study_area_option)
-        TextView mStudyAreaOption;
+        private TextView mStudyAreaOption;
 
         public MyOptionViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            mStudyAreaOption = itemView.findViewById(R.id.study_area_option);
         }
     }
 }

@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import net.muxi.huashiapp.ui.timeTable.LargeSizeNumberPicker;
-import net.muxi.huashiapp.util.UserUtil;
-import net.muxi.huashiapp.widget.BottomPickerDialogFragment;
+import com.muxistudio.appcommon.utils.UserUtil;
+import com.muxistudio.appcommon.widgets.BottomPickerDialogFragment;
 
 /**
  * Created by ybao (ybaovv@gmail.com)

@@ -7,33 +7,41 @@ import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.appcommon.data.AttentionBook;
+import com.muxistudio.appcommon.data.BorrowedBook;
+import com.muxistudio.appcommon.data.CardDailyUse;
+import com.muxistudio.appcommon.data.CardDataEtp;
+import com.muxistudio.appcommon.data.Course;
+import com.muxistudio.appcommon.data.Score;
+import com.muxistudio.appcommon.data.User;
+import com.muxistudio.appcommon.db.HuaShiDao;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.presenter.CardDataPresenter;
+import com.muxistudio.appcommon.presenter.LoginPresenter;
+import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.appcommon.utils.NotifyUtil;
+import com.muxistudio.common.util.DateUtil;
+import com.muxistudio.common.util.Logger;
+import com.muxistudio.common.util.PreferenceUtil;
+
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.AttentionBook;
-import net.muxi.huashiapp.common.data.BorrowedBook;
-import net.muxi.huashiapp.common.data.CardData;
-import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.data.Score;
-import net.muxi.huashiapp.common.data.User;
-import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.net.CampusFactory;
 import net.muxi.huashiapp.ui.card.CardActivity;
 import net.muxi.huashiapp.ui.main.MainActivity;
 import net.muxi.huashiapp.ui.score.ScoreActivity;
-import net.muxi.huashiapp.util.DateUtil;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.NotifyUtil;
-import net.muxi.huashiapp.util.PreferenceUtil;
-import net.muxi.huashiapp.util.TimeTableUtil;
+import net.muxi.huashiapp.utils.TimeTableUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -104,24 +112,23 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 //todo
     private void checkCard() {
-        CampusFactory.getRetrofitService().getCardBalance(mUser.getSid(), "60", "0", "10")
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<CardData>>() {
+        //todo update
+        CardDataPresenter presenter= new CardDataPresenter(null);
+        presenter.getCardObservable().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber() {
                     @Override
-                    public void onCompleted() {
-
-                    }
+                    public void onCompleted() { Logger.d("提醒校园卡消费");}
 
                     @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
+                    public void onError(Throwable e) { e.printStackTrace();}
 
                     @Override
-                    public void onNext(List<CardData> cardDatas) {
+                    public void onNext(Object o) {
+                        CardDataEtp etp = presenter.getCardDataEtp();
+                        CardDailyUse use = (CardDailyUse) o;
+
                         try {
-                            if (Integer.valueOf(cardDatas.get(0).getOutMoney())
+                            if (Integer.valueOf(etp.getModel().getBalance())
                                     < CARD_LEAVE_MONEY) {
                                 NotifyUtil.show(mContext, CardActivity.class,
                                         mContext.getResources().getString(
@@ -139,7 +146,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void checkLib() {
-        CampusFactory.getRetrofitService().getPersonalBook(App.PHPSESSID)
+        CampusFactory.getRetrofitService().getPersonalBook(UserAccountManager.getInstance().getPHPSESSID())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<BorrowedBook>>() {
@@ -173,7 +180,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                         }
                     }
                 });
-        CampusFactory.getRetrofitService().getAttentionBooks(App.sUser.sid)
+        CampusFactory.getRetrofitService().getAttentionBooks(UserAccountManager.getInstance().getInfoUser().sid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(listResponse -> {
@@ -239,11 +246,17 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
+    /**
+     * 有可能用户的cookie会过期,所以在请求之前直接先重新登录一次
+     */
     private void checkScores() {
         judgeYearAndTerm();
-        CampusFactory.getRetrofitService().getScores( mCurYear + "",
-                mCurTerm + "")
-                .subscribeOn(Schedulers.newThread())
+        LoginPresenter loginPresenter = new LoginPresenter();
+        loginPresenter.login(new UserAccountManager().getInfoUser())
+                .subscribeOn(Schedulers.io())
+                .flatMap((Func1<Boolean, Observable<List<Score>>>) aBoolean ->
+                        CampusFactory.getRetrofitService().getScores( mCurYear + "",
+                        mCurTerm + ""))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Score>>() {
                     @Override

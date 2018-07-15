@@ -30,7 +30,7 @@
 #-------------------------------------------定制化区域----------------------------------------------
 #---------------------------------1.实体类---------------------------------
 
--keep class net.muxi.huashiapp.common.data.** { *; }
+-keep class com.muxistudio.appcommon.data.** { *; }
 
 
 #-------------------------------------------------------------------------
@@ -99,11 +99,6 @@
 -dontwarn com.tencent.mm.**
 -keep class com.tencent.mm.sdk.** {*;}
 
-# 信鸽推送
--keep public class * extends android.app.Service
--keep public class * extends android.content.BroadcastReceiver
--keep class com.tencent.android.tpush.**{ *;}
--keep class com.tencent.mid.**{ *;}
 
 #xUtils(保持注解，及使用注解的Activity不被混淆，不然会影响Activity中你使用注解相关的代码无法使用)
 -keep class * extends java.lang.annotation.Annotation {*;}
@@ -587,5 +582,22 @@
 -keepattributes SourceFile,LineNumberTable
 
 
+#----------------------------------------------------------------------------
+
+#---------------------------------ARouter------------------------------------
+
+-keep public class com.alibaba.android.arouter.routes.**{*;}
+-keep class * implements com.alibaba.android.arouter.facade.template.ISyringe{*;}
+
+## 如果使用了 byType 的方式获取 Service，需添加下面规则，保护接口
+#-keep interface * implements com.alibaba.android.arouter.facade.template.IProvider
+#
+## 如果使用了 单类注入，即不定义接口实现 IProvider，需添加下面规则，保护实现
+#-keep class * implements com.alibaba.android.arouter.facade.template.IProvider
+
+#----------------------------------------------------------------------------
+
+#---------------------------------MiPush------------------------------------
 
 
+ -keep class net.muxi.huashiapp.HuashiPushMessageReceiver {*;}

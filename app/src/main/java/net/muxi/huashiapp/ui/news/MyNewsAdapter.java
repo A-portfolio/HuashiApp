@@ -4,17 +4,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.data.News;
+import com.muxistudio.common.util.NoDoubleClickUtil;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.News;
-import net.muxi.huashiapp.util.NoDoubleClickUtil;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by december on 16/5/18.
@@ -23,13 +23,17 @@ import butterknife.ButterKnife;
 public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsViewHolder> {
 
 
-
     private List<News> mNewsList;
 
     private OnItemClickListener mOnItemClickListener;
 
+
+    private void initView(View view) {
+
+    }
+
     public interface OnItemClickListener {
-        void OnItemClick(View view, List<News> newsList,int position);
+        void OnItemClick(View view, List<News> newsList, int position);
     }
 
 
@@ -52,7 +56,7 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsView
             @Override
             public void onClick(View v) {
                 if (!NoDoubleClickUtil.isDoubleClick()) {
-                        mOnItemClickListener.OnItemClick(v,mNewsList,position);
+                    mOnItemClickListener.OnItemClick(v, mNewsList, position);
                 }
             }
         });
@@ -69,16 +73,17 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsView
     }
 
     static class MyNewsViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.news_layout)
-        RelativeLayout mNewsLayout;
-        @BindView(R.id.news_info_title)
-        TextView mNewsInfoTitle;
-        @BindView(R.id.news_info_date)
-        TextView mNewsInfoDate;
+        private RelativeLayout mNewsLayout;
+        private ImageView mNewsInfoIcon;
+        private TextView mNewsInfoTitle;
+        private TextView mNewsInfoDate;
 
         public MyNewsViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
+            mNewsLayout = view.findViewById(R.id.news_layout);
+            mNewsInfoIcon = view.findViewById(R.id.news_info_icon);
+            mNewsInfoTitle = view.findViewById(R.id.news_info_title);
+            mNewsInfoDate = view.findViewById(R.id.news_info_date);
         }
 
 

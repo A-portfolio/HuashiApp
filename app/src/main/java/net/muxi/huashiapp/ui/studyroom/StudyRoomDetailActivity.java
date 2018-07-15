@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
@@ -14,17 +13,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.ClassRoom;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.common.util.DimensUtil;
+import com.muxistudio.common.util.Logger;
 import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.ClassRoom;
-import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.util.DimensUtil;
-import net.muxi.huashiapp.util.Logger;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -34,31 +31,23 @@ import rx.schedulers.Schedulers;
 
 public class StudyRoomDetailActivity extends ToolbarActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.grid_classroom_eight)
-    GridLayout mGridClassroomEight;
-    @BindView(R.id.grid_classroom_ten)
-    GridLayout mGridClassroomTen;
-    @BindView(R.id.grid_classroom_twelve)
-    GridLayout mGridClassroomTwelve;
-    @BindView(R.id.grid_classroom_fourteen)
-    GridLayout mGridClassroomFourteen;
-    @BindView(R.id.grid_classroom_sixteen)
-    GridLayout mGridClassroomSixteen;
-    @BindView(R.id.grid_classroom_eighteen)
-    GridLayout mGridClassroomEighteen;
-    @BindView(R.id.grid_classroom_twenty)
-    GridLayout mGridClassroomTwenty;
-    @BindView(R.id.study_detail_layout)
-    RelativeLayout mStudyDetailLayout;
-
-    @BindView(R.id.multi_status_view)
-    MultiStatusView mMultiStatusView;
-
-
     private ClassRoom mClassRoom;
-
+    private RelativeLayout mStudyDetailLayout;
+    private MultiStatusView mMultiStatusView;
+    private TextView mTitleStudyRoomEight;
+    private GridLayout mGridClassroomEight;
+    private TextView mTitleStudyRoomTen;
+    private GridLayout mGridClassroomTen;
+    private TextView mTitleStudyRoomTwelve;
+    private GridLayout mGridClassroomTwelve;
+    private TextView mTitleStudyRoomFourteen;
+    private GridLayout mGridClassroomFourteen;
+    private TextView mTitleStudyRoomSixteen;
+    private GridLayout mGridClassroomSixteen;
+    private TextView mTitleStudyRoomEighteen;
+    private GridLayout mGridClassroomEighteen;
+    private TextView mTitleStudyRoomTwenty;
+    private GridLayout mGridClassroomTwenty;
 
     public static void start(Context context, String query) {
         Intent starter = new Intent(context, StudyRoomDetailActivity.class);
@@ -74,12 +63,12 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
 
     //测试用直接查询
     private String mTest = "第5周周三7号楼";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_studyroom_detail);
-        ButterKnife.bind(this);
-
+        initView();
         setTitle("空闲教室列表");
 
         mQuery = getIntent().getStringExtra("query");
@@ -179,7 +168,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 context2.setText(mClassRoom.getValue3().get(i));
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
 //                params.rightMargin = DimensUtil.dp2px(42f);
-                params.width = 2 * mGridClassroomEight.getWidth() / 7  ;
+                params.width = 2 * mGridClassroomEight.getWidth() / 7;
 //                params.rightMargin = mGridClassroomEight.getWidth() / 5;
                 params.topMargin = DimensUtil.dp2px(16f);
                 mGridClassroomTen.addView(context2, params);
@@ -331,5 +320,24 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
             mStudyDetailLayout.addView(studyRoomCorrectView);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initView() {
+        mStudyDetailLayout = findViewById(R.id.study_detail_layout);
+        mMultiStatusView = findViewById(R.id.multi_status_view);
+        mTitleStudyRoomEight = findViewById(R.id.title_study_room_eight);
+        mGridClassroomEight = findViewById(R.id.grid_classroom_eight);
+        mTitleStudyRoomTen = findViewById(R.id.title_study_room_ten);
+        mGridClassroomTen = findViewById(R.id.grid_classroom_ten);
+        mTitleStudyRoomTwelve = findViewById(R.id.title_study_room_twelve);
+        mGridClassroomTwelve = findViewById(R.id.grid_classroom_twelve);
+        mTitleStudyRoomFourteen = findViewById(R.id.title_study_room_fourteen);
+        mGridClassroomFourteen = findViewById(R.id.grid_classroom_fourteen);
+        mTitleStudyRoomSixteen = findViewById(R.id.title_study_room_sixteen);
+        mGridClassroomSixteen = findViewById(R.id.grid_classroom_sixteen);
+        mTitleStudyRoomEighteen = findViewById(R.id.title_study_room_eighteen);
+        mGridClassroomEighteen = findViewById(R.id.grid_classroom_eighteen);
+        mTitleStudyRoomTwenty = findViewById(R.id.title_study_room_twenty);
+        mGridClassroomTwenty = findViewById(R.id.grid_classroom_twenty);
     }
 }

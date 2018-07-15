@@ -10,17 +10,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
+import com.muxistudio.appcommon.data.News;
+import com.muxistudio.common.util.DimensUtil;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.News;
-import net.muxi.huashiapp.util.DimensUtil;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static net.muxi.huashiapp.widget.BaseDetailLayout.DISTANCE_TO_SLIDE;
 
@@ -28,12 +25,6 @@ import static net.muxi.huashiapp.widget.BaseDetailLayout.DISTANCE_TO_SLIDE;
  * Created by december on 16/7/29.
  */
 public class NewsDetailView extends RelativeLayout {
-
-    @BindView(R.id.news_float_btn)
-    ImageView mNewsFloatBtn;
-    @BindView(R.id.news_content)
-    WebView mNewsContent;
-
 
     private Context mContext;
     private List<News> mNewsList;
@@ -46,6 +37,9 @@ public class NewsDetailView extends RelativeLayout {
     private Scroller mScroller;
 
     private VelocityTracker mVelocityTracker;
+    private RelativeLayout mBackgroundLayout;
+    private ImageView mNewsFloatBtn;
+    private WebView mNewsContent;
 
     public NewsDetailView(Context context, List<News> news, int position) {
         super(context);
@@ -56,7 +50,7 @@ public class NewsDetailView extends RelativeLayout {
         mScroller = new Scroller(context);
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_news_detail, this, true);
-        ButterKnife.bind(this,view);
+        initView(view);
 //        mNewsTitle.setText(mNewsList.get(mPosition).getTitle());
 //
 //        mNewsDate.setText(mNewsList.get(mPosition).getDate());
@@ -142,6 +136,12 @@ public class NewsDetailView extends RelativeLayout {
 
         }
         return true;
+    }
+
+    private void initView(View view) {
+        mBackgroundLayout = view.findViewById(R.id.background_layout);
+        mNewsFloatBtn = view.findViewById(R.id.news_float_btn);
+        mNewsContent = view.findViewById(R.id.news_content);
     }
 
 //    private void addAppendix() {

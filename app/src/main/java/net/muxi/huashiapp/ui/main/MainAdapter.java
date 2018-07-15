@@ -13,33 +13,32 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.muxistudio.appcommon.data.BannerData;
+import com.muxistudio.appcommon.data.Hint;
+import com.muxistudio.appcommon.data.ItemData;
+import com.muxistudio.appcommon.utils.FrescoUtil;
 import com.muxistudio.cardbanner.CardBanner;
 import com.muxistudio.cardbanner.ViewHolder;
+import com.muxistudio.common.util.DimensUtil;
+import com.muxistudio.common.util.Logger;
+import com.muxistudio.common.util.PreferenceUtil;
 
 import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.BannerData;
-import net.muxi.huashiapp.common.data.Hint;
-import net.muxi.huashiapp.common.data.ItemData;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
-import net.muxi.huashiapp.util.DimensUtil;
-import net.muxi.huashiapp.util.FrescoUtil;
-import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by december on 16/4/19.
  */
 public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements MyItemTouchCallback.ItemTouchAdapter {
 
-    private static final int ITEM_TYPE_HINT  =  0;
+    private static final int ITEM_TYPE_HINT = 0;
     private static final int ITEM_TYPE_BANNER = 1;
     private static final int ITEM_TYPE_COMMON = 2;
     private static final int ITEM_TYPE_FOOTER = 3;
@@ -55,7 +54,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     //banner 和 error（hint） 一共所占的 item 数量
-    public static  int ITEM = 1;
+    public static int ITEM = 1;
+
 
 
     public interface OnBannerItemClickListener {
@@ -63,13 +63,14 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
 
-    public MainAdapter(List<ItemData> items, List<BannerData> bannerDatas,Hint hint) {
+    public MainAdapter(List<ItemData> items, List<BannerData> bannerDatas, Hint hint) {
         this.mItemDatas = items;
         this.hint = hint;
         mBannerDatas = bannerDatas;
         Comparator<BannerData> comparator = (o1, o2) -> {
             return Integer.parseInt(o1.getNum()) - Integer.parseInt(o2.getNum());
         };
+        Logger.d("bannder data is null? " + (mBannerDatas == null) + " comparator is null" + (comparator == null));
         Collections.sort(mBannerDatas, comparator);
         resUrls = new ArrayList<>();
         for (int i = 0; i < bannerDatas.size(); i++) {
@@ -92,50 +93,51 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     public boolean isBannerPosition(int position) {
-        if(isHintShown()){
+        if (isHintShown()) {
             return position == 1;
-        }else{
+        } else {
             return position == 0;
         }
     }
 
-    public boolean isHintPosition(int position){
-        if(isHintShown()){
+    public boolean isHintPosition(int position) {
+        if (isHintShown()) {
             return position == 0;
-        }else{
+        } else {
             return false;
         }
     }
+
     public boolean isFooterPosition(int position) {
-        if(isHintShown()){
+        if (isHintShown()) {
             return position == mItemDatas.size() + 2;
-        }else{
+        } else {
             return position == mItemDatas.size() + 1;
         }
     }
 
-    public void setHint(Hint hint){
+    public void setHint(Hint hint) {
         this.hint = hint;
     }
 
-            //原来mItemData有十一个元素 加上banner和footer 一共 13个元素 position的范围是0-12
-            // 现在加上了一个hint 隐藏的提示元素 ： 一共 9+2+1=13
+    //原来mItemData有十一个元素 加上banner和footer 一共 13个元素 position的范围是0-12
+    // 现在加上了一个hint 隐藏的提示元素 ： 一共 9+2+1=13
     //如果出现则是13 不出现则是12
     @Override
     public int getItemViewType(int position) {
-            if (isHintShown()) {
-                if (position == 0) {
-                    ITEM = 2;
-                    return ITEM_TYPE_HINT;
-                } else if (position == 1) {
-                    return ITEM_TYPE_BANNER;
-                } else if (position == mItemDatas.size() + 2) {
-                    return ITEM_TYPE_FOOTER;
-                } else {
-                    return ITEM_TYPE_COMMON;
-                }
-            } else{
-            if(position ==0) {
+        if (isHintShown()) {
+            if (position == 0) {
+                ITEM = 2;
+                return ITEM_TYPE_HINT;
+            } else if (position == 1) {
+                return ITEM_TYPE_BANNER;
+            } else if (position == mItemDatas.size() + 2) {
+                return ITEM_TYPE_FOOTER;
+            } else {
+                return ITEM_TYPE_COMMON;
+            }
+        } else {
+            if (position == 0) {
                 return ITEM_TYPE_BANNER;
             } else if (position == mItemDatas.size() + 1) {
                 return ITEM_TYPE_FOOTER;
@@ -148,10 +150,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        if(viewType==ITEM_TYPE_HINT){
-             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_hint, parent, false);
-             return new HintViewHolder(view);
-        }else if (viewType == ITEM_TYPE_BANNER) {
+        if (viewType == ITEM_TYPE_HINT) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_hint, parent, false);
+            return new HintViewHolder(view);
+        } else if (viewType == ITEM_TYPE_BANNER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_banner, parent, false);
             return new BannerViewHolder(view);
         } else if (viewType == ITEM_TYPE_FOOTER) {
@@ -166,24 +168,25 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if(holder instanceof HintViewHolder){
-            ((HintViewHolder) holder).mRlContent.setOnClickListener(v->{
-                mContext.startActivity(new Intent(mContext,DetailActivity.class)
-                .putExtra("detail",hint.getDetail()));
+        if (holder instanceof HintViewHolder) {
+            ((HintViewHolder) holder).mRlHintContent.setOnClickListener(v -> {
+                mContext.startActivity(new Intent(mContext, DetailActivity.class)
+                        .putExtra("detail", hint.getDetail()));
             });
-            ((HintViewHolder) holder).mHintMsg.setText(hint.getMsg());
-            ((HintViewHolder) holder).mBtnClose.setOnClickListener(v->{
-                ((HintViewHolder) holder).mRlContent.setVisibility(View.GONE);
-                PreferenceUtil.saveInt(PreferenceUtil.HINT_UPDATE_TIME,hint.getUpdate());
+            ((HintViewHolder) holder).mTvHintMsg.setText(hint.getMsg());
+            ((HintViewHolder) holder).mIvHintClose.setOnClickListener(v -> {
+                ((HintViewHolder) holder).mRlHintContent.setVisibility(View.GONE);
+                PreferenceUtil.saveInt(PreferenceUtil.HINT_UPDATE_TIME, hint.getUpdate());
+                ITEM = 1;
             });
-            if(hint.getType().equals("err")){
-                ((HintViewHolder) holder).mRlContent
+            if (hint.getType().equals("err")) {
+                ((HintViewHolder) holder).mRlHintContent
                         .setBackgroundColor(mContext.getResources().getColor(R.color.red));
-            }else{
-                ((HintViewHolder) holder).mRlContent
+            } else {
+                ((HintViewHolder) holder).mRlHintContent
                         .setBackgroundColor(mContext.getResources().getColor(R.color.hint_yellow));
             }
-        }else if (holder instanceof BannerViewHolder) {
+        } else if (holder instanceof BannerViewHolder) {
             for (int i = 0; i < mBannerDatas.size(); i++) {
                 ViewHolder<BannerData> viewHolder = (context, bannerDatas) -> {
                     SimpleDraweeView simpleDraweeView = new SimpleDraweeView(mContext);
@@ -224,6 +227,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             ((CommonViewHolder) holder).itemView.setTag(position - ITEM);
         }
     }
+
     @Override
     public int getItemCount() {
         return mItemDatas.size() + 2;
@@ -259,10 +263,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     //判断有没有hint信息的包装函数
-    private boolean isHintShown(){
-        boolean b = UPDATE_TIME!=hint.getUpdate();
+    public boolean isHintShown() {
+        boolean b = UPDATE_TIME != hint.getUpdate();
         boolean a = BuildConfig.VERSION_NAME.equals(hint.getVersion());
-        return !TextUtils.isEmpty(hint.getMsg())&&a&&b;
+        return !TextUtils.isEmpty(hint.getMsg()) && a && b;
     }
 
 
@@ -284,6 +288,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     public class BannerViewHolder extends RecyclerView.ViewHolder {
         public CardBanner mCardBanner;
+
         public BannerViewHolder(View itemView) {
             super(itemView);
             mCardBanner = (CardBanner) itemView.findViewById(R.id.card_banner);
@@ -300,18 +305,17 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
     }
 
-    public class HintViewHolder extends RecyclerView.ViewHolder{
+    public class HintViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_hint_msg)
-        TextView mHintMsg;
-        @BindView(R.id.iv_hint_close)
-        ImageView mBtnClose;
-        @BindView(R.id.rl_hint_content)
-        RelativeLayout mRlContent;
+        private RelativeLayout mRlHintContent;
+        private TextView mTvHintMsg;
+        private ImageView mIvHintClose;
 
         public HintViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            mRlHintContent = itemView.findViewById(R.id.rl_hint_content);
+            mTvHintMsg = itemView.findViewById(R.id.tv_hint_msg);
+            mIvHintClose = itemView.findViewById(R.id.iv_hint_close);
         }
     }
 

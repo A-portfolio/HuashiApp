@@ -8,13 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import net.muxi.huashiapp.Constants;
+import com.muxistudio.appcommon.Constants;
+import net.muxi.huashiapp.utils.TimeTableUtil;
+import com.muxistudio.common.util.DateUtil;
+import com.muxistudio.common.util.Logger;
+
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.service.WidgetService;
 import net.muxi.huashiapp.ui.main.MainActivity;
-import net.muxi.huashiapp.util.DateUtil;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.TimeTableUtil;
 
 import java.util.Date;
 

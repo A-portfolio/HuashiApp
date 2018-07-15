@@ -7,30 +7,30 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.Score;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
+import com.muxistudio.appcommon.presenter.LoginPresenter;
+import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.common.util.Logger;
 import com.muxistudio.multistatusview.MultiStatusView;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.common.data.Score;
-import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.net.ccnu.CcnuCrawler2;
-import net.muxi.huashiapp.ui.login.LoginPresenter;
-import net.muxi.huashiapp.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -39,19 +39,23 @@ import rx.schedulers.Schedulers;
 
 public class CreditGradeActivity extends ToolbarActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.btn_enter)
-    Button mBtnEnter;
-    @BindView(R.id.multi_status_view)
-    MultiStatusView mMultiStatusView;
+    //    @BindView(R.id.toolbar)
+//    Toolbar mToolbar;
+//    @BindView(R.id.recycler_view)
+//    RecyclerView mRecyclerView;
+//    @BindView(R.id.btn_enter)
+//    Button mBtnEnter;
+//    @BindView(R.id.multi_status_view)
+//    MultiStatusView mMultiStatusView;
     private List<Score> mScoresList = new ArrayList<>();
     private CreditGradeAdapter mCreditGradeAdapter;
 
     private int start;
     private int end;
+    private RecyclerView mRecyclerView;
+    private LinearLayout mLayoutBtn;
+    private Button mBtnEnter;
+    private MultiStatusView mMultiStatusView;
 
     public static void start(Context context, int start, int end) {
         Intent starter = new Intent(context, CreditGradeActivity.class);
@@ -64,17 +68,15 @@ public class CreditGradeActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credit_grade);
-        ButterKnife.bind(this);
+        initView();
         start = getIntent().getIntExtra("start", 0);
         end = getIntent().getIntExtra("ending", 0);
         setTitle(String.format("%d-%d学年", start, end));
-        loadCredit(getScoreRequest(start,end));
+        loadCredit(getScoreRequest(start, end));
 
-        mBtnEnter.setOnClickListener(v ->{
+        mBtnEnter.setOnClickListener(v -> {
             showCreditGradeDialog();
         });
-
-//        mMultiStatusView.setOnRetryListener(v->{retryLoadCredit(getScoreRequest(start,end));});
     }
 
     private void showCreditGradeDialog() {
@@ -86,8 +88,7 @@ public class CreditGradeActivity extends ToolbarActivity {
     private float calculateResult() {
         float sum = 0;
         float credits = 0;
-        //如果用户操作太快 mCreditGradeAdapter有可能尚未来得及初始化
-        if(mCreditGradeAdapter.getCheckedList()!=null&&mCreditGradeAdapter!=null) {
+        if (mCreditGradeAdapter.getCheckedList() != null) {
             for (int pos : mCreditGradeAdapter.getCheckedList()) {
                 float credit = Float.parseFloat(mScoresList.get(pos).credit);
                 credits += credit;
@@ -121,36 +122,29 @@ public class CreditGradeActivity extends ToolbarActivity {
         showLoading();
         Observable<List<Score>> creditObservable = Observable.merge(listObservable,5)
                 .flatMap(Observable::from)
-                .toList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .toList();
 
-                creditObservable
-                        .subscribe(scores -> {
+        creditObservable
+                .subscribeOn(Schedulers.io())
+                .onErrorResumeNext(throwable -> {
+                    CcnuCrawler2.clearCookieStore();
+                    return new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
+                            .flatMap(aBoolean -> creditObservable);
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(scores -> {
                     mScoresList = scores;
                     initRecyclerView();
                     this.hideLoading();
-                },throwable -> {
-                            if(throwable instanceof HttpException) {
-                                CcnuCrawler2.clearCookieStore();
-                                new LoginPresenter().login(App.sUser)
-                                        .flatMap(aBoolean -> creditObservable).subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(o -> {
-                                            mScoresList = o;
-                                            initRecyclerView();
-                                            hideLoading();
-                                        });
-                                throwable.printStackTrace();
-                            }
-                }, ()->{});
+                }, Throwable::printStackTrace, () -> {});
     }
 
-    public Observable<List<Score>>[] getScoreRequest(int start,int end){
+
+    public Observable<List<Score>>[] getScoreRequest(int start, int end) {
         Observable<List<Score>>[] observables = new Observable[(end - start)];
-        for (int i = 0;i < (end - start);i++){
+        for (int i = 0; i < (end - start); i++) {
             observables[i] = CampusFactory.getRetrofitService()
-                    .getScores(String.valueOf(start + i ), "");
+                    .getScores(String.valueOf(start + i), "");
         }
         return observables;
     }
@@ -166,5 +160,12 @@ public class CreditGradeActivity extends ToolbarActivity {
                 this,
                 DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+    private void initView() {
+        mRecyclerView = findViewById(R.id.recycler_view);
+        mLayoutBtn = findViewById(R.id.layout_btn);
+        mBtnEnter = findViewById(R.id.btn_enter);
+        mMultiStatusView = findViewById(R.id.multi_status_view);
     }
 }

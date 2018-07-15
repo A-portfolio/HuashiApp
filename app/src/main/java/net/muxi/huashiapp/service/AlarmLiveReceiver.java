@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import net.muxi.huashiapp.util.AlarmUtil;
+import net.muxi.huashiapp.utils.AlarmUtil;
 
 /**
  * Created by ybao on 16/5/16.

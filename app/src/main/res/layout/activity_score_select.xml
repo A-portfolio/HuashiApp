@@ -29,7 +29,7 @@
         android:textColor="?android:attr/textColorPrimary"/>
 
     <TextView
-        android:id="@+id/et_year"
+        android:id="@+id/tv_year"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_select_year"
@@ -43,7 +43,7 @@
     <View android:id="@+id/divider"
           android:layout_width="match_parent"
           android:layout_height="1dp"
-          android:layout_below="@+id/et_year"
+          android:layout_below="@+id/tv_year"
           android:layout_marginLeft="16dp"
           android:layout_marginRight="16dp"
           android:layout_marginTop="16dp"

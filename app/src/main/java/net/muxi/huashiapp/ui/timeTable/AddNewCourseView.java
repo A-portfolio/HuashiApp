@@ -6,9 +6,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
+import com.muxistudio.common.util.DimensUtil;
+import com.muxistudio.common.util.PreferenceUtil;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.DimensUtil;
-import net.muxi.huashiapp.util.PreferenceUtil;
 
 /**
  * Created by ybao (ybaovv@gmail.com)

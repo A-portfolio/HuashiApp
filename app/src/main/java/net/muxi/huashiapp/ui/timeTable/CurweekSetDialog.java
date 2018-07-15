@@ -12,26 +12,17 @@ import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.Constants;
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.common.util.DimensUtil;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.DimensUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by ybao on 16/7/14.
  */
 //暂时没有发现在哪里使用到hhhh
 public class CurweekSetDialog extends Dialog {
-
-    @BindView(R.id.gl_weeks)
-    GridLayout mGlWeeks;
-    @BindView(R.id.btn_negative)
-    Button mBtnNegative;
-    @BindView(R.id.btn_positive)
-    Button mBtnPositive;
 
     private LinearLayout[] weeksLayout;
     private TextView[] mTvWeeks;
@@ -40,16 +31,20 @@ public class CurweekSetDialog extends Dialog {
     private int pos;
     private OnDialogPostiveClickListener mOnDialogPostiveClickListener;
     private Context mContext;
-    public CurweekSetDialog(Context context,int curWeek) {
-        super(context,R.style.DialogStyle);
+    private GridLayout mGlWeeks;
+    private Button mBtnNegative;
+    private Button mBtnPositive;
+
+    public CurweekSetDialog(Context context, int curWeek) {
+        super(context, R.style.DialogStyle);
         mContext = context;
         pos = curWeek - 1;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_curweek_set);
-        ButterKnife.bind(this);
         initView();
         mBtnNegative.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,16 +55,18 @@ public class CurweekSetDialog extends Dialog {
         mBtnPositive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnDialogPostiveClickListener != null){
+                if (mOnDialogPostiveClickListener != null) {
                     mOnDialogPostiveClickListener.onDialogPostiveClick(pos + 1);
                 }
                 dismiss();
             }
         });
     }
-    public void setOnDialogPostiveClickListener(OnDialogPostiveClickListener dialogPostiveClickListener){
+
+    public void setOnDialogPostiveClickListener(OnDialogPostiveClickListener dialogPostiveClickListener) {
         mOnDialogPostiveClickListener = dialogPostiveClickListener;
     }
+
     private void initView() {
         weeksLayout = new LinearLayout[Constants.WEEKS_LENGTH];
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
@@ -106,7 +103,7 @@ public class CurweekSetDialog extends Dialog {
             weeksLayout[i].addView(mTvWeeks[i]);
 
             mRadioButtons[i] = new AppCompatRadioButton(mContext);
-            if (i == pos){
+            if (i == pos) {
                 mRadioButtons[i].setChecked(true);
             }
             mRadioButtons[i] = new AppCompatRadioButton(mContext);
@@ -125,8 +122,12 @@ public class CurweekSetDialog extends Dialog {
             });
         }
         mRadioButtons[pos].setChecked(true);
+        mGlWeeks = findViewById(R.id.gl_weeks);
+        mBtnNegative = findViewById(R.id.btn_negative);
+        mBtnPositive = findViewById(R.id.btn_positive);
     }
-    public interface OnDialogPostiveClickListener{
+
+    public interface OnDialogPostiveClickListener {
         void onDialogPostiveClick(int curWeek);
     }
 }

@@ -6,20 +6,23 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Space;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.appcommon.RxBus;
+import com.muxistudio.appcommon.appbase.BaseAppActivity;
+import com.muxistudio.appcommon.data.Course;
+import com.muxistudio.appcommon.db.HuaShiDao;
+import com.muxistudio.appcommon.event.RefreshTableEvent;
+import com.muxistudio.appcommon.net.CampusFactory;
+
+import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.utils.TimeTableUtil;
+
 import java.util.ArrayList;
 import java.util.List;
-import net.muxi.huashiapp.Constants;
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.common.base.BaseActivity;
-import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.event.RefreshTableEvent;
-import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.util.TimeTableUtil;
+
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -30,30 +33,22 @@ import rx.schedulers.Schedulers;
 
 public class CourseDetailView extends RelativeLayout {
 
-    @BindView(R.id.tv_course)
-    TextView mTvCourse;
-    @BindView(R.id.tv_status)
-    TextView mTvStatus;
-    @BindView(R.id.tv_weeks)
-    TextView mTvWeeks;
-    @BindView(R.id.tv_teacher)
-    TextView mTvTeacher;
-    @BindView(R.id.tv_time)
-    TextView mTvTime;
-    @BindView(R.id.tv_place)
-    TextView mTvPlace;
-    @BindView(R.id.layout_cancel)
-    LinearLayout mLayoutCancel;
-    @BindView(R.id.layout_edit)
-    LinearLayout mLayoutEdit;
-
     private Context mContext;
+    private Space mSpaceCenter;
+    private TextView mTvCourse;
+    private TextView mTvStatus;
+    private TextView mTvWeeks;
+    private TextView mTvTeacher;
+    private TextView mTvTime;
+    private TextView mTvPlace;
+    private LinearLayout mLayoutCancel;
+    private LinearLayout mLayoutEdit;
 
     public CourseDetailView(Context context, Course course, int selectWeek) {
         super(context);
         mContext = context;
         LayoutInflater.from(context).inflate(R.layout.view_course_detail, this);
-        ButterKnife.bind(this);
+        initView();
 
         int color;
         if (TimeTableUtil.isThisWeek(selectWeek, course.getWeeks())) {
@@ -78,9 +73,7 @@ public class CourseDetailView extends RelativeLayout {
         mTvTime.setTextColor(color);
         mTvPlace.setTextColor(color);
 
-        //对于过长的课程名称 缩短一点
-
-        mTvCourse.setText(getPrettifiedText(course.course));
+        mTvCourse.setText(course.course);
         mTvTeacher.setText(course.teacher);
         mTvPlace.setText(course.place);
         mTvTime.setText(String.format("周%s%d-%d节",
@@ -111,24 +104,13 @@ public class CourseDetailView extends RelativeLayout {
         });
     }
 
-    //如果课程名称是 桂子山植物鉴赏(网络课)(素质课) 会转化为-> 桂子山植物鉴赏\n(网络课)\n(素质课)
-    private String getPrettifiedText(String courseName){
-        if(courseName.contains("(素质课)")&&courseName.contains("(网络课)")){
-            int start = courseName.indexOf("(网络课)");
-            String courseName2 = courseName.substring(0,start) + "\n"
-                + courseName.substring(start,courseName.length());
-            return courseName2;
-        }else{
-            return courseName;
-        }
-    }
     private void delCourse(Course course) {
         CampusFactory.getRetrofitService().deleteCourse(course.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(verifyResponseResponse -> {
                     if (verifyResponseResponse.code() == 200) {
-                        Snackbar.make(((BaseActivity) mContext).getWindow().findViewById(
+                        Snackbar.make(((BaseAppActivity) mContext).getWindow().findViewById(
                                 android.R.id.content),
                                 R.string.tip_delete_course_ok, Snackbar.LENGTH_LONG)
                                 .setAction(R.string.undo, v -> {
@@ -138,20 +120,21 @@ public class CourseDetailView extends RelativeLayout {
                         dao.deleteCourse(course.id);
                         RxBus.getDefault().send(new RefreshTableEvent());
                     } else {
-                        ((BaseActivity) mContext).showErrorSnackbarShort(R.string.tip_err_server);
+                        ((BaseAppActivity) mContext).showErrorSnackbarShort(R.string.tip_err_server);
                     }
                 }, throwable -> {
                     throwable.printStackTrace();
-                    ((BaseActivity) mContext).showErrorSnackbarShort(R.string.tip_err_server);
+                    ((BaseAppActivity) mContext).showErrorSnackbarShort(R.string.tip_err_server);
                 });
     }
+
     public void addCourse(Course course) {
         CampusFactory.getRetrofitService()
                 .addCourse(course)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(courseId -> {
-                    if (courseId.id != 0){
+                    if (courseId.id != 0) {
                         course.id = String.valueOf(courseId.id);
                         HuaShiDao dao = new HuaShiDao();
                         dao.insertCourse(course);
@@ -174,4 +157,15 @@ public class CourseDetailView extends RelativeLayout {
         mOnNegativeButtonClickListener = listener;
     }
 
+    private void initView() {
+        mSpaceCenter = findViewById(R.id.space_center);
+        mTvCourse = findViewById(R.id.tv_course);
+        mTvStatus = findViewById(R.id.tv_status);
+        mTvWeeks = findViewById(R.id.tv_weeks);
+        mTvTeacher = findViewById(R.id.tv_teacher);
+        mTvTime = findViewById(R.id.tv_time);
+        mTvPlace = findViewById(R.id.tv_place);
+        mLayoutCancel = findViewById(R.id.layout_cancel);
+        mLayoutEdit = findViewById(R.id.layout_edit);
+    }
 }

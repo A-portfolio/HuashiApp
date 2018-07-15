@@ -10,20 +10,20 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.appcommon.appbase.BaseAppActivity;
+import com.muxistudio.common.util.Logger;
+import com.muxistudio.common.util.PreferenceUtil;
 
-import net.muxi.huashiapp.Constants;
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.BaseActivity;
 import net.muxi.huashiapp.ui.main.MainActivity;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.PreferenceUtil;
 
 
 /**
  * Created by ybao on 16/7/30.
  */
 //这里是整个app刚刚进去的闪屏活动！
-public class EntranceActivity extends BaseActivity implements View.OnClickListener {
+public class EntranceActivity extends BaseAppActivity implements View.OnClickListener {
 
     private SimpleDraweeView mDrawee;
     private long mSplashUpdate;

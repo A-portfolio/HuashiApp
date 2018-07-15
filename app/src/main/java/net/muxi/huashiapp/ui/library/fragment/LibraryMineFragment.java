@@ -10,35 +10,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.muxistudio.appcommon.appbase.BaseAppFragment;
+import com.umeng.analytics.MobclickAgent;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.BaseFragment;
 import net.muxi.huashiapp.ui.library.LibrarySearchActivity;
 import net.muxi.huashiapp.ui.library.adapter.MyBookListPagerAdapter;
-import net.muxi.huashiapp.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by ybao on 17/2/16.
  */
 
-public class LibraryMineFragment extends BaseFragment {
-
-    @BindView(R.id.et_search)
-    EditText mEtSearch;
-    @BindView(R.id.tab_layout)
-    TabLayout mTabLayout;
-    @BindView(R.id.view_pager)
-    ViewPager mViewPager;
+public class LibraryMineFragment extends BaseAppFragment {
 
     private MyBookListFragment mBooksBorrowedFragment;
     private MyBookListFragment mBooksAttentionFragment;
 
     private MyBookListPagerAdapter mPagerAdapter;
+    private EditText mEtSearch;
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
 
     public static LibraryMineFragment newInstance() {
         Bundle args = new Bundle();
@@ -50,9 +45,11 @@ public class LibraryMineFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lib_mine, container, false);
-        ButterKnife.bind(this, view);
+        mEtSearch = view.findViewById(R.id.et_search);
+        mTabLayout = view.findViewById(R.id.tab_layout);
+        mViewPager = view.findViewById(R.id.view_pager);
         initView();
         return view;
     }
@@ -86,6 +83,7 @@ public class LibraryMineFragment extends BaseFragment {
                 titleList);
         mViewPager.setAdapter(mPagerAdapter);
 
+        MobclickAgent.onEvent(this.getActivity(),"lib_mine");
     }
 
     @Override

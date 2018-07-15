@@ -9,15 +9,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.RxBus;
+import com.muxistudio.appcommon.data.AuditCourse;
+import com.muxistudio.appcommon.data.Course;
+import com.muxistudio.appcommon.data.CourseId;
+import com.muxistudio.appcommon.db.HuaShiDao;
+import com.muxistudio.appcommon.event.AuditCourseEvent;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.common.util.ToastUtil;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.common.data.AuditCourse;
-import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.data.CourseId;
-import net.muxi.huashiapp.common.db.HuaShiDao;
-import net.muxi.huashiapp.event.AuditCourseEvent;
-import net.muxi.huashiapp.net.CampusFactory;
-import net.muxi.huashiapp.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,8 +26,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -40,7 +40,9 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
     private List<Course> mCourses;
     private HuaShiDao dao;
     private AuditCourse auditCourses;
-    public CourseAuditAdapter(AuditCourse course){
+
+
+    public CourseAuditAdapter(AuditCourse course) {
         this.auditCourses = course;
         dao = new HuaShiDao();
         mCourses = dao.loadAllCourses();
@@ -48,7 +50,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
 
     @Override
     public AuditViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_course_audit,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_course_audit, parent, false);
         return new AuditViewHolder(view);
     }
 
@@ -56,59 +58,59 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
     public void onBindViewHolder(AuditViewHolder holder, int position) {
         //这个course 是有id的
         AuditCourse.ResBean auditCourse = auditCourses.getRes().get(position);
-        String courseNameTeacher = auditCourse.getName()+"("+auditCourse.getTeacher()+")";
+        String courseNameTeacher = auditCourse.getName() + "(" + auditCourse.getTeacher() + ")";
         holder.mTvCourseNameTeacher.setText(courseNameTeacher);
         List<AuditCourse.ResBean.WwBean> wwBeanList = auditCourses.getRes().get(position).getWw();
-        String where ="", whenPeriod = "",whenWeek = "";
-        for(AuditCourse.ResBean.WwBean wwBean:wwBeanList){
-            if(!wwBean.getWhere().equals(where)){
-                where += getProperSite(wwBean.getWhere())+"\n";
+        String where = "", whenPeriod = "", whenWeek = "";
+        for (AuditCourse.ResBean.WwBean wwBean : wwBeanList) {
+            if (!wwBean.getWhere().equals(where)) {
+                where += getProperSite(wwBean.getWhere()) + "\n";
             }
             String p[] = AuditCourse.getCourseTime(wwBean.getWhen());
-            whenPeriod += p[0]+"\n";
-            whenWeek  += p[1]+"\n";
+            whenPeriod += p[0] + "\n";
+            whenWeek += p[1] + "\n";
         }
         String kind = auditCourse.getKind();
         if (kind.equals("专业课")) {
             holder.mIvCourseMarker.setImageResource(R.drawable.audit_professional);
-        } else if(kind.equals("公共课")){
+        } else if (kind.equals("公共课")) {
             holder.mIvCourseMarker.setImageResource(R.drawable.audit_public);
-        } else if(kind.equals("通核课")){
+        } else if (kind.equals("通核课")) {
             holder.mIvCourseMarker.setImageResource(R.drawable.audit_core);
-        } else if(kind.equals("通选课")){
+        } else if (kind.equals("通选课")) {
             holder.mIvCourseMarker.setImageResource(R.drawable.audit_elective);
         }
         holder.mTvCourseWeek.setText(whenWeek);
-        holder.mTVCoursePeriod.setText(whenPeriod);
+        holder.mTvCoursePeriod.setText(whenPeriod);
         holder.mTvCourseSite.setText(where);
-        holder.mBtnChooseCourse.setOnClickListener(v->{
-            if(mCourses.size()==0||mCourses==null){
+        holder.mBtnChooseCourse.setOnClickListener(v -> {
+            if (mCourses.size() == 0 || mCourses == null) {
                 ToastUtil.showShort("课程表为空,请先添加课程哟~");
                 return;
             }
-            if(!positions.contains(position)){
+            if (!positions.contains(position)) {
                 positions.add(position);
-                String p[] = holder.mTVCoursePeriod.getText().toString().split("\n");
+                String p[] = holder.mTvCoursePeriod.getText().toString().split("\n");
                 //如果是两门课程的话都要不冲突才可以
                 // 关于两门课程的解释 同一周的不同时间的同一门课程 教务处作为两门课程处理
                 //只用有一门课的情况:
                 String formerWeeks[] = getWeek(holder.mTvCourseWeek.getText().toString());
-                if(p.length==1){
-                    if(isConflict(p[0],formerWeeks)){
+                if (p.length == 1) {
+                    if (isConflict(p[0], formerWeeks)) {
                         ToastUtil.showShort("课程冲突");
                         holder.mBtnChooseCourse.setText("添加");
                         positions.remove((Integer) (position));
                         //上传事件
                         return;
                     } else {
-                        addCourse(holder.mTVCoursePeriod.getText().toString(),auditCourse,holder);
+                        addCourse(holder.mTvCoursePeriod.getText().toString(), auditCourse, holder);
                         return;
                     }
                 }
                 //如果是两门课
                 boolean bothConflict = false;
-                for(int i=0;i<p.length;i++){
-                    if(isConflict(p[i],formerWeeks)){
+                for (int i = 0; i < p.length; i++) {
+                    if (isConflict(p[i], formerWeeks)) {
                         //只要一门冲突就都冲突
                         bothConflict = true;
                         ToastUtil.showShort("课程冲突");
@@ -117,53 +119,54 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                         break;
                     }
                 }
-                if(!bothConflict){
-                    addCourse(holder.mTVCoursePeriod.getText().toString(),auditCourse,holder);
+                if (!bothConflict) {
+                    addCourse(holder.mTvCoursePeriod.getText().toString(), auditCourse, holder);
                 }
-            }else {
+            } else {
                 //还需要删除这门课
                 holder.mBtnChooseCourse.setText("添加");
                 positions.remove((Integer) (position));
             }
         });
     }
+
     //转换格式1-17周 -- 1,2,3,4,5,6,7 String数组
     //有些课程如果两周的话格式是: 1-17周\n1-17周
-    private String[] getWeek(String string){
+    private String[] getWeek(String string) {
         String stringCopy = string;
-        if(string.contains("\n")){
+        if (string.contains("\n")) {
             stringCopy = string.split("\n")[0];
         }
-        String pieces[] = stringCopy.substring(0,stringCopy.length()-1).split("-");
-        String stater = pieces[0],end = pieces[1];
-        String array[] = new String[Integer.parseInt(end)-Integer.parseInt(stater)+1];
-        for(int i=Integer.parseInt(stater),index =0;i<=Integer.parseInt(end);i++,index++){
+        String pieces[] = stringCopy.substring(0, stringCopy.length() - 1).split("-");
+        String stater = pieces[0], end = pieces[1];
+        String array[] = new String[Integer.parseInt(end) - Integer.parseInt(stater) + 1];
+        for (int i = Integer.parseInt(stater), index = 0; i <= Integer.parseInt(end); i++, index++) {
             array[index] = i + "";
         }
         return array;
     }
 
     //学校返回的数据格式会在教学楼后面加点 比如0910.0
-    private String getProperSite(String site){
-        if(site.contains(".")){
+    private String getProperSite(String site) {
+        if (site.contains(".")) {
             int index = site.indexOf(".");
-            return site.substring(0,index);
-        }else{
+            return site.substring(0, index);
+        } else {
             return site;
         }
     }
 
     //设置不同课程的提示
     //如果有两个时间的话需要上传两次时间和地点
-    private void addCourse(String period,AuditCourse.ResBean auditCourse, AuditViewHolder holder){
-        if(isTwoClassWeek(period)){
+    private void addCourse(String period, AuditCourse.ResBean auditCourse, AuditViewHolder holder) {
+        if (isTwoClassWeek(period)) {
             String peroids[] = period.split("\n");
             //week 如果没有修改的格式是 1-17周"\n"1-17周 这两个是一样的 所以在下面的week参数中选取一样的
             String week = holder.mTvCourseWeek.getText().toString().split("\n")[0];
-            List<AuditCourse.ResBean> list = createRequestCourse(auditCourse,peroids,week);
-            rx.Observable<CourseId> observable1 = CampusFactory.getRetrofitService().addCourse(convertCourse(list.get(0)));
-            rx.Observable<CourseId> observable2 = CampusFactory.getRetrofitService().addCourse(convertCourse(list.get(1)));
-            rx.Observable<CourseId> mergeObservable = rx.Observable.merge(observable1,observable2);
+            List<AuditCourse.ResBean> list = createRequestCourse(auditCourse, peroids, week);
+            Observable<CourseId> observable1 = CampusFactory.getRetrofitService().addCourse(convertCourse(list.get(0)));
+            Observable<CourseId> observable2 = CampusFactory.getRetrofitService().addCourse(convertCourse(list.get(1)));
+            Observable<CourseId> mergeObservable = Observable.merge(observable1, observable2);
             mergeObservable.subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(courseId -> {
@@ -174,32 +177,34 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                         //必须要在服务端发送回来的时候在本地放置id!
                         c.setId(String.valueOf(courseId));
                         dao.insertCourse(convertCourse(auditCourse));
-                    },throwable -> {
+                    }, throwable -> {
                         throwable.printStackTrace();
-                    },()->{});
-        }else{
+                    }, () -> {
+                    });
+        } else {
             AuditCourse.ResBean audit = auditCourse;
-            addCourseNetWork(audit,holder);
+            addCourseNetWork(audit, holder);
         }
     }
 
     //判断是不是一周两节课 是的话返回true
-    private boolean isTwoClassWeek(String week){
+    private boolean isTwoClassWeek(String week) {
         int counter = 0;
-        for(int i=0;i<week.length();i++){
-            if(week.charAt(i)=='\n')
+        for (int i = 0; i < week.length(); i++) {
+            if (week.charAt(i) == '\n')
                 counter++;
         }
-        if(counter==2){
+        if (counter == 2) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
+
     //生成一个请求中使用的AuditCourse 在网络请求中会进行转化
-    private List<AuditCourse.ResBean> createRequestCourse(AuditCourse.ResBean auditCourse,String[] period,String whenWeek){
-        List<AuditCourse.ResBean>  courseList = new ArrayList<>();
-        for(String p:period) {
+    private List<AuditCourse.ResBean> createRequestCourse(AuditCourse.ResBean auditCourse, String[] period, String whenWeek) {
+        List<AuditCourse.ResBean> courseList = new ArrayList<>();
+        for (String p : period) {
             AuditCourse.ResBean audit = new AuditCourse.ResBean();
             audit.setName(auditCourse.getName());
             audit.setForwho(auditCourse.getForwho());
@@ -218,7 +223,8 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         }
         return courseList;
     }
-    public void addCourseNetWork(AuditCourse.ResBean auditCourse,AuditViewHolder holder){
+
+    public void addCourseNetWork(AuditCourse.ResBean auditCourse, AuditViewHolder holder) {
         CampusFactory.getRetrofitService()
                 .addCourse(convertCourse(auditCourse))
                 .subscribeOn(Schedulers.newThread())
@@ -231,16 +237,17 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                     //必须要在服务端发送回来的时候在本地放置id!
                     c.setId(String.valueOf(courseId));
                     dao.insertCourse(convertCourse(auditCourse));
-                },throwable -> {
+                }, throwable -> {
                     throwable.printStackTrace();
-                },()->{});
+                }, () -> {
+                });
     }
 
     //true 表示 冲突 false 表示不冲突 默认情况下返回冲突
-    private boolean isConflict(String period,String[] courseArray){
+    private boolean isConflict(String period, String[] courseArray) {
         boolean flag = false;
         //之所以要这样表示是因为mcourses 不能很快的根据星期几查询到那天的课表内容
-        for (Course course: mCourses) {
+        for (Course course : mCourses) {
             //格式: 星期一1-2
             int infos[] = getDayDuring(period);
             int day = infos[0], start = infos[1], during = infos[2];
@@ -263,7 +270,8 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         }
         return flag;
     }
-    private Course convertCourse(AuditCourse.ResBean auditCourse){
+
+    private Course convertCourse(AuditCourse.ResBean auditCourse) {
         Course course = new Course();
         /*
     public String remind;
@@ -284,16 +292,16 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
     }
 
     //判断两个集合是否有交集
-    private <T> boolean isIntersection(List<T> list1, List<T> list2){
+    private <T> boolean isIntersection(List<T> list1, List<T> list2) {
         int size1 = list1.size(), size2 = list2.size();
         int size;
-        if(size1>size2){
+        if (size1 > size2) {
             size = size2;
-        }else{
+        } else {
             size = size1;
         }
-        for(int i=0;i<size;i++){
-            if(list1.contains(list2.get(i))){
+        for (int i = 0; i < size; i++) {
+            if (list1.contains(list2.get(i))) {
                 return true;
             }
         }
@@ -301,60 +309,62 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
     }
 
     //对于这样的地点信息会进行一个处理 : @9302.0 -> @9302
-    private String getCorrectPlace(String site){
+    private String getCorrectPlace(String site) {
         String correctString = "";
-        if(site.contains(".")){
+        if (site.contains(".")) {
             correctString += site.split("\\.")[0];
-        }else{
+        } else {
             correctString += site;
         }
         return correctString;
     }
+
     //获取课程开始是一周开始的星期几 和 课程开始的节数和持续的时间
-    private int[] getDayDuring(String period){
+    private int[] getDayDuring(String period) {
         String patter = "(([^0-9]*)(\\d+)-(\\d+))";
         Pattern pattern = Pattern.compile(patter);
         Matcher matcher = pattern.matcher(period);
         String day = "";
         int start = 0, end = 0;
-        while(matcher.find()){
-            day = matcher.group(2).substring(0,3);
-            start   = Integer.parseInt(matcher.group(3));
-            end   =   Integer.parseInt(matcher.group(4));
+        while (matcher.find()) {
+            day = matcher.group(2).substring(0, 3);
+            start = Integer.parseInt(matcher.group(3));
+            end = Integer.parseInt(matcher.group(4));
         }
         int dayN = getDay(day);
         int during = end - start + 1;
-        return new int[]{dayN,start,during};
+        return new int[]{dayN, start, during};
     }
+
     //通过星期几输出相应的值
-    private int getDay(String day){
-        if(day.equals("星期一")){
+    private int getDay(String day) {
+        if (day.equals("星期一")) {
             return 1;
         }
-        if(day.equals("星期二")){
+        if (day.equals("星期二")) {
             return 2;
         }
-        if(day.equals("星期三")){
+        if (day.equals("星期三")) {
             return 3;
         }
-        if(day.equals("星期四")){
+        if (day.equals("星期四")) {
             return 4;
         }
-        if(day.equals("星期五")){
+        if (day.equals("星期五")) {
             return 5;
         }
-        if(day.equals("星期六")){
+        if (day.equals("星期六")) {
             return 6;
         }
-        if(day.equals("星期日")||day.equals("星期天")){
+        if (day.equals("星期日") || day.equals("星期天")) {
             return 7;
         }
-        return  0;
+        return 0;
     }
 
     //通过相应的数字输出星期几
-    private String getDay(int day){
-        switch (day){
+    private String getDay(int day) {
+        switch (day) {
             case 1:
                 return "星期一";
             case 2:
@@ -370,51 +380,52 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
             case 7:
                 return "星期日";
         }
-        return  "";
+        return "";
     }
+
     //eg : audit class 的课程周数格式为 1-7 周 要改成课表的格式 1,2,3,4,5,6,7
-    private String getWeekString(String week){
+    private String getWeekString(String week) {
         String patter = "((\\d+)-(\\d+))";
         Pattern pattern = Pattern.compile(patter);
         Matcher matcher = pattern.matcher(week);
-        int start  = 0  ,end = 0;
-        while (matcher.find()){
+        int start = 0, end = 0;
+        while (matcher.find()) {
             start = Integer.parseInt(matcher.group(2));
-            end   = Integer.parseInt(matcher.group(3));
+            end = Integer.parseInt(matcher.group(3));
         }
-        String weekString  = "";
-        for(int i = start;i<=end;i++){
-            if(i!=end){
+        String weekString = "";
+        for (int i = start; i <= end; i++) {
+            if (i != end) {
                 weekString += i + ",";
-            }else{
-                weekString += i+ "";
+            } else {
+                weekString += i + "";
             }
         }
         return weekString;
     }
+
     @Override
-    public int getItemCount(){
+    public int getItemCount() {
         return auditCourses.getRes().size();
     }
 
-    static class AuditViewHolder extends RecyclerView.ViewHolder{
-        //何种类型的课程 通核通选 公共课 等等
-        @BindView(R.id.iv_course_marker)
-        ImageView mIvCourseMarker;
-        //同时包含老师和课程名称
-        @BindView(R.id.tv_course_name_teacher)
-        TextView mTvCourseNameTeacher;
-        @BindView(R.id.tv_course_week)
-        TextView mTvCourseWeek;
-        @BindView(R.id.tv_course_period)
-        TextView mTVCoursePeriod;
-        @BindView(R.id.tv_course_site)
-        TextView mTvCourseSite;
-        @BindView(R.id.btn_choose_course)
-        Button mBtnChooseCourse;
+    static class AuditViewHolder extends RecyclerView.ViewHolder {
+
+        private ImageView mIvCourseMarker;
+        private TextView mTvCourseNameTeacher;
+        private TextView mTvCourseWeek;
+        private TextView mTvCoursePeriod;
+        private TextView mTvCourseSite;
+        private Button mBtnChooseCourse;
+
         public AuditViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            mIvCourseMarker = itemView.findViewById(R.id.iv_course_marker);
+            mTvCourseNameTeacher = itemView.findViewById(R.id.tv_course_name_teacher);
+            mTvCourseWeek = itemView.findViewById(R.id.tv_course_week);
+            mTvCoursePeriod = itemView.findViewById(R.id.tv_course_period);
+            mTvCourseSite = itemView.findViewById(R.id.tv_course_site);
+            mBtnChooseCourse = itemView.findViewById(R.id.btn_choose_course);
         }
     }
 }

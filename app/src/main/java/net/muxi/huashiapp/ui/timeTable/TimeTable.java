@@ -9,18 +9,17 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.RxBus;
+import com.muxistudio.appcommon.event.RefreshFinishEvent;
+import com.muxistudio.common.util.DimensUtil;
+import com.muxistudio.common.util.Logger;
+import com.muxistudio.common.util.PreferenceUtil;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.event.RefreshFinishEvent;
-import net.muxi.huashiapp.util.DimensUtil;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.PreferenceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by ybao on 16/4/19.
@@ -44,21 +43,6 @@ public class TimeTable extends RelativeLayout {
     public static final int MAX_CLICK_DISTANCE = DimensUtil.dp2px(15);
     public static final int MAX_CLICK_DURATION = 500;
 
-    @BindView(R.id.timetable_content)
-    TableContent mTimetableContent;
-    @BindView(R.id.week_layout)
-    WeekLayout mWeekLayout;
-    @BindView(R.id.course_time_layout)
-    CourseTimeLayout mCourseTimeLayout;
-    @BindView(R.id.refresh_view)
-    RefreshView mRefreshView;
-    @BindView(R.id.view_curweek_set)
-    AddNewCourseView mViewCurweekSet;
-    @BindView(R.id.layout_table)
-    TimeTableLayout mLayoutTable;
-    @BindView(R.id.tv_tip)
-    TextView mTvTip;
-
     private View curDownTargetView;
     private boolean isFirstShow = true;
     private Scroller mScroller;
@@ -72,9 +56,19 @@ public class TimeTable extends RelativeLayout {
     private boolean isPulling = false;
 
     private OnClickListener mOnCourseClickListener;
+    private TextView mTvTip;
+    private RefreshView mRefreshView;
+    private AddNewCourseView mViewCurweekSet;
+    private TimeTableLayout mLayoutTable;
+    private View mDivider;
+    private TableContent mTimetableContent;
+    private WeekLayout mWeekLayout;
+    private CourseTimeLayout mCourseTimeLayout;
+
     public TimeTable(Context context) {
         this(context, null);
     }
+
     public TimeTable(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
@@ -86,7 +80,7 @@ public class TimeTable extends RelativeLayout {
                     if (refreshFinishEvent.isRefreshResult()) {
                         mRefreshView.setRefreshResult(R.string.tip_refresh_ok);
                         mRefreshView.setRefreshViewBackground(R.color.colorAccent);
-                    } else{
+                    } else {
                         mRefreshView.setRefreshResult(R.string.tip_refresh_fail);
                         mRefreshView.setRefreshViewBackground(R.color.red);
                     }
@@ -99,8 +93,8 @@ public class TimeTable extends RelativeLayout {
     }
 
     public void initLayout() {
-        LayoutInflater.from(mContext).inflate(R.layout.view_timetable, this);
-        ButterKnife.bind(this);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.view_timetable, this);
+        initView(view);
     }
 
 
@@ -231,7 +225,7 @@ public class TimeTable extends RelativeLayout {
                 } else if (mRefreshView.status == RefreshView.Status.RELEASE_TO_REFRESH) {
                     mRefreshView.setRefreshing();
                     smoothScrollTo(0, -REFRESHING_VIEW_HEIGHT);
-                    if (mOnRefreshListener != null){
+                    if (mOnRefreshListener != null) {
                         mOnRefreshListener.onRefresh();
                     }
                     Logger.d("reload");
@@ -276,11 +270,22 @@ public class TimeTable extends RelativeLayout {
 
     private OnRefreshListener mOnRefreshListener;
 
-    public void setOnRefreshListener(OnRefreshListener onRefreshListener){
+    public void setOnRefreshListener(OnRefreshListener onRefreshListener) {
         mOnRefreshListener = onRefreshListener;
     }
 
-    public interface OnRefreshListener{
+    private void initView(View view) {
+        mTvTip = view.findViewById(R.id.tv_tip);
+        mRefreshView = view.findViewById(R.id.refresh_view);
+        mViewCurweekSet = view.findViewById(R.id.view_curweek_set);
+        mLayoutTable = view.findViewById(R.id.layout_table);
+        mDivider = view.findViewById(R.id.divider);
+        mTimetableContent = view.findViewById(R.id.timetable_content);
+        mWeekLayout = view.findViewById(R.id.week_layout);
+        mCourseTimeLayout = view.findViewById(R.id.course_time_layout);
+    }
+
+    public interface OnRefreshListener {
         void onRefresh();
     }
 

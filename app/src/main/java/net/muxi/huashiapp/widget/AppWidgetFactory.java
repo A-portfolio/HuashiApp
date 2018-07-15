@@ -1,26 +1,19 @@
 package net.muxi.huashiapp.widget;
 
-import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.muxistudio.appcommon.data.Course;
+import com.muxistudio.appcommon.db.HuaShiDao;
+import net.muxi.huashiapp.utils.TimeTableUtil;
+import com.muxistudio.common.util.Logger;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.common.db.HuaShiDao;
 import net.muxi.huashiapp.ui.main.MainActivity;
-import net.muxi.huashiapp.util.Logger;
-import net.muxi.huashiapp.util.TimeTableUtil;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func2;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by ybao on 16/11/2.

@@ -1,0 +1,50 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
+        ndk{abiFilters "armeabi"}
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+//    api files('tbs_sdk_thirdapp_v3.0.0.1038_43000_sharewithdownload_obfs_20170110_144724.jar')
+    api rootProject.ext.dependencies["arouterapi"]
+    annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
+
+    api rootProject.ext.dependencies.fresco
+    api rootProject.ext.dependencies.fresco_animated_gif
+    api rootProject.ext.dependencies["rxjava"]
+    api rootProject.ext.dependencies.recyclerview
+    api rootProject.ext.dependencies["design"]
+    api rootProject.ext.dependencies["cardview"]
+    api rootProject.ext.dependencies.appcompat_v7
+    api rootProject.ext.dependencies.gson
+//    testImplementation 'junit:junit:4.12'
+//    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}

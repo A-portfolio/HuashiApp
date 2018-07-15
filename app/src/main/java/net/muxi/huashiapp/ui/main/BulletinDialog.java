@@ -12,9 +12,6 @@ import android.widget.TextView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.widget.CenterDialogFragment;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by kolibreath on 18-2-13.
@@ -22,33 +19,40 @@ import butterknife.OnClick;
 
 public class BulletinDialog extends CenterDialogFragment {
 
-    @BindView(R.id.tv_title_bulletin)
-    TextView mTvTitleBulletin;
-    @BindView(R.id.tv_msg_bulletin)
-    TextView mTvMsgBulletin;
-    @BindView(R.id.btn_confirm_bulletin)
-    TextView mBtnConfirmBulletin;
-    @OnClick(R.id.btn_confirm_bulletin)
-    void submit(){
-      dismiss();
+    private android.widget.RelativeLayout mRlVerify;
+    private TextView mTvTitleBulletin;
+    private TextView mTvMsgBulletin;
+    private TextView mBtnConfirmBulletin;
+
+    void submit() {
+        dismiss();
     }
 
-    public static BulletinDialog newInstance(){
+    public static BulletinDialog newInstance() {
         return new BulletinDialog();
     }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_main_bulletin, null);
-        ButterKnife.bind(this,view);
+        initView(view);
         Dialog dialog = new Dialog(getContext());
         dialog.setContentView(view);
         Window window = dialog.getWindow();
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-        layoutParams.height  = WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(layoutParams);
         window.setBackgroundDrawableResource(R.drawable.bg_center_dialog);
         return dialog;
+    }
+
+    private void initView(View view) {
+        mRlVerify = view.findViewById(R.id.rl_verify);
+        mTvTitleBulletin = view.findViewById(R.id.tv_title_bulletin);
+        mTvMsgBulletin = view.findViewById(R.id.tv_msg_bulletin);
+        mBtnConfirmBulletin = view.findViewById(R.id.btn_confirm_bulletin);
+        mBtnConfirmBulletin.setOnClickListener(v -> submit());
     }
 }

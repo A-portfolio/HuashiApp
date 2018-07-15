@@ -9,8 +9,9 @@ import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.muxistudio.common.util.DimensUtil;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.DimensUtil;
 
 /**
  * Created by ybao on 17/1/29.

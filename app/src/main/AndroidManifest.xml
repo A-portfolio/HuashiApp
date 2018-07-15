@@ -21,28 +21,26 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <!-- 【必须】 信鸽SDK所需权限 -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.RESTART_PACKAGES"/>
-    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <uses-permission android:name="android.permission.READ_LOGS"/>
+
+    <!--小米推送所需要的权限-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.VIBRATE"/>
-    <!-- 【可选】 信鸽SDK所需权限 -->
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BATTERY_STATS"/>
+    <permission android:name="net.muxi.huashiapp.permission.MIPUSH_RECEIVE"
+        android:protectionLevel="signature" />
+    <!--这里com.xiaomi.mipushdemo改成app的包名-->
+    <uses-permission android:name="net.muxi.huashiapp.permission.MIPUSH_RECEIVE" />
+    <!--这里com.xiaomi.mipushdemo改成app的包名-->
 
+    <!--安卓8.0安装应用权限-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
     <application
-
-        android:name="net.muxi.huashiapp.App"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
         <meta-data android:value="58b55d3d8f4a9d21ce0013ed" android:name="UMENG_APPKEY"/>
@@ -235,16 +233,6 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
 
-        <!-- 【必须】 (2.30及以上版新增)展示通知的activity -->
-        <!-- 【注意】 如果被打开的activity是启动模式为SingleTop，SingleTask或SingleInstance，请根据通知的异常自查列表第8点处理-->
-        <activity
-            android:name="com.tencent.android.tpush.XGPushActivity"
-            android:exported="true">
-            <intent-filter>
-                <!-- 若使用AndroidStudio，请设置android:name="android.intent.action"-->
-                <action android:name="android.intent.action"/>
-            </intent-filter>
-        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -267,25 +255,6 @@
                 android:resource="@xml/schedule_widget_provider"/>
         </receiver>
 
-        <!-- 【必须】 信鸽receiver广播接收 -->
-        <receiver
-            android:name="com.tencent.android.tpush.XGPushReceiver"
-            android:process=":xg_service_v2">
-            <intent-filter android:priority="0x7fffffff">
-
-                <!-- 【必须】 信鸽SDK的内部广播 -->
-                <action android:name="com.tencent.android.tpush.action.SDK"/>
-                <action android:name="com.tencent.android.tpush.action.INTERNAL_PUSH_MESSAGE"/>
-                <!-- 【必须】 系统广播：开屏和网络切换 -->
-                <action android:name="android.intent.action.USER_PRESENT"/>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-
-                <!-- 【可选】 一些常用的系统广播，增强信鸽service的复活机会，请根据需要选择。当然，你也可以添加APP自定义的一些广播让启动service -->
-                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED"/>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
-            </intent-filter>
-        </receiver>
 
         <service
             android:name="net.muxi.huashiapp.service.WidgetService"
@@ -293,30 +262,60 @@
             android:permission="android.permission.BIND_REMOTEVIEWS">
         </service>
 
-        <!-- 【必须】 信鸽service -->
+        <!--小米推送 所需要配置的service 和 receiver-->
         <service
-            android:name="com.tencent.android.tpush.service.XGPushService"
+            android:enabled="true" android:process=":pushservice"
+            android:name="com.xiaomi.push.service.XMPushService"/>
+
+        <service
+            android:name="com.xiaomi.push.service.XMJobService"
+            android:enabled="true" android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":pushservice" />
+
+        <!--注：此service必须在3.0.1版本以后（包括3.0.1版本）加入-->
+        <service
+            android:enabled="true"
             android:exported="true"
-            android:persistent="true"
-            android:process=":xg_service_v2"/>
+            android:name="com.xiaomi.mipush.sdk.PushMessageHandler" />
 
-        <!-- 【必须】 通知service，此选项有助于提高抵达率 -->
         <service
-            android:name="com.tencent.android.tpush.rpc.XGRemoteService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="net.muxi.huashiapp.PUSH_ACTION"/>
-            </intent-filter>
-        </service>
+            android:enabled="true"
+            android:name="com.xiaomi.mipush.sdk.MessageHandleService" />
 
-        <!-- 【必须】 请将YOUR_ACCESS_ID修改为APP的AccessId，“21”开头的10位数字，中间没空格 -->
-        <meta-data
-            android:name="XG_V2_ACCESS_ID"
-            android:value="2100216051"/>
-        <!-- 【必须】 请将YOUR_ACCESS_KEY修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 -->
-        <meta-data
-            android:name="XG_V2_ACCESS_KEY"
-            android:value="AE3232GC4CVI"/>
+        <!--注：此service必须在2.2.5版本以后（包括2.2.5版本）加入-->
+        <receiver
+            android:exported="true"
+            android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:exported="false"
+            android:process=":pushservice"
+            android:name="com.xiaomi.push.service.receivers.PingReceiver" >
+            <intent-filter>
+                <action android:name="com.xiaomi.push.PING_TIMER" />
+            </intent-filter>
+        </receiver>
+
+        <!--自定义的receiver 接受消息-->
+         <receiver
+             android:exported= "true"
+             android:name="net.muxi.huashiapp.service.HuashiPushMessageReceiver">
+
+             <intent-filter>
+                 <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
+             </intent-filter>
+             <intent-filter>
+                 <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />
+             </intent-filter>
+             <intent-filter>
+                 <action android:name="com.xiaomi.mipush.ERROR" />
+             </intent-filter>
+         </receiver>
 
     </application>
 

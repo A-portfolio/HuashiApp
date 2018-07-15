@@ -5,30 +5,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.SwitchCompat;
-import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.common.util.PreferenceUtil;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
-import net.muxi.huashiapp.util.PreferenceUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by ybao on 16/5/17.
  */
 public class SettingActivity extends ToolbarActivity {
-
-    @BindView(R.id.switch_course_remind)
-    SwitchCompat mSwitchCourseRemind;
-    @BindView(R.id.switch_library_remind)
-    SwitchCompat mSwitchLibraryRemind;
-    @BindView(R.id.switch_card_remind)
-    SwitchCompat mSwitchCardRemind;
-    @BindView(R.id.switch_score_remind)
-    SwitchCompat mSwitchScoreRemind;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
 
     private PreferenceUtil sp;
     private AppBarLayout mAppBarLayout;
@@ -38,10 +27,20 @@ public class SettingActivity extends ToolbarActivity {
     private String preCard;
     private String preScore;
     private String preAll;
+    private ImageView mImg;
+    private SwitchCompat mSwitchCourseRemind;
+    private ImageView mImg1;
+    private TextView mLibraryNotice;
+    private SwitchCompat mSwitchLibraryRemind;
+    private ImageView mImg2;
+    private TextView mCardNotice;
+    private SwitchCompat mSwitchCardRemind;
+    private ImageView mImg3;
+    private SwitchCompat mSwitchScoreRemind;
 
 
-    public static void start(Context context){
-        Intent starter = new Intent(context,SettingActivity.class);
+    public static void start(Context context) {
+        Intent starter = new Intent(context, SettingActivity.class);
         context.startActivity(starter);
     }
 
@@ -49,7 +48,7 @@ public class SettingActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        ButterKnife.bind(this);
+        initView();
         setTitle("通知栏提醒");
         sp = new PreferenceUtil();
 
@@ -94,4 +93,16 @@ public class SettingActivity extends ToolbarActivity {
         mSwitchScoreRemind.setChecked(sp.getBoolean(preScore, true));
     }
 
+    private void initView() {
+        mImg = findViewById(R.id.img);
+        mSwitchCourseRemind = findViewById(R.id.switch_course_remind);
+        mImg1 = findViewById(R.id.img1);
+        mLibraryNotice = findViewById(R.id.library_notice);
+        mSwitchLibraryRemind = findViewById(R.id.switch_library_remind);
+        mImg2 = findViewById(R.id.img2);
+        mCardNotice = findViewById(R.id.card_notice);
+        mSwitchCardRemind = findViewById(R.id.switch_card_remind);
+        mImg3 = findViewById(R.id.img3);
+        mSwitchScoreRemind = findViewById(R.id.switch_score_remind);
+    }
 }

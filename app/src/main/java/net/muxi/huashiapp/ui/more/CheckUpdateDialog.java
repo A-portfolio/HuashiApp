@@ -11,24 +11,12 @@ import android.widget.TextView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.widget.CenterDialogFragment;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by december on 17/2/27.
  */
 
 public class CheckUpdateDialog extends CenterDialogFragment {
-
-    @BindView(R.id.update_title)
-    TextView mUpdateTitle;
-    @BindView(R.id.update_content)
-    TextView mUpdateContent;
-    @BindView(R.id.btn_update)
-    Button mBtnUpdate;
-    @BindView(R.id.btn_cancel)
-    Button mBtnCancel;
-
 
     private String mTitle;
     private String mContent;
@@ -38,12 +26,16 @@ public class CheckUpdateDialog extends CenterDialogFragment {
 
     private OnPositiveClickListener mPositiveClickListener;
     private OnNegativeClickListener mNegativeClickListener;
+    private TextView mUpdateTitle;
+    private TextView mUpdateContent;
+    private Button mBtnUpdate;
+    private Button mBtnCancel;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_check_update, null);
-        ButterKnife.bind(this, view);
+        initView(view);
 
         Dialog dialog = createCenterDialog(view);
 
@@ -110,6 +102,12 @@ public class CheckUpdateDialog extends CenterDialogFragment {
         mContent = content;
     }
 
+    private void initView(View view) {
+        mUpdateTitle = view.findViewById(R.id.update_title);
+        mUpdateContent = view.findViewById(R.id.update_content);
+        mBtnUpdate = view.findViewById(R.id.btn_update);
+        mBtnCancel = view.findViewById(R.id.btn_cancel);
+    }
 
 
     public interface OnPositiveClickListener {

@@ -127,6 +127,21 @@
             android:layout_alignStart="@+id/tv_tx" android:layout_below="@+id/tv_tx"
             android:text="通识选修学分" android:textColor="@color/colorWhite"/>
 
+        <TextView
+            android:id="@+id/tv_zz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_alignLeft="@+id/tx"
+            android:layout_alignStart="@+id/tx" android:layout_below="@+id/tx"
+            android:layout_marginTop="18dp" android:fontFamily="sans-serif"
+            android:text=" " android:textColor="@color/colorWhite"
+            android:textSize="32sp" android:textStyle="normal|italic"/>
+
+        <TextView
+            android:id="@+id/zz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_alignLeft="@+id/tx"
+            android:layout_alignStart="@+id/tx" android:layout_below="@+id/tv_th"
+            android:text="专业主干课程" android:textColor="@color/colorWhite"/>
     </RelativeLayout>
 
     <TextView

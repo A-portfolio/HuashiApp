@@ -10,10 +10,10 @@ import android.view.View;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.Constants;
+import com.muxistudio.appcommon.Constants;
+import com.muxistudio.common.util.DateUtil;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.DateUtil;
 
 import java.util.List;
 

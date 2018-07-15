@@ -11,9 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import java.util.List;
+
+import com.muxistudio.appcommon.user.UserAccountManager;
+
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+
+import java.util.List;
+
 
 /**
  * Created by december on 17/2/18.
@@ -50,7 +55,7 @@ public class MoreAdapter extends RecyclerView.Adapter<MoreAdapter.MoreViewHolder
     public void onBindViewHolder(MoreViewHolder holder, int position) {
         holder.mItemImg.setImageResource(mIcons.get(position));
         holder.mItemImg.setColorFilter(ContextCompat.getColor(mContext,mColors.get(position))
-        , PorterDuff.Mode.MULTIPLY);
+                , PorterDuff.Mode.MULTIPLY);
         if (position == 6) {
             holder.mItemText.setTextColor(App.sContext.getResources().getColor(R.color.red));
         }
@@ -58,14 +63,14 @@ public class MoreAdapter extends RecyclerView.Adapter<MoreAdapter.MoreViewHolder
         holder.mItemLayout.setOnClickListener(v -> {
             if (mItemClickListener != null) {
                 mItemClickListener.OnItemClick(v, position);
-                if (!TextUtils.isEmpty(App.sUser.getSid())&&position==6) {
+                if (!TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().sid)&&position==6) {
                     holder.mItemImg.setVisibility(View.INVISIBLE);
                     holder.mItemText.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
-        }
+    }
 
     @Override
     public int getItemCount() {

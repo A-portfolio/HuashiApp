@@ -6,16 +6,14 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.Logger;
+import com.muxistudio.common.util.Logger;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import net.muxi.huashiapp.R;
+
 
 /**
  * Created by ybao on 17/2/11.
@@ -23,10 +21,8 @@ import butterknife.ButterKnife;
 
 public class CreditGradeDialog extends DialogFragment implements View.OnClickListener{
 
-    @BindView(R.id.tv_credit_grade)
-    TextView mTvCreditGrade;
-    @BindView(R.id.btn_ok)
-    TextView mBtnOk;
+    private TextView mTvCreditGrade;
+    private TextView mBtnOk;
 
     public static CreditGradeDialog newInstance(float result) {
         Bundle args = new Bundle();
@@ -40,7 +36,7 @@ public class CreditGradeDialog extends DialogFragment implements View.OnClickLis
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_grade_result, null);
-        ButterKnife.bind(this,view);
+        initView(view);
         float result = getArguments().getFloat("result",0);
         mTvCreditGrade.setText(String.format("%.2f",result + 0.005));
         mBtnOk.setOnClickListener(this);
@@ -58,11 +54,16 @@ public class CreditGradeDialog extends DialogFragment implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btn_ok:{
-                Logger.d("dialog dismiss");
-                CreditGradeDialog.this.dismiss();
-            }
+        int id = view.getId();
+        if (id == R.id.btn_ok){
+            Logger.d("dialog dismiss");
+            CreditGradeDialog.this.dismiss();
         }
+    }
+
+    private void initView(View view) {
+        mTvCreditGrade = view.findViewById(R.id.tv_credit_grade);
+        mBtnOk = view.findViewById(R.id.btn_ok);
+        mBtnOk.setOnClickListener(v -> onClick(view));
     }
 }

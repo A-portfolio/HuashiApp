@@ -9,13 +9,13 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
+import com.muxistudio.appcommon.utils.NumberPickerHelper;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.util.NumberPickerHelper;
+import net.muxi.huashiapp.ui.timeTable.LargeSizeNumberPicker;
 
 import java.lang.reflect.Field;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by december on 17/2/9.
@@ -24,23 +24,25 @@ import butterknife.ButterKnife;
 public class StudyTimePickerView extends LinearLayout {
     public static final String[] DAYS = {"周一", "周二", "周三", "周四", "周五"};
     public String[] STUDY_TIME = new String[20];
-    @BindView(R.id.np_study_week)
-    NumberPicker mNpStudyWeek;
-    @BindView(R.id.np_study_day)
-    NumberPicker mNpStudyDay;
 
     private OnValueChangeListener mValueChangeListener;
+    private LargeSizeNumberPicker mNpStudyWeek;
+    private LargeSizeNumberPicker mNpStudyDay;
+
     public StudyTimePickerView(Context context) {
         this(context, null);
     }
+
     public StudyTimePickerView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        inflate(context,R.layout.view_study_time_picker, this);
-        ButterKnife.bind(this);
+        inflate(context, R.layout.view_study_time_picker, this);
+        mNpStudyWeek = findViewById(R.id.np_study_week);
+        mNpStudyDay = findViewById(R.id.np_study_day);
         setWillNotDraw(false);
         initView();
 
     }
+
     private void initView() {
         setDividerColor(mNpStudyWeek, Color.TRANSPARENT);
         setDividerColor(mNpStudyDay, Color.TRANSPARENT);

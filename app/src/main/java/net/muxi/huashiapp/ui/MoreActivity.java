@@ -6,12 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Button;
 
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import net.muxi.huashiapp.R;
+
 
 /**
  * Created by december on 17/4/25.
@@ -19,23 +17,22 @@ import butterknife.OnClick;
 
 public class MoreActivity extends ToolbarActivity {
 
-    @BindView(R.id.btn_feedback)
-    Button mBtnFeedback;
+    private Button mBtnFeedback;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, MoreActivity.class);
         context.startActivity(starter);
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_more);
-        ButterKnife.bind(this);
         setTitle("更多");
 
+        initView();
     }
 
-    @OnClick(R.id.btn_feedback)
     public void onViewClicked() {
         SuggestionActivity.start(this);
     }
@@ -43,5 +40,10 @@ public class MoreActivity extends ToolbarActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    private void initView() {
+        mBtnFeedback = findViewById(R.id.btn_feedback);
+        mBtnFeedback.setOnClickListener(v -> onViewClicked());
     }
 }

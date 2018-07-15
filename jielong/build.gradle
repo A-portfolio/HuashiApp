@@ -1,0 +1,58 @@
+if(rootProject.ext.isJieLongDebug){
+    apply plugin: 'com.android.library'
+} else {
+    apply plugin: 'com.android.application'
+}
+
+android {
+    compileSdkVersion 27
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        if(!rootProject.ext.isJieLongDebug){
+            applicationId "com.muxistudio.jielong"
+        }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ moduleName : project.getName() ]
+            }
+        }
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            if (!rootProject.ext.isJieLongDebug) {
+                manifest.srcFile 'src/debug/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java {
+                    exclude '**/debug/**'
+                }
+            }
+        }
+    }
+}
+
+
+dependencies {
+    def depends = rootProject.ext.dependencies
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project (":appcommon")
+    annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
+    implementation depends["appcompat_v7"]
+}

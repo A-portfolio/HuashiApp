@@ -5,14 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.common.base.ToolbarActivity;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import net.muxi.huashiapp.R;
+
 
 /**
  * Created by december on 17/2/6.
@@ -20,24 +18,19 @@ import butterknife.ButterKnife;
 
 public class StudyAreaOptionActivity extends ToolbarActivity {
 
-
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.building_recycler_view)
-    RecyclerView mBuildingRecyclerView;
-
     //自习楼栋查询参数
     private String area;
 
     String[] buildings = {"7号楼", "8号楼"};
 
     private AreaOptionAdapter mAdapter;
+    private RecyclerView mBuildingRecyclerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_study_area);
-        ButterKnife.bind(this);
+        initView();
         setTitle("选择自习地点");
 
         mAdapter = new AreaOptionAdapter(buildings);
@@ -48,8 +41,8 @@ public class StudyAreaOptionActivity extends ToolbarActivity {
             public void OnItemClick(View view, String[] buildings, int position) {
                 area = buildings[position];
                 Intent intent = new Intent();
-                intent.putExtra("studyArea",area);
-                setResult(0,intent);
+                intent.putExtra("studyArea", area);
+                setResult(0, intent);
                 StudyAreaOptionActivity.this.finish();
             }
         });
@@ -65,10 +58,12 @@ public class StudyAreaOptionActivity extends ToolbarActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
-        setResult(0,intent);
+        setResult(0, intent);
         this.finish();
     }
 
 
-
+    private void initView() {
+        mBuildingRecyclerView = findViewById(R.id.building_recycler_view);
+    }
 }

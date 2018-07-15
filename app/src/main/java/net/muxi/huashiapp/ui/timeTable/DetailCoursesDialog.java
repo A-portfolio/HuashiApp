@@ -17,17 +17,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
+import com.muxistudio.appcommon.RxBus;
+import com.muxistudio.appcommon.data.Course;
+import com.muxistudio.appcommon.event.RefreshTableEvent;
+import com.muxistudio.common.util.DimensUtil;
+
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.RxBus;
-import net.muxi.huashiapp.common.data.Course;
-import net.muxi.huashiapp.event.RefreshTableEvent;
-import net.muxi.huashiapp.util.DimensUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.Subscription;
 
 /**
@@ -37,16 +36,13 @@ import rx.Subscription;
 
 public class DetailCoursesDialog extends DialogFragment {
 
-    @BindView(R.id.layout_courses)
-    LinearLayout mLayoutCourses;
-    @BindView(R.id.scrollView)
-    ScrollView mScrollView;
-    @BindView(R.id.root_layout)
-    RelativeLayout mRootLayout;
-
     private List<Course> mCourseList;
     private int mSelectWeek;
     private Subscription mSubscription;
+    private RelativeLayout mRootLayout;
+    private ScrollView mScrollView;
+    private LinearLayout mLayoutCourses;
+
     public static DetailCoursesDialog newInstance(List<Course> courseList, int selectWeek) {
         Bundle args = new Bundle();
         args.putParcelableArrayList("course_list", (ArrayList) courseList);
@@ -62,7 +58,7 @@ public class DetailCoursesDialog extends DialogFragment {
         mCourseList = getArguments().getParcelableArrayList("course_list");
         mSelectWeek = getArguments().getInt("select_week", 1);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_courses, null);
-        ButterKnife.bind(this, view);
+        initView(view);
         addCourseViews(mCourseList, view);
         mRootLayout.setOnClickListener(v -> {
             dismiss();
@@ -116,5 +112,11 @@ public class DetailCoursesDialog extends DialogFragment {
         if (!mSubscription.isUnsubscribed()){
             mSubscription.unsubscribe();
         }
+    }
+
+    private void initView(View view) {
+        mRootLayout = view.findViewById(R.id.root_layout);
+        mScrollView = view.findViewById(R.id.scrollView);
+        mLayoutCourses = view.findViewById(R.id.layout_courses);
     }
 }
