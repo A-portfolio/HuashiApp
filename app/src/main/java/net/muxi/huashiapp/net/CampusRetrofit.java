@@ -33,8 +33,7 @@ public class CampusRetrofit{
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl("" +
-                        "")
+                .baseUrl("https://ccnubox.muxixyz.com/api/")
                 //http://39.108.79.110:5678/api/
                 .build();
         mRetrofitService = retrofit.create(RetrofitService.class);
