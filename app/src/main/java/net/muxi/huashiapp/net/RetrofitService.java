@@ -175,7 +175,7 @@ public interface RetrofitService {
         @Query("weekday") String day,
         @Query("building") String area);
 
-    @GET("api/grade/")
+    @GET("grade/")
     Observable<List<Score>> getScores(@Query("xnm") String year,
         @Query("xqm") String term);
 
