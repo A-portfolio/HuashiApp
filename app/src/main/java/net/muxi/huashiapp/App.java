@@ -7,6 +7,7 @@ import android.util.Log;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.muxistudio.appcommon.data.User;
 import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.common.base.Global;
 import com.muxistudio.common.util.PreferenceUtil;
@@ -24,6 +25,7 @@ import static com.muxistudio.appcommon.Constants.UMENG_APP_KEY;
 public class App extends Application {
 
     public static Context sContext;
+    public static User sUser;
 
     @Override
     public void onCreate() {

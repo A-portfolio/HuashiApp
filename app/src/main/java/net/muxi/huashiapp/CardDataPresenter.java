@@ -1,11 +1,11 @@
 package net.muxi.huashiapp;
 
+import com.muxistudio.appcommon.net.ccnu.CcnuService2;
+import com.muxistudio.common.util.DateUtil;
+
 import net.muxi.huashiapp.common.data.CardDailyUse;
 import net.muxi.huashiapp.common.data.CardDataEtp;
 import net.muxi.huashiapp.common.data.ICardView;
-import net.muxi.huashiapp.net.ccnu.CcnuService2;
-import net.muxi.huashiapp.util.DateUtil;
-import net.muxi.huashiapp.util.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -108,8 +108,9 @@ public class CardDataPresenter {
         String todayDays = DateUtil.toDateInYear(today);
         String sevenDays = DateUtil.toDateInYear(seven);
 
-        Observable<CardDailyUse> cardDailyUseObservable = service.getCardDailyData(map
+        Observable<com.muxistudio.appcommon.data.CardDailyUse> cardDailyUseObservable = service.getCardDailyData(map
         ,100,100,sevenDays,todayDays);
+
 
 
         sessionIdObservable

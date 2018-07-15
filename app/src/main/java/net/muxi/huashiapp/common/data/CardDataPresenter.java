@@ -1,7 +1,8 @@
 package net.muxi.huashiapp.common.data;
 
+import com.muxistudio.appcommon.net.ccnu.CcnuService2;
+
 import net.muxi.huashiapp.App;
-import net.muxi.huashiapp.net.ccnu.CcnuService2;
 
 import java.io.IOException;
 import java.util.ArrayList;
