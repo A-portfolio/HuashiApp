@@ -91,8 +91,11 @@ public class CreditGradeActivity extends ToolbarActivity {
         if (mCreditGradeAdapter.getCheckedList() != null) {
             for (int pos : mCreditGradeAdapter.getCheckedList()) {
                 float credit = Float.parseFloat(mScoresList.get(pos).credit);
-                credits += credit;
-                sum += Float.parseFloat(mScoresList.get(pos).grade) * credit;
+
+                if (Character.isDigit(mScoresList.get(pos).grade.charAt(0))) {
+                    credits += credit;
+                    sum += Float.parseFloat(mScoresList.get(pos).grade) * credit;
+                }
             }
             if (credits == 0) {
                 return 0;

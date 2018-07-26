@@ -79,8 +79,16 @@ public class BookDetailActivity extends ToolbarActivity {
     }
 
     public void showBorrowedBookFragment(Book book) {
-        getSupportFragmentManager().beginTransaction().add(R.id.content_layout,
-                BookBorrowedFragment.newInstance(book, id)).commit();
+        if(book != null){
+            getSupportFragmentManager().beginTransaction().add(R.id.content_layout,
+                    BookBorrowedFragment.newInstance(book, id)).commit();
+        }else{
+            try {
+                throw new Exception("the book is null");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

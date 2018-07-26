@@ -152,8 +152,10 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
 
     //初始化暴露给 web 端的本地接口
     public void initRegisterInterface() {
-        mWebview.register("obtainInfoUser", (s, callbackFunc) -> callbackFunc.onCallback(new Gson().toJson(UserAccountManager.getInstance().getInfoUser())));
-        mWebview.register("obtainLibUser", (s, callbackFunc) -> callbackFunc.onCallback(new Gson().toJson(UserAccountManager.getInstance().getLibUser())));
+        mWebview.register("obtainInfoUser",
+                (s, callbackFunc) -> callbackFunc.onCallback(new Gson().toJson(UserAccountManager.getInstance().getInfoUser())));
+        mWebview.register("obtainLibUser",
+                (s, callbackFunc) -> callbackFunc.onCallback(new Gson().toJson(UserAccountManager.getInstance().getLibUser())));
         // 消费账单
         mWebview.register("share", (s, callbackFunc) -> {
             ShareDialog shareDialog = ShareDialog.newInstance(0);
@@ -325,7 +327,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         api.sendReq(req);
     }
 
-    public void shareTOWXSceneTimeline() {
+    public void     shareTOWXSceneTimeline() {
         WXWebpageObject webpageObject = new WXWebpageObject();
         webpageObject.webpageUrl = url;
         WXMediaMessage msg = new WXMediaMessage(webpageObject);

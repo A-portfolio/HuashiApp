@@ -34,13 +34,10 @@ public class BridgeWebClient extends WebViewClient {
                 if (event.indexOf(CALLBACK_RESOLVED) > -1) {
                     mBridgeWebView.responseHandlers.get(event + uniqueId).handle(data, null);
                 } else {
-                    mBridgeWebView.handlers.get(event).handle(data, new CallbackFunc() {
-                        @Override
-                        public void onCallback(String data) {
-                            if (!TextUtils.isEmpty(data)) {
-                                mBridgeWebView.send(event + CALLBACK_RESOLVED, data, null,
-                                        uniqueId);
-                            }
+                    mBridgeWebView.handlers.get(event).handle(data, data1 -> {
+                        if (!TextUtils.isEmpty(data1)) {
+                            mBridgeWebView.send(event + CALLBACK_RESOLVED, data1, null,
+                                    uniqueId);
                         }
                     });
                 }

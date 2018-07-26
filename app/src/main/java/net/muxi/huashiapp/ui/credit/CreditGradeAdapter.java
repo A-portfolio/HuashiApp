@@ -63,7 +63,7 @@ public class CreditGradeAdapter extends RecyclerView.Adapter<CreditGradeAdapter.
             }
             holder.mLayoutItem.setOnClickListener(v -> {
                 if (checkedList.contains(position)) {
-                    checkedList.remove((Object) position);
+                    checkedList.remove(position);
                     holder.mIvChecked.setVisibility(View.INVISIBLE);
                     holder.mTvProperty.setBackgroundResource(R.drawable.shape_unchecked);
                 } else {
@@ -76,6 +76,8 @@ public class CreditGradeAdapter extends RecyclerView.Adapter<CreditGradeAdapter.
                     }
                 }
             });
+        }else{
+            holder.mIvChecked.setVisibility(View.INVISIBLE);
         }
     }
 
