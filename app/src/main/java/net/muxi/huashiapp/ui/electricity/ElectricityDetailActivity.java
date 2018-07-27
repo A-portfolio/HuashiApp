@@ -39,7 +39,6 @@ import rx.schedulers.Schedulers;
 public class ElectricityDetailActivity extends ToolbarActivity {
 
     private RelativeLayout mEleDetailLayout;
-    private AppBarLayout mAppBar;
     private TabLayout mTabLayout;
     private MultiStatusView mMultiStatusView;
     private ViewPager mViewPager;
@@ -52,7 +51,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
     }
 
     private static final String PAY_HINT = "电费不足？查看如何微信缴费";
-    private PreferenceUtil sp;
     private String mQuery;
     private List<Fragment> detailFragments;
 
@@ -64,7 +62,7 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         initView();
         setTitle("查询结果");
         init();
-        sp = new PreferenceUtil();
+        PreferenceUtil sp = new PreferenceUtil();
         mQuery = getIntent().getStringExtra("query");
         mMultiStatusView.setOnRetryListener(v -> {
             showLoading();
@@ -124,13 +122,11 @@ public class ElectricityDetailActivity extends ToolbarActivity {
                         mMultiStatusView.showNetError();
                         hideLoading();
                     }
-                }, throwable -> {
+                }, (Throwable throwable) -> {
                     throwable.printStackTrace();
                     mMultiStatusView.showNetError();
                     hideLoading();
-                }, () -> {
-                    hideLoading();
-                });
+                }, this::hideLoading);
     }
 
     public void init() {
@@ -168,10 +164,10 @@ public class ElectricityDetailActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_change_room) {
-            //其实我也不知道这个事件有什么作用
+
             MobclickAgent.onEvent(this, "ele_fee_change_dom_query");
             PreferenceUtil sp = new PreferenceUtil();
-            sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
+            PreferenceUtil.clearString(PreferenceUtil.ELE_QUERY_STRING);
             Intent intent = new Intent(ElectricityDetailActivity.this, ElectricityActivity.class);
             startActivity(intent);
             this.finish();
@@ -191,7 +187,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         ElectricityPayHintView view = new ElectricityPayHintView(this);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.view_show);
         view.startAnimation(animation);
-//        mEleDetailLayout.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         mEleDetailLayout.addView(view);
 
     }
@@ -211,7 +206,7 @@ public class ElectricityDetailActivity extends ToolbarActivity {
 
     private void initView() {
         mEleDetailLayout = findViewById(R.id.ele_detail_layout);
-        mAppBar = findViewById(R.id.app_bar);
+        AppBarLayout mAppBar = findViewById(R.id.app_bar);
         mTabLayout = findViewById(R.id.tabLayout);
         mMultiStatusView = findViewById(R.id.multi_status_view);
         mViewPager = findViewById(R.id.viewPager);

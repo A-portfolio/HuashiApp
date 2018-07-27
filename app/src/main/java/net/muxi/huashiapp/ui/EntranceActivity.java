@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Button;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.muxistudio.appcommon.Constants;
@@ -18,6 +19,12 @@ import com.muxistudio.common.util.PreferenceUtil;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.main.MainActivity;
 
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.Subscription;
+import rx.functions.Action1;
+
 
 /**
  * Created by ybao on 16/7/30.
@@ -25,22 +32,26 @@ import net.muxi.huashiapp.ui.main.MainActivity;
 //这里是整个app刚刚进去的闪屏活动！
 public class EntranceActivity extends BaseAppActivity implements View.OnClickListener {
 
-    private SimpleDraweeView mDrawee;
     private long mSplashUpdate;
     private String mSplashUrl;
     private String mSplashImg;
-    private static final int SPLASH_TIME = 200;
+    private static final int SPLASH_TIME = 2000;
     private PreferenceUtil sp;
-    private boolean isFirstOpen;
 
+    private Subscription mHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sp = new PreferenceUtil();
-        isFirstOpen = sp.getBoolean(PreferenceUtil.APP_FIRST_OPEN, true);
+        boolean isFirstOpen = PreferenceUtil.getBoolean(PreferenceUtil.APP_FIRST_OPEN, true);
+
+        Button mBtnSkip = findViewById(R.id.btn_skip);
+        mBtnSkip.setOnClickListener(this);
+
         if (!isFirstOpen) {
-            if (sp.getString(Constants.SPLASH_IMG).equals("")) {
+
+            if (PreferenceUtil.getString(Constants.SPLASH_IMG).equals("")) {
                 startMainActivityDelay(0);
             } else {
                 setContentView(R.layout.activity_entrance);
@@ -51,33 +62,38 @@ public class EntranceActivity extends BaseAppActivity implements View.OnClickLis
                 getWindow().getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
-                mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
-                mDrawee.setImageURI(Uri.parse(sp.getString(Constants.SPLASH_IMG)));
+                SimpleDraweeView mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
+                mDrawee.setImageURI(Uri.parse(PreferenceUtil.getString(Constants.SPLASH_IMG)));
                 mDrawee.setOnClickListener(this);
-                startMainActivityDelay(2500);
+                startMainActivityDelay(SPLASH_TIME);
             }
             return;
         }
 
         GuideActivity.start(this);
-        sp.saveBoolean(PreferenceUtil.APP_FIRST_OPEN, false);
+        PreferenceUtil.saveBoolean(PreferenceUtil.APP_FIRST_OPEN, false);
         this.finish();
     }
 
     @Override
     public void onClick(View v) {
+        if (v.getId() == R.id.btn_skip) {
+            mHandler.unsubscribe();
+            finish();
+        }
         if (v.getId() == R.id.drawee) {
             Intent intent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(sp.getString(Constants.SPLASH_URL).toString()));
+                    Uri.parse(PreferenceUtil.getString(Constants.SPLASH_URL)));
             startActivity(intent);
         }
     }
 
     public void startMainActivityDelay(long delayMills){
-        new Handler().postDelayed(() ->{
-            MainActivity.start(EntranceActivity.this);
-            EntranceActivity.this.finish();
-        },delayMills);
+        mHandler = Observable.timer(delayMills, TimeUnit.MILLISECONDS)
+                .subscribe(aLong -> {
+                    MainActivity.start(EntranceActivity.this);
+                    EntranceActivity.this.finish();
+                });
     }
 
     @Override

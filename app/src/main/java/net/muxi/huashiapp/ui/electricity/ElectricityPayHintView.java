@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.muxistudio.appcommon.appbase.BaseAppActivity;
 import com.muxistudio.appcommon.utils.AppUtil;
+import com.muxistudio.appcommon.utils.UtilsExtensionKt;
 import com.muxistudio.common.util.DimensUtil;
 
 import net.muxi.huashiapp.R;
@@ -28,8 +29,6 @@ public class ElectricityPayHintView extends RelativeLayout {
 
     private Context mContext;
 
-    private int mYDown;
-    private int mYDistance;
     private int mCurY;
 
     private Scroller mScroller;
@@ -37,12 +36,7 @@ public class ElectricityPayHintView extends RelativeLayout {
     private VelocityTracker mVelocityTracker;
 
     private ElectricityPayHintView mView;
-    private ImageView mViewCloseBtn;
-    private TextView mTvTitle;
-    private TextView mTvContent;
-    private RelativeLayout mRelativeLayout;
     private TextView mTvName;
-    private TextView mTvCopy;
 
     public ElectricityPayHintView(Context context) {
         super(context);
@@ -52,16 +46,13 @@ public class ElectricityPayHintView extends RelativeLayout {
     }
 
     private void initView() {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_electricity_pay_hint, this, true);
+        ImageView mViewCloseBtn = findViewById(R.id.view_close_btn);
 
-        mViewCloseBtn = findViewById(R.id.view_close_btn);
-        mTvTitle = findViewById(R.id.tv_title);
-        mTvContent = findViewById(R.id.tv_content);
-        mRelativeLayout = findViewById(R.id.relative_layout);
         mTvName = findViewById(R.id.tv_name);
-        mTvCopy = findViewById(R.id.tv_copy);
-        mViewCloseBtn.setOnClickListener(v -> onClick(v));
-        mTvCopy.setOnClickListener(v -> onClick(v));
+        TextView mTvCopy = findViewById(R.id.tv_copy);
+        //the prototype of the lambda is setOnclickListener(v -> onClick())
+        mViewCloseBtn.setOnClickListener(this::onClick);
+        mTvCopy.setOnClickListener(this::onClick);
     }
 
     public void smoothScrollTo(int y) {
@@ -76,8 +67,11 @@ public class ElectricityPayHintView extends RelativeLayout {
         if (id == R.id.view_close_btn){
             removeAllViews();
         }else if (id == R.id.tv_copy){
+
             AppUtil.clipToClipBoard(getContext(), mTvName.getText());
             ((BaseAppActivity) mContext).showSnackbarShort("成功复制到粘贴板");
+
+            UtilsExtensionKt.intent2Wx(new AppUtil(),this.getContext());
         }
     }
 
@@ -86,8 +80,7 @@ public class ElectricityPayHintView extends RelativeLayout {
         int action = MotionEventCompat.getActionMasked(event);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                mYDown = (int) event.getY();
-                mCurY = mYDown;
+                mCurY = (int) event.getY();
                 break;
 
             case MotionEvent.ACTION_MOVE:
@@ -96,7 +89,7 @@ public class ElectricityPayHintView extends RelativeLayout {
                 } else {
                     mVelocityTracker.clear();
                 }
-                mYDistance = (int) (event.getY() - mCurY);
+                int mYDistance = (int) (event.getY() - mCurY);
                 if (-mYDistance > -getScrollY()) {
                     scrollBy(0, -getScrollY());
                 } else {

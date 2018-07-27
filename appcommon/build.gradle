@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
@@ -46,5 +47,9 @@ dependencies {
     api rootProject.ext.dependencies["umeng_analytics"]
     provided rootProject.ext.dependencies.tinker_android_anno
     api rootProject.ext.dependencies.tinker_patch
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+}
+repositories {
+    mavenCentral()
 }

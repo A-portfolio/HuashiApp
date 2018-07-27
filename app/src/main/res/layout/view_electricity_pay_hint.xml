@@ -42,9 +42,9 @@
         android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="68dp"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="60dp"
-        android:layout_marginRight="68dp"
+        android:layout_marginRight= "50dp"
         >
 
         <TextView
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/tv_name"
             android:layout_alignParentRight="true"
-            android:text="点击复制"
+            android:text="点击复制，并跳转到微信"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/medium_size"
             />
