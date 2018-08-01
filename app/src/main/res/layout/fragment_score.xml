@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/view_toolbar"
+        />
+
+
+    <ImageView
+        android:id="@+id/iv_year"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="103dp"
+        android:src="@drawable/ic_choose_year"/>
+
+    <TextView
+        android:id="@+id/tv_select_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_alignTop="@id/iv_year"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/iv_year"
+        android:text="选择学年"
+        android:textColor="?android:attr/textColorPrimary"/>
+
+    <TextView
+        android:id="@+id/tv_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_select_year"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/iv_year"
+        android:textSize="10sp"
+        tools:text="2013-2016学年"/>
+
+    <View android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tv_year"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/divider"/>
+
+
+
+    <!--选择学期-->
+    <ImageView
+        android:id="@+id/iv_term"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="203dp"
+        android:src="@drawable/ic_choose_year"/>
+
+    <TextView
+        android:id="@+id/tv_select_term"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_alignTop="@id/iv_term"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/iv_term"
+        android:text="选择学期"
+        android:textColor="?android:attr/textColorPrimary"/>
+
+    <TextView
+        android:id="@+id/tv_term"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_select_term"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/iv_year"
+        android:textSize="10sp"
+        tools:text="全部"/>
+
+    <View android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tv_term"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/divider_dark"/>
+
+    <ImageView
+        android:id="@+id/iv_course_type"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="303dp"
+        android:src="@drawable/ic_choose_year"/>
+
+    <TextView
+        android:id="@+id/tv_select_course"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_alignTop="@id/iv_course_type"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/iv_course_type"
+        android:text="选择课程种类"
+        android:textColor="?android:attr/textColorPrimary"/>
+
+    <TextView
+        android:id="@+id/tv_course_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_select_course"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/iv_year"
+        android:textSize="10sp"
+        tools:text="专业主干课/通识选修课/同时必修课"/>
+
+
+    <Button
+        android:id="@+id/btn_enter"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/iv_course_type"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/ripple_accent"
+        android:text="查询"
+        android:textColor="@color/colorWhite"/>
+
+</RelativeLayout>

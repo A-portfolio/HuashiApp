@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import com.muxistudio.appcommon.event.NetErrorEvent;
 import com.muxistudio.appcommon.event.RefreshSessionEvent;
 import com.muxistudio.appcommon.presenter.LoginPresenter;
 import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.appcommon.widgets.LoadingDialog;
 import com.muxistudio.common.base.BaseFragment;
 
 
@@ -28,6 +30,8 @@ import com.muxistudio.common.base.BaseFragment;
  */
 public class BaseAppFragment extends BaseFragment{
 
+
+    private LoadingDialog mLoadingDialog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,5 +88,20 @@ public class BaseAppFragment extends BaseFragment{
         Snackbar.make(getActivity().findViewById(android.R.id.content),
                 word, Snackbar.LENGTH_LONG).show();
     }
+
+
+    public void showLoading(FragmentActivity activity) {
+        if (mLoadingDialog == null) {
+            mLoadingDialog = new LoadingDialog();
+        }
+        mLoadingDialog.show(activity.getSupportFragmentManager(),"Loading");
+    }
+
+    public void hideLoading() {
+        if(mLoadingDialog !=null){
+            mLoadingDialog.dismissAllowingStateLoss();
+        }
+    }
+
 
 }

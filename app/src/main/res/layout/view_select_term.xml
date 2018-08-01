@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_margin="30dp"
+        android:id="@+id/tv_term_all"
+        android:textColor="@color/primary_text_color"
+        android:text="全部"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <RadioButton
+        android:id="@+id/rb_all"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_alignBaseline="@+id/tv_term_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <View
+        android:layout_margin="20dp"
+        android:layout_below="@+id/rb_all"
+        android:background="@color/divider_dark"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+
+    <!--专业主干课程-->
+    <TextView
+        android:id="@+id/tv_zyzgk"
+        android:textColor="@color/primary_text_color"
+        android:text="专业主干课"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
+        android:id="@+id/cb_zyzgk"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_alignBaseline="@+id/tv_zyzgk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!--专业选修课程-->
+    <TextView
+        android:id="@+id/tv_zyxxk"
+        android:textColor="@color/primary_text_color"
+        android:text="专业选修课"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="135dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
+        android:id="@+id/cb_zyxxk"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_alignBaseline="@+id/tv_zyxxk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!--通识必修课程-->
+    <TextView
+        android:id="@+id/tv_tsbxk"
+        android:textColor="@color/primary_text_color"
+        android:text="通识必修课"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="170dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
+        android:id="@+id/cb_tsbxk"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_alignBaseline="@+id/tv_tsbxk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!--通识选修课程-->
+    <TextView
+        android:id="@+id/tv_tsxxk"
+        android:textColor="@color/primary_text_color"
+        android:text="通识选修课"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="205dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
+        android:id="@+id/cb_tsxxk"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_alignBaseline="@+id/tv_tsxxk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textColor="@color/primary_text_color"
+        android:layout_marginTop="20dp"
+        android:layout_toLeftOf="@+id/btn_cancel"
+        android:layout_below="@+id/cb_tsxxk"
+        android:id="@+id/btn_confirm"
+        android:text="确定"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/btn_cancel"
+        android:textColor="@color/primary_text_color"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_alignBaseline="@+id/btn_confirm"
+        android:text="取消"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>

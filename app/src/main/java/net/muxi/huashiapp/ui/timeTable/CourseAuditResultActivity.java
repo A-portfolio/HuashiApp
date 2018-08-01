@@ -26,7 +26,8 @@ import rx.schedulers.Schedulers;
  */
 
 //显示结果
-public class CourseAuditResultActivity extends ToolbarActivity {
+public class
+CourseAuditResultActivity extends ToolbarActivity {
 
     private RecyclerView mRvAuditCourse;
     private ImageView mIvErrorView;

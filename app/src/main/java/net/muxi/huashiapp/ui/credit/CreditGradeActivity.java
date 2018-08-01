@@ -39,14 +39,6 @@ import rx.schedulers.Schedulers;
 
 public class CreditGradeActivity extends ToolbarActivity {
 
-    //    @BindView(R.id.toolbar)
-//    Toolbar mToolbar;
-//    @BindView(R.id.recycler_view)
-//    RecyclerView mRecyclerView;
-//    @BindView(R.id.btn_enter)
-//    Button mBtnEnter;
-//    @BindView(R.id.multi_status_view)
-//    MultiStatusView mMultiStatusView;
     private List<Score> mScoresList = new ArrayList<>();
     private CreditGradeAdapter mCreditGradeAdapter;
 

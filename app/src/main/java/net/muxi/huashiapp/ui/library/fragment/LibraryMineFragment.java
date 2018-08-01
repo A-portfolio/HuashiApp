@@ -25,6 +25,9 @@ import java.util.List;
  * Created by ybao on 17/2/16.
  */
 
+/**
+ * 主要的功能页面
+ */
 public class LibraryMineFragment extends BaseAppFragment {
 
     private MyBookListFragment mBooksBorrowedFragment;

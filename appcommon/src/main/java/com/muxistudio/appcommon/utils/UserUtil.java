@@ -26,6 +26,12 @@ public class UserUtil {
         return null;
     }
 
+
+    /**
+     * 生成一个类似 2016-2017 这样的两个连接一起来的字符串
+     * @param length
+     * @return
+     */
     public static String[] generateHyphenYears(int length){
         String[] years = generateYears(length + 1);
         String[] yearsWithHyphen = new String[length];

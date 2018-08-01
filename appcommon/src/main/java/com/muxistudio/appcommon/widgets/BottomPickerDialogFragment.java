@@ -21,13 +21,9 @@ import com.muxistudio.appcommon.R;
 
 public class BottomPickerDialogFragment extends BottomDialogFragment {
 
-    //    @BindView(R.id.tv_title)
     TextView mTvTitle;
-    //    @BindView(R.id.picker_layout)
     PickerLayout mPickerLayout;
-    //    @BindView(R.id.btn_cancel)
     Button mBtnCancel;
-    //    @BindView(R.id.btn_enter)
     Button mBtnEnter;
 
     private View.OnClickListener mOnPositiveButtonClickListener;
@@ -41,7 +37,6 @@ public class BottomPickerDialogFragment extends BottomDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_picker_dialog, null);
-//        ButterKnife.bind(this,view);
         mTvTitle = (TextView) view.findViewById(R.id.tv_title);
         mPickerLayout = (PickerLayout) view.findViewById(R.id.picker_layout);
         mBtnCancel = (Button) view.findViewById(R.id.btn_cancel);

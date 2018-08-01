@@ -178,7 +178,8 @@
             android:name=".ui.studyroom.StudyRoomBlankActivity"
             android:launchMode="singleTask"/>
 
-
+        <activity android:name=".ui.score.ScoreCreditActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name="net.muxi.huashiapp.ui.wxapi.WXEntryActivity"
             android:exported="true"
