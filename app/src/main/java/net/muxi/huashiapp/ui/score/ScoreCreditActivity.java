@@ -34,7 +34,7 @@ public class ScoreCreditActivity extends AppCompatActivity {
 
 
     public static void start(Context context) {
-        context.startActivity(new Intent(context,ScoreActivity.class));
+        context.startActivity(new Intent(context,ScoreCreditActivity.class));
     }
 
 
@@ -65,6 +65,8 @@ public class ScoreCreditActivity extends AppCompatActivity {
 
         mPagerAdapter = new ScoreCreditPagerAdapter(getSupportFragmentManager(),fragments,
                 titles);
+
+        mViewPager.setAdapter(mPagerAdapter);
 
 //        todo add mobclick agents
 

@@ -13,7 +13,7 @@
         android:layout_marginTop="16dp"
         />
 
-    <net.muxi.huashiapp.ui.credit.CreditYearSelectView
+    <net.muxi.huashiapp.ui.score.ScoreCreditSelectView
         android:id="@+id/credit_year_select_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

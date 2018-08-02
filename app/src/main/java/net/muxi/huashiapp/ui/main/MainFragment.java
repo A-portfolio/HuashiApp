@@ -311,6 +311,8 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
 
                         case "成绩2":
                             ScoreCreditActivity.start(getActivity());
+                            break;
+
 
                     }
                 }

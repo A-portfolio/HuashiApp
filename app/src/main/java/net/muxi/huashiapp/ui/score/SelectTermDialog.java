@@ -32,6 +32,10 @@ public class SelectTermDialog extends BottomDialogFragment implements View.OnCli
 
     private boolean terms[] = new boolean[3];
 
+    public static SelectTermDialog newInstance(){
+        return new SelectTermDialog();
+    }
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -51,12 +55,12 @@ public class SelectTermDialog extends BottomDialogFragment implements View.OnCli
             dismiss();
 
         if(id == R.id.btn_confirm) {
-            mListener.onclick();
+            mListener.onclick(terms);
         }
 
     }
 
-    private void setOnClickListener(OnPositiveClickListener listener){
+    public void setOnPositiveButtonClickListener(OnPositiveClickListener listener){
         if(mListener != null)
             this.mListener = listener;
     }
@@ -92,11 +96,12 @@ public class SelectTermDialog extends BottomDialogFragment implements View.OnCli
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_select_term,null);
         initView(view);
-        return super.onCreateDialog(savedInstanceState);
+        Dialog dialog = createBottomDialog(view);
+        return dialog;
     }
 
-    interface OnPositiveClickListener{
-        void onclick();
+    public interface OnPositiveClickListener{
+        void onclick(boolean[] terms);
     }
 
 }

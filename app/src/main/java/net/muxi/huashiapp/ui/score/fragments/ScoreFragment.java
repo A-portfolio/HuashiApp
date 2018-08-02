@@ -14,7 +14,9 @@ import com.muxistudio.appcommon.utils.UserUtil;
 import com.muxistudio.appcommon.widgets.LoadingDialog;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.ui.score.SelectYearDialogFragment;
+import net.muxi.huashiapp.ui.score.SelectCourseTypeDialog;
+import net.muxi.huashiapp.ui.score.SelectTermDialog;
+import net.muxi.huashiapp.ui.score.SelectYearDialog;
 
 /**
  * author :kolibreath
@@ -39,8 +41,11 @@ public class ScoreFragment extends Fragment implements  View.OnClickListener{
     private FragmentActivity mContext;
 
    private int type ;
-   private int value;
 
+   //years in between
+   private int mGap;
+   private boolean mTerms[] = new boolean[3];
+   private boolean mCourses[] = new boolean[3];
 
     private void initView(View view) {
         mTvSelectYear = view.findViewById(R.id.tv_select_year);
@@ -82,7 +87,6 @@ public class ScoreFragment extends Fragment implements  View.OnClickListener{
         super.onCreate(savedInstanceState);
         type = getArguments().getInt("type");
 
-        setYear(value);
     }
 
     @Nullable
@@ -103,19 +107,28 @@ public class ScoreFragment extends Fragment implements  View.OnClickListener{
 
 
     private void showSelectYearDialog() {
-        SelectYearDialogFragment fragment = SelectYearDialogFragment.newInstance(value);
-        fragment.show(getActivity().getSupportFragmentManager(), "score_year_select");
-        fragment.setOnPositionButtonClickListener(v -> {
-            setYear(fragment.getValue());
+        //todo startyear and end year required!
+        SelectYearDialog dialog = SelectYearDialog.newInstance("2016","2018");
+        dialog.show(getActivity().getSupportFragmentManager(), "score_credit_year_select");
+        dialog.setOnPositiveButtonClickListener((start, end) -> {
+            mGap = Integer.parseInt(end)- Integer.parseInt(start);
+            setYear(mGap);
         });
     }
 
     private void showSelectTermDialog(){
+        SelectTermDialog dialog = SelectTermDialog.newInstance();
+        dialog.show(getActivity().getSupportFragmentManager(),"score_credit_term_select");
+        dialog.setOnPositiveButtonClickListener(terms -> {
+            mTerms = terms;
+        });
 
     }
 
-    private void showSlectCourseTypeDialog(){
-
+    private void showSelectCourseTypeDialog(){
+        SelectCourseTypeDialog dialog = SelectCourseTypeDialog.newInstance(mCourses);
+        dialog.show(getActivity().getSupportFragmentManager(),"score_credit_course_type");
+        dialog.setOnPositiveButtonClickListener(courses -> mCourses = courses);
     }
 
     @Override
@@ -130,7 +143,7 @@ public class ScoreFragment extends Fragment implements  View.OnClickListener{
         }
 
         if(id == R.id.tv_select_course || id == R.id.tv_course_type || id == R.id.iv_course_type){
-            showSlectCourseTypeDialog();
+            showSelectCourseTypeDialog();
         }
 
 

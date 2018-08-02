@@ -20,6 +20,9 @@ public class SelectYearDialog extends BottomDialogFragment {
     private Button mBtnCancel;
     private Button mBtnEnter;
 
+    //gap is the years in between like 2016 - 2020 the gap is four years
+    private int gap;
+
     public static SelectYearDialog newInstance(String start, String end) {
         Bundle args = new Bundle();
         args.putString("start", start);
@@ -37,6 +40,7 @@ public class SelectYearDialog extends BottomDialogFragment {
         String startYear = getArguments().getString("start");
         String endYear = getArguments().getString("ending");
 
+        gap = Integer.parseInt(endYear) - Integer.parseInt(startYear);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_credit_select_year,
                 null);
         initView(view);

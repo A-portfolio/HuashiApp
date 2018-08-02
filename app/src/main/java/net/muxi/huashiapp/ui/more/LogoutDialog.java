@@ -33,7 +33,7 @@ public class LogoutDialog extends CenterDialogFragment {
     }
 
     private void initEvent() {
-        mBtnIdLogout.setOnClickListener(new View.OnClickListener() {
+        mBtnIdLogout.setOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mIdClickListener != null) {
@@ -42,7 +42,7 @@ public class LogoutDialog extends CenterDialogFragment {
             }
         });
 
-        mBtnLibraryLogout.setOnClickListener(new View.OnClickListener() {
+        mBtnLibraryLogout.setOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mLibraryClickListener != null) {
@@ -51,7 +51,7 @@ public class LogoutDialog extends CenterDialogFragment {
             }
         });
 
-        mBtnAllLogout.setOnClickListener(new View.OnClickListener() {
+        mBtnAllLogout.setOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mAllClickListener != null) {

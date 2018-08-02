@@ -164,7 +164,7 @@ public class NewsDetailView extends RelativeLayout {
 //            textViews[i].setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
 //
 //            textViews[i].setAutoLinkMask(Linkify.WEB_URLS);
-//            textViews[i].setOnClickListener(new OnClickListener() {
+//            textViews[i].setOnPositiveButtonClickListener(new OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
 //                    try {
@@ -178,7 +178,7 @@ public class NewsDetailView extends RelativeLayout {
 //                    }
 //                }
 //            });
-//            textViews[i].setOnClickListener(new OnClickListener() {
+//            textViews[i].setOnPositiveButtonClickListener(new OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
 //                    Intent intent = new Intent(mContext, DownloadService.class);

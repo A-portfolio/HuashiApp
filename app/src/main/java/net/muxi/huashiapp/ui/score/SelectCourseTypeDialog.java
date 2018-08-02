@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.muxistudio.appcommon.widgets.BottomPickerDialogFragment;
 
@@ -22,48 +23,49 @@ public class SelectCourseTypeDialog extends BottomPickerDialogFragment implement
     private CheckBox mTsbxk;
     private CheckBox mTsxxk;
 
-    private Button mBtnConfirm;
-    private Button mBtnCancel;
+    private TextView mBtnConfirm;
+    private TextView mBtnCancel;
 
     private OnPositiveClickListener mListener;
 
     //选择了课程中的哪几种
-    private boolean[] terms = new boolean[4];
-    public static SelectCourseTypeDialog newInstance(boolean terms[]){
+    private boolean[] courses = new boolean[4];
+
+    public static SelectCourseTypeDialog newInstance(boolean courses[]){
         Bundle args = new Bundle();
-        args.putBooleanArray("terms_value",terms);
+        args.putBooleanArray("terms_value",courses);
 
         SelectCourseTypeDialog dialog = new SelectCourseTypeDialog();
         dialog.setArguments(args);
         return dialog;
     }
 
-    public boolean[] getTerms(){
-        return terms;
+    public boolean[] getCourses(){
+        return courses;
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if(id == R.id.cb_zyzgk){
-            terms[0] = true;
+            courses[0] = true;
         }
 
         if(id == R.id.cb_zyxxk){
-            terms[1] = true;
+            courses[1] = true;
         }
 
         if(id == R.id.cb_tsbxk){
-            terms[2] = true;
+            courses[2] = true;
         }
 
         if(id == R.id.cb_tsxxk){
-            terms[3] = true;
+            courses[3] = true;
         }
 
         if(id == R.id.rb_all){
-            for(int i= 0;i<terms.length;i++){
-                terms[i] = true;
+            for(int i = 0; i< courses.length; i++){
+                courses[i] = true;
             }
 
             mZyzgk.setChecked(true);
@@ -77,20 +79,15 @@ public class SelectCourseTypeDialog extends BottomPickerDialogFragment implement
 
         if(id == R.id.btn_confirm){
             dismiss();
-            mListener.onclick();
+            mListener.onclick(courses);
         }
     }
 
-    public void setOnclickListener(OnPositiveClickListener listener){
-        if(mListener !=null){
-            mListener = listener;
-        }
-    }
 
     private void initView(View view){
 
-        for(int i= 0;i<terms.length;i++){
-            terms[i] = false;
+        for(int i = 0; i< courses.length; i++){
+            courses[i] = false;
         }
 
         mZyzgk = view.findViewById(R.id.cb_zyzgk);
@@ -113,18 +110,23 @@ public class SelectCourseTypeDialog extends BottomPickerDialogFragment implement
         mBtnCancel.setOnClickListener(this);
     }
 
-    interface OnPositiveClickListener{
-        void onclick();
+    public void setOnPositiveButtonClickListener(OnPositiveClickListener listener){
+        if(listener!=null){
+            this.mListener = listener;
+        }
+    }
+
+    public interface OnPositiveClickListener{
+        void onclick(boolean courses[]);
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        terms = getArguments().getBooleanArray("terms_value");
+        courses = getArguments().getBooleanArray("terms_value");
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_select_course_type,null);
         Dialog dialog = createBottomDialog(view);
         initView(view);
-        setTitle("");
-        return super.onCreateDialog(savedInstanceState);
+        return dialog  ;
     }
 }
