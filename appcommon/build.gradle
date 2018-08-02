@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    compileSdkVersion 27
 
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
@@ -33,10 +33,9 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api project (":common")
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    api project(':common')
     annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
-
     api rootProject.ext.dependencies["retrofit"]
     api rootProject.ext.dependencies["converter_gson"]
     api rootProject.ext.dependencies["adapter_rxjava"]
@@ -48,7 +47,6 @@ dependencies {
     provided rootProject.ext.dependencies.tinker_android_anno
     api rootProject.ext.dependencies.tinker_patch
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
 }
 repositories {
     mavenCentral()

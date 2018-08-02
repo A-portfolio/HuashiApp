@@ -25,6 +25,8 @@ import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action1;
 
+import java.lang.String;
+
 
 /**
  * Created by ybao on 16/7/30.
@@ -46,15 +48,17 @@ public class EntranceActivity extends BaseAppActivity implements View.OnClickLis
         sp = new PreferenceUtil();
         boolean isFirstOpen = PreferenceUtil.getBoolean(PreferenceUtil.APP_FIRST_OPEN, true);
 
-        Button mBtnSkip = findViewById(R.id.btn_skip);
-        mBtnSkip.setOnClickListener(this);
+
+
 
         if (!isFirstOpen) {
-
             if (PreferenceUtil.getString(Constants.SPLASH_IMG).equals("")) {
                 startMainActivityDelay(0);
             } else {
                 setContentView(R.layout.activity_entrance);
+
+                Button mBtnSkip = findViewById(R.id.btn_skip);
+                mBtnSkip.setOnClickListener(this);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     getWindow().setStatusBarColor(Color.TRANSPARENT);

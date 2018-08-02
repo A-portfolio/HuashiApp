@@ -28,67 +28,83 @@
         android:layout_height="1dp"/>
 
 
-    <!--第一学期-->
+    <!--专业主干课程-->
     <TextView
-        android:id="@+id/tv_first_term"
+        android:id="@+id/tv_zyzgk"
         android:textColor="@color/primary_text_color"
-        android:text="第一学期"
+        android:text="专业主干课"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <CheckBox
-        android:id="@+id/cb_first_term"
+        android:id="@+id/cb_zyzgk"
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
-        android:layout_alignBaseline="@+id/tv_first_term"
+        android:layout_alignBaseline="@+id/tv_zyzgk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <!--第二学期-->
+    <!--专业选修课程-->
     <TextView
-        android:id="@+id/tv_second_term"
+        android:id="@+id/tv_zyxxk"
         android:textColor="@color/primary_text_color"
-        android:text="第二学期"
+        android:text="专业选修课"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="135dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <CheckBox
-        android:id="@+id/cb_second_term"
+        android:id="@+id/cb_zyxxk"
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
-        android:layout_alignBaseline="@+id/tv_second_term"
+        android:layout_alignBaseline="@+id/tv_zyxxk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <!--第三学期-->
+    <!--通识必修课程-->
     <TextView
-        android:id="@+id/tv_third_term"
+        android:id="@+id/tv_tsbxk"
         android:textColor="@color/primary_text_color"
-        android:text="第三年学期"
+        android:text="通识必修课"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="170dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <CheckBox
-        android:id="@+id/cb_third_term"
+        android:id="@+id/cb_tsbxk"
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
-        android:layout_alignBaseline="@+id/tv_third_term"
+        android:layout_alignBaseline="@+id/tv_tsbxk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <!--通识选修课程-->
+    <TextView
+        android:id="@+id/tv_tsxxk"
+        android:textColor="@color/primary_text_color"
+        android:text="通识选修课"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="205dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
+    <CheckBox
+        android:id="@+id/cb_tsxxk"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_alignBaseline="@+id/tv_tsxxk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:textColor="@color/primary_text_color"
         android:layout_marginTop="20dp"
         android:layout_toLeftOf="@+id/btn_cancel"
-        android:layout_below="@+id/cb_third_term"
+        android:layout_below="@+id/cb_tsxxk"
         android:id="@+id/btn_confirm"
         android:text="确定"
         android:layout_width="wrap_content"

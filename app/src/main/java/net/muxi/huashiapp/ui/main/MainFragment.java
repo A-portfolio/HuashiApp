@@ -45,6 +45,8 @@ import net.muxi.huashiapp.ui.electricity.ElectricityActivity;
 import net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.news.NewsActivity;
+import net.muxi.huashiapp.ui.score.ScoreActivity;
+import net.muxi.huashiapp.ui.score.ScoreCreditActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomBlankActivity;
@@ -165,6 +167,9 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
             mItemDatas.add(new ItemData("校历", R.drawable.ic_calendar + "", false));
             mItemDatas.add(new ItemData("常用网站", R.drawable.ic_net + "", false));
             mItemDatas.add(new ItemData("更多", R.drawable.ic_more + "", false));
+
+//            todo remove after
+            mItemDatas.add(new ItemData("成绩2", R.drawable.ic_score + "", false));
         }
 
     }
@@ -303,6 +308,9 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                         case "更多":
                             MoreActivity.start(getActivity());
                             break;
+
+                        case "成绩2":
+                            ScoreCreditActivity.start(getActivity());
 
                     }
                 }

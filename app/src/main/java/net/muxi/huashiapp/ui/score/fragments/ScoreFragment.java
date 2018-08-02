@@ -126,11 +126,11 @@ public class ScoreFragment extends Fragment implements  View.OnClickListener{
         }
 
         if(id == R.id.iv_term || id == R.id.tv_term || id == R.id.tv_select_term){
-
+            showSelectTermDialog();
         }
 
         if(id == R.id.tv_select_course || id == R.id.tv_course_type || id == R.id.iv_course_type){
-
+            showSlectCourseTypeDialog();
         }
 
 

@@ -14,7 +14,7 @@ def androidCompileVersion = rootProject.ext.android
 
 android {
 
-    compileSdkVersion androidCompileVersion.compileSdkVersion
+    compileSdkVersion 27
     buildToolsVersion androidCompileVersion.buildToolsVersion
 
     dexOptions {
@@ -47,22 +47,21 @@ android {
     }
 
     compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
     }
 
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    api project (":appcommon")
+    api project(':appcommon')
     implementation 'me.biubiubiu.justifytext:library:1.1'
     implementation 'com.github.fengminchao:MultiStatusView:0.6'
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
     implementation 'com.zhy:base-rvadapter:3.0.3'
     implementation 'com.github.fengminchao:CardBanner:1.0'
     implementation 'com.android.support:multidex:1.0.2'
-
     implementation files('libs/MiPush_SDK_Client_3_6_2.jar')
 }
 

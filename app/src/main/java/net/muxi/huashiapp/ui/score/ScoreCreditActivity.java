@@ -1,5 +1,7 @@
 package net.muxi.huashiapp.ui.score;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -30,6 +32,10 @@ public class ScoreCreditActivity extends AppCompatActivity {
 
     private List<Fragment> fragments = new ArrayList<>();
 
+
+    public static void start(Context context) {
+        context.startActivity(new Intent(context,ScoreActivity.class));
+    }
 
 
     private void initView(){
@@ -69,5 +75,7 @@ public class ScoreCreditActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_credit);
+
+        initView();
     }
 }

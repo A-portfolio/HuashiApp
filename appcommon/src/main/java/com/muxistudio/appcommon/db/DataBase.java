@@ -53,7 +53,7 @@ public class DataBase extends SQLiteOpenHelper {
     public static final String KEY_NUM = "num";
 
 
-    //apartment 的属性
+    //apartment 的属
     public static final String KEY_APART = "apart";
     public static final String KEY_TELE = "tele";
     public static final String KEY_APART_PLACE = "place";

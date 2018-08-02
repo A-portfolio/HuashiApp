@@ -5,107 +5,98 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
-import com.muxistudio.appcommon.widgets.BottomPickerDialogFragment;
+import com.muxistudio.appcommon.widgets.BottomDialogFragment;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.ui.timeTable.LargeSizeNumberPicker;
+import net.muxi.huashiapp.ui.more.FeedbackDialog;
 
-public class SelectTermDialog extends BottomPickerDialogFragment implements View.OnClickListener{
+public class SelectTermDialog extends BottomDialogFragment implements View.OnClickListener {
 
-    private RadioButton mRb;
 
-    private CheckBox mZyzgk;
-    private CheckBox mZyxxk;
-    private CheckBox mTsbxk;
-    private CheckBox mTsxxk;
+    private android.widget.TextView tvTermAll;
+    private android.widget.RadioButton rbAll;
+    private android.widget.TextView tvFirstTerm;
+    private android.widget.CheckBox cbFirstTerm;
+    private android.widget.TextView tvSecondTerm;
+    private android.widget.CheckBox cbSecondTerm;
+    private android.widget.TextView tvThirdTerm;
+    private android.widget.CheckBox cbThirdTerm;
+    private android.widget.TextView btnConfirm;
+    private android.widget.TextView btnCancel;
 
-    private Button mBtnConfirm;
-    private Button mBtnCancel;
+    private OnPositiveClickListener mListener;
 
-    //选择了课程中的哪几种
-    private boolean[] terms = new boolean[4];
-    public static SelectTermDialog newInstance(boolean terms[]){
-        Bundle args = new Bundle();
-        args.putBooleanArray("terms_value",terms);
-
-        SelectTermDialog dialog = new SelectTermDialog();
-        dialog.setArguments(args);
-        return dialog;
-    }
-
-    public boolean[] getTerms(){
-        return terms;
-    }
+    private boolean terms[] = new boolean[3];
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id == R.id.cb_zyzgk){
-            terms[0] = true;
-        }
-
-        if(id == R.id.cb_zyxxk){
-            terms[1] = true;
-        }
-
-        if(id == R.id.cb_tsbxk){
-            terms[2] = true;
-        }
-
-        if(id == R.id.cb_tsxxk){
-            terms[3] = true;
-        }
-
         if(id == R.id.rb_all){
-            for(int i= 0;i<terms.length;i++){
+            for(int i=0;i<terms.length;i++)
                 terms[i] = true;
-            }
-
-            mZyzgk.setChecked(true);
-            mZyxxk.setChecked(true);
-            mTsbxk.setChecked(true);
-            mTsxxk.setChecked(true);
         }
+
+        if(id == R.id.cb_first_term)
+            terms[0] = true;
+        if(id == R.id.cb_second_term)
+            terms[1] = true;
+        if(id == R.id.cb_third_term)
+            terms[2] = true;
+
+        if(id == R.id.btn_cancel)
+            dismiss();
+
+        if(id == R.id.btn_confirm) {
+            mListener.onclick();
+        }
+
     }
 
-    private void initView(View view){
+    private void setOnClickListener(OnPositiveClickListener listener){
+        if(mListener != null)
+            this.mListener = listener;
+    }
 
-        for(int i= 0;i<terms.length;i++){
+    private void initView(View view) {
+
+        for(int i=0;i<terms.length;i++){
             terms[i] = false;
         }
+        tvTermAll = (TextView) view.findViewById(R.id.tv_term_all);
+        rbAll = (RadioButton) view.findViewById(R.id.rb_all);
+        tvFirstTerm = (TextView) view.findViewById(R.id.tv_first_term);
+        cbFirstTerm = (CheckBox) view.findViewById(R.id.cb_first_term);
+        tvSecondTerm = (TextView) view.findViewById(R.id.tv_second_term);
+        cbSecondTerm = (CheckBox) view.findViewById(R.id.cb_second_term);
+        tvThirdTerm = (TextView) view.findViewById(R.id.tv_third_term);
+        cbThirdTerm = (CheckBox) view.findViewById(R.id.cb_third_term);
+        btnConfirm = (TextView) view.findViewById(R.id.btn_confirm);
+        btnCancel = (TextView) view.findViewById(R.id.btn_cancel);
 
-        mZyzgk = view.findViewById(R.id.cb_zyzgk);
-        mZyxxk = view.findViewById(R.id.cb_zyxxk);
-        mTsbxk = view.findViewById(R.id.cb_tsbxk);
-        mTsxxk = view.findViewById(R.id.cb_tsxxk);
-
-        mBtnConfirm = view.findViewById(R.id.btn_confirm);
-        mBtnCancel  = view.findViewById(R.id.btn_cancel);
-
-        mRb    = view.findViewById(R.id.rb_all);
-
-        mRb.setOnClickListener(this);
-        mZyzgk.setOnClickListener(this);
-        mZyxxk.setOnClickListener(this);
-        mTsbxk.setOnClickListener(this);
-        mTsxxk.setOnClickListener(this);
-
-        mBtnConfirm.setOnClickListener(this);
-        mBtnCancel.setOnClickListener(this);
+        tvTermAll.setOnClickListener(this);
+        rbAll.setOnClickListener(this);
+        tvFirstTerm.setOnClickListener(this);
+        cbFirstTerm.setOnClickListener(this);
+        cbSecondTerm.setOnClickListener(this);
+        cbThirdTerm.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);
+        btnConfirm.setOnClickListener(this);
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        terms = getArguments().getBooleanArray("terms_value");
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_select_term,null);
-        Dialog dialog = createBottomDialog(view);
         initView(view);
-        setTitle("");
         return super.onCreateDialog(savedInstanceState);
     }
+
+    interface OnPositiveClickListener{
+        void onclick();
+    }
+
 }
