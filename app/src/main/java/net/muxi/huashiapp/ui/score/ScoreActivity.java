@@ -20,6 +20,7 @@ import net.muxi.huashiapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

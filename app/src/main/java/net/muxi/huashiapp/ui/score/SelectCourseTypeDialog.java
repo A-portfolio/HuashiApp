@@ -31,12 +31,8 @@ public class SelectCourseTypeDialog extends BottomPickerDialogFragment implement
     //选择了课程中的哪几种
     private boolean[] courses = new boolean[4];
 
-    public static SelectCourseTypeDialog newInstance(boolean courses[]){
-        Bundle args = new Bundle();
-        args.putBooleanArray("terms_value",courses);
-
+    public static SelectCourseTypeDialog newInstance(){
         SelectCourseTypeDialog dialog = new SelectCourseTypeDialog();
-        dialog.setArguments(args);
         return dialog;
     }
 
@@ -123,7 +119,6 @@ public class SelectCourseTypeDialog extends BottomPickerDialogFragment implement
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        courses = getArguments().getBooleanArray("terms_value");
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_select_course_type,null);
         Dialog dialog = createBottomDialog(view);
         initView(view);
