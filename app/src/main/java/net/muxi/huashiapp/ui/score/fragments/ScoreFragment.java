@@ -138,6 +138,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
 
             //todo to find what fuck it is!
 //            setYear(mGap);
+            loadGrade();
         });
     }
 
@@ -209,6 +210,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
             }
         }
 
+        //todo 增加应用级别的重试
         Observable.from(scores)
                 .toList()
                 .flatMapIterable((Func1<List<Observable<List<Score>>>, Iterable<?>>) observables -> observables)
@@ -222,14 +224,4 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
     }
 
 
-
-    static class Params{
-        public String year;
-        public String term;
-
-        public Params(String year, String term){
-            this.term = term;
-            this.year = term;
-        }
-     }
 }

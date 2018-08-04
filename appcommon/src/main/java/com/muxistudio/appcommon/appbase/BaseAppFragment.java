@@ -35,7 +35,6 @@ public class BaseAppFragment extends BaseFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        retryObserver();
     }
 
     @Override
@@ -52,23 +51,6 @@ public class BaseAppFragment extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    private void retryObserver(){
-        RxBus.getDefault()
-                .toObservable(RefreshSessionEvent.class)
-                .subscribe(event->{
-                    Log.d("received", "showToast: ");
-                    User user = new User();
-                    user.setSid(UserAccountManager.getInstance().getInfoUser().sid);
-                    user.setPassword(UserAccountManager.getInstance().getInfoUser().password);
-                    new LoginPresenter().loginRetry(user);
-                },Throwable::printStackTrace,()->{});
-        RxBus.getDefault()
-                .toObservable(NetErrorEvent.class)
-                .subscribe(netErrorEvent -> {
-                },Throwable::printStackTrace);
-
     }
 
     public void showSnackBarShort(String word){

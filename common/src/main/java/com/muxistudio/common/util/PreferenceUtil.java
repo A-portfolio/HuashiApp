@@ -11,8 +11,10 @@ import com.muxistudio.common.base.Global;
  */
 public class PreferenceUtil {
 
+    public static final String LAST_LOGIN_MOMENT = "sLastLoginMoment";
+
     public static final String HINT_UPDATE_TIME = "sHintUpdateTime";
-//    public static final String DATE_TODAY   = "sTodayDate";;
+
     //phpsessionid 有两种情况 下面中的一种
     public static final String CURWEEK = "sCurWeek";
     public static final String PHPSESSID = "sPhpSessId";
@@ -167,6 +169,28 @@ public class PreferenceUtil {
      */
     public void clearAllData() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Global.getApplication());
+    }
+
+    /**
+     * 记录用户登录的时间差 如果超过2个小时启动自动登录 可以直接通过 App中常量引用
+     */
+    public static void saveLastLoginMoment(){
+        PreferenceUtil.saveLong(PreferenceUtil.LAST_LOGIN_MOMENT,(System.currentTimeMillis()));
+    }
+
+    /**
+     * cookie是否仍然有效?
+     * @return false invalid ; true valid
+     */
+    public static boolean isCookieValid(){
+        if(System.currentTimeMillis() > PreferenceUtil.getLong(PreferenceUtil.LAST_LOGIN_MOMENT))
+            return false;
+        else
+            return true;
+    }
+
+    public static long getLastLoginMoment(){
+        return PreferenceUtil.getLong(PreferenceUtil.LAST_LOGIN_MOMENT);
     }
 
 

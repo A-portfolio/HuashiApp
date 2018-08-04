@@ -298,6 +298,7 @@ public class CcnuCrawler2 {
         return infoCookie;
     }
 
+    //cookie 保存的是在interceptor中完成的
     public static void saveCookies() {
         getInfoCookie();
         PreferenceUtil.saveString(PreferenceUtil.BIG_SERVER_POOL, mBigServerpoolCookie);

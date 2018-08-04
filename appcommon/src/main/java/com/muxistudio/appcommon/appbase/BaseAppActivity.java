@@ -48,7 +48,6 @@ public class BaseAppActivity extends BaseActivity {
         }
         getWindow().getDecorView().setBackgroundColor(Color.WHITE);
         //sendComponentNameByZG();
-        retryObserver();
     }
 
     private void sendComponentNameByZG() {
@@ -141,24 +140,6 @@ public class BaseAppActivity extends BaseActivity {
         View view = snackbar.getView();
         view.setBackgroundColor(getResources().getColor(R.color.red));
         snackbar.show();
-    }
-
-    //包括联网和重试请求的observer
-    private void retryObserver(){
-        RxBus.getDefault()
-                .toObservable(RefreshSessionEvent.class)
-                .subscribe(event->{
-//                 Log.d("received", "showToast: ");
-                 User user = new User();
-                 user.setSid(UserAccountManager.getInstance().getInfoUser().sid);
-                 user.setPassword(UserAccountManager.getInstance().getInfoUser().password);
-                 new LoginPresenter().loginRetry(user);
-                },Throwable::printStackTrace,()->{});
-        RxBus.getDefault()
-                .toObservable(NetErrorEvent.class)
-                .subscribe(netErrorEvent -> {
-                },Throwable::printStackTrace);
-
     }
 
 

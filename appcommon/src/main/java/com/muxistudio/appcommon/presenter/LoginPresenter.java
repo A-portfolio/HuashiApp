@@ -20,20 +20,11 @@ import rx.Observable;
 
 public class LoginPresenter {
 
-    public void loginRetry(User user)  {
-            new Thread(){
-                @Override
-                public void run() {
-                    super.run();
-                    try {
-                        CcnuCrawler2.performLogin(user.sid,user.password);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
-
-    }
+    /**
+     * login 在完成一个登录过程 在回调中自定义逻辑
+     * @param user
+     * @return
+     */
     //在完成登陆之后无论是否成功需要清除了 cookieStore
     public Observable<Boolean> login(User user){
         return Observable.create(subscriber -> {

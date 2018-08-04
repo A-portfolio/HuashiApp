@@ -25,8 +25,7 @@ import static com.muxistudio.appcommon.Constants.UMENG_APP_KEY;
 public class App extends Application {
 
     public static Context sContext;
-    public static User sUser;
-
+    public static long sLastLogin;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -40,6 +39,8 @@ public class App extends Application {
         initARouter(this);
         initX5();
         MiPushUtil.initMiPush(this);
+
+        sLastLogin = PreferenceUtil.getLong(PreferenceUtil.LAST_LOGIN_MOMENT);
     }
 
     private void initX5() {

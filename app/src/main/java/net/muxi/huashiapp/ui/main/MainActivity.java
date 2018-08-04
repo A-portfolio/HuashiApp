@@ -25,6 +25,7 @@ import com.muxistudio.appcommon.data.SplashData;
 import com.muxistudio.appcommon.event.LibLoginEvent;
 import com.muxistudio.appcommon.event.LoginSuccessEvent;
 import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.presenter.LoginPresenter;
 import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.appcommon.utils.FrescoUtil;
 import com.muxistudio.common.util.Logger;
@@ -46,6 +47,7 @@ import net.muxi.huashiapp.utils.AlarmUtil;
 import java.io.File;
 
 import rx.Observer;
+import rx.Scheduler;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -56,7 +58,6 @@ public class MainActivity extends BaseAppActivity implements
 
     private Fragment mCurFragment;
     private BottomNavigationView mNavView;
-    private FrameLayout mContentLayout;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);
@@ -68,7 +69,6 @@ public class MainActivity extends BaseAppActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mNavView = findViewById(R.id.nav_view);
-        mContentLayout = findViewById(R.id.content_layout);
         mNavView.setOnNavigationItemSelectedListener(this);
         //开启动态权限
         if (!isStoragePermissionGranted()) {
@@ -81,7 +81,19 @@ public class MainActivity extends BaseAppActivity implements
         checkNewVersion();
         AlarmUtil.register(this);
         getSplashData();
+
+        //登录重试
+        //todo test
+        if(!PreferenceUtil.isCookieValid()&& UserAccountManager.getInstance().isInfoUserLogin())
+            new LoginPresenter()
+                    .login(UserAccountManager.getInstance().getInfoUser())
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(Schedulers.io())
+            .subscribe(b->{Logger.d("cookie 过期 重新登录成功");},Throwable::printStackTrace,()->{});
+
+
     }
+
 
     private void checkNewVersion() {
         CampusFactory.getRetrofitService().getLatestVersion()

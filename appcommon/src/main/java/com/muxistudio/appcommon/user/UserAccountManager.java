@@ -48,6 +48,13 @@ public class UserAccountManager {
         return mInfoUser;
     }
 
+    public boolean isInfoUserLogin(){
+        if(TextUtils.isEmpty(getInfoUser().sid) || TextUtils.isEmpty(getInfoUser().password))
+            return false;
+        else
+            return true;
+    }
+
     /**
      * 用户换账号登录交给此方法处理
      *
