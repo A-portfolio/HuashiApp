@@ -29,7 +29,7 @@ import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.card.CardActivity;
 import net.muxi.huashiapp.ui.main.MainActivity;
-import net.muxi.huashiapp.ui.score.ScoreActivity;
+import net.muxi.huashiapp.ui.score.ScoreDisplayActivity;
 import net.muxi.huashiapp.utils.TimeTableUtil;
 
 import java.util.ArrayList;
@@ -275,7 +275,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                         if (scoresList.size() != sp.getInt(PreferenceUtil.SCORES_NUM)
                                 && scoresList.size() != 0) {
                             sp.saveInt(PreferenceUtil.SCORES_NUM, scoresList.size());
-                            NotifyUtil.show(mContext, ScoreActivity.class,
+                            NotifyUtil.show(mContext, ScoreDisplayActivity.class,
                                     mContext.getString(R.string.notify_title_score),
                                     mContext.getString(R.string.notify_content_score));
                         }

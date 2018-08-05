@@ -107,7 +107,7 @@
             android:launchMode="singleTask"/>
 
         <activity
-            android:name="net.muxi.huashiapp.ui.score.ScoreActivity"
+            android:name="net.muxi.huashiapp.ui.score.ScoreDisplayActivity"
             android:launchMode="singleTask"/>
 
         <activity

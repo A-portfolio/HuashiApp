@@ -45,7 +45,6 @@ import net.muxi.huashiapp.ui.electricity.ElectricityActivity;
 import net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.news.NewsActivity;
-import net.muxi.huashiapp.ui.score.ScoreActivity;
 import net.muxi.huashiapp.ui.score.ScoreCreditActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
