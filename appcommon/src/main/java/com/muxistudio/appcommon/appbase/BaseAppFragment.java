@@ -72,11 +72,12 @@ public class BaseAppFragment extends BaseFragment{
     }
 
 
-    public void showLoading(FragmentActivity activity) {
+    public void showLoading() {
+
         if (mLoadingDialog == null) {
             mLoadingDialog = new LoadingDialog();
         }
-        mLoadingDialog.show(activity.getSupportFragmentManager(),"Loading");
+        mLoadingDialog.show(getActivity().getSupportFragmentManager(),"Loading");
     }
 
     public void hideLoading() {

@@ -22,10 +22,6 @@ public class ScoreCreditActivity extends AppCompatActivity {
     //有两种类型 一种是算查学分绩 另一种是 看自己的学分 刚进入的界面是查算学分绩
     public static final int SCORE_CREDIT = -1, CUR_CREDIT = -2;
 
-    private TabLayout mTabLayout;
-    private ViewPager mViewPager;
-    private ScoreCreditPagerAdapter mPagerAdapter;
-
     private ScoreFragment mScoreFragment;
     //mCurCreditFragment means the current credit
     private CurCreditFragment mCurCreditFragment;
@@ -39,8 +35,8 @@ public class ScoreCreditActivity extends AppCompatActivity {
 
 
     private void initView(){
-        mTabLayout = findViewById(R.id.tab_layout);
-        mViewPager = findViewById(R.id.view_pager);
+        TabLayout mTabLayout = findViewById(R.id.tab_layout);
+        ViewPager mViewPager = findViewById(R.id.view_pager);
 
         List<String> titles = new ArrayList<>();
         titles.add("查算学分绩");
@@ -63,7 +59,7 @@ public class ScoreCreditActivity extends AppCompatActivity {
         fragments.add(mScoreFragment);
         fragments.add(mCurCreditFragment);
 
-        mPagerAdapter = new ScoreCreditPagerAdapter(getSupportFragmentManager(),fragments,
+        ScoreCreditPagerAdapter mPagerAdapter = new ScoreCreditPagerAdapter(getSupportFragmentManager(), fragments,
                 titles);
 
         mViewPager.setAdapter(mPagerAdapter);

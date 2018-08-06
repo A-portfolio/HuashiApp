@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.score.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -31,12 +32,14 @@ import rx.schedulers.Schedulers;
 
 /**
  * author :kolibreath
+ * 真正的网络请求的逻辑 委托到了 ScoreDisplayActivity
  * 查算学分绩 fragment
  */
 public class ScoreFragment extends BaseAppFragment implements  View.OnClickListener{
 
 
     private TextView mTvYear;
+    private TextView mTvTerm;
 
    //学期在请求的时候需要转换为特殊的一个参数 具体参考api文档
    private List<String> termParams = new ArrayList<>();
@@ -48,7 +51,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         mTvYear = view.findViewById(R.id.tv_year);
 
         TextView mTvSelectTerm = view.findViewById(R.id.tv_select_term);
-        TextView mTvTerm = view.findViewById(R.id.tv_term);
+        mTvTerm = view.findViewById(R.id.tv_term);
         ImageView mIvTerm = view.findViewById(R.id.iv_term);
 
         ImageView mIvCourseType = view.findViewById(R.id.iv_course_type);
@@ -95,7 +98,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
 
     }
 
-
+    //设置默认的学年选择
     public void setYear(int value) {
         mTvYear.setText(String.format("%s学年", UserUtil.generateHyphenYears(4)[value]));
     }
@@ -103,6 +106,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
 
     //获取到学年的跨度
     //2015 -2016 学年度 不包括 2016年的成绩
+    @SuppressLint("DefaultLocale")
     private void showSelectYearDialog() {
         //todo startyear and end year required!
         SelectYearDialog dialog = SelectYearDialog.newInstance("2016","2018");
@@ -114,9 +118,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
             for(int i = startYear;i< endYear;i++)
                yearParams.add(String.valueOf(i));
 
-            //todo to find what fuck it is!
-//            setYear(mGap);
-            loadGrade();
+            mTvYear.setText(String.format("%d-%d学年",startYear,endYear));
         });
     }
 
@@ -128,24 +130,35 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         SelectTermDialog dialog = SelectTermDialog.newInstance();
         dialog.show(getActivity().getSupportFragmentManager(),"score_credit_term_select");
         dialog.setOnPositiveButtonClickListener(terms -> {
+            String term = "";
             for(int i=0;i<terms.length;i++){
                 if(terms[i]){
                     switch (i){
                         case 0:
-                            termParams.add("0");
+                            termParams.add("3");
+                            term += "第一学期/";
                             break;
                         case 1:
-                            termParams.add("3");
+                            termParams.add("12");
+                            term +="第二学期/";
                             break;
                         case 2:
-                            termParams.add("12");
-                            break;
-                        case 3:
                             termParams.add("16");
+                            term +="第三学期";
                             break;
                     }
                 }
+
             }
+            if(terms[0] && terms[1] &&terms[2]){
+                term = "全部";
+                termParams.clear();
+                termParams.add("0");
+            }else{
+                term = term.substring(0,term.length()-1);
+            }
+
+            mTvTerm.setText(term);
         });
         }
 
@@ -157,7 +170,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         SelectCourseTypeDialog dialog = SelectCourseTypeDialog.newInstance();
         dialog.show(getActivity().getSupportFragmentManager(),"score_credit_course_type");
         dialog.setOnPositiveButtonClickListener(courses -> {
-            //todo to implement
+
         });
     }
 
@@ -184,30 +197,5 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
             ScoreDisplayActivity.start(getActivity(),yearJson,termJson);
         }
     }
-
-
-
-    private void loadGrade() {
-        List<Observable<List<Score>>> scores = new ArrayList<>();
-        for (int i = 0; i < yearParams.size(); i++) {
-            for (int j = 0; j < termParams.size(); j++) {
-                scores.add(CampusFactory.getRetrofitService()
-                        .getScores(yearParams.get(i), termParams.get(j)));
-            }
-        }
-
-        //todo 增加应用级别的重试
-        Observable.from(scores)
-                .toList()
-                .flatMapIterable((Func1<List<Observable<List<Score>>>, Iterable<?>>) observables -> observables)
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(Schedulers.io())
-                .subscribe(scoresList -> {
-                    //get List<Scores> from the score
-                    //todo to render
-                        },Throwable::printStackTrace,()->{}
-                );
-    }
-
 
 }

@@ -38,7 +38,7 @@
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@+id/iv_year"
         android:textSize="10sp"
-        tools:text="2013-2016学年"/>
+        android:text="2013-2016学年"/>
 
     <View android:id="@+id/divider"
         android:layout_width="match_parent"
@@ -81,7 +81,7 @@
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@+id/iv_year"
         android:textSize="10sp"
-        tools:text="全部"/>
+        android:text="全部"/>
 
     <View android:id="@+id/divider2"
         android:layout_width="match_parent"
@@ -121,7 +121,7 @@
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@+id/iv_year"
         android:textSize="10sp"
-        tools:text="专业主干课/通识选修课/同时必修课"/>
+        android:text="专业主干课/通识选修课/同时必修课"/>
 
 
     <Button

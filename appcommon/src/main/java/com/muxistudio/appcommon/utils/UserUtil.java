@@ -48,4 +48,12 @@ public class UserUtil {
         }
         return "";
     }
+
+    /**
+     * 获取学生入学年份
+     * @return 入学年份
+     */
+    public static String getStudentFirstYear(){
+        return UserAccountManager.getInstance().getInfoUser().sid.substring(0,4);
+    }
 }

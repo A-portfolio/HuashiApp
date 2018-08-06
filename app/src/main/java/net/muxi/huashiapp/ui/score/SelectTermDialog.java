@@ -14,7 +14,7 @@ import com.muxistudio.appcommon.widgets.BottomDialogFragment;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.more.FeedbackDialog;
 
-public class SelectTermDialog extends BottomDialogFragment implements View.OnClickListener {
+public class    SelectTermDialog extends BottomDialogFragment implements View.OnClickListener {
 
 
     private android.widget.TextView tvTermAll;
@@ -39,9 +39,24 @@ public class SelectTermDialog extends BottomDialogFragment implements View.OnCli
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id == R.id.rb_all){
-            for(int i=0;i<terms.length;i++)
-                terms[i] = true;
+        if(id == R.id.rb_all) {
+            if (rbAll.isChecked()) {
+                for (int i = 0; i < terms.length; i++) {
+                    terms[i] = true;
+                }
+
+                cbFirstTerm.setChecked(true);
+                cbSecondTerm.setChecked(true);
+                cbThirdTerm.setChecked(true);
+            }else{
+                for (int i = 0; i < terms.length; i++) {
+                    terms[i] = false;
+                }
+
+                cbFirstTerm.setChecked(false);
+                cbSecondTerm.setChecked(false);
+                cbThirdTerm.setChecked(false);
+            }
         }
 
         if(id == R.id.cb_first_term)
@@ -50,18 +65,19 @@ public class SelectTermDialog extends BottomDialogFragment implements View.OnCli
             terms[1] = true;
         if(id == R.id.cb_third_term)
             terms[2] = true;
-
         if(id == R.id.btn_cancel)
             dismiss();
 
         if(id == R.id.btn_confirm) {
-            mListener.onclick(terms);
+            dismiss();
+            if(mListener != null)
+                  mListener.onclick(terms);
         }
 
     }
 
     public void setOnPositiveButtonClickListener(OnPositiveClickListener listener){
-        if(mListener != null)
+        if(mListener == null)
             this.mListener = listener;
     }
 

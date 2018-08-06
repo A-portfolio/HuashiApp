@@ -87,6 +87,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         new LoginPresenter()
                 .login(UserAccountManager.getInstance().getInfoUser())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(aBoolean -> CampusFactory.getRetrofitService()
                         .getScores(year, finalTermTemp))
                 .subscribe(this::renderScoreList,
@@ -98,6 +99,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
     }
 
     private void loadGrade() {
+        //todo to refractor
         List<Observable<List<Score>>> scores = new ArrayList<>();
         for (int i = 0; i < yearParams.size(); i++) {
             for (int j = 0; j < termParams.size(); j++) {
@@ -108,15 +110,15 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         }
 
         Observable.merge(scores)
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .onErrorResumeNext(throwable -> {
                     CcnuCrawler2.clearCookieStore();
                     return new LoginPresenter()
                             .login(UserAccountManager.getInstance().getInfoUser())
                             .flatMap(aBoolean ->Observable.merge(scores))
-                            .subscribeOn(AndroidSchedulers.mainThread())
-                            .observeOn(Schedulers.io());
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.io());
                 })
                .subscribe(
                        this::renderScoreList,

@@ -22,6 +22,7 @@ public class SelectCourseTypeDialog extends BottomPickerDialogFragment implement
     private CheckBox mZyxxk;
     private CheckBox mTsbxk;
     private CheckBox mTsxxk;
+    private CheckBox mGxfzk;
 
     private TextView mBtnConfirm;
     private TextView mBtnCancel;
@@ -60,14 +61,24 @@ public class SelectCourseTypeDialog extends BottomPickerDialogFragment implement
         }
 
         if(id == R.id.rb_all){
-            for(int i = 0; i< courses.length; i++){
-                courses[i] = true;
+            //todo test here true or false
+            if(mRb.isChecked()) {
+                for (int i = 0; i < courses.length; i++) {
+                    courses[i] = true;
+                }
+                mZyzgk.setChecked(true);
+                mZyxxk.setChecked(true);
+                mTsbxk.setChecked(true);
+                mTsxxk.setChecked(true);
+            }else{
+                for (int i = 0; i < courses.length; i++) {
+                    courses[i] = false;
+                }
+                mZyzgk.setChecked(false);
+                mZyxxk.setChecked(false);
+                mTsbxk.setChecked(false);
+                mTsxxk.setChecked(false);
             }
-
-            mZyzgk.setChecked(true);
-            mZyxxk.setChecked(true);
-            mTsbxk.setChecked(true);
-            mTsxxk.setChecked(true);
         }
 
         if(id == R.id.btn_cancel)
@@ -107,7 +118,7 @@ public class SelectCourseTypeDialog extends BottomPickerDialogFragment implement
     }
 
     public void setOnPositiveButtonClickListener(OnPositiveClickListener listener){
-        if(listener!=null){
+        if(listener == null){
             this.mListener = listener;
         }
     }
