@@ -64,6 +64,31 @@ public class ScoreCreditActivity extends AppCompatActivity {
 
         mViewPager.setAdapter(mPagerAdapter);
 
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            private int curPosition = 0;
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if(position > curPosition){
+                    //slide right "->"
+                    curPosition = position;
+                    if(mCurCreditFragment.getCredit().isEmpty())
+                        mCurCreditFragment.loadCredit();
+                }else if (position < curPosition){
+                    curPosition = position;
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
 //        todo add mobclick agents
 
 

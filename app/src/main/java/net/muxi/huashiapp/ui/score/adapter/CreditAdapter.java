@@ -98,7 +98,7 @@ public class CreditAdapter implements ExpandableListAdapter {
         TextView mGroupTextView = groupView.findViewById(R.id.tv_group);
         TextView mTvGroupCredit = groupView.findViewById(R.id.tv_course_credit);
 
-        mTvGroupCredit.setText(String.valueOf(groupCredit));
+//        mTvGroupCredit.setText(String.valueOf(groupCredit));
         mGroupTextView.setText(groupName);
         return groupView;
     }
@@ -119,7 +119,7 @@ public class CreditAdapter implements ExpandableListAdapter {
         mCreditName.setText(credits.course);
         mCreditValue.setText(credits.credit);
 
-        return null;
+        return childView;
     }
 
     @Override

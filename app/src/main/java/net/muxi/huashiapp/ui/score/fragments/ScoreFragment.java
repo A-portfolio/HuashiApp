@@ -1,8 +1,10 @@
 package net.muxi.huashiapp.ui.score.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +40,11 @@ import rx.schedulers.Schedulers;
 public class ScoreFragment extends BaseAppFragment implements  View.OnClickListener{
 
 
+    private boolean mDefault = true;
+    private String startYear, endYear;
     private TextView mTvYear;
     private TextView mTvTerm;
+    private boolean mTerms[] = new boolean[3];
 
    //学期在请求的时候需要转换为特殊的一个参数 具体参考api文档
    private List<String> termParams = new ArrayList<>();
@@ -70,7 +75,25 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         mIvCourseType.setOnClickListener(this);
         mTvSelectCourseType.setOnClickListener(this);
         mTvCourseType.setOnClickListener(this);
+    }
 
+    /**
+     *如果没有选择直接查询的话将会设置为默认值
+     */
+    private void setDefaultValue(){
+        startYear = UserUtil.getStudentFirstYear();
+        endYear   = String.valueOf(Integer.parseInt(startYear) + 1);
+
+        int startYearValue = Integer.parseInt(startYear);
+        int endYearValue = Integer.parseInt(endYear);
+
+        yearParams.clear();
+        for(int i=startYearValue;i<=endYearValue;i++){
+            yearParams.add(String.valueOf(i));
+        }
+
+        termParams.clear();
+        termParams.add("0");
     }
 
     public static ScoreFragment newInstance(int type){
@@ -94,31 +117,33 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
 
         View view = inflater.inflate(R.layout.fragment_score, container, false);
         initView(view);
+        setDefaultValue();
         return  view;
 
     }
-
-    //设置默认的学年选择
-    public void setYear(int value) {
-        mTvYear.setText(String.format("%s学年", UserUtil.generateHyphenYears(4)[value]));
-    }
-
 
     //获取到学年的跨度
     //2015 -2016 学年度 不包括 2016年的成绩
     @SuppressLint("DefaultLocale")
     private void showSelectYearDialog() {
-        //todo startyear and end year required!
-        SelectYearDialog dialog = SelectYearDialog.newInstance("2016","2018");
+
+        SelectYearDialog dialog = SelectYearDialog.newInstance(startYear,endYear);
+
         dialog.show(getActivity().getSupportFragmentManager(), "score_credit_year_select");
         dialog.setOnPositiveButtonClickListener((start, end) -> {
-            int startYear = Integer.parseInt(start);
-            int endYear = Integer.parseInt(end);
+            mDefault = false;
+            startYear = start;
+            endYear = end;
 
-            for(int i = startYear;i< endYear;i++)
-               yearParams.add(String.valueOf(i));
+            int startYearValue = Integer.parseInt(startYear);
+            int endYearValue   = Integer.parseInt(endYear);
 
-            mTvYear.setText(String.format("%d-%d学年",startYear,endYear));
+            yearParams.clear();
+
+            for(int i = startYearValue;i< endYearValue;i++) {
+                yearParams.add(String.valueOf(i));
+            }
+            mTvYear.setText(String.format("%d-%d学年",startYearValue,endYearValue));
         });
     }
 
@@ -130,7 +155,12 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         SelectTermDialog dialog = SelectTermDialog.newInstance();
         dialog.show(getActivity().getSupportFragmentManager(),"score_credit_term_select");
         dialog.setOnPositiveButtonClickListener(terms -> {
+            mDefault = false;
             String term = "";
+
+            termParams.clear();
+            mTerms = terms;
+
             for(int i=0;i<terms.length;i++){
                 if(terms[i]){
                     switch (i){
@@ -194,6 +224,34 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
             String termJson = gson.toJson(termParams);
             String yearJson = gson.toJson(yearParams);
 
+            if(mDefault) {
+                String year = yearParams.get(0) + "-" + yearParams.get(yearParams.size() -1);
+                String term = "";
+                if(mTerms[0]&&mTerms[1]&&mTerms[2]){
+                    term = "第一学期/第二学期/第三学期";
+                }
+                for(int i=0;i<mTerms.length;i++){
+                    if(mTerms[i]&&i==0)
+                        term += "第一学期/";
+                    if(mTerms[i]&&i==1)
+                        term += "第二学期/";
+                    if(mTerms[i]&&i==2)
+                        term += "第三学期";
+                }
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("使用默认选项进行成绩查询")
+                        .setMessage("选择的学年为:"+year+"\n"+
+                                    "选择的学期为:"+term+"\n")
+                        .setNegativeButton("取消", (dialog, which) -> {
+                            dialog.dismiss();
+                        })
+                        .setPositiveButton("确定", (dialog, which) -> {
+                            dialog.dismiss();
+                            ScoreDisplayActivity.start(getActivity(),yearJson,termJson);
+                        })
+                        .create().show();
+
+            }
             ScoreDisplayActivity.start(getActivity(),yearJson,termJson);
         }
     }

@@ -23,6 +23,12 @@ public class SelectYearDialog extends BottomDialogFragment {
     //gap is the years in between like 2016 - 2020 the gap is four years
     private int gap;
 
+    /**
+     *
+     * @param start
+     * @param end
+     * @return start 和 end 都会作为这个dialog的标题出现
+     */
     public static SelectYearDialog newInstance(String start, String end) {
         Bundle args = new Bundle();
         args.putString("start", start);

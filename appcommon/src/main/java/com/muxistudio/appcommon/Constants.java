@@ -64,7 +64,7 @@ public class Constants {
             "通识必修课",
             "通识选修课",
             "通识核心课",
-            "专业主干课"
+            "专业主干课程"
     };
 
     public static final String[] TERMS = {

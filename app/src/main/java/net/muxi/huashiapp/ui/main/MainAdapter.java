@@ -16,6 +16,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.muxistudio.appcommon.data.BannerData;
 import com.muxistudio.appcommon.data.Hint;
 import com.muxistudio.appcommon.data.ItemData;
+import com.muxistudio.appcommon.utils.CommonTextUtils;
 import com.muxistudio.appcommon.utils.FrescoUtil;
 import com.muxistudio.cardbanner.CardBanner;
 import com.muxistudio.cardbanner.ViewHolder;
@@ -302,6 +303,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         public FooterViewHolder(View itemView) {
             super(itemView);
             mTextView = (TextView) itemView.findViewById(R.id.tv_footer);
+            CommonTextUtils.setText(mTextView);
         }
     }
 

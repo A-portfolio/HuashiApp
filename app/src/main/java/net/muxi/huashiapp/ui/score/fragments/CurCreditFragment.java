@@ -35,13 +35,13 @@ import rx.schedulers.Schedulers;
 public class CurCreditFragment extends BaseAppFragment {
 
     private int startYear,endYear;
-    private List<Score> mCredit;
+    private List<Score> mCredit = new ArrayList<>();
     private ExpandableListView mElvCredit;
 
     private double mAllCredit = 0;
     private double mZybxCredit = 0, mZyxxCredit = 0, mTshxCredit = 0, mTsxxCredit = 0;
     private double mOtherCredit = 0;
-
+    private ViewPagerSlideListener mViewPagerSlideListener;
 
     private int getCurYear(){
         @SuppressLint("SimpleDateFormat")
@@ -57,6 +57,10 @@ public class CurCreditFragment extends BaseAppFragment {
     }
     public static CurCreditFragment newInstance(int type){
         return new CurCreditFragment();
+    }
+
+    public List<Score> getCredit(){
+        return mCredit;
     }
 
     public Observable<List<Score>>[] getScoreRequest(int start, int end) {
@@ -85,7 +89,7 @@ public class CurCreditFragment extends BaseAppFragment {
         for(Score credit : credits){
             mAllCredit += Double.parseDouble(credit.credit);
             for(int i= 0;i< Constants.CREDIT_CATEGORY.length;i++){
-                if(Constants.CREDIT_CATEGORY[i].equals(credit.category)) {
+                if(Constants.CREDIT_CATEGORY[i].equals(credit.kcxzmc)) {
                     switch (i) {
                         case 1:
                             mZyxxCredit += Double.parseDouble(credit.credit);
@@ -135,26 +139,32 @@ public class CurCreditFragment extends BaseAppFragment {
         scoreObservable
                 .subscribeOn(Schedulers.io())
                 .onErrorResumeNext(throwable -> {
+                    throwable.printStackTrace();
                     CcnuCrawler2.clearCookieStore();
                     return new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
                             .flatMap(aubBoolean -> scoreObservable);
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(scores -> {
+                    hideLoading();
+
+                    mCredit = scores;
+                    List<List<Score>> sortedList = getSortCredit(scores);
+
                     //专业必修 专业选修 通识核心 通识选修 其他课程
                     List<String> courseTypes = new ArrayList<>();
                     courseTypes.add("专业必修");
                     courseTypes.add("专业选修");
                     courseTypes.add("通识核心");
                     courseTypes.add("通识选修");
+                    courseTypes.add("其他课程");
 
                     List<Double> courseCredits = new ArrayList<>();
                     courseCredits.add(mZybxCredit);
                     courseCredits.add(mZyxxCredit);
                     courseCredits.add(mTshxCredit);
                     courseCredits.add(mTsxxCredit);
-
-                    List<List<Score>> sortedList = getSortCredit(scores);
+                    courseCredits.add(mOtherCredit);
 
                     CreditAdapter adapter = new CreditAdapter(getActivity(),sortedList,courseTypes,courseCredits);
                     mElvCredit.setAdapter(adapter);
@@ -178,9 +188,14 @@ public class CurCreditFragment extends BaseAppFragment {
         endYear = getCurYear();
 
         //loadCredit
-        loadCredit();
+        //todo to solve the 403 problem
     }
 
+    public void setViewPagerListener(ViewPagerSlideListener listener){
+        if(listener == null)
+            this.mViewPagerSlideListener = listener;
+
+    }
 
     @Nullable
     @Override
@@ -188,7 +203,12 @@ public class CurCreditFragment extends BaseAppFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_credit,container,false);
 
         mElvCredit = view.findViewById(R.id.eplv_credit);
-
         return view;
+    }
+
+
+
+    interface ViewPagerSlideListener{
+        void onSlideRight();
     }
 }
