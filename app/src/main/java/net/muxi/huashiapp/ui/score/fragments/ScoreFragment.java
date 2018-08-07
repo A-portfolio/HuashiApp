@@ -1,7 +1,6 @@
 package net.muxi.huashiapp.ui.score.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -13,9 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.appbase.BaseAppFragment;
-import com.muxistudio.appcommon.data.Score;
-import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.utils.UserUtil;
 
 import net.muxi.huashiapp.R;
@@ -26,11 +24,6 @@ import net.muxi.huashiapp.ui.score.SelectYearDialog;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * author :kolibreath
@@ -47,8 +40,9 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
     private boolean mTerms[] = new boolean[3];
 
    //学期在请求的时候需要转换为特殊的一个参数 具体参考api文档
-   private List<String> termParams = new ArrayList<>();
-   private List<String> yearParams = new ArrayList<>();
+   private List<String> mTermParams = new ArrayList<>();
+   private List<String> mYearParams = new ArrayList<>();
+   private List<String> mCourseTypeParams = new ArrayList<>();
 
     private void initView(View view) {
         TextView mTvSelectYear = view.findViewById(R.id.tv_select_year);
@@ -87,13 +81,13 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         int startYearValue = Integer.parseInt(startYear);
         int endYearValue = Integer.parseInt(endYear);
 
-        yearParams.clear();
+        mYearParams.clear();
         for(int i=startYearValue;i<=endYearValue;i++){
-            yearParams.add(String.valueOf(i));
+            mYearParams.add(String.valueOf(i));
         }
 
-        termParams.clear();
-        termParams.add("0");
+        mTermParams.clear();
+        mTermParams.add("0");
     }
 
     public static ScoreFragment newInstance(int type){
@@ -138,10 +132,10 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
             int startYearValue = Integer.parseInt(startYear);
             int endYearValue   = Integer.parseInt(endYear);
 
-            yearParams.clear();
+            mYearParams.clear();
 
             for(int i = startYearValue;i< endYearValue;i++) {
-                yearParams.add(String.valueOf(i));
+                mYearParams.add(String.valueOf(i));
             }
             mTvYear.setText(String.format("%d-%d学年",startYearValue,endYearValue));
         });
@@ -158,22 +152,22 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
             mDefault = false;
             String term = "";
 
-            termParams.clear();
+            mTermParams.clear();
             mTerms = terms;
 
             for(int i=0;i<terms.length;i++){
                 if(terms[i]){
                     switch (i){
                         case 0:
-                            termParams.add("3");
+                            mTermParams.add("3");
                             term += "第一学期/";
                             break;
                         case 1:
-                            termParams.add("12");
+                            mTermParams.add("12");
                             term +="第二学期/";
                             break;
                         case 2:
-                            termParams.add("16");
+                            mTermParams.add("16");
                             term +="第三学期";
                             break;
                     }
@@ -182,8 +176,8 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
             }
             if(terms[0] && terms[1] &&terms[2]){
                 term = "全部";
-                termParams.clear();
-                termParams.add("0");
+                mTermParams.clear();
+                mTermParams.add("0");
             }else{
                 term = term.substring(0,term.length()-1);
             }
@@ -200,7 +194,25 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         SelectCourseTypeDialog dialog = SelectCourseTypeDialog.newInstance();
         dialog.show(getActivity().getSupportFragmentManager(),"score_credit_course_type");
         dialog.setOnPositiveButtonClickListener(courses -> {
-
+            //boolean course 的顺序是专业主干课 专业选修 通识必修 通识选修 list 只会存放选择的课程
+            for(int i=0;i<courses.length;i++){
+                if(courses[i]) {
+                    switch (i) {
+                        case 0:
+                            mCourseTypeParams.add(Constants.CREDIT_CATEGORY[5]);
+                            break;
+                        case 1:
+                            mCourseTypeParams.add(Constants.CREDIT_CATEGORY[1]);
+                            break;
+                        case 2:
+                            mCourseTypeParams.add(Constants.CREDIT_CATEGORY[2]);
+                            break;
+                        case 3:
+                            mCourseTypeParams.add(Constants.CREDIT_CATEGORY[3]);
+                            break;
+                    }
+                }
+            }
         });
     }
 
@@ -221,11 +233,12 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
 
         if(id == R.id.btn_enter){
             Gson gson = new Gson();
-            String termJson = gson.toJson(termParams);
-            String yearJson = gson.toJson(yearParams);
+            String termJson = gson.toJson(mTermParams);
+            String yearJson = gson.toJson(mYearParams);
+            String courseTypeJosn = gson.toJson(mCourseTypeParams);
 
             if(mDefault) {
-                String year = yearParams.get(0) + "-" + yearParams.get(yearParams.size() -1);
+                String year = mYearParams.get(0) + "-" + mYearParams.get(mYearParams.size() -1);
                 String term = "";
                 if(mTerms[0]&&mTerms[1]&&mTerms[2]){
                     term = "第一学期/第二学期/第三学期";
@@ -247,12 +260,12 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
                         })
                         .setPositiveButton("确定", (dialog, which) -> {
                             dialog.dismiss();
-                            ScoreDisplayActivity.start(getActivity(),yearJson,termJson);
+                            ScoreDisplayActivity.start(getActivity(),yearJson,termJson,courseTypeJosn);
                         })
                         .create().show();
 
             }
-            ScoreDisplayActivity.start(getActivity(),yearJson,termJson);
+            ScoreDisplayActivity.start(getActivity(),yearJson,termJson,courseTypeJosn);
         }
     }
 
