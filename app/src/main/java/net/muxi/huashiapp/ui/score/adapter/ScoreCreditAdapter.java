@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.muxistudio.appcommon.data.Score;
@@ -14,12 +15,16 @@ import com.muxistudio.appcommon.data.Score;
 import net.muxi.huashiapp.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 //包括展示成绩和计算学分绩
 public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.ViewHolder>{
 
-
+    Map<Integer,Boolean> mCheckMap = new HashMap<>();
     List<Score> mScores = new ArrayList<>();
     Context mContext;
 
@@ -28,11 +33,38 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
         this.mScores = scores;
     }
 
+    //默认情况下全选checklist中所有的成绩 去计算学分绩
+    private void initCheckList(){
+        int size = getItemCount();
+        for(int i=0;i<size;i++){
+            mCheckMap.put(i,true);
+        }
+    }
+
+    private boolean isDouble(String grade){
+        return Character.isDigit(grade.charAt(0));
+    }
+
+    /**
+     * @return 返回一个map 这个map 在一般情况下 key 是连续的int，如果出现缓考这种特殊字符情况，会出现中断
+     */
+    public Map<Integer,Boolean> getCheckMap(){
+        return mCheckMap;
+    }
+
+    /**
+     * 设置checkmap都被选择 作为暴露给外部全选的接口
+     */
+    public void setAllChecked(){
+        initCheckList();
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_score_credit,parent,false);
+
+        initCheckList();
         return new ViewHolder(view);
     }
 
@@ -48,7 +80,25 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
 
         holder.mTvCourseType.setText(mScores.get(position).kcxzmc);
         holder.mTvCourseCredit.setText(mScores.get(position).credit);
+
+        Set<Integer> keySet=  mCheckMap.keySet();
+        if(!isDouble(mScores.get(position).grade)){
+            holder.mCbCredit.setVisibility(View.INVISIBLE);
+            mCheckMap.remove(position);
+            mCheckMap.put(position,false);
+        }
+
+        holder.mCbCredit.setOnClickListener(view ->{
+            if(keySet.contains(position)){
+                mCheckMap.remove(position);
+                holder.mCbCredit.setChecked(false);
+            }else{
+                mCheckMap.put(position,true);
+                holder.mCbCredit.setChecked(true);
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {
@@ -70,8 +120,12 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
         private TextView mTvUsualScore;
         private TextView mTvExamScore;
 
+        private CheckBox mCbCredit;
+
         public ViewHolder(View itemView) {
             super(itemView);
+            mCbCredit     = itemView.findViewById(R.id.cb_cal_credit);
+
             mTvCourseType = itemView.findViewById(R.id.tv_course_type);
             mTvCourseCredit = itemView.findViewById(R.id.tv_course_credit);
 

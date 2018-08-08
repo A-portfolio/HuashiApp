@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.view.MenuItem;
+import android.widget.Button;
 
 import com.google.gson.Gson;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
@@ -23,9 +25,13 @@ import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.ui.credit.CreditGradeDialog;
+import net.muxi.huashiapp.ui.score.adapter.ScoreCreditAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -35,13 +41,15 @@ import rx.schedulers.Schedulers;
 //这里需要展示成绩学分情况 并且 算出学分绩
 public class ScoreDisplayActivity extends ToolbarActivity {
 
-    private ScoresAdapter mScoresAdapter;
-    private List<Score> mScoresList = new ArrayList<>();
+    private List<Score> mFilteredList = new ArrayList<>();
     private String mYear;
     private String mTerm;
     private String mCourseType;
 
     private MultiStatusView mMultiStatusView;
+    private Button mBtnEnter;
+
+    private ScoreCreditAdapter mScoresAdapter;
 
     private List<String> mCourseParams = new ArrayList<>();
     private List<String> mYearParams = new ArrayList<>();
@@ -55,27 +63,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         context.startActivity(starter);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        slideFromBottom(this);
-
-        setContentView(R.layout.activity_score);
-
-        //获取解析 mYear mTerm params
-        getParams();
-        initView();
-        loadGrade();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        slideFromTop(this);
-    }
 
     private void getParams(){
         mYear = getIntent().getStringExtra("mYear");
@@ -106,7 +94,10 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(aBoolean -> CampusFactory.getRetrofitService()
                         .getScores(mYear, finalTermTemp))
-                .subscribe(this::renderScoreList,
+                .subscribe( scoreList -> {
+                            filterList(scoreList);
+                            renderedFilteredScoreList();
+                        },
                         throwable -> {
                             throwable.printStackTrace();
                             mMultiStatusView.showNetError();
@@ -137,7 +128,10 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                             .subscribeOn(Schedulers.io());
                 })
                .subscribe(
-                       this::renderScoreList,
+                       scoreList -> {
+                           filterList(scoreList);
+                           renderedFilteredScoreList();
+                           },
                        throwable ->{
                            throwable.printStackTrace();
                            mMultiStatusView.showNetError();
@@ -145,8 +139,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                },this::hideLoading );
     }
 
-    private void renderScoreList(List<Score> scores) {
-        //filter list
+    private void filterList(List<Score> scores){
         List<Score> filteredList = new ArrayList<>();
         for(Score score: scores) {
             for (String type : mCourseParams) {
@@ -161,14 +154,19 @@ public class ScoreDisplayActivity extends ToolbarActivity {
             return;
         }
 
+        mFilteredList.addAll(filteredList);
+    }
+
+    private void renderedFilteredScoreList() {
+        //filter list
         mMultiStatusView.showContent();
-        mScoresList.addAll(filteredList);
+
 
         try {
-            mScoresAdapter = new ScoresAdapter(mScoresList);
+            mScoresAdapter = new ScoreCreditAdapter(mFilteredList);
         } catch (Exception e) {
             e.printStackTrace();
-            mScoresAdapter = new ScoresAdapter(new ArrayList<>());
+            mScoresAdapter = new ScoreCreditAdapter(new ArrayList<>());
         }
         //getContentView() 内部使用了 LayoutInflater 去加载自定义view MultiStatusView 中自定义的布局
         //需要加载的view 写在multistatusiew的定义中
@@ -188,6 +186,27 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         mMultiStatusView.setOnRetryListener(v -> retryLoadGrade(mTerm));
         setTitle(generateYearTitle() + generateTermTitle());
 
+        mBtnEnter = findViewById(R.id.btn_enter);
+        mBtnEnter.setOnClickListener(v -> {
+            Map<Integer,Boolean> map = mScoresAdapter.getCheckMap();
+            float credit = 0, sum = 0;
+            Set<Integer> set = map.keySet();
+            for(int key : set){
+                if(map.get(key)){
+                    sum += Float.parseFloat(mFilteredList.get(key).grade);
+                    credit += Float.parseFloat(mFilteredList.get(key).credit);
+                }
+            }
+            if(credit == 0)
+                showCreditGradeDialog(0);
+            float result = sum / credit;
+            showCreditGradeDialog(result);
+        });
+    }
+
+    private void showCreditGradeDialog(float result) {
+        CreditGradeDialog gradeDialog = CreditGradeDialog.newInstance(result);
+        gradeDialog.show(getSupportFragmentManager(), "result");
     }
 
     @SuppressLint("DefaultLocale")
@@ -253,6 +272,39 @@ public class ScoreDisplayActivity extends ToolbarActivity {
             Transition transition = TransitionInflater.from(context).inflateTransition(com.muxistudio.common.R.transition.trans_slide_from_bottom);
             context.getWindow().setEnterTransition(transition);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_all) {
+            if (mScoresAdapter != null) {
+                mScoresAdapter.setAllChecked();
+                mScoresAdapter.notifyDataSetChanged();
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        slideFromBottom(this);
+
+        setContentView(R.layout.activity_score_display);
+
+        //获取解析 mYear mTerm params
+        getParams();
+        initView();
+        loadGrade();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        slideFromTop(this);
     }
 }
 
