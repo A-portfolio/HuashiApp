@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * author :kolibreath
+ * @author :kolibreath
  * 真正的网络请求的逻辑 委托到了 ScoreDisplayActivity
  * 查算学分绩 fragment
  */

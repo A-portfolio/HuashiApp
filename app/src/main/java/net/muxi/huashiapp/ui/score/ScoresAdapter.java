@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import java.util.List;
 /**
  * Created by ybao on 16/6/20.
  */
+//todo courseName view background add flexibility
 public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder> {
 
     private List<Score> mScoresList;
@@ -91,6 +93,7 @@ public class ScoresAdapter extends RecyclerView.Adapter<ScoresAdapter.ViewHolder
         private TextView mTvCredit;
         private TextView mTvUsual;
         private TextView mTvEnding;
+        private CheckBox mCalCredit;
 
         public ViewHolder(View itemView) {
             super(itemView);

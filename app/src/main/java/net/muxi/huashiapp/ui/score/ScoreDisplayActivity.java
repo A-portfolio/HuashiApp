@@ -31,9 +31,8 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by ybao on 16/4/26.
- */
+
+//这里需要展示成绩学分情况 并且 算出学分绩
 public class ScoreDisplayActivity extends ToolbarActivity {
 
     private ScoresAdapter mScoresAdapter;
@@ -171,8 +170,10 @@ public class ScoreDisplayActivity extends ToolbarActivity {
             e.printStackTrace();
             mScoresAdapter = new ScoresAdapter(new ArrayList<>());
         }
-        RecyclerView recyclerView = (RecyclerView) mMultiStatusView
-                .getContentView();
+        //getContentView() 内部使用了 LayoutInflater 去加载自定义view MultiStatusView 中自定义的布局
+        //需要加载的view 写在multistatusiew的定义中
+        RecyclerView recyclerView = (RecyclerView) mMultiStatusView.getContentView();
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(ScoreDisplayActivity
                 .this));

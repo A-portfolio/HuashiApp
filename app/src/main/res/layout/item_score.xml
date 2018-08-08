@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--todo  if find no usage : delete!-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/layout_item" android:layout_width="match_parent"
