@@ -35,6 +35,7 @@ import java.util.Set;
 
 import retrofit2.HttpException;
 import rx.Observable;
+import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -137,15 +138,13 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribeOn(Schedulers.io());
                             case 500:
-                                break;
+                                return Observable.merge(scores)
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribeOn(Schedulers.io());
                         }
                     }
-                    CcnuCrawler2.clearCookieStore();
-                    return new LoginPresenter()
-                            .login(UserAccountManager.getInstance().getInfoUser())
-                            .flatMap(aBoolean ->Observable.merge(scores))
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribeOn(Schedulers.io());
+                    //todo to test
+                    return null;
                 })
                .subscribe(
                        scoreList -> {
