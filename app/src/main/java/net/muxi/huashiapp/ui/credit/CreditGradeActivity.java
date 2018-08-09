@@ -159,7 +159,8 @@ public class CreditGradeActivity extends ToolbarActivity {
 
     private void initView() {
         mRecyclerView = findViewById(R.id.recycler_view);
-        mLayoutBtn = findViewById(R.id.layout_btn);
+        mLayoutBtn = findViewById(R
+                .id.layout_btn);
         mBtnEnter = findViewById(R.id.btn_enter);
         mMultiStatusView = findViewById(R.id.multi_status_view);
     }

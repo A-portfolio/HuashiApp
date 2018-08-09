@@ -287,7 +287,7 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
         };
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             this.setVisibility(VISIBLE);
-            AnimationUtil.,reveal(mSearchBar, animationListener);
+            AnimationUtil.reveal(mSearchBar, animationListener);
         } else {
             AnimationUtil.fadeInView(this, AnimationUtil.ANIMATION_DURATION_SHORT, animationListener);
         }

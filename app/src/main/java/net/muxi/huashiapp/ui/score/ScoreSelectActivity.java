@@ -63,7 +63,8 @@ public class ScoreSelectActivity extends ToolbarActivity {
                 }else if (bid == R.id.rb_3){
                     term = 16;
                 }
-                ScoreDisplayActivity.start(ScoreSelectActivity.this, mTvYear.getText().toString().substring(0, 4), term + "");
+                //todo to test
+//                ScoreDisplayActivity.start(ScoreSelectActivity.this, mTvYear.getText().toString().substring(0, 4), term + "");
             } else {
                 ToastUtil.showShort(R.string.tip_net_error);
             }
