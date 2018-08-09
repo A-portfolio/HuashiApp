@@ -158,10 +158,18 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                },this::hideLoading );
     }
 
+    /**
+     * 根据用户选择的课程分类展示用户的成绩 比如 用户选择只查看
+     * @param scores
+     */
     private void filterList(List<Score> scores){
         List<Score> filteredList = new ArrayList<>();
         for(Score score: scores) {
+            //有些课程的kcxzmc字段是空 注意规避一下
             for (String type : mCourseParams) {
+                if(score.kcxzmc == null){
+                    System.out.println("fuckfafa");
+                }
                 if (score.kcxzmc.equals(type)){
                     filteredList.add(score);
                 }
