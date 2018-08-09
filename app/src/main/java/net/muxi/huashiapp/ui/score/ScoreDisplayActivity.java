@@ -33,8 +33,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import retrofit2.HttpException;
 import rx.Observable;
+import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
@@ -71,7 +74,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         mCourseType = getIntent().getStringExtra("mCourseType");
 
         Gson gson = new Gson();
-        //todo test
+
         mCourseParams = gson.fromJson(mCourseType,List.class);
         mYearParams = gson.fromJson(mYear,List.class);
         mTermParams = gson.fromJson(mTerm,List.class);
@@ -92,7 +95,8 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                 .login(UserAccountManager.getInstance().getInfoUser())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMap(aBoolean -> CampusFactory.getRetrofitService()
+                .flatMap(aBoolean ->
+                        CampusFactory.getRetrofitService()
                         .getScores(mYear, finalTermTemp))
                 .subscribe( scoreList -> {
                             filterList(scoreList);
@@ -120,12 +124,27 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .onErrorResumeNext(throwable -> {
-                    CcnuCrawler2.clearCookieStore();
-                    return new LoginPresenter()
-                            .login(UserAccountManager.getInstance().getInfoUser())
-                            .flatMap(aBoolean ->Observable.merge(scores))
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribeOn(Schedulers.io());
+                    if(throwable instanceof  HttpException){
+                        int code  = ((HttpException) throwable).code();
+                        switch (code){
+                            case 404:
+                                //todo implement with hint
+                                break;
+                            case  403:
+                                CcnuCrawler2.clearCookieStore();
+                                return new LoginPresenter()
+                                        .login(UserAccountManager.getInstance().getInfoUser())
+                                        .flatMap(aBoolean ->Observable.merge(scores))
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribeOn(Schedulers.io());
+                            case 500:
+                                return Observable.merge(scores)
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribeOn(Schedulers.io());
+                        }
+                    }
+                    //todo to test
+                    return null;
                 })
                .subscribe(
                        scoreList -> {
@@ -139,10 +158,18 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                },this::hideLoading );
     }
 
+    /**
+     * 根据用户选择的课程分类展示用户的成绩 比如 用户选择只查看
+     * @param scores
+     */
     private void filterList(List<Score> scores){
         List<Score> filteredList = new ArrayList<>();
         for(Score score: scores) {
+            //有些课程的kcxzmc字段是空 注意规避一下
             for (String type : mCourseParams) {
+                if(score.kcxzmc == null){
+                    System.out.println("fuckfafa");
+                }
                 if (score.kcxzmc.equals(type)){
                     filteredList.add(score);
                 }

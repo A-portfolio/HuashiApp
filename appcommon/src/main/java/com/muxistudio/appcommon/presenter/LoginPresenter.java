@@ -13,6 +13,8 @@ import com.umeng.analytics.MobclickAgent;
 import java.io.IOException;
 
 import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Func0;
 
 /**
  * Created by kolibreath on 17-12-21.
@@ -27,17 +29,19 @@ public class LoginPresenter {
      */
     //在完成登陆之后无论是否成功需要清除了 cookieStore
     public Observable<Boolean> login(User user){
-        return Observable.create(subscriber -> {
-            subscriber.onStart();
-            boolean crawlerResult = false;
-            try {
-                crawlerResult = CcnuCrawler2.performLogin(user.sid, user.password);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            subscriber.onNext(crawlerResult);
-            subscriber.onCompleted();
-        });
+        return Observable.defer(() ->
+                Observable.create((
+                        Observable.OnSubscribe<Boolean>) subscriber -> {
+                        subscriber.onStart();;
+                        boolean crawlerResult = false;
+                        try {
+                            crawlerResult  = CcnuCrawler2.performLogin(user.sid,user.password);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        subscriber.onNext(crawlerResult);
+                        subscriber.onCompleted();
+        }));
     }
 
     public void saveLoginState(Intent intent,User user,String type){
@@ -53,3 +57,7 @@ public class LoginPresenter {
         CcnuCrawler2.saveCookies();
     }
 }
+
+
+
+

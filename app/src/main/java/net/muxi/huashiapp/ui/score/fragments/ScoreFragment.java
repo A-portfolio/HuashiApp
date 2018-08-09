@@ -23,6 +23,7 @@ import net.muxi.huashiapp.ui.score.SelectTermDialog;
 import net.muxi.huashiapp.ui.score.SelectYearDialog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -87,7 +88,12 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         }
 
         mTermParams.clear();
-        mTermParams.add("0");
+        mTermParams.add("");
+
+        mCourseTypeParams.addAll(Arrays.asList(Constants.CREDIT_CATEGORY));
+
+        for(int i=0;i<mTerms.length;i++)
+            mTerms[i] = true;
     }
 
     public static ScoreFragment newInstance(int type){
@@ -143,7 +149,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
 
     /**
      * 下面的数字表示第 n 学期
-     * 请求参数对应表： 0 -> "0" 1->"3" 2->"12" 3->"16"
+     * 请求参数对应表： 全部 -> "" 1->"3" 2->"12" 3->"16"
      */
     private void showSelectTermDialog(){
         SelectTermDialog dialog = SelectTermDialog.newInstance();
@@ -177,7 +183,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
             if(terms[0] && terms[1] &&terms[2]){
                 term = "全部";
                 mTermParams.clear();
-                mTermParams.add("0");
+                mTermParams.add("");
             }else{
                 term = term.substring(0,term.length()-1);
             }
@@ -195,6 +201,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         dialog.show(getActivity().getSupportFragmentManager(),"score_credit_course_type");
         dialog.setOnPositiveButtonClickListener(courses -> {
             //boolean course 的顺序是专业主干课 专业选修 通识必修 通识选修 list 只会存放选择的课程
+            mCourseTypeParams.clear();
             for(int i=0;i<courses.length;i++){
                 if(courses[i]) {
                     switch (i) {
@@ -264,8 +271,8 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
                         })
                         .create().show();
 
-            }
-            ScoreDisplayActivity.start(getActivity(),yearJson,termJson,courseTypeJosn);
+            }else
+                ScoreDisplayActivity.start(getActivity(),yearJson,termJson,courseTypeJosn);
         }
     }
 
