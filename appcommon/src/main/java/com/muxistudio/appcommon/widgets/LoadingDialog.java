@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
@@ -25,11 +26,16 @@ import rx.Observable;
 
 public class LoadingDialog extends BottomDialogFragment {
 
+    private TextView mTvLoadingInfo;
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = new Dialog(getContext(), R.style.FullScreenDialogStyle);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_loading, null);
+
+        mTvLoadingInfo = view.findViewById(R.id.tv_loading_info);
+        mTvLoadingInfo.setText("");
+
         Uri uri = Uri.parse("asset://net.muxi.huashiapp/loading.gif");
         DraweeController controller = Fresco.newDraweeControllerBuilder().setUri(
                 uri).setAutoPlayAnimations(true).build();
@@ -48,5 +54,9 @@ public class LoadingDialog extends BottomDialogFragment {
         return dialog;
     }
 
+    public void setLoadingInfo(String text){
+        if(mTvLoadingInfo != null)
+            mTvLoadingInfo.setText(text);
+    }
 
 }

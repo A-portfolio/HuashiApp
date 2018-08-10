@@ -12,7 +12,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 
 import com.google.gson.Gson;
@@ -28,6 +30,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.credit.CreditGradeDialog;
 import net.muxi.huashiapp.ui.score.adapter.ScoreCreditAdapter;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -114,12 +117,17 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
     private void loadGrade() {
         showLoading();
+        setLoadingInfo("正在请求成绩数据~~");
+
         Observable<List<Score>>[] scoreArray = new Observable[mYearParams.size()*mTermParams.size()];
         for(int i=0;i<mYearParams.size();i++) {
             for (int j = 0; j < mTermParams.size(); j++) {
                 scoreArray[i*mTermParams.size() + j] = CampusFactory.getRetrofitService()
                         .getScores(mYearParams.get(i), mTermParams.get(j))
-                        .retryWhen(new RequestRetry(3,scoreArray));
+                        .retryWhen(new RequestRetry.Builder()
+                        .setMaxretries(3)
+                        .setObservable(scoreArray)
+                                .setRetryInfo(() -> setLoadingInfo("登录过期，正在重新登录中")).build());
             }
         }
         Observable.merge(scoreArray,5)
@@ -186,6 +194,16 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         //需要加载的view 写在multistatusiew的定义中
         RecyclerView recyclerView = (RecyclerView) mMultiStatusView.getContentView();
 
+        try {
+            Field field = mMultiStatusView.getClass().getDeclaredField("mContentView");
+            field.setAccessible(true);
+            View view = (View) field.get(mMultiStatusView);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(ScoreDisplayActivity
                 .this));
@@ -216,6 +234,9 @@ public class ScoreDisplayActivity extends ToolbarActivity {
             float result = sum / credit;
             showCreditGradeDialog(result);
         });
+
+
+
     }
 
     private void showCreditGradeDialog(float result) {

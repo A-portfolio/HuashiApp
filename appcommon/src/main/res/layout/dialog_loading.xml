@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/light_dialog_background"
-              android:gravity="center">
+    >
 
     <com.facebook.drawee.view.SimpleDraweeView
+        android:layout_centerInParent="true"
         android:id="@+id/drawee"
         android:layout_width="120dp"
         android:layout_height="144dp"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_loading_info"
+        android:layout_marginTop="20dp"
+        android:textColor="#110808"
+        android:text="正在加载中"
+        android:textSize="14sp"
+        android:layout_below="@+id/drawee"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

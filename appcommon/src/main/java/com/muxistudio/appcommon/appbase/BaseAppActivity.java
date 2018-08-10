@@ -142,5 +142,9 @@ public class BaseAppActivity extends BaseActivity {
         snackbar.show();
     }
 
-
+    public void setLoadingInfo(String text){
+        if(mLoadingDialog != null){
+            mLoadingDialog.setLoadingInfo(text);
+        }
+    }
 }
