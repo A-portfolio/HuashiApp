@@ -15,6 +15,7 @@ import java.io.IOException;
 import rx.Observable;
 import rx.Scheduler;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func0;
 import rx.schedulers.Schedulers;
 
@@ -31,11 +32,8 @@ public class LoginPresenter {
      */
     //在完成登陆之后无论是否成功需要清除了 cookieStore
     public Observable<Boolean> login(User user){
-        return Observable
-                .defer(() ->
-                Observable.
-                        create((
-                        Observable.OnSubscribe<Boolean>) subscriber -> {
+        return Observable.
+                        create((Observable.OnSubscribe<Boolean>) subscriber -> {
                         subscriber.onStart();;
                         boolean crawlerResult = false;
                         try {
@@ -45,7 +43,7 @@ public class LoginPresenter {
                         }
                         subscriber.onNext(crawlerResult);
                         subscriber.onCompleted();
-        }));
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     public void saveLoginState(Intent intent,User user,String type){

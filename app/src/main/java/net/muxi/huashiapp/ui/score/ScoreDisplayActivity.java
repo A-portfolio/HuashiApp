@@ -126,6 +126,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                 int index = i;
                 scoreArray[i*mTermParams.size() + j] = CampusFactory.getRetrofitService()
                         .getScores(mYearParams.get(i), mTermParams.get(j))
+                        .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(scoreList -> {
                            setLoadingInfo(CommonTextUtils.generateRandomText(mYearParams.get(index)));
                         })
