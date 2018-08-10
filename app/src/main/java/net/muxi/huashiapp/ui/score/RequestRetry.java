@@ -10,7 +10,10 @@ import java.util.List;
 
 import retrofit2.HttpException;
 import rx.Observable;
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public class RequestRetry implements
         Func1<Observable<? extends Throwable>, Observable<?>> {
@@ -47,13 +50,16 @@ public class RequestRetry implements
                                 //这两种情况下都会导致要重新写cookie
                                 case 500:
                                 case 403:
-                                    if(mListener!=null)
-                                        mListener.onRetry();
 
-                                    return new LoginPresenter().
-                                            login(UserAccountManager.getInstance()
+                                    return new LoginPresenter()
+                                            .login(UserAccountManager.getInstance()
                                                     .getInfoUser())
-                                            .flatMap(aubBoolean -> scoreObservable);
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .flatMap(aubBoolean ->{
+//                                                if(mListener!=null)
+//                                                    mListener.onRetry();
+                                                return scoreObservable;});
                                 case 404:
                                     //todo to implements
                                     break;

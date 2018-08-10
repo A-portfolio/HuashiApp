@@ -24,6 +24,7 @@ import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
 import com.muxistudio.appcommon.presenter.LoginPresenter;
 import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.appcommon.utils.CommonTextUtils;
 import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
@@ -122,8 +123,12 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         Observable<List<Score>>[] scoreArray = new Observable[mYearParams.size()*mTermParams.size()];
         for(int i=0;i<mYearParams.size();i++) {
             for (int j = 0; j < mTermParams.size(); j++) {
+                int index = i;
                 scoreArray[i*mTermParams.size() + j] = CampusFactory.getRetrofitService()
                         .getScores(mYearParams.get(i), mTermParams.get(j))
+                        .doOnNext(scoreList -> {
+                           setLoadingInfo(CommonTextUtils.generateRandomText(mYearParams.get(index)));
+                        })
                         .retryWhen(new RequestRetry.Builder()
                         .setMaxretries(3)
                         .setObservable(scoreArray)

@@ -37,4 +37,18 @@ public class CommonTextUtils {
                     view.setText("———别笑，我也是有底线的———");
         }
     }
+
+    /**
+     *
+     * @return 返回格式化之后的字符串作为查成绩或者查学分的时候的提示
+     */
+    public static String generateRandomText(String year){
+        String formats[] = new String[]{
+                "嘿咻嘿咻~,正在查找%d学年-%d学年的成绩情况",
+                "正在打开学校服务器~~"
+        };
+        int startYear = Integer.parseInt(year);
+        int seed = (int) (System.currentTimeMillis()%formats.length);
+        return String.format(formats[seed],startYear,startYear + 1);
+    }
 }

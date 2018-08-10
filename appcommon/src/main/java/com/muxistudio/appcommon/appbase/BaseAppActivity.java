@@ -142,6 +142,10 @@ public class BaseAppActivity extends BaseActivity {
         snackbar.show();
     }
 
+    /**
+     * 给loadingDialog设置加载动画的提示，注意这个方法需要运行在创建dialog的线程上
+     * @param text
+     */
     public void setLoadingInfo(String text){
         if(mLoadingDialog != null){
             mLoadingDialog.setLoadingInfo(text);

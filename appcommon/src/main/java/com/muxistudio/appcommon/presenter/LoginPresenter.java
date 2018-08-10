@@ -13,8 +13,10 @@ import com.umeng.analytics.MobclickAgent;
 import java.io.IOException;
 
 import rx.Observable;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.functions.Func0;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by kolibreath on 17-12-21.
@@ -29,8 +31,10 @@ public class LoginPresenter {
      */
     //在完成登陆之后无论是否成功需要清除了 cookieStore
     public Observable<Boolean> login(User user){
-        return Observable.defer(() ->
-                Observable.create((
+        return Observable
+                .defer(() ->
+                Observable.
+                        create((
                         Observable.OnSubscribe<Boolean>) subscriber -> {
                         subscriber.onStart();;
                         boolean crawlerResult = false;
