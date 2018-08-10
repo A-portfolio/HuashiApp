@@ -35,8 +35,11 @@ import java.util.Set;
 
 import retrofit2.HttpException;
 import rx.Observable;
+import rx.Observer;
 import rx.Scheduler;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -110,66 +113,50 @@ public class ScoreDisplayActivity extends ToolbarActivity {
     }
 
     private void loadGrade() {
-        //todo to refractor
-        List<Observable<List<Score>>> scores = new ArrayList<>();
-        for (int i = 0; i < mYearParams.size(); i++) {
+        showLoading();
+        Observable<List<Score>>[] scoreArray = new Observable[mYearParams.size()*mTermParams.size()];
+        for(int i=0;i<mYearParams.size();i++) {
             for (int j = 0; j < mTermParams.size(); j++) {
-                scores.add(CampusFactory
-                        .getRetrofitService()
-                        .getScores(mYearParams.get(i), mTermParams.get(j)));
+                scoreArray[i*mTermParams.size() + j] = CampusFactory.getRetrofitService()
+                        .getScores(mYearParams.get(i), mTermParams.get(j))
+                        .retryWhen(new RequestRetry(3,scoreArray));
             }
         }
-
-        Observable.merge(scores)
+        Observable.merge(scoreArray,5)
+                .flatMap((Func1<List<Score>, Observable<Score>>) scoreList ->
+                        Observable.from(scoreList))
+                .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .onErrorResumeNext(throwable -> {
-                    if(throwable instanceof  HttpException){
-                        int code  = ((HttpException) throwable).code();
-                        switch (code){
-                            case 404:
-                                //todo implement with hint
-                                break;
-                            case  403:
-                                CcnuCrawler2.clearCookieStore();
-                                return new LoginPresenter()
-                                        .login(UserAccountManager.getInstance().getInfoUser())
-                                        .flatMap(aBoolean ->Observable.merge(scores))
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribeOn(Schedulers.io());
-                            case 500:
-                                return Observable.merge(scores)
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribeOn(Schedulers.io());
-                        }
+                .subscribe(new Subscriber() {
+                    @Override
+                    public void onCompleted() {
+                        hideLoading();
                     }
-                    //todo to test
-                    return null;
-                })
-               .subscribe(
-                       scoreList -> {
-                           filterList(scoreList);
-                           renderedFilteredScoreList();
-                           },
-                       throwable ->{
-                           throwable.printStackTrace();
-                           mMultiStatusView.showNetError();
-                           hideLoading();
-               },this::hideLoading );
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        mMultiStatusView.showNetError();
+                        hideLoading();
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        List<Score> scoreList = (List<Score>) o;
+                        filterList(scoreList);
+                        renderedFilteredScoreList();
+                    }
+                });
     }
 
-    /**
-     * 根据用户选择的课程分类展示用户的成绩 比如 用户选择只查看
-     * @param scores
-     */
     private void filterList(List<Score> scores){
         List<Score> filteredList = new ArrayList<>();
         for(Score score: scores) {
-            //有些课程的kcxzmc字段是空 注意规避一下
             for (String type : mCourseParams) {
-                if(score.kcxzmc == null){
-                    System.out.println("fuckfafa");
-                }
+                if(score.kcxzmc == null)
+                    //todo to implement
+                    continue;
                 if (score.kcxzmc.equals(type)){
                     filteredList.add(score);
                 }
@@ -333,5 +320,8 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         super.onBackPressed();
         slideFromTop(this);
     }
+
+
+
 }
 
