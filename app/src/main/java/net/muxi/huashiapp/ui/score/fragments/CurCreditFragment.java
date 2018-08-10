@@ -127,13 +127,9 @@ public class CurCreditFragment extends BaseAppFragment {
 
     public void loadCredit(Observable<List<Score>>[] listObservable) {
         showLoading();
-        Observable<List<Score>> scoreObservable = Observable.merge(listObservable, 5)
-                .flatMap(new Func1<List<Score>, Observable<Score>>() {
-                    @Override
-                    public Observable<Score> call(List<Score> scoreList) {
-                        return Observable.from(scoreList);
-                    }
-                })
+        Observable<List<Score>> scoreObservable =
+                Observable.merge(listObservable, 5)
+                .flatMap((Func1<List<Score>, Observable<Score>>) scoreList -> Observable.from(scoreList))
                 .toList();
 
         scoreObservable

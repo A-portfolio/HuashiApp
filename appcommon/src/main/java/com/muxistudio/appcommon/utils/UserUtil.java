@@ -54,6 +54,7 @@ public class UserUtil {
      * @return 入学年份
      */
     public static String getStudentFirstYear(){
+        //todo ensure to be called only when the user has already login!
         return UserAccountManager.getInstance().getInfoUser().sid.substring(0,4);
     }
 }

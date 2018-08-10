@@ -35,7 +35,11 @@ import java.util.Set;
 
 import retrofit2.HttpException;
 import rx.Observable;
+import rx.Observer;
+import rx.Scheduler;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -109,60 +113,66 @@ public class ScoreDisplayActivity extends ToolbarActivity {
     }
 
     private void loadGrade() {
-        //todo to refractor
-        List<Observable<List<Score>>> scores = new ArrayList<>();
-        for (int i = 0; i < mYearParams.size(); i++) {
+        showLoading();
+        Observable[] scoreArray = new Observable[mYearParams.size()*mTermParams.size()];
+        for(int i=0;i<mYearParams.size();i++) {
             for (int j = 0; j < mTermParams.size(); j++) {
-                scores.add(CampusFactory
-                        .getRetrofitService()
-                        .getScores(mYearParams.get(i), mTermParams.get(j)));
+                Observable<List<Score>> o = CampusFactory.getRetrofitService()
+                        .getScores(mYearParams.get(i), mTermParams.get(j));
+
+                scoreArray[i*mTermParams.size() + j] = o.onErrorResumeNext(throwable ->{
+                    if(throwable instanceof HttpException){
+                        int code = ((HttpException) throwable).code();
+                        switch (code){
+                            case 500:
+                                return o;
+                            case 403:
+                                //todo implements
+                                return Observable.empty(); }
+                    }
+                    return Observable.error(new Exception());
+                });
             }
         }
 
-        Observable.merge(scores)
-                .observeOn(AndroidSchedulers.mainThread())
+        Observable<List<Score>> scores = Observable.merge(scoreArray,5)
+                .flatMap((Func1<List<Score>, Observable<Score>>) scoreList ->
+                        Observable.from(scoreList))
+                .toList();
+
+
+                 scores
+                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .onErrorResumeNext(throwable -> {
-                    if(throwable instanceof  HttpException){
-                        int code  = ((HttpException) throwable).code();
-                        switch (code){
-                            case 404:
-                                //todo implement with hint
-                                break;
-                            case  403:
-                                CcnuCrawler2.clearCookieStore();
-                                return new LoginPresenter()
-                                        .login(UserAccountManager.getInstance().getInfoUser())
-                                        .flatMap(aBoolean ->Observable.merge(scores))
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribeOn(Schedulers.io());
-                            case 500:
-                                break;
-                        }
+                .subscribe(new Subscriber() {
+                    @Override
+                    public void onCompleted() {
+                        hideLoading();
                     }
-                    CcnuCrawler2.clearCookieStore();
-                    return new LoginPresenter()
-                            .login(UserAccountManager.getInstance().getInfoUser())
-                            .flatMap(aBoolean ->Observable.merge(scores))
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribeOn(Schedulers.io());
-                })
-               .subscribe(
-                       scoreList -> {
-                           filterList(scoreList);
-                           renderedFilteredScoreList();
-                           },
-                       throwable ->{
-                           throwable.printStackTrace();
-                           mMultiStatusView.showNetError();
-                           hideLoading();
-               },this::hideLoading );
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        mMultiStatusView.showNetError();
+                        hideLoading();
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        List<Score> scoreList = (List<Score>) o;
+                        filterList(scoreList);
+                        renderedFilteredScoreList();
+                    }
+                });
     }
 
     private void filterList(List<Score> scores){
         List<Score> filteredList = new ArrayList<>();
         for(Score score: scores) {
             for (String type : mCourseParams) {
+                if(score.kcxzmc == null)
+                    //todo to implement
+                    continue;
                 if (score.kcxzmc.equals(type)){
                     filteredList.add(score);
                 }
