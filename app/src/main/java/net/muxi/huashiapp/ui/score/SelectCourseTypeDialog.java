@@ -5,80 +5,91 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.widgets.BottomPickerDialogFragment;
 
 import net.muxi.huashiapp.R;
+
+import java.util.HashMap;
 
 public class SelectCourseTypeDialog extends BottomPickerDialogFragment implements View.OnClickListener{
 
     private RadioButton mRb;
 
     private CheckBox mZyzgk;
-    private CheckBox mZyxxk;
+    private CheckBox mGxfzk;
+    private CheckBox mTshxk;
     private CheckBox mTsbxk;
     private CheckBox mTsxxk;
-    private CheckBox mGxfzk;
-
-    private TextView mBtnConfirm;
-    private TextView mBtnCancel;
 
     private OnPositiveClickListener mListener;
 
     //选择了课程中的哪几种
-    private boolean[] courses = new boolean[4];
+    private HashMap<String,Boolean> mSelectedTypes = new HashMap<>();
 
     public static SelectCourseTypeDialog newInstance(){
         SelectCourseTypeDialog dialog = new SelectCourseTypeDialog();
         return dialog;
     }
 
-    public boolean[] getCourses(){
-        return courses;
+    /**
+     * 设置selecedTypes 注意： 其他课程字段也设置为选择
+     */
+    private void setState(){
+        if(mRb.isChecked()) {
+
+            for(String keys: Constants.CLASS_TYPE){
+                mSelectedTypes.put(keys,true);
+            }
+
+            mZyzgk.setChecked(true);
+            mGxfzk.setChecked(true);
+            mTshxk.setChecked(true);
+            mTsbxk.setChecked(true);
+            mTsxxk.setChecked(true);
+        }else{
+
+            for(String keys: Constants.CLASS_TYPE){
+                mSelectedTypes.put(keys,false);
+            }
+            mTshxk.setChecked(false);
+            mZyzgk.setChecked(false);
+            mGxfzk.setChecked(false);
+            mTsbxk.setChecked(false);
+            mTsxxk.setChecked(false);
+        }
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if(id == R.id.cb_zyzgk){
-            courses[0] = true;
+            mSelectedTypes.put(Constants.CLASS_TYPE[0],true);
         }
 
-        if(id == R.id.cb_zyxxk){
-            courses[1] = true;
+        if(id == R.id.cb_gxfzk){
+            mSelectedTypes.put(Constants.CLASS_TYPE[1],true);
+        }
+
+        if(id == R.id.cb_tshxk){
+            mSelectedTypes.put(Constants.CLASS_TYPE[2],true);
         }
 
         if(id == R.id.cb_tsbxk){
-            courses[2] = true;
+            mSelectedTypes.put(Constants.CLASS_TYPE[3],true);
         }
 
         if(id == R.id.cb_tsxxk){
-            courses[3] = true;
+           mSelectedTypes.put(Constants.CLASS_TYPE[4],true);
         }
 
+
         if(id == R.id.rb_all){
-            //todo test here true or false
-            if(mRb.isChecked()) {
-                for (int i = 0; i < courses.length; i++) {
-                    courses[i] = true;
-                }
-                mZyzgk.setChecked(true);
-                mZyxxk.setChecked(true);
-                mTsbxk.setChecked(true);
-                mTsxxk.setChecked(true);
-            }else{
-                for (int i = 0; i < courses.length; i++) {
-                    courses[i] = false;
-                }
-                mZyzgk.setChecked(false);
-                mZyxxk.setChecked(false);
-                mTsbxk.setChecked(false);
-                mTsxxk.setChecked(false);
-            }
+            setState();
         }
 
         if(id == R.id.btn_cancel)
@@ -86,30 +97,31 @@ public class SelectCourseTypeDialog extends BottomPickerDialogFragment implement
 
         if(id == R.id.btn_confirm){
             dismiss();
-            mListener.onclick(courses);
+            mListener.onclick(mSelectedTypes);
         }
     }
 
 
+
+
     private void initView(View view){
 
-        for(int i = 0; i< courses.length; i++){
-            courses[i] = false;
-        }
 
         mZyzgk = view.findViewById(R.id.cb_zyzgk);
-        mZyxxk = view.findViewById(R.id.cb_zyxxk);
+        mGxfzk = view.findViewById(R.id.cb_gxfzk);
+        mTshxk = view.findViewById(R.id.cb_tshxk);
         mTsbxk = view.findViewById(R.id.cb_tsbxk);
         mTsxxk = view.findViewById(R.id.cb_tsxxk);
 
-        mBtnConfirm = view.findViewById(R.id.btn_confirm);
-        mBtnCancel  = view.findViewById(R.id.btn_cancel);
+        TextView mBtnConfirm = view.findViewById(R.id.btn_confirm);
+        TextView mBtnCancel = view.findViewById(R.id.btn_cancel);
 
         mRb    = view.findViewById(R.id.rb_all);
 
         mRb.setOnClickListener(this);
         mZyzgk.setOnClickListener(this);
-        mZyxxk.setOnClickListener(this);
+        mGxfzk.setOnClickListener(this);
+        mTshxk.setOnClickListener(this);
         mTsbxk.setOnClickListener(this);
         mTsxxk.setOnClickListener(this);
 
@@ -124,7 +136,7 @@ public class SelectCourseTypeDialog extends BottomPickerDialogFragment implement
     }
 
     public interface OnPositiveClickListener{
-        void onclick(boolean courses[]);
+        void onclick(HashMap<String,Boolean> selectedCourse);
     }
 
     @NonNull

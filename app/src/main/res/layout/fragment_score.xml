@@ -121,7 +121,7 @@
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@+id/iv_year"
         android:textSize="10sp"
-        android:text="专业主干课/通识选修课/同时必修课"/>
+        android:text="专业主干课/专业选修课/通识选修课/通识必修课"/>
 
 
     <Button

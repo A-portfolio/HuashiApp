@@ -16,7 +16,6 @@ import net.muxi.huashiapp.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,7 +45,7 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
     }
 
     /**
-     * @return 返回一个map 这个map 在一般情况下 key 是连续的int，如果出现缓考这种特殊字符情况，会出现中断
+     * @return 返回一个判断那些课程已经被选择了的map
      */
     public Map<Integer,Boolean> getCheckMap(){
         return mCheckMap;
@@ -58,6 +57,7 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
     public void setAllChecked(){
         initCheckList();
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -70,9 +70,9 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String totalScore = String.format("总成绩是:%s",mScores.get(position).grade);
-        String usualScore = String.format("平时成绩是:%s",mScores.get(position).usual);
-        String examScore = String.format("总成绩是:%s",mScores.get(position).ending);
+        String totalScore = String.format("总成绩/%s",mScores.get(position).grade);
+        String usualScore = String.format("平时成绩/%s",mScores.get(position).usual);
+        String examScore = String.format("总成绩/%s",mScores.get(position).ending);
 
         holder.mTvTotalScore.setText(totalScore);
         holder.mTvUsualScore.setText(usualScore);
@@ -81,7 +81,9 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
         holder.mTvCourseType.setText(mScores.get(position).kcxzmc);
         holder.mTvCourseCredit.setText(mScores.get(position).credit);
 
+        holder.mTvCourseName.setText(mScores.get(position).course);
         Set<Integer> keySet=  mCheckMap.keySet();
+        //判断是否是 浮点型数字
         if(!isDouble(mScores.get(position).grade)){
             holder.mCbCredit.setVisibility(View.INVISIBLE);
             mCheckMap.remove(position);
@@ -119,6 +121,7 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
         private TextView mTvTotalScore;
         private TextView mTvUsualScore;
         private TextView mTvExamScore;
+        private TextView mTvCourseName;
 
         private CheckBox mCbCredit;
 
@@ -132,6 +135,8 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
             mTvTotalScore = itemView.findViewById(R.id.tv_score_total_value);
             mTvUsualScore = itemView.findViewById(R.id.tv_score_usual_value);
             mTvExamScore  = itemView.findViewById(R.id.tv_score_exam_value);
+
+            mTvCourseName = itemView.findViewById(R.id.tv_course_name);
         }
 
     }

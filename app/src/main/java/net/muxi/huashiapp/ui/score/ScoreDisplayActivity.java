@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -21,9 +20,6 @@ import com.google.gson.Gson;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.Score;
 import com.muxistudio.appcommon.net.CampusFactory;
-import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
-import com.muxistudio.appcommon.presenter.LoginPresenter;
-import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.appcommon.utils.CommonTextUtils;
 import com.muxistudio.multistatusview.MultiStatusView;
 
@@ -37,13 +33,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import retrofit2.HttpException;
 import rx.Observable;
-import rx.Observer;
-import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -90,32 +82,6 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
 
 
-    private void retryLoadGrade(String term) {
-        String termTemp = "";
-        if (term.equals("0"))
-            termTemp = "";
-        else
-            termTemp = term;
-        String finalTermTemp = termTemp;
-        showLoading();
-        new LoginPresenter()
-                .login(UserAccountManager.getInstance().getInfoUser())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMap(aBoolean ->
-                        CampusFactory.getRetrofitService()
-                        .getScores(mYear, finalTermTemp))
-                .subscribe( scoreList -> {
-                            filterList(scoreList);
-                            renderedFilteredScoreList();
-                        },
-                        throwable -> {
-                            throwable.printStackTrace();
-                            mMultiStatusView.showNetError();
-                            CcnuCrawler2.clearCookieStore();
-                        }, this::hideLoading);
-    }
-
     private void loadGrade() {
         showLoading();
         setLoadingInfo("正在请求成绩数据~~");
@@ -136,9 +102,9 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                                 .setRetryInfo(() -> setLoadingInfo("登录过期，正在重新登录中")).build());
             }
         }
+
         Observable.merge(scoreArray,5)
-                .flatMap((Func1<List<Score>, Observable<Score>>) scoreList ->
-                        Observable.from(scoreList))
+                .flatMap((Func1<List<Score>, Observable<Score>>) Observable::from)
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -158,20 +124,34 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                     @Override
                     public void onNext(Object o) {
                         List<Score> scoreList = (List<Score>) o;
-                        filterList(scoreList);
-                        renderedFilteredScoreList();
+                        boolean isFull = filterList(scoreList,mFilteredList);
+                        if(isFull)
+                            renderedFilteredScoreList();
                     }
                 });
     }
 
-    private void filterList(List<Score> scores){
+    /**
+     * 根据 {@link com.muxistudio.appcommon.Constants} 中的 CLASS_TYPE 中用户选择所要计算学分绩的个别类型进行过滤
+     * 因为 {@link Score} 中 kcxmzc字段没有 “其他”类型for循环遍历完成之后依然没有这个类型，同样需要添加到filterList中去
+     * @param scores
+     * @return 是否为空 如果不为空返回true 如果为空返回false
+     */
+    private boolean filterList(List<Score> scores,List<Score> resultList){
+
         List<Score> filteredList = new ArrayList<>();
         for(Score score: scores) {
-            for (String type : mCourseParams) {
-                if(score.kcxzmc == null)
-                    //todo to implement
-                    continue;
-                if (score.kcxzmc.equals(type)){
+            if(score.kcxzmc == null) {
+                filteredList.add(score);
+                continue;
+            }
+            for(int i=0;i<mCourseParams.size();i++){
+                if(score.kcxzmc.equals(mCourseParams.get(i))){
+                    filteredList.add(score);
+                    break;
+                }
+                //说明这些课程是不在我们的确定的名称集合中
+                if(i == mCourseParams.size() -1){
                     filteredList.add(score);
                 }
             }
@@ -179,16 +159,17 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
         if ( filteredList.isEmpty()) {
             mMultiStatusView.showEmpty();
-            return;
+            return false;
+        }else{
+            resultList.clear();
+            resultList.addAll(filteredList);
+            return true;
         }
-
-        mFilteredList.addAll(filteredList);
     }
 
     private void renderedFilteredScoreList() {
         //filter list
         mMultiStatusView.showContent();
-
 
         try {
             mScoresAdapter = new ScoreCreditAdapter(mFilteredList);
@@ -196,7 +177,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
             e.printStackTrace();
             mScoresAdapter = new ScoreCreditAdapter(new ArrayList<>());
         }
-        //getContentView() 内部使用了 LayoutInflater 去加载自定义view MultiStatusView 中自定义的布局
+        //getContentVAdapteriew() 内部使用了 LayoutInflater 去加载自定义view MultiStatusView 中自定义的布局
         //需要加载的view 写在multistatusiew的定义中
         RecyclerView recyclerView = (RecyclerView) mMultiStatusView.getContentView();
 
@@ -221,8 +202,8 @@ public class ScoreDisplayActivity extends ToolbarActivity {
     private void initView() {
         mMultiStatusView = findViewById(R.id.multi_status_view);
         //因为在请求的过程中使用了自动重新的登录 而且也有应用级别的cookie刷新 主动重试的情况一般不会出现
-        mMultiStatusView.setOnRetryListener(v -> retryLoadGrade(mTerm));
-        setTitle(generateYearTitle() + generateTermTitle());
+        mMultiStatusView.setOnRetryListener(v -> loadGrade());
+        setTitle(generateYearTitle());
 
         mBtnEnter = findViewById(R.id.btn_enter);
         mBtnEnter.setOnClickListener(v -> {
@@ -257,43 +238,6 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
         return String.format("第%d-%d学期",startYear,endYear);
     }
-
-    private String generateTermTitle(){
-        //通过termParams 生成对应的 学期
-        String termTitle = "";
-        if(mTermParams.size() == 1 && !mTermParams.get(0).equals("0")){
-            String termValue = getTermValue(mTermParams.get(0));
-            termTitle = String.format("第%s学期", termValue);
-        }else if(mTermParams.size() == 1 && mTermParams.get(0).equals("0")){
-            termTitle = "所有学期";
-        }else{
-            String termValueStart = getTermValue(mTermParams.get(0));
-            String termValueEnd   = getTermValue(mTermParams.get(mTermParams.size() -1));
-            termTitle = String.format("第%s-%s学期",termValueStart,termValueEnd);
-        }
-        return termTitle;
-    }
-
-    //从对应的 mTerm 的 string 中解析出对应的 mTerm 名称 第 n 学期
-    private String getTermValue(String term){
-        String termValue = "";
-            switch (term){
-                case "0":
-                    termValue = "0";
-                    break;
-                case "3":
-                    termValue = "1";
-                    break;
-                case "12":
-                    termValue=  "2";
-                    break;
-                case "16":
-                    termValue = "16";
-                    break;
-        }
-        return termValue;
-    }
-
 
     /**
      * activity出入的两种动画

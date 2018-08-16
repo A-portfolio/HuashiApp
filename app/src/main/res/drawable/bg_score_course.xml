@@ -5,10 +5,10 @@
 
     <stroke
         android:color="@color/green"
-        android:width="2dp"/>
+        android:width="1dp"/>
 
     <corners
-        android:radius="10dp"/>
+        android:radius="7dp"/>
 
 
 

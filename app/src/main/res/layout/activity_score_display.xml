@@ -5,9 +5,12 @@
     android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <include layout="@layout/view_toolbar"/>
+    <include
+        android:id="@+id/tool_layout"
+        layout="@layout/view_toolbar"/>
 
     <com.muxistudio.multistatusview.MultiStatusView
+        android:layout_below="@+id/tool_layout"
         android:id="@+id/multi_status_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,7 +32,7 @@
             android:layout_marginRight="16dp"
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:text="计算"
+            android:text="计算学分绩"
             android:textColor="@color/colorWhite"
             android:background="@drawable/ripple_accent"
             android:layout_height="48dp"/>

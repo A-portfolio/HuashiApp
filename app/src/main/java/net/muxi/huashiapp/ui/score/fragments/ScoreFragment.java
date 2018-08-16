@@ -21,6 +21,7 @@ import net.muxi.huashiapp.ui.score.ScoreDisplayActivity;
 import net.muxi.huashiapp.ui.score.SelectCourseTypeDialog;
 import net.muxi.huashiapp.ui.score.SelectTermDialog;
 import net.muxi.huashiapp.ui.score.SelectYearDialog;
+import net.muxi.huashiapp.util.ScoreCreditUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,9 +40,10 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
     private TextView mTvYear;
     private TextView mTvTerm;
     private boolean mTerms[] = new boolean[3];
+    private String mTermName;
 
-   //学期在请求的时候需要转换为特殊的一个参数 具体参考api文档
-   private List<String> mTermParams = new ArrayList<>();
+    private List<String> mTermCodeParams = new ArrayList<>();
+   private List<String> mTermNameParams = new ArrayList<>();
    private List<String> mYearParams = new ArrayList<>();
    private List<String> mCourseTypeParams = new ArrayList<>();
 
@@ -75,7 +77,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
     /**
      *如果没有选择直接查询的话将会设置为默认值
      */
-    private void setDefaultValue(){
+    private void initDefaultValue(){
         startYear = UserUtil.getStudentFirstYear();
         endYear   = String.valueOf(Integer.parseInt(startYear) + 1);
 
@@ -87,8 +89,8 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
             mYearParams.add(String.valueOf(i));
         }
 
-        mTermParams.clear();
-        mTermParams.add("");
+        mTermNameParams.clear();
+        mTermNameParams.add("");
 
         mCourseTypeParams.addAll(Arrays.asList(Constants.CREDIT_CATEGORY));
 
@@ -117,7 +119,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
 
         View view = inflater.inflate(R.layout.fragment_score, container, false);
         initView(view);
-        setDefaultValue();
+        initDefaultValue();
         return  view;
 
     }
@@ -139,7 +141,6 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
             int endYearValue   = Integer.parseInt(endYear);
 
             mYearParams.clear();
-
             for(int i = startYearValue;i< endYearValue;i++) {
                 mYearParams.add(String.valueOf(i));
             }
@@ -156,70 +157,27 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         dialog.show(getActivity().getSupportFragmentManager(),"score_credit_term_select");
         dialog.setOnPositiveButtonClickListener(terms -> {
             mDefault = false;
-            String term = "";
 
-            mTermParams.clear();
+            mTermNameParams.clear();
             mTerms = terms;
 
-            for(int i=0;i<terms.length;i++){
-                if(terms[i]){
-                    switch (i){
-                        case 0:
-                            mTermParams.add("3");
-                            term += "第一学期/";
-                            break;
-                        case 1:
-                            mTermParams.add("12");
-                            term +="第二学期/";
-                            break;
-                        case 2:
-                            mTermParams.add("16");
-                            term +="第三学期";
-                            break;
-                    }
-                }
+            mTermCodeParams = ScoreCreditUtils.parseTerm2Code(terms);
+            mTermNameParams = ScoreCreditUtils.parseTerm2Names(terms);
+            mTermName = ScoreCreditUtils.parseNames2String(mTermNameParams,'/');
 
-            }
-            if(terms[0] && terms[1] &&terms[2]){
-                term = "全部";
-                mTermParams.clear();
-                mTermParams.add("");
-            }else{
-                term = term.substring(0,term.length()-1);
-            }
-
-            mTvTerm.setText(term);
+            mTvTerm.setText(mTermName);
         });
         }
 
 
     /**
-     * 返回的课程中包括所有的课程 如果不满足条件的课程只能手动过滤掉
+     *返回用户选择的课程名称
      */
     private void showSelectCourseTypeDialog(){
         SelectCourseTypeDialog dialog = SelectCourseTypeDialog.newInstance();
         dialog.show(getActivity().getSupportFragmentManager(),"score_credit_course_type");
-        dialog.setOnPositiveButtonClickListener(courses -> {
-            //boolean course 的顺序是专业主干课 专业选修 通识必修 通识选修 list 只会存放选择的课程
-            mCourseTypeParams.clear();
-            for(int i=0;i<courses.length;i++){
-                if(courses[i]) {
-                    switch (i) {
-                        case 0:
-                            mCourseTypeParams.add(Constants.CREDIT_CATEGORY[5]);
-                            break;
-                        case 1:
-                            mCourseTypeParams.add(Constants.CREDIT_CATEGORY[1]);
-                            break;
-                        case 2:
-                            mCourseTypeParams.add(Constants.CREDIT_CATEGORY[2]);
-                            break;
-                        case 3:
-                            mCourseTypeParams.add(Constants.CREDIT_CATEGORY[3]);
-                            break;
-                    }
-                }
-            }
+        dialog.setOnPositiveButtonClickListener(courses ->{
+            mCourseTypeParams = ScoreCreditUtils.getCourseType(courses);
         });
     }
 
@@ -240,28 +198,17 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
 
         if(id == R.id.btn_enter){
             Gson gson = new Gson();
-            String termJson = gson.toJson(mTermParams);
+            String termJson = gson.toJson(mTermCodeParams);
             String yearJson = gson.toJson(mYearParams);
             String courseTypeJosn = gson.toJson(mCourseTypeParams);
 
             if(mDefault) {
-                String year = mYearParams.get(0) + "-" + mYearParams.get(mYearParams.size() -1);
-                String term = "";
-                if(mTerms[0]&&mTerms[1]&&mTerms[2]){
-                    term = "第一学期/第二学期/第三学期";
-                }
-                for(int i=0;i<mTerms.length;i++){
-                    if(mTerms[i]&&i==0)
-                        term += "第一学期/";
-                    if(mTerms[i]&&i==1)
-                        term += "第二学期/";
-                    if(mTerms[i]&&i==2)
-                        term += "第三学期";
-                }
+                String year = ScoreCreditUtils.parseYears2Title(mYearParams);
+
                 new AlertDialog.Builder(getActivity())
                         .setTitle("使用默认选项进行成绩查询")
                         .setMessage("选择的学年为:"+year+"\n"+
-                                    "选择的学期为:"+term+"\n")
+                                    "选择的学期为:"+ mTermName +"\n")
                         .setNegativeButton("取消", (dialog, which) -> {
                             dialog.dismiss();
                         })

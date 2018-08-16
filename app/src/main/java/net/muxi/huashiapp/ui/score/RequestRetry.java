@@ -25,6 +25,8 @@ public class RequestRetry implements
 
         private RetryInfoListener mListener;
 
+        //todo to refactor
+    // using following method :https://www.linkedin.com/pulse/switch-case-if-else-blocks-rx-java-streams-ahmed-adel
         @Override
         public Observable<?> call(Observable<? extends Throwable> attempts) {
             return attempts
@@ -49,7 +51,7 @@ public class RequestRetry implements
                                                     .getInfoUser())
                                             //上面的登录操作运行在io线程上
                                             .observeOn(Schedulers.io())
-                                            //让这一段修改的线程运行在UI上
+                                                //让这一段修改的线程运行在UI上
                                             .subscribeOn(AndroidSchedulers.mainThread())
                                             .flatMap(
                                                     (Func1<Boolean, Observable<Boolean>>) aBoolean -> {
@@ -73,8 +75,6 @@ public class RequestRetry implements
                                     break;
                             }
                         }
-
-
                         return Observable.error(throwable);
                     })
                     .subscribeOn(Schedulers.io())

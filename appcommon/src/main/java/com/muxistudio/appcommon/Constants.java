@@ -58,6 +58,19 @@ public class Constants {
             "第二十一周"
     };
 
+    /**
+     * 这个分类中 对应的字段是{@link com.muxistudio.appcommon.data.Score} 中 kcxzmc字段
+     */
+    public static final String[] CLASS_TYPE = {
+            "专业主干课程",
+            "个性发展课程",
+            "通识核心课",
+            "通识必修课",
+            "通识选修课",
+            "其他"
+    };
+
+    //todo to remove
     public static final String[] CREDIT_CATEGORY = {
             "个性发展课程",
             "专业选修课",

@@ -15,7 +15,7 @@
         android:layout_width="15dp"
         android:layout_height="15dp" />
 
-    <TextView
+    x<TextView
         android:id="@+id/tv_course_name"
         android:layout_toRightOf="@id/iv_dot"
         android:text="计算机网络"

@@ -57,30 +57,48 @@
         android:layout_height="wrap_content" />
 
     <CheckBox
-        android:id="@+id/cb_zyxxk"
+        android:id="@+id/cb_gxfzk"
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
         android:layout_alignBaseline="@+id/tv_zyxxk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <!--通识必修课程-->
+    <!--通识核心课程-->
     <TextView
-        android:id="@+id/tv_tsbxk"
+        android:id="@+id/tv_tshxk"
         android:textColor="@color/primary_text_color"
-        android:text="通识必修课"
+        android:text="通识核心课"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="170dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <CheckBox
+        android:id="@+id/cb_tshxk"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:layout_alignBaseline="@+id/tv_tshxk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!--通识必修课-->
+    <TextView
+        android:id="@+id/tv_tsbxk"
+        android:textColor="@color/primary_text_color"
+        android:text="通识必修课"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="205dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
         android:id="@+id/cb_tsbxk"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
         android:layout_alignBaseline="@+id/tv_tsbxk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="wrap_content"/>
 
     <!--通识选修课程-->
     <TextView
@@ -88,7 +106,7 @@
         android:textColor="@color/primary_text_color"
         android:text="通识选修课"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="205dp"
+        android:layout_marginTop="240dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
