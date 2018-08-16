@@ -12,7 +12,6 @@ import com.muxistudio.appcommon.data.Score;
 
 import net.muxi.huashiapp.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,10 +21,10 @@ import java.util.List;
 public class CreditAdapter implements ExpandableListAdapter {
 
     //List<List<Object>> 是一个二维数组
-    private List<List<Score>> mChildCredits = new ArrayList<>();
-    private List<String> mCreditType = new ArrayList<>();
+    private List<List<Score>> mChildCredits;
+    private List<String> mCreditType;
     private Context mCtx;
-    private List<Double> mGroupCredits = new ArrayList<>();
+    private List<Double> mGroupCredits;
 
     public CreditAdapter(Context context,
                          List<List<Score>> mCredits,

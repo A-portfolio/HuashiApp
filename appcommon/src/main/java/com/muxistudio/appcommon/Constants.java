@@ -19,6 +19,9 @@ public class Constants {
     public static final String LIBRARY_QUERY_TEXT = "queryText";
     public static final String TIP_CHECK_NET = "当前网络不可用,请检查网络连接";
     public static final String ALARMTIME = "alarmTime";
+
+    public static final String ALL_CREDIT = "sAllCredit";
+
     public static final String[] WEEKDAYS = {"一",
             "二",
             "三",

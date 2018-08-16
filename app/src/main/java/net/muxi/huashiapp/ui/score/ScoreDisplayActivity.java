@@ -57,6 +57,13 @@ public class ScoreDisplayActivity extends ToolbarActivity {
     private List<String> mYearParams = new ArrayList<>();
     private List<String> mTermParams = new ArrayList<>();
 
+    /**
+     *
+     * @param context context
+     * @param year year eg: arraylistOf("2016","2017")
+     * @param term term code
+     * @param courseType courseType name eg: arraylistOf("专业主干课程","通识选修课")
+     */
     public static void start(Context context, String year, String term,String courseType) {
         Intent starter = new Intent(context, ScoreDisplayActivity.class);
         starter.putExtra("mYear", year);

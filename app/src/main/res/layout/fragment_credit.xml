@@ -4,9 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/tool_layout"
+        layout="@layout/view_toolbar"/>
+
     <!--SpannableListView here!-->
     <ExpandableListView
         android:id="@+id/eplv_credit"
+        android:layout_below="@+id/tool_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </ExpandableListView>

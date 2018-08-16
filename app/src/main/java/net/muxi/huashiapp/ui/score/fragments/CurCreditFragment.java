@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
-import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.appbase.BaseAppFragment;
 import com.muxistudio.appcommon.data.Score;
 import com.muxistudio.appcommon.net.CampusFactory;
@@ -20,10 +19,12 @@ import com.muxistudio.appcommon.utils.UserUtil;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.score.adapter.CreditAdapter;
+import net.muxi.huashiapp.util.ScoreCreditUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import rx.Observable;
@@ -38,9 +39,6 @@ public class CurCreditFragment extends BaseAppFragment {
     private List<Score> mCredit = new ArrayList<>();
     private ExpandableListView mElvCredit;
 
-    private double mAllCredit = 0;
-    private double mZybxCredit = 0, mZyxxCredit = 0, mTshxCredit = 0, mTsxxCredit = 0;
-    private double mOtherCredit = 0;
     private ViewPagerSlideListener mViewPagerSlideListener;
 
     private int getCurYear(){
@@ -72,59 +70,6 @@ public class CurCreditFragment extends BaseAppFragment {
         return observables;
     }
 
-    /**
-     * 返回的课程二维list按照这个顺序：专业必修 专业选修 通识核心 通识选修 其他课程
-     * @param credits
-     * @return List<List<Score>>
-     */
-    public List<List<Score>> getSortCredit(List<Score> credits){
-        List<Score> zybx = new ArrayList<>();
-        List<Score> zyxx = new ArrayList<>();
-        List<Score> tshx = new ArrayList<>();
-        List<Score> tsxx = new ArrayList<>();
-        List<Score> other = new ArrayList<>();
-
-        //如果还有不符合这个上面的课程就归为其他类别
-        //除了基本的四种分类之外其余的都属于其他的类别
-        for(Score credit : credits){
-            mAllCredit += Double.parseDouble(credit.credit);
-            for(int i= 0;i< Constants.CREDIT_CATEGORY.length;i++){
-                if(Constants.CREDIT_CATEGORY[i].equals(credit.kcxzmc)) {
-                    switch (i) {
-                        case 1:
-                            mZyxxCredit += Double.parseDouble(credit.credit);
-                            zyxx.add(credit);
-                            break;
-                        case 3:
-                            mTsxxCredit += Double.parseDouble(credit.credit);
-                            tsxx.add(credit);
-                            break;
-                        case 4:
-                            mTshxCredit += Double.parseDouble(credit.credit);
-                            tshx.add(credit);
-                            break;
-                        case 5:
-                            mZybxCredit += Double.parseDouble(credit.credit);
-                            zybx.add(credit);
-                            break;
-                        default:
-                            mOtherCredit += Double.parseDouble(credit.credit);
-                            other.add(credit);
-                            break;
-                    }
-                }
-            }
-        }
-
-        List<List<Score>> sortedList = new ArrayList<>();
-        sortedList.add(zybx);
-        sortedList.add(zyxx);
-        sortedList.add(tshx);
-        sortedList.add(tsxx);
-
-        return sortedList;
-    }
-
     public void loadCredit(Observable<List<Score>>[] listObservable) {
         showLoading();
         Observable<List<Score>> scoreObservable =
@@ -145,24 +90,15 @@ public class CurCreditFragment extends BaseAppFragment {
                     hideLoading();
 
                     mCredit = scores;
-                    List<List<Score>> sortedList = getSortCredit(scores);
 
-                    //专业必修 专业选修 通识核心 通识选修 其他课程
-                    List<String> courseTypes = new ArrayList<>();
-                    courseTypes.add("专业必修");
-                    courseTypes.add("专业选修");
-                    courseTypes.add("通识核心");
-                    courseTypes.add("通识选修");
-                    courseTypes.add("其他课程");
+                    HashMap<String,Double> creditValueMap = ScoreCreditUtils.getSortedCourseCreditMap(scores);
+                    HashMap<String,List<Score>> scoreMap  = ScoreCreditUtils.getSortedCourseTypeMap(scores);
 
-                    List<Double> courseCredits = new ArrayList<>();
-                    courseCredits.add(mZybxCredit);
-                    courseCredits.add(mZyxxCredit);
-                    courseCredits.add(mTshxCredit);
-                    courseCredits.add(mTsxxCredit);
-                    courseCredits.add(mOtherCredit);
+                    List<List<Score>> sortedList = ScoreCreditUtils.getTypeOrderedList(scoreMap);
+                    List<String> classType = ScoreCreditUtils.getCreditTypes();
+                    List<Double> courseCredits = ScoreCreditUtils.getCreditValues(creditValueMap);
 
-                    CreditAdapter adapter = new CreditAdapter(getActivity(),sortedList,courseTypes,courseCredits);
+                    CreditAdapter adapter = new CreditAdapter(getActivity(),sortedList,classType,courseCredits);
                     mElvCredit.setAdapter(adapter);
 
                 }, Throwable::printStackTrace, () -> {

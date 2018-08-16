@@ -64,11 +64,15 @@ public class SelectCourseTypeDialog extends BottomPickerDialogFragment implement
         }
     }
 
+    //todo to refractor
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if(id == R.id.cb_zyzgk){
-            mSelectedTypes.put(Constants.CLASS_TYPE[0],true);
+            if(mZyzgk.isChecked())
+                mSelectedTypes.put(Constants.CLASS_TYPE[0],true);
+            else
+                mSelectedTypes.put(Constants.CLASS_TYPE[0],false);
         }
 
         if(id == R.id.cb_gxfzk){
@@ -139,12 +143,19 @@ public class SelectCourseTypeDialog extends BottomPickerDialogFragment implement
         void onclick(HashMap<String,Boolean> selectedCourse);
     }
 
+    private void initSelectTypes(){
+        for(String key:Constants.CLASS_TYPE){
+            mSelectedTypes.put(key,true);
+        }
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_select_course_type,null);
         Dialog dialog = createBottomDialog(view);
         initView(view);
+        initSelectTypes();
         return dialog  ;
     }
 }

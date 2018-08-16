@@ -40,6 +40,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
     private TextView mTvYear;
     private TextView mTvTerm;
     private boolean mTerms[] = new boolean[3];
+    //使用默认选择的时候的提示
     private String mTermName;
 
     private List<String> mTermCodeParams = new ArrayList<>();
@@ -76,6 +77,11 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
 
     /**
      *如果没有选择直接查询的话将会设置为默认值
+     * 学年 mYearParams:  包括用户入学的第一年一整个学年 eg: 2016210897 mYearParams 中就包含 2016 and 2017
+     * 学期 mTermNameParams: 包括一学年所有学期 第一学期 第二学期 和 第三学期
+     * 默认学期提示：
+     * 学期code： 包括所有学期的code ""
+     * 课程类型： 所有的课程类型
      */
     private void initDefaultValue(){
         startYear = UserUtil.getStudentFirstYear();
@@ -90,9 +96,16 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         }
 
         mTermNameParams.clear();
-        mTermNameParams.add("");
+        mTermNameParams.add("第一学期");
+        mTermNameParams.add("第二学期");
+        mTermNameParams.add("第三学期");
 
-        mCourseTypeParams.addAll(Arrays.asList(Constants.CREDIT_CATEGORY));
+        mTermName = ScoreCreditUtils.parseTermNames2String(mTermNameParams,'/');
+
+        mTermCodeParams.clear();
+        mTermCodeParams.add("");
+
+        mCourseTypeParams.addAll(Arrays.asList(Constants.CLASS_TYPE));
 
         for(int i=0;i<mTerms.length;i++)
             mTerms[i] = true;
@@ -140,10 +153,8 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
             int startYearValue = Integer.parseInt(startYear);
             int endYearValue   = Integer.parseInt(endYear);
 
-            mYearParams.clear();
-            for(int i = startYearValue;i< endYearValue;i++) {
-                mYearParams.add(String.valueOf(i));
-            }
+            mYearParams = ScoreCreditUtils.parseNumber2Years(startYearValue,endYearValue);
+
             mTvYear.setText(String.format("%d-%d学年",startYearValue,endYearValue));
         });
     }
@@ -158,16 +169,18 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         dialog.setOnPositiveButtonClickListener(terms -> {
             mDefault = false;
 
-            mTermNameParams.clear();
             mTerms = terms;
 
             mTermCodeParams = ScoreCreditUtils.parseTerm2Code(terms);
             mTermNameParams = ScoreCreditUtils.parseTerm2Names(terms);
-            mTermName = ScoreCreditUtils.parseNames2String(mTermNameParams,'/');
+
+            //清空默认情况下的mTermName
+            mTermName = "";
+            mTermName = ScoreCreditUtils.parseTermNames2String(mTermNameParams,'/');
 
             mTvTerm.setText(mTermName);
         });
-        }
+    }
 
 
     /**
@@ -177,7 +190,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         SelectCourseTypeDialog dialog = SelectCourseTypeDialog.newInstance();
         dialog.show(getActivity().getSupportFragmentManager(),"score_credit_course_type");
         dialog.setOnPositiveButtonClickListener(courses ->{
-            mCourseTypeParams = ScoreCreditUtils.getCourseType(courses);
+            mCourseTypeParams = ScoreCreditUtils.getSelectedCourseType(courses);
         });
     }
 
