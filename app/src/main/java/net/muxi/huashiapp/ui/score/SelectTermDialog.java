@@ -67,14 +67,31 @@ public class SelectTermDialog extends BottomDialogFragment implements View.OnCli
             }
         }
 
-        if(id == R.id.cb_first_term)
-            terms[0] = cbFirstTerm.isChecked();
+        if(id == R.id.cb_first_term) {
+            if (cbFirstTerm.isChecked()) {
+                terms[0] = true;
+            }else{
+                rbAll.setChecked(false);
+                terms[0] = false;
+            }
+        }
+        if(id == R.id.cb_second_term){
+            if (cbSecondTerm.isChecked()) {
+                terms[1] = true;
+            }else{
+                rbAll.setChecked(false);
+                terms[1] = false;
+            }
+        }
 
-        if(id == R.id.cb_second_term)
-            terms[1] = cbSecondTerm.isChecked();
-
-        if(id == R.id.cb_third_term)
-            terms[2] = cbThirdTerm.isChecked();;
+        if(id == R.id.cb_third_term){
+            if (cbThirdTerm.isChecked()) {
+                terms[2] = true;
+            }else{
+                rbAll.setChecked(false);
+                terms[2] = false;
+            }
+        }
 
         if(id == R.id.btn_cancel)
             dismiss();

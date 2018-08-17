@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.muxistudio.appcommon.data.Score;
@@ -94,11 +95,16 @@ public class CreditAdapter implements ExpandableListAdapter {
 
         double groupCredit = mGroupCredits.get(groupPosition);
         String groupName = mCreditType.get(groupPosition);
-        TextView mGroupTextView = groupView.findViewById(R.id.tv_group);
-        TextView mTvGroupCredit = groupView.findViewById(R.id.tv_course_credit);
 
-//        mTvGroupCredit.setText(String.valueOf(groupCredit));
+        ImageView mIvGroupView = groupView.findViewById(R.id.iv_group);
+        TextView mGroupTextView = groupView.findViewById(R.id.tv_group);
+        TextView mTvGroupCredit = groupView.findViewById(R.id.tv_group_credit);
+
+        mTvGroupCredit.setText(String.valueOf(groupCredit));
         mGroupTextView.setText(groupName);
+
+        mIvGroupView.setImageResource(isExpanded? R.drawable.ic_group_selected: R.drawable.ic_group_unselected);
+
         return groupView;
     }
 
@@ -110,7 +116,6 @@ public class CreditAdapter implements ExpandableListAdapter {
         else
             childView = convertView;
 
-        //todo check this cast!
         Score credits = (Score) getChild(groupPosition,childPosition);
         TextView mCreditName = childView.findViewById(R.id.tv_course_name);
         TextView mCreditValue = childView.findViewById(R.id.tv_course_credit);

@@ -85,7 +85,7 @@ public class ScoreCreditUtils {
         for (String name : termNames) {
             names = names + name + separator;
         }
-        names = names.substring(0, names.length());
+        names = names.substring(0, names.length()-1);
         return names;
     }
 
@@ -135,6 +135,7 @@ public class ScoreCreditUtils {
         for (String credit : Constants.CLASS_TYPE) {
             creditMap.put(credit, 0d);
         }
+
 
         double allCredit = 0;
 

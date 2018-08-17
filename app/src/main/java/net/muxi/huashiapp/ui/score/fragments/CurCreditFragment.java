@@ -98,6 +98,7 @@ public class CurCreditFragment extends BaseAppFragment {
                     List<String> classType = ScoreCreditUtils.getCreditTypes();
                     List<Double> courseCredits = ScoreCreditUtils.getCreditValues(creditValueMap);
 
+                    mElvCredit.setGroupIndicator(null);
                     CreditAdapter adapter = new CreditAdapter(getActivity(),sortedList,classType,courseCredits);
                     mElvCredit.setAdapter(adapter);
 
@@ -131,7 +132,8 @@ public class CurCreditFragment extends BaseAppFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_credit,container,false);
         mElvCredit = view.findViewById(R.id.eplv_credit);
         return view;

@@ -214,11 +214,14 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
         mBtnEnter = findViewById(R.id.btn_enter);
         mBtnEnter.setOnClickListener(v -> {
+
             Map<Integer,Boolean> map = mScoresAdapter.getCheckMap();
             float credit = 0, sum = 0;
             Set<Integer> set = map.keySet();
             for(int key : set){
                 if(map.get(key)){
+                    if(!Character.isDigit(mFilteredList.get(key).grade.charAt(0)))
+                        continue;
                     sum += Float.parseFloat(mFilteredList.get(key).grade);
                     credit += Float.parseFloat(mFilteredList.get(key).credit);
                 }
