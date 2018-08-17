@@ -3,24 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
+    android:layout_height="wrap_content"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp">
 
-    <!--todo add image src-->
+    <CheckBox
+        android:id="@+id/cb_cal_credit"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@id/tv_course_name"
+        android:layout_marginRight="20dp"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <ImageView
         android:id="@+id/iv_dot"
-        android:src="@drawable/ic_back"
-        android:layout_width="15dp"
-        android:layout_height="15dp" />
+        android:layout_marginTop="5dp"
+        android:src="@drawable/ic_score_dot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-    x<TextView
+    <TextView
         android:id="@+id/tv_course_name"
         android:layout_toRightOf="@id/iv_dot"
+        android:textStyle="bold"
         android:text="计算机网络"
         android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
+        android:layout_width="85dp"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -45,9 +55,10 @@
 
     <LinearLayout
         android:layout_toRightOf="@+id/iv_dot"
+        android:layout_marginTop="14dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="40dp"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/tv_course_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -75,12 +86,5 @@
 
     </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/cb_cal_credit"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
 </RelativeLayout>

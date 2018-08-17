@@ -78,7 +78,7 @@ public class ScoreCreditUtils {
      * @param separator 学期名称分隔符 只能是单个字符
      * @return 生成的字符串可能格式为 第一学期/第二学期
      */
-    public static String parseTermNames2String(List<String> termNames, char separator) {
+    public static String parseNames2String(List<String> termNames, char separator) {
         if (termNames.size() == 1)
             return termNames.get(0);
         String names = "";

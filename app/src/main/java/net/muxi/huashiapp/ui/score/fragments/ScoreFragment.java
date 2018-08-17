@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.appbase.BaseAppFragment;
+import com.muxistudio.appcommon.data.Score;
 import com.muxistudio.appcommon.utils.UserUtil;
 
 import net.muxi.huashiapp.R;
@@ -37,10 +38,15 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
 
     private boolean mDefault = true;
     private String startYear, endYear;
+
+    private TextView mTvCourseType;
     private TextView mTvYear;
     private TextView mTvTerm;
+
     private boolean mTerms[] = new boolean[3];
+
     //使用默认选择的时候的提示
+    private String mCourseTypeName;
     private String mTermName;
 
     private List<String> mTermCodeParams = new ArrayList<>();
@@ -59,7 +65,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
 
         ImageView mIvCourseType = view.findViewById(R.id.iv_course_type);
         TextView mTvSelectCourseType = view.findViewById(R.id.tv_select_course);
-        TextView mTvCourseType = view.findViewById(R.id.tv_course_type);
+        mTvCourseType = view.findViewById(R.id.tv_course_type);
 
         Button mBtnQuery = view.findViewById(R.id.btn_enter);
         mBtnQuery.setOnClickListener(this);
@@ -73,6 +79,10 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         mIvCourseType.setOnClickListener(this);
         mTvSelectCourseType.setOnClickListener(this);
         mTvCourseType.setOnClickListener(this);
+
+        mTvYear.setText(String.format("%s-%s学年",startYear,endYear));
+        mTvTerm.setText(mTermName);
+        mTvCourseType.setText(mCourseTypeName);
     }
 
     /**
@@ -100,12 +110,13 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         mTermNameParams.add("第二学期");
         mTermNameParams.add("第三学期");
 
-        mTermName = ScoreCreditUtils.parseTermNames2String(mTermNameParams,'/');
+        mTermName = ScoreCreditUtils.parseNames2String(mTermNameParams,'/');
 
         mTermCodeParams.clear();
         mTermCodeParams.add("");
 
         mCourseTypeParams.addAll(Arrays.asList(Constants.CLASS_TYPE));
+        mCourseTypeName = "全部";
 
         for(int i=0;i<mTerms.length;i++)
             mTerms[i] = true;
@@ -131,8 +142,8 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_score, container, false);
-        initView(view);
         initDefaultValue();
+        initView(view);
         return  view;
 
     }
@@ -176,7 +187,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
 
             //清空默认情况下的mTermName
             mTermName = "";
-            mTermName = ScoreCreditUtils.parseTermNames2String(mTermNameParams,'/');
+            mTermName = ScoreCreditUtils.parseNames2String(mTermNameParams,'/');
 
             mTvTerm.setText(mTermName);
         });
@@ -188,9 +199,16 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
      */
     private void showSelectCourseTypeDialog(){
         SelectCourseTypeDialog dialog = SelectCourseTypeDialog.newInstance();
-        dialog.show(getActivity().getSupportFragmentManager(),"score_credit_course_type");
+        dialog.show(getActivity().getSupportFragmentManager(), "score_credit_course_type");
         dialog.setOnPositiveButtonClickListener(courses ->{
-            mCourseTypeParams = ScoreCreditUtils.getSelectedCourseType(courses);
+            mDefault = false;
+            if(courses != null )
+                if(!courses.isEmpty())
+                mCourseTypeParams = ScoreCreditUtils.getSelectedCourseType(courses);
+
+            mCourseTypeName = "";
+            mCourseTypeName = ScoreCreditUtils.parseNames2String(mCourseTypeParams,'/');
+            mTvCourseType.setText(mCourseTypeName);
         });
     }
 

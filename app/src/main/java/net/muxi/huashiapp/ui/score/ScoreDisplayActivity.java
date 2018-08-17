@@ -281,10 +281,9 @@ public class ScoreDisplayActivity extends ToolbarActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        slideFromBottom(this);
-
         setContentView(R.layout.activity_score_display);
+        slideFromBottom(this);
+        setTitle("成绩");
 
         //获取解析 mYear mTerm params
         getParams();

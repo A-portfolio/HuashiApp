@@ -5,13 +5,15 @@
 
     <TextView
         android:layout_margin="30dp"
+        android:textStyle="bold"
         android:id="@+id/tv_term_all"
         android:textColor="@color/primary_text_color"
         android:text="全部"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <RadioButton
+    <CheckBox
+        style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
         android:id="@+id/rb_all"
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
@@ -21,9 +23,11 @@
 
 
     <View
-        android:layout_margin="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
         android:layout_below="@+id/rb_all"
-        android:background="@color/divider_dark"
+        android:background="@color/grey"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 
@@ -32,9 +36,10 @@
     <TextView
         android:id="@+id/tv_zyzgk"
         android:textColor="@color/primary_text_color"
+        android:textStyle="bold"
         android:text="专业主干课"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="90dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -46,13 +51,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <!--专业选修课程-->
+    <!--个性发展课程-->
     <TextView
-        android:id="@+id/tv_zyxxk"
+        android:id="@+id/tv_gxfzk"
+        android:textStyle="bold"
         android:textColor="@color/primary_text_color"
-        android:text="专业选修课"
+        android:layout_below="@+id/tv_zyzgk"
+        android:text="个性发展课"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="135dp"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -60,7 +67,7 @@
         android:id="@+id/cb_gxfzk"
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
-        android:layout_alignBaseline="@+id/tv_zyxxk"
+        android:layout_alignBaseline="@+id/tv_gxfzk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -68,9 +75,11 @@
     <TextView
         android:id="@+id/tv_tshxk"
         android:textColor="@color/primary_text_color"
+        android:textStyle="bold"
         android:text="通识核心课"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tv_gxfzk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -86,9 +95,11 @@
     <TextView
         android:id="@+id/tv_tsbxk"
         android:textColor="@color/primary_text_color"
+        android:textStyle="bold"
         android:text="通识必修课"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="205dp"
+        android:layout_below="@+id/tv_tshxk"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -104,9 +115,11 @@
     <TextView
         android:id="@+id/tv_tsxxk"
         android:textColor="@color/primary_text_color"
+        android:textStyle="bold"
         android:text="通识选修课"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="240dp"
+        android:layout_below="@+id/tv_tsbxk"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -119,26 +132,57 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:textColor="@color/primary_text_color"
-        android:layout_marginTop="20dp"
-        android:layout_toLeftOf="@+id/btn_cancel"
-        android:layout_below="@+id/cb_tsxxk"
-        android:id="@+id/btn_confirm"
-        android:text="确定"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/btn_cancel"
-        android:textColor="@color/primary_text_color"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="30dp"
-        android:layout_alignBaseline="@+id/btn_confirm"
-        android:text="取消"
+        android:id="@+id/tv_info_source"
+        android:drawableLeft="@drawable/ic_score_question_mark"
+        android:layout_below="@+id/tv_tsxxk"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/info_source"
+        android:textColor="@color/colorAccent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <LinearLayout
+        android:id="@+id/layout"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_below="@+id/tv_info_source"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="@color/primary_text_color"
+            android:id="@+id/btn_confirm"
+            android:text="确定"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/btn_cancel"
+            android:textColor="@color/primary_text_color"
+            android:textSize="14sp"
+            android:text="取消"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+    <View
+        android:layout_below="@id/layout"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"/>
 
 </RelativeLayout>

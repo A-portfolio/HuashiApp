@@ -4,15 +4,18 @@ package net.muxi.huashiapp.ui.score.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.muxistudio.appcommon.data.Score;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.widget.CenterDialogFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,18 +73,48 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String totalScore = String.format("总成绩/%s",mScores.get(position).grade);
-        String usualScore = String.format("平时成绩/%s",mScores.get(position).usual);
-        String examScore = String.format("总成绩/%s",mScores.get(position).ending);
+
+        String totalScore = String.format("总成绩:%s",mScores.get(position).grade);
+        String usualScore = String.format("平时成绩:%s",mScores.get(position).usual);
+        String examScore = String.format("总成绩:%s",mScores.get(position).ending);
 
         holder.mTvTotalScore.setText(totalScore);
         holder.mTvUsualScore.setText(usualScore);
         holder.mTvExamScore.setText(examScore);
 
-        holder.mTvCourseType.setText(mScores.get(position).kcxzmc);
+        if(TextUtils.isEmpty(mScores.get(position).kcxzmc)){
+            holder.mTvCourseType.setText("未分类课程");
+        }else {
+            holder.mTvCourseType.setText(mScores.get(position).kcxzmc);
+        }
+
         holder.mTvCourseCredit.setText(mScores.get(position).credit);
 
         holder.mTvCourseName.setText(mScores.get(position).course);
+
+        holder.mItemView.setOnClickListener(v ->{
+            CenterDialogFragment fragment = new CenterDialogFragment();
+            View view  = LayoutInflater.from(mContext).inflate(R.layout.view_score_detail,null,false);
+            fragment.setContentView(view);
+
+            TextView tvCourseType= view.findViewById(R.id.tv_course_type);
+            TextView tvCourseCredit = view.findViewById(R.id.tv_course_credit);
+            TextView tvCourseGrade = view.findViewById(R.id.tv_grade_value);
+            TextView tvCourseUsualGrade = view.findViewById(R.id.tv_usual_grade_value);
+            TextView tvCourseExamGrade  = view.findViewById(R.id.tv_exam_grade_value);
+
+            tvCourseType.setText(mScores.get(position).kcxzmc);
+            tvCourseCredit.setText(mScores.get(position).credit);
+            tvCourseGrade.setText(mScores.get(position).grade);
+            tvCourseUsualGrade.setText(mScores.get(position).usual);
+            tvCourseExamGrade.setText(mScores.get(position).ending);
+
+            Button btnConfirm = view.findViewById(R.id.btn_confirm);
+            btnConfirm.setOnClickListener( view1 ->{
+                fragment.dismiss();
+            });
+        });
+
         Set<Integer> keySet=  mCheckMap.keySet();
         //判断是否是 浮点型数字
         if(!isDouble(mScores.get(position).grade)){
@@ -107,10 +140,6 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
         return mScores.size();
     }
 
-
-
-
-
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         //注意：需要给textView添加分类，在xml文件中是硬编码的 需要格式化 比如 "总成绩是:%s"
@@ -124,6 +153,7 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
         private TextView mTvCourseName;
 
         private CheckBox mCbCredit;
+        private View mItemView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -137,6 +167,8 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
             mTvExamScore  = itemView.findViewById(R.id.tv_score_exam_value);
 
             mTvCourseName = itemView.findViewById(R.id.tv_course_name);
+
+            mItemView = itemView;
         }
 
     }

@@ -8,6 +8,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toolbar;
+
+import com.muxistudio.appcommon.appbase.BaseAppActivity;
+import com.muxistudio.appcommon.appbase.BaseAppFragment;
+import com.muxistudio.appcommon.appbase.ToolbarActivity;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.score.adapter.ScoreCreditPagerAdapter;
@@ -17,7 +22,7 @@ import net.muxi.huashiapp.ui.score.fragments.ScoreFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScoreCreditActivity extends AppCompatActivity {
+public class ScoreCreditActivity extends ToolbarActivity {
 
     //有两种类型 一种是算查学分绩 另一种是 看自己的学分 刚进入的界面是查算学分绩
     public static final int SCORE_CREDIT = -1, CUR_CREDIT = -2;
@@ -98,7 +103,7 @@ public class ScoreCreditActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_credit);
-
+        setTitle("成绩");
         initView();
     }
 }

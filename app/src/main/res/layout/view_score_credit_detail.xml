@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--学分绩结果详情dialog-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_average_score_credit"
+        android:layout_marginTop="30dp"
+        android:textSize="17sp"
+        android:text="平均学分绩为"
+        android:textColor="@color/textColor"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_average_value"
+        android:layout_below="@id/tv_average_score_credit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="99.9"
+        android:textColor="@color/textColor"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_centerHorizontal="true"
+        android:text="确定"
+        android:layout_marginTop="30dp"
+        android:textSize="14sp"
+        android:layout_below="@+id/tv_average_value"
+        android:id="@+id/btn_confirm"
+        android:layout_width="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/ripple_accent"
+        android:layout_height="48dp" />
+
+</RelativeLayout>

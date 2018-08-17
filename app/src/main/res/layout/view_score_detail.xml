@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_course_name"
+        android:text="计算机网络"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@color/textColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/tv_course_name"
+        android:background="@color/divider_dark"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <!--课程性质-->
+    <TextView
+        android:id="@+id/tv_course_type"
+        android:layout_marginTop="20dp"
+        android:text="课程性质"
+        android:textSize="14sp"
+        android:textColor="@color/textColor"
+        android:layout_below="@+id/divider"
+        android:layout_marginLeft="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_course_type_value"
+        android:layout_alignBaseline="@+id/tv_course_type"
+        android:layout_marginRight="30dp"
+        android:text="专业主干课程"
+        android:textColor="@color/textColor"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!--学分-->
+    <TextView
+        android:id="@+id/tv_course_credit"
+        android:layout_marginTop="20dp"
+        android:text="学分"
+        android:textSize="14sp"
+        android:textColor="@color/textColor"
+        android:layout_below="@+id/tv_course_type"
+        android:layout_marginLeft="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_course_type_credit_value"
+        android:layout_alignBaseline="@+id/tv_course_credit"
+        android:layout_marginRight="30dp"
+        android:text="2.0"
+        android:textColor="@color/textColor"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!--总成绩-->
+    <TextView
+        android:id="@+id/tv_grade"
+        android:layout_marginTop="20dp"
+        android:text="总成绩"
+        android:textSize="14sp"
+        android:textColor="@color/textColor"
+        android:layout_below="@+id/tv_course_credit"
+        android:layout_marginLeft="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_grade_value"
+        android:layout_alignBaseline="@+id/tv_grade"
+        android:layout_marginRight="30dp"
+        android:text="86.6"
+        android:textColor="@color/textColor"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!--平时成绩-->
+
+    <TextView
+        android:id="@+id/tv_usual_grade"
+        android:layout_marginTop="20dp"
+        android:text="平时成绩"
+        android:textSize="14sp"
+        android:textColor="@color/textColor"
+        android:layout_below="@+id/tv_grade"
+        android:layout_marginLeft="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_usual_grade_value"
+        android:layout_alignBaseline="@+id/tv_usual_grade"
+        android:layout_marginRight="30dp"
+        android:text="90"
+        android:textColor="@color/textColor"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!--期末成绩-->
+    <TextView
+        android:id="@+id/tv_exam_grade"
+        android:layout_marginTop="20dp"
+        android:text="期末成绩"
+        android:textSize="14sp"
+        android:textColor="@color/textColor"
+        android:layout_below="@+id/tv_usual_grade"
+        android:layout_marginLeft="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_exam_grade_value"
+        android:layout_alignBaseline="@+id/tv_exam_grade"
+        android:layout_marginRight="30dp"
+        android:text="90"
+        android:textColor="@color/textColor"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_centerHorizontal="true"
+        android:text="确定"
+        android:layout_marginTop="30dp"
+        android:textSize="14sp"
+        android:layout_below="@+id/tv_exam_grade"
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/ripple_accent"
+        android:layout_height="48dp" />
+</RelativeLayout>

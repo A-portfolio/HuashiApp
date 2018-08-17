@@ -133,7 +133,6 @@ public class CurCreditFragment extends BaseAppFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_credit,container,false);
-
         mElvCredit = view.findViewById(R.id.eplv_credit);
         return view;
     }
