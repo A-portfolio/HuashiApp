@@ -173,8 +173,15 @@ public interface RetrofitService {
     @GET("classroom/get_classroom/")
     Observable<ClassRoom> getClassRoom(@Query("weekno") String week,
                                        @Query("weekday") String day,
+
                                        @Query("building") String area);
 
+    /**
+     *
+     * @param year int类型，如果是查询2016-2017学年则查询2016
+     * @param term 学期的代码（code）
+     * @return
+     */
     @GET("grade/")
     Observable<List<Score>> getScores(@Query("xnm") String year,
                                       @Query("xqm") String term);

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.muxistudio.appcommon.R;
 
@@ -30,9 +31,8 @@ public abstract class ToolbarActivity extends BaseAppActivity{
     public void initToolbar() {
         mToolbar = findViewById(R.id.toolbar);
         if (mToolbar != null) {
-            mToolbar.setTitle(getString(R.string.app_name));
             this.setSupportActionBar(mToolbar);
-
+            mToolbar.setTitle("");
             if (canBack()){
                 ActionBar actionbar = getSupportActionBar();
                 if (actionbar != null){
@@ -46,7 +46,9 @@ public abstract class ToolbarActivity extends BaseAppActivity{
 
     public void setTitle(String title){
         if (mToolbar != null){
-            mToolbar.setTitle(title);
+            mToolbar.setTitle("");
+            TextView textView = mToolbar.findViewById(R.id.tv_title);
+            textView.setText(title);
             setSupportActionBar(mToolbar);
         }
     }

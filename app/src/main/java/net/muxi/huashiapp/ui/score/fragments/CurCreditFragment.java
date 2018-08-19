@@ -19,7 +19,7 @@ import com.muxistudio.appcommon.utils.UserUtil;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.score.adapter.CreditAdapter;
-import net.muxi.huashiapp.util.ScoreCreditUtils;
+import net.muxi.huashiapp.utils.ScoreCreditUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

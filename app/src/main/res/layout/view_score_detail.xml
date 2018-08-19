@@ -149,4 +149,9 @@
         android:textColor="@color/colorWhite"
         android:background="@drawable/ripple_accent"
         android:layout_height="48dp" />
+
+    <View
+        android:layout_below="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
 </RelativeLayout>

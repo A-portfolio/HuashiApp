@@ -1,11 +1,13 @@
-package net.muxi.huashiapp.util;
+package net.muxi.huashiapp.utils;
 
 import android.annotation.SuppressLint;
 
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.data.Score;
+import com.muxistudio.common.util.DateUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -100,10 +102,10 @@ public class ScoreCreditUtils {
         if (years.size() == 1) {
             int start = Integer.parseInt(years.get(0));
             int end = start + 1;
-            return String.format("第%d-%d学年", start, end);
+            return String.format("%d-%d学年", start, end);
         }
         String start = years.get(0), end = years.get(years.size() - 1);
-        return String.format("第%s-%s学年", start, end);
+        return String.format("%s-%s", start, end);
     }
 
     /**
@@ -295,5 +297,32 @@ public class ScoreCreditUtils {
             years.add(String.valueOf(i));
         }
         return years;
+    }
+
+    /**
+     * 返回正确的年份截止 如果今年是2017 但是用户在选择年份的时候选择了2019 会自动过滤到2017
+     * 但是如果年份相同，比如今年是2017，用户选择startYear 为2017 但是选择endYear为2019，
+     * 如果再次定位到2017 会非常不合理，这个时候的查询年份为2017-2018
+     *
+     * 注意：为什么不在选择框中指定年份： 对于新生来看的话选择学年的Dialog会非常难看，所以在这里指定
+     *
+     * @Param startYear 起始年份
+     * @param endYear   截止年份
+     * @return startYear 一定小于 endYear
+     */
+    public static int getProperEndYear(int startYear, int endYear){
+        int curYear = Integer.parseInt(DateUtil.getCurYear(new Date(System.currentTimeMillis())));
+
+       //eg startYear = 2016 endYear = 2017 cureYear = 2016
+        if(endYear > curYear && curYear == startYear){
+            return (endYear);
+        }
+
+        //eg startYear = 2016 endYear = 2020 curYear = 2017
+        if(endYear > curYear){
+            return (curYear);
+        }
+
+        return (endYear);
     }
 }

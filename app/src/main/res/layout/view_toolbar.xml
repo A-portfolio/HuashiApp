@@ -9,4 +9,13 @@
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:textColor="@color/textColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </android.support.v7.widget.Toolbar>

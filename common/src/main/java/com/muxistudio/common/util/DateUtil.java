@@ -16,6 +16,7 @@ import java.util.TimeZone;
  */
 public class DateUtil {
 
+
     public static String toDate(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("MM/dd");
         return dateFormat.format(date);
@@ -77,10 +78,7 @@ public class DateUtil {
         try{
             Date d1 = format.parse(date1);
             Date d2 = format.parse(date2);
-            long time1 = d2.getTime();
-            long time2 = d1.getTime();
-            long week = (d2.getTime() - d1.getTime())/(24 * 60 * 60 * 1000 * 7);
-            return week;
+            return (d2.getTime() - d1.getTime())/(24 * 60 * 60 * 1000 * 7);
         }catch (ParseException e){
             e.printStackTrace();
             return 0;
@@ -189,6 +187,11 @@ public class DateUtil {
         return (diff % nd % nh % nm );
     }
 
+    /**
+     *
+     * @param date 当前的日期
+     * @return 返回今年的年份的String
+     */
     public static String getCurYear(Date date){
         DateFormat dateFormat = new SimpleDateFormat("yyyy");
         return dateFormat.format(date);

@@ -21,27 +21,21 @@
         android:layout_height="match_parent"
         app:contentView="@layout/view_content_recycler"
         app:emptyView="@layout/view_empty_score"
-        app:netErrorView="@layout/view_error"/>
+        app:netErrorView="@layout/view_error"
+        android:layout_above="@+id/btn_enter"
+        android:layout_marginBottom="10dp"/>
 
-    <LinearLayout
+    <Button
+        android:id="@+id/btn_enter"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:id="@+id/layout_btn"
-        android:gravity="center"
+        android:text="计算学分绩"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorWhite">
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/ripple_accent"
+        android:layout_height="48dp"/>
 
-        <Button
-            android:id="@+id/btn_enter"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:text="计算学分绩"
-            android:textColor="@color/colorWhite"
-            android:background="@drawable/ripple_accent"
-            android:layout_height="48dp"/>
-
-    </LinearLayout>
 
 </RelativeLayout>

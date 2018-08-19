@@ -26,6 +26,7 @@ import com.muxistudio.multistatusview.MultiStatusView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.credit.CreditGradeDialog;
 import net.muxi.huashiapp.ui.score.adapter.ScoreCreditAdapter;
+import net.muxi.huashiapp.utils.ScoreCreditUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ import rx.schedulers.Schedulers;
 //这里需要展示成绩学分情况 并且 算出学分绩
 public class ScoreDisplayActivity extends ToolbarActivity {
 
-    private List<Score> mFilteredList = new ArrayList<>();
+    private ArrayList<Score> mFilteredList = new ArrayList<>();
     private String mYear;
     private String mTerm;
     private String mCourseType;
@@ -191,10 +192,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         try {
             Field field = mMultiStatusView.getClass().getDeclaredField("mContentView");
             field.setAccessible(true);
-            View view = (View) field.get(mMultiStatusView);
         } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
 
@@ -210,7 +208,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         mMultiStatusView = findViewById(R.id.multi_status_view);
         //因为在请求的过程中使用了自动重新的登录 而且也有应用级别的cookie刷新 主动重试的情况一般不会出现
         mMultiStatusView.setOnRetryListener(v -> loadGrade());
-        setTitle(generateYearTitle());
+        setTitle(ScoreCreditUtils.parseYears2Title(mYearParams));
 
         mBtnEnter = findViewById(R.id.btn_enter);
         mBtnEnter.setOnClickListener(v -> {
@@ -222,8 +220,10 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                 if(map.get(key)){
                     if(!Character.isDigit(mFilteredList.get(key).grade.charAt(0)))
                         continue;
-                    sum += Float.parseFloat(mFilteredList.get(key).grade);
-                    credit += Float.parseFloat(mFilteredList.get(key).credit);
+                    double curSum = Float.parseFloat(mFilteredList.get(key).grade);
+                    double curCredit = Float.parseFloat(mFilteredList.get(key).credit);
+                    sum += curSum*curCredit;
+                    credit += curCredit;
                 }
             }
             if(credit == 0)
@@ -241,13 +241,6 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         gradeDialog.show(getSupportFragmentManager(), "result");
     }
 
-    @SuppressLint("DefaultLocale")
-    private String generateYearTitle(){
-        int startYear = Integer.parseInt(mYearParams.get(0));
-        int endYear   = Integer.parseInt(mYearParams.get(mYearParams.size()-1));
-
-        return String.format("第%d-%d学期",startYear,endYear);
-    }
 
     /**
      * activity出入的两种动画
@@ -286,7 +279,6 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_display);
         slideFromBottom(this);
-        setTitle("成绩");
 
         //获取解析 mYear mTerm params
         getParams();

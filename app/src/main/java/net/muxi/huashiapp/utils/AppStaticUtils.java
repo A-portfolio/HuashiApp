@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.util;
+package net.muxi.huashiapp.utils;
 
 import android.content.Context;
 import com.umeng.analytics.MobclickAgent;

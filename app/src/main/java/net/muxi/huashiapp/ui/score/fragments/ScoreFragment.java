@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.appbase.BaseAppFragment;
-import com.muxistudio.appcommon.data.Score;
 import com.muxistudio.appcommon.utils.UserUtil;
 
 import net.muxi.huashiapp.R;
@@ -22,7 +21,7 @@ import net.muxi.huashiapp.ui.score.ScoreDisplayActivity;
 import net.muxi.huashiapp.ui.score.SelectCourseTypeDialog;
 import net.muxi.huashiapp.ui.score.SelectTermDialog;
 import net.muxi.huashiapp.ui.score.SelectYearDialog;
-import net.muxi.huashiapp.util.ScoreCreditUtils;
+import net.muxi.huashiapp.utils.ScoreCreditUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,7 +100,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         int endYearValue = Integer.parseInt(endYear);
 
         mYearParams.clear();
-        for(int i=startYearValue;i<=endYearValue;i++){
+        for(int i=startYearValue;i<endYearValue;i++){
             mYearParams.add(String.valueOf(i));
         }
 
@@ -163,6 +162,8 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
 
             int startYearValue = Integer.parseInt(startYear);
             int endYearValue   = Integer.parseInt(endYear);
+
+            endYearValue = ScoreCreditUtils.getProperEndYear(startYearValue,endYearValue);
 
             mYearParams = ScoreCreditUtils.parseNumber2Years(startYearValue,endYearValue);
 

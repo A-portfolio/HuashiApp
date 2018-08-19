@@ -15,6 +15,13 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+/**
+ * 服务端会偶尔返回500,或者cookie过期的时候就会触发重试，如果重试超过指定次数的话就会返回Observable.empty(),
+ * 如果是500 403 404 之外的问题就会发射onError()信号中断流
+ *
+ * 注意：如果使用还未有成绩的年份或者学期，同样也会执行重试逻辑，最后会返回Observable.empty()，避免后面Observable流被中断
+ */
+
 public class RequestRetry implements
         Func1<Observable<? extends Throwable>, Observable<?>> {
 
@@ -30,13 +37,13 @@ public class RequestRetry implements
         @Override
         public Observable<?> call(Observable<? extends Throwable> attempts) {
             return attempts
-                    .flatMap((Func1<Throwable, Observable<?>>) throwable -> {
+                    .flatMap((Func1<Throwable, Observable<?>>) (Throwable throwable) -> {
                         throwable.printStackTrace();
                         CcnuCrawler2.clearCookieStore();
 
                         if(++retryCount > maxRetries){
                             //然后对这个throwbale的code进行判断再处理
-                            return Observable.error(throwable);
+                            return Observable.empty();
                         }
 
                         if(throwable instanceof HttpException){
@@ -66,8 +73,7 @@ public class RequestRetry implements
                                                     .observeOn(AndroidSchedulers.mainThread())
                                                     .subscribeOn(Schedulers.io())
                                                     .flatMap((Func1<List<Score>, Observable<Score>>)
-                                                            scoreList ->
-                                                            Observable.from(scoreList))
+                                                            Observable::from)
                                                     .toList());
 
                                 case 404:

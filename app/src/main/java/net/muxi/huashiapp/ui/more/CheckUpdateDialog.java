@@ -46,21 +46,15 @@ public class CheckUpdateDialog extends CenterDialogFragment {
     }
 
     private void initEvent(){
-        mBtnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mPositiveClickListener != null){
-                    mPositiveClickListener.OnPositiveClick();
-                }
+        mBtnUpdate.setOnClickListener(v -> {
+            if (mPositiveClickListener != null){
+                mPositiveClickListener.OnPositiveClick();
             }
         });
 
-        mBtnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mNegativeClickListener != null){
-                    mNegativeClickListener.OnNegativeClick();
-                }
+        mBtnCancel.setOnClickListener(v -> {
+            if (mNegativeClickListener != null){
+                mNegativeClickListener.OnNegativeClick();
             }
         });
     }

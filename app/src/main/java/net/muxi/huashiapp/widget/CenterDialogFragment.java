@@ -20,7 +20,6 @@ import net.muxi.huashiapp.R;
 public class CenterDialogFragment extends DialogFragment {
 
     public static final int DIALOG_MARGIN = 8 * 3;
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -38,7 +37,6 @@ public class CenterDialogFragment extends DialogFragment {
         params.height = (WindowManager.LayoutParams.WRAP_CONTENT);
         window.setAttributes(params);
         window.setBackgroundDrawableResource(R.drawable.bg_center_dialog);
-
 
         return dialog;
     }

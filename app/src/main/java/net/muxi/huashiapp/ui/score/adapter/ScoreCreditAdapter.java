@@ -1,8 +1,10 @@
 package net.muxi.huashiapp.ui.score.adapter;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.muxistudio.appcommon.data.Score;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.ui.score.fragments.ScoreDetailDialog;
 import net.muxi.huashiapp.widget.CenterDialogFragment;
 
 import java.util.ArrayList;
@@ -27,10 +31,10 @@ import java.util.Set;
 public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.ViewHolder>{
 
     Map<Integer,Boolean> mCheckMap = new HashMap<>();
-    List<Score> mScores = new ArrayList<>();
-    Context mContext;
+    ArrayList<Score> mScores;
+    FragmentActivity mContext;
 
-    public ScoreCreditAdapter(List<Score> scores) {
+    public ScoreCreditAdapter(ArrayList<Score> scores) {
         super();
         this.mScores = scores;
     }
@@ -64,7 +68,7 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
+        mContext = (FragmentActivity) parent.getContext();
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_score_credit,parent,false);
 
         initCheckList();
@@ -78,9 +82,18 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
         String usualScore = String.format("平时成绩:%s",mScores.get(position).usual);
         String examScore = String.format("总成绩:%s",mScores.get(position).ending);
 
+        holder.mCbCredit.setChecked(mCheckMap.get(position));
         holder.mTvTotalScore.setText(totalScore);
+
         holder.mTvUsualScore.setText(usualScore);
+        if(TextUtils.isEmpty(mScores.get(position).usual)) {
+            holder.mTvUsualScore.setVisibility(View.INVISIBLE);
+        }
+
         holder.mTvExamScore.setText(examScore);
+        if(TextUtils.isEmpty(mScores.get(position).ending)){
+            holder.mTvExamScore.setVisibility(View.INVISIBLE);
+        }
 
         if(TextUtils.isEmpty(mScores.get(position).kcxzmc)){
             holder.mTvCourseType.setText("未分类课程");
@@ -93,29 +106,10 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
         holder.mTvCourseName.setText(mScores.get(position).course);
 
         holder.mItemView.setOnClickListener(v ->{
-            CenterDialogFragment fragment = new CenterDialogFragment();
-            View view  = LayoutInflater.from(mContext).inflate(R.layout.view_score_detail,null,false);
-            fragment.setContentView(view);
-
-            TextView tvCourseType= view.findViewById(R.id.tv_course_type);
-            TextView tvCourseCredit = view.findViewById(R.id.tv_course_credit);
-            TextView tvCourseGrade = view.findViewById(R.id.tv_grade_value);
-            TextView tvCourseUsualGrade = view.findViewById(R.id.tv_usual_grade_value);
-            TextView tvCourseExamGrade  = view.findViewById(R.id.tv_exam_grade_value);
-
-            tvCourseType.setText(mScores.get(position).kcxzmc);
-            tvCourseCredit.setText(mScores.get(position).credit);
-            tvCourseGrade.setText(mScores.get(position).grade);
-            tvCourseUsualGrade.setText(mScores.get(position).usual);
-            tvCourseExamGrade.setText(mScores.get(position).ending);
-
-            Button btnConfirm = view.findViewById(R.id.btn_confirm);
-            btnConfirm.setOnClickListener( view1 ->{
-                fragment.dismiss();
-            });
+            ScoreDetailDialog dialog = ScoreDetailDialog.newInstance(mScores,position);
+            dialog.show(mContext.getSupportFragmentManager(),"score_detail");
         });
 
-        Set<Integer> keySet=  mCheckMap.keySet();
         //判断是否是 浮点型数字
         if(!isDouble(mScores.get(position).grade)){
             holder.mCbCredit.setVisibility(View.INVISIBLE);
@@ -123,13 +117,12 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
             mCheckMap.put(position,false);
         }
 
-        holder.mCbCredit.setOnClickListener(view ->{
-            if(keySet.contains(position)){
-                mCheckMap.remove(position);
-                holder.mCbCredit.setChecked(false);
-            }else{
+        //先变化ui 变化之后的状态
+        holder.mCbCredit.setOnClickListener(v -> {
+            if(holder.mCbCredit.isChecked()){
                 mCheckMap.put(position,true);
-                holder.mCbCredit.setChecked(true);
+            }else{
+                mCheckMap.put(position,false);
             }
         });
     }
@@ -152,6 +145,7 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
         private TextView mTvExamScore;
         private TextView mTvCourseName;
 
+        //默认情况下学分绩全选
         private CheckBox mCbCredit;
         private View mItemView;
 
@@ -169,6 +163,8 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
             mTvCourseName = itemView.findViewById(R.id.tv_course_name);
 
             mItemView = itemView;
+
+            mCbCredit.setChecked(true);
         }
 
     }
