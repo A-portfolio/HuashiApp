@@ -14,14 +14,14 @@
         app:actualImageScaleType="centerCrop"/>
 
 
-    <Button
+    <TextView
         android:id="@+id/btn_skip"
-        android:layout_alignParentBottom="true"
+        android:background="@color/grey"
         android:layout_alignParentRight="true"
         android:layout_margin="20dp"
-        android:background="@drawable/bg_splash_skip"
         android:text="跳过"
-        android:layout_width="70dp"
-        android:layout_height="40dp" />
+        android:gravity="center"
+        android:layout_width="60dp"
+        android:layout_height="30dp" />
 
 </RelativeLayout>

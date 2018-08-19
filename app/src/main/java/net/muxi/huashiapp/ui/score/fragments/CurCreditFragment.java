@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.muxistudio.appcommon.appbase.BaseAppFragment;
 import com.muxistudio.appcommon.data.Score;
@@ -37,6 +38,8 @@ public class CurCreditFragment extends BaseAppFragment {
 
     private int startYear,endYear;
     private List<Score> mCredit = new ArrayList<>();
+
+    private TextView mTvTotalCredit;
     private ExpandableListView mElvCredit;
 
     private ViewPagerSlideListener mViewPagerSlideListener;
@@ -91,7 +94,7 @@ public class CurCreditFragment extends BaseAppFragment {
 
                     mCredit = scores;
 
-                    HashMap<String,Double> creditValueMap = ScoreCreditUtils.getSortedCourseCreditMap(scores);
+                    HashMap<String,Double> creditValueMap = ScoreCreditUtils.getSortedGroupCreditMap(scores);
                     HashMap<String,List<Score>> scoreMap  = ScoreCreditUtils.getSortedCourseTypeMap(scores);
 
                     List<List<Score>> sortedList = ScoreCreditUtils.getTypeOrderedList(scoreMap);
@@ -102,12 +105,14 @@ public class CurCreditFragment extends BaseAppFragment {
                     CreditAdapter adapter = new CreditAdapter(getActivity(),sortedList,classType,courseCredits);
                     mElvCredit.setAdapter(adapter);
 
+                    double totalValue = ScoreCreditUtils.getCreditTotal(creditValueMap);
+                    mTvTotalCredit.setText(String.valueOf(totalValue));
                 }, Throwable::printStackTrace, () -> {
                 });
     }
 
     /**
-     * the wrapper of the credit loading
+     * the wrapper of the credit loading {@link #loadCredit(Observable[])}
      */
     public void loadCredit(){
         loadCredit(getScoreRequest(startYear,endYear));
@@ -135,11 +140,15 @@ public class CurCreditFragment extends BaseAppFragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_credit,container,false);
-        mElvCredit = view.findViewById(R.id.eplv_credit);
+        initView(view);
         return view;
     }
 
+    private void initView(View view){
+        mElvCredit = view.findViewById(R.id.eplv_credit);
+        mTvTotalCredit = view.findViewById(R.id.tv_credit_total_value);
 
+    }
 
     interface ViewPagerSlideListener{
         void onSlideRight();

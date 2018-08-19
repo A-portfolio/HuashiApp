@@ -131,7 +131,7 @@ public class ScoreCreditUtils {
      * @param credits 成绩数组
      * @return {@link Constants } CLASS_TYPE对应的集中课程分类相加,但是多增加了一条所有课的学分的key
      */
-    public static HashMap<String, Double> getSortedCourseCreditMap(List<Score> credits) {
+    public static HashMap<String, Double> getSortedGroupCreditMap(List<Score> credits) {
         HashMap<String, Double> creditMap = new HashMap<>();
         //初始化hashmap
         for (String credit : Constants.CLASS_TYPE) {
@@ -322,7 +322,20 @@ public class ScoreCreditUtils {
         if(endYear > curYear){
             return (curYear);
         }
-
         return (endYear);
+    }
+
+    /**
+     * 计算用户所选学年的所有学分之和
+     * @param groupCredit 所有列表的总学分之和
+     * @return double 总学分之和
+     */
+    public static double getCreditTotal(HashMap<String,Double> groupCredit){
+        double total = 0d;
+        Set<String> keys = groupCredit.keySet();
+        for(String key: keys) {
+            total += groupCredit.get(key);
+        }
+        return total;
     }
 }

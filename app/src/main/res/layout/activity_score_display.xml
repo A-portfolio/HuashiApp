@@ -5,17 +5,11 @@
     android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/linear_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
         <include
-            layout="@layout/view_toolbar"/>
-    </LinearLayout>
-
+            layout="@layout/toolbar_layout"/>
 
     <com.muxistudio.multistatusview.MultiStatusView
-        android:layout_below="@+id/linear_layout"
+        android:layout_marginTop="56dp"
         android:id="@+id/multi_status_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

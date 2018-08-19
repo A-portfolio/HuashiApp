@@ -89,7 +89,7 @@ public class CreditAdapter implements ExpandableListAdapter {
         //加载父布局
         View groupView ;
         if(convertView == null)
-            groupView = LayoutInflater.from(mCtx).inflate(R.layout.view_credit_group,parent,false);
+            groupView = LayoutInflater.from(mCtx).inflate(R.layout.item_credit_group,parent,false);
         else
             groupView = convertView;
 
@@ -112,7 +112,7 @@ public class CreditAdapter implements ExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View childView;
         if(convertView == null)
-            childView = LayoutInflater.from(mCtx).inflate(R.layout.view_credit_child,parent,false);
+            childView = LayoutInflater.from(mCtx).inflate(R.layout.item_credit_child,parent,false);
         else
             childView = convertView;
 

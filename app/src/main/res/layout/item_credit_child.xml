@@ -13,9 +13,8 @@
         android:layout_toRightOf="@id/iv_dot"
         android:layout_marginLeft="40dp"
         android:text="苍穹的奥秘"
-        android:gravity="center"
         android:textSize="14sp"
-        android:layout_width="wrap_content"
+        android:layout_width="230dp"
         android:layout_height="wrap_content" />
 
     <TextView

@@ -8,11 +8,10 @@
     android:orientation="vertical">
 
     <include
-        android:id="@+id/toolbar_layout"
         layout="@layout/view_toolbar" />
 
     <android.support.design.widget.TabLayout
-        android:layout_below="@+id/toolbar_layout"
+        android:layout_marginTop="56dp"
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="56dp"

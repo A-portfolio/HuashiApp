@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.muxistudio.appcommon.Constants;
@@ -19,14 +19,6 @@ import com.muxistudio.common.util.PreferenceUtil;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.main.MainActivity;
 
-import java.util.concurrent.TimeUnit;
-
-import rx.Observable;
-import rx.Subscription;
-import rx.functions.Action1;
-
-import java.lang.String;
-
 
 /**
  * Created by ybao on 16/7/30.
@@ -34,31 +26,26 @@ import java.lang.String;
 //这里是整个app刚刚进去的闪屏活动！
 public class EntranceActivity extends BaseAppActivity implements View.OnClickListener {
 
+    private SimpleDraweeView mDrawee;
     private long mSplashUpdate;
     private String mSplashUrl;
     private String mSplashImg;
-    private static final int SPLASH_TIME = 2000;
+    private static final int SPLASH_TIME = 200;
     private PreferenceUtil sp;
+    private boolean isFirstOpen;
 
-    private Subscription mHandler;
+    private TextView mBtnSkip;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sp = new PreferenceUtil();
-        boolean isFirstOpen = PreferenceUtil.getBoolean(PreferenceUtil.APP_FIRST_OPEN, true);
-
-
-
-
+        isFirstOpen = sp.getBoolean(PreferenceUtil.APP_FIRST_OPEN, true);
         if (!isFirstOpen) {
-            if (PreferenceUtil.getString(Constants.SPLASH_IMG).equals("")) {
+            if (sp.getString(Constants.SPLASH_IMG).equals("")) {
                 startMainActivityDelay(0);
             } else {
                 setContentView(R.layout.activity_entrance);
-
-                Button mBtnSkip = findViewById(R.id.btn_skip);
-                mBtnSkip.setOnClickListener(this);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     getWindow().setStatusBarColor(Color.TRANSPARENT);
@@ -66,38 +53,41 @@ public class EntranceActivity extends BaseAppActivity implements View.OnClickLis
                 getWindow().getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
-                SimpleDraweeView mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
-                mDrawee.setImageURI(Uri.parse(PreferenceUtil.getString(Constants.SPLASH_IMG)));
+                mBtnSkip = findViewById(R.id.btn_skip);
+
+                mBtnSkip.setOnClickListener(this);
+                mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
+                mDrawee.setImageURI(Uri.parse(sp.getString(Constants.SPLASH_IMG)));
                 mDrawee.setOnClickListener(this);
-                startMainActivityDelay(SPLASH_TIME);
+                startMainActivityDelay(2500);
             }
             return;
         }
 
         GuideActivity.start(this);
-        PreferenceUtil.saveBoolean(PreferenceUtil.APP_FIRST_OPEN, false);
+        sp.saveBoolean(PreferenceUtil.APP_FIRST_OPEN, false);
         this.finish();
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btn_skip) {
-            mHandler.unsubscribe();
-            finish();
+        if(v.getId() == R.id.btn_skip){
+            MainActivity.start(this);
+            this.finish();
         }
+
         if (v.getId() == R.id.drawee) {
             Intent intent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(PreferenceUtil.getString(Constants.SPLASH_URL)));
+                    Uri.parse(sp.getString(Constants.SPLASH_URL).toString()));
             startActivity(intent);
         }
     }
 
     public void startMainActivityDelay(long delayMills){
-        mHandler = Observable.timer(delayMills, TimeUnit.MILLISECONDS)
-                .subscribe(aLong -> {
-                    MainActivity.start(EntranceActivity.this);
-                    EntranceActivity.this.finish();
-                });
+        new Handler().postDelayed(() ->{
+            MainActivity.start(EntranceActivity.this);
+            EntranceActivity.this.finish();
+        },delayMills);
     }
 
     @Override

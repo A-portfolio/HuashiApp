@@ -74,10 +74,11 @@ public class ScoreCreditActivity extends ToolbarActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if(position > curPosition){
-                    //slide right "->"
+                    //slide to the right fragment
                     curPosition = position;
-                    if(mCurCreditFragment.getCredit().isEmpty())
+                    if(mCurCreditFragment.getCredit().isEmpty()) {
                         mCurCreditFragment.loadCredit();
+                    }
                 }else if (position < curPosition){
                     curPosition = position;
                 }
@@ -99,11 +100,12 @@ public class ScoreCreditActivity extends ToolbarActivity {
 
     }
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_credit);
-        setTitle("成绩");
+        setTitle("查算学分绩");
         initView();
     }
 }
