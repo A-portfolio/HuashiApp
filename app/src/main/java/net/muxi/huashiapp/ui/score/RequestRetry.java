@@ -43,7 +43,7 @@ public class RequestRetry implements
 
                         if(++retryCount > maxRetries){
                             //然后对这个throwbale的code进行判断再处理
-                            return Observable.empty();
+                            return Observable.error(new Exception());
                         }
 
                         if(throwable instanceof HttpException){
@@ -51,15 +51,21 @@ public class RequestRetry implements
                             switch (code){
                                 //这两种情况下都会导致要重新写cookie
                                 case 500:
+                                    return  Observable.merge(listObservable, 5)
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribeOn(Schedulers.io())
+                                            .flatMap((Func1<List<Score>, Observable<Score>>)
+                                                    Observable::from)
+                                            .toList();
                                 case 403:
 
                                     return new LoginPresenter()
                                             .login(UserAccountManager.getInstance()
                                                     .getInfoUser())
                                             //上面的登录操作运行在io线程上
-                                            .observeOn(Schedulers.io())
+                                            .subscribeOn(Schedulers.io())
                                                 //让这一段修改的线程运行在UI上
-                                            .subscribeOn(AndroidSchedulers.mainThread())
+                                            .observeOn(AndroidSchedulers.mainThread())
                                             .flatMap(
                                                     (Func1<Boolean, Observable<Boolean>>) aBoolean -> {
                                                 if(mListener!=null)

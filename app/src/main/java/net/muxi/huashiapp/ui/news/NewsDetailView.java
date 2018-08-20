@@ -51,19 +51,9 @@ public class NewsDetailView extends RelativeLayout {
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_news_detail, this, true);
         initView(view);
-//        mNewsTitle.setText(mNewsList.get(mPosition).getTitle());
-//
-//        mNewsDate.setText(mNewsList.get(mPosition).getDate());
         initWebView();
-//        addAppendix();
-//        mNewsLink.setText(mNewsList.get(mPosition).getAppendix_list().toString());
 
-        mNewsFloatBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                removeAllViews();
-            }
-        });
+        mNewsFloatBtn.setOnClickListener(v -> removeAllViews());
 
     }
 
@@ -144,53 +134,5 @@ public class NewsDetailView extends RelativeLayout {
         mNewsContent = view.findViewById(R.id.news_content);
     }
 
-//    private void addAppendix() {
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-//                ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT
-//        );
-//        int appendixNum = mNewsList.get(mPosition).getAppendix_list().size();
-//        final List<String> appendix = mNewsList.get(mPosition).getAppendix_list();
-//        TextView[] textViews = new TextView[appendixNum];
-//        if (appendixNum == 0) {
-//            mTvAppendix.setVisibility(GONE);
-//        }
-//        Logger.d(appendixNum + "");
-//        for (int i = 0; i < appendixNum; i++) {
-//            final int j = i;
-//            textViews[i] = new TextView(mContext);
-//            textViews[i].setText(appendix.get(i).toString());
-//            textViews[i].getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-//            textViews[i].setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-//
-//            textViews[i].setAutoLinkMask(Linkify.WEB_URLS);
-//            textViews[i].setOnPositiveButtonClickListener(new OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    try {
-//                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(appendix.get(j).toString()));
-//                        mContext.startActivity(browserIntent);
-//                        Intent intent = WebViewActivity.newIntent(mContext, appendix.get(j).toString());
-//                        mContext.startActivity(intent);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        ToastUtil.showShort(App.sContext.getString(R.string.tip_link_unable_open));
-//                    }
-//                }
-//            });
-//            textViews[i].setOnPositiveButtonClickListener(new OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(mContext, DownloadService.class);
-//                    intent.putExtra("fileType", "file");
-//                    intent.putExtra("url", appendix.get(j));
-//                    intent.putExtra("fileName", appendix.get(j));
-//                    mContext.startService(intent);
-//                }
-//            });
-
-//            mLinkLayout.addView(textViews[i], params);
-//        }
-//    }
 
 }

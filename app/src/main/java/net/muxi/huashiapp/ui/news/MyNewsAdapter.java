@@ -52,12 +52,9 @@ public class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.MyNewsView
     public void onBindViewHolder(MyNewsViewHolder holder, final int position) {
         holder.mNewsInfoDate.setText(mNewsList.get(position).getDate());
         holder.mNewsInfoTitle.setText(mNewsList.get(position).getTitle());
-        holder.mNewsLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!NoDoubleClickUtil.isDoubleClick()) {
-                    mOnItemClickListener.OnItemClick(v, mNewsList, position);
-                }
+        holder.mNewsLayout.setOnClickListener(v -> {
+            if (!NoDoubleClickUtil.isDoubleClick()) {
+                mOnItemClickListener.OnItemClick(v, mNewsList, position);
             }
         });
 
