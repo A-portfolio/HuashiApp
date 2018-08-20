@@ -82,8 +82,9 @@ public class RouteOverlay {
      * @return 更换的Marker图片。
      * @since V2.1.0
      */
+    // TODO: 18-8-20 修改图标 
     protected BitmapDescriptor getStartBitmapDescriptor() {
-        return BitmapDescriptorFactory.fromResource(R.drawable.amap_start);
+        return BitmapDescriptorFactory.fromResource(R.drawable.audit_core);
     }
     /**
      * 给终点Marker设置图标，并返回更换图标的图片。如不用默认图片，需要重写此方法。
@@ -91,7 +92,7 @@ public class RouteOverlay {
      * @since V2.1.0
      */
     protected BitmapDescriptor getEndBitmapDescriptor() {
-        return BitmapDescriptorFactory.fromResource(R.drawable.amap_end);
+        return BitmapDescriptorFactory.fromResource(R.drawable.audit_core);
     }
 
 
@@ -101,7 +102,7 @@ public class RouteOverlay {
      * @since V2.1.0
      */
     protected BitmapDescriptor getWalkBitmapDescriptor() {
-        return BitmapDescriptorFactory.fromResource(R.drawable.amap_man);
+        return BitmapDescriptorFactory.fromResource(R.drawable.audit_core);
     }
 
     protected void addStartAndEndMarker() {
