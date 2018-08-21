@@ -133,6 +133,7 @@ public class MainActivity extends BaseAppActivity implements
     }
 
     private void initListener() {
+        // TODO: 18-8-20
         RxBus.getDefault().toObservable(LibLoginEvent.class)
                 .subscribe(libLoginEvent -> {
                     FragmentManager fm = getSupportFragmentManager();
@@ -149,6 +150,8 @@ public class MainActivity extends BaseAppActivity implements
                                 .commitAllowingStateLoss();
                     }
                 }, Throwable::printStackTrace);
+
+
         Subscription subscription = RxBus.getDefault().toObservable(LoginSuccessEvent.class)
                 .subscribe(loginSuccessEvent -> {
                     if (loginSuccessEvent.targetActivityName.equals("table")) {
@@ -200,6 +203,7 @@ public class MainActivity extends BaseAppActivity implements
         handleIntent(intent);
     }
 
+    // TODO: 18-8-20  
     //根据 intent 跳转到对应的 fragment
     private void handleIntent(Intent intent) {
         if (!intent.hasExtra("ui")) {
