@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.location;
+package net.muxi.huashiapp.ui.location.overlay;
 
 import android.content.Context;
 
@@ -10,6 +10,8 @@ import com.amap.api.maps.model.PolylineOptions;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkStep;
+
+import net.muxi.huashiapp.ui.location.AMapUtil;
 
 import java.util.List;
 

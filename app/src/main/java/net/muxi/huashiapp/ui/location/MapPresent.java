@@ -22,6 +22,8 @@ import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 
+import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
+
 public class MapPresent {
     private LatLonPoint mMyLlocation;
     private LatLonPoint from;

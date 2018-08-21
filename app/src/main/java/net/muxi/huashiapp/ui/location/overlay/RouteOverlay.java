@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.location;
+package net.muxi.huashiapp.ui.location.overlay;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;

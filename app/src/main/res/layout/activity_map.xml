@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.location.MapActivity">
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.amap.api.maps.MapView>
+
+
+    <include layout="@layout/view_map_top"
+        android:id="@+id/map_route_id"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
+
+    <include layout="@layout/view_map_bottom"
+        android:id="@+id/map_bottom_id"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_alignParentBottom="true"/>
+
+    <LinearLayout
+        android:id="@+id/hind_layout"
+        android:visibility="invisible"
+        android:background="@color/colorBlack"
+        android:alpha="0.4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/map_route_id"
+        android:layout_above="@id/map_bottom_id"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/hind_recycler_view"
+            android:background="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/map_route_button"
+        android:layout_width="88dp"
+        android:layout_height="32dp"
+        android:background="@drawable/bg_map_button"
+        android:layout_above="@+id/map_bottom_id"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:text="路线"
+        android:textSize="14sp"
+        android:textColor="@color/colorWhite"/>
+
+</RelativeLayout>

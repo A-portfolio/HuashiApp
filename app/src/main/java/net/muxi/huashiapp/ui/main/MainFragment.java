@@ -43,6 +43,7 @@ import net.muxi.huashiapp.ui.card.CardActivity;
 import net.muxi.huashiapp.ui.credit.SelectCreditActivity;
 import net.muxi.huashiapp.ui.electricity.ElectricityActivity;
 import net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity;
+import net.muxi.huashiapp.ui.location.MapActivity;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.news.NewsActivity;
 import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
@@ -164,6 +165,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
             mItemDatas.add(new ItemData("部门信息", R.drawable.ic_apartment + "", false));
             mItemDatas.add(new ItemData("校历", R.drawable.ic_calendar + "", false));
             mItemDatas.add(new ItemData("常用网站", R.drawable.ic_net + "", false));
+            mItemDatas.add(new ItemData("地图",R.drawable.ic_map + "",false));
             mItemDatas.add(new ItemData("更多", R.drawable.ic_more + "", false));
         }
 
@@ -299,6 +301,10 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                                 CourseAuditSearchActivity.start(getActivity());
                                 MobclickAgent.onEvent(getActivity(), "course_audit");
                             }
+                            break;
+                        case "地图":
+                            MapActivity.start(getActivity());
+//                            MobclickAgent.onEvent(getActivity(),"");
                             break;
                         case "更多":
                             MoreActivity.start(getActivity());

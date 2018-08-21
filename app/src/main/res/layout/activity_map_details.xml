@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <com.muxistudio.cardbanner.CardBanner
+                android:id="@+id/map_detail_banner"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_centerVertical="true"
+                app:cardMargin="0dp"
+                app:baseElevation="2dp"
+                app:cardRadius="8dp"
+                app:floatElevation="2dp"
+                app:isLoop="false"
+                app:sideCardWidth="1dp">
+
+            </com.muxistudio.cardbanner.CardBanner>
+
+            <include layout="@layout/view_map_details"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_gravity="bottom"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>
