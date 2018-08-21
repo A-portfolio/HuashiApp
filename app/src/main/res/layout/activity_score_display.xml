@@ -15,6 +15,7 @@
         android:layout_height="match_parent"
         app:contentView="@layout/view_content_recycler"
         app:emptyView="@layout/view_empty_score"
+        app:errorView="@layout/view_error"
         app:netErrorView="@layout/view_error"
         android:layout_above="@+id/btn_enter"
         android:layout_marginBottom="10dp"/>

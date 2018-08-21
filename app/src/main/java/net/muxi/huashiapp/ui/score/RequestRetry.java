@@ -41,9 +41,10 @@ public class RequestRetry implements
                         throwable.printStackTrace();
                         CcnuCrawler2.clearCookieStore();
 
+
                         if(++retryCount > maxRetries){
-                            //然后对这个throwbale的code进行判断再处理
-                            return Observable.error(new Exception());
+                            return Observable.error
+                                    (new RetryException(RetryException.CONFIRM_QUERY));
                         }
 
                         if(throwable instanceof HttpException){
@@ -87,7 +88,7 @@ public class RequestRetry implements
                                     break;
                             }
                         }
-                        return Observable.error(throwable);
+                        return Observable.error(new RetryException((RetryException.NET_ERROR)));
                     })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
@@ -121,6 +122,16 @@ public class RequestRetry implements
             }
             public RequestRetry build(){
                 return mRequestRetry;
+            }
+        }
+
+
+        public static class RetryException extends  Exception{
+            public int code = 0;
+            public static  final int  CONFIRM_QUERY = 100;
+            public static final int NET_ERROR = 101;
+            public RetryException(int code){
+                this.code = code;
             }
         }
 }

@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.score;
+package net.muxi.huashiapp.ui.score.dialogs;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.muxistudio.appcommon.widgets.BottomDialogFragment;

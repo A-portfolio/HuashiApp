@@ -17,15 +17,17 @@ import com.muxistudio.appcommon.appbase.BaseAppFragment;
 import com.muxistudio.appcommon.utils.UserUtil;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.ui.score.ScoreDisplayActivity;
-import net.muxi.huashiapp.ui.score.SelectCourseTypeDialog;
-import net.muxi.huashiapp.ui.score.SelectTermDialog;
-import net.muxi.huashiapp.ui.score.SelectYearDialog;
+import net.muxi.huashiapp.ui.score.activtities.ScoreDisplayActivity;
+import net.muxi.huashiapp.ui.score.dialogs.ParamsDisplayDialog;
+import net.muxi.huashiapp.ui.score.dialogs.SelectCourseTypeDialog;
+import net.muxi.huashiapp.ui.score.dialogs.SelectTermDialog;
+import net.muxi.huashiapp.ui.score.dialogs.SelectYearDialog;
 import net.muxi.huashiapp.utils.ScoreCreditUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author :kolibreath
@@ -237,22 +239,16 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
             if(mDefault) {
                 String year = ScoreCreditUtils.parseYears2Title(mYearParams);
 
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("使用默认选项进行成绩查询")
-                        .setMessage("选择的学年为:"+year+"\n"+
-                                    "选择的学期为:"+ mTermName +"\n")
-                        .setNegativeButton("取消", (dialog, which) -> {
-                            dialog.dismiss();
-                        })
-                        .setPositiveButton("确定", (dialog, which) -> {
-                            dialog.dismiss();
-                            ScoreDisplayActivity.start(getActivity(),yearJson,termJson,courseTypeJosn);
-                        })
-                        .create().show();
-
+                ParamsDisplayDialog dialog = ParamsDisplayDialog.newInstance(year,mTermName);
+                dialog.setOnPositiveClickListener(() -> {
+                    ScoreDisplayActivity.start(getActivity(),yearJson,termJson,courseTypeJosn);
+                });
+                dialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),"default_params");
             }else
                 ScoreDisplayActivity.start(getActivity(),yearJson,termJson,courseTypeJosn);
         }
     }
+
+
 
 }

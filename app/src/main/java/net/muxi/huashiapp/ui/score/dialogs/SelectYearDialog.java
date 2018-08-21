@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.score;
+package net.muxi.huashiapp.ui.score.dialogs;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.muxistudio.appcommon.widgets.BottomDialogFragment;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.ui.score.ScoreCreditSelectView;
 
 public class SelectYearDialog extends BottomDialogFragment {
 

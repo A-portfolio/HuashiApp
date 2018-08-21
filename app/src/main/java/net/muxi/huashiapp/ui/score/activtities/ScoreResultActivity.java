@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.score;
+package net.muxi.huashiapp.ui.score.activtities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

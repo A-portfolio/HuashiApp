@@ -29,7 +29,7 @@ import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.card.CardActivity;
 import net.muxi.huashiapp.ui.main.MainActivity;
-import net.muxi.huashiapp.ui.score.ScoreDisplayActivity;
+import net.muxi.huashiapp.ui.score.activtities.ScoreDisplayActivity;
 import net.muxi.huashiapp.utils.TimeTableUtil;
 
 import java.util.ArrayList;

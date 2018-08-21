@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.score;
+package net.muxi.huashiapp.ui.score.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

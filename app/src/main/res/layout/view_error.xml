@@ -21,30 +21,27 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"/>
 
-    <LinearLayout
-        android:layout_below="@+id/iv_error"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
         <TextView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/tv_confirm_query"
+            android:layout_below="@+id/iv_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/space_center"
-            android:text="学校服务器异常，"
+            android:text="@string/tip_confirm_query"
             android:textColor="#C6D2DE"
             android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/view_retry"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iv_error"
-            android:layout_toRightOf="@id/space_center"
+            android:layout_below="@id/tv_confirm_query"
             android:text="点击刷新"
             android:textColor="#7B79FF"
             android:textSize="16sp"/>
-    </LinearLayout>
 
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.score;
+package net.muxi.huashiapp.ui.score.activtities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,11 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.Toolbar;
 
-import com.muxistudio.appcommon.appbase.BaseAppActivity;
-import com.muxistudio.appcommon.appbase.BaseAppFragment;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 
 import net.muxi.huashiapp.R;

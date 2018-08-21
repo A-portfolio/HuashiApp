@@ -9,7 +9,6 @@ import java.io.File;
  */
 public class Constants {
 
-
     public static final String UMENG_APP_KEY = "58b55d3d8f4a9d21ce0013ed";
     public static final String MI_PUSH_APPID = "2882303761517505217";
     public static final String MI_PUSH_APPKEY = "5981750541217";

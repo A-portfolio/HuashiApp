@@ -45,8 +45,8 @@ import net.muxi.huashiapp.ui.electricity.ElectricityActivity;
 import net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.news.NewsActivity;
-import net.muxi.huashiapp.ui.score.ScoreCreditActivity;
-import net.muxi.huashiapp.ui.score.ScoreSelectActivity;
+import net.muxi.huashiapp.ui.score.activtities.ScoreCreditActivity;
+import net.muxi.huashiapp.ui.score.activtities.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomBlankActivity;
 import net.muxi.huashiapp.ui.timeTable.CourseAuditSearchActivity;
@@ -58,6 +58,7 @@ import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -85,6 +86,8 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
     public static final String CARD_ACTIVITY = "card";
     public static final String CREDIT_ACTIVITY = "credit";
     public static final String COURSE_AUDIT_SEARCH_ACTIVITY = "course_search";
+    public static final String SCORE_CREDIT_ACTIVITY = "score_credit_activity";
+
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
 
@@ -114,6 +117,8 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                         case COURSE_AUDIT_SEARCH_ACTIVITY:
                             CourseAuditSearchActivity.start(getContext());
                             break;
+                        case SCORE_CREDIT_ACTIVITY:
+                            ScoreCreditActivity.start(Objects.requireNonNull(getContext()));
                     }
                 }, Throwable::printStackTrace);
 
@@ -309,7 +314,11 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                             break;
 
                         case "成绩2":
-                            ScoreCreditActivity.start(getActivity());
+                            if(TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().getSid())){
+                                LoginActivity.start(getActivity(),"info",SCORE_CREDIT_ACTIVITY);
+                            }else{
+                                ScoreCreditActivity.start(Objects.requireNonNull(getActivity()));
+                            }
                             break;
 
 

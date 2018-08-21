@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.score;
+package net.muxi.huashiapp.ui.score.activtities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 
 import com.google.gson.Gson;
@@ -25,6 +24,7 @@ import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.credit.CreditGradeDialog;
+import net.muxi.huashiapp.ui.score.RequestRetry;
 import net.muxi.huashiapp.ui.score.adapter.ScoreCreditAdapter;
 import net.muxi.huashiapp.utils.ScoreCreditUtils;
 
@@ -106,8 +106,8 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                         })
                         .retryWhen(new RequestRetry.Builder()
                         .setMaxretries(3)
-                        .setObservable(scoreArray)
-                                .setRetryInfo(() -> setLoadingInfo("登录过期，正在重新登录中")).build());
+                        .setObservable(scoreArray).setRetryInfo(() -> setLoadingInfo("登录过期，正在重新登录中"))
+                                .build());
             }
         }
 
@@ -125,7 +125,18 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        mMultiStatusView.showNetError();
+
+                        if(e instanceof RequestRetry.RetryException){
+                            int code = ((RequestRetry.RetryException) e).code;
+                            switch (code){
+                                case RequestRetry.RetryException.CONFIRM_QUERY:
+                                    mMultiStatusView.showError();
+                                    break;
+                                case RequestRetry.RetryException.NET_ERROR:
+                                    mMultiStatusView.showNetError();
+                                    break;
+                            }
+                        }
                         hideLoading();
                     }
 
@@ -138,6 +149,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                     }
                 });
     }
+
 
     /**
      * 根据 {@link com.muxistudio.appcommon.Constants} 中的 CLASS_TYPE 中用户选择所要计算学分绩的个别类型进行过滤

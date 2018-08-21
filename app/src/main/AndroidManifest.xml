@@ -103,11 +103,11 @@
         <activity android:name=".ui.timeTable.CurweekSetActivity"
             android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.score.ScoreSelectActivity"
+        <activity android:name=".ui.score.activtities.ScoreSelectActivity"
             android:launchMode="singleTask"/>
 
         <activity
-            android:name="net.muxi.huashiapp.ui.score.ScoreDisplayActivity"
+            android:name="net.muxi.huashiapp.ui.score.activtities.ScoreDisplayActivity"
             android:launchMode="singleTask"/>
 
         <activity
@@ -178,7 +178,7 @@
             android:name=".ui.studyroom.StudyRoomBlankActivity"
             android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.score.ScoreCreditActivity"
+        <activity android:name=".ui.score.activtities.ScoreCreditActivity"
             android:launchMode="singleTask"/>
         <activity
             android:name="net.muxi.huashiapp.ui.wxapi.WXEntryActivity"

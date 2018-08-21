@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.score;
+package net.muxi.huashiapp.ui.score.activtities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import com.muxistudio.common.util.NetUtil;
 import com.muxistudio.common.util.ToastUtil;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.ui.score.SelectYearDialogFragment;
 
 
 /**
