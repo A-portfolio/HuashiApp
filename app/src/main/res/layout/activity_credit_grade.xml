@@ -25,7 +25,7 @@
         android:background="@color/colorWhite">
 
         <Button
-            android:id="@+id/btn_enter"
+            android:id="@+id/btn_confirm"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_gravity="center"

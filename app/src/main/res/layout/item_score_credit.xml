@@ -33,58 +33,25 @@
         android:layout_width="85dp"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/tv_course_credit"
-        android:layout_toRightOf="@id/tv_course_name"
-        android:text="2.0"
-        android:gravity="center"
-        android:background="@drawable/bg_score_course"
-        android:layout_marginLeft="10dp"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/tv_course_type"
-        android:layout_toRightOf="@id/tv_course_credit"
-        android:text="专业主干课程"
-        android:gravity="center"
-        android:background="@drawable/bg_score_course"
-        android:layout_marginLeft="10dp"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content" />
-
-    <LinearLayout
-        android:layout_toRightOf="@+id/iv_dot"
-        android:layout_marginTop="14dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="40dp"
-        android:layout_below="@+id/tv_course_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+  <TextView
+      android:id="@+id/tv_course_credit"
+      android:layout_marginTop="16dp"
+      android:layout_marginLeft="20dp"
+      android:layout_below="@+id/tv_course_name"
+      android:text="学分: 2.0"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/tv_score_total_value"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/tv_course_credit"
+            android:layout_below="@+id/tv_course_name"
             android:text="总成绩：86.3"
-            android:layout_weight="3"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tv_score_usual_value"
-            android:text="平时：86.3"
-            android:layout_weight="3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tv_score_exam_value"
-            android:text="期末：86.3"
-            android:layout_weight="3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-
-    </LinearLayout>
 
 
 </RelativeLayout>

@@ -17,11 +17,11 @@
         app:emptyView="@layout/view_empty_score"
         app:errorView="@layout/view_error"
         app:netErrorView="@layout/view_error"
-        android:layout_above="@+id/btn_enter"
+        android:layout_above="@+id/btn_confirm"
         android:layout_marginBottom="10dp"/>
 
     <Button
-        android:id="@+id/btn_enter"
+        android:id="@+id/btn_confirm"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_gravity="center"

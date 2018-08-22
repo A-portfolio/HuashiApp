@@ -171,7 +171,7 @@ public class SelectDialogFragment extends BottomDialogFragment {
         int id = view.getId();
         if (id == R.id.btn_cancel) {
             this.dismiss();
-        } else if (id == R.id.btn_enter) {
+        } else if (id == R.id.btn_confirm) {
             this.dismiss();
             if (mPositiveButtonClickListener != null) {
                 mPositiveButtonClickListener.onPositiveButtonClickListener(getWeekList(),
@@ -296,7 +296,7 @@ public class SelectDialogFragment extends BottomDialogFragment {
         mTvAllWeek = view.findViewById(R.id.tv_all_week);
         mGridLayout = view.findViewById(R.id.grid_layout);
         mBtnCancel = view.findViewById(R.id.btn_cancel);
-        mBtnEnter = view.findViewById(R.id.btn_enter);
+        mBtnEnter = view.findViewById(R.id.btn_confirm);
         mBtnCancel.setOnClickListener(v -> onClick(v));
         mBtnEnter.setOnClickListener(v -> onClick(v));
     }

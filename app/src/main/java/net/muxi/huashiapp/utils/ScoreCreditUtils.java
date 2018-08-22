@@ -187,9 +187,8 @@ public class ScoreCreditUtils {
 
         for (Score credit : credits) {
 
-            for (int i = 0; i < Constants.CREDIT_CATEGORY.length; i++) {
-                String type = Constants.CREDIT_CATEGORY[i];
-
+            for (int i = 0; i < Constants.CLASS_TYPE.length; i++) {
+                String type = Constants.CLASS_TYPE[i];
                 if (type.equals(credit.kcxzmc)) {
                     List<Score> c = sortedMap.get(type);
                     c.add(credit);
@@ -334,7 +333,9 @@ public class ScoreCreditUtils {
         double total = 0d;
         Set<String> keys = groupCredit.keySet();
         for(String key: keys) {
-            total += groupCredit.get(key);
+          if(key.equals(Constants.ALL_CREDIT))
+            continue; 
+          total += groupCredit.get(key);
         }
         return total;
     }

@@ -84,5 +84,5 @@
     <dimen name="spinner_marigin">170dp</dimen>
 
     <dimen name="setting_preference_height">64dp</dimen>
-
+    <dimen name="select_checkbox_size">16dp</dimen>
 </resources>

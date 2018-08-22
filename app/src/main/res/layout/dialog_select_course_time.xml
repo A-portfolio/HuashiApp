@@ -39,7 +39,7 @@
         />
 
         <Button
-            android:id="@+id/btn_enter"
+            android:id="@+id/btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="56dp"
             android:layout_below="@+id/grid_layout"

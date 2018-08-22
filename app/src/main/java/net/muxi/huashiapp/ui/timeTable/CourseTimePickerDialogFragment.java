@@ -76,7 +76,7 @@ public class CourseTimePickerDialogFragment extends BottomDialogFragment {
         mTvTitle = view.findViewById(R.id.tv_title);
         mCourseTimePickerView = view.findViewById(R.id.course_time_picker_view);
         mBtnCancel = view.findViewById(R.id.btn_cancel);
-        mBtnEnter = view.findViewById(R.id.btn_enter);
+        mBtnEnter = view.findViewById(R.id.btn_confirm);
     }
 
     public interface OnPositiveButtonClickListener {

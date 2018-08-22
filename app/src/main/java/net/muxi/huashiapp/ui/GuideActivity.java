@@ -58,7 +58,7 @@ public class GuideActivity extends BaseAppActivity implements View.OnClickListen
             view.setBackgroundResource(R.color.colorWhite);
             ((SimpleDraweeView) view.findViewById(R.id.guide_image)).setImageURI(Uri.parse("res:/" + imgs[i]));
             if (i == imgs.length - 1) {
-                Button mButton = (Button) view.findViewById(R.id.btn_enter);
+                Button mButton = (Button) view.findViewById(R.id.btn_confirm);
                 mButton.setVisibility(View.VISIBLE);
                 mButton.setTag("enter");
                 mButton.setOnClickListener(this);

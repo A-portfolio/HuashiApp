@@ -27,10 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -161,7 +158,7 @@ public class CreditGradeActivity extends ToolbarActivity {
         mRecyclerView = findViewById(R.id.recycler_view);
         mLayoutBtn = findViewById(R
                 .id.layout_btn);
-        mBtnEnter = findViewById(R.id.btn_enter);
+        mBtnEnter = findViewById(R.id.btn_confirm);
         mMultiStatusView = findViewById(R.id.multi_status_view);
     }
 }

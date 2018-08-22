@@ -102,7 +102,7 @@ public class ScoreSelectActivity extends ToolbarActivity {
         mRb1 = findViewById(R.id.rb_1);
         mRb2 = findViewById(R.id.rb_2);
         mRb3 = findViewById(R.id.rb_3);
-        mBtnEnter = findViewById(R.id.btn_enter);
+        mBtnEnter = findViewById(R.id.btn_confirm);
         mTvSelectYear.setOnClickListener(v -> onClick(v));
         mTvYear.setOnClickListener(v -> onClick(v));
     }

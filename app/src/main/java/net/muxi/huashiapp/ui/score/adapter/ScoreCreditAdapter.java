@@ -79,29 +79,12 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         String totalScore = String.format("总成绩:%s",mScores.get(position).grade);
-        String usualScore = String.format("平时成绩:%s",mScores.get(position).usual);
-        String examScore = String.format("总成绩:%s",mScores.get(position).ending);
 
         holder.mCbCredit.setChecked(mCheckMap.get(position));
         holder.mTvTotalScore.setText(totalScore);
 
-        holder.mTvUsualScore.setText(usualScore);
-        if(TextUtils.isEmpty(mScores.get(position).usual)) {
-            holder.mTvUsualScore.setVisibility(View.INVISIBLE);
-        }
-
-        holder.mTvExamScore.setText(examScore);
-        if(TextUtils.isEmpty(mScores.get(position).ending)){
-            holder.mTvExamScore.setVisibility(View.INVISIBLE);
-        }
-
-        if(TextUtils.isEmpty(mScores.get(position).kcxzmc)){
-            holder.mTvCourseType.setText("未分类课程");
-        }else {
-            holder.mTvCourseType.setText(mScores.get(position).kcxzmc);
-        }
-
-        holder.mTvCourseCredit.setText(mScores.get(position).credit);
+        String credit = String.format("学分:%s",mScores.get(position).credit);
+        holder.mTvCourseCredit.setText(credit);
 
         holder.mTvCourseName.setText(mScores.get(position).course);
 
@@ -137,12 +120,9 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
 
         //注意：需要给textView添加分类，在xml文件中是硬编码的 需要格式化 比如 "总成绩是:%s"
 
-        private TextView mTvCourseType;
         private TextView mTvCourseCredit;
 
         private TextView mTvTotalScore;
-        private TextView mTvUsualScore;
-        private TextView mTvExamScore;
         private TextView mTvCourseName;
 
         //默认情况下学分绩全选
@@ -153,13 +133,9 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
             super(itemView);
             mCbCredit     = itemView.findViewById(R.id.cb_cal_credit);
 
-            mTvCourseType = itemView.findViewById(R.id.tv_course_type);
             mTvCourseCredit = itemView.findViewById(R.id.tv_course_credit);
 
             mTvTotalScore = itemView.findViewById(R.id.tv_score_total_value);
-            mTvUsualScore = itemView.findViewById(R.id.tv_score_usual_value);
-            mTvExamScore  = itemView.findViewById(R.id.tv_score_exam_value);
-
             mTvCourseName = itemView.findViewById(R.id.tv_course_name);
 
             mItemView = itemView;

@@ -222,7 +222,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         mMultiStatusView.setOnRetryListener(v -> loadGrade());
         setTitle(ScoreCreditUtils.parseYears2Title(mYearParams));
 
-        mBtnEnter = findViewById(R.id.btn_enter);
+        mBtnEnter = findViewById(R.id.btn_confirm);
         mBtnEnter.setOnClickListener(v -> {
 
             Map<Integer,Boolean> map = mScoresAdapter.getCheckMap();

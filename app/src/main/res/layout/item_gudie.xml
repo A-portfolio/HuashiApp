@@ -14,7 +14,7 @@
         android:scaleType="center" />
 
     <Button
-        android:id="@+id/btn_enter"
+        android:id="@+id/btn_confirm"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"

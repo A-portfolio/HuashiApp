@@ -40,7 +40,7 @@ public class BottomPickerDialogFragment extends BottomDialogFragment {
         mTvTitle = (TextView) view.findViewById(R.id.tv_title);
         mPickerLayout = (PickerLayout) view.findViewById(R.id.picker_layout);
         mBtnCancel = (Button) view.findViewById(R.id.btn_cancel);
-        mBtnEnter = (Button) view.findViewById(R.id.btn_enter);
+        mBtnEnter = (Button) view.findViewById(R.id.btn_confirm);
         initView();
         Dialog dialog = createBottomDialog(view);
         return dialog;

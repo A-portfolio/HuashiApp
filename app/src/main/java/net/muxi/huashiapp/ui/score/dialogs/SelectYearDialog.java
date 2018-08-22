@@ -84,7 +84,7 @@ public class SelectYearDialog extends BottomDialogFragment {
         mTitle = view.findViewById(R.id.title);
         mScoreCreditSelectView = view.findViewById(R.id.credit_year_select_view);
         mBtnCancel = view.findViewById(R.id.btn_cancel);
-        mBtnEnter = view.findViewById(R.id.btn_enter);
+        mBtnEnter = view.findViewById(R.id.btn_confirm);
     }
 
     public interface OnPositiveButtonClickListener {

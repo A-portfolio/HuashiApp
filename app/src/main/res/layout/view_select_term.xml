@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_margin="30dp"
+        android:layout_margin="40dp"
         android:id="@+id/tv_term_all"
         android:textColor="@color/primary_text_color"
         android:text="全部"
@@ -17,18 +17,18 @@
         style="@android:style/Widget.DeviceDefault.Light.CompoundButton.RadioButton"
         android:id="@+id/rb_all"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="40dp"
         android:layout_alignBaseline="@+id/tv_term_all"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
 
     <View
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="40dp"
         android:layout_below="@+id/rb_all"
-        android:background="@color/divider_dark"
+        android:background="@color/grey"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 
@@ -39,7 +39,7 @@
         android:textColor="@color/primary_text_color"
         android:text="第一学期"
         android:textStyle="bold"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -47,7 +47,7 @@
     <CheckBox
         android:id="@+id/cb_first_term"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="40dp"
         android:layout_alignBaseline="@+id/tv_first_term"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -58,7 +58,7 @@
         android:textColor="@color/primary_text_color"
         android:text="第二学期"
         android:textStyle="bold"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="135dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -66,7 +66,7 @@
     <CheckBox
         android:id="@+id/cb_second_term"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="40dp"
         android:layout_alignBaseline="@+id/tv_second_term"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -77,7 +77,7 @@
         android:textColor="@color/primary_text_color"
         android:text="第三学期"
         android:textStyle="bold"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="170dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -85,49 +85,17 @@
     <CheckBox
         android:id="@+id/cb_third_term"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="40dp"
         android:layout_alignBaseline="@+id/tv_third_term"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-
-    <LinearLayout
-        android:layout_marginTop="30dp"
-        android:id="@+id/linear_layout"
-        android:layout_below="@+id/cb_third_term"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:textColor="@color/primary_text_color"
-            android:layout_toLeftOf="@+id/btn_cancel"
-            android:id="@+id/btn_confirm"
-            android:text="确定"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/btn_cancel"
-            android:textSize="14sp"
-            android:textColor="@color/primary_text_color"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="30dp"
-            android:layout_alignBaseline="@+id/btn_confirm"
-            android:text="取消"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-
-    <View
-        android:layout_below="@id/linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"/>
+  <include
+      android:layout_marginTop="24dp"
+      layout="@layout/view_bottom_dialog_btns"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/tv_third_term"/>
 
 
 </RelativeLayout>

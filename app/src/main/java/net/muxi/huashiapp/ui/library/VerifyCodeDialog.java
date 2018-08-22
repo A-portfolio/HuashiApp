@@ -121,7 +121,7 @@ public class VerifyCodeDialog extends CenterDialogFragment {
         mBtnRetry = view.findViewById(R.id.btn_retry);
         mEtVerify = view.findViewById(R.id.et_verify);
         mBtnCancel = view.findViewById(R.id.btn_cancel);
-        mBtnEnter = view.findViewById(R.id.btn_enter);
+        mBtnEnter = view.findViewById(R.id.btn_confirm);
     }
 
     public interface InputCompleteListener {

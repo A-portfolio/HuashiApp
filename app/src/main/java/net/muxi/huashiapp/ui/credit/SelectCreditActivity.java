@@ -80,7 +80,7 @@ public class SelectCreditActivity extends ToolbarActivity {
             mTvCredit.setBackgroundResource(R.drawable.shape_disabled);
             mTvCredit.setTextColor(getResources().getColor(R.color.disable_color));
             calType = CREDIT_GRADE;
-        } else if (id == R.id.btn_enter) {
+        } else if (id == R.id.btn_confirm) {
             if (NetUtil.isConnected()) {
                 if (calType == CREDIT) {
                     CreditResultActivity.start(SelectCreditActivity.this, Integer.parseInt(start)
@@ -103,7 +103,7 @@ public class SelectCreditActivity extends ToolbarActivity {
         mTvType = findViewById(R.id.tv_type);
         mTvCredit = findViewById(R.id.tv_credit);
         mTvCreditGrade = findViewById(R.id.tv_credit_grade);
-        mBtnEnter = findViewById(R.id.btn_enter);
+        mBtnEnter = findViewById(R.id.btn_confirm);
         mTvSelectYear.setOnClickListener(v -> onClick(v));
         mEtYear.setOnClickListener(v -> onClick(v));
         mTvCredit.setOnClickListener(v -> onClick(v));

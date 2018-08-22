@@ -3,7 +3,6 @@ package net.muxi.huashiapp.ui.score.fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +67,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         TextView mTvSelectCourseType = view.findViewById(R.id.tv_select_course);
         mTvCourseType = view.findViewById(R.id.tv_course_type);
 
-        Button mBtnQuery = view.findViewById(R.id.btn_enter);
+        Button mBtnQuery = view.findViewById(R.id.btn_confirm);
         mBtnQuery.setOnClickListener(this);
 
         mTvSelectYear.setOnClickListener(this);
@@ -230,7 +229,7 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
             showSelectCourseTypeDialog();
         }
 
-        if(id == R.id.btn_enter){
+        if(id == R.id.btn_confirm){
             Gson gson = new Gson();
             String termJson = gson.toJson(mTermCodeParams);
             String yearJson = gson.toJson(mYearParams);
