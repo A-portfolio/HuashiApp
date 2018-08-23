@@ -1,9 +1,14 @@
 package net.muxi.huashiapp.ui.location;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -17,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -44,7 +50,7 @@ import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapActivity extends Check implements AMapLocationListener, TextWatcher, View.OnFocusChangeListener,AMap.OnMapTouchListener, AMap.OnMarkerClickListener {
+public class MapActivity extends AppCompatActivity implements AMapLocationListener, TextWatcher, View.OnFocusChangeListener,AMap.OnMapTouchListener, AMap.OnMarkerClickListener {
 
     private MapView mMapView;
     private AMap aMap;
@@ -195,7 +201,7 @@ public class MapActivity extends Check implements AMapLocationListener, TextWatc
         initListener();
         initData();
         initAdapter();
-
+        checkPermission();
         mMapView =  findViewById(R.id.map);
         mMapView.onCreate(savedInstanceState);
         aMap = mMapView.getMap();
@@ -212,6 +218,36 @@ public class MapActivity extends Check implements AMapLocationListener, TextWatc
 //            mNowPoint = mMapPresent.getMyLocation();
 //            mStartPoint = mNowPoint;
             drawRoute(mStartPoint,mEndPoint);
+        }
+    }
+
+
+    public void checkPermission(){
+        String[] needPermissions = {
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        };
+        boolean request=false;
+        for (String s:needPermissions
+             ) {
+            if (ContextCompat.checkSelfPermission(this,s )
+                    != PackageManager.PERMISSION_GRANTED){
+                request=true;
+            }
+        }
+        if (request) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_CONTACTS)) {
+                Toast.makeText(this,"需要定位权限",Toast.LENGTH_SHORT).show();
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        1);
+            }else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        1);
+            }
+
         }
     }
 
@@ -352,5 +388,17 @@ public class MapActivity extends Check implements AMapLocationListener, TextWatc
         mMapView.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+
+        if (requestCode==1){
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            }
+        }else
+            finish();
+    }
 
 }
