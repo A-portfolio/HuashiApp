@@ -37,6 +37,7 @@
         android:background="@color/color_map_details"/>
 
     <TextView
+        android:id="@+id/point_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -46,6 +47,7 @@
         android:text="详细信息详细信息详细信息详细信息详细信息详细信息详细信息"
         />
     <Button
+        android:id="@+id/point_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="信息不准确？戳这里反馈"

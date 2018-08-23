@@ -28,10 +28,11 @@
 
             </com.muxistudio.cardbanner.CardBanner>
 
-            <include layout="@layout/view_map_details"
-                android:layout_height="wrap_content"
+            <include
+                layout="@layout/view_map_details"
                 android:layout_width="match_parent"
-                android:layout_gravity="bottom"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom" />
 
         </LinearLayout>
     </ScrollView>

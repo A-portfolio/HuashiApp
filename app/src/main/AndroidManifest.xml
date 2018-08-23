@@ -225,7 +225,7 @@
             android:name="ZHUGE_CHANNEL"
             android:value="校园通"/>
         <meta-data
-            android:name="net.muxi.huashiapp"
+            android:name="com.amap.api.v2.apikey"
             android:value="8c11f6ae2c754927abfb535f5a8a859d"/>
 
 
@@ -283,6 +283,11 @@
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS">
         </service>
+
+        <service
+            android:name="com.amap.api.location.APSService">
+        </service>
+
 
         <!--小米推送 所需要配置的service 和 receiver-->
         <service

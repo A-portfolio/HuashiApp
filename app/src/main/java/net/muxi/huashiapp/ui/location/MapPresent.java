@@ -25,7 +25,7 @@ import com.amap.api.services.route.WalkRouteResult;
 import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
 public class MapPresent {
-    private LatLonPoint mMyLlocation;
+    private LatLonPoint mMyLocation;
     private LatLonPoint from;
     private LatLonPoint to;
 
@@ -50,13 +50,13 @@ public class MapPresent {
         aMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener() {
             @Override
             public void onMyLocationChange(Location location) {
-               from= mMyLlocation=new LatLonPoint(location.getLatitude(),location.getLongitude());
+               from= mMyLocation=new LatLonPoint(location.getLatitude(),location.getLongitude());
             }
         });
     }
     //可能为null
-    public LatLonPoint getmMyLlocation() {
-        return mMyLlocation;
+    public LatLonPoint getMyLocation() {
+        return mMyLocation;
     }
 
     //起点的搜索，初始值为自己的坐标

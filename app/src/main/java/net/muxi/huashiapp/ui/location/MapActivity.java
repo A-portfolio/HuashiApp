@@ -2,21 +2,31 @@ package net.muxi.huashiapp.ui.location;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
@@ -30,39 +40,54 @@ import com.amap.api.services.route.WalkRouteResult;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
-public class MapActivity extends Check implements AMap.OnMyLocationChangeListener, RouteSearch.OnRouteSearchListener, TextWatcher, View.OnFocusChangeListener {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MapActivity extends Check implements AMapLocationListener, TextWatcher, View.OnFocusChangeListener,AMap.OnMapTouchListener, AMap.OnMarkerClickListener {
 
     private MapView mMapView;
     private AMap aMap;
+    public AMapLocationClient mLocationClient = null;
+    public AMapLocationClientOption mLocationOption = null;
     private final static String TAG="GAODE";
-    private LatLonPoint startPoint;
-    private LatLonPoint to;
+    private LatLonPoint mStartPoint;
+    private LatLonPoint mEndPoint;
+    private LatLonPoint mSearchPoint;
+    private LatLonPoint mNowPoint;
     private RouteSearch routeSearch;
     private WalkRouteOverlay walkRouteOverlay;
+    private MapSearchAdapter mAdapter;
+    private MapPresent mMapPresent;
+    private Marker mMarker;
+    private PointDetails mNowPointDetails;   //  此时底部应该显示的点数据
 
     private LinearLayout mLayoutDetails;
     private LinearLayout mLayoutSearch;
     private LinearLayout mLayoutRoute;
+    private LinearLayout mLayoutResult;
+    private RelativeLayout mRelativeLayout;
 
     private TextView mTvSite;
     private TextView mTvDetail;
-    private TextView mTvMore;
+    private Button mBtnMore;
     private EditText mEtSearch;
     private ImageView mImgSearch;
     private Button mBtnRoute;
     private ImageView mImgBack;
     private ImageView mImgExchange;
+    private ImageView mImgLocate;
+    private RecyclerView mRecyclerView;
 
     private EditText mEtStart;
     private EditText mEtEnd;
 
-    private int MODE = 0;
-    private static final int MODE_ROUTE = 1;
-    private static final int MODE_SEARCH = 2;
+    private int MODE = 2;
+    private static final int MODE_ROUTE = 1;   // 路线
+    private static final int MODE_SEARCH = 2;  // 搜索
 
-    private LatLonPoint mStartPoint;
-    private LatLonPoint mEndPoint;
-    private LatLonPoint mSearchPoint;
+//    private int id = 0;
+
+    private List<PointSearch> mList;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, MapActivity.class);
@@ -73,8 +98,7 @@ public class MapActivity extends Check implements AMap.OnMyLocationChangeListene
         mLayoutDetails = findViewById(R.id.map_bottom_id);
         mTvSite = findViewById(R.id.map_bottom_site);
         mTvDetail = findViewById(R.id.map_bottom_detail);
-        mTvMore = findViewById(R.id.map_bottom_more);
-
+        mBtnMore = findViewById(R.id.map_bottom_more);
         mLayoutSearch = findViewById(R.id.map_top_search);
         mEtSearch = findViewById(R.id.map_top_edt);
         mImgSearch = findViewById(R.id.map_top_button);
@@ -84,41 +108,81 @@ public class MapActivity extends Check implements AMap.OnMyLocationChangeListene
         mBtnRoute = findViewById(R.id.map_route_button);
         mImgBack = findViewById(R.id.map_top_back);
         mImgExchange = findViewById(R.id.map_top_exchange);
-
+        mRecyclerView = findViewById(R.id.map_search_recycle);
+        mLayoutResult = findViewById(R.id.map_search_layout);
+        mImgLocate = findViewById(R.id.map_btn_locate);
     }
 
     private void initListener(){
-        mTvMore.setOnClickListener(v -> {
-                Intent intent = new Intent(getBaseContext(),PointDetailActivity.class);
-                intent.putExtra("地点","");
-                intent.putExtra("详情","");
-                intent.putExtra("图片","");
-                startActivity(intent);
+        mBtnMore.setOnClickListener(v -> {
+            mNowPointDetails = new PointDetails();
+            PointDetailActivity.start(getBaseContext(),mNowPointDetails);
+
         });
         mImgBack.setOnClickListener(v -> {
-                if (MODE == MODE_SEARCH){
-                    finish();
-                }else {
-                    exchangeMode();
-                }
+            if (MODE == MODE_SEARCH){
+                finish();
+            }else {
+                exchangeMode();
+            }
         });
         mBtnRoute.setOnClickListener( v -> {
-                exchangeMode();
+            exchangeMode();
         });
-        mImgExchange.setOnClickListener(v -> {
 
-                String temp = mEtStart.getText().toString();
-                mEtStart.setText(mEtEnd.getText().toString());
-                mEtEnd.setText(temp);
+        mImgExchange.setOnClickListener(v -> {
+            String temp = mEtStart.getText().toString();
+            mEtStart.setText(mEtEnd.getText().toString());
+            mEtEnd.setText(temp);
+        });
+        mImgLocate.setOnClickListener( v ->{
+            if (mLocationClient != null){
+                mLocationClient.startLocation();
+            }
+
+        });
+        mImgSearch.setOnClickListener( v -> {
+
+        });
+        mEtSearch.addTextChangedListener(this);
+        mEtStart.addTextChangedListener(this);
+        mEtEnd.addTextChangedListener(this);
+
+    }
+
+    private void initAdapter(){
+        mAdapter = new MapSearchAdapter(getBaseContext(), mList);
+        mRecyclerView = new RecyclerView(getBaseContext());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new MapSearchAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, String name) {
+                mEtSearch.setText(name);
+                mLayoutResult.setVisibility(View.GONE);
+            }
         });
     }
+
+    public void initData(){
+        mList = new ArrayList<>();
+        PointSearch pointSearch1 = new PointSearch();
+        pointSearch1.setName("八号楼");
+        PointSearch pointSearch2= new PointSearch();
+        pointSearch2.setName("七号楼");
+        mList.add(pointSearch1);
+        mList.add(pointSearch2);
+    }
+
+    //  搜索模式切换
     private void exchangeMode(){
+        mLayoutResult.setVisibility(View.GONE);
         if (MODE == MODE_SEARCH){
             mLayoutSearch.setVisibility(View.GONE);
             mLayoutRoute.setVisibility(View.VISIBLE);
             mBtnRoute.setVisibility(View.GONE);
             MODE = MODE_ROUTE;
-        }else{
+        }else if (MODE == MODE_ROUTE){
             mLayoutRoute.setVisibility(View.GONE);
             mLayoutSearch.setVisibility(View.VISIBLE);
             mBtnRoute.setVisibility(View.VISIBLE);
@@ -131,32 +195,153 @@ public class MapActivity extends Check implements AMap.OnMyLocationChangeListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        mMapView =  findViewById(R.id.map);
-        mMapView.onCreate(savedInstanceState);
-        aMap=mMapView.getMap();
-        MyLocationStyle myLocationStyle;
-        myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
-        myLocationStyle.interval(2000); //设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒。
-        aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
-//aMap.getUiSettings().setMyLocationButtonEnabled(true);设置默认定位按钮是否显示，非必需设置。
-        aMap.setMyLocationEnabled(true);
-        aMap.setOnMyLocationChangeListener(this);
-
-        routeSearch=new RouteSearch(this);
-        routeSearch.setRouteSearchListener(this);
-
-        aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                return false;
-            }
-        });
-
         initView();
         initListener();
+        initData();
+        initAdapter();
+
+        mMapView =  findViewById(R.id.map);
+        mMapView.onCreate(savedInstanceState);
+        aMap = mMapView.getMap();
+//        mLocationClient = new AMapLocationClient(getBaseContext());
+//        mLocationClient.setLocationListener(this);
+//        mLocationOption = new AMapLocationClientOption();
+//        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);//高精度模式
+//        mLocationClient.setLocationOption(mLocationOption);
+        MyLocationStyle myLocationStyle;
+        myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
+        myLocationStyle.interval(2000); //设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒。
+        aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
+        aMap.getUiSettings().setMyLocationButtonEnabled(true);//设置默认定位按钮是否显示，非必需设置。
+        aMap.setMyLocationEnabled(true);
+
+        if (aMap != null) {
+            mMapPresent = new MapPresent(aMap);
+            mMapPresent.setlocation();
+        }
+
+        if (MODE == MODE_SEARCH){
+
+        } else if (MODE == MODE_ROUTE){
+            mStartPoint = new LatLonPoint(39.996678,116.479271);
+            mEndPoint = new LatLonPoint(39.997796,116.468939);
+//            mNowPoint = mMapPresent.getMyLocation();
+//            mStartPoint = mNowPoint;
+            drawRoute(mStartPoint,mEndPoint);
+        }
     }
 
+    public void drawRoute(LatLonPoint startPoint, LatLonPoint endPoint){
+        RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(startPoint,endPoint);
+        RouteSearch.WalkRouteQuery query = new RouteSearch.WalkRouteQuery(fromAndTo);
+        routeSearch = new RouteSearch(this);
+        routeSearch.calculateWalkRouteAsyn(query);//开始算路
+        routeSearch.setRouteSearchListener(new RouteSearch.OnRouteSearchListener() {
+            @Override
+            public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
+                aMap.clear();
+                if (i== AMapException.CODE_AMAP_SUCCESS){
+                    if (walkRouteResult!=null&&walkRouteResult.getPaths()!=null){
+                        WalkPath walkPath=walkRouteResult.getPaths().get(0);
+                        if (walkRouteOverlay!=null){
+                            walkRouteOverlay.removeFromMap();
+                        }
+                        walkRouteOverlay=new WalkRouteOverlay(getBaseContext(),aMap,walkPath,
+                                walkRouteResult.getStartPos(),walkRouteResult.getTargetPos());
+                        LatLonPoint l=walkRouteOverlay.getLastWalkPoint(walkPath.getSteps().get(0));
+                        Log.d(TAG, "onWalkRouteSearched: "+l.toString());
+                        walkRouteOverlay.addToMap();
+                        walkRouteOverlay.zoomToSpan();
+                    }
+                }
+            }
 
+            @Override
+            public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
+
+            }
+
+            @Override
+            public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
+
+            }
+
+            @Override
+            public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
+
+            }
+        });
+    }
+
+    //  检查marker 用坐标or名称？？
+    public void checkMarker(LatLonPoint latLonPoint){
+
+    }
+
+    public void checkMarker(String name){
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker){
+
+        return false;
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation amapLocation){
+        if (amapLocation != null) {
+            if (amapLocation.getErrorCode() == 0) {
+                mSearchPoint.setLatitude(amapLocation.getLatitude());
+                mSearchPoint.setLongitude(amapLocation.getLongitude());
+                if (mMarker == null) {
+                    mMarker = aMap.addMarker(new MarkerOptions()
+                            .position(AMapUtil.convertToLatLng(mSearchPoint))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
+                } else {
+                    mMarker.setPosition(AMapUtil.convertToLatLng(mSearchPoint));
+                }
+                aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(AMapUtil.convertToLatLng(mSearchPoint), 10));
+            } else {
+                Log.e("AmapError", "location Error, ErrCode:"
+                        + amapLocation.getErrorCode() + ", errInfo:"
+                        + amapLocation.getErrorInfo());
+            }
+        }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (charSequence.length() == 0) mLayoutResult.setVisibility(View.GONE);
+        else if(mLayoutResult.getVisibility() != View.VISIBLE) {
+            mLayoutResult.setVisibility(View.VISIBLE);
+//            mRelativeLayout.setAlpha(Float.valueOf("0.7"));
+            mMapPresent.ToPoiSearch(charSequence.toString(),getBaseContext());
+            mAdapter.notifyDataSetChanged();
+        }
+//        mList.clear();
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean b) {
+
+    }
+
+    @Override
+    public void onTouch(MotionEvent event){
+
+    }
 
     @Override
     protected void onDestroy() {
@@ -183,64 +368,5 @@ public class MapActivity extends Check implements AMap.OnMyLocationChangeListene
         mMapView.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onMyLocationChange(Location location) {
-        startPoint =new LatLonPoint(location.getLatitude(),location.getLongitude());
-    }
 
-    @Override
-    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
-
-    }
-
-    @Override
-    public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
-
-    }
-
-    @Override
-    public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
-        aMap.clear();
-        if (i== AMapException.CODE_AMAP_SUCCESS){
-            if (walkRouteResult!=null&&walkRouteResult.getPaths()!=null){
-                WalkPath walkPath=walkRouteResult.getPaths().get(0);
-                if (walkRouteOverlay!=null){
-                    walkRouteOverlay.removeFromMap();
-                }
-                walkRouteOverlay=new WalkRouteOverlay(this,aMap,walkPath,
-                        walkRouteResult.getStartPos(),walkRouteResult.getTargetPos());
-                LatLonPoint l=walkRouteOverlay.getLastWalkPoint(walkPath.getSteps().get(0));
-                Log.d(TAG, "onWalkRouteSearched: "+l.toString());
-
-                walkRouteOverlay.addToMap();
-                walkRouteOverlay.zoomToSpan();
-            }
-        }
-
-    }
-
-    @Override
-    public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
-
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-
-    }
-
-    @Override
-    public void onFocusChange(View view, boolean b) {
-
-    }
 }

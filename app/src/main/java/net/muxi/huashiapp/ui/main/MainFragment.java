@@ -234,7 +234,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                                 ScoreSelectActivity.start(getActivity());
                             }
                             MobclickAgent.onEvent(getActivity(), "score_query");
-                            ;
+
                             break;
                         case "校园通知":
                             NewsActivity.start(getActivity());
