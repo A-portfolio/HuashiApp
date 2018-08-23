@@ -114,5 +114,6 @@
     <color name="color_map_start">#7286FA</color>
     <color name="color_map_end">#F8C548</color>
     <color name="color_map_details">#757882</color>
+    <color name="color_map_stroke">#DEC8ED</color>
 
 </resources>

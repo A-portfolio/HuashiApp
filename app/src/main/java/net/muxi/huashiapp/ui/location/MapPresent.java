@@ -22,6 +22,7 @@ import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 
+import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
 public class MapPresent {
@@ -44,6 +45,7 @@ public class MapPresent {
         final MyLocationStyle myLocationStyle;
         myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
         myLocationStyle.interval(2000*30); //设置连续定位模式下的定位间隔，一分钟定位一次
+        myLocationStyle.strokeWidth(1);
         aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
         aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
         aMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -55,6 +57,7 @@ public class MapPresent {
             }
         });
     }
+
     //可能为null
     public LatLonPoint getMyLocation() {
         return mMyLocation;
