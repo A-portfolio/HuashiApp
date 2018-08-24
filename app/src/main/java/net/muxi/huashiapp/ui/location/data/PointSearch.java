@@ -1,12 +1,17 @@
-package net.muxi.huashiapp.ui.location;
+package net.muxi.huashiapp.ui.location.data;
 
 import java.util.List;
 
 public class PointSearch {
 
-    public String name;
-    public List<Double> points;
 
+    /**
+     * name : 华中师范大学图书馆
+     * points : [30.526257,114.36735]
+     */
+
+    private String name;
+    private List<Double> points;
 
     public String getName() {
         return name;

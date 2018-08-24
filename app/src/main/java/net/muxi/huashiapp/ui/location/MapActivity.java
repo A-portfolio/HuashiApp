@@ -25,16 +25,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.MarkerOptions;
-import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusRouteResult;
@@ -43,8 +37,11 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
+import com.muxistudio.appcommon.data.Detail;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.ui.location.data.PointDetails;
+import net.muxi.huashiapp.ui.location.data.PointSearch;
 import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
 import java.util.ArrayList;
@@ -305,7 +302,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     @Override
     public boolean onMarkerClick(Marker marker){
 
-        return false;
+
+        return true;
     }
 
     @Override

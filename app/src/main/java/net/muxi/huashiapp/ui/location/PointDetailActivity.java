@@ -14,6 +14,8 @@ import com.muxistudio.cardbanner.CardBanner;
 import com.muxistudio.cardbanner.ViewHolder;
 
 import net.muxi.huashiapp.R;
+
+import net.muxi.huashiapp.ui.location.data.PointDetails;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

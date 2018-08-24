@@ -1,7 +1,6 @@
 package net.muxi.huashiapp.ui.location;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.ui.location.data.PointSearch;
 
 import java.util.List;
 
