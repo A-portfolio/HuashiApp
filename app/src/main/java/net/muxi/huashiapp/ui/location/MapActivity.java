@@ -124,7 +124,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private void initListener(){
         mBtnMore.setOnClickListener(v -> {
             mNowPointDetails = new PointDetails();
-            mNowPointDetails.setName();
+            mNowPointDetails.setName("");
             mNowPointDetails.setInfo("详细信息详细信息");
             PointDetailActivity.start(getBaseContext(),mNowPointDetails);
 
