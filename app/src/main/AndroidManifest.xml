@@ -192,7 +192,8 @@
             android:launchMode="singleTask"/>
 
         <activity android:name=".ui.location.MapActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan"/>
 
         <activity android:name=".ui.location.PointDetailActivity"
             android:launchMode="singleTask"/>

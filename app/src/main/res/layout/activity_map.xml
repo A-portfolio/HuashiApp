@@ -33,7 +33,7 @@
         android:id="@+id/map_search_layout"
         android:visibility="invisible"
         android:background="@drawable/bg_map_top"
-        android:alpha="0.7"
+        android:alpha="0.8"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/map_route_id"
@@ -52,10 +52,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="找不到目的地，点击这里反馈"
-            android:textSize="12sp"
+            android:textSize="15sp"
             android:textColor="@color/colorAccent"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
+            android:layout_marginTop="6dp"
             android:textStyle="bold"
             android:gravity="center" />
     </LinearLayout>

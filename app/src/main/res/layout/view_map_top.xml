@@ -16,6 +16,8 @@
         android:src="@drawable/ic_back"/>
 
     <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:id="@+id/map_top_route"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -85,6 +87,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
