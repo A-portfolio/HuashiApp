@@ -1,12 +1,14 @@
 package net.muxi.huashiapp.ui.location.data;
 
-import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 
 /**
  * Created by yue on 2018/8/21.
  */
 
-public class PointDetails {
+public class PointDetails implements Parcelable {
 
     /**
      * name : yy楼
@@ -17,8 +19,7 @@ public class PointDetails {
 
     private String name;
     private String info;
-    private List<String> url;
-    private List<Double> points;
+    private String []url;
 
     public String getName() {
         return name;
@@ -36,19 +37,38 @@ public class PointDetails {
         this.info = info;
     }
 
-    public List<String> getUrl() {
+    public String[] getUrl() {
         return url;
     }
 
-    public void setUrl(List<String> url) {
+    public void setUrl(String[] url) {
         this.url = url;
     }
 
-    public List<Double> getPoints() {
-        return points;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setPoints(List<Double> points) {
-        this.points = points;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(info);
+        dest.writeStringArray(url);
     }
+    public static final Parcelable.Creator<PointDetails> CREATOR= new Creator<PointDetails>() {
+        @Override
+        public PointDetails createFromParcel(Parcel source) {
+            PointDetails p=new PointDetails();
+            p.name=source.readString();
+            p.info=source.readString();
+            p.url=source.createStringArray();
+            return null;
+        }
+
+        @Override
+        public PointDetails[] newArray(int size) {
+            return new PointDetails[size];
+        }
+    };
 }

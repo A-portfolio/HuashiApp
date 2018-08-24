@@ -123,11 +123,9 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 
     private void initListener(){
         mBtnMore.setOnClickListener(v -> {
-            mNowPointDetails = new PointDetails();
-            mNowPointDetails.setName("");
-            mNowPointDetails.setInfo("详细信息详细信息");
-            PointDetailActivity.start(getBaseContext(),mNowPointDetails);
-
+            if (mNowPointDetails!=null) {
+                PointDetailActivity.start(getBaseContext(), mNowPointDetails);
+            }
         });
         mImgBack.setOnClickListener(v -> {
             if (MODE == MODE_SEARCH){
@@ -311,16 +309,21 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(detail -> {
-                    mTvSite.setText(detail.getPlat().getName());
-                    mTvDetail.setText(detail.getPlat().getInfo());
+
+                    mNowPointDetails=new PointDetails();
+                    mNowPointDetails.setName(detail.getPlat().getName());
+                    mNowPointDetails.setInfo(detail.getPlat().getInfo());
+                    List<String> list=detail.getPlat().getUrl();
+                    mNowPointDetails.setUrl(list.toArray(new String[list.size()]));
+                    mTvSite.setText(mNowPointDetails.getName());
+                    mTvDetail.setText(mNowPointDetails.getInfo());
                     mBtnMore.setEnabled(true);
                 },throwable -> {
                     throwable.printStackTrace();
                     mTvSite.setText(marker.getTitle());
                     mTvDetail.setText(marker.getSnippet());
                     mBtnMore.setEnabled(false);
-                },()->{
-                    Logger.i("onMarkerClock");});
+                },()-> Logger.i("onMarkerClock"));
         return true;
     }
 

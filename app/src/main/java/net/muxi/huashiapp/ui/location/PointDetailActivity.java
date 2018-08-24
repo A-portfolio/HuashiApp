@@ -3,6 +3,7 @@ package net.muxi.huashiapp.ui.location;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
@@ -37,10 +38,9 @@ public class PointDetailActivity extends ToolbarActivity {
 
     private List<Integer> resIdList = new ArrayList<>();
 
-    public static void start(Context context, PointDetails pointDetail) {
+    public static void start(Context context, Parcelable p) {
         Intent starter = new Intent(context, PointDetailActivity.class);
-        starter.putExtra("name",pointDetail.getName());
-        starter.putExtra("info",pointDetail.getInfo());
+        starter.putExtra("Detail",p);
 
         context.startActivity(starter);
     }
