@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
@@ -29,6 +32,7 @@ public class PointDetailActivity extends ToolbarActivity {
     public TextView mTvDistance;
     public TextView mTvDetail;
     public Button mBtn;
+    private int width,height;
 
     public PointDetails mPointData;
     private List<ViewHolder<Integer>> mViewHolders = new ArrayList<>();
@@ -38,9 +42,9 @@ public class PointDetailActivity extends ToolbarActivity {
 
     private List<Integer> resIdList = new ArrayList<>();
 
-    public static void start(Context context, Parcelable p) {
+    public static void start(Context context, PointDetails point) {
         Intent starter = new Intent(context, PointDetailActivity.class);
-        starter.putExtra("Detail",p);
+        starter.putExtra("detail",point);
 
         context.startActivity(starter);
     }
@@ -56,11 +60,9 @@ public class PointDetailActivity extends ToolbarActivity {
 
         initView();
         initBanner();
-        String name = getIntent().getStringExtra("name");
-        String detail = getIntent().getStringExtra("info");
-        setTitle(name);
-        mTvName.setText(name);
-        mTvDetail.setText(detail);
+        mPointData = getIntent().getParcelableExtra("detail");
+        setTitle(mPointData.getName());
+        mTvDetail.setText(mPointData.getInfo());
 
     }
 
@@ -70,6 +72,13 @@ public class PointDetailActivity extends ToolbarActivity {
         mTvDistance = findViewById(R.id.point_distance);
         mTvDetail = findViewById(R.id.point_detail);
         mBtn = findViewById(R.id.point_btn);
+
+//        DisplayMetrics metrics = getResources().getDisplayMetrics();
+//        width = metrics.widthPixels;
+//        height = metrics.heightPixels;
+//        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)mBanner.getLayoutParams();
+//        params.height = width;
+//        mBanner.setLayoutParams(params);
     }
 
     private void initBanner(){

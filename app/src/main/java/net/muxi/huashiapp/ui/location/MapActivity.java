@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -74,6 +75,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private LinearLayout mLayoutRoute;
     private LinearLayout mLayoutResult;
     private RelativeLayout mRelativeLayout;
+    private RelativeLayout.LayoutParams mParamsRoute;
+    private RelativeLayout.LayoutParams mParamsLocate;
 
     private TextView mTvSite;
     private TextView mTvDetail;
@@ -119,10 +122,25 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         mRecyclerView = findViewById(R.id.map_search_recycle);
         mLayoutResult = findViewById(R.id.map_search_layout);
         mImgLocate = findViewById(R.id.map_btn_locate);
+        mParamsRoute = (RelativeLayout.LayoutParams) mBtnRoute.getLayoutParams();
+        mParamsLocate = (RelativeLayout.LayoutParams) mImgLocate.getLayoutParams();
+    }
+
+    private void initLayout(int route,int locateBottom,int locateLeft){
+        mParamsRoute.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,route);
+        mParamsLocate.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,locateBottom);
+        mParamsLocate.addRule(RelativeLayout.ALIGN_LEFT,locateLeft);
+        mBtnRoute.setLayoutParams(mParamsRoute);
+        mImgLocate.setLayoutParams(mParamsLocate);
+
     }
 
     private void initListener(){
         mBtnMore.setOnClickListener(v -> {
+            PointDetails pointDetails = new PointDetails();
+            pointDetails.setName("八号楼");
+            pointDetails.setInfo("详细信息详细信息");
+            PointDetailActivity.start(getBaseContext(), pointDetails);
             if (mNowPointDetails!=null) {
                 PointDetailActivity.start(getBaseContext(), mNowPointDetails);
             }
@@ -145,7 +163,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         });
         
         mImgSearch.setOnClickListener( v -> {
-
+            mLayoutDetails.setVisibility(View.VISIBLE);
+            initLayout(0,0,0);
         });
         mEtSearch.addTextChangedListener(this);
         mEtStart.addTextChangedListener(this);
@@ -199,6 +218,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         setContentView(R.layout.activity_map);
         initView();
         initListener();
+        initLayout(10,10,5);
         initData();
         initAdapter();
         checkPermission();
@@ -219,6 +239,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 //            mStartPoint = mNowPoint;
             drawRoute(mStartPoint,mEndPoint);
         }
+
+
     }
 
 
@@ -304,6 +326,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 
     @Override
     public boolean onMarkerClick(Marker marker){
+        mLayoutDetails.setVisibility(View.VISIBLE);
+        initLayout(0,0,0);
 
         CampusFactory.getRetrofitService().getDetail(marker.getTitle())
                 .subscribeOn(Schedulers.io())
