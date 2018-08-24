@@ -82,9 +82,8 @@ public class RouteOverlay {
      * @return 更换的Marker图片。
      * @since V2.1.0
      */
-    // TODO: 18-8-20 修改图标 
     protected BitmapDescriptor getStartBitmapDescriptor() {
-        return BitmapDescriptorFactory.fromResource(R.drawable.audit_core);
+        return BitmapDescriptorFactory.fromResource(R.drawable.startMarker);
     }
     /**
      * 给终点Marker设置图标，并返回更换图标的图片。如不用默认图片，需要重写此方法。
@@ -92,7 +91,7 @@ public class RouteOverlay {
      * @since V2.1.0
      */
     protected BitmapDescriptor getEndBitmapDescriptor() {
-        return BitmapDescriptorFactory.fromResource(R.drawable.audit_core);
+        return BitmapDescriptorFactory.fromResource(R.drawable.endMarker);
     }
 
 
@@ -101,11 +100,13 @@ public class RouteOverlay {
      * @return 更换的Marker图片。
      * @since V2.1.0
      */
+    // TODO: 18-8-24 根据是否有详情判断图标 
     protected BitmapDescriptor getWalkBitmapDescriptor() {
-        return BitmapDescriptorFactory.fromResource(R.drawable.audit_core);
+        
+        return BitmapDescriptorFactory.fromResource(R.drawable.Oval);
     }
 
-    protected void addStartAndEndMarker() {
+    /*protected void addStartAndEndMarker() {
         startMarker = mAMap.addMarker(new MarkerOptions()
                 .position(startPoint).icon(getStartBitmapDescriptor())
                 .title("\u8D77\u70B9"));
@@ -115,7 +116,7 @@ public class RouteOverlay {
                 .icon(getEndBitmapDescriptor()).title("\u7EC8\u70B9"));
         // mAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoint,
         // getShowRouteZoom()));
-    }
+    }*/
     /**
      * 移动镜头到当前的视角。
      * @bounds 一个矩形区域，代表当前路线的矩形区域
@@ -168,6 +169,7 @@ public class RouteOverlay {
         if(options == null) {
             return;
         }
+
         Marker marker = mAMap.addMarker(options);
         if(marker != null) {
             stationMarkers.add(marker);

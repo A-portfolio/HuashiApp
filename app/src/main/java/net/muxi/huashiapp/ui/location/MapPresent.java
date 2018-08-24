@@ -64,6 +64,7 @@ public class MapPresent {
     }
 
     //起点的搜索，初始值为自己的坐标
+    // TODO: 18-8-24 搜索重构 
     public void fromSearch(final String keyWord, Context context){
         PoiSearch.Query query=new PoiSearch.Query(keyWord,"","武汉");
         PoiSearch poiSearch=new PoiSearch(context,query);

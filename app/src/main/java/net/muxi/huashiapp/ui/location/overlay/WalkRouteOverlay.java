@@ -63,7 +63,7 @@ public class WalkRouteOverlay extends RouteOverlay {
 
             }
             mPolylineOptions.add(endPoint);
-            addStartAndEndMarker();
+            //addStartAndEndMarker();
 
             showPolyline();
         } catch (Throwable e) {
@@ -123,10 +123,13 @@ public class WalkRouteOverlay extends RouteOverlay {
         addStationMarker(new MarkerOptions()
                 .position(position)
                 .infoWindowEnable(false)
-                .title("\u65B9\u5411:" + walkStep.getAction()
-                        + "\n\u9053\u8DEF:" + walkStep.getRoad())
-                .snippet(walkStep.getInstruction()).visible(nodeIconVisible)
-                .anchor(0.5f, 0.5f).icon(walkStationDescriptor));
+                //方向，道路
+                // TODO: 18-8-24 marker
+                .title("\n\u9053\u8DEF:"+ walkStep.getRoad())
+                .snippet("\u65B9\u5411:" + walkStep.getAction())
+                .visible(nodeIconVisible)
+                .anchor(0.5f, 0.5f)
+                .icon(walkStationDescriptor));
     }
 
     /**
