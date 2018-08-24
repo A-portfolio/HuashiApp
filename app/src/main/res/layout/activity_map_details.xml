@@ -17,14 +17,14 @@
             <com.muxistudio.cardbanner.CardBanner
                 android:id="@+id/map_detail_banner"
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="270dp"
                 android:layout_centerVertical="true"
-                app:cardMargin="0dp"
-                app:baseElevation="2dp"
+                app:cardMargin="2dp"
+                app:baseElevation="4dp"
                 app:cardRadius="8dp"
                 app:floatElevation="2dp"
-                app:isLoop="false"
-                app:sideCardWidth="1dp">
+                app:isLoop="true"
+                app:sideCardWidth="4dp">
 
             </com.muxistudio.cardbanner.CardBanner>
 
