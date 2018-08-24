@@ -37,6 +37,7 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
+import com.muxistudio.appcommon.data.Detail;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.location.data.PointDetails;
@@ -301,7 +302,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     @Override
     public boolean onMarkerClick(Marker marker){
 
-        return false;
+
+        return true;
     }
 
     @Override

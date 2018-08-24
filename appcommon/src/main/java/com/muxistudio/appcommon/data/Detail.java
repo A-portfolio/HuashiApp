@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.location.data;
+package com.muxistudio.appcommon.data;
 
 import java.util.List;
 
