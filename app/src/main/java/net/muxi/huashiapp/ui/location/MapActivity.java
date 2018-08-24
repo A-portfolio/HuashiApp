@@ -38,6 +38,8 @@ import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.muxistudio.appcommon.data.Detail;
+import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.location.data.PointDetails;
@@ -46,6 +48,9 @@ import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MapActivity extends AppCompatActivity implements AMapLocationListener, TextWatcher, View.OnFocusChangeListener,AMap.OnMapTouchListener, AMap.OnMarkerClickListener {
 
@@ -119,7 +124,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private void initListener(){
         mBtnMore.setOnClickListener(v -> {
             mNowPointDetails = new PointDetails();
-            mNowPointDetails.setName("八号楼");
+            mNowPointDetails.setName();
             mNowPointDetails.setInfo("详细信息详细信息");
             PointDetailActivity.start(getBaseContext(),mNowPointDetails);
 
@@ -302,7 +307,20 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     @Override
     public boolean onMarkerClick(Marker marker){
 
-
+        CampusFactory.getRetrofitService().getDetail(marker.getTitle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(detail -> {
+                    mTvSite.setText(detail.getPlat().getName());
+                    mTvDetail.setText(detail.getPlat().getInfo());
+                    mBtnMore.setEnabled(true);
+                },throwable -> {
+                    throwable.printStackTrace();
+                    mTvSite.setText(marker.getTitle());
+                    mTvDetail.setText(marker.getSnippet());
+                    mBtnMore.setEnabled(false);
+                },()->{
+                    Logger.i("onMarkerClock");});
         return true;
     }
 
