@@ -21,6 +21,7 @@ public class PointDetails implements Parcelable {
     private String info;
     private String []url;
 
+
     public String getName() {
         return name;
     }
@@ -63,7 +64,7 @@ public class PointDetails implements Parcelable {
             p.name=source.readString();
             p.info=source.readString();
             p.url=source.createStringArray();
-            return null;
+            return p;
         }
 
         @Override
