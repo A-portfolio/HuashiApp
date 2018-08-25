@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.cardbanner.CardBanner;
 import com.muxistudio.cardbanner.ViewHolder;
+import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
 
@@ -59,8 +61,9 @@ public class PointDetailActivity extends ToolbarActivity {
         setContentView(R.layout.activity_map_details);
 
         initView();
-        initBanner();
+        //initBanner();
         mPointData = getIntent().getParcelableExtra("detail");
+        Logger.i(mPointData.getName());
         setTitle(mPointData.getName());
         mTvDetail.setText(mPointData.getInfo());
 

@@ -79,6 +79,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private RelativeLayout mRelativeLayout;
     private RelativeLayout.LayoutParams mParamsRoute;
     private RelativeLayout.LayoutParams mParamsLocate;
+    private boolean requestPermission;
 
     private TextView mTvSite;
     private TextView mTvDetail;
@@ -138,11 +139,12 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     }
 
     private void initListener(){
+        mImgLocate.setOnClickListener(v -> mMapPresent.setlocation());
         mBtnMore.setOnClickListener(v -> {
             PointDetails pointDetails = new PointDetails();
             pointDetails.setName("八号楼");
             pointDetails.setInfo("详细信息详细信息");
-            PointDetailActivity.start(getBaseContext(), pointDetails);
+            PointDetailActivity.start(getApplicationContext(), pointDetails);
             if (mNowPointDetails!=null) {
                 PointDetailActivity.start(getBaseContext(), mNowPointDetails);
             }
@@ -234,6 +236,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        requestPermission=false;
         initView();
         initListener();
         initLayout(10,10,5);
@@ -245,6 +248,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         aMap = mMapView.getMap();
         if (aMap != null) {
             mMapPresent = new MapPresent(aMap);
+            if (!requestPermission)
             mMapPresent.setlocation();
         }
 
@@ -267,24 +271,22 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
         };
-        boolean request=false;
         for (String s:needPermissions
              ) {
             if (ContextCompat.checkSelfPermission(this,s )
                     != PackageManager.PERMISSION_GRANTED){
-                request=true;
+                requestPermission=true;
             }
         }
-        if (request) {
+        if (requestPermission) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.READ_CONTACTS)) {
                 Toast.makeText(this,"需要定位权限",Toast.LENGTH_SHORT).show();
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        needPermissions,
                         1);
             }else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                ActivityCompat.requestPermissions(this, needPermissions,
                         1);
             }
 
@@ -460,6 +462,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         if (requestCode==1){
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mMapPresent.setlocation();
             }
         }else
             finish();
