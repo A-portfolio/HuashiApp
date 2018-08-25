@@ -112,6 +112,7 @@ public class MapPresent {
         poiSearch.searchPOIAsyn();
     }
 
+    // TODO: 18-8-24 算出总距离时长 
     public void drawRoute(final Context context){
         routeSearch=new RouteSearch(context);
         routeSearch.setRouteSearchListener(new RouteSearch.OnRouteSearchListener() {
