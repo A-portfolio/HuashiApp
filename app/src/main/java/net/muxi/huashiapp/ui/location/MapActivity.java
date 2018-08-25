@@ -13,9 +13,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -61,6 +63,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private LatLonPoint mEndPoint;
     private LatLonPoint mSearchPoint;
     private LatLonPoint mNowPoint;
+
     private LocationListener mLocationListener;
     private RouteSearch routeSearch;
     private WalkRouteOverlay walkRouteOverlay;
@@ -74,6 +77,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private LinearLayout mLayoutRoute;
     private LinearLayout mLayoutResult;
     private RelativeLayout mRelativeLayout;
+    private RelativeLayout.LayoutParams mParamsRoute;
+    private RelativeLayout.LayoutParams mParamsLocate;
 
     private TextView mTvSite;
     private TextView mTvDetail;
@@ -95,7 +100,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 
 //    private int id = 0;
 
-    private List<PointSearch> mList;
+    private List<PointSearch> mList = new ArrayList<>();
 
     public static void start(Context context) {
         Intent starter = new Intent(context, MapActivity.class);
@@ -119,10 +124,25 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         mRecyclerView = findViewById(R.id.map_search_recycle);
         mLayoutResult = findViewById(R.id.map_search_layout);
         mImgLocate = findViewById(R.id.map_btn_locate);
+        mParamsRoute = (RelativeLayout.LayoutParams) mBtnRoute.getLayoutParams();
+        mParamsLocate = (RelativeLayout.LayoutParams) mImgLocate.getLayoutParams();
+    }
+
+    private void initLayout(int route,int locateBottom,int locateLeft){
+        mParamsRoute.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,route);
+        mParamsLocate.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,locateBottom);
+        mParamsLocate.addRule(RelativeLayout.ALIGN_LEFT,locateLeft);
+        mBtnRoute.setLayoutParams(mParamsRoute);
+        mImgLocate.setLayoutParams(mParamsLocate);
+
     }
 
     private void initListener(){
         mBtnMore.setOnClickListener(v -> {
+            PointDetails pointDetails = new PointDetails();
+            pointDetails.setName("八号楼");
+            pointDetails.setInfo("详细信息详细信息");
+            PointDetailActivity.start(getBaseContext(), pointDetails);
             if (mNowPointDetails!=null) {
                 PointDetailActivity.start(getBaseContext(), mNowPointDetails);
             }
@@ -145,34 +165,48 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         });
         
         mImgSearch.setOnClickListener( v -> {
-
+            mLayoutDetails.setVisibility(View.VISIBLE);
+            initLayout(0,0,0);
         });
         mEtSearch.addTextChangedListener(this);
         mEtStart.addTextChangedListener(this);
         mEtEnd.addTextChangedListener(this);
+        mEtSearch.setOnFocusChangeListener(this);
+        mEtStart.setOnFocusChangeListener(this);
+        mEtEnd.setOnFocusChangeListener(this);
 
     }
 
     private void initAdapter(){
-        mAdapter = new MapSearchAdapter(getBaseContext(), mList);
-        mRecyclerView = new RecyclerView(getBaseContext());
+        OnClickTextList onClickTextList = new OnClickTextList() {
+            @Override
+            public void changeEditText(String s, LatLonPoint l) {
+                if(mEtStart.hasFocus()){mEtStart.setText(s);mStartPoint=l;mEtStart.clearFocus();ifCanSearch();}
+                else if(mEtEnd.hasFocus()) {mEtEnd.setText(s);mEndPoint=l;mEtEnd.clearFocus();ifCanSearch();}
+                else {mEtSearch.setText(s);mSearchPoint=l;mEtSearch.clearFocus();}
+                hideKeyboard();
+            }
+        };
+        mAdapter = new MapSearchAdapter(getBaseContext(), mList,onClickTextList);
+        mRecyclerView = findViewById(R.id.map_search_recycle);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new MapSearchAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, String name) {
-                mEtSearch.setText(name);
-                mLayoutResult.setVisibility(View.GONE);
-            }
-        });
     }
 
+
     public void initData(){
-        mList = new ArrayList<>();
+        List<Double> doubles1 = new ArrayList<>();
+        List<Double> doubles2 = new ArrayList<>();
+        doubles1.add(30.526024);
+        doubles1.add(114.367444);
+        doubles2.add(30.520266);
+        doubles2.add(114.368498);
         PointSearch pointSearch1 = new PointSearch();
         pointSearch1.setName("八号楼");
+        pointSearch1.setPoints(doubles1);
         PointSearch pointSearch2= new PointSearch();
         pointSearch2.setName("七号楼");
+        pointSearch2.setPoints(doubles2);
         mList.add(pointSearch1);
         mList.add(pointSearch2);
     }
@@ -181,11 +215,14 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private void exchangeMode(){
         mLayoutResult.setVisibility(View.GONE);
         if (MODE == MODE_SEARCH){
+            mSearchPoint = null;
             mLayoutSearch.setVisibility(View.GONE);
             mLayoutRoute.setVisibility(View.VISIBLE);
             mBtnRoute.setVisibility(View.GONE);
             MODE = MODE_ROUTE;
         }else if (MODE == MODE_ROUTE){
+            mStartPoint = null;
+            mEndPoint = null;
             mLayoutRoute.setVisibility(View.GONE);
             mLayoutSearch.setVisibility(View.VISIBLE);
             mBtnRoute.setVisibility(View.VISIBLE);
@@ -199,6 +236,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         setContentView(R.layout.activity_map);
         initView();
         initListener();
+        initLayout(10,10,5);
         initData();
         initAdapter();
         checkPermission();
@@ -213,12 +251,14 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         if (MODE == MODE_SEARCH){
 
         } else if (MODE == MODE_ROUTE){
-            mStartPoint = new LatLonPoint(39.996678,116.479271);
-            mEndPoint = new LatLonPoint(39.997796,116.468939);
+//            mStartPoint = new LatLonPoint(39.996678,116.479271);
+//            mEndPoint = new LatLonPoint(39.997796,116.468939);
 //            mNowPoint = mMapPresent.getMyLocation();
 //            mStartPoint = mNowPoint;
-            drawRoute(mStartPoint,mEndPoint);
+//            drawRoute(mStartPoint,mEndPoint);
         }
+
+
     }
 
 
@@ -304,6 +344,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 
     @Override
     public boolean onMarkerClick(Marker marker){
+        mLayoutDetails.setVisibility(View.VISIBLE);
+        initLayout(0,0,0);
 
         CampusFactory.getRetrofitService().getDetail(marker.getTitle())
                 .subscribeOn(Schedulers.io())
@@ -361,9 +403,9 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         else if(mLayoutResult.getVisibility() != View.VISIBLE) {
             mLayoutResult.setVisibility(View.VISIBLE);
 //            mRelativeLayout.setAlpha(Float.valueOf("0.7"));
-            mMapPresent.ToPoiSearch(charSequence.toString(),getBaseContext());
-            mAdapter.notifyDataSetChanged();
+//            mMapPresent.ToPoiSearch(charSequence.toString(),getBaseContext());
         }
+        mAdapter.notifyDataSetChanged();
 //        mList.clear();
     }
 
@@ -373,8 +415,12 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     }
 
     @Override
-    public void onFocusChange(View view, boolean b) {
+    public void onFocusChange(View view, boolean hasFocus) {
+        if(hasFocus){
 
+        }else {
+            mLayoutResult.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -414,10 +460,26 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         if (requestCode==1){
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
             }
         }else
             finish();
+    }
+
+    private void ifCanSearch() {
+        if(mStartPoint!=null && mEndPoint!=null){
+            drawRoute(mStartPoint,mEndPoint);
+        }else {
+            Toast.makeText(getBaseContext(),"请确认您输入了正确的地点！",Toast.LENGTH_LONG);
+        }
+        Log.d("From ifCanSearch",(mStartPoint==null)?"true":"false");
+    }
+
+    private void hideKeyboard() {
+        View viewFocus = this.getCurrentFocus();
+        if (viewFocus != null) {
+            InputMethodManager imManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imManager.hideSoftInputFromWindow(viewFocus.getWindowToken(), 0);
+        }
     }
 
 }
