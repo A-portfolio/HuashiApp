@@ -61,9 +61,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private String mSearchName;
     private LatLonPoint mNowPoint;
 
-    //true为draw,false为search
-    private boolean draworSearch=false;
-
     private LocationListener mLocationListener;
     private MapSearchAdapter mAdapter;
     private MapPresent mMapPresent;
@@ -401,9 +398,11 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     }
 
     private void ifCanSearch() {
+        //method about drawing route
         if(mStartPoint!=null && mEndPoint!=null){
-            draworSearch=mMapPresent.drawRoute(getApplicationContext(),mStartName,mEndName
+            mMapPresent.drawRoute(getApplicationContext(),mStartName,mEndName
                     ,mStartPoint,mEndPoint);
+            showDetail(mEndName,true);
 
         }else {
             //暂时为空
@@ -411,11 +410,13 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     }
 
     private void ifCanSearchPoint(){
+        //method about searching point
         if(mSearchPoint!=null){
             mMapPresent.addMarker(mSearchPoint,mEtSearch.getText().toString());
             mEndPoint = mSearchPoint;
             mEndName = mSearchName;
             mEtEnd.setText(mEndName);
+            showDetail(mEndName,false);
         }
     }
 
@@ -427,7 +428,13 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         }
     }
 
-    public void showDetail(String name){
+
+    /**
+     *
+     * @param name
+     * @param ifDraworSearch true=draw and false=search
+     */
+    public void showDetail(String name,boolean ifDraworSearch){
         CampusFactory.getRetrofitService().getDetail(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -439,7 +446,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                     List<String> list=detail.getPlat().getUrl();
                     mNowPointDetails.setUrl(list.toArray(new String[list.size()]));
                     mTvSite.setText(mNowPointDetails.getName());
-                    if (draworSearch)
+                    if (ifDraworSearch)
                         mTvDetail.setText(String.format("距离：%sm预计耗时：%smin", String.valueOf(mMapPresent.getDistance()), String.valueOf(mMapPresent.getTime())));
                     else
                         mTvDetail.setText(detail.getPlat().getInfo());
