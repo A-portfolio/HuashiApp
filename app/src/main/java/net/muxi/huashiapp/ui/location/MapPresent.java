@@ -136,7 +136,6 @@ public class MapPresent {
                 aMap.clear();
                 if (i == AMapException.CODE_AMAP_SUCCESS) {
                     if (walkRouteResult != null && walkRouteResult.getPaths() != null) {
-                        addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(startPoint),AMapUtil.convertToLatLng(endPoint),startName,endName);
                         WalkPath walkPath = walkRouteResult.getPaths().get(0);
                         if (walkRouteOverlay != null) {
                             walkRouteOverlay.removeFromMap();
@@ -147,7 +146,7 @@ public class MapPresent {
 
                         time=walkRouteOverlay.getTime();
                         distance=walkRouteOverlay.getDistance();
-                        addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(from),AMapUtil.convertToLatLng(to),startName,endName);
+                        addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(startPoint),AMapUtil.convertToLatLng(endPoint),startName,endName);
 
                         walkRouteOverlay.zoomToSpan();
                     }
