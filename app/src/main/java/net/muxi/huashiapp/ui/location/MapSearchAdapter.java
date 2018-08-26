@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.amap.api.services.core.LatLonPoint;
+import com.muxistudio.appcommon.data.MapDetailList;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.location.data.PointSearch;
@@ -23,10 +24,10 @@ import java.util.List;
 public class MapSearchAdapter extends RecyclerView.Adapter{
 
     private Context mContext;
-    private List<PointSearch> mList;
+    private List<MapDetailList.PointBean> mList;
     private OnClickTextList onClickTextList;
 
-    public MapSearchAdapter(Context context,List<PointSearch> list,OnClickTextList onClickTextList){
+    public MapSearchAdapter(Context context,List<MapDetailList.PointBean> list,OnClickTextList onClickTextList){
         this.mContext = context;
         this.mList = list;
         this.onClickTextList = onClickTextList;
@@ -46,7 +47,7 @@ public class MapSearchAdapter extends RecyclerView.Adapter{
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        PointSearch p = mList.get(position);
+        MapDetailList.PointBean p = mList.get(position);
         LatLonPoint l = new LatLonPoint(p.getPoints().get(1),p.getPoints().get(0));
         ((ViewHolder)holder).bind(p.getName(),l);
     }

@@ -40,7 +40,9 @@ import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.muxistudio.appcommon.data.Detail;
+import com.muxistudio.appcommon.data.MapDetailList;
 import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.net.MapCampusFactory;
 import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
@@ -51,6 +53,7 @@ import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -101,7 +104,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 
 //    private int id = 0;
 
-    private List<PointSearch> mList = new ArrayList<>();
+    private List<MapDetailList.PointBean> mList = new ArrayList<>();
 
     public static void start(Context context) {
         Intent starter = new Intent(context, MapActivity.class);
@@ -169,6 +172,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         mImgSearch.setOnClickListener( v -> {
             mLayoutDetails.setVisibility(View.VISIBLE);
             initLayout(0,0,0);
+            ifCanSearchPoint();
         });
         mEtSearch.addTextChangedListener(this);
         mEtStart.addTextChangedListener(this);
@@ -193,24 +197,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         mRecyclerView = findViewById(R.id.map_search_recycle);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
-    }
-
-
-    public void initData(){
-        List<Double> doubles1 = new ArrayList<>();
-        List<Double> doubles2 = new ArrayList<>();
-        doubles1.add(30.526024);
-        doubles1.add(114.367444);
-        doubles2.add(30.520266);
-        doubles2.add(114.368498);
-        PointSearch pointSearch1 = new PointSearch();
-        pointSearch1.setName("八号楼");
-        pointSearch1.setPoints(doubles1);
-        PointSearch pointSearch2= new PointSearch();
-        pointSearch2.setName("七号楼");
-        pointSearch2.setPoints(doubles2);
-        mList.add(pointSearch1);
-        mList.add(pointSearch2);
     }
 
     //  搜索模式切换
@@ -240,7 +226,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         initView();
         initListener();
         initLayout(10,10,5);
-        initData();
         initAdapter();
         checkPermission();
         mMapView =  findViewById(R.id.map);
@@ -401,14 +386,21 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        if (charSequence.length() == 0) mLayoutResult.setVisibility(View.GONE);
-        else if(mLayoutResult.getVisibility() != View.VISIBLE) {
-            mLayoutResult.setVisibility(View.VISIBLE);
-//            mRelativeLayout.setAlpha(Float.valueOf("0.7"));
-//            mMapPresent.ToPoiSearch(charSequence.toString(),getBaseContext());
+        if (charSequence.length() == 0) {
+            mLayoutResult.setVisibility(View.GONE);
+        } else {
+            MapCampusFactory.getRetrofitService().getDetailList(charSequence.toString())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(list ->{
+                        mList.clear();
+                        if(list.getPoint() != null) mList.addAll(list.getPoint());
+                        mAdapter.notifyDataSetChanged();
+                    });
+            if(mLayoutResult.getVisibility() != View.VISIBLE) {
+                mLayoutResult.setVisibility(View.VISIBLE);
+            }
         }
-        mAdapter.notifyDataSetChanged();
-//        mList.clear();
     }
 
     @Override
@@ -471,10 +463,16 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private void ifCanSearch() {
         if(mStartPoint!=null && mEndPoint!=null){
             drawRoute(mStartPoint,mEndPoint);
+            Toast.makeText(getBaseContext(),"开始绘制路线！",Toast.LENGTH_LONG);
         }else {
             Toast.makeText(getBaseContext(),"请确认您输入了正确的地点！",Toast.LENGTH_LONG);
         }
-        Log.d("From ifCanSearch",(mStartPoint==null)?"true":"false");
+    }
+
+    private void ifCanSearchPoint(){
+        if(mSearchPoint!=null){
+            //search point
+        }
     }
 
     private void hideKeyboard() {

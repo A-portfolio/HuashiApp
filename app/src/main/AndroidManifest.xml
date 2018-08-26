@@ -227,7 +227,7 @@
             android:value="校园通"/>
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="936bf6af54eb102378866d707d996639"/>
+            android:value="d3dac874cd84bd098d7744d07d87421b"/>
 
 
 

@@ -123,6 +123,8 @@
 
     </LinearLayout>
     <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:id="@+id/map_top_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
