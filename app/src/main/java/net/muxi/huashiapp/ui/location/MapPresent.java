@@ -163,5 +163,7 @@ public class MapPresent {
 
     }
 
-
+    public void addMarker(LatLonPoint latLonPoint,String name){
+        Marker marker=aMap.addMarker(new MarkerOptions().position(AMapUtil.convertToLatLng(latLonPoint)).title(name));
+    }
 }
