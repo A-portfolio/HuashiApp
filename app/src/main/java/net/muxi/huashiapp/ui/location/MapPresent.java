@@ -144,7 +144,7 @@ public class MapPresent {
                                 walkRouteResult.getStartPos(), walkRouteResult.getTargetPos());
                         walkRouteOverlay.addToMap();
 
-                        time=walkRouteOverlay.getTime();
+                        time=walkRouteOverlay.getTime()/60;
                         distance=walkRouteOverlay.getDistance();
                         addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(startPoint),AMapUtil.convertToLatLng(endPoint),startName,endName);
 
@@ -172,7 +172,7 @@ public class MapPresent {
 
         aMap.addMarker((new MarkerOptions()).position(endPoint)
                 .icon(AMapUtil.getEndBitmapDescriptor()).title(endName))
-                .setSnippet("距离；"+distance+"  时间:"+time);
+                .setSnippet(distance+"米"+"  |   用时约"+time+"分钟");
         // mAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoint,
         // getShowRouteZoom()));
     }

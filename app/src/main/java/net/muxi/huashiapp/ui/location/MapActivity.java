@@ -137,10 +137,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private void initListener(){
         mImgLocate.setOnClickListener(v -> mMapPresent.setlocation());
         mBtnMore.setOnClickListener(v -> {
-            PointDetails pointDetails = new PointDetails();
-            pointDetails.setName("八号楼");
-            pointDetails.setInfo("详细信息详细信息");
-            PointDetailActivity.start(getApplicationContext(), pointDetails);
             if (mNowPointDetails!=null) {
                 PointDetailActivity.start(getBaseContext(), mNowPointDetails);
             }
@@ -235,7 +231,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
             mMapPresent.setlocation();
 
         }
-
     }
 
 
@@ -266,15 +261,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         }
     }
 
-    @Override
-    public boolean onMarkerClick(Marker marker){
-        mLayoutDetails.setVisibility(View.VISIBLE);
-        initLayout(0,0,0);
-        Logger.i("marker onclick");
-        if (marker.getTitle()==null){
-            return true;
-        }
-        CampusFactory.getRetrofitService().getDetail(marker.getTitle())
+    public void getData(String name){
+        CampusFactory.getRetrofitService().getDetail(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(detail -> {
@@ -285,7 +273,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                     List<String> list=detail.getPlat().getUrl();
                     mNowPointDetails.setUrl(list.toArray(new String[list.size()]));
                     mTvSite.setText(mNowPointDetails.getName());
-                    mTvDetail.setText(marker.getSnippet());
                     mBtnMore.setEnabled(true);
                 },throwable -> {
                     throwable.printStackTrace();
@@ -295,8 +282,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                     }
                     switch (code) {
                         case 404: {
-                            mTvSite.setText(marker.getTitle());
-                            mTvDetail.setText(marker.getSnippet());
+                            mTvSite.setText(name);
                             mBtnMore.setEnabled(false);
                             break;
                         }
@@ -307,6 +293,16 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                         default:break;
                     }
                 },()-> Logger.i("onMarkerClock"));
+    }
+    @Override
+    public boolean onMarkerClick(Marker marker){
+        mLayoutDetails.setVisibility(View.VISIBLE);
+        initLayout(0,0,0);
+        Logger.i("marker onclick");
+        if (marker.getTitle()==null){
+            return true;
+        }
+        getData(marker.getTitle());
         return true;
     }
 
@@ -315,16 +311,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
                 mMapPresent.setlocation();
-//                mSearchPoint.setLatitude(amapLocation.getLatitude());
-//                mSearchPoint.setLongitude(amapLocation.getLongitude());
-//                if (mMarker == null) {
-//                    mMarker = aMap.addMarker(new MarkerOptions()
-//                            .position(AMapUtil.convertToLatLng(mSearchPoint))
-//                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
-//                } else {
-//                    mMarker.setPosition(AMapUtil.convertToLatLng(mSearchPoint));
-//                }
-//                aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(AMapUtil.convertToLatLng(mSearchPoint), 10));
             } else {
                 Log.e("AmapError", "location Error, ErrCode:"
                         + amapLocation.getErrorCode() + ", errInfo:"
