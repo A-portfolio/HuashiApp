@@ -37,6 +37,14 @@ public class MapPresent {
     private float time;
     private float distance;
 
+    public float getTime() {
+        return time;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
     private final static String TAG="GAODE";
 
     public MapPresent(AMap aMap){
@@ -118,7 +126,7 @@ public class MapPresent {
     }
 
     // TODO: 18-8-24 算出总距离时长 
-    public void drawRoute(final Context context,String startName,String endName,LatLonPoint startPoint,LatLonPoint endPoint){
+    public boolean drawRoute(final Context context,String startName,String endName,LatLonPoint startPoint,LatLonPoint endPoint){
         routeSearch=new RouteSearch(context);
         routeSearch.setRouteSearchListener(new RouteSearch.OnRouteSearchListener() {
             @Override
@@ -149,6 +157,7 @@ public class MapPresent {
                         addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(startPoint),AMapUtil.convertToLatLng(endPoint),startName,endName);
 
                         walkRouteOverlay.zoomToSpan();
+
                     }
                 }
             }
@@ -162,7 +171,7 @@ public class MapPresent {
             RouteSearch.WalkRouteQuery query=new RouteSearch.WalkRouteQuery(new RouteSearch.FromAndTo(startPoint,endPoint));
             routeSearch.calculateWalkRouteAsyn(query);
         }
-
+                return true;
     }
     public void addStartAndEndMarker(AMap aMap,LatLng startPoint,LatLng endPoint,String startName,String endName) {
         aMap.addMarker(new MarkerOptions()

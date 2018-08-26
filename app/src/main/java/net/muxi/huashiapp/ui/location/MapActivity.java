@@ -61,6 +61,9 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private String mSearchName;
     private LatLonPoint mNowPoint;
 
+    //true为draw,false为search
+    private boolean draworSearch=false;
+
     private LocationListener mLocationListener;
     private MapSearchAdapter mAdapter;
     private MapPresent mMapPresent;
@@ -272,6 +275,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         initLayout(0,0,0);
         Logger.i("marker onclick");
         if (marker.getTitle()==null){
+
             return true;
         }
         CampusFactory.getRetrofitService().getDetail(marker.getTitle())
@@ -289,6 +293,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                     mBtnMore.setEnabled(true);
                 },throwable -> {
                     throwable.printStackTrace();
+                    mBtnMore.setEnabled(false);
                     int code=0 ;
                     if(throwable instanceof HttpException){
                         code = ((HttpException) throwable).code();
@@ -297,7 +302,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                         case 404: {
                             mTvSite.setText(marker.getTitle());
                             mTvDetail.setText(marker.getSnippet());
-                            mBtnMore.setEnabled(false);
+
                             break;
                         }
                         case 400:{
@@ -411,8 +416,9 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 
     private void ifCanSearch() {
         if(mStartPoint!=null && mEndPoint!=null){
-            mMapPresent.drawRoute(getApplicationContext(),mStartName,mEndName
+            draworSearch=mMapPresent.drawRoute(getApplicationContext(),mStartName,mEndName
                     ,mStartPoint,mEndPoint);
+
         }else {
             //暂时为空
         }
@@ -433,6 +439,26 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
             InputMethodManager imManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imManager.hideSoftInputFromWindow(viewFocus.getWindowToken(), 0);
         }
+    }
+
+    public void showDetail(String name){
+        CampusFactory.getRetrofitService().getDetail(name)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(detail -> {
+
+                    mNowPointDetails=new PointDetails();
+                    mNowPointDetails.setName(detail.getPlat().getName());
+                    mNowPointDetails.setInfo(detail.getPlat().getInfo());
+                    List<String> list=detail.getPlat().getUrl();
+                    mNowPointDetails.setUrl(list.toArray(new String[list.size()]));
+                    mTvSite.setText(mNowPointDetails.getName());
+                    if (draworSearch)
+                        mTvDetail.setText(String.format("距离：%sm预计耗时：%smin", String.valueOf(mMapPresent.getDistance()), String.valueOf(mMapPresent.getTime())));
+                    else
+                        mTvDetail.setText(detail.getPlat().getInfo());
+                    mBtnMore.setEnabled(true);
+                }, Throwable::printStackTrace);
     }
 
 }
