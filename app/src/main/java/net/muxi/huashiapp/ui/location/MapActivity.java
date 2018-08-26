@@ -31,15 +31,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.Marker;
-import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
-import com.amap.api.services.route.BusRouteResult;
-import com.amap.api.services.route.DriveRouteResult;
-import com.amap.api.services.route.RideRouteResult;
-import com.amap.api.services.route.RouteSearch;
-import com.amap.api.services.route.WalkPath;
-import com.amap.api.services.route.WalkRouteResult;
-import com.muxistudio.appcommon.data.Detail;
 import com.muxistudio.appcommon.data.MapDetailList;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.common.util.Logger;
@@ -48,7 +40,6 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.location.data.PointDetails;
 import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
-import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,22 +48,22 @@ import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MapActivity extends AppCompatActivity implements AMapLocationListener, TextWatcher, View.OnFocusChangeListener,AMap.OnMapTouchListener, AMap.OnMarkerClickListener {
+public class MapActivity extends AppCompatActivity implements AMapLocationListener, TextWatcher, View.OnFocusChangeListener, AMap.OnMarkerClickListener {
 
     private MapView mMapView;
     private AMap aMap;
     private final static String TAG="GAODE";
     private LatLonPoint mStartPoint;
     private LatLonPoint mEndPoint;
+    private String mStartName;
+    private String mEndName;
     private LatLonPoint mSearchPoint;
+    private String mSearchName;
     private LatLonPoint mNowPoint;
 
     private LocationListener mLocationListener;
-    private RouteSearch routeSearch;
-    private WalkRouteOverlay walkRouteOverlay;
     private MapSearchAdapter mAdapter;
     private MapPresent mMapPresent;
-    private Marker mMarker;
     private PointDetails mNowPointDetails;   //  此时底部应该显示的点数据
 
     private LinearLayout mLayoutDetails;
@@ -130,6 +121,11 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         mImgLocate = findViewById(R.id.map_btn_locate);
         mParamsRoute = (RelativeLayout.LayoutParams) mBtnRoute.getLayoutParams();
         mParamsLocate = (RelativeLayout.LayoutParams) mImgLocate.getLayoutParams();
+
+        mStartName = "我的位置";
+        mEtStart.setText(mStartName);
+        mStartPoint = mMapPresent.getMyLocation();
+        //初始化我的位置
     }
 
     private void initLayout(int route,int locateBottom,int locateLeft){
@@ -187,9 +183,9 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         OnClickTextList onClickTextList = new OnClickTextList() {
             @Override
             public void changeEditText(String s, LatLonPoint l) {
-                if(mEtStart.hasFocus()){mEtStart.setText(s);mStartPoint=l;mEtStart.clearFocus();ifCanSearch();}
-                else if(mEtEnd.hasFocus()) {mEtEnd.setText(s);mEndPoint=l;mEtEnd.clearFocus();ifCanSearch();}
-                else {mEtSearch.setText(s);mSearchPoint=l;mEtSearch.clearFocus();ifCanSearchPoint();}
+                if(mEtStart.hasFocus()){mEtStart.setText(s);mStartName=s;mStartPoint=l;mEtStart.clearFocus();ifCanSearch();}
+                else if(mEtEnd.hasFocus()) {mEtEnd.setText(s);mEndName=s;mEndPoint=l;mEtEnd.clearFocus();ifCanSearch();}
+                else {mEtSearch.setText(s);mSearchPoint=l;mSearchName=s;mEtSearch.clearFocus();ifCanSearchPoint();}
                 hideKeyboard();
             }
         };
@@ -207,6 +203,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
             mLayoutSearch.setVisibility(View.GONE);
             mLayoutRoute.setVisibility(View.VISIBLE);
             mBtnRoute.setVisibility(View.GONE);
+            ifCanSearch();
             MODE = MODE_ROUTE;
         }else if (MODE == MODE_ROUTE){
             mStartPoint = null;
@@ -236,16 +233,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
             aMap.setOnMarkerClickListener(this);
             if (!requestPermission)
             mMapPresent.setlocation();
-        }
-
-        if (MODE == MODE_SEARCH){
-
-        } else if (MODE == MODE_ROUTE){
-//            mStartPoint = new LatLonPoint(39.996678,116.479271);
-//            mEndPoint = new LatLonPoint(39.997796,116.468939);
-//            mNowPoint = mMapPresent.getMyLocation();
-//            mStartPoint = mNowPoint;
-//            drawRoute(mStartPoint,mEndPoint);
         }
 
 
@@ -279,60 +266,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         }
     }
 
-    public void drawRoute(LatLonPoint startPoint, LatLonPoint endPoint){
-        RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(startPoint,endPoint);
-        RouteSearch.WalkRouteQuery query = new RouteSearch.WalkRouteQuery(fromAndTo);
-        routeSearch = new RouteSearch(this);
-        routeSearch.calculateWalkRouteAsyn(query);//开始算路
-        routeSearch.setRouteSearchListener(new RouteSearch.OnRouteSearchListener() {
-            @Override
-            public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
-                aMap.clear();
-                Logger.i("aMap clear~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                if (i== AMapException.CODE_AMAP_SUCCESS){
-                    if (walkRouteResult!=null&&walkRouteResult.getPaths()!=null){
-                        Logger.i("aMap draw~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                        WalkPath walkPath=walkRouteResult.getPaths().get(0);
-                        if (walkRouteOverlay!=null){
-                            walkRouteOverlay.removeFromMap();
-                        }
-                        walkRouteOverlay=new WalkRouteOverlay(getBaseContext(),aMap,walkPath,
-                                walkRouteResult.getStartPos(),walkRouteResult.getTargetPos());
-                        LatLonPoint l=walkRouteOverlay.getLastWalkPoint(walkPath.getSteps().get(0));
-                        Log.d(TAG, "onWalkRouteSearched: "+l.toString());
-                        walkRouteOverlay.addToMap();
-                        walkRouteOverlay.zoomToSpan();
-                    }
-                }
-            }
-
-            @Override
-            public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
-
-            }
-
-            @Override
-            public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
-
-            }
-
-            @Override
-            public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
-
-            }
-        });
-    }
-
-    //  检查marker 用坐标or名称？？
-    public void checkMarker(LatLonPoint latLonPoint){
-
-    }
-
-    public void checkMarker(String name){
-
-    }
-
-    // TODO: 18-8-26 如果加我的位置要设置
     @Override
     public boolean onMarkerClick(Marker marker){
         mLayoutDetails.setVisibility(View.VISIBLE);
@@ -432,15 +365,10 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     @Override
     public void onFocusChange(View view, boolean hasFocus) {
         if(hasFocus){
-
+            //暂时为空
         }else {
             mLayoutResult.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void onTouch(MotionEvent event){
-
     }
 
     @Override
@@ -483,15 +411,19 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 
     private void ifCanSearch() {
         if(mStartPoint!=null && mEndPoint!=null){
-            drawRoute(mStartPoint,mEndPoint);
+            mMapPresent.drawRoute(getApplicationContext(),mStartName,mEndName
+                    ,mStartPoint,mEndPoint);
         }else {
-
+            //暂时为空
         }
     }
 
     private void ifCanSearchPoint(){
         if(mSearchPoint!=null){
             mMapPresent.addMarker(mSearchPoint,mEtSearch.getText().toString());
+            mEndPoint = mSearchPoint;
+            mEndName = mSearchName;
+            mEtEnd.setText(mEndName);
         }
     }
 
