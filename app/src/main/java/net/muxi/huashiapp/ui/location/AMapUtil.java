@@ -5,8 +5,12 @@ package net.muxi.huashiapp.ui.location;
 
 import android.graphics.Bitmap;
 
+import com.amap.api.maps.model.BitmapDescriptor;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.services.core.LatLonPoint;
+
+import net.muxi.huashiapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +31,18 @@ public class AMapUtil {
     }
    */
 
+    public static BitmapDescriptor getStartBitmapDescriptor() {
+        return BitmapDescriptorFactory.fromResource(R.drawable.ic_start_marker);
+    }
+
+    /**
+     * 给终点Marker设置图标，并返回更换图标的图片。如不用默认图片，需要重写此方法。
+     * @return 更换的Marker图片。
+     * @since V2.1.0
+     */
+    public static  BitmapDescriptor getEndBitmapDescriptor() {
+        return BitmapDescriptorFactory.fromResource(R.drawable.ic_end_marker);
+    }
 
     public static LatLonPoint convertToLatLonPoint(LatLng latlon) {
         return new LatLonPoint(latlon.latitude, latlon.longitude);

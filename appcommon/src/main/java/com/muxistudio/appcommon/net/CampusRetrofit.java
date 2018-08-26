@@ -35,6 +35,7 @@ public class CampusRetrofit{
                 .baseUrl("https://ccnubox.muxixyz.com/api/")
                 .build();
         mRetrofitService = retrofit.create(RetrofitService.class);
+
     }
 
     public RetrofitService getRetrofitService(){

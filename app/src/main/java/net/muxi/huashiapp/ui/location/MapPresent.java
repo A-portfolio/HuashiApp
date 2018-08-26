@@ -136,6 +136,7 @@ public class MapPresent {
                 aMap.clear();
                 if (i == AMapException.CODE_AMAP_SUCCESS) {
                     if (walkRouteResult != null && walkRouteResult.getPaths() != null) {
+                        addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(from),AMapUtil.convertToLatLng(to));
                         WalkPath walkPath = walkRouteResult.getPaths().get(0);
                         if (walkRouteOverlay != null) {
                             walkRouteOverlay.removeFromMap();
@@ -161,6 +162,17 @@ public class MapPresent {
             routeSearch.calculateWalkRouteAsyn(query);
         }
 
+    }
+    public void addStartAndEndMarker(AMap aMap,LatLng startPoint,LatLng endPoint) {
+        aMap.addMarker(new MarkerOptions()
+                .position(startPoint).icon(AMapUtil.getStartBitmapDescriptor())
+                .title("\u8D77\u70B9"));
+        // startMarker.showInfoWindow();
+
+        aMap.addMarker((new MarkerOptions()).position(endPoint)
+                .icon(AMapUtil.getEndBitmapDescriptor()).title("\u7EC8\u70B9"));
+        // mAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoint,
+        // getShowRouteZoom()));
     }
 
 

@@ -333,7 +333,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     public boolean onMarkerClick(Marker marker){
         mLayoutDetails.setVisibility(View.VISIBLE);
         initLayout(0,0,0);
-
+        Logger.i("marker onclick");
         CampusFactory.getRetrofitService().getDetail(marker.getTitle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

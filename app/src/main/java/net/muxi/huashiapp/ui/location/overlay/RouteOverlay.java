@@ -106,7 +106,7 @@ public class RouteOverlay {
         return BitmapDescriptorFactory.fromResource(R.drawable.ic_map_oval);
     }
 
-    /*protected void addStartAndEndMarker() {
+   /* protected void addStartAndEndMarker() {
         startMarker = mAMap.addMarker(new MarkerOptions()
                 .position(startPoint).icon(getStartBitmapDescriptor())
                 .title("\u8D77\u70B9"));
