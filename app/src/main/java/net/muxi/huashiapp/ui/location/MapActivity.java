@@ -231,6 +231,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         aMap = mMapView.getMap();
         if (aMap != null) {
             mMapPresent = new MapPresent(aMap);
+            aMap.setOnMarkerClickListener(this);
             if (!requestPermission)
             mMapPresent.setlocation();
         }

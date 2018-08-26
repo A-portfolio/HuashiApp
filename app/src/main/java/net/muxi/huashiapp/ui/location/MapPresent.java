@@ -118,7 +118,7 @@ public class MapPresent {
     }
 
     // TODO: 18-8-24 算出总距离时长 
-    public void drawRoute(final Context context){
+    public void drawRoute(final Context context,String startName,String endName){
         routeSearch=new RouteSearch(context);
         routeSearch.setRouteSearchListener(new RouteSearch.OnRouteSearchListener() {
             @Override
@@ -136,7 +136,7 @@ public class MapPresent {
                 aMap.clear();
                 if (i == AMapException.CODE_AMAP_SUCCESS) {
                     if (walkRouteResult != null && walkRouteResult.getPaths() != null) {
-                        addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(from),AMapUtil.convertToLatLng(to));
+                        addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(from),AMapUtil.convertToLatLng(to),startName,endName);
                         WalkPath walkPath = walkRouteResult.getPaths().get(0);
                         if (walkRouteOverlay != null) {
                             walkRouteOverlay.removeFromMap();
@@ -163,19 +163,21 @@ public class MapPresent {
         }
 
     }
-    public void addStartAndEndMarker(AMap aMap,LatLng startPoint,LatLng endPoint) {
+    public void addStartAndEndMarker(AMap aMap,LatLng startPoint,LatLng endPoint,String startName,String endName) {
         aMap.addMarker(new MarkerOptions()
                 .position(startPoint).icon(AMapUtil.getStartBitmapDescriptor())
-                .title("\u8D77\u70B9"));
+                .title(startName));
         // startMarker.showInfoWindow();
 
         aMap.addMarker((new MarkerOptions()).position(endPoint)
-                .icon(AMapUtil.getEndBitmapDescriptor()).title("\u7EC8\u70B9"));
+                .icon(AMapUtil.getEndBitmapDescriptor()).title(endName));
         // mAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoint,
         // getShowRouteZoom()));
     }
 
     public void addMarker(LatLonPoint latLonPoint,String name){
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+        aMap. moveCamera(CameraUpdateFactory.changeLatLng(AMapUtil.convertToLatLng(latLonPoint)));
         Marker marker=aMap.addMarker(new MarkerOptions().position(AMapUtil.convertToLatLng(latLonPoint)).title(name));
     }
 }
