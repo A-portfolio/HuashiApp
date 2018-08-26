@@ -121,9 +121,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         mParamsRoute = (RelativeLayout.LayoutParams) mBtnRoute.getLayoutParams();
         mParamsLocate = (RelativeLayout.LayoutParams) mImgLocate.getLayoutParams();
 
-        mStartName = "我的位置";
-        mEtStart.setText(mStartName);
-        mStartPoint = mMapPresent.getMyLocation();
         //初始化我的位置
     }
 
@@ -184,7 +181,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
             public void changeEditText(String s, LatLonPoint l) {
                 if(mEtStart.hasFocus()){mEtStart.setText(s);mStartName=s;mStartPoint=l;mEtStart.clearFocus();ifCanSearch();}
                 else if(mEtEnd.hasFocus()) {mEtEnd.setText(s);mEndName=s;mEndPoint=l;mEtEnd.clearFocus();ifCanSearch();}
-                else {mEtSearch.setText(s);mSearchPoint=l;mSearchName=s;mEtSearch.clearFocus();ifCanSearchPoint();}
+                else {mEtSearch.setText(s);mSearchPoint=l;mSearchName=s;mEtSearch.clearFocus();}
                 hideKeyboard();
             }
         };
@@ -198,11 +195,14 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private void exchangeMode(){
         mLayoutResult.setVisibility(View.GONE);
         if (MODE == MODE_SEARCH){
+            mStartName = "我的位置";
+            mEtStart.setText(mStartName);
+            mStartPoint = mMapPresent.getMyLocation();
+            ifCanSearch();
             mSearchPoint = null;
             mLayoutSearch.setVisibility(View.GONE);
             mLayoutRoute.setVisibility(View.VISIBLE);
             mBtnRoute.setVisibility(View.GONE);
-            ifCanSearch();
             MODE = MODE_ROUTE;
         }else if (MODE == MODE_ROUTE){
             mStartPoint = null;
@@ -232,8 +232,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
             aMap.setOnMarkerClickListener(this);
             if (!requestPermission)
             mMapPresent.setlocation();
-        }
 
+        }
 
     }
 
@@ -324,7 +324,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (charSequence.length() == 0) {
             mLayoutResult.setVisibility(View.GONE);
-        } else {
+        } else if(mEtStart.hasFocus()||mEtEnd.hasFocus()||mEtSearch.hasFocus()){
             CampusFactory.getRetrofitService().getDetailList(charSequence.toString())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
