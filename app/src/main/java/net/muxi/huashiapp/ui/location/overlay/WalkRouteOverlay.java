@@ -25,6 +25,8 @@ public class WalkRouteOverlay extends RouteOverlay {
 
     private BitmapDescriptor walkStationDescriptor= null;
 
+    private float time=0;
+    private float distance=0;
     private WalkPath walkPath;
     /**
      * 通过此构造函数创建步行路线图层。
@@ -35,6 +37,15 @@ public class WalkRouteOverlay extends RouteOverlay {
      * @param end 终点。详见搜索服务模块的核心基础包（com.amap.api.services.core）中的类<strong><a href="../../../../../../Search/com/amap/api/services/core/LatLonPoint.html" title="com.amap.api.services.core中的类">LatLonPoint</a></strong>。
      * @since V2.1.0
      */
+
+
+
+    public float getTime(){
+        return time;
+    }
+    public float getDistance(){
+        return distance;
+    }
     public WalkRouteOverlay(Context context, AMap amap, WalkPath path,
                             LatLonPoint start, LatLonPoint end) {
         super(context);
@@ -129,6 +140,8 @@ public class WalkRouteOverlay extends RouteOverlay {
                 .visible(nodeIconVisible)
                 .anchor(0.5f, 0.5f)
                 .icon(walkStationDescriptor));
+        distance+=walkStep.getDistance();
+        time+=walkStep.getDuration();
     }
 
     /**

@@ -37,6 +37,9 @@ public class MapPresent {
     private RouteSearch routeSearch;
     private WalkRouteOverlay walkRouteOverlay;
 
+    private float time;
+    private float distance;
+
     private final static String TAG="GAODE";
 
     public MapPresent(AMap aMap){
@@ -136,17 +139,18 @@ public class MapPresent {
                 aMap.clear();
                 if (i == AMapException.CODE_AMAP_SUCCESS) {
                     if (walkRouteResult != null && walkRouteResult.getPaths() != null) {
-                        addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(from),AMapUtil.convertToLatLng(to),startName,endName);
                         WalkPath walkPath = walkRouteResult.getPaths().get(0);
                         if (walkRouteOverlay != null) {
                             walkRouteOverlay.removeFromMap();
                         }
                         walkRouteOverlay = new WalkRouteOverlay(context, aMap, walkPath,
                                 walkRouteResult.getStartPos(), walkRouteResult.getTargetPos());
-                        LatLonPoint l = walkRouteOverlay.getLastWalkPoint(walkPath.getSteps().get(0));
-                        Log.d(TAG, "onWalkRouteSearched: " + l.toString());
-
                         walkRouteOverlay.addToMap();
+
+                        time=walkRouteOverlay.getTime();
+                        distance=walkRouteOverlay.getDistance();
+                        addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(from),AMapUtil.convertToLatLng(to),startName,endName);
+
                         walkRouteOverlay.zoomToSpan();
                     }
                 }
@@ -170,7 +174,8 @@ public class MapPresent {
         // startMarker.showInfoWindow();
 
         aMap.addMarker((new MarkerOptions()).position(endPoint)
-                .icon(AMapUtil.getEndBitmapDescriptor()).title(endName));
+                .icon(AMapUtil.getEndBitmapDescriptor()).title(endName))
+                .setSnippet("距离；"+distance+"  时间:"+time);
         // mAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoint,
         // getShowRouteZoom()));
     }

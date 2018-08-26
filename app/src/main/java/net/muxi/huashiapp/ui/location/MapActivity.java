@@ -48,9 +48,11 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.location.data.PointDetails;
 import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.HttpException;
 import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -330,11 +332,15 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 
     }
 
+    // TODO: 18-8-26 如果加我的位置要设置
     @Override
     public boolean onMarkerClick(Marker marker){
         mLayoutDetails.setVisibility(View.VISIBLE);
         initLayout(0,0,0);
         Logger.i("marker onclick");
+        if (marker.getTitle()==null){
+            return true;
+        }
         CampusFactory.getRetrofitService().getDetail(marker.getTitle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -346,13 +352,27 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                     List<String> list=detail.getPlat().getUrl();
                     mNowPointDetails.setUrl(list.toArray(new String[list.size()]));
                     mTvSite.setText(mNowPointDetails.getName());
-                    mTvDetail.setText(mNowPointDetails.getInfo());
+                    mTvDetail.setText(marker.getSnippet());
                     mBtnMore.setEnabled(true);
                 },throwable -> {
                     throwable.printStackTrace();
-                    mTvSite.setText(marker.getTitle());
-                    mTvDetail.setText(marker.getSnippet());
-                    mBtnMore.setEnabled(false);
+                    int code=0 ;
+                    if(throwable instanceof HttpException){
+                        code = ((HttpException) throwable).code();
+                    }
+                    switch (code) {
+                        case 404: {
+                            mTvSite.setText(marker.getTitle());
+                            mTvDetail.setText(marker.getSnippet());
+                            mBtnMore.setEnabled(false);
+                            break;
+                        }
+                        case 400:{
+                            Toast.makeText(getApplicationContext(),"信息错误",Toast.LENGTH_LONG).show();
+                            break;
+                        }
+                        default:break;
+                    }
                 },()-> Logger.i("onMarkerClock"));
         return true;
     }
