@@ -29,9 +29,6 @@ import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
 public class MapPresent {
     private LatLonPoint mMyLocation;
-    private LatLonPoint from;
-    private LatLonPoint to;
-
 
     private AMap aMap;
     private RouteSearch routeSearch;
@@ -58,7 +55,7 @@ public class MapPresent {
         aMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener() {
             @Override
             public void onMyLocationChange(Location location) {
-               from= mMyLocation=new LatLonPoint(location.getLatitude(),location.getLongitude());
+               mMyLocation=new LatLonPoint(location.getLatitude(),location.getLongitude());
             }
         });
     }
@@ -78,7 +75,7 @@ public class MapPresent {
             public void onPoiSearched(PoiResult poiResult, int i) {
                 Log.d(TAG, "onPoiSearched-result code: "+i);
                 LatLonPoint latLonPoint=poiResult.getPois().get(0).getLatLonPoint();
-                to=latLonPoint;
+                //to=latLonPoint;
                 aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
                 LatLng p=new LatLng(latLonPoint.getLatitude(),latLonPoint.getLongitude());
                 aMap. moveCamera(CameraUpdateFactory.changeLatLng(p));
@@ -102,7 +99,7 @@ public class MapPresent {
             public void onPoiSearched(PoiResult poiResult, int i) {
                 Log.d(TAG, "onPoiSearched-result code: "+i);
                 LatLonPoint latLonPoint=poiResult.getPois().get(0).getLatLonPoint();
-                to=latLonPoint;
+                //to=latLonPoint;
                 aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
                 LatLng p=new LatLng(latLonPoint.getLatitude(),latLonPoint.getLongitude());
                 aMap. moveCamera(CameraUpdateFactory.changeLatLng(p));
@@ -118,7 +115,7 @@ public class MapPresent {
     }
 
     // TODO: 18-8-24 算出总距离时长 
-    public void drawRoute(final Context context,String startName,String endName){
+    public void drawRoute(final Context context,String startName,String endName,LatLonPoint startPoint,LatLonPoint endPoint){
         routeSearch=new RouteSearch(context);
         routeSearch.setRouteSearchListener(new RouteSearch.OnRouteSearchListener() {
             @Override
@@ -136,7 +133,7 @@ public class MapPresent {
                 aMap.clear();
                 if (i == AMapException.CODE_AMAP_SUCCESS) {
                     if (walkRouteResult != null && walkRouteResult.getPaths() != null) {
-                        addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(from),AMapUtil.convertToLatLng(to),startName,endName);
+                        addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(startPoint),AMapUtil.convertToLatLng(endPoint),startName,endName);
                         WalkPath walkPath = walkRouteResult.getPaths().get(0);
                         if (walkRouteOverlay != null) {
                             walkRouteOverlay.removeFromMap();
@@ -157,8 +154,8 @@ public class MapPresent {
             }
         });
 
-        if (from!=null&&to!=null){
-            RouteSearch.WalkRouteQuery query=new RouteSearch.WalkRouteQuery(new RouteSearch.FromAndTo(from,to));
+        if (startPoint!=null&&endPoint!=null){
+            RouteSearch.WalkRouteQuery query=new RouteSearch.WalkRouteQuery(new RouteSearch.FromAndTo(startPoint,endPoint));
             routeSearch.calculateWalkRouteAsyn(query);
         }
 
