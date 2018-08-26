@@ -140,10 +140,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private void initListener(){
         mImgLocate.setOnClickListener(v -> mMapPresent.setlocation());
         mBtnMore.setOnClickListener(v -> {
-            PointDetails pointDetails = new PointDetails();
-            pointDetails.setName("八号楼");
-            pointDetails.setInfo("详细信息详细信息");
-            PointDetailActivity.start(getApplicationContext(), pointDetails);
             if (mNowPointDetails!=null) {
                 PointDetailActivity.start(getBaseContext(), mNowPointDetails);
             }
@@ -320,16 +316,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
                 mMapPresent.setlocation();
-//                mSearchPoint.setLatitude(amapLocation.getLatitude());
-//                mSearchPoint.setLongitude(amapLocation.getLongitude());
-//                if (mMarker == null) {
-//                    mMarker = aMap.addMarker(new MarkerOptions()
-//                            .position(AMapUtil.convertToLatLng(mSearchPoint))
-//                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
-//                } else {
-//                    mMarker.setPosition(AMapUtil.convertToLatLng(mSearchPoint));
-//                }
-//                aMap.animateCamera(CameraUpdateFactory.newLatLngZoom(AMapUtil.convertToLatLng(mSearchPoint), 10));
             } else {
                 Log.e("AmapError", "location Error, ErrCode:"
                         + amapLocation.getErrorCode() + ", errInfo:"

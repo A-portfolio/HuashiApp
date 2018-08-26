@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:textSize="14sp"
-        android:text="距您约   米，步行约  分钟"
+        android:text=""
         android:textColor="@color/color_map_details"
         />
 
