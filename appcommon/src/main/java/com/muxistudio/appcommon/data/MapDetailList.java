@@ -4,20 +4,21 @@ import java.util.List;
 
 public class MapDetailList {
 
-    private List<PointBean> point;
 
-    public List<PointBean> getPoint() {
-        return point;
+    private List<PointsBean> points;
+
+    public List<PointsBean> getPoints() {
+        return points;
     }
 
-    public void setPoint(List<PointBean> point) {
-        this.point = point;
+    public void setPoints(List<PointsBean> points) {
+        this.points = points;
     }
 
-    public static class PointBean {
+    public static class PointsBean {
         /**
-         * name : string
-         * points : [0]
+         * name : 八号教学楼
+         * points : [30.526619,114.365561]
          */
 
         private String name;

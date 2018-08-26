@@ -24,10 +24,10 @@ import java.util.List;
 public class MapSearchAdapter extends RecyclerView.Adapter{
 
     private Context mContext;
-    private List<MapDetailList.PointBean> mList;
+    private List<MapDetailList.PointsBean> mList;
     private OnClickTextList onClickTextList;
 
-    public MapSearchAdapter(Context context,List<MapDetailList.PointBean> list,OnClickTextList onClickTextList){
+    public MapSearchAdapter(Context context,List<MapDetailList.PointsBean> list,OnClickTextList onClickTextList){
         this.mContext = context;
         this.mList = list;
         this.onClickTextList = onClickTextList;
@@ -47,8 +47,8 @@ public class MapSearchAdapter extends RecyclerView.Adapter{
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        MapDetailList.PointBean p = mList.get(position);
-        LatLonPoint l = new LatLonPoint(p.getPoints().get(1),p.getPoints().get(0));
+        MapDetailList.PointsBean p = mList.get(position);
+        LatLonPoint l = new LatLonPoint(p.getPoints().get(0),p.getPoints().get(1));
         ((ViewHolder)holder).bind(p.getName(),l);
     }
 

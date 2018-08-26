@@ -42,12 +42,10 @@ import com.amap.api.services.route.WalkRouteResult;
 import com.muxistudio.appcommon.data.Detail;
 import com.muxistudio.appcommon.data.MapDetailList;
 import com.muxistudio.appcommon.net.CampusFactory;
-import com.muxistudio.appcommon.net.MapCampusFactory;
 import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.location.data.PointDetails;
-import net.muxi.huashiapp.ui.location.data.PointSearch;
 import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
 import java.util.ArrayList;
@@ -104,7 +102,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 
 //    private int id = 0;
 
-    private List<MapDetailList.PointBean> mList = new ArrayList<>();
+    private List<MapDetailList.PointsBean> mList = new ArrayList<>();
 
     public static void start(Context context) {
         Intent starter = new Intent(context, MapActivity.class);
@@ -287,8 +285,10 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
             @Override
             public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
                 aMap.clear();
+                Logger.i("aMap clear~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 if (i== AMapException.CODE_AMAP_SUCCESS){
                     if (walkRouteResult!=null&&walkRouteResult.getPaths()!=null){
+                        Logger.i("aMap draw~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                         WalkPath walkPath=walkRouteResult.getPaths().get(0);
                         if (walkRouteOverlay!=null){
                             walkRouteOverlay.removeFromMap();
@@ -389,14 +389,14 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         if (charSequence.length() == 0) {
             mLayoutResult.setVisibility(View.GONE);
         } else {
-            MapCampusFactory.getRetrofitService().getDetailList(charSequence.toString())
+            CampusFactory.getRetrofitService().getDetailList(charSequence.toString())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(list ->{
                         mList.clear();
-                        if(list.getPoint() != null) mList.addAll(list.getPoint());
+                        if(list.getPoints() != null) mList.addAll(list.getPoints());
                         mAdapter.notifyDataSetChanged();
-                    });
+                    },Throwable::printStackTrace);
             if(mLayoutResult.getVisibility() != View.VISIBLE) {
                 mLayoutResult.setVisibility(View.VISIBLE);
             }
@@ -463,9 +463,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private void ifCanSearch() {
         if(mStartPoint!=null && mEndPoint!=null){
             drawRoute(mStartPoint,mEndPoint);
-            Toast.makeText(getBaseContext(),"开始绘制路线！",Toast.LENGTH_LONG);
         }else {
-            Toast.makeText(getBaseContext(),"请确认您输入了正确的地点！",Toast.LENGTH_LONG);
+
         }
     }
 
