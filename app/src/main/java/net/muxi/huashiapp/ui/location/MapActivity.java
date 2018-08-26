@@ -187,7 +187,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
             public void changeEditText(String s, LatLonPoint l) {
                 if(mEtStart.hasFocus()){mEtStart.setText(s);mStartPoint=l;mEtStart.clearFocus();ifCanSearch();}
                 else if(mEtEnd.hasFocus()) {mEtEnd.setText(s);mEndPoint=l;mEtEnd.clearFocus();ifCanSearch();}
-                else {mEtSearch.setText(s);mSearchPoint=l;mEtSearch.clearFocus();}
+                else {mEtSearch.setText(s);mSearchPoint=l;mEtSearch.clearFocus();ifCanSearchPoint();}
                 hideKeyboard();
             }
         };
@@ -470,7 +470,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 
     private void ifCanSearchPoint(){
         if(mSearchPoint!=null){
-            //search point
+            mMapPresent.addMarker(mSearchPoint,mEtSearch.getText().toString());
         }
     }
 
