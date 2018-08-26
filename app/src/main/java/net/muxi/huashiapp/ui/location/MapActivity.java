@@ -48,7 +48,8 @@ import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MapActivity extends AppCompatActivity implements AMapLocationListener, TextWatcher, View.OnFocusChangeListener, AMap.OnMarkerClickListener {
+public class MapActivity extends AppCompatActivity implements AMapLocationListener, TextWatcher,
+        View.OnFocusChangeListener, AMap.OnMarkerClickListener,ChangeListenner {
 
     private MapView mMapView;
     private AMap aMap;
@@ -362,6 +363,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mMapPresent.onDestory();
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
     }
@@ -401,8 +403,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         //method about drawing route
         if(mStartPoint!=null && mEndPoint!=null){
             mMapPresent.drawRoute(getApplicationContext(),mStartName,mEndName
-                    ,mStartPoint,mEndPoint);
-            showDetail(mEndName,true);
+                    ,mStartPoint,mEndPoint,this);
+
 
         }else {
             //暂时为空
@@ -434,11 +436,15 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
      * @param name
      * @param ifDraworSearch true=draw and false=search
      */
+    @Override
     public void showDetail(String name,boolean ifDraworSearch){
+        mLayoutDetails.setVisibility(View.VISIBLE);
+        initLayout(0,0,0);
         CampusFactory.getRetrofitService().getDetail(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(detail -> {
+
 
                     mNowPointDetails=new PointDetails();
                     mNowPointDetails.setName(detail.getPlat().getName());

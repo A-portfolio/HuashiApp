@@ -126,7 +126,8 @@ public class MapPresent {
     }
 
     // TODO: 18-8-24 算出总距离时长 
-    public boolean drawRoute(final Context context,String startName,String endName,LatLonPoint startPoint,LatLonPoint endPoint){
+    public boolean drawRoute(final Context context,String startName,String endName,LatLonPoint startPoint,
+                             LatLonPoint endPoint,ChangeListenner change){
         routeSearch=new RouteSearch(context);
         routeSearch.setRouteSearchListener(new RouteSearch.OnRouteSearchListener() {
             @Override
@@ -155,7 +156,7 @@ public class MapPresent {
                         time=walkRouteOverlay.getTime()/60;
                         distance=walkRouteOverlay.getDistance();
                         addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(startPoint),AMapUtil.convertToLatLng(endPoint),startName,endName);
-
+                        change.showDetail(endName,true);
                         walkRouteOverlay.zoomToSpan();
 
                     }
@@ -190,5 +191,9 @@ public class MapPresent {
         aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
         aMap. moveCamera(CameraUpdateFactory.changeLatLng(AMapUtil.convertToLatLng(latLonPoint)));
         Marker marker=aMap.addMarker(new MarkerOptions().position(AMapUtil.convertToLatLng(latLonPoint)).title(name));
+    }
+
+    public void onDestory(){
+        aMap=null;
     }
 }
