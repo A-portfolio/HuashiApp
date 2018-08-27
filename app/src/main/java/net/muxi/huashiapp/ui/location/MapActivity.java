@@ -32,11 +32,13 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.services.core.LatLonPoint;
+import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.data.MapDetailList;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.ui.location.data.DetailEven;
 import net.muxi.huashiapp.ui.location.data.PointDetails;
 import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
@@ -231,6 +233,11 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
             mMapPresent.setlocation();
 
         }
+
+        RxBus.getDefault().toObservable(DetailEven.class)
+                .subscribe(detailEven ->  showDetail(detailEven.getName(),detailEven.isSearchOrRoute()),
+                        Throwable::printStackTrace,
+                        ()-> Log.i(TAG, "detailEven"));
 
     }
 
