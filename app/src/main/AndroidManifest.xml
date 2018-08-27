@@ -225,10 +225,14 @@
         <meta-data
             android:name="ZHUGE_CHANNEL"
             android:value="校园通"/>
+
+        <!--高德地图dubug api key-->
+        <!--wpy:936bf6af54eb102378866d707d996639 -->
+        <!--zdf:8c11f6ae2c754927abfb535f5a8a859d -->
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="8c11f6ae2c754927abfb535f5a8a859d"/>
-
+            android:value="936bf6af54eb102378866d707d996639"/>
 
 
         <activity
