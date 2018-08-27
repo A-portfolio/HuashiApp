@@ -38,11 +38,11 @@ public class MapPresent {
     private float distance;
 
     public float getTime() {
-        return time;
+        return walkRouteOverlay.getTime();
     }
 
     public float getDistance() {
-        return distance;
+        return walkRouteOverlay.getDistance();
     }
 
     private final static String TAG="GAODE";
@@ -181,7 +181,7 @@ public class MapPresent {
 
         aMap.addMarker((new MarkerOptions()).position(endPoint)
                 .icon(AMapUtil.getEndBitmapDescriptor()).title(endName))
-                .setSnippet(distance+"米"+"  |   用时约"+time+"分钟");
+                .setSnippet(String.format("%sm米  |   用时约%s分钟",String.valueOf(distance),String.valueOf(time)));
         // mAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoint,
         // getShowRouteZoom()));
     }

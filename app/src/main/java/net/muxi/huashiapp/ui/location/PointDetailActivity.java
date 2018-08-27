@@ -3,17 +3,13 @@ package net.muxi.huashiapp.ui.location;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.cardbanner.CardBanner;
 import com.muxistudio.cardbanner.ViewHolder;
@@ -37,12 +33,11 @@ public class PointDetailActivity extends ToolbarActivity {
     private int width,height;
 
     public PointDetails mPointData;
-    private List<ViewHolder<Integer>> mViewHolders = new ArrayList<>();
+    private List<ViewHolder<String>> mViewHolders = new ArrayList<>();
 
-    //  测试用图
-    private Integer[] resIds = {R.drawable.a, R.drawable.aa, R.drawable.aaa};
+    private String[] resId;
 
-    private List<Integer> resIdList = new ArrayList<>();
+    private List<String> resIdList = new ArrayList<>();
 
     public static void start(Context context, PointDetails point) {
         Intent starter = new Intent(context, PointDetailActivity.class);
@@ -59,13 +54,15 @@ public class PointDetailActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_details);
+        mPointData = getIntent().getParcelableExtra("detail");
 
         initView();
-        //initBanner();
-        mPointData = getIntent().getParcelableExtra("detail");
-        Logger.i(mPointData.getName());
+        initBanner();
+        Logger.i(mPointData.getName()+"--------------"+mPointData.getUrl().toString());
         setTitle(mPointData.getName());
+        mTvName.setText(mPointData.getName());
         mTvDetail.setText(mPointData.getInfo());
+
 
     }
 
@@ -85,19 +82,20 @@ public class PointDetailActivity extends ToolbarActivity {
     }
 
     private void initBanner(){
-        for (int i = 0;i < 3;i ++) {
-            ViewHolder<Integer> viewHolder = new ViewHolder<Integer>() {
+        resId = mPointData.getUrl();
+        for (int i = 0; i < mPointData.getUrl().length; i++) {
+            ViewHolder<String> viewHolder = new ViewHolder<String>() {
                 @Override
-                public View getView(Context context, Integer data) {
+                public View getView(Context context, String data) {
                     ImageView imageView = new ImageView(PointDetailActivity.this);
-                    imageView.setImageResource(data);
                     imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    Glide.with(getApplicationContext()).load(data).into(imageView);
                     return imageView;
                 }
             };
             mViewHolders.add(viewHolder);
         }
-        resIdList = Arrays.asList(resIds);
+        resIdList = Arrays.asList(resId);
         mBanner.setViewHolders(mViewHolders,resIdList);
         mBanner.setScrollDuration(5000);
         mBanner.setScrollTime(500);

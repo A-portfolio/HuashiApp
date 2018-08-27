@@ -61,7 +61,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private String mSearchName;
     private LatLonPoint mNowPoint;
 
-    private LocationListener mLocationListener;
     private MapSearchAdapter mAdapter;
     private MapPresent mMapPresent;
     private PointDetails mNowPointDetails;   //  此时底部应该显示的点数据
@@ -446,10 +445,14 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                     List<String> list=detail.getPlat().getUrl();
                     mNowPointDetails.setUrl(list.toArray(new String[list.size()]));
                     mTvSite.setText(mNowPointDetails.getName());
-                    if (ifDraworSearch)
-                        mTvDetail.setText(String.format("距离：%sm预计耗时：%smin", String.valueOf(mMapPresent.getDistance()), String.valueOf(mMapPresent.getTime())));
-                    else
+                    if (ifDraworSearch) {
+                        mTvDetail.setText(String.format("%sm米  |   用时约%s分钟", String.valueOf(mMapPresent.getDistance()), String.valueOf(mMapPresent.getTime())));
+                    }else
                         mTvDetail.setText(detail.getPlat().getInfo());
+//                    if (ifDraworSearch)
+//                        mTvDetail.setText(String.format("%sm米  |   用时约%s分钟", String.valueOf(mMapPresent.getDistance()), String.valueOf(mMapPresent.getTime())));
+//                    else
+//                        mTvDetail.setText(detail.getPlat().getInfo());
                     mBtnMore.setEnabled(true);
                 }, Throwable::printStackTrace);
     }
