@@ -21,6 +21,7 @@ public abstract class ToolbarActivity extends BaseAppActivity{
         super.onCreate(savedInstanceState);
     }
 
+    //这个方法被后面的类继承 并且初始化Toolbar
     @Override
     public void setContentView(int layoutResId) {
         super.setContentView(layoutResId);
@@ -32,7 +33,7 @@ public abstract class ToolbarActivity extends BaseAppActivity{
         mToolbar = findViewById(R.id.toolbar);
         if (mToolbar != null) {
             this.setSupportActionBar(mToolbar);
-            mToolbar.setTitle("");
+            mToolbar.setTitle("华师匣子");
             if (canBack()){
                 ActionBar actionbar = getSupportActionBar();
                 if (actionbar != null){
@@ -46,9 +47,7 @@ public abstract class ToolbarActivity extends BaseAppActivity{
 
     public void setTitle(String title){
         if (mToolbar != null){
-            mToolbar.setTitle("");
-            TextView textView = mToolbar.findViewById(R.id.tv_title);
-            textView.setText(title);
+            mToolbar.setTitle(title);
             setSupportActionBar(mToolbar);
         }
     }

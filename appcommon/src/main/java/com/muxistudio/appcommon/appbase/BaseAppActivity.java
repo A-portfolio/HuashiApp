@@ -47,14 +47,6 @@ public class BaseAppActivity extends BaseActivity {
             mActionBar.setDisplayHomeAsUpEnabled(true);
         }
         getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-        //sendComponentNameByZG();
-    }
-
-    private void sendComponentNameByZG() {
-         if (getComponentName() != null) {
-             //ZhugeUtils.sendEvent(getComponentName());
-         }
-        Logger.d(getComponentName().getClassName());
     }
 
     public void showLoading() {

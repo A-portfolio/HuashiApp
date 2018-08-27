@@ -33,6 +33,7 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
     Map<Integer,Boolean> mCheckMap = new HashMap<>();
     ArrayList<Score> mScores;
     FragmentActivity mContext;
+    private boolean mAllChecked = false;
 
     public ScoreCreditAdapter(ArrayList<Score> scores) {
         super();
@@ -40,10 +41,10 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
     }
 
     //默认情况下全选checklist中所有的成绩 去计算学分绩
-    private void initCheckList(){
+    private void initCheckList(boolean mAllChecked){
         int size = getItemCount();
         for(int i=0;i<size;i++){
-            mCheckMap.put(i,true);
+            mCheckMap.put(i,mAllChecked);
         }
     }
 
@@ -61,8 +62,8 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
     /**
      * 设置checkmap都被选择 作为暴露给外部全选的接口
      */
-    public void setAllChecked(){
-        initCheckList();
+    public void setAllChecked(boolean allChecked){
+        initCheckList(allChecked);
     }
 
     @NonNull
@@ -71,7 +72,7 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
         mContext = (FragmentActivity) parent.getContext();
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_score_credit,parent,false);
 
-        initCheckList();
+        initCheckList(true);
         return new ViewHolder(view);
     }
 

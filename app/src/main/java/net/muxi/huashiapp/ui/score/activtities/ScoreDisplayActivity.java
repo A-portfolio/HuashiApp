@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
@@ -57,6 +58,8 @@ public class ScoreDisplayActivity extends ToolbarActivity {
     private List<String> mCourseParams = new ArrayList<>();
     private List<String> mYearParams = new ArrayList<>();
     private List<String> mTermParams = new ArrayList<>();
+
+    private boolean mAllChecked = true;
 
     /**
      *
@@ -278,9 +281,14 @@ public class ScoreDisplayActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_all) {
             if (mScoresAdapter != null) {
-                mScoresAdapter.setAllChecked();
-                mScoresAdapter.notifyDataSetChanged();
+              if(mAllChecked )
+                mScoresAdapter.setAllChecked(true);
+                mAllChecked = false;
+            }else{
+              mScoresAdapter.setAllChecked(false);
+              mAllChecked = true;
             }
+            mScoresAdapter.notifyDataSetChanged();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -298,7 +306,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         loadGrade();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+  @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBackPressed() {
         super.onBackPressed();
