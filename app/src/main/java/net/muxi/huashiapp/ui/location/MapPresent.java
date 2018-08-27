@@ -37,8 +37,8 @@ public class MapPresent {
     private float time;
     private float distance;
 
-    public float getTime() {
-        return walkRouteOverlay.getTime();
+    public String getTime() {
+        return String.format("%.1f",walkRouteOverlay.getTime()/60);
     }
 
     public float getDistance() {
@@ -153,7 +153,7 @@ public class MapPresent {
                                 walkRouteResult.getStartPos(), walkRouteResult.getTargetPos());
                         walkRouteOverlay.addToMap();
 
-                        time=walkRouteOverlay.getTime()/60;
+                        time=walkRouteOverlay.getTime();
                         distance=walkRouteOverlay.getDistance();
                         addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(startPoint),AMapUtil.convertToLatLng(endPoint),startName,endName);
                         change.showDetail(endName,true);

@@ -31,6 +31,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.Text;
 import com.amap.api.services.core.LatLonPoint;
 import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.data.MapDetailList;
@@ -39,6 +40,7 @@ import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.location.data.DetailEven;
+import net.muxi.huashiapp.ui.SuggestionActivity;
 import net.muxi.huashiapp.ui.location.data.PointDetails;
 import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
@@ -87,6 +89,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private ImageView mImgExchange;
     private ImageView mImgLocate;
     private RecyclerView mRecyclerView;
+    private TextView mTvFeedback;
 
     private EditText mEtStart;
     private EditText mEtEnd;
@@ -121,6 +124,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         mRecyclerView = findViewById(R.id.map_search_recycle);
         mLayoutResult = findViewById(R.id.map_search_layout);
         mImgLocate = findViewById(R.id.map_btn_locate);
+        mTvFeedback = findViewById(R.id.map_item_hind);
         mParamsRoute = (RelativeLayout.LayoutParams) mBtnRoute.getLayoutParams();
         mParamsLocate = (RelativeLayout.LayoutParams) mImgLocate.getLayoutParams();
 
@@ -164,6 +168,9 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
             mLayoutDetails.setVisibility(View.VISIBLE);
             initLayout(0,0,0);
             ifCanSearchPoint();
+        });
+        mTvFeedback.setOnClickListener( v -> {
+            SuggestionActivity.start(getBaseContext());
         });
         mEtSearch.addTextChangedListener(this);
         mEtStart.addTextChangedListener(this);
@@ -459,13 +466,9 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                     mNowPointDetails.setUrl(list.toArray(new String[list.size()]));
                     mTvSite.setText(mNowPointDetails.getName());
                     if (ifDraworSearch) {
-                        mTvDetail.setText(String.format("%sm米  |   用时约%s分钟", String.valueOf(mMapPresent.getDistance()), String.valueOf(mMapPresent.getTime())));
+                        mTvDetail.setText(String.format("%sm米  |   用时约%s分钟", String.valueOf(mMapPresent.getDistance()), mMapPresent.getTime()));
                     }else
                         mTvDetail.setText(detail.getPlat().getInfo());
-//                    if (ifDraworSearch)
-//                        mTvDetail.setText(String.format("%sm米  |   用时约%s分钟", String.valueOf(mMapPresent.getDistance()), String.valueOf(mMapPresent.getTime())));
-//                    else
-//                        mTvDetail.setText(detail.getPlat().getInfo());
                     mBtnMore.setEnabled(true);
                 }, Throwable::printStackTrace);
     }

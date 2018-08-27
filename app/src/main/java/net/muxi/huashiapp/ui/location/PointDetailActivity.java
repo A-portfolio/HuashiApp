@@ -17,6 +17,7 @@ import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
 
+import net.muxi.huashiapp.ui.SuggestionActivity;
 import net.muxi.huashiapp.ui.location.data.PointDetails;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,7 +73,9 @@ public class PointDetailActivity extends ToolbarActivity {
         mTvDistance = findViewById(R.id.point_distance);
         mTvDetail = findViewById(R.id.point_detail);
         mBtn = findViewById(R.id.point_btn);
-
+        mBtn.setOnClickListener( v-> {
+            SuggestionActivity.start(getBaseContext());
+        });
 //        DisplayMetrics metrics = getResources().getDisplayMetrics();
 //        width = metrics.widthPixels;
 //        height = metrics.heightPixels;
