@@ -20,3 +20,6 @@ freeline_project_description.json
 # apk
 *.apk
 
+# log
+.log
+
