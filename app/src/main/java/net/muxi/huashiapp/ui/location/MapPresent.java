@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
@@ -190,7 +191,7 @@ public class MapPresent {
     public void addMarker(LatLonPoint latLonPoint,String name){
         aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
         aMap. moveCamera(CameraUpdateFactory.changeLatLng(AMapUtil.convertToLatLng(latLonPoint)));
-        Marker marker=aMap.addMarker(new MarkerOptions().position(AMapUtil.convertToLatLng(latLonPoint)).title(name));
+        Marker marker=aMap.addMarker(new MarkerOptions().position(AMapUtil.convertToLatLng(latLonPoint)).title(name).icon(AMapUtil.getStartBitmapDescriptor()));
     }
 
     public void onDestory(){
