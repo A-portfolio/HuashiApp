@@ -49,10 +49,12 @@ public class BaseAppActivity extends BaseActivity {
         getWindow().getDecorView().setBackgroundColor(Color.WHITE);
     }
 
-    public void showLoading() {
+    public void showLoading(String loadingInfo) {
         if (mLoadingDialog == null) {
             mLoadingDialog = new LoadingDialog();
+            //mLoadingDialog.setLoadingInfo(loadingInfo);
         }
+        //mLoadingDialog.setLoadingInfo(loadingInfo);
         mLoadingDialog.show(getSupportFragmentManager(), "loading");
     }
 
@@ -138,6 +140,7 @@ public class BaseAppActivity extends BaseActivity {
      * 给loadingDialog设置加载动画的提示，注意这个方法需要运行在创建dialog的线程上
      * @param text
      */
+    //todo set it with Builder Pattern
     public void setLoadingInfo(String text){
         if(mLoadingDialog != null){
             mLoadingDialog.setLoadingInfo(text);

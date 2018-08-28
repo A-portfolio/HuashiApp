@@ -12,6 +12,7 @@ import com.muxistudio.appcommon.data.ApartmentData;
 import com.muxistudio.appcommon.db.HuaShiDao;
 import com.muxistudio.appcommon.net.CampusFactory;
 
+import com.muxistudio.appcommon.utils.CommonTextUtils;
 import net.muxi.huashiapp.R;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class ApartmentActivity extends ToolbarActivity {
         if (mApartDatas.size() > 0) {
             setupRecyclerView(mApartDatas);
         } else {
-            showLoading();
+            showLoading(CommonTextUtils.generateRandomApartmentText());
         }
         setTitle("部门信息");
         CampusFactory.getRetrofitService().getApartment()

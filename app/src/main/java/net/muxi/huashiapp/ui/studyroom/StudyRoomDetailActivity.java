@@ -78,7 +78,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     }
 
     private void loadData() {
-        showLoading();
+        showLoading("正在请求空闲教室数据ing~");
         CampusFactory.getRetrofitService()
                 .getClassRoom(getWeek(mQuery), getDayValue(mQuery)
                         , getBuidingValue(mQuery))

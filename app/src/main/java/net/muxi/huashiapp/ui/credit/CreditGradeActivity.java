@@ -111,7 +111,7 @@ public class CreditGradeActivity extends ToolbarActivity {
     }
 
     public void loadCredit(Observable<List<Score>>[] listObservable) {
-        showLoading();
+        showLoading("");
         Observable<List<Score>> creditObservable = Observable.merge(listObservable,5)
                 .flatMap(Observable::from)
                 .toList();

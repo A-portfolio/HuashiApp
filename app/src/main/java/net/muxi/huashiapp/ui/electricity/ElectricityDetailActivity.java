@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.EleRequestData;
 import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.utils.CommonTextUtils;
 import com.muxistudio.common.util.PreferenceUtil;
 import com.muxistudio.multistatusview.MultiStatusView;
 import com.umeng.analytics.MobclickAgent;
@@ -65,7 +66,7 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         PreferenceUtil sp = new PreferenceUtil();
         mQuery = getIntent().getStringExtra("query");
         mMultiStatusView.setOnRetryListener(v -> {
-            showLoading();
+            showLoading(CommonTextUtils.generateRandomApartmentText());
             loadDatas();
         });
         setFontType(PAY_HINT);

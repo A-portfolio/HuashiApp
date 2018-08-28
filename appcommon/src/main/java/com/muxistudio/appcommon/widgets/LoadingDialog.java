@@ -34,7 +34,7 @@ public class LoadingDialog extends BottomDialogFragment {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_loading, null);
 
         mTvLoadingInfo = view.findViewById(R.id.tv_loading_info);
-        mTvLoadingInfo.setText("");
+        mTvLoadingInfo.setText("fuck");
 
         Uri uri = Uri.parse("asset://net.muxi.huashiapp/loading.gif");
         DraweeController controller = Fresco.newDraweeControllerBuilder().setUri(

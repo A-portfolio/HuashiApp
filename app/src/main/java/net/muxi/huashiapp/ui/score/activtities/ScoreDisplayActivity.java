@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
@@ -94,8 +93,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
 
     private void loadGrade() {
-        showLoading();
-        setLoadingInfo("正在请求成绩数据~~");
+        showLoading("正在请求成绩数据~~");
 
         Observable<List<Score>>[] scoreArray = new Observable[mYearParams.size()*mTermParams.size()];
         for(int i=0;i<mYearParams.size();i++) {
@@ -105,7 +103,8 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                         .getScores(mYearParams.get(i), mTermParams.get(j))
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(scoreList -> {
-                           setLoadingInfo(CommonTextUtils.generateRandomText(mYearParams.get(index)));
+
+                           setLoadingInfo(CommonTextUtils.generateRandomScoreText(mYearParams.get(index)));
                         })
                         .retryWhen(new RequestRetry.Builder()
                         .setMaxretries(3)

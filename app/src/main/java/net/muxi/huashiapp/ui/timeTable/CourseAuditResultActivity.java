@@ -14,6 +14,7 @@ import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.AuditCourse;
 import com.muxistudio.appcommon.net.CampusFactory;
 
+import com.muxistudio.appcommon.utils.CommonTextUtils;
 import net.muxi.huashiapp.R;
 
 import java.util.HashMap;
@@ -72,7 +73,7 @@ CourseAuditResultActivity extends ToolbarActivity {
 
     private void searchAuditCourse(HashMap<String, String> map) {
         //api文档中只有name teacher subject三个部分
-        showLoading();
+        showLoading(CommonTextUtils.generateRandomCourseText());
         CampusFactory.getRetrofitService().getAuditCourse(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

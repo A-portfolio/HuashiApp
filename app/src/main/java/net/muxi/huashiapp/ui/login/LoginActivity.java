@@ -20,6 +20,7 @@ import com.muxistudio.appcommon.event.RefreshSessionEvent;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
 import com.muxistudio.appcommon.presenter.LoginPresenter;
+import com.muxistudio.appcommon.utils.CommonTextUtils;
 import com.muxistudio.common.util.NetUtil;
 import com.umeng.analytics.MobclickAgent;
 
@@ -71,7 +72,6 @@ public class LoginActivity extends ToolbarActivity {
         if (type.equals("info")) {
             setTitle("登录信息门户");
         }
-        //showCaptcha(type);
         setLoginListener();
     }
 
@@ -91,39 +91,20 @@ public class LoginActivity extends ToolbarActivity {
             return;
         } else if (TextUtils.isEmpty(user.password)) {
             showErrorSnackbarShort(R.string.tip_input_password);
+            return;
         }
-        showLoading();
+
+        showLoading(CommonTextUtils.generateRandomLoginText());
+        setLoadingInfo("yi qi la da bian");
         if (type.equals("info") || type.equals("lib")) {
             presenter.login(user)
-                    .subscribeOn(Schedulers.io())
-                    .flatMap(result -> {
-                        if (result) {
-                            hideLoading();
-                            //保存登录状态
-                            presenter.saveLoginState(getIntent(),user,type);
-                            finish();
-                            return CampusFactory.getRetrofitService()
-                                    .postUserInfo(new
-                                            UserInfo(Integer.parseInt(user.sid), user.password));
-                        } else {
-                            hideLoading();
-                            CcnuCrawler2.clearCookieStore();
-                            showErrorSnackbarShort(R.string.tip_err_account);
-                            return Observable.error(new Exception());
-                        }
-                    })
-                    .observeOn(AndroidSchedulers.mainThread())
-                    //the error handling show be added, if not the Observalbe.error() will propagate properly
-                    .subscribe(new Subscriber<Msg>() {
-                        @Override
-                        public void onCompleted() { }
-
-                        @Override
-                        public void onError(Throwable e) { e.printStackTrace();}
-
-                        @Override
-                        public void onNext(Msg msg) { }});
-
+                    .subscribe(result->{
+                      if(result){
+                        hideLoading();
+                        presenter.saveLoginState(getIntent(),user,type);
+                        finish();
+                      }
+                    },Throwable::printStackTrace,()->{});
             if (type.equals("info"))
                 MobclickAgent.onEvent(this, "login");
             else {

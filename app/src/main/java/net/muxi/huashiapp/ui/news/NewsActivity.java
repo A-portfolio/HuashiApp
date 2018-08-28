@@ -14,6 +14,7 @@ import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.News;
 import com.muxistudio.appcommon.net.CampusFactory;
 
+import com.muxistudio.appcommon.utils.CommonTextUtils;
 import net.muxi.huashiapp.R;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class NewsActivity extends ToolbarActivity {
         init();
 
 
-        showLoading();
+        showLoading(CommonTextUtils.generateRandomNewsText());
         CampusFactory.getRetrofitService().getNews()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())

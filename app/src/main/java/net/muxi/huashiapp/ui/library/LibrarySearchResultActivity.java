@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.BookSearchResult;
 import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.utils.CommonTextUtils;
 import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
@@ -54,7 +55,7 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
         setContentView(R.layout.activity_lib_result);
         initView();
         setTitle("搜索结果");
-        showLoading();
+        showLoading(CommonTextUtils.generateRandomLoginText());
 
         query = getIntent().getStringExtra("query");
         mBookList = new ArrayList<>();
@@ -63,7 +64,7 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
 
         mMultiStatusView.setOnRetryListener(view -> {
             page = 1;
-            showLoading();
+            showLoading(CommonTextUtils.generateRandomLoginText());
             loadBooks();
         });
         loadBooks();
@@ -100,13 +101,10 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
                 }, throwable -> {
                     throwable.printStackTrace();
                     mMultiStatusView.showError();
-                    mMultiStatusView.setOnRetryListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            page = 1;
-                            showLoading();
-                            loadBooks();
-                        }
+                    mMultiStatusView.setOnRetryListener(view -> {
+                        page = 1;
+                        showLoading(CommonTextUtils.generateRandomLoginText());
+                        loadBooks();
                     });
                 }, () -> {
                     hideLoading();

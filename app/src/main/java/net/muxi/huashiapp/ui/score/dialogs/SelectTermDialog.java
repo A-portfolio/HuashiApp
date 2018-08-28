@@ -50,7 +50,7 @@ public class SelectTermDialog extends BottomDialogFragment implements View.OnCli
                 cbSecondTerm.setChecked(true);
                 cbThirdTerm.setChecked(true);
 
-                rbAll.setChecked(false);
+                rbAll.setChecked(true);
                 mSelectAll = true;
             }else{
                 for (int i = 0; i < terms.length; i++) {

@@ -26,7 +26,8 @@ import rx.schedulers.Schedulers;
 public class LoginPresenter {
 
     /**
-     * login 在完成一个登录过程 在回调中自定义逻辑
+     * login 在完成一个登录过程 在回调中自定义逻辑 如果返回的内容是false的话 直接使用onError()
+     *
      * @param user
      * @return
      */

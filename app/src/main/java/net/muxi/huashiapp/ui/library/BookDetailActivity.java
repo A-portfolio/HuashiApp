@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.Book;
 import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.utils.CommonTextUtils;
 import com.muxistudio.common.util.PreferenceUtil;
 import com.muxistudio.multistatusview.MultiStatusView;
 
@@ -53,7 +54,7 @@ public class BookDetailActivity extends ToolbarActivity {
     }
 
     private void loadData() {
-        showLoading();
+        showLoading(CommonTextUtils.generateRandomLoginText());
         Intent intent = getIntent();
         CampusFactory.getRetrofitService().getBookDetail(intent.getStringExtra("id"))
                 .subscribeOn(Schedulers.io())

@@ -55,7 +55,7 @@ public class WebsiteActivity extends ToolbarActivity {
             //学生信息服务平台暂时无法使用
             setupRecyclerView(filterData(mWebsiteDatas));
         } else {
-            showLoading();
+            showLoading("校园网站正在加载中~");
         }
 
 
