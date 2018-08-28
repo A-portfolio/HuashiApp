@@ -65,7 +65,7 @@ public class MapPresenter {
         Logger.i(Float.toString(myLocationStyle.getStrokeWidth()));
         aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
         aMap.moveCamera(CameraUpdateFactory.zoomTo(18));
-        aMap.moveCamera(CameraUpdateFactory.changeLatLng(AMapUtil.convertToLatLng(mMyLocation)));
+
         aMap.setMyLocationEnabled(true);
         //aMap.getUiSettings().setMyLocationButtonEnabled(true);
         aMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener() {
