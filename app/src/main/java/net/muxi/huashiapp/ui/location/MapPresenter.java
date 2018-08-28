@@ -188,7 +188,7 @@ public class MapPresenter {
 
         aMap.addMarker((new MarkerOptions()).position(endPoint)
                 .icon(AMapUtil.getEndBitmapDescriptor()).title(endName))
-                .setSnippet(String.format("%sm米  |   用时约%s分钟",String.valueOf(distance),String.valueOf(time)));
+                .setSnippet(String.format("%sm米  |   用时约%s分钟",String.valueOf(distance),getTime()));
         // mAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoint,
         // getShowRouteZoom()));
     }
