@@ -32,7 +32,7 @@ public class AMapUtil {
    */
 
     public static BitmapDescriptor getStartBitmapDescriptor() {
-        return BitmapDescriptorFactory.fromResource(R.drawable.ic_start_marker);
+        return BitmapDescriptorFactory.fromResource(R.drawable.ic_map_start_marker);
     }
 
     /**
@@ -41,7 +41,7 @@ public class AMapUtil {
      * @since V2.1.0
      */
     public static  BitmapDescriptor getEndBitmapDescriptor() {
-        return BitmapDescriptorFactory.fromResource(R.drawable.ic_end_marker);
+        return BitmapDescriptorFactory.fromResource(R.drawable.ic_map_end_marker);
     }
 
     public static LatLonPoint convertToLatLonPoint(LatLng latlon) {

@@ -13,7 +13,6 @@ import com.amap.api.services.core.LatLonPoint;
 import com.muxistudio.appcommon.data.MapDetailList;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.ui.location.data.PointSearch;
 
 import java.util.List;
 
@@ -65,7 +64,7 @@ public class MapSearchAdapter extends RecyclerView.Adapter{
             name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClickTextList.changeEditText(s,l);
+                    onClickTextList.onClickText(s,l);
                 }
             });
         }

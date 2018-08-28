@@ -178,7 +178,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private void initAdapter(){
         OnClickTextList onClickTextList = new OnClickTextList() {
             @Override
-            public void changeEditText(String s, LatLonPoint l) {
+            public void onClickText(String s, LatLonPoint l) {
                 if(mEtStart.hasFocus()){mEtStart.setText(s);mStartName=s;mStartPoint=l;mEtStart.clearFocus();ifCanSearch();}
                 else if(mEtEnd.hasFocus()) {mEtEnd.setText(s);mEndName=s;mEndPoint=l;mEtEnd.clearFocus();ifCanSearch();}
                 else {mEtSearch.setText(s);mSearchPoint=l;mSearchName=s;mEtSearch.clearFocus();}
@@ -421,6 +421,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private void ifCanSearchPoint(){
         //method about searching point
         if(mSearchPoint!=null){
+            mMapPresenter.addMarker(mSearchPoint,mEtSearch.getText().toString());
+            aMap.clear();
             mMapPresenter.addMarker(mSearchPoint,mEtSearch.getText().toString());
             mEndPoint = mSearchPoint;
             mEndName = mSearchName;

@@ -228,11 +228,12 @@
 
         <!--高德地图dubug api key-->
         <!--wpy:936bf6af54eb102378866d707d996639 -->
+        <!--zdf:d3dac874cd84bd098d7744d07d87421b -->
         <!--pmy:8c11f6ae2c754927abfb535f5a8a859d -->
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="936bf6af54eb102378866d707d996639"/>
+            android:value="d3dac874cd84bd098d7744d07d87421b"/>
 
 
         <activity
