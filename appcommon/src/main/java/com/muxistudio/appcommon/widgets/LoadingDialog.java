@@ -27,14 +27,21 @@ import rx.Observable;
 public class LoadingDialog extends BottomDialogFragment {
 
     private TextView mTvLoadingInfo;
+
+  public static LoadingDialog newInstance(){
+    LoadingDialog fragment = new LoadingDialog();
+    return fragment;
+  }
+
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         Dialog dialog = new Dialog(getContext(), R.style.FullScreenDialogStyle);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_loading, null);
 
         mTvLoadingInfo = view.findViewById(R.id.tv_loading_info);
-        mTvLoadingInfo.setText("fuck");
 
         Uri uri = Uri.parse("asset://net.muxi.huashiapp/loading.gif");
         DraweeController controller = Fresco.newDraweeControllerBuilder().setUri(

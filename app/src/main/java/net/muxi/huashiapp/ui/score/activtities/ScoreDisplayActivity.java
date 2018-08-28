@@ -103,7 +103,6 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                         .getScores(mYearParams.get(i), mTermParams.get(j))
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(scoreList -> {
-
                            setLoadingInfo(CommonTextUtils.generateRandomScoreText(mYearParams.get(index)));
                         })
                         .retryWhen(new RequestRetry.Builder()

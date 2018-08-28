@@ -23,9 +23,8 @@ import com.muxistudio.common.util.Logger;
 
 public class BottomDialogFragment extends DialogFragment {
 
-    public static final int DIALOG_MARGIN = 8 * 3;
-    public BottomDialogFragment() {
-    }
+
+  public BottomDialogFragment() {}
 
     public static BottomDialogFragment newInstance() {
         Bundle args = new Bundle();
@@ -34,11 +33,6 @@ public class BottomDialogFragment extends DialogFragment {
         return fragment;
     }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return super.onCreateDialog(savedInstanceState);
-    }
 
     public Dialog  createBottomDialog(View view){
         Dialog dialog = new Dialog(getContext(), R.style.BottomDialogStyle);
@@ -63,9 +57,9 @@ public class BottomDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void show(FragmentManager manager, String tag) {
+    public void showNow(FragmentManager manager, String tag) {
         try{
-          super.show(manager, tag);
+          super.showNow(manager, tag);
         }catch (Exception e){
             e.printStackTrace();
             Logger.d("fragment exception ");

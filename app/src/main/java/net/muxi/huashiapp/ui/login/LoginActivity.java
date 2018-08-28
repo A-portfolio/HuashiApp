@@ -95,7 +95,6 @@ public class LoginActivity extends ToolbarActivity {
         }
 
         showLoading(CommonTextUtils.generateRandomLoginText());
-        setLoadingInfo("yi qi la da bian");
         if (type.equals("info") || type.equals("lib")) {
             presenter.login(user)
                     .subscribe(result->{

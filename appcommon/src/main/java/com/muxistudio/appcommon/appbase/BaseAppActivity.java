@@ -21,7 +21,12 @@ import com.muxistudio.common.base.BaseActivity;
 import com.muxistudio.common.util.Logger;
 import com.umeng.analytics.MobclickAgent;
 
+import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func0;
+import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 
 import static android.support.design.widget.Snackbar.make;
@@ -49,17 +54,19 @@ public class BaseAppActivity extends BaseActivity {
         getWindow().getDecorView().setBackgroundColor(Color.WHITE);
     }
 
-    public void showLoading(String loadingInfo) {
-        if (mLoadingDialog == null) {
-            mLoadingDialog = new LoadingDialog();
-            //mLoadingDialog.setLoadingInfo(loadingInfo);
-        }
-        //mLoadingDialog.setLoadingInfo(loadingInfo);
-        mLoadingDialog.show(getSupportFragmentManager(), "loading");
+  /**
+   * DialogFragment 内部使用了Fragment commit()方法这个方法是一个异步操作
+   * @param loadingInfo
+   */
+  public void showLoading(String loadingInfo) {
+      if(mLoadingDialog == null){
+        mLoadingDialog = LoadingDialog.newInstance();
+      }
+      mLoadingDialog.showNow(this.getSupportFragmentManager(),"loading_dialog");
+      mLoadingDialog.setLoadingInfo(loadingInfo);
     }
 
     public void hideLoading() {
-        Logger.d("hideloading");
         if (mLoadingDialog != null) {
             mLoadingDialog.dismissAllowingStateLoss();
         }
