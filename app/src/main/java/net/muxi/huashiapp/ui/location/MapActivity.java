@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -13,9 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -31,7 +28,6 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.Text;
 import com.amap.api.services.core.LatLonPoint;
 import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.data.MapDetailList;
@@ -42,18 +38,16 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.location.data.DetailEven;
 import net.muxi.huashiapp.ui.SuggestionActivity;
 import net.muxi.huashiapp.ui.location.data.PointDetails;
-import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.HttpException;
-import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class MapActivity extends AppCompatActivity implements AMapLocationListener, TextWatcher,
-        View.OnFocusChangeListener, AMap.OnMarkerClickListener,ChangeListenner {
+        View.OnFocusChangeListener, AMap.OnMarkerClickListener {
 
     private MapView mMapView;
     private AMap aMap;
@@ -67,7 +61,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private LatLonPoint mNowPoint;
 
     private MapSearchAdapter mAdapter;
-    private MapPresent mMapPresent;
+    private MapPresenter mMapPresenter;
     private PointDetails mNowPointDetails;   //  此时底部应该显示的点数据
 
     private LinearLayout mLayoutDetails;
@@ -141,7 +135,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     }
 
     private void initListener(){
-        mImgLocate.setOnClickListener(v -> mMapPresent.setlocation());
+        mImgLocate.setOnClickListener(v -> mMapPresenter.setlocation());
         mBtnMore.setOnClickListener(v -> {
             if (mNowPointDetails!=null) {
                 PointDetailActivity.start(getBaseContext(), mNowPointDetails);
@@ -203,7 +197,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         if (MODE == MODE_SEARCH){
             mStartName = "我的位置";
             mEtStart.setText(mStartName);
-            mStartPoint = mMapPresent.getMyLocation();
+            mStartPoint = mMapPresenter.getMyLocation();
             ifCanSearch();
             mSearchPoint = null;
             mLayoutSearch.setVisibility(View.GONE);
@@ -234,10 +228,10 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         mMapView.onCreate(savedInstanceState);
         aMap = mMapView.getMap();
         if (aMap != null) {
-            mMapPresent = new MapPresent(aMap);
+            mMapPresenter = new MapPresenter(aMap);
             aMap.setOnMarkerClickListener(this);
             if (!requestPermission)
-            mMapPresent.setlocation();
+            mMapPresenter.setlocation();
 
         }
 
@@ -326,7 +320,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     public void onLocationChanged(AMapLocation amapLocation){
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
-                mMapPresent.setlocation();
+                mMapPresenter.setlocation();
             } else {
                 Log.e("AmapError", "location Error, ErrCode:"
                         + amapLocation.getErrorCode() + ", errInfo:"
@@ -376,7 +370,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mMapPresent.onDestory();
+        mMapPresenter.onDestory();
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
     }
@@ -406,7 +400,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         if (requestCode==1){
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mMapPresent.setlocation();
+                mMapPresenter.setlocation();
             }
         }else
             finish();
@@ -415,8 +409,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private void ifCanSearch() {
         //method about drawing route
         if(mStartPoint!=null && mEndPoint!=null){
-            mMapPresent.drawRoute(getApplicationContext(),mStartName,mEndName
-                    ,mStartPoint,mEndPoint,this);
+            mMapPresenter.drawRoute(getApplicationContext(),mStartName,mEndName
+                    ,mStartPoint,mEndPoint);
 
 
         }else {
@@ -427,7 +421,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private void ifCanSearchPoint(){
         //method about searching point
         if(mSearchPoint!=null){
-            mMapPresent.addMarker(mSearchPoint,mEtSearch.getText().toString());
+            mMapPresenter.addMarker(mSearchPoint,mEtSearch.getText().toString());
             mEndPoint = mSearchPoint;
             mEndName = mSearchName;
             mEtEnd.setText(mEndName);
@@ -449,7 +443,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
      * @param name
      * @param ifDraworSearch true=draw and false=search
      */
-    @Override
     public void showDetail(String name,boolean ifDraworSearch){
         mLayoutDetails.setVisibility(View.VISIBLE);
         initLayout(0,0,0);
@@ -466,7 +459,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                     mNowPointDetails.setUrl(list.toArray(new String[list.size()]));
                     mTvSite.setText(mNowPointDetails.getName());
                     if (ifDraworSearch) {
-                        mTvDetail.setText(String.format("%sm米  |   用时约%s分钟", String.valueOf(mMapPresent.getDistance()), mMapPresent.getTime()));
+                        mTvDetail.setText(String.format("%sm米  |   用时约%s分钟", String.valueOf(mMapPresenter.getDistance()), mMapPresenter.getTime()));
                     }else
                         mTvDetail.setText(detail.getPlat().getInfo());
                     mBtnMore.setEnabled(true);

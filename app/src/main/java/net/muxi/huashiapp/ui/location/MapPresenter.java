@@ -22,12 +22,14 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
+import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.ui.location.data.DetailEven;
 import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
-public class MapPresent {
+public class MapPresenter {
     private LatLonPoint mMyLocation;
 
     private AMap aMap;
@@ -47,26 +49,29 @@ public class MapPresent {
 
     private final static String TAG="GAODE";
 
-    public MapPresent(AMap aMap){
+    public MapPresenter(AMap aMap){
         this.aMap=aMap;
     }
 
     public void setlocation(){
         final MyLocationStyle myLocationStyle;
-        myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
-        myLocationStyle.interval(2000*30); //设置连续定位模式下的定位间隔，一分钟定位一次
+        myLocationStyle = new MyLocationStyle();
+        //myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
+        myLocationStyle.interval(3000*20);
         myLocationStyle.strokeWidth(0.5F);
         myLocationStyle.strokeColor(Color.argb(130,197,229,227));
         myLocationStyle.radiusFillColor(Color.argb(130,197,229,227));
         Logger.i(Float.toString(myLocationStyle.getStrokeWidth()));
         aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
         aMap.moveCamera(CameraUpdateFactory.zoomTo(18));
+        aMap.moveCamera(CameraUpdateFactory.changeLatLng(AMapUtil.convertToLatLng(mMyLocation)));
         aMap.setMyLocationEnabled(true);
         //aMap.getUiSettings().setMyLocationButtonEnabled(true);
         aMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener() {
             @Override
             public void onMyLocationChange(Location location) {
-               mMyLocation=new LatLonPoint(location.getLatitude(),location.getLongitude());
+                mMyLocation=new LatLonPoint(location.getLatitude(),location.getLongitude());
+                    aMap.moveCamera(CameraUpdateFactory.changeLatLng(AMapUtil.convertToLatLng(mMyLocation)));
             }
         });
     }
@@ -127,7 +132,7 @@ public class MapPresent {
 
     // TODO: 18-8-24 算出总距离时长 
     public boolean drawRoute(final Context context,String startName,String endName,LatLonPoint startPoint,
-                             LatLonPoint endPoint,ChangeListenner change){
+                             LatLonPoint endPoint){
         routeSearch=new RouteSearch(context);
         routeSearch.setRouteSearchListener(new RouteSearch.OnRouteSearchListener() {
             @Override
@@ -156,7 +161,7 @@ public class MapPresent {
                         time=walkRouteOverlay.getTime();
                         distance=walkRouteOverlay.getDistance();
                         addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(startPoint),AMapUtil.convertToLatLng(endPoint),startName,endName);
-                        change.showDetail(endName,true);
+                        RxBus.getDefault().send(new DetailEven(endName,true));
                         walkRouteOverlay.zoomToSpan();
 
                     }
