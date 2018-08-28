@@ -13,7 +13,10 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,7 +39,6 @@ import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.location.data.DetailEven;
-import net.muxi.huashiapp.ui.SuggestionActivity;
 import net.muxi.huashiapp.ui.location.data.PointDetails;
 
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class MapActivity extends AppCompatActivity implements AMapLocationListener, TextWatcher,
-        View.OnFocusChangeListener, AMap.OnMarkerClickListener {
+        View.OnFocusChangeListener, AMap.OnMarkerClickListener, AMap.OnMapTouchListener {
 
     private MapView mMapView;
     private AMap aMap;
@@ -64,41 +66,67 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private MapPresenter mMapPresenter;
     private PointDetails mNowPointDetails;   //  此时底部应该显示的点数据
 
+    private boolean requestPermission;
     private LinearLayout mLayoutDetails;
     private LinearLayout mLayoutSearch;
     private LinearLayout mLayoutRoute;
-    private LinearLayout mLayoutResult;
-    private RelativeLayout mRelativeLayout;
-    private RelativeLayout.LayoutParams mParamsRoute;
-    private RelativeLayout.LayoutParams mParamsLocate;
-    private boolean requestPermission;
 
+    // 底部详情栏
     private TextView mTvSite;
     private TextView mTvDetail;
     private Button mBtnMore;
-    private EditText mEtSearch;
-    private ImageView mImgSearch;
-    private Button mBtnRoute;
-    private ImageView mImgBack;
-    private ImageView mImgExchange;
-    private ImageView mImgLocate;
-    private RecyclerView mRecyclerView;
-    private TextView mTvFeedback;
 
+    // 顶部搜索栏
+    private EditText mEtSearch;
     private EditText mEtStart;
     private EditText mEtEnd;
+    private ImageView mImgSearch;
+    private ImageView mImgBack;
+    private ImageView mImgExchange;
+
+    private RecyclerView mRecyclerView;
+    private Button mBtnRoute;
+    private ImageView mImgLocate;
 
     private int MODE = 2;
     private static final int MODE_ROUTE = 1;   // 路线
     private static final int MODE_SEARCH = 2;  // 搜索
-
-//    private int id = 0;
 
     private List<MapDetailList.PointsBean> mList = new ArrayList<>();
 
     public static void start(Context context) {
         Intent starter = new Intent(context, MapActivity.class);
         context.startActivity(starter);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_map);
+        requestPermission=false;
+        initView();
+        initAdapter();
+        initListener();
+        initLayout(10,10,5);
+        checkPermission();
+        mMapView =  findViewById(R.id.map);
+        mMapView.onCreate(savedInstanceState);
+        aMap = mMapView.getMap();
+        if (aMap != null) {
+            mMapPresenter = new MapPresenter(aMap);
+            aMap.setOnMarkerClickListener(this);
+            aMap.setOnMapTouchListener(this);
+            if (!requestPermission) {
+                mMapPresenter.setlocation();
+            }
+        }
+
+
+        RxBus.getDefault().toObservable(DetailEven.class)
+                .subscribe(detailEven ->  showDetail(detailEven.getName(),detailEven.isSearchOrRoute()),
+                        Throwable::printStackTrace,
+                        ()-> Log.i(TAG, "detailEven"));
+
     }
 
     private void initView() {
@@ -116,22 +144,23 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         mImgBack = findViewById(R.id.map_top_back);
         mImgExchange = findViewById(R.id.map_top_exchange);
         mRecyclerView = findViewById(R.id.map_search_recycle);
-        mLayoutResult = findViewById(R.id.map_search_layout);
         mImgLocate = findViewById(R.id.map_btn_locate);
-        mTvFeedback = findViewById(R.id.map_item_hind);
-        mParamsRoute = (RelativeLayout.LayoutParams) mBtnRoute.getLayoutParams();
-        mParamsLocate = (RelativeLayout.LayoutParams) mImgLocate.getLayoutParams();
 
-        //初始化我的位置
     }
 
-    private void initLayout(int route,int locateBottom,int locateLeft){
-        mParamsRoute.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,route);
-        mParamsLocate.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,locateBottom);
-        mParamsLocate.addRule(RelativeLayout.ALIGN_LEFT,locateLeft);
-        mBtnRoute.setLayoutParams(mParamsRoute);
-        mImgLocate.setLayoutParams(mParamsLocate);
-
+    private void initAdapter(){
+        OnClickTextList onClickTextList = new OnClickTextList() {
+            @Override
+            public void onClickText(String s, LatLonPoint l) {
+                if(mEtStart.hasFocus()){mEtStart.setText(s);mStartName=s;mStartPoint=l;mEtStart.clearFocus();ifCanSearch();}
+                else if(mEtEnd.hasFocus()) {mEtEnd.setText(s);mEndName=s;mEndPoint=l;mEtEnd.clearFocus();ifCanSearch();}
+                else {mEtSearch.setText(s);mSearchPoint=l;mSearchName=s;mEtSearch.clearFocus();}
+                hideKeyboard();
+            }
+        };
+        mAdapter = new MapSearchAdapter(getBaseContext(), mList,onClickTextList);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void initListener(){
@@ -157,14 +186,16 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
             mEtStart.setText(mEtEnd.getText().toString());
             mEtEnd.setText(temp);
         });
-        
+
         mImgSearch.setOnClickListener( v -> {
             mLayoutDetails.setVisibility(View.VISIBLE);
             initLayout(0,0,0);
             ifCanSearchPoint();
         });
-        mTvFeedback.setOnClickListener( v -> {
-            SuggestionActivity.start(getBaseContext());
+        mEtSearch.setOnClickListener( v ->{
+            if (mList != null){
+                mRecyclerView.setVisibility(View.VISIBLE);
+            }
         });
         mEtSearch.addTextChangedListener(this);
         mEtStart.addTextChangedListener(this);
@@ -172,28 +203,22 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         mEtSearch.setOnFocusChangeListener(this);
         mEtStart.setOnFocusChangeListener(this);
         mEtEnd.setOnFocusChangeListener(this);
-
     }
 
-    private void initAdapter(){
-        OnClickTextList onClickTextList = new OnClickTextList() {
-            @Override
-            public void onClickText(String s, LatLonPoint l) {
-                if(mEtStart.hasFocus()){mEtStart.setText(s);mStartName=s;mStartPoint=l;mEtStart.clearFocus();ifCanSearch();}
-                else if(mEtEnd.hasFocus()) {mEtEnd.setText(s);mEndName=s;mEndPoint=l;mEtEnd.clearFocus();ifCanSearch();}
-                else {mEtSearch.setText(s);mSearchPoint=l;mSearchName=s;mEtSearch.clearFocus();}
-                hideKeyboard();
-            }
-        };
-        mAdapter = new MapSearchAdapter(getBaseContext(), mList,onClickTextList);
-        mRecyclerView = findViewById(R.id.map_search_recycle);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mAdapter);
+    // 当底部栏消失：0，0，0   出现：10，10，5
+    private void initLayout(int routeBottom,int locateBottom,int locateLeft){
+        RelativeLayout.LayoutParams paramsRoute = (RelativeLayout.LayoutParams) mBtnRoute.getLayoutParams();
+        paramsRoute.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,routeBottom);  //  设置route按钮相对于底部的距离
+        RelativeLayout.LayoutParams paramsLocate = (RelativeLayout.LayoutParams) mImgLocate.getLayoutParams();
+        paramsLocate.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,locateBottom);   //  设置定位按钮相对于底部的距离
+        paramsLocate.addRule(RelativeLayout.ALIGN_LEFT,locateLeft);  //  设置定位按钮相对于屏幕左侧的距离
+        mBtnRoute.setLayoutParams(paramsRoute);
+        mImgLocate.setLayoutParams(paramsLocate);
     }
 
     //  搜索模式切换
     private void exchangeMode(){
-        mLayoutResult.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.GONE);
         if (MODE == MODE_SEARCH){
             mStartName = "我的位置";
             mEtStart.setText(mStartName);
@@ -212,34 +237,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
             mBtnRoute.setVisibility(View.VISIBLE);
             MODE = MODE_SEARCH;
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
-        requestPermission=false;
-        initView();
-        initListener();
-        initLayout(10,10,5);
-        initAdapter();
-        checkPermission();
-        mMapView =  findViewById(R.id.map);
-        mMapView.onCreate(savedInstanceState);
-        aMap = mMapView.getMap();
-        if (aMap != null) {
-            mMapPresenter = new MapPresenter(aMap);
-            aMap.setOnMarkerClickListener(this);
-            if (!requestPermission)
-            mMapPresenter.setlocation();
-
-        }
-
-        RxBus.getDefault().toObservable(DetailEven.class)
-                .subscribe(detailEven ->  showDetail(detailEven.getName(),detailEven.isSearchOrRoute()),
-                        Throwable::printStackTrace,
-                        ()-> Log.i(TAG, "detailEven"));
-
     }
 
 
@@ -337,18 +334,20 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (charSequence.length() == 0) {
-            mLayoutResult.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.GONE);
         } else if(mEtStart.hasFocus()||mEtEnd.hasFocus()||mEtSearch.hasFocus()){
             CampusFactory.getRetrofitService().getDetailList(charSequence.toString())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(list ->{
                         mList.clear();
-                        if(list.getPoints() != null) mList.addAll(list.getPoints());
+                        if(list.getPoints() != null && list.getPoints().size() > 4) {
+                            mList.addAll(list.getPoints().subList(0,4));
+                        }else  mList.addAll(list.getPoints());
                         mAdapter.notifyDataSetChanged();
                     },Throwable::printStackTrace);
-            if(mLayoutResult.getVisibility() != View.VISIBLE) {
-                mLayoutResult.setVisibility(View.VISIBLE);
+            if(mRecyclerView.getVisibility() != View.VISIBLE) {
+                mRecyclerView.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -363,7 +362,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         if(hasFocus){
             //暂时为空
         }else {
-            mLayoutResult.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.GONE);
         }
     }
 
@@ -466,6 +465,22 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                         mTvDetail.setText(detail.getPlat().getInfo());
                     mBtnMore.setEnabled(true);
                 }, Throwable::printStackTrace);
+    }
+
+    @Override
+    public void onTouch(MotionEvent event){
+        if (mRecyclerView.getVisibility() == View.VISIBLE){
+            mRecyclerView.setVisibility(View.GONE);
+            HideKeyboard(mEtSearch);
+        }
+    }
+
+    // 隐藏键盘
+    public static void HideKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive()) {
+            imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+        }
     }
 
 }

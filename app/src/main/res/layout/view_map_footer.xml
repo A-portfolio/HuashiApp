@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/map_footer"
+    android:layout_width="match_parent"
+    android:layout_height="54dp"
+    android:background="#0000"
+    android:gravity="center"
+    android:text="找不到目的地，点击这里反馈"
+    android:textColor="@color/colorAccent"
+    android:textSize="@dimen/medium_size"
+    android:textStyle="bold"/>
