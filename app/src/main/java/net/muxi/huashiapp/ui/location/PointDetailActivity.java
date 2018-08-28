@@ -2,14 +2,17 @@ package net.muxi.huashiapp.ui.location;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+
+import com.facebook.drawee.drawable.ProgressBarDrawable;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.cardbanner.CardBanner;
 import com.muxistudio.cardbanner.ViewHolder;
@@ -90,10 +93,16 @@ public class PointDetailActivity extends ToolbarActivity {
             ViewHolder<String> viewHolder = new ViewHolder<String>() {
                 @Override
                 public View getView(Context context, String data) {
+                    /*
                     ImageView imageView = new ImageView(PointDetailActivity.this);
                     imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    Glide.with(getApplicationContext()).load(data).into(imageView);
-                    return imageView;
+                    Glide.with(getApplicationContext()).load(data).into(imageView);*/
+                    SimpleDraweeView image=new SimpleDraweeView(PointDetailActivity.this);
+                    // TODO: 18-8-28 添加动画资源或占位图 
+                    //image.getHierarchy().setProgressBarImage();
+                    Uri uri = Uri.parse(data);
+                    image.setImageURI(uri);
+                    return image;
                 }
             };
             mViewHolders.add(viewHolder);
