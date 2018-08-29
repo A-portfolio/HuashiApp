@@ -36,6 +36,7 @@ public class MapPresenter {
     private AMap aMap;
     private RouteSearch routeSearch;
     private WalkRouteOverlay walkRouteOverlay;
+    private Marker endmarker;
 
     private float time;
     private float distance;
@@ -186,20 +187,25 @@ public class MapPresenter {
                 .title(startName));
         // startMarker.showInfoWindow();
 
-        aMap.addMarker((new MarkerOptions()).position(endPoint)
-                .icon(AMapUtil.getEndBitmapDescriptor()).title(endName))
-                .setSnippet(String.format("%sm米  |   用时约%s分钟",String.valueOf(distance),getTime()));
+      endmarker=aMap.addMarker(new MarkerOptions().position(endPoint)
+                .icon(AMapUtil.getEndBitmapDescriptor()).title(endName)
+                .snippet(String.format("%sm米  |   用时约%s分钟",String.valueOf(distance),getTime())));
         // mAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoint,
         // getShowRouteZoom()));
     }
 
-    public void addMarker(LatLonPoint latLonPoint,String name){
+    public Marker addMarker(LatLonPoint latLonPoint,String name){
         aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
         aMap. moveCamera(CameraUpdateFactory.changeLatLng(AMapUtil.convertToLatLng(latLonPoint)));
         Marker marker=aMap.addMarker(new MarkerOptions().position(AMapUtil.convertToLatLng(latLonPoint)).title(name).icon(AMapUtil.getStartBitmapDescriptor()));
+        return marker;
     }
 
     public void onDestory(){
         aMap=null;
+    }
+
+    public Marker getEndmarker() {
+        return endmarker;
     }
 }

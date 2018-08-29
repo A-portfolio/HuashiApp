@@ -1,12 +1,14 @@
 package net.muxi.huashiapp.ui.location;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.muxistudio.appcommon.widgets.BottomDialogFragment;
 import com.muxistudio.common.base.BaseFragment;
 
 import net.muxi.huashiapp.R;
@@ -16,21 +18,11 @@ import net.muxi.huashiapp.ui.location.data.PointDetails;
  * Created by yue on 2018/8/29.
  */
 
-public class BottomFragment extends BaseFragment {
+public class BottomFragment extends Fragment {
     private TextView mTvSite;
     private TextView mTvDetail;
     private Button mBtnMore;
-
-    public static BottomFragment newInstance(PointDetails pointDetails,String detail, boolean more) {
-
-        Bundle args = new Bundle();
-        args.putParcelable("point",pointDetails);
-        args.putString("site", pointDetails.getName());
-        args.putString("detail", detail);
-        args.putBoolean("more",more);
-        BottomFragment fragment = new BottomFragment();
-        fragment.setArguments(args);
-        return fragment;
+    public BottomFragment(){
     }
 
     @Override
@@ -40,20 +32,16 @@ public class BottomFragment extends BaseFragment {
         mTvDetail = view.findViewById(R.id.map_bottom_detail);
         mBtnMore = view.findViewById(R.id.map_bottom_more);
 
-        mTvSite.setText(getArguments().getString("site"));
-        mTvDetail.setText(getArguments().getString("detail"));
-        mBtnMore.setEnabled(getArguments().getBoolean("more"));
-
-        PointDetails pointDetails = getArguments().getParcelable("point");
-        mBtnMore.setOnClickListener(v ->{
-            if (getArguments().getBoolean("more")){
-                PointDetailActivity.start(getActivity(),pointDetails);
-            }
-        });
+        mBtnMore.setOnClickListener((View.OnClickListener)getActivity());
 
         return view;
     }
 
+    public void setdetail(String site,String info,boolean enable){
+        mTvSite.setText(site);
+        mTvDetail.setText(info);
+        mBtnMore.setEnabled(enable);
+    }
     @Override
     public void onPause(){
         super.onPause();

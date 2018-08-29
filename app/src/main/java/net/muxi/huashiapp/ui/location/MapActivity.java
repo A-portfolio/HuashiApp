@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -51,8 +52,8 @@ import retrofit2.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MapActivity extends AppCompatActivity implements AMapLocationListener, TextWatcher,
-        View.OnFocusChangeListener, AMap.OnMarkerClickListener, AMap.OnMapTouchListener {
+public class MapActivity extends FragmentActivity implements AMapLocationListener, TextWatcher,
+        View.OnFocusChangeListener, AMap.OnMarkerClickListener, AMap.OnMapTouchListener ,View.OnClickListener{
 
     private MapView mMapView;
     private AMap aMap;
@@ -63,7 +64,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private String mEndName;
     private LatLonPoint mSearchPoint;
     private String mSearchName;
-
+    private final String FRAGMENT_TAG="detail_fragment";
     private MapSearchAdapter mAdapter;
     private MapPresenter mMapPresenter;
     private PointDetails mNowPointDetails;   //  此时底部应该显示的点数据
@@ -73,8 +74,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private boolean requestPermission;
     private LinearLayout mLayoutSearch;
     private LinearLayout mLayoutRoute;
-
-    private LinearLayout mLayoutDetails;
 
     // 顶部搜索栏
     private EditText mEtSearch;
@@ -123,14 +122,13 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 
 
         RxBus.getDefault().toObservable(DetailEven.class)
-                .subscribe(detailEven ->  showDetail(detailEven.getName(),detailEven.isSearchOrRoute()),
+                .subscribe(detailEven ->  showDetail(detailEven.getName(),detailEven.isSearchOrRoute(),mMapPresenter.getEndmarker()),
                         Throwable::printStackTrace,
                         ()-> Log.i(TAG, "detailEven"));
 
     }
 
     private void initView() {
-        mLayoutDetails = findViewById(R.id.map_bottom_ll);
         mLayoutSearch = findViewById(R.id.map_top_search);
         mEtSearch = findViewById(R.id.map_top_edt);
         mImgSearch = findViewById(R.id.map_top_button);
@@ -180,7 +178,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         });
 
         mImgSearch.setOnClickListener( v -> {
-            mLayoutDetails.setVisibility(View.VISIBLE);
             initLayout(0,0,0);
             ifCanSearchPoint();
         });
@@ -260,45 +257,13 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 
     @Override
     public boolean onMarkerClick(Marker marker){
-        mLayoutDetails.setVisibility(View.VISIBLE);
         initLayout(0,0,0);
         Logger.i("marker onclick");
         if (marker.getTitle()==null){
 
             return true;
         }
-        CampusFactory.getRetrofitService().getDetail(marker.getTitle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(detail -> {
-
-                    mNowPointDetails=new PointDetails();
-                    mNowPointDetails.setName(detail.getPlat().getName());
-                    mNowPointDetails.setInfo(detail.getPlat().getInfo());
-                    List<String> list=detail.getPlat().getUrl();
-                    mNowPointDetails.setUrl(list.toArray(new String[list.size()]));
-                    addFragment(mNowPointDetails,marker.getSnippet(),true);
-                },throwable -> {
-                    throwable.printStackTrace();
-//                    mBtnMore.setEnabled(false);
-                    int code=0 ;
-                    if(throwable instanceof HttpException){
-                        code = ((HttpException) throwable).code();
-                    }
-                    switch (code) {
-                        case 404: {
-                            PointDetails pointDetails = new PointDetails();
-                            pointDetails.setName(marker.getTitle());
-                            addFragment(pointDetails,marker.getSnippet(),false);
-                            break;
-                        }
-                        case 400:{
-                            Toast.makeText(getApplicationContext(),"信息错误",Toast.LENGTH_LONG).show();
-                            break;
-                        }
-                        default:break;
-                    }
-                },()-> Logger.i("onMarkerClock"));
+        showDetail(marker.getTitle(),false,marker);
         return true;
     }
 
@@ -409,13 +374,12 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private void ifCanSearchPoint(){
         //method about searching point
         if(mSearchPoint!=null){
-            mMapPresenter.addMarker(mSearchPoint,mEtSearch.getText().toString());
             aMap.clear();
-            mMapPresenter.addMarker(mSearchPoint,mEtSearch.getText().toString());
+            Marker marker=mMapPresenter.addMarker(mSearchPoint,mEtSearch.getText().toString());
             mEndPoint = mSearchPoint;
             mEndName = mSearchName;
             mEtEnd.setText(mEndName);
-            showDetail(mEndName,false);
+            showDetail(mEndName,false,marker);
         }
     }
 
@@ -433,15 +397,12 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
      * @param name
      * @param ifDraworSearch true=draw and false=search
      */
-    public void showDetail(String name,boolean ifDraworSearch){
-        mLayoutDetails.setVisibility(View.VISIBLE);
+    public void showDetail(String name,boolean ifDraworSearch,Marker marker){
         initLayout(0,0,0);
         CampusFactory.getRetrofitService().getDetail(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(detail -> {
-
-
                     mNowPointDetails=new PointDetails();
                     mNowPointDetails.setName(detail.getPlat().getName());
                     mNowPointDetails.setInfo(detail.getPlat().getInfo());
@@ -453,8 +414,24 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                     }else {
                         details = detail.getPlat().getInfo();
                     }
-                    addFragment(mNowPointDetails,details,true);
-                }, Throwable::printStackTrace);
+                    getDetailFragment().setdetail(mNowPointDetails.getName(),details,true);
+                    if (getDetailFragment().isHidden())
+                        showFragment();
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    int code=0;
+                    if (throwable instanceof HttpException)
+                        code=((HttpException) throwable).code();
+                    switch (code){
+                        case 404:{
+                            getDetailFragment().setdetail(marker.getTitle(),marker.getSnippet(),false);
+                            if (getDetailFragment().isHidden())
+                                showFragment();
+                            break;
+                        }
+                        default:break;
+                    }
+                });
     }
 
     @Override
@@ -463,6 +440,8 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
             mRecyclerView.setVisibility(View.GONE);
             HideKeyboard(mEtSearch);
         }
+        if (getDetailFragment().isVisible())
+            hideFragment();
     }
 
     // 隐藏键盘
@@ -473,16 +452,36 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         }
     }
 
-    // 底部详情fragment
-    private void addFragment(PointDetails pointDetails,String detail,boolean more){
-        if (mBottomFragment == null) {
-            mBottomFragment = BottomFragment.newInstance(pointDetails,detail,more);
-            getSupportFragmentManager().beginTransaction().add(R.id.map_bottom_ll,
-                    mBottomFragment).commit();
-        }else {
-            mBottomFragment = BottomFragment.newInstance(pointDetails,detail,more);
-            getSupportFragmentManager().beginTransaction().replace(R.id.map_bottom_ll,
-                    mBottomFragment).commit();
+
+    public BottomFragment getDetailFragment() {
+        BottomFragment fragment = (BottomFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+        if (fragment == null) {
+            fragment = new BottomFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.map_bottom_ll, fragment, FRAGMENT_TAG)
+                    .setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom)
+                    .commit();
         }
+        return fragment;
+    }
+
+    public void showFragment(){
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom)
+                .show(getDetailFragment())
+                .commit();
+    }
+
+    public void hideFragment(){
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom)
+                .hide(getDetailFragment())
+                .commit();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mNowPointDetails!= null)
+            PointDetailActivity.start(this,mNowPointDetails);
     }
 }
