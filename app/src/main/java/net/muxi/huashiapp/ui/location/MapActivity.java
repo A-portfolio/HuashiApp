@@ -4,6 +4,11 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -12,18 +17,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -60,21 +63,18 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     private String mEndName;
     private LatLonPoint mSearchPoint;
     private String mSearchName;
-    private LatLonPoint mNowPoint;
 
     private MapSearchAdapter mAdapter;
     private MapPresenter mMapPresenter;
     private PointDetails mNowPointDetails;   //  此时底部应该显示的点数据
 
+    private BottomFragment mBottomFragment;
+
     private boolean requestPermission;
-    private LinearLayout mLayoutDetails;
     private LinearLayout mLayoutSearch;
     private LinearLayout mLayoutRoute;
 
-    // 底部详情栏
-    private TextView mTvSite;
-    private TextView mTvDetail;
-    private Button mBtnMore;
+    private LinearLayout mLayoutDetails;
 
     // 顶部搜索栏
     private EditText mEtSearch;
@@ -130,10 +130,7 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     }
 
     private void initView() {
-        mLayoutDetails = findViewById(R.id.map_bottom_id);
-        mTvSite = findViewById(R.id.map_bottom_site);
-        mTvDetail = findViewById(R.id.map_bottom_detail);
-        mBtnMore = findViewById(R.id.map_bottom_more);
+        mLayoutDetails = findViewById(R.id.map_bottom_ll);
         mLayoutSearch = findViewById(R.id.map_top_search);
         mEtSearch = findViewById(R.id.map_top_edt);
         mImgSearch = findViewById(R.id.map_top_button);
@@ -165,11 +162,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
 
     private void initListener(){
         mImgLocate.setOnClickListener(v -> mMapPresenter.setlocation());
-        mBtnMore.setOnClickListener(v -> {
-            if (mNowPointDetails!=null) {
-                PointDetailActivity.start(getBaseContext(), mNowPointDetails);
-            }
-        });
         mImgBack.setOnClickListener(v -> {
             if (MODE == MODE_SEARCH){
                 finish();
@@ -205,7 +197,6 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
         mEtEnd.setOnFocusChangeListener(this);
     }
 
-    // 当底部栏消失：0，0，0   出现：10，10，5
     private void initLayout(int routeBottom,int locateBottom,int locateLeft){
         RelativeLayout.LayoutParams paramsRoute = (RelativeLayout.LayoutParams) mBtnRoute.getLayoutParams();
         paramsRoute.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,routeBottom);  //  设置route按钮相对于底部的距离
@@ -286,21 +277,19 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                     mNowPointDetails.setInfo(detail.getPlat().getInfo());
                     List<String> list=detail.getPlat().getUrl();
                     mNowPointDetails.setUrl(list.toArray(new String[list.size()]));
-                    mTvSite.setText(mNowPointDetails.getName());
-                    mTvDetail.setText(marker.getSnippet());
-                    mBtnMore.setEnabled(true);
+                    addFragment(mNowPointDetails,marker.getSnippet(),true);
                 },throwable -> {
                     throwable.printStackTrace();
-                    mBtnMore.setEnabled(false);
+//                    mBtnMore.setEnabled(false);
                     int code=0 ;
                     if(throwable instanceof HttpException){
                         code = ((HttpException) throwable).code();
                     }
                     switch (code) {
                         case 404: {
-                            mTvSite.setText(marker.getTitle());
-                            mTvDetail.setText(marker.getSnippet());
-
+                            PointDetails pointDetails = new PointDetails();
+                            pointDetails.setName(marker.getTitle());
+                            addFragment(pointDetails,marker.getSnippet(),false);
                             break;
                         }
                         case 400:{
@@ -458,12 +447,13 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
                     mNowPointDetails.setInfo(detail.getPlat().getInfo());
                     List<String> list=detail.getPlat().getUrl();
                     mNowPointDetails.setUrl(list.toArray(new String[list.size()]));
-                    mTvSite.setText(mNowPointDetails.getName());
+                    String details;
                     if (ifDraworSearch) {
-                        mTvDetail.setText(String.format("%sm米  |   用时约%s分钟", String.valueOf(mMapPresenter.getDistance()), mMapPresenter.getTime()));
-                    }else
-                        mTvDetail.setText(detail.getPlat().getInfo());
-                    mBtnMore.setEnabled(true);
+                        details = String.format("%sm米  |   用时约%s分钟", String.valueOf(mMapPresenter.getDistance()), mMapPresenter.getTime());
+                    }else {
+                        details = detail.getPlat().getInfo();
+                    }
+                    addFragment(mNowPointDetails,details,true);
                 }, Throwable::printStackTrace);
     }
 
@@ -476,11 +466,23 @@ public class MapActivity extends AppCompatActivity implements AMapLocationListen
     }
 
     // 隐藏键盘
-    public static void HideKeyboard(View v) {
+    private void HideKeyboard(View v) {
         InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm.isActive()) {
             imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
         }
     }
 
+    // 底部详情fragment
+    private void addFragment(PointDetails pointDetails,String detail,boolean more){
+        if (mBottomFragment == null) {
+            mBottomFragment = BottomFragment.newInstance(pointDetails,detail,more);
+            getSupportFragmentManager().beginTransaction().add(R.id.map_bottom_ll,
+                    mBottomFragment).commit();
+        }else {
+            mBottomFragment = BottomFragment.newInstance(pointDetails,detail,more);
+            getSupportFragmentManager().beginTransaction().replace(R.id.map_bottom_ll,
+                    mBottomFragment).commit();
+        }
+    }
 }

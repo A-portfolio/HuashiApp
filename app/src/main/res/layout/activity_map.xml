@@ -20,14 +20,14 @@
         android:layout_width="match_parent" />
 
 
-    <include layout="@layout/view_map_bottom"
-        android:id="@+id/map_bottom_id"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_alignParentBottom="true"
-        android:visibility="invisible"/>
+    <!--<include layout="@layout/view_map_bottom"-->
+        <!--android:id="@+id/map_bottom_id"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_marginLeft="8dp"-->
+        <!--android:layout_marginRight="8dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:visibility="invisible"/>-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/map_search_recycle"
@@ -39,6 +39,17 @@
         >
     </android.support.v7.widget.RecyclerView>
 
+    <LinearLayout
+        android:id="@+id/map_bottom_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:visibility="invisible">
+
+    </LinearLayout>
     <ImageView
         android:id="@+id/map_btn_locate"
         android:layout_width="28dp"
@@ -46,8 +57,8 @@
         android:background="@drawable/bg_map_details"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="8dp"
+        android:layout_above="@id/map_bottom_ll"
         android:foregroundGravity="center"
-        android:layout_above="@id/map_bottom_id"
         android:src="@drawable/ic_map_location"
         android:scaleType="center"
         />
@@ -56,7 +67,7 @@
         android:layout_width="88dp"
         android:layout_height="32dp"
         android:background="@drawable/bg_map_button"
-        android:layout_above="@+id/map_bottom_id"
+        android:layout_above="@id/map_bottom_ll"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:text="路线"

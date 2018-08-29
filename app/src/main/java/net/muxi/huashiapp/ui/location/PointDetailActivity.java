@@ -10,8 +10,6 @@ import android.widget.Button;
 
 import android.widget.TextView;
 
-
-import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.cardbanner.CardBanner;
@@ -19,7 +17,6 @@ import com.muxistudio.cardbanner.ViewHolder;
 import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
-
 import net.muxi.huashiapp.ui.SuggestionActivity;
 import net.muxi.huashiapp.ui.location.data.PointDetails;
 import java.util.ArrayList;
@@ -34,7 +31,6 @@ public class PointDetailActivity extends ToolbarActivity {
     public TextView mTvDistance;
     public TextView mTvDetail;
     public Button mBtn;
-    private int width,height;
 
     public PointDetails mPointData;
     private List<ViewHolder<String>> mViewHolders = new ArrayList<>();
