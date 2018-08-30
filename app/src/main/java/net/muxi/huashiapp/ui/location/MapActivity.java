@@ -149,7 +149,10 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
             public void onClickText(String s, LatLonPoint l) {
                 if(mEtStart.hasFocus()){mEtStart.setText(s);mStartName=s;mStartPoint=l;mEtStart.clearFocus();ifCanSearch();}
                 else if(mEtEnd.hasFocus()) {mEtEnd.setText(s);mEndName=s;mEndPoint=l;mEtEnd.clearFocus();ifCanSearch();}
-                else {mEtSearch.setText(s);mSearchPoint=l;mSearchName=s;mEtSearch.clearFocus();}
+                else {mEtSearch.setText(s);mSearchPoint=l;
+                mSearchName=s;
+                mEtSearch.clearFocus();
+                }
                 hideKeyboard();
             }
         };
@@ -379,7 +382,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
             mEndPoint = mSearchPoint;
             mEndName = mSearchName;
             mEtEnd.setText(mEndName);
-            showDetail(mEndName,false,marker);
+            showDetail(mSearchName,false,marker);
         }
     }
 
@@ -414,9 +417,10 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
                     }else {
                         details = detail.getPlat().getInfo();
                     }
-                    getDetailFragment().setdetail(mNowPointDetails.getName(),details,true);
-                    if (getDetailFragment().isHidden())
+                    if (getDetailFragment().isHidden()) {
                         showFragment();
+                    }
+                    getDetailFragment().setdetail(mNowPointDetails.getName(),details,true);
                 }, throwable -> {
                     throwable.printStackTrace();
                     int code=0;
