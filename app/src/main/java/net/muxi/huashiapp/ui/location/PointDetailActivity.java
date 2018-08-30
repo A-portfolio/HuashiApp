@@ -101,7 +101,7 @@ public class PointDetailActivity extends ToolbarActivity {
                     SimpleDraweeView image=new SimpleDraweeView(PointDetailActivity.this);
                     // TODO: 18-8-28 添加动画资源或占位图 
                     //image.getHierarchy().setProgressBarImage();
-                    ImageRequest request =
+                  /*  ImageRequest request =
                             ImageRequestBuilder.newBuilderWithSource(uri)
                                     .setResizeOptions(new ResizeOptions(dp2px(140), dp2px(90)))
                                     .setProgressiveRenderingEnabled(true)//支持图片渐进式加载
@@ -111,8 +111,8 @@ public class PointDetailActivity extends ToolbarActivity {
                             (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
                                     .setImageRequest(request)
                                     .build();
-                    image.setController(controller);
-                  //  image.setImageURI(uri);
+                    image.setController(controller);*/
+                     image.setImageURI(uri);
                     return image;
                 }
             };

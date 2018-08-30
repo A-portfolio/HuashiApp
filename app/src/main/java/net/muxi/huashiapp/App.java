@@ -36,11 +36,12 @@ public class App extends Application {
         sContext = getApplicationContext();
         Global.setApplication(this);
         UserAccountManager.getInstance().initUser();
-        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+      /*  ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
                 .setProgressiveJpegConfig(new SimpleProgressiveJpegConfig())
                 .setDownsampleEnabled(true)
                 .build();
-        Fresco.initialize(this,config);
+        Fresco.initialize(this,config);*/
+      Fresco.initialize(this);
         initBugly();
         initUMeng();
         initARouter(this);

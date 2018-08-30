@@ -109,6 +109,9 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
         initLayout(10,10,5);
         checkPermission();
         mMapView =  findViewById(R.id.map);
+        // TODO: 18-8-30 待改进
+        hideFragment();
+
         mMapView.onCreate(savedInstanceState);
         aMap = mMapView.getMap();
         if (aMap != null) {
@@ -417,10 +420,9 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
                     }else {
                         details = detail.getPlat().getInfo();
                     }
-                    if (getDetailFragment().isHidden()) {
-                        showFragment();
-                    }
                     getDetailFragment().setdetail(mNowPointDetails.getName(),details,true);
+                    if (getDetailFragment().isHidden())
+                        showFragment();
                 }, throwable -> {
                     throwable.printStackTrace();
                     int code=0;
@@ -460,6 +462,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
     public BottomFragment getDetailFragment() {
         BottomFragment fragment = (BottomFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
         if (fragment == null) {
+            Log.i(TAG, "getDetailFragment: create fragment");
             fragment = new BottomFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.map_bottom_ll, fragment, FRAGMENT_TAG)

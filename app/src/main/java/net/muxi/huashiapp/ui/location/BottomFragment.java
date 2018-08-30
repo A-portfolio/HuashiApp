@@ -2,6 +2,7 @@ package net.muxi.huashiapp.ui.location;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.muxistudio.appcommon.widgets.BottomDialogFragment;
 import com.muxistudio.common.base.BaseFragment;
+import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.location.data.PointDetails;
@@ -27,6 +29,7 @@ public class BottomFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance){
+        Logger.i("onCreateView");
         View view = inflater.inflate(R.layout.fragment_map_bottom, null);
         mTvSite= view.findViewById(R.id.map_bottom_site);
         mTvDetail = view.findViewById(R.id.map_bottom_detail);
