@@ -2,6 +2,7 @@ package net.muxi.huashiapp.ui.location;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +11,12 @@ import android.widget.Button;
 
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.cardbanner.CardBanner;
 import com.muxistudio.cardbanner.ViewHolder;
@@ -22,6 +28,8 @@ import net.muxi.huashiapp.ui.location.data.PointDetails;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.muxistudio.common.util.DimensUtil.dp2px;
 
 
 public class PointDetailActivity extends ToolbarActivity {
@@ -89,15 +97,22 @@ public class PointDetailActivity extends ToolbarActivity {
             ViewHolder<String> viewHolder = new ViewHolder<String>() {
                 @Override
                 public View getView(Context context, String data) {
-                    /*
-                    ImageView imageView = new ImageView(PointDetailActivity.this);
-                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    Glide.with(getApplicationContext()).load(data).into(imageView);*/
+                    Uri uri = Uri.parse(data);
                     SimpleDraweeView image=new SimpleDraweeView(PointDetailActivity.this);
                     // TODO: 18-8-28 添加动画资源或占位图 
                     //image.getHierarchy().setProgressBarImage();
-                    Uri uri = Uri.parse(data);
-                    image.setImageURI(uri);
+                    ImageRequest request =
+                            ImageRequestBuilder.newBuilderWithSource(uri)
+                                    .setResizeOptions(new ResizeOptions(dp2px(140), dp2px(90)))
+                                    .setProgressiveRenderingEnabled(true)//支持图片渐进式加载
+                                    .build();
+
+                    PipelineDraweeController controller =
+                            (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
+                                    .setImageRequest(request)
+                                    .build();
+                    image.setController(controller);
+                  //  image.setImageURI(uri);
                     return image;
                 }
             };

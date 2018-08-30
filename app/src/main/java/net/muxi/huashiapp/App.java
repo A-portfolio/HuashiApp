@@ -7,6 +7,9 @@ import android.util.Log;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig;
 import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.common.base.Global;
 import com.muxistudio.common.util.PreferenceUtil;
@@ -17,6 +20,7 @@ import com.umeng.commonsdk.UMConfigure;
 import net.muxi.huashiapp.utils.MiPushUtil;
 
 import static com.muxistudio.appcommon.Constants.UMENG_APP_KEY;
+import static com.muxistudio.common.util.DimensUtil.dp2px;
 
 /**
  * Created by ybao on 16/4/18.
@@ -32,7 +36,11 @@ public class App extends Application {
         sContext = getApplicationContext();
         Global.setApplication(this);
         UserAccountManager.getInstance().initUser();
-        Fresco.initialize(this);
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+                .setProgressiveJpegConfig(new SimpleProgressiveJpegConfig())
+                .setDownsampleEnabled(true)
+                .build();
+        Fresco.initialize(this,config);
         initBugly();
         initUMeng();
         initARouter(this);
