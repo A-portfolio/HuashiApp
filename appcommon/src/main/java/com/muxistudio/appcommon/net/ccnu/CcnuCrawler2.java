@@ -307,6 +307,8 @@ public class CcnuCrawler2 {
 
     public static void clearCookieStore(){
         cookieStore.clear();
+        PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
+        PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
     }
 
 
