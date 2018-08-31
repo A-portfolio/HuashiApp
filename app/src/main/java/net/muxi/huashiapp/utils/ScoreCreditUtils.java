@@ -138,7 +138,6 @@ public class ScoreCreditUtils {
             creditMap.put(credit, 0d);
         }
 
-
         double allCredit = 0;
 
         for (Score credit : credits) {
@@ -147,11 +146,18 @@ public class ScoreCreditUtils {
 
             for (int i = 0; i < Constants.CLASS_TYPE.length; i++) {
                 String type = Constants.CLASS_TYPE[i];
+                //将专业选修课和个性发展课归为一类课程
+                if(credit.kcxzmc.equals("专业选修课")){
+                  double addup= creditMap.get(Constants.CLASS_TYPE[1]) + Double.parseDouble(credit.credit);
+                  creditMap.put(type,addup);
+                  break;
+              }
                 if (type.equals(credit.kcxzmc)) {
                     double addUp = creditMap.get(type) + Double.parseDouble(credit.credit);
                     creditMap.put(type, addUp);
                     break;
                 }
+                //对于其他的组别额外考虑
                 if (i == Constants.CLASS_TYPE.length - 1) {
                     double addUp = creditMap.get("其他") + Double.parseDouble(credit.credit);
                     creditMap.put("其他", addUp);
@@ -334,9 +340,10 @@ public class ScoreCreditUtils {
         Set<String> keys = groupCredit.keySet();
         for(String key: keys) {
           if(key.equals(Constants.ALL_CREDIT))
-            continue; 
+            continue;
           total += groupCredit.get(key);
         }
         return total;
     }
+
 }

@@ -34,7 +34,7 @@ import static android.support.design.widget.Snackbar.make;
 /**
  * Created by ybao on 16/4/19.
  */
-public class BaseAppActivity extends BaseActivity {
+public class  BaseAppActivity extends BaseActivity {
 
     protected Menu menu;
     protected ActionBar mActionBar;
@@ -58,12 +58,13 @@ public class BaseAppActivity extends BaseActivity {
    * DialogFragment 内部使用了Fragment commit()方法这个方法是一个异步操作
    * @param loadingInfo
    */
-  public void showLoading(String loadingInfo) {
+  public LoadingDialog showLoading(String loadingInfo) {
       if(mLoadingDialog == null){
         mLoadingDialog = LoadingDialog.newInstance();
       }
       mLoadingDialog.showNow(this.getSupportFragmentManager(),"loading_dialog");
       mLoadingDialog.setLoadingInfo(loadingInfo);
+      return mLoadingDialog;
     }
 
     public void hideLoading() {

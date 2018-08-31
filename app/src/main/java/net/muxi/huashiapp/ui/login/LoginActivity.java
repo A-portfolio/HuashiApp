@@ -21,6 +21,7 @@ import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
 import com.muxistudio.appcommon.presenter.LoginPresenter;
 import com.muxistudio.appcommon.utils.CommonTextUtils;
+import com.muxistudio.appcommon.widgets.LoadingDialog;
 import com.muxistudio.common.util.NetUtil;
 import com.umeng.analytics.MobclickAgent;
 
@@ -28,6 +29,7 @@ import net.muxi.huashiapp.R;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -40,12 +42,15 @@ public class LoginActivity extends ToolbarActivity {
 
     private LoginPresenter presenter = new LoginPresenter();
     private String type;
+
+    private LoadingDialog mLoadingDialog;
     private boolean isShownPassword = false;
     private TextInputLayout mLayoutSid;
     private EditText mEtSid;
     private TextInputLayout mLayoutPwd;
     private EditText mEtPwd;
     private Button mBtnLogin;
+    private Subscription mSubscription ;
 
     /**
      * @param loginType 分为 lib 和 info
@@ -94,9 +99,9 @@ public class LoginActivity extends ToolbarActivity {
             return;
         }
 
-        showLoading(CommonTextUtils.generateRandomLoginText());
+        mLoadingDialog = showLoading(CommonTextUtils.generateRandomLoginText());
         if (type.equals("info") || type.equals("lib")) {
-            presenter.login(user)
+             mSubscription = presenter.login(user)
                     .subscribe(result->{
                       if(result){
                         hideLoading();
@@ -104,6 +109,15 @@ public class LoginActivity extends ToolbarActivity {
                         finish();
                       }
                     },Throwable::printStackTrace,()->{});
+
+             mLoadingDialog.setOnSubscriptionCanceledListener(
+                 () -> {
+                   if(! mSubscription.isUnsubscribed())
+                     CcnuCrawler2.clearCookieStore();
+                     mSubscription.unsubscribe();
+                 });
+
+
             if (type.equals("info"))
                 MobclickAgent.onEvent(this, "login");
             else {
@@ -121,7 +135,7 @@ public class LoginActivity extends ToolbarActivity {
     }
 
 
-    @Override
+  @Override
     protected void onResume() {
         super.onResume();
     }

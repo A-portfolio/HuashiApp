@@ -55,7 +55,8 @@ public class CommonTextUtils {
   public static String generateRandomLoginText(){
       String texts[]= new String[]{
           "正在前往学校服务器~~",
-          "稍等稍等,正在获取你的数据"
+          "稍等稍等,正在获取你的数据",
+          "匣子正在穿过网线"
       };
 
       return texts[(int) (System.currentTimeMillis()%texts.length)];
