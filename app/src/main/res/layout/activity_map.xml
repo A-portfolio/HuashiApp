@@ -19,20 +19,10 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
 
-
-    <!--<include layout="@layout/view_map_bottom"-->
-        <!--android:id="@+id/map_bottom_id"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_marginLeft="8dp"-->
-        <!--android:layout_marginRight="8dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:visibility="invisible"/>-->
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/map_search_recycle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_below="@+id/map_route_id"
         android:background="@drawable/bg_map_details"
         android:visibility="gone"

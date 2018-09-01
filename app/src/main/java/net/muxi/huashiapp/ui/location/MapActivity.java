@@ -301,9 +301,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(list ->{
                         mList.clear();
-                        if(list.getPoints() != null && list.getPoints().size() > 4) {
-                            mList.addAll(list.getPoints().subList(0,4));
-                        }else  mList.addAll(list.getPoints());
+                        mList.addAll(list.getPoints());
                         mAdapter.notifyDataSetChanged();
                     },Throwable::printStackTrace);
             if(mRecyclerView.getVisibility() != View.VISIBLE) {
@@ -389,6 +387,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
         }
     }
 
+    // 隐藏键盘
     private void hideKeyboard() {
         View viewFocus = this.getCurrentFocus();
         if (viewFocus != null) {
@@ -444,20 +443,11 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
     public void onTouch(MotionEvent event){
         if (mRecyclerView.getVisibility() == View.VISIBLE){
             mRecyclerView.setVisibility(View.GONE);
-            HideKeyboard(mEtSearch);
+            hideKeyboard();
         }
         if (getDetailFragment().isVisible())
             hideFragment();
     }
-
-    // 隐藏键盘
-    private void HideKeyboard(View v) {
-        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm.isActive()) {
-            imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-        }
-    }
-
 
     public BottomFragment getDetailFragment() {
         BottomFragment fragment = (BottomFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
