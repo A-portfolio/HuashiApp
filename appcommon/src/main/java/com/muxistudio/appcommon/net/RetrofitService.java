@@ -14,9 +14,11 @@ import com.muxistudio.appcommon.data.CardData;
 import com.muxistudio.appcommon.data.ClassRoom;
 import com.muxistudio.appcommon.data.Course;
 import com.muxistudio.appcommon.data.CourseId;
+import com.muxistudio.appcommon.data.Detail;
 import com.muxistudio.appcommon.data.EleRequestData;
 import com.muxistudio.appcommon.data.Electricity;
 import com.muxistudio.appcommon.data.Hint;
+import com.muxistudio.appcommon.data.MapDetailList;
 import com.muxistudio.appcommon.data.Msg;
 import com.muxistudio.appcommon.data.News;
 import com.muxistudio.appcommon.data.PatchData;
@@ -186,5 +188,11 @@ public interface RetrofitService {
     Observable<List<Score>> getScores(@Query("xnm") String year,
                                       @Query("xqm") String term);
 
+    @GET("plat/detail/")
+    Observable<Detail>getDetail(@Query("name")String name);
+
+
+    @GET("plat/match/")
+    Observable<MapDetailList>getDetailList(@Query("name")String name);
 
 }

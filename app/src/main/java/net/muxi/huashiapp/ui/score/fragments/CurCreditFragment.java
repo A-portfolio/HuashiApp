@@ -84,7 +84,7 @@ public class CurCreditFragment extends BaseAppFragment {
                 .subscribeOn(Schedulers.io())
                 .onErrorResumeNext(throwable -> {
                     throwable.printStackTrace();
-                    CcnuCrawler2.clearCookieStore();
+                    CcnuCrawler2.clear();
                     return new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
                             .flatMap(aubBoolean -> scoreObservable);
                 })

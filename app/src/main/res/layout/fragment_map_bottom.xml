@@ -1,0 +1,40 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottomSheetLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_map_details">
+
+    <TextView
+        android:id="@+id/map_bottom_site"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="路标地名"
+        android:textSize="18sp"
+        android:textColor="@color/colorBlack"/>
+
+    <TextView
+        android:gravity="center_vertical"
+        android:id="@+id/map_bottom_detail"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="16sp" />
+
+    <Button
+        android:background="@null"
+        android:gravity="center_vertical"
+        android:id="@+id/map_bottom_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:text="查看详情"
+        android:textSize="12sp"
+        android:textColor="@color/color_map_start"/>
+
+</LinearLayout>

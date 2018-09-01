@@ -33,8 +33,7 @@ public class CcnuCrawler2 {
     private static String mJessionCookie, mBigServerpoolCookie;
 
     private static Cookie accountJid=null,casPrivacy=null,casTgc = null,phpSessidLib =null;
-    private static String location1 = "";
-    private static String valueOfLt, valueOfExe;
+  private static String valueOfLt, valueOfExe;
     //在这个callback中拿到相关信息 valueoflt valueofexe
     private static CcnuService2 mCcnuService;
     private static String JSESSIONID_LOGIN_IN = null;
@@ -305,8 +304,17 @@ public class CcnuCrawler2 {
         PreferenceUtil.saveString(PreferenceUtil.JSESSIONID, mJessionCookie);
     }
 
-    public static void clearCookieStore(){
+    public static void clear(){
         cookieStore.clear();
+        mCcnuService = null;
+        mJessionCookie = null ;
+        mBigServerpoolCookie = null;
+
+        accountJid=null;
+        casPrivacy=null;
+        casTgc = null;
+        phpSessidLib =null;
+
         PreferenceUtil.clearString(PreferenceUtil.JSESSIONID);
         PreferenceUtil.clearString(PreferenceUtil.BIG_SERVER_POOL);
     }

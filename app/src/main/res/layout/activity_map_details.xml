@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_toolbar"/>
+
+    <ScrollView
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <com.muxistudio.cardbanner.CardBanner
+                android:id="@+id/map_detail_banner"
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                android:layout_centerVertical="true"
+                app:cardMargin="2dp"
+                app:baseElevation="4dp"
+                app:cardRadius="8dp"
+                app:floatElevation="2dp"
+                app:isLoop="true"
+                app:sideCardWidth="4dp">
+
+            </com.muxistudio.cardbanner.CardBanner>
+
+            <include
+                layout="@layout/view_map_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

@@ -13,11 +13,8 @@ import android.widget.EditText;
 
 import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
-import com.muxistudio.appcommon.data.Msg;
 import com.muxistudio.appcommon.data.User;
-import com.muxistudio.appcommon.data.UserInfo;
 import com.muxistudio.appcommon.event.RefreshSessionEvent;
-import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
 import com.muxistudio.appcommon.presenter.LoginPresenter;
 import com.muxistudio.appcommon.utils.CommonTextUtils;
@@ -27,11 +24,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.R;
 
-import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by ybao on 16/4/18.
@@ -113,7 +106,7 @@ public class LoginActivity extends ToolbarActivity {
              mLoadingDialog.setOnSubscriptionCanceledListener(
                  () -> {
                    if(! mSubscription.isUnsubscribed())
-                     CcnuCrawler2.clearCookieStore();
+                     CcnuCrawler2.clear();
                      mSubscription.unsubscribe();
                  });
 

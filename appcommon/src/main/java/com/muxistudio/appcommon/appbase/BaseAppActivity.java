@@ -40,6 +40,7 @@ public class  BaseAppActivity extends BaseActivity {
     protected ActionBar mActionBar;
 
     private LoadingDialog mLoadingDialog;
+    // TODO:
     private CompositeSubscription mCompositeSubscription;
 
 

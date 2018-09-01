@@ -10,7 +10,6 @@ import java.util.List;
 
 import retrofit2.HttpException;
 import rx.Observable;
-import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -39,7 +38,7 @@ public class RequestRetry implements
             return attempts
                     .flatMap((Func1<Throwable, Observable<?>>) (Throwable throwable) -> {
                         throwable.printStackTrace();
-                        CcnuCrawler2.clearCookieStore();
+                        CcnuCrawler2.clear();
 
 
                         if(++retryCount > maxRetries){

@@ -31,6 +31,19 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <permission android:name="net.muxi.huashiapp.permission.MIPUSH_RECEIVE"
         android:protectionLevel="signature" />
+
+    <!--高德地图定位权限-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <!--这里com.xiaomi.mipushdemo改成app的包名-->
     <uses-permission android:name="net.muxi.huashiapp.permission.MIPUSH_RECEIVE" />
     <!--这里com.xiaomi.mipushdemo改成app的包名-->
@@ -180,6 +193,13 @@
 
         <activity android:name=".ui.score.activtities.ScoreCreditActivity"
             android:launchMode="singleTask"/>
+        <activity android:name=".ui.location.MapActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan"/>
+
+        <activity android:name=".ui.location.PointDetailActivity"
+            android:launchMode="singleTask"/>
+
         <activity
             android:name="net.muxi.huashiapp.ui.wxapi.WXEntryActivity"
             android:exported="true"
@@ -207,6 +227,16 @@
         <meta-data
             android:name="ZHUGE_CHANNEL"
             android:value="校园通"/>
+
+        <!--高德地图dubug api key-->
+        <!--wpy:936bf6af54eb102378866d707d996639 -->
+        <!--zdf:d3dac874cd84bd098d7744d07d87421b -->
+        <!--pmy:8c11f6ae2c754927abfb535f5a8a859d -->
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="936bf6af54eb102378866d707d996639"/>
+
 
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -262,6 +292,11 @@
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS">
         </service>
+
+        <service
+            android:name="com.amap.api.location.APSService">
+        </service>
+
 
         <!--小米推送 所需要配置的service 和 receiver-->
         <service

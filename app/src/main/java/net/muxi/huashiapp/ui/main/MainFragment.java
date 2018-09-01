@@ -40,13 +40,12 @@ import net.muxi.huashiapp.ui.CalendarActivity;
 import net.muxi.huashiapp.ui.MoreActivity;
 import net.muxi.huashiapp.ui.apartment.ApartmentActivity;
 import net.muxi.huashiapp.ui.card.CardActivity;
-import net.muxi.huashiapp.ui.credit.SelectCreditActivity;
 import net.muxi.huashiapp.ui.electricity.ElectricityActivity;
 import net.muxi.huashiapp.ui.electricity.ElectricityDetailActivity;
+import net.muxi.huashiapp.ui.location.MapActivity;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.news.NewsActivity;
 import net.muxi.huashiapp.ui.score.activtities.ScoreCreditActivity;
-import net.muxi.huashiapp.ui.score.activtities.ScoreSelectActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomBlankActivity;
 import net.muxi.huashiapp.ui.timeTable.CourseAuditSearchActivity;
@@ -105,14 +104,8 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
         RxBus.getDefault().toObservable(LoginSuccessEvent.class)
                 .subscribe(loginSuccessEvent -> {
                     switch (loginSuccessEvent.targetActivityName) {
-                        case SCORE_ACTIVITY:
-                            ScoreSelectActivity.start(getContext());
-                            break;
                         case CARD_ACTIVITY:
                             CardActivity.start(getContext());
-                            break;
-                        case CREDIT_ACTIVITY:
-                            SelectCreditActivity.start(getContext());
                             break;
                         case COURSE_AUDIT_SEARCH_ACTIVITY:
                             CourseAuditSearchActivity.start(getContext());
@@ -164,16 +157,13 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
             mItemDatas.add(new ItemData("校园通知", R.drawable.ic_news + "", false));
             mItemDatas.add(new ItemData("电费", R.drawable.ic_ele + "", false));
             mItemDatas.add(new ItemData("校园卡", R.drawable.ic_card + "", false));
-            mItemDatas.add(new ItemData("算学分", R.drawable.ic_credit + "", false));
             mItemDatas.add(new ItemData("空闲教室", R.drawable.ic_empty_room + "", false));
             mItemDatas.add(new ItemData("蹭课", R.drawable.ic_course_audit + "", false));
             mItemDatas.add(new ItemData("部门信息", R.drawable.ic_apartment + "", false));
             mItemDatas.add(new ItemData("校历", R.drawable.ic_calendar + "", false));
             mItemDatas.add(new ItemData("常用网站", R.drawable.ic_net + "", false));
+            mItemDatas.add(new ItemData("地图",R.drawable.ic_map + "",false));
             mItemDatas.add(new ItemData("更多", R.drawable.ic_more + "", false));
-
-//            todo remove after
-            mItemDatas.add(new ItemData("成绩2", R.drawable.ic_score + "", false));
         }
 
     }
@@ -234,15 +224,6 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
 
                     ItemData itemData = mItemDatas.get(index);
                     switch (itemData.getName()) {
-                        case "成绩":
-                            if (TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().getSid())) {
-                                LoginActivity.start(getActivity(), "info", SCORE_ACTIVITY);
-                            } else {
-                                ScoreSelectActivity.start(getActivity());
-                            }
-                            MobclickAgent.onEvent(getActivity(), "score_query");
-                            ;
-                            break;
                         case "校园通知":
                             NewsActivity.start(getActivity());
                             MobclickAgent.onEvent(getActivity(), "notice_info_query");
@@ -263,14 +244,6 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                                 CardActivity.start(getActivity());
                             }
                             MobclickAgent.onEvent(getActivity(), "card_query");
-                            break;
-                        case "算学分":
-                            if (TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().getSid())) {
-                                LoginActivity.start(getActivity(), "info", CREDIT_ACTIVITY);
-                            } else {
-                                SelectCreditActivity.start(getActivity());
-                            }
-                            MobclickAgent.onEvent(getActivity(), "average_credit_query");
                             break;
                         case "空闲教室":
                             String today = DateUtil.getWeek(new Date());
@@ -309,16 +282,21 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                                 MobclickAgent.onEvent(getActivity(), "course_audit");
                             }
                             break;
+                        case "地图":
+                            MapActivity.start(getActivity());
+//                            MobclickAgent.onEvent(getActivity(),"");
+                            break;
                         case "更多":
                             MoreActivity.start(getActivity());
                             break;
 
-                        case "成绩2":
+                        case "成绩":
                             if(TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().getSid())){
                                 LoginActivity.start(getActivity(),"info",SCORE_CREDIT_ACTIVITY);
                             }else{
                                 ScoreCreditActivity.start(Objects.requireNonNull(getActivity()));
                             }
+                            MobclickAgent.onEvent(getActivity(), "score_query");
                             break;
 
 

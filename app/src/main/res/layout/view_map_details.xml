@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_map_details">
+
+    <TextView
+        android:id="@+id/point_site"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="地点"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:textSize="18sp"
+        android:textColor="@color/colorBlack"/>
+
+    <TextView
+        android:id="@+id/point_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:textSize="14sp"
+        android:text=""
+        android:textColor="@color/color_map_details"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/color_map_details"/>
+
+    <TextView
+        android:id="@+id/point_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:textSize="14sp"
+        android:textColor="@color/color_map_details"
+        android:text="详细信息详细信息详细信息详细信息详细信息详细信息详细信息"
+        />
+    <Button
+        android:id="@+id/point_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="信息不准确？戳这里反馈"
+        android:background="#0000"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/colorAccent"/>
+</LinearLayout>

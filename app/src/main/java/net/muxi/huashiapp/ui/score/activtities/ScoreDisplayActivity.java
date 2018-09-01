@@ -23,7 +23,6 @@ import com.muxistudio.appcommon.utils.CommonTextUtils;
 import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.ui.credit.CreditGradeDialog;
 import net.muxi.huashiapp.ui.score.RequestRetry;
 import net.muxi.huashiapp.ui.score.adapter.ScoreCreditAdapter;
 import net.muxi.huashiapp.utils.ScoreCreditUtils;
