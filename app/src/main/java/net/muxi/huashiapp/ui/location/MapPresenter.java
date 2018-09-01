@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
@@ -28,56 +27,48 @@ import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.common.util.Logger;
 
 import java.util.Locale;
-import net.muxi.huashiapp.R;
+
 import net.muxi.huashiapp.ui.location.data.DetailEven;
 import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
-//todo refractors the member name of the class
 public class MapPresenter {
     private LatLonPoint mMyLocation;
 
-    private AMap aMap;
-    private RouteSearch routeSearch;
-    private WalkRouteOverlay walkRouteOverlay;
-    private Marker endmarker;
+    private AMap mAMap;
+    private WalkRouteOverlay mWalkRouteOverlay;
+    private Marker mEndMarker;
 
-    private float time;
-    private float distance;
     @SuppressLint("DefaultLocale")
     public String getTime() {
-        return String.format( Locale.CHINESE,
-            "%.1f",walkRouteOverlay.getTime()/60);
+        return String.format(Locale.CHINESE,
+                "%.1f", mWalkRouteOverlay.getTime() / 60);
     }
 
-    public float getDistance() {
-        return walkRouteOverlay.getDistance();
+    public String getDistance() {
+        return String.valueOf(mWalkRouteOverlay.getDistance());
     }
 
-    private final static String TAG="GAODE";
+    private final static String TAG = "GAODE";
 
-    public MapPresenter(AMap aMap){
-        this.aMap=aMap;
+    public MapPresenter(AMap aMap) {
+        this.mAMap = aMap;
     }
 
-    public void setlocation(){
+    public void setLocation() {
         final MyLocationStyle myLocationStyle;
         myLocationStyle = new MyLocationStyle();
-        //myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
         myLocationStyle.interval(3000*20);
         myLocationStyle.strokeWidth(0.5F);
-        myLocationStyle.strokeColor(Color.argb(130,197,229,227));
-        myLocationStyle.radiusFillColor(Color.argb(130,197,229,227));
-        Logger.i(Float.toString(myLocationStyle.getStrokeWidth()));
-        aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(18));
+        myLocationStyle.strokeColor(Color.argb(130, 197, 229, 227));
+        myLocationStyle.radiusFillColor(Color.argb(130, 197, 229, 227));
+        mAMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
+        mAMap.moveCamera(CameraUpdateFactory.zoomTo(18));
 
-        aMap.setMyLocationEnabled(true);
-        //aMap.getUiSettings().setMyLocationButtonEnabled(true);
-        aMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener() {
+        mAMap.setMyLocationEnabled(true);
+        mAMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener() {
             @Override
             public void onMyLocationChange(Location location) {
-                mMyLocation=new LatLonPoint(location.getLatitude(),location.getLongitude());
-                    aMap.moveCamera(CameraUpdateFactory.changeLatLng(AMapUtil.convertToLatLng(mMyLocation)));
+                mMyLocation = new LatLonPoint(location.getLatitude(), location.getLongitude());
             }
         });
     }
@@ -89,19 +80,19 @@ public class MapPresenter {
 
     //起点的搜索，初始值为自己的坐标
     // TODO: 18-8-24 搜索重构 
-    public void fromSearch(final String keyWord, Context context){
-        PoiSearch.Query query=new PoiSearch.Query(keyWord,"","武汉");
-        PoiSearch poiSearch=new PoiSearch(context,query);
+    public void fromSearch(final String keyWord, Context context) {
+        PoiSearch.Query query = new PoiSearch.Query(keyWord, "", "武汉");
+        PoiSearch poiSearch = new PoiSearch(context, query);
         poiSearch.setOnPoiSearchListener(new PoiSearch.OnPoiSearchListener() {
             @Override
             public void onPoiSearched(PoiResult poiResult, int i) {
-                Log.d(TAG, "onPoiSearched-result code: "+i);
-                LatLonPoint latLonPoint=poiResult.getPois().get(0).getLatLonPoint();
+
+                LatLonPoint latLonPoint = poiResult.getPois().get(0).getLatLonPoint();
                 //to=latLonPoint;
-                aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
-                LatLng p=new LatLng(latLonPoint.getLatitude(),latLonPoint.getLongitude());
-                aMap. moveCamera(CameraUpdateFactory.changeLatLng(p));
-                Marker marker=aMap.addMarker(new MarkerOptions().position(p).title(keyWord));
+                mAMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+                LatLng p = new LatLng(latLonPoint.getLatitude(), latLonPoint.getLongitude());
+                mAMap.moveCamera(CameraUpdateFactory.changeLatLng(p));
+                Marker marker = mAMap.addMarker(new MarkerOptions().position(p).title(keyWord));
             }
 
             @Override
@@ -113,19 +104,18 @@ public class MapPresenter {
     }
 
     //终点的搜索
-    public void ToPoiSearch(final String keyWord, Context context){
-        PoiSearch.Query query=new PoiSearch.Query(keyWord,"","武汉");
-        PoiSearch poiSearch=new PoiSearch(context,query);
+    public void ToPoiSearch(final String keyWord, Context context) {
+        PoiSearch.Query query = new PoiSearch.Query(keyWord, "", "武汉");
+        PoiSearch poiSearch = new PoiSearch(context, query);
         poiSearch.setOnPoiSearchListener(new PoiSearch.OnPoiSearchListener() {
             @Override
             public void onPoiSearched(PoiResult poiResult, int i) {
-                Log.d(TAG, "onPoiSearched-result code: "+i);
-                LatLonPoint latLonPoint=poiResult.getPois().get(0).getLatLonPoint();
+                LatLonPoint latLonPoint = poiResult.getPois().get(0).getLatLonPoint();
                 //to=latLonPoint;
-                aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
-                LatLng p=new LatLng(latLonPoint.getLatitude(),latLonPoint.getLongitude());
-                aMap. moveCamera(CameraUpdateFactory.changeLatLng(p));
-                Marker marker=aMap.addMarker(new MarkerOptions().position(p).title(keyWord));
+                mAMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+                LatLng p = new LatLng(latLonPoint.getLatitude(), latLonPoint.getLongitude());
+                mAMap.moveCamera(CameraUpdateFactory.changeLatLng(p));
+                Marker marker = mAMap.addMarker(new MarkerOptions().position(p).title(keyWord));
             }
 
             @Override
@@ -136,10 +126,9 @@ public class MapPresenter {
         poiSearch.searchPOIAsyn();
     }
 
-    // TODO: 18-8-24 算出总距离时长 
-    public boolean drawRoute(final Context context,String startName,String endName,LatLonPoint startPoint,
-                             LatLonPoint endPoint){
-        routeSearch=new RouteSearch(context);
+    public boolean drawRoute(final Context context, String startName, String endName, LatLonPoint startPoint,
+                             LatLonPoint endPoint) {
+        RouteSearch routeSearch = new RouteSearch(context);
         routeSearch.setRouteSearchListener(new RouteSearch.OnRouteSearchListener() {
             @Override
             public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
@@ -153,63 +142,61 @@ public class MapPresenter {
 
             @Override
             public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
-                aMap.clear();
+                mAMap.clear();
                 if (i == AMapException.CODE_AMAP_SUCCESS) {
                     if (walkRouteResult != null && walkRouteResult.getPaths() != null) {
                         WalkPath walkPath = walkRouteResult.getPaths().get(0);
-                        if (walkRouteOverlay != null) {
-                            walkRouteOverlay.removeFromMap();
+                        if (mWalkRouteOverlay != null) {
+                            mWalkRouteOverlay.removeFromMap();
                         }
-                        walkRouteOverlay = new WalkRouteOverlay(context, aMap, walkPath,
+                        mWalkRouteOverlay = new WalkRouteOverlay(context, mAMap, walkPath,
                                 walkRouteResult.getStartPos(), walkRouteResult.getTargetPos());
-                        walkRouteOverlay.addToMap();
+                        mWalkRouteOverlay.addToMap();
 
-                        time=walkRouteOverlay.getTime();
-                        distance=walkRouteOverlay.getDistance();
-                        addStartAndEndMarker(aMap,AMapUtil.convertToLatLng(startPoint),AMapUtil.convertToLatLng(endPoint),startName,endName);
-                        RxBus.getDefault().send(new DetailEven(endName,true));
-                        walkRouteOverlay.zoomToSpan();
+
+                        addStartAndEndMarker(mAMap, AMapUtil.convertToLatLng(startPoint), AMapUtil.convertToLatLng(endPoint), startName, endName);
+                        RxBus.getDefault().send(new DetailEven(endName, true));
+                        mWalkRouteOverlay.zoomToSpan();
 
                     }
                 }
             }
+
             @Override
             public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
 
             }
         });
 
-        if (startPoint!=null&&endPoint!=null){
-            RouteSearch.WalkRouteQuery query=new RouteSearch.WalkRouteQuery(new RouteSearch.FromAndTo(startPoint,endPoint));
+        if (startPoint != null && endPoint != null) {
+            RouteSearch.WalkRouteQuery query = new RouteSearch.WalkRouteQuery(new RouteSearch.FromAndTo(startPoint, endPoint));
             routeSearch.calculateWalkRouteAsyn(query);
         }
-                return true;
+        return true;
     }
-    public void addStartAndEndMarker(AMap aMap,LatLng startPoint,LatLng endPoint,String startName,String endName) {
+
+    public void addStartAndEndMarker(AMap aMap, LatLng startPoint, LatLng endPoint, String startName, String endName) {
         aMap.addMarker(new MarkerOptions()
                 .position(startPoint).icon(AMapUtil.getStartBitmapDescriptor())
                 .title(startName));
-        // startMarker.showInfoWindow();
 
-      endmarker=aMap.addMarker(new MarkerOptions().position(endPoint)
+
+        mEndMarker = aMap.addMarker(new MarkerOptions().position(endPoint)
                 .icon(AMapUtil.getEndBitmapDescriptor()).title(endName)
-                .snippet(String.format("%sm米  |   用时约%s分钟",String.valueOf(distance),getTime())));
-        // mAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoint,
-        // getShowRouteZoom()));
+                .snippet(String.format("%sm米  |   用时约%s分钟", getDistance(), getTime())));
     }
 
-    public Marker addMarker(LatLonPoint latLonPoint,String name){
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
-        aMap. moveCamera(CameraUpdateFactory.changeLatLng(AMapUtil.convertToLatLng(latLonPoint)));
-        Marker marker=aMap.addMarker(new MarkerOptions().position(AMapUtil.convertToLatLng(latLonPoint)).title(name).icon(AMapUtil.getStartBitmapDescriptor()));
-        return marker;
+    public Marker addMarker(LatLonPoint latLonPoint, String name) {
+        mAMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+        mAMap.moveCamera(CameraUpdateFactory.changeLatLng(AMapUtil.convertToLatLng(latLonPoint)));
+        return mAMap.addMarker(new MarkerOptions().position(AMapUtil.convertToLatLng(latLonPoint)).title(name).icon(AMapUtil.getStartBitmapDescriptor()));
     }
 
-    public void onDestory(){
-        aMap=null;
+    public void onDestroy() {
+        mAMap = null;
     }
 
-    public Marker getEndmarker() {
-        return endmarker;
+    public Marker getEndMarker() {
+        return mEndMarker;
     }
 }

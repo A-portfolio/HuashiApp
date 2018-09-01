@@ -62,15 +62,12 @@ public class MapSearchAdapter extends RecyclerView.Adapter{
         }
     }
 
-    //fixme return null !!!!!????
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
         if (viewType == TYPE_CONTENT) {
             return new ContentViewHolder(mInflater.inflate(R.layout.item_map_point, parent, false));
-        }else if (viewType == TYPE_BOTTOM){
+        }else
             return new FooterViewHolder(mInflater.inflate(R.layout.view_map_footer, parent, false));
-        }
-        return null;
     }
 
     @Override
@@ -79,8 +76,6 @@ public class MapSearchAdapter extends RecyclerView.Adapter{
             MapDetailList.PointsBean p = mList.get(position);
             LatLonPoint l = new LatLonPoint(p.getPoints().get(0), p.getPoints().get(1));
             ((ContentViewHolder) holder).bind(p.getName(), l);
-        }else if (holder instanceof FooterViewHolder){
-
         }
     }
 

@@ -66,8 +66,6 @@ public class PointDetailActivity extends ToolbarActivity {
 
         initView();
         initBanner();
-        //fixme 去除类似的这样子的logger 如果需要正式上线的话
-        Logger.i(mPointData.getName()+"--------------"+mPointData.getUrl().toString());
         setTitle(mPointData.getName());
         mTvName.setText(mPointData.getName());
         mTvDetail.setText(mPointData.getInfo());
