@@ -144,7 +144,7 @@ public class VerifyCodeDialog extends CenterDialogFragment {
         return inputContent;
     }
 
-    private View showCaptcha() {
+    private View showCaptcha(String url,Context context) {
         new Thread(){
             @Override
             public void run() {
