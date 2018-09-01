@@ -67,10 +67,8 @@ public class MapSearchAdapter extends RecyclerView.Adapter{
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
         if (viewType == TYPE_CONTENT) {
             return new ContentViewHolder(mInflater.inflate(R.layout.item_map_point, parent, false));
-        }else if (viewType == TYPE_BOTTOM){
+        }else
             return new FooterViewHolder(mInflater.inflate(R.layout.view_map_footer, parent, false));
-        }
-        return null;
     }
 
     @Override

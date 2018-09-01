@@ -4,21 +4,14 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -119,13 +112,13 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
             aMap.setOnMarkerClickListener(this);
             aMap.setOnMapTouchListener(this);
             if (!requestPermission) {
-                mMapPresenter.setlocation();
+                mMapPresenter.setLocation();
             }
         }
 
 
         RxBus.getDefault().toObservable(DetailEven.class)
-                .subscribe(detailEven ->  showDetail(detailEven.getName(),detailEven.isSearchOrRoute(),mMapPresenter.getEndmarker()),
+                .subscribe(detailEven ->  showDetail(detailEven.getName(),detailEven.isSearchOrRoute(),mMapPresenter.getEndMarker()),
                         Throwable::printStackTrace,
                         ()-> Log.i(TAG, "detailEven"));
 
@@ -162,7 +155,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
     }
 
     private void initListener(){
-        mImgLocate.setOnClickListener(v -> mMapPresenter.setlocation());
+        mImgLocate.setOnClickListener(v -> mMapPresenter.setLocation());
         mImgBack.setOnClickListener(v -> {
             if (MODE == MODE_SEARCH){
                 finish();
@@ -274,7 +267,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
     public void onLocationChanged(AMapLocation amapLocation){
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
-                mMapPresenter.setlocation();
+                mMapPresenter.setLocation();
             } else {
                 Log.e("AmapError", "location Error, ErrCode:"
                         + amapLocation.getErrorCode() + ", errInfo:"
@@ -326,7 +319,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mMapPresenter.onDestory();
+        mMapPresenter.onDestroy();
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
     }
@@ -356,7 +349,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
         if (requestCode==1){
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mMapPresenter.setlocation();
+                mMapPresenter.setLocation();
             }
         }else
             finish();
@@ -386,14 +379,12 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
         }
     }
 
-    //fixme this.getCurrentFocus may returning null, referring to this post
-  // https://stackoverflow.com/questions/19069448/null-pointer-error-with-hidesoftinputfromwindow
-    private void hideKeyboard() {
-        View viewFocus = this.getCurrentFocus();
-        if (viewFocus != null) {
+    private void hideKeyboard() { {
             InputMethodManager imManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imManager.hideSoftInputFromWindow(viewFocus.getWindowToken(), 0);
+        if (imManager != null) {
+            imManager.hideSoftInputFromWindow(this.getWindow().getDecorView().getRootView().getWindowToken(), 0);
         }
+    }
     }
 
 
@@ -415,7 +406,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
                     mNowPointDetails.setUrl(list.toArray(new String[list.size()]));
                     String details;
                     if (ifDraworSearch) {
-                        details = String.format("%sm米  |   用时约%s分钟", String.valueOf(mMapPresenter.getDistance()), mMapPresenter.getTime());
+                        details = String.format("%sm米  |   用时约%s分钟", mMapPresenter.getDistance(), mMapPresenter.getTime());
                     }else {
                         details = detail.getPlat().getInfo();
                     }
@@ -443,19 +434,10 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
     public void onTouch(MotionEvent event){
         if (mRecyclerView.getVisibility() == View.VISIBLE){
             mRecyclerView.setVisibility(View.GONE);
-            HideKeyboard(mEtSearch);
+            hideKeyboard();
         }
         if (getDetailFragment().isVisible())
             hideFragment();
-    }
-
-    // 隐藏键盘
-  //fixme imm.isActive may produce null NPE
-    private void HideKeyboard(View v) {
-        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm.isActive()) {
-            imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-        }
     }
 
 

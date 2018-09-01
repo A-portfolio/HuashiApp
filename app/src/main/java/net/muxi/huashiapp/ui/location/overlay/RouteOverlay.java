@@ -1,4 +1,5 @@
 package net.muxi.huashiapp.ui.location.overlay;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -19,101 +20,84 @@ import net.muxi.huashiapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
-//todo the name of the member
 public class RouteOverlay {
-    protected List<Marker> stationMarkers = new ArrayList<Marker>();
-    private List<Polyline> allPolyLines = new ArrayList<Polyline>();
-    protected Marker startMarker;
-    protected Marker endMarker;
-    protected LatLng startPoint;
-    protected LatLng endPoint;
+    protected List<Marker> mStationMarkers = new ArrayList<Marker>();
+    private List<Polyline> mAllPolyLines = new ArrayList<Polyline>();
+    protected Marker mStartMarker;
+    protected Marker mEndMarker;
+    protected LatLng mStartPoint;
+    protected LatLng mEndPoint;
     protected AMap mAMap;
-    private Context mContext;
-    private Bitmap startBit, endBit, busBit, walkBit, driveBit;
-    protected boolean nodeIconVisible = true;
+    private Bitmap mStartBit, mEndBit, mBusBit, mWalkBit, mDriveBit;
+    protected boolean mNodeIconVisible = true;
 
     public RouteOverlay(Context context) {
-        mContext = context;
+        Context mContext = context;
     }
 
     /**
      * 去掉walkRouteOverlay上所有的Marker。
      */
     public void removeFromMap() {
-        if (startMarker != null) {
-            startMarker.remove();
+        if (mStartMarker != null) {
+            mStartMarker.remove();
 
         }
-        if (endMarker != null) {
-            endMarker.remove();
+        if (mEndMarker != null) {
+            mEndMarker.remove();
         }
-        for (Marker marker : stationMarkers) {
+        for (Marker marker : mStationMarkers) {
             marker.remove();
         }
-        for (Polyline line : allPolyLines) {
+        for (Polyline line : mAllPolyLines) {
             line.remove();
         }
         destroyBit();
     }
 
     private void destroyBit() {
-        if (startBit != null) {
-            startBit.recycle();
-            startBit = null;
+        if (mStartBit != null) {
+            mStartBit.recycle();
+            mStartBit = null;
         }
-        if (endBit != null) {
-            endBit.recycle();
-            endBit = null;
+        if (mEndBit != null) {
+            mEndBit.recycle();
+            mEndBit = null;
         }
-        if (busBit != null) {
-            busBit.recycle();
-            busBit = null;
+        if (mBusBit != null) {
+            mBusBit.recycle();
+            mBusBit = null;
         }
-        if (walkBit != null) {
-            walkBit.recycle();
-            walkBit = null;
+        if (mWalkBit != null) {
+            mWalkBit.recycle();
+            mWalkBit = null;
         }
-        if (driveBit != null) {
-            driveBit.recycle();
-            driveBit = null;
+        if (mDriveBit != null) {
+            mDriveBit.recycle();
+            mDriveBit = null;
         }
     }
-    /**
-     * 给起点Marker设置图标，并返回更换图标的图片。如不用默认图片，需要重写此方法。
-     * @return 更换的Marker图片。
-     * @since V2.1.0
-     */
-    protected BitmapDescriptor getStartBitmapDescriptor() {
-        return BitmapDescriptorFactory.fromResource(R.drawable.ic_map_start_marker);
-    }
-    /**
-     * 给终点Marker设置图标，并返回更换图标的图片。如不用默认图片，需要重写此方法。
-     * @return 更换的Marker图片。
-     * @since V2.1.0
-     */
-    protected BitmapDescriptor getEndBitmapDescriptor() {
-        return BitmapDescriptorFactory.fromResource(R.drawable.ic_map_end_marker);
-    }
-
 
     /**
      * 给步行Marker设置图标，并返回更换图标的图片。如不用默认图片，需要重写此方法。
+     *
      * @return 更换的Marker图片。
      * @since V2.1.0
      */
     // TODO: 18-8-24 根据是否有详情判断图标 
     protected BitmapDescriptor getWalkBitmapDescriptor() {
-        
+
         return BitmapDescriptorFactory.fromResource(R.drawable.ic_map_oval);
     }
 
     /**
      * 移动镜头到当前的视角。
+     *
      * @bounds 一个矩形区域，代表当前路线的矩形区域
      * @since V2.1.0
      */
     public void zoomToSpan() {
-        if (startPoint != null) {
+        if (mStartPoint != null) {
             if (mAMap == null)
                 return;
             try {
@@ -128,26 +112,28 @@ public class RouteOverlay {
 
     protected LatLngBounds getLatLngBounds() {
         LatLngBounds.Builder b = LatLngBounds.builder();
-        b.include(new LatLng(startPoint.latitude, startPoint.longitude));
-        b.include(new LatLng(endPoint.latitude, endPoint.longitude));
-        for (Polyline polyline : allPolyLines){
-            for (LatLng point : polyline.getPoints()){
+        b.include(new LatLng(mStartPoint.latitude, mStartPoint.longitude));
+        b.include(new LatLng(mEndPoint.latitude, mEndPoint.longitude));
+        for (Polyline polyline : mAllPolyLines) {
+            for (LatLng point : polyline.getPoints()) {
                 b.include(point);
             }
         }
         return b.build();
     }
+
     /**
      * 路段节点图标控制显示接口。
+     *
      * @param visible true为显示节点图标，false为不显示。
      * @since V2.3.1
      */
     public void setNodeIconVisibility(boolean visible) {
         try {
-            nodeIconVisible = visible;
-            if (this.stationMarkers != null && this.stationMarkers.size() > 0) {
-                for (int i = 0; i < this.stationMarkers.size(); i++) {
-                    this.stationMarkers.get(i).setVisible(visible);
+            mNodeIconVisible = visible;
+            if (this.mStationMarkers != null && this.mStationMarkers.size() > 0) {
+                for (int i = 0; i < this.mStationMarkers.size(); i++) {
+                    this.mStationMarkers.get(i).setVisible(visible);
                 }
             }
         } catch (Throwable e) {
@@ -156,24 +142,24 @@ public class RouteOverlay {
     }
 
     protected void addStationMarker(MarkerOptions options) {
-        if(options == null) {
+        if (options == null) {
             return;
         }
 
         Marker marker = mAMap.addMarker(options);
-        if(marker != null) {
-            stationMarkers.add(marker);
+        if (marker != null) {
+            mStationMarkers.add(marker);
         }
 
     }
 
     protected void addPolyLine(PolylineOptions options) {
-        if(options == null) {
+        if (options == null) {
             return;
         }
         Polyline polyline = mAMap.addPolyline(options);
-        if(polyline != null) {
-            allPolyLines.add(polyline);
+        if (polyline != null) {
+            mAllPolyLines.add(polyline);
         }
     }
 
@@ -185,11 +171,5 @@ public class RouteOverlay {
         return Color.parseColor("#6db74d");
     }
 
-    //fixme 这段JavaDoc 意义和在？？？？？？
-    /**
-     * 自定义路线颜色。
-     * return 自定义路线颜色。
-     * @since V2.2.1
-     */
 
 }

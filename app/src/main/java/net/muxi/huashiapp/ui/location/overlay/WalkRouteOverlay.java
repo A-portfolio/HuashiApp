@@ -48,8 +48,8 @@ public class WalkRouteOverlay extends RouteOverlay {
         super(context);
         this.mAMap = amap;
         this.walkPath = path;
-        startPoint = AMapUtil.convertToLatLng(start);
-        endPoint = AMapUtil.convertToLatLng(end);
+        mStartPoint = AMapUtil.convertToLatLng(start);
+        mEndPoint = AMapUtil.convertToLatLng(end);
     }
     /**
      * 添加步行路线到地图中。
@@ -60,7 +60,7 @@ public class WalkRouteOverlay extends RouteOverlay {
         initPolylineOptions();
         try {
             List<WalkStep> walkPaths = walkPath.getSteps();
-            mPolylineOptions.add(startPoint);
+            mPolylineOptions.add(mStartPoint);
             for (int i = 0; i < walkPaths.size(); i++) {
                 WalkStep walkStep = walkPaths.get(i);
                 LatLng latLng = AMapUtil.convertToLatLng(walkStep
@@ -70,7 +70,7 @@ public class WalkRouteOverlay extends RouteOverlay {
                 addWalkPolyLines(walkStep);
 
             }
-            mPolylineOptions.add(endPoint);
+            mPolylineOptions.add(mEndPoint);
 
             showPolyline();
         } catch (Throwable e) {
@@ -133,7 +133,7 @@ public class WalkRouteOverlay extends RouteOverlay {
                 //方向，道路
                 .title("道路: "+ walkStep.getRoad())
                 .snippet("方向: " +walkStep.getInstruction())
-                .visible(nodeIconVisible)
+                .visible(mNodeIconVisible)
                 .anchor(0.5f, 0.5f)
                 .icon(walkStationDescriptor));
         distance+=walkStep.getDistance();
