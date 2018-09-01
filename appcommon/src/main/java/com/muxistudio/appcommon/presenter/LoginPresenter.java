@@ -35,8 +35,8 @@ public class LoginPresenter {
     public Observable<Boolean> login(User user){
         return Observable.
                         create((Observable.OnSubscribe<Boolean>) subscriber -> {
-                        subscriber.onStart();;
-                        boolean crawlerResult = false;
+                        subscriber.onStart();
+                          boolean crawlerResult = false;
                         try {
                             crawlerResult  = CcnuCrawler2.performLogin(user.sid,user.password);
                         } catch (IOException e) {

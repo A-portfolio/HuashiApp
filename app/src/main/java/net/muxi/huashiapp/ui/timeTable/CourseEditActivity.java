@@ -18,6 +18,7 @@ import com.muxistudio.appcommon.event.RefreshTableEvent;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.Locale;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
 
@@ -133,7 +134,7 @@ public class CourseEditActivity extends ToolbarActivity {
             mEtCourse.setText(mCourse.course);
             mEtPlace.setText(mCourse.place);
             mEtWeek.setText(getDisplayWeeks());
-            mEtTime.setText(String.format("周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
+            mEtTime.setText(String.format(Locale.CHINESE,"周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
                     start + duration - 1));
             mEtCourseTeacher.setText(mCourse.teacher);
         }
@@ -205,7 +206,7 @@ public class CourseEditActivity extends ToolbarActivity {
                     mWeekday = weekday;
                     start = start1;
                     duration = end - start1 + 1;
-                    mEtTime.setText(String.format("周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
+                    mEtTime.setText(String.format(Locale.CHINESE,"周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
                             start + duration - 1));
                 });
         }else if (id == R.id.btn_ensure){
@@ -242,15 +243,15 @@ public class CourseEditActivity extends ToolbarActivity {
         if (isSingleWeeks(weekList)) {
             start = weekList.get(0);
             end = weekList.get(weekList.size() - 1) + 1;
-            s = String.format("%d-%d周单", start, end);
+            s = String.format(Locale.CHINESE,"%d-%d周单", start, end);
         } else if (isDoubleWeeks(weekList)) {
             start = weekList.get(0) - 1;
             end = weekList.get(weekList.size() - 1);
-            s = String.format("%d-%d周双", start, end);
+            s = String.format(Locale.CHINESE,"%d-%d周双", start, end);
         } else if (isContinuOusWeeks(weekList)) {
             start = weekList.get(0);
             end = weekList.get(weekList.size() - 1);
-            s = String.format("%d-%d周", start, end);
+            s = String.format(Locale.CHINESE,"%d-%d周", start, end);
         } else {
             s = TextUtils.join(",", weekList);
             s += "周";

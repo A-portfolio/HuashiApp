@@ -8,6 +8,7 @@ import android.content.Intent;
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.common.util.Logger;
 
+import java.util.Locale;
 import net.muxi.huashiapp.service.AlarmReceiver;
 
 import java.text.SimpleDateFormat;
@@ -37,7 +38,7 @@ public class AlarmUtil {
             if (now.after(calendars[i])){
                 continue;
             }
-            SimpleDateFormat format = new SimpleDateFormat("MM-dd-HH-mm-ss");
+            SimpleDateFormat format = new SimpleDateFormat("MM-dd-HH-mm-ss", Locale.CHINESE);
             Logger.d(format.format(calendars[i].getTime()));
 
             Intent intent = new Intent("net.muxi.huashiapp.alarm");

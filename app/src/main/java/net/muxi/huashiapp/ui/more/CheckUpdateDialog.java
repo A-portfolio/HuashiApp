@@ -105,11 +105,11 @@ public class CheckUpdateDialog extends CenterDialogFragment {
 
 
     public interface OnPositiveClickListener {
-        public void OnPositiveClick();
+        void OnPositiveClick();
     }
 
     public interface OnNegativeClickListener {
-        public void OnNegativeClick();
+        void OnNegativeClick();
     }
 
 }

@@ -17,7 +17,7 @@ import java.lang.reflect.Field;
  */
 public class DimensUtil {
 
-    public static Context sContext = Global.getApplication();
+  public static Context sContext = Global.sApp;
 
     public static Display getDisplay() {
         WindowManager windowManager = (WindowManager) sContext.getSystemService(Context.WINDOW_SERVICE);

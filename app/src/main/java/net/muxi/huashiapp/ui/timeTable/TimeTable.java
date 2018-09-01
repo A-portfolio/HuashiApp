@@ -285,7 +285,11 @@ public class TimeTable extends RelativeLayout {
         mCourseTimeLayout = view.findViewById(R.id.course_time_layout);
     }
 
-    public interface OnRefreshListener {
+  @Override public boolean performClick() {
+    return true;
+  }
+
+  public interface OnRefreshListener {
         void onRefresh();
     }
 

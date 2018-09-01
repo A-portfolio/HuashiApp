@@ -152,11 +152,7 @@ public class CcnuCrawler {
             //这个是一个okhttp的写法
             Response<ResponseBody> response = retrofitService.loginInfo(sid,
                     password).execute();
-            if (response.body().string().contains("index_jg.jsp")) {
-                return true;
-
-            }
-            return false;
+          return response.body().string().contains("index_jg.jsp");
         } catch (IOException e) {
             e.printStackTrace();
         }

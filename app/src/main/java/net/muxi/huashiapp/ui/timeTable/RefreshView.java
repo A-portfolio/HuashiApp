@@ -54,7 +54,7 @@ public class RefreshView extends RelativeLayout {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_table_refresh, this);
         mLayoutRefresh = findViewById(R.id.layout_refresh);
         mDrawee = findViewById(R.id.drawee);
-        mTvTip = (TextView) view.findViewById(R.id.tv_tip);
+        mTvTip = view.findViewById(R.id.tv_tip);
 
         mDraweeController = Fresco.newDraweeControllerBuilder()
                 .setOldController(mDrawee.getController())

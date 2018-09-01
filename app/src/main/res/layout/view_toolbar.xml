@@ -11,7 +11,7 @@
 
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_book_title"
         android:maxLines="1"
         android:textSize="20sp"
         android:textColor="@color/textColor"

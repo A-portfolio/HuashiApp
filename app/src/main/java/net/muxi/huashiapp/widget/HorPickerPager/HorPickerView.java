@@ -8,7 +8,7 @@ import android.widget.TextView;
  * Date: 17/2/28
  */
 
-public class HorPickerView extends TextView{
+public class HorPickerView extends android.support.v7.widget.AppCompatTextView{
 
     public HorPickerView(Context context) {
         super(context);

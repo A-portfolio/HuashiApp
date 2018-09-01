@@ -15,7 +15,7 @@ import net.muxi.huashiapp.R;
  */
 
 //只含有课程id
-public class CourseView extends TextView{
+public class CourseView extends android.support.v7.widget.AppCompatTextView{
 
     private String cid;
     private Context context;

@@ -22,7 +22,7 @@ public class RetrofitServiceTest {
     private User libuser;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         retrofitService = CampusFactory.getRetrofitService();
         String usernum = "2014214629";
         String pwd = "fmc2014214629";
@@ -36,7 +36,7 @@ public class RetrofitServiceTest {
     }
 
     @Test
-    public void mainLogin() throws Exception {
+    public void mainLogin() {
 //        retrofitService.mainLogin(Base64Util.createBaseStr(user))
 //                .observeOn(Schedulers.immediate())
 //                .subscribeOn(Schedulers.immediate())
@@ -46,137 +46,137 @@ public class RetrofitServiceTest {
     }
 
     @Test
-    public void libLogin() throws Exception {
+    public void libLogin() {
 
     }
 
     @Test
-    public void searchBook() throws Exception {
+    public void searchBook() {
 
     }
 
     @Test
-    public void getBookDetail() throws Exception {
+    public void getBookDetail() {
 
     }
 
     @Test
-    public void getPersonalBook() throws Exception {
+    public void getPersonalBook() {
 
     }
 
     @Test
-    public void getAttentionBooks() throws Exception {
+    public void getAttentionBooks() {
 
     }
 
     @Test
-    public void createAttentionBook() throws Exception {
+    public void createAttentionBook() {
 
     }
 
     @Test
-    public void delAttentionBook() throws Exception {
+    public void delAttentionBook() {
 
     }
 
     @Test
-    public void renewBook() throws Exception {
+    public void renewBook() {
 
     }
 
     @Test
-    public void getSchedule() throws Exception {
+    public void getSchedule() {
 
     }
 
     @Test
-    public void addCourse() throws Exception {
+    public void addCourse() {
 
     }
 
     @Test
-    public void deleteCourse() throws Exception {
+    public void deleteCourse() {
 
     }
 
     @Test
-    public void updateCourse() throws Exception {
+    public void updateCourse() {
 
     }
 
     @Test
-    public void getScores() throws Exception {
+    public void getScores() {
 
     }
 
     @Test
-    public void getDetailScores() throws Exception {
+    public void getDetailScores() {
 
     }
 
     @Test
-    public void getNews() throws Exception {
+    public void getNews() {
 
     }
 
     @Test
-    public void getCalendar() throws Exception {
+    public void getCalendar() {
 
     }
 
     @Test
-    public void getBanner() throws Exception {
+    public void getBanner() {
 
     }
 
     @Test
-    public void getApartment() throws Exception {
+    public void getApartment() {
 
     }
 
     @Test
-    public void getElectricity() throws Exception {
+    public void getElectricity() {
 
     }
 
     @Test
-    public void getCardBalance() throws Exception {
+    public void getCardBalance() {
 
     }
 
     @Test
-    public void getLatestVersion() throws Exception {
+    public void getLatestVersion() {
 
     }
 
     @Test
-    public void downloadFile() throws Exception {
+    public void downloadFile() {
 
     }
 
     @Test
-    public void getPatch() throws Exception {
+    public void getPatch() {
 
     }
 
     @Test
-    public void getSplash() throws Exception {
+    public void getSplash() {
 
     }
 
     @Test
-    public void getProduct() throws Exception {
+    public void getProduct() {
 
     }
 
     @Test
-    public void getWebsite() throws Exception {
+    public void getWebsite() {
 
     }
 
     @Test
-    public void getClassRoom() throws Exception {
+    public void getClassRoom() {
 
     }
 

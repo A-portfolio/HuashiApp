@@ -305,11 +305,7 @@ public class BaseDetailLayout extends FrameLayout {
 
 
     private boolean isTop() {
-        if (mScrollView.getScrollY() <= 0) {
-            return true;
-        } else {
-            return false;
-        }
+      return mScrollView.getScrollY() <= 0;
     }
 
     private void initView(View view) {

@@ -17,6 +17,7 @@ import com.muxistudio.appcommon.db.HuaShiDao;
 import com.muxistudio.appcommon.event.RefreshTableEvent;
 import com.muxistudio.appcommon.net.CampusFactory;
 
+import java.util.Locale;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.utils.TimeTableUtil;
 
@@ -76,7 +77,7 @@ public class CourseDetailView extends RelativeLayout {
         mTvCourse.setText(course.course);
         mTvTeacher.setText(course.teacher);
         mTvPlace.setText(course.place);
-        mTvTime.setText(String.format("周%s%d-%d节",
+        mTvTime.setText(String.format(Locale.CHINESE,"周%s%d-%d节",
                 Constants.WEEKDAYS[TimeTableUtil.weekday2num(course.day)], course.start,
                 course.during + course.start - 1));
         List<Integer> weekList = new ArrayList<>();

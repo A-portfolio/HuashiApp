@@ -33,7 +33,7 @@ public class AttenBookAdapter implements ItemViewDelegate<AttentionBook>{
 
     @Override
     public void convert(ViewHolder holder, AttentionBook attentionBook, int position) {
-        holder.setText(R.id.tv_title,attentionBook.book);
+        holder.setText(R.id.tv_book_title,attentionBook.book);
         holder.getView(R.id.item_layout).setOnClickListener(v -> {
             BookDetailActivity.start(mContext,attentionBook.id);
         });

@@ -86,7 +86,7 @@ public class MoreFragment extends BaseAppFragment {
     }
 
     public void initView() {
-        mAdapter = new MoreAdapter((List<String>) Arrays.asList(titles), Arrays.asList(icons),Arrays.asList(colors));
+        mAdapter = new MoreAdapter(Arrays.asList(titles), Arrays.asList(icons),Arrays.asList(colors));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setItemClickListener((view, position) -> {
@@ -203,12 +203,8 @@ public class MoreFragment extends BaseAppFragment {
 
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-                return false;
-            }
+          return getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+              == PackageManager.PERMISSION_GRANTED;
         } else {
             return true;
         }

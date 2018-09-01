@@ -77,10 +77,10 @@ gradle.startParameter.taskNames.each({
     if(taskNameL.contains("assemble") || taskNameL.contains("install")) {
         if(taskNameL.contains("debug")) {
             currentBuildType = "debug"
-            return;
+            return
         } else if(taskNameL.contains("release")) {
             currentBuildType = "release"
-            return;
+            return
         }
     }
 })

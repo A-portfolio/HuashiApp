@@ -63,17 +63,17 @@ public class CalendarActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         initView();
-        mDraweeView = (SimpleDraweeView) findViewById(R.id.drawee);
+        mDraweeView = findViewById(R.id.drawee);
 
         sp = new PreferenceUtil();
-        lastTime = sp.getLong(PreferenceUtil.CALENDAR_UPDATE);
+        lastTime = PreferenceUtil.getLong(PreferenceUtil.CALENDAR_UPDATE);
         setTitle("校历");
 
         //如果有本地缓存就从中读取
         if (lastTime != DEFAULT_TIME) {
-            getImgSize(sp.getString(PreferenceUtil.CALENDAR_SIZE));
+            getImgSize(PreferenceUtil.getString(PreferenceUtil.CALENDAR_SIZE));
             if (imgWidth != 0) {
-                setCalendarDrawee(sp.getString(PreferenceUtil.CALENDAR_ADDRESS));
+                setCalendarDrawee(PreferenceUtil.getString(PreferenceUtil.CALENDAR_ADDRESS));
             }
         }
         if (NetUtil.isConnected()) {
@@ -138,9 +138,9 @@ public class CalendarActivity extends ToolbarActivity {
     private void saveCalendarData(CalendarData calendarData) {
         lastTime = calendarData.getUpdate();
         picUrl = calendarData.getImg();
-        sp.saveLong(PreferenceUtil.CALENDAR_UPDATE, lastTime);
-        sp.saveString(PreferenceUtil.CALENDAR_ADDRESS, picUrl);
-        sp.saveString(PreferenceUtil.CALENDAR_SIZE, calendarData.getSize());
+        PreferenceUtil.saveLong(PreferenceUtil.CALENDAR_UPDATE, lastTime);
+        PreferenceUtil.saveString(PreferenceUtil.CALENDAR_ADDRESS, picUrl);
+        PreferenceUtil.saveString(PreferenceUtil.CALENDAR_SIZE, calendarData.getSize());
     }
 
     public void getImgSize(String size) {

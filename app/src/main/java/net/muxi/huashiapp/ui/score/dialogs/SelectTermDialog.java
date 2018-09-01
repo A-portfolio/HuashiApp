@@ -113,16 +113,16 @@ public class SelectTermDialog extends BottomDialogFragment implements View.OnCli
         for(int i=0;i<terms.length;i++){
             terms[i] = false;
         }
-        tvTermAll = (TextView) view.findViewById(R.id.tv_term_all);
-        rbAll = (CheckBox) view.findViewById(R.id.rb_all);
-        tvFirstTerm = (TextView) view.findViewById(R.id.tv_first_term);
-        cbFirstTerm = (CheckBox) view.findViewById(R.id.cb_first_term);
-        tvSecondTerm = (TextView) view.findViewById(R.id.tv_second_term);
-        cbSecondTerm = (CheckBox) view.findViewById(R.id.cb_second_term);
-        tvThirdTerm = (TextView) view.findViewById(R.id.tv_third_term);
-        cbThirdTerm = (CheckBox) view.findViewById(R.id.cb_third_term);
-        btnConfirm = (TextView) view.findViewById(R.id.btn_confirm);
-        btnCancel = (TextView) view.findViewById(R.id.btn_cancel);
+        tvTermAll = view.findViewById(R.id.tv_term_all);
+        rbAll = view.findViewById(R.id.rb_all);
+        tvFirstTerm = view.findViewById(R.id.tv_first_term);
+        cbFirstTerm = view.findViewById(R.id.cb_first_term);
+        tvSecondTerm = view.findViewById(R.id.tv_second_term);
+        cbSecondTerm = view.findViewById(R.id.cb_second_term);
+        tvThirdTerm = view.findViewById(R.id.tv_third_term);
+        cbThirdTerm = view.findViewById(R.id.cb_third_term);
+        btnConfirm = view.findViewById(R.id.btn_confirm);
+        btnCancel = view.findViewById(R.id.btn_cancel);
 
         tvTermAll.setOnClickListener(this);
         rbAll.setOnClickListener(this);

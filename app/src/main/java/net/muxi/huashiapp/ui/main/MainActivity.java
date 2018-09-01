@@ -320,12 +320,8 @@ public class MainActivity extends BaseAppActivity implements
 
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-                return false;
-            }
+          return checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+              == PackageManager.PERMISSION_GRANTED;
         } else {
             return true;
         }

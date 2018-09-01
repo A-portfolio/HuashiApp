@@ -24,6 +24,7 @@ import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.common.util.Logger;
 
+import java.util.Locale;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.library.VerifyCodeDialog;
 
@@ -84,7 +85,7 @@ public class BookBorrowedFragment extends BaseAppFragment {
 
     private void initView(View view) {
         mToolbar = view.findViewById(R.id.toolbar);
-        mTvTitle = view.findViewById(R.id.tv_title);
+        mTvTitle = view.findViewById(R.id.tv_book_title);
         mTvAuthor = view.findViewById(R.id.tv_author);
         mTvInfo = view.findViewById(R.id.tv_info);
         mTvShowAll = view.findViewById(R.id.tv_show_all);
@@ -148,7 +149,7 @@ public class BookBorrowedFragment extends BaseAppFragment {
                 .subscribe(personalBooks -> {
                     if (personalBooks != null && personalBooks.size() > 0) {
                         mTvTid.setText("条码号" + personalBooks.get(0).bar_code);
-                        mTvDay.setText(String.format("当前借阅（剩余%d天）", personalBooks.get(0).time));
+                        mTvDay.setText(String.format(Locale.CHINESE,"当前借阅（剩余%d天）", personalBooks.get(0).time));
                         mTvPlace.setText(personalBooks.get(0).room);
                         mBorrowedBook = personalBooks.get(0);
                     }

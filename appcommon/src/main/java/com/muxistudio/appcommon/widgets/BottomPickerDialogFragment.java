@@ -37,10 +37,10 @@ public class BottomPickerDialogFragment extends BottomDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_picker_dialog, null);
-        mTvTitle = (TextView) view.findViewById(R.id.tv_title);
-        mPickerLayout = (PickerLayout) view.findViewById(R.id.picker_layout);
-        mBtnCancel = (Button) view.findViewById(R.id.btn_cancel);
-        mBtnEnter = (Button) view.findViewById(R.id.btn_confirm);
+        mTvTitle = view.findViewById(R.id.tv_title);
+        mPickerLayout = view.findViewById(R.id.picker_layout);
+        mBtnCancel = view.findViewById(R.id.btn_cancel);
+        mBtnEnter = view.findViewById(R.id.btn_confirm);
         initView();
         Dialog dialog = createBottomDialog(view);
         return dialog;

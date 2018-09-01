@@ -25,6 +25,7 @@ import static com.muxistudio.common.util.DimensUtil.dp2px;
 /**
  * Created by ybao on 16/4/18.
  */
+//fixme 使用静态的sContext变量会造成类存泄漏
 public class App extends Application {
 
     public static Context sContext;
@@ -33,8 +34,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        sContext = getApplicationContext();
-        Global.setApplication(this);
+        sContext = getContext();
+        Global. setApplication(this);
         UserAccountManager.getInstance().initUser();
         Fresco.initialize(this);
         initBugly();

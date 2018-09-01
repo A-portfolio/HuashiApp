@@ -14,7 +14,7 @@ import net.muxi.huashiapp.R;
 /**
  * Created by ybao on 16/4/18.
  */
-public class LoginEditText extends EditText {
+public class LoginEditText extends android.support.v7.widget.AppCompatEditText {
 
     private Drawable mDrawable;
 

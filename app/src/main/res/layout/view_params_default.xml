@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_book_title"
         android:text="使用默认选项进行成绩查询："
         android:textColor="@color/textColor"
         android:textSize="18sp"
@@ -18,7 +18,7 @@
         android:id="@+id/tv_year"
         android:text="选择的学年是:  "
         android:textSize="14sp"
-        android:layout_below="@+id/tv_title"
+        android:layout_below="@+id/tv_book_title"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="24dp"
         android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
     <TextView
         android:id="@+id/tv_year_value"
         android:layout_toRightOf="@+id/tv_year"
-        android:layout_below="@id/tv_title"
+        android:layout_below="@id/tv_book_title"
         android:textColor="@color/colorAccent"
         android:text="2016-2017"
         android:layout_marginTop="24dp"

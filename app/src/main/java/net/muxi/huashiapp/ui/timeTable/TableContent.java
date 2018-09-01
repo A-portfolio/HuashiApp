@@ -213,7 +213,8 @@ public class TableContent extends FrameLayout {
         return course;
     }
 
-    public String ellipseNotCurCourse(String course){
+
+  public String ellipseNotCurCourse(String course){
         String s = "非本周-";
         if (course.length() > 4){
             return s + course.substring(0,3) + "...";

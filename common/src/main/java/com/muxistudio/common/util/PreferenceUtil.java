@@ -183,10 +183,7 @@ public class PreferenceUtil {
      * @return false invalid ; true valid
      */
     public static boolean isCookieValid(){
-        if(System.currentTimeMillis() > PreferenceUtil.getLong(PreferenceUtil.LAST_LOGIN_MOMENT))
-            return false;
-        else
-            return true;
+      return System.currentTimeMillis() <= PreferenceUtil.getLong(PreferenceUtil.LAST_LOGIN_MOMENT);
     }
 
     public static long getLastLoginMoment(){

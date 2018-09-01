@@ -27,8 +27,6 @@ public class LibraryMainFragment extends BaseAppFragment {
 
     private Toolbar mToolbar;
     private EditText mEtSearch;
-    private ImageView mIvPeople;
-    private TextView mTvTitle;
     private Button mBtnLoginLib;
 
     public static LibraryMainFragment newInstance() {
@@ -53,8 +51,6 @@ public class LibraryMainFragment extends BaseAppFragment {
     private void initView(View view) {
         mToolbar = view.findViewById(R.id.toolbar);
         mEtSearch = view.findViewById(R.id.et_search);
-        mIvPeople = view.findViewById(R.id.iv_people);
-        mTvTitle = view.findViewById(R.id.tv_title);
         mBtnLoginLib = view.findViewById(R.id.btn_login_lib);
     }
 }

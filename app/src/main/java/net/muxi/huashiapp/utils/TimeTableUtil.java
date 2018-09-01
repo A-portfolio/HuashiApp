@@ -10,6 +10,7 @@ import com.muxistudio.common.util.DateUtil;
 import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.PreferenceUtil;
 
+import java.util.Locale;
 import net.muxi.huashiapp.R;
 
 import java.util.ArrayList;
@@ -161,10 +162,10 @@ public class TimeTableUtil {
         String defaluteDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()),
                 1 - day);
         int curWeek;
-        String firstWeek = sp.getString(PreferenceUtil.FIRST_WEEK_DATE, defaluteDate);
+        String firstWeek = PreferenceUtil.getString(PreferenceUtil.FIRST_WEEK_DATE, defaluteDate);
         String weekArg =  DateUtil.toDateInYear(new Date(System.currentTimeMillis()));
         curWeek = (int) DateUtil.getDistanceWeek(
-                sp.getString(PreferenceUtil.FIRST_WEEK_DATE, defaluteDate),
+                PreferenceUtil.getString(PreferenceUtil.FIRST_WEEK_DATE, defaluteDate),
                 DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
         curWeek = curWeek <= Constants.WEEKS_LENGTH ? curWeek : Constants.WEEKS_LENGTH;
         curWeek = curWeek >= 1 ? curWeek : 1;
@@ -284,11 +285,7 @@ public class TimeTableUtil {
         if (weekList.size() < 2) {
             return false;
         }
-        if (weekList.get(weekList.size() - 1) - weekList.get(0) == weekList.size() - 1) {
-            return true;
-        } else {
-            return false;
-        }
+      return weekList.get(weekList.size() - 1) - weekList.get(0) == weekList.size() - 1;
     }
 
     public static String getDisplayWeeks(List<Integer> weekList) {
@@ -298,15 +295,15 @@ public class TimeTableUtil {
         if (isSingleWeeks(weekList)) {
             start = weekList.get(0);
             end = weekList.get(weekList.size() - 1) + 1;
-            s = String.format("%d-%d周单", start, end);
+            s = String.format(Locale.CHINESE,"%d-%d周单", start, end);
         } else if (isDoubleWeeks(weekList)) {
             start = weekList.get(0) - 1;
             end = weekList.get(weekList.size() - 1);
-            s = String.format("%d-%d周双", start, end);
+            s = String.format(Locale.CHINESE,"%d-%d周双", start, end);
         } else if (isContinuOusWeeks(weekList)) {
             start = weekList.get(0);
             end = weekList.get(weekList.size() - 1);
-            s = String.format("%d-%d周", start, end);
+            s = String.format(Locale.CHINESE,"%d-%d周", start, end);
         } else {
             s = TextUtils.join(",", weekList);
             s += "周";

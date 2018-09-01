@@ -186,7 +186,7 @@ public class ElectricityActivity extends ToolbarActivity {
                     }
                 }
                 PreferenceUtil sp = new PreferenceUtil();
-                sp.saveString(PreferenceUtil.ELE_QUERY_STRING, mQuery);
+                PreferenceUtil.saveString(PreferenceUtil.ELE_QUERY_STRING, mQuery);
 
                 EleRequestData eleAirRequest = new EleRequestData();
                 eleAirRequest.setDor(mQuery);
@@ -204,7 +204,7 @@ public class ElectricityActivity extends ToolbarActivity {
                              */
                         .subscribe(electricityResponse -> {
                                     if (electricityResponse.code() == 404) {
-                                        sp.clearString(PreferenceUtil.ELE_QUERY_STRING);
+                                        PreferenceUtil.clearString(PreferenceUtil.ELE_QUERY_STRING);
                                         showErrorSnackbarShort(getString(R.string.ele_room_not_found));
                                     } else {
                                         ElectricityDetailActivity.start(this, mQuery);

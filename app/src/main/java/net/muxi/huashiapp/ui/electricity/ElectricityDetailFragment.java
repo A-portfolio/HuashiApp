@@ -59,16 +59,16 @@ public class ElectricityDetailFragment extends BaseAppFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_electricity_detail, container, false);
-        mTvDegreeLeft = (TextView) view.findViewById(R.id.tv_degree_left);
-        mTvDegreeLastMonth = (TextView) view.findViewById(R.id.tv_degree_last_month);
-        mTvDegreeCurMonth = (TextView) view.findViewById(R.id.tv_degree_cur_month);
-        mTvMoneyLeft = (TextView) view.findViewById(R.id.tv_money_left);
-        mTvMoneyLastMonth = (TextView) view.findViewById(R.id.tv_money_last_month);
-        mTvMoneyCurMonth = (TextView) view.findViewById(R.id.tv_money_cur_month);
+        mTvDegreeLeft = view.findViewById(R.id.tv_degree_left);
+        mTvDegreeLastMonth = view.findViewById(R.id.tv_degree_last_month);
+        mTvDegreeCurMonth = view.findViewById(R.id.tv_degree_cur_month);
+        mTvMoneyLeft = view.findViewById(R.id.tv_money_left);
+        mTvMoneyLastMonth = view.findViewById(R.id.tv_money_last_month);
+        mTvMoneyCurMonth = view.findViewById(R.id.tv_money_cur_month);
 
-        mCardMoneyLeft = (CardView) view.findViewById(R.id.card_money_left);
-        mCardDegreeLeft = (CardView) view.findViewById(R.id.card_degree_left);
-        mCardTotalUse = (CardView) view.findViewById(R.id.card_total_use);
+        mCardMoneyLeft = view.findViewById(R.id.card_money_left);
+        mCardDegreeLeft = view.findViewById(R.id.card_degree_left);
+        mCardTotalUse = view.findViewById(R.id.card_total_use);
 
         return view;
     }

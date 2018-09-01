@@ -55,7 +55,7 @@ public class FeedbackDialog extends CenterDialogFragment {
 
 
     public interface OnClickListener {
-        public void OnClick();
+        void OnClick();
     }
 
 

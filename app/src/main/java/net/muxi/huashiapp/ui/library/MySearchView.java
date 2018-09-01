@@ -77,12 +77,12 @@ public class MySearchView extends FrameLayout implements View.OnClickListener {
 
 
     private void initSearchView() {
-        mBtnBack = (ImageView) findViewById(R.id.btn_back);
-        mBtnSearch = (ImageView) findViewById(R.id.btn_search);
-        mSearchBar = (RelativeLayout) findViewById(R.id.search_bar);
-        mSearchListview = (ListView) findViewById(R.id.search_listview);
-        mSearchLayout = (FrameLayout) findViewById(R.id.search_layout);
-        mEditSearch = (EditText) findViewById(R.id.edit_search);
+        mBtnBack = findViewById(R.id.btn_back);
+        mBtnSearch = findViewById(R.id.btn_search);
+        mSearchBar = findViewById(R.id.search_bar);
+        mSearchListview = findViewById(R.id.search_listview);
+        mSearchLayout = findViewById(R.id.search_layout);
+        mEditSearch = findViewById(R.id.edit_search);
         mTintView = findViewById(R.id.tint_view);
         mDivider = findViewById(R.id.divider);
 

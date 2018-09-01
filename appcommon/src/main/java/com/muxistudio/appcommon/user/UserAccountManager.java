@@ -49,10 +49,7 @@ public class UserAccountManager {
     }
 
     public boolean isInfoUserLogin(){
-        if(TextUtils.isEmpty(getInfoUser().sid) || TextUtils.isEmpty(getInfoUser().password))
-            return false;
-        else
-            return true;
+      return !TextUtils.isEmpty(getInfoUser().sid) && !TextUtils.isEmpty(getInfoUser().password);
     }
 
     /**
@@ -108,11 +105,7 @@ public class UserAccountManager {
     @Deprecated
     public boolean isLibLogin() {
         String phpSess = PreferenceUtil.getString(PreferenceUtil.PHPSESSID);
-        if (!TextUtils.isEmpty(phpSess)) {
-            return true;
-        } else {
-            return false;
-        }
+      return !TextUtils.isEmpty(phpSess);
     }
 
     public String getPHPSESSID() {

@@ -142,7 +142,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
             getProduct();
         } else {
             Gson gson = new Gson();
-            mProductData = gson.fromJson(sp.getString(PreferenceUtil.PRODUCT_DATA), ProductData.class);
+            mProductData = gson.fromJson(PreferenceUtil.getString(PreferenceUtil.PRODUCT_DATA), ProductData.class);
             getProduct();
         }
         return view;
@@ -181,7 +181,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
             TipViewUtil.addToContent(getContext(), indicatedView1, DIRECTION_UP,
                     DimensUtil.getScreenWidth() / 4,
                     (DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight()) / 2);
-            sp.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN, false);
+            PreferenceUtil.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN, false);
             return;
         }
     }
@@ -229,7 +229,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                             MobclickAgent.onEvent(getActivity(), "notice_info_query");
                             break;
                         case "电费":
-                            String eleQuery = sp.getString(PreferenceUtil.ELE_QUERY_STRING);
+                            String eleQuery = PreferenceUtil.getString(PreferenceUtil.ELE_QUERY_STRING);
                             if (eleQuery.equals("")) {
                                 ElectricityActivity.start(getActivity());
                             } else {
@@ -331,16 +331,16 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                             mProductData = productData;
                             Gson gson = new Gson();
                             mProductJson = gson.toJson(mProductData);
-                            sp.saveString(PreferenceUtil.PRODUCT_DATA, mProductJson);
-                            sp.saveFloat(PreferenceUtil.PRODUCT_UPDATE, (float) productData.getUpdate());
+                            PreferenceUtil.saveString(PreferenceUtil.PRODUCT_DATA, mProductJson);
+                            PreferenceUtil.saveFloat(PreferenceUtil.PRODUCT_UPDATE, (float) productData.getUpdate());
                             for (int i = 0; i < productData.get_product().size(); i++) {
                                 FrescoUtil.savePicture(productData.get_product().get(i).getIcon(), getContext(), productData.get_product().get(i).getName());
                             }
                             updateProductDisplay(mProductData);
                         }
                     } else {
-                        sp.clearString(PreferenceUtil.PRODUCT_DATA);
-                        sp.clearFloat(PreferenceUtil.PRODUCT_UPDATE);
+                        PreferenceUtil.clearString(PreferenceUtil.PRODUCT_DATA);
+                        PreferenceUtil.clearFloat(PreferenceUtil.PRODUCT_UPDATE);
                     }
                 }, throwable -> {
                     throwable.printStackTrace();

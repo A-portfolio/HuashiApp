@@ -69,17 +69,13 @@ public class Course implements Parcelable {
     };
 
     public boolean hasNullValue() {
-        if (TextUtils.isEmpty(id)
-                || TextUtils.isEmpty(course)
-                || TextUtils.isEmpty(teacher)
-                || TextUtils.isEmpty(weeks)
-                || TextUtils.isEmpty(day)
-                || TextUtils.isEmpty(place)
-                || TextUtils.isEmpty(remind)
-                ) {
-            return true;
-        }
-        return false;
+      return TextUtils.isEmpty(id)
+          || TextUtils.isEmpty(course)
+          || TextUtils.isEmpty(teacher)
+          || TextUtils.isEmpty(weeks)
+          || TextUtils.isEmpty(day)
+          || TextUtils.isEmpty(place)
+          || TextUtils.isEmpty(remind);
     }
 
     public String getId() {

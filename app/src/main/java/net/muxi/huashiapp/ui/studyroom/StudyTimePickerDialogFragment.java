@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.widgets.BottomDialogFragment;
 
+import java.util.Locale;
 import net.muxi.huashiapp.R;
 
 
@@ -46,10 +47,10 @@ public class StudyTimePickerDialogFragment extends BottomDialogFragment {
         mStudyTimePickerView.setWeek(week);
         mStudyTimePickerView.setDay(day);
         mTvTitle.setText(
-                String.format("第%d周周%s",week + 1, Constants.WEEKDAYS[day]));
+                String.format(Locale.CHINESE,"第%d周周%s",week + 1, Constants.WEEKDAYS[day]));
         mStudyTimePickerView.setOnValueChangeListener((mweek, mday) -> {
             mTvTitle.setText(
-                    String.format("第%d周周%s",mweek + 1, Constants.WEEKDAYS[mday]));
+                    String.format(Locale.CHINESE,"第%d周周%s",mweek + 1, Constants.WEEKDAYS[mday]));
         });
 
         Dialog dialog = createBottomDialog(view);
@@ -77,7 +78,7 @@ public class StudyTimePickerDialogFragment extends BottomDialogFragment {
     }
 
     private void initView(View view) {
-        mTvTitle = view.findViewById(R.id.tv_title);
+        mTvTitle = view.findViewById(R.id.tv_book_title);
         mStudyTimePickerView = view.findViewById(R.id.study_time_picker_view);
         mBtnCancel = view.findViewById(R.id.btn_cancel);
         mBtnEnter = view.findViewById(R.id.btn_confirm);

@@ -9,7 +9,7 @@
 >
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_book_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="72dp"
@@ -24,7 +24,7 @@
         android:id="@+id/tv_remind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_title"
+        android:layout_below="@+id/tv_book_title"
         android:layout_marginLeft="72dp"
         android:layout_marginRight="12dp"
         android:ellipsize="end"

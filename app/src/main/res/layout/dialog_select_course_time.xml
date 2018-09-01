@@ -7,7 +7,7 @@
     android:background="@drawable/bg_card">
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_book_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="周一第一至第二节"
@@ -16,7 +16,7 @@
 
     <net.muxi.huashiapp.ui.timeTable.CourseTimePickerView
         android:id="@+id/course_time_picker_view"
-        android:layout_below="@+id/tv_title"
+        android:layout_below="@+id/tv_book_title"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:layout_width="match_parent"

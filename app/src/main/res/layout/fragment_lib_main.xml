@@ -25,26 +25,13 @@
         android:layout_marginTop="75dp"
         android:src="@drawable/inset_lib_main"/>
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/et_search"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="95dp"
-        android:text="我的图书馆还在施工\n试试搜索功能吧"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:visibility="invisible"/>
-
     <Button
         android:id="@+id/btn_login_lib"
         android:layout_width="126dp"
         android:layout_height="36dp"
-        android:layout_below="@+id/tv_title"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_below="@+id/iv_people"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
         android:background="@drawable/ripple_orange"
         android:text="登录我的图书馆"
         android:textColor="@color/colorWhite"/>

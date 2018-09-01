@@ -278,10 +278,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         public CommonViewHolder(View itemview) {
             super(itemview);
-            mTextView = (TextView) itemview.findViewById(R.id.main_text_view);
-            mDraweeView = (SimpleDraweeView) itemview.findViewById(R.id.main_pic);
-            mItemLayout = (RelativeLayout) itemview.findViewById(R.id.item_layout);
-            ViewGroup.LayoutParams layoutParams = (ViewGroup.LayoutParams) mDraweeView.getLayoutParams();
+            mTextView = itemview.findViewById(R.id.main_text_view);
+            mDraweeView = itemview.findViewById(R.id.main_pic);
+            mItemLayout = itemview.findViewById(R.id.item_layout);
+            ViewGroup.LayoutParams layoutParams = mDraweeView.getLayoutParams();
             layoutParams.width = DimensUtil.getScreenWidth() / 3;
             mDraweeView.setLayoutParams(layoutParams);
         }
@@ -292,7 +292,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         public BannerViewHolder(View itemView) {
             super(itemView);
-            mCardBanner = (CardBanner) itemView.findViewById(R.id.card_banner);
+            mCardBanner = itemView.findViewById(R.id.card_banner);
         }
     }
 
@@ -302,7 +302,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         public FooterViewHolder(View itemView) {
             super(itemView);
-            mTextView = (TextView) itemView.findViewById(R.id.tv_footer);
+            mTextView = itemView.findViewById(R.id.tv_footer);
             CommonTextUtils.setText(mTextView);
         }
     }

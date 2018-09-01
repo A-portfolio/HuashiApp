@@ -28,7 +28,6 @@ import com.muxistudio.common.util.PreferenceUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
-import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 
@@ -74,7 +73,7 @@ public class BookDetailFragment extends BaseAppFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_detail, container, false);
-        mTvTitle = view.findViewById(R.id.tv_title);
+        mTvTitle = view.findViewById(R.id.tv_book_title);
         mTvAuthor = view.findViewById(R.id.tv_author);
         mBtnAttention = view.findViewById(R.id.btn_attention);
         mTvInfo = view.findViewById(R.id.tv_info);

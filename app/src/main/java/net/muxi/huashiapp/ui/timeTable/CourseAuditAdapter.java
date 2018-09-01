@@ -194,11 +194,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
             if (week.charAt(i) == '\n')
                 counter++;
         }
-        if (counter == 2) {
-            return true;
-        } else {
-            return false;
-        }
+      return counter == 2;
     }
 
     //生成一个请求中使用的AuditCourse 在网络请求中会进行转化

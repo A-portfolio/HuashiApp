@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.location;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
@@ -26,10 +27,12 @@ import com.amap.api.services.route.WalkRouteResult;
 import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.common.util.Logger;
 
+import java.util.Locale;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.location.data.DetailEven;
 import net.muxi.huashiapp.ui.location.overlay.WalkRouteOverlay;
 
+//todo refractors the member name of the class
 public class MapPresenter {
     private LatLonPoint mMyLocation;
 
@@ -40,9 +43,10 @@ public class MapPresenter {
 
     private float time;
     private float distance;
-
+    @SuppressLint("DefaultLocale")
     public String getTime() {
-        return String.format("%.1f",walkRouteOverlay.getTime()/60);
+        return String.format( Locale.CHINESE,
+            "%.1f",walkRouteOverlay.getTime()/60);
     }
 
     public float getDistance() {

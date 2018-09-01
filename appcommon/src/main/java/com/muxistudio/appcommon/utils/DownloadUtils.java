@@ -68,10 +68,6 @@ public class DownloadUtils {
 
     public static boolean isFileExists(String path){
         File file = new File(path);
-        if (file.exists()){
-            return true;
-        }else {
-            return false;
-        }
+      return file.exists();
     }
 }

@@ -89,9 +89,9 @@ public class MoreAdapter extends RecyclerView.Adapter<MoreAdapter.MoreViewHolder
 
         public MoreViewHolder(View itemView) {
             super(itemView);
-            mItemImg = (ImageView) itemView.findViewById(R.id.item_img);
-            mItemText = (TextView) itemView.findViewById(R.id.item_text);
-            mItemLayout = (RelativeLayout) itemView.findViewById(R.id.item_layout);
+            mItemImg = itemView.findViewById(R.id.item_img);
+            mItemText = itemView.findViewById(R.id.item_text);
+            mItemLayout = itemView.findViewById(R.id.item_layout);
         }
 
     }

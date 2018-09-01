@@ -261,7 +261,7 @@ public class MyBookListFragment extends BaseAppFragment {
     }
 
     private void setBorrowItem(ViewHolder holder, BorrowedBook borrowedBook, int position) {
-        holder.setText(R.id.tv_title, borrowedBook.book);
+        holder.setText(R.id.tv_book_title, borrowedBook.book);
         String s = borrowedBook.time < 10 ? "0" + borrowedBook.time : String.valueOf(
                 borrowedBook.time);
         holder.setText(R.id.tv_remind, String.format("时间剩余%s天", s));

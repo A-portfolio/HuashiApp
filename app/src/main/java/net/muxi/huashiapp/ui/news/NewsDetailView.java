@@ -128,7 +128,7 @@ public class NewsDetailView extends RelativeLayout {
         return true;
     }
 
-    private void initView(View view) {
+  private void initView(View view) {
         mBackgroundLayout = view.findViewById(R.id.background_layout);
         mNewsFloatBtn = view.findViewById(R.id.news_float_btn);
         mNewsContent = view.findViewById(R.id.news_content);

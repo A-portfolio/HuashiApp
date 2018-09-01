@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.muxistudio.appcommon.Constants;
+import java.util.Locale;
 import net.muxi.huashiapp.utils.TimeTableUtil;
 import com.muxistudio.common.util.DateUtil;
 import com.muxistudio.common.util.Logger;
@@ -44,7 +45,7 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
                 rv = new RemoteViews(context.getPackageName(), R.layout.widget_schedule);
                 int week = TimeTableUtil.getCurWeek();
                 String weekday = Constants.WEEKDAYS_XQ[DateUtil.getDayInWeek(new Date()) - 1];
-                rv.setTextViewText(R.id.tv_weekday, String.format("第%d周%s", week, weekday));
+                rv.setTextViewText(R.id.tv_weekday, String.format(Locale.CHINESE,"第%d周%s", week, weekday));
                 rv.setRemoteAdapter(R.id.lv,widgetServiceIntent);
                 widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv);
                 rv.setEmptyView(R.id.lv,R.id.layout_empty);

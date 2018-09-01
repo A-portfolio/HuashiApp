@@ -32,6 +32,7 @@ import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.PreferenceUtil;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.Locale;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
 import net.muxi.huashiapp.utils.TimeTableUtil;
@@ -315,7 +316,7 @@ public class TimetableFragment extends BaseAppFragment {
      */
     //第n周
     public void setSelectedWeek(int selectingWeek) {
-        mTvSelectWeek.setText(String.format("第%d周", selectingWeek));
+        mTvSelectWeek.setText(String.format(Locale.CHINESE,"第%d周", selectingWeek));
     }
 
     /**

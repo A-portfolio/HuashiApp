@@ -11,62 +11,62 @@ import java.util.Date;
  */
 public class DateUtilTest {
     @Test
-    public void toDate() throws Exception {
+    public void toDate() {
 
     }
 
     @Test
-    public void toToday() throws Exception {
+    public void toToday() {
 
     }
 
     @Test
-    public void toDateInYear() throws Exception {
+    public void toDateInYear() {
 
     }
 
     @Test
-    public void toWeek() throws Exception {
+    public void toWeek() {
 
     }
 
     @Test
-    public void toWeek1() throws Exception {
+    public void toWeek1() {
 
     }
 
     @Test
-    public void parseDateInYear() throws Exception {
+    public void parseDateInYear() {
 
     }
 
     @Test
-    public void getDayBetweenDates() throws Exception {
+    public void getDayBetweenDates() {
 
     }
 
     @Test
-    public void getDistanceWeek() throws Exception {
+    public void getDistanceWeek() {
 
     }
 
     @Test
-    public void getTheDateInYear() throws Exception {
+    public void getTheDateInYear() {
 
     }
 
     @Test
-    public void getTheDate() throws Exception {
+    public void getTheDate() {
 
     }
 
     @Test
-    public void getToday() throws Exception {
+    public void getToday() {
 
     }
 
     @Test
-    public void getWeek() throws Exception {
+    public void getWeek() {
 
     }
 
@@ -84,16 +84,16 @@ public class DateUtilTest {
     }
 
     @Test
-    public void getTheWeekDate() throws Exception {
+    public void getTheWeekDate() {
 
     }
 
     @Test
-    public void isAfter() throws Exception {
+    public void isAfter() {
     }
 
     @Test
-    public void getSecondSpace() throws Exception {
+    public void getSecondSpace() {
 
     }
 

@@ -93,15 +93,6 @@
             android:name="net.muxi.huashiapp.ui.SettingActivity"
             android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.credit.SelectCreditActivity"
-            android:launchMode="singleTask"/>
-
-        <activity android:name=".ui.credit.CreditResultActivity"
-            android:launchMode="singleTask"/>
-
-        <activity android:name=".ui.credit.CreditGradeActivity"
-            android:launchMode="singleTask"/>
-
         <activity
             android:name="net.muxi.huashiapp.ui.timeTable.CourseEditActivity"
             android:launchMode="singleTask"/>
@@ -114,9 +105,6 @@
             android:launchMode="singleTask"/>
 
         <activity android:name=".ui.timeTable.CurweekSetActivity"
-            android:launchMode="singleTask"/>
-
-        <activity android:name=".ui.score.activtities.ScoreSelectActivity"
             android:launchMode="singleTask"/>
 
         <activity
@@ -324,7 +312,8 @@
             android:exported="true"
             android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver" >
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                    tools:ignore="BatteryLife"/>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>

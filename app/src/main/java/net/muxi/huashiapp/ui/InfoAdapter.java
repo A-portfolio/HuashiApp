@@ -83,7 +83,7 @@ public class InfoAdapter extends BaseExpandableListAdapter{
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_expand_group, parent, false);
             groupViewHolder = new GroupViewHolder();
-            groupViewHolder.tvTitle = (TextView) convertView.findViewById(R.id.label_expand_group);
+            groupViewHolder.tvTitle = convertView.findViewById(R.id.label_expand_group);
             convertView.setTag(groupViewHolder);
         } else {
             groupViewHolder = (GroupViewHolder) convertView.getTag();
@@ -99,8 +99,8 @@ public class InfoAdapter extends BaseExpandableListAdapter{
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_expand_child, parent, false);
             childViewHolder = new ChildViewHolder();
-            childViewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_child);
-            childViewHolder.mRadioButton = (AppCompatRadioButton) convertView.findViewById(R.id.rb_child);
+            childViewHolder.tvTitle = convertView.findViewById(R.id.tv_child);
+            childViewHolder.mRadioButton = convertView.findViewById(R.id.rb_child);
             convertView.setTag(childViewHolder);
         } else {
             childViewHolder = (ChildViewHolder) convertView.getTag();

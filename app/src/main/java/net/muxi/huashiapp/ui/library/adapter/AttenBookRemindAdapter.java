@@ -35,7 +35,7 @@ public class AttenBookRemindAdapter implements ItemViewDelegate<AttentionBook> {
 
     @Override
     public void convert(ViewHolder holder, AttentionBook attentionBook, int position) {
-        holder.setText(R.id.tv_title, attentionBook.book);
+        holder.setText(R.id.tv_book_title, attentionBook.book);
         holder.setText(R.id.tv_remind, "关注图书可借");
         ((TextView) holder.getView(R.id.tv_remind)).setTextColor(
                 App.sContext.getResources().getColor(R.color.color_selected));

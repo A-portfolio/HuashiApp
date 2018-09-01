@@ -12,6 +12,7 @@ import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.event.CurWeekChangeEvent;
 
+import java.util.Locale;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.utils.TimeTableUtil;
 
@@ -39,9 +40,9 @@ public class CurweekSetActivity extends ToolbarActivity {
         String[] s = new String[Constants.WEEKS_LENGTH];
         for (int i = 0; i < Constants.WEEKS_LENGTH; i++) {
             if (i < 9) {
-                s[i] = String.format("第0%d周", i + 1);
+                s[i] = String.format(Locale.CHINESE,"第0%d周", i + 1);
             } else {
-                s[i] = String.format("第%d周", i + 1);
+                s[i] = String.format(Locale.CHINESE,"第%d周", i + 1);
             }
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,

@@ -7,7 +7,7 @@
     android:background="@drawable/bg_card">
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_book_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="title"

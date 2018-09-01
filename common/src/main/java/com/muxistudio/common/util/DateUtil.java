@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -18,24 +19,24 @@ public class DateUtil {
 
 
     public static String toDate(Date date) {
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd");
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd", Locale.CHINESE);
         return dateFormat.format(date);
     }
 
     public static String toToday(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("MM月dd日");
+        DateFormat dateFormat = new SimpleDateFormat("MM月dd日",Locale.CHINESE);
         return dateFormat.format(date);
     }
 
     public static String toDateInYear(Date date){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd",Locale.CHINESE);
         TimeZone timeZone = TimeZone.getTimeZone("GMT+8");
         format.setTimeZone(timeZone);
         return format.format(date);
     }
 
     public static String toWeek(Date date) {
-        DateFormat dateFormat = new SimpleDateFormat("E");
+        DateFormat dateFormat = new SimpleDateFormat("E",Locale.CHINESE);
         return dateFormat.format(date);
     }
 
@@ -74,7 +75,7 @@ public class DateUtil {
 
     //获取两个日期相隔的周,用于课程表
     public static long getDistanceWeek(String date1,String date2){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd",Locale.CHINESE);
         try{
             Date d1 = format.parse(date1);
             Date d2 = format.parse(date2);
@@ -161,7 +162,7 @@ public class DateUtil {
      * @return
      */
     public static boolean isAfter(String date1,String date2){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd",Locale.CHINESE);
         try{
             Date d1 = format.parse(date1);
             Date d2 = format.parse(date2);
@@ -193,7 +194,7 @@ public class DateUtil {
      * @return 返回今年的年份的String
      */
     public static String getCurYear(Date date){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy",Locale.CHINESE);
         return dateFormat.format(date);
     }
 

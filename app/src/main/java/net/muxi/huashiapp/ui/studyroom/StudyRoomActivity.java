@@ -19,6 +19,7 @@ import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.common.util.DateUtil;
 import com.muxistudio.common.util.PreferenceUtil;
 
+import java.util.Locale;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.utils.TimeTableUtil;
 
@@ -111,7 +112,7 @@ public class StudyRoomActivity extends ToolbarActivity {
             mDialogFragment = StudyTimePickerDialogFragment.newInstance(mWeek, mDay);
             mDialogFragment.show(getSupportFragmentManager(), "picker_time");
             mDialogFragment.setOnPositiveButtonClickListener((week, day) -> {
-                mTvStudyTime.setText(String.format("第%d周周%s", week + 1, Constants.WEEKDAYS[day]));
+                mTvStudyTime.setText(String.format(Locale.CHINESE,"第%d周周%s", week + 1, Constants.WEEKDAYS[day]));
             });
         } else if (id == R.id.tv_area || id == R.id.tv_study_area) {
             intent = new Intent();
@@ -120,7 +121,7 @@ public class StudyRoomActivity extends ToolbarActivity {
         } else if (id == R.id.btn_search) {
             if (mTvStudyTime.getText().length() != 0 && mTvStudyArea.getText().length() != 0) {
                 mQuery = mTvStudyTime.getText().toString() + mTvStudyArea.getText().toString();
-                sp.saveString(PreferenceUtil.STUDY_ROOM_QUERY_STRING, mQuery);
+                PreferenceUtil.saveString(PreferenceUtil.STUDY_ROOM_QUERY_STRING, mQuery);
                 StudyRoomDetailActivity.start(StudyRoomActivity.this, mQuery);
             } else {
                 showErrorSnackbarShort("请填写完整信息");

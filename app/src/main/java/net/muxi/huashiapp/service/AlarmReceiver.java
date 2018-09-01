@@ -67,10 +67,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         mUser = new User();
         mLibUser = new User();
         sp = new PreferenceUtil();
-        mUser.setSid(sp.getString(PreferenceUtil.STUDENT_ID));
-        mUser.setPassword(sp.getString(PreferenceUtil.STUDENT_PWD));
-        mLibUser.setSid(sp.getString(PreferenceUtil.LIBRARY_ID));
-        mLibUser.setPassword(sp.getString(PreferenceUtil.LIBRARY_PWD));
+        mUser.setSid(PreferenceUtil.getString(PreferenceUtil.STUDENT_ID));
+        mUser.setPassword(PreferenceUtil.getString(PreferenceUtil.STUDENT_PWD));
+        mLibUser.setSid(PreferenceUtil.getString(PreferenceUtil.LIBRARY_ID));
+        mLibUser.setPassword(PreferenceUtil.getString(PreferenceUtil.LIBRARY_PWD));
 
         Logger.d(mUser.getSid());
         if (TextUtils.isEmpty(mUser.sid)) {
@@ -79,32 +79,33 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         //判断对应的登录状态以及当前时间,还有用户是否设置提醒
         if (intent.getIntExtra(Constants.ALARMTIME, 2) == 2) {
-            Log.d(TAG,sp.getBoolean(App.getContext().getString(R.string.pre_schedule),true) + "");
-            if (sp.getBoolean(App.getContext().getString(R.string.pre_schedule), true)) {
+            Log.d(TAG,
+                PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_schedule),true) + "");
+            if (PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_schedule), true)) {
                 checkCourses();
                 Log.d(TAG, "check course");
             }
-            if (sp.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
+            if (PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
                 checkScores();
                 Log.d(TAG, "check score");
             }
         }
         if (intent.getIntExtra(Constants.ALARMTIME, 0) == 1) {
-            if (sp.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
+            if (PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
                 checkScores();
                 Log.d(TAG, "check score");
             }
         }
         if (intent.getIntExtra(Constants.ALARMTIME, 0) == 0) {
-            if (sp.getBoolean(App.getContext().getString(R.string.pre_card), true)) {
+            if (PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_card), true)) {
                 checkCard();
                 Log.d(TAG, "check card");
             }
-            if (sp.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
+            if (PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
                 checkScores();
             }
             if (mLibUser.getSid() != "") {
-                if (sp.getBoolean(App.getContext().getString(R.string.pre_library), true)) {
+                if (PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_library), true)) {
                     checkLib();
                 }
             }
@@ -208,7 +209,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         int day = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
         String defalutDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()),
                 1 - day);
-        String startDate = sp.getString(PreferenceUtil.FIRST_WEEK_DATE, defalutDate);
+        String startDate = PreferenceUtil.getString(PreferenceUtil.FIRST_WEEK_DATE, defalutDate);
         int curWeek = (int) DateUtil.getDistanceWeek(startDate,
                 DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
         Logger.d(curWeek + "");
@@ -271,16 +272,16 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                     @Override
                     public void onNext(List<Score> scoresList) {
-                        Logger.d(scoresList.size() + "  " + sp.getInt(PreferenceUtil.SCORES_NUM));
-                        if (scoresList.size() != sp.getInt(PreferenceUtil.SCORES_NUM)
+                        Logger.d(scoresList.size() + "  " + PreferenceUtil.getInt(PreferenceUtil.SCORES_NUM));
+                        if (scoresList.size() != PreferenceUtil.getInt(PreferenceUtil.SCORES_NUM)
                                 && scoresList.size() != 0) {
-                            sp.saveInt(PreferenceUtil.SCORES_NUM, scoresList.size());
+                            PreferenceUtil.saveInt(PreferenceUtil.SCORES_NUM, scoresList.size());
                             NotifyUtil.show(mContext, ScoreDisplayActivity.class,
                                     mContext.getString(R.string.notify_title_score),
                                     mContext.getString(R.string.notify_content_score));
                         }
                         if (scoresList.size() == 0) {
-                            sp.saveInt(PreferenceUtil.SCORES_NUM, scoresList.size());
+                            PreferenceUtil.saveInt(PreferenceUtil.SCORES_NUM, scoresList.size());
                         }
                     }
                 });

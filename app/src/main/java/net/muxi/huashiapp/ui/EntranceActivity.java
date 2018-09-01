@@ -40,9 +40,9 @@ public class EntranceActivity extends BaseAppActivity implements View.OnClickLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sp = new PreferenceUtil();
-        isFirstOpen = sp.getBoolean(PreferenceUtil.APP_FIRST_OPEN, true);
+        isFirstOpen = PreferenceUtil.getBoolean(PreferenceUtil.APP_FIRST_OPEN, true);
         if (!isFirstOpen) {
-            if (sp.getString(Constants.SPLASH_IMG).equals("")) {
+            if (PreferenceUtil.getString(Constants.SPLASH_IMG).equals("")) {
                 startMainActivityDelay(0);
             } else {
                 setContentView(R.layout.activity_entrance);
@@ -56,8 +56,8 @@ public class EntranceActivity extends BaseAppActivity implements View.OnClickLis
                 mBtnSkip = findViewById(R.id.btn_skip);
 
                 mBtnSkip.setOnClickListener(this);
-                mDrawee = (SimpleDraweeView) findViewById(R.id.drawee);
-                mDrawee.setImageURI(Uri.parse(sp.getString(Constants.SPLASH_IMG)));
+                mDrawee = findViewById(R.id.drawee);
+                mDrawee.setImageURI(Uri.parse(PreferenceUtil.getString(Constants.SPLASH_IMG)));
                 mDrawee.setOnClickListener(this);
                 startMainActivityDelay(2500);
             }
@@ -65,7 +65,7 @@ public class EntranceActivity extends BaseAppActivity implements View.OnClickLis
         }
 
         GuideActivity.start(this);
-        sp.saveBoolean(PreferenceUtil.APP_FIRST_OPEN, false);
+        PreferenceUtil.saveBoolean(PreferenceUtil.APP_FIRST_OPEN, false);
         this.finish();
     }
 
@@ -78,7 +78,7 @@ public class EntranceActivity extends BaseAppActivity implements View.OnClickLis
 
         if (v.getId() == R.id.drawee) {
             Intent intent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(sp.getString(Constants.SPLASH_URL).toString()));
+                    Uri.parse(PreferenceUtil.getString(Constants.SPLASH_URL).toString()));
             startActivity(intent);
         }
     }

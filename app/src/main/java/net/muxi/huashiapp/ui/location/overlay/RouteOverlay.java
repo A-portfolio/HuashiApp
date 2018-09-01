@@ -19,9 +19,10 @@ import net.muxi.huashiapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
+//todo the name of the member
 public class RouteOverlay {
     protected List<Marker> stationMarkers = new ArrayList<Marker>();
-    protected List<Polyline> allPolyLines = new ArrayList<Polyline>();
+    private List<Polyline> allPolyLines = new ArrayList<Polyline>();
     protected Marker startMarker;
     protected Marker endMarker;
     protected LatLng startPoint;
@@ -106,17 +107,6 @@ public class RouteOverlay {
         return BitmapDescriptorFactory.fromResource(R.drawable.ic_map_oval);
     }
 
-   /* protected void addStartAndEndMarker() {
-        startMarker = mAMap.addMarker(new MarkerOptions()
-                .position(startPoint).icon(getStartBitmapDescriptor())
-                .title("\u8D77\u70B9"));
-        // startMarker.showInfoWindow();
-
-        endMarker = mAMap.addMarker((new MarkerOptions()).position(endPoint)
-                .icon(getEndBitmapDescriptor()).title("\u7EC8\u70B9"));
-        // mAMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoint,
-        // getShowRouteZoom()));
-    }*/
     /**
      * 移动镜头到当前的视角。
      * @bounds 一个矩形区域，代表当前路线的矩形区域

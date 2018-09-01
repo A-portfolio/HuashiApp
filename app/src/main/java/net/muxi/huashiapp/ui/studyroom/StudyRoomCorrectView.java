@@ -120,9 +120,9 @@ public class StudyRoomCorrectView extends RelativeLayout {
     }
 
 
-    private void initView(View view) {
+  private void initView(View view) {
         mViewCloseBtn = view.findViewById(R.id.view_close_btn);
-        mTvTitle = view.findViewById(R.id.tv_title);
+        mTvTitle = view.findViewById(R.id.tv_book_title);
         mTvContent = view.findViewById(R.id.tv_content);
         mBtnFeedback = view.findViewById(R.id.btn_feedback);
         mViewCloseBtn.setOnClickListener(v -> onViewClicked(v));
