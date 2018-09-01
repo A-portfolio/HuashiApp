@@ -338,6 +338,7 @@ public class CcnuCrawler2 {
                 flag3 = true;
             }
         }
+        //fixme
         //假设其他几种情况
         return flag1&&flag2&&flag3 ||flag1 || flag1 && flag2 || flag1&&flag3;
     }
