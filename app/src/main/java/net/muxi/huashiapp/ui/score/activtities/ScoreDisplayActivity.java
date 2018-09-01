@@ -25,6 +25,7 @@ import com.muxistudio.multistatusview.MultiStatusView;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.score.RequestRetry;
 import net.muxi.huashiapp.ui.score.adapter.ScoreCreditAdapter;
+import net.muxi.huashiapp.ui.score.dialogs.CreditGradeDialog;
 import net.muxi.huashiapp.utils.ScoreCreditUtils;
 
 import java.lang.reflect.Field;
