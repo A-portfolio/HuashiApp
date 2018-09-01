@@ -83,7 +83,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
     private int MODE = 2;
     private static final int MODE_ROUTE = 1;   // 路线
     private static final int MODE_SEARCH = 2;  // 搜索
-
+    private boolean mDrawed=false;
     private List<MapDetailList.PointsBean> mList = new ArrayList<>();
 
     public static void start(Context context) {
@@ -259,7 +259,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
 
             return true;
         }
-        showDetail(marker.getTitle(),false,marker);
+        showDetail(marker.getTitle(),mDrawed,marker);
         return true;
     }
 
@@ -356,7 +356,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
     private void ifCanSearch() {
         //method about drawing route
         if(mStartPoint!=null && mEndPoint!=null){
-            mMapPresenter.drawRoute(getApplicationContext(),mStartName,mEndName
+            mDrawed=mMapPresenter.drawRoute(getApplicationContext(),mStartName,mEndName
                     ,mStartPoint,mEndPoint);
 
 

@@ -86,7 +86,7 @@ public class MapPresenter {
         poiSearch.setOnPoiSearchListener(new PoiSearch.OnPoiSearchListener() {
             @Override
             public void onPoiSearched(PoiResult poiResult, int i) {
-                Log.d(TAG, "onPoiSearched-result code: " + i);
+
                 LatLonPoint latLonPoint = poiResult.getPois().get(0).getLatLonPoint();
                 //to=latLonPoint;
                 mAMap.moveCamera(CameraUpdateFactory.zoomTo(17));
@@ -110,7 +110,6 @@ public class MapPresenter {
         poiSearch.setOnPoiSearchListener(new PoiSearch.OnPoiSearchListener() {
             @Override
             public void onPoiSearched(PoiResult poiResult, int i) {
-                Log.d(TAG, "onPoiSearched-result code: " + i);
                 LatLonPoint latLonPoint = poiResult.getPois().get(0).getLatLonPoint();
                 //to=latLonPoint;
                 mAMap.moveCamera(CameraUpdateFactory.zoomTo(17));
