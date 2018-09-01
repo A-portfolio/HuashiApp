@@ -1,33 +1,15 @@
 <resources>
     <string name="app_name">华师匣子</string>
-    <string name="app_slogan">口袋里的华师</string>
-    <string name="app">ccnubox</string>
 
-    <!--菜单项-->
-    <string name="action_logout">注销</string>
-    <string name="action_settings">设置</string>
-    <string name="action_news">公告</string>
-    <string name="action_search">查找</string>
-    <string name="action_add">添加</string>
-    <string name="action_login">登录</string>
-    <string name="action_share_wechat">分享到朋友圈</string>
-    <string name="action_share_qq">分享到qq空间</string>
-    <string name="action_share_weibo">分享到微博</string>
-    <string name="action_copy_url">复制链接</string>
-    <string name="action_open_browser">在浏览器中打开</string>
-    <string name="action_refresh">刷新本页面</string>
-    <string name="action_set_cur_week">设置当前周</string>
-    <string name="action_check_update">检查更新</string>
-    <string name="action_main">首页</string>
+  <!--菜单项-->
+  <string name="action_main">首页</string>
     <string name="action_timetable">课程表</string>
     <string name="action_library">图书馆</string>
     <string name="action_more">更多</string>
     <string name="action_correct">空闲教室报错</string>
     <string name="action_change_room">更换寝室</string>
 
-    <string name="calculate">计算</string>
-
-    <string name="library">图书馆</string>
+  <string name="library">图书馆</string>
 
     <string name="notify_title_score">华师匣子</string>
     <string name="notify_content_score">匣客，新成绩已出，赶紧去查看吧！</string>
@@ -35,64 +17,29 @@
     <string name="notify_content_course">匣客，明天要上%1$s课程了！</string>
     <string name="notify_title_card">华师匣子</string>
     <string name="notify_content_card">匣客，你的学生卡余额低于20元，及时充值啊！</string>
-    <string name="notify_title_lib">华师匣子</string>
-    <string name="notify_content_lib">匣客，%1$s要到归还日期啦！</string>
+  <string name="notify_content_lib">匣客，%1$s要到归还日期啦！</string>
     <string name="notify_content_attention">匣客，你关注的图书%s可以借阅啦~</string>
 
-    <string name="tip_id_text">学号</string>
-    <string name="tip_pwd_text">信息门户密码</string>
-    <string name="tip_login">(请输入信息门户的密码)</string>
-    <string name="tip_lib_pwd">图书馆密码</string>
-    <string name="tip_err_account">学号或密码错误</string>
-    <string name="tip_login_again">更换过密码的话请重新登录更新密码</string>
-    <string name="tip_err_server">学校服务器异常，不是匣子的锅QAQ</string>
+  <string name="tip_err_account">学号或密码错误</string>
+  <string name="tip_err_server">学校服务器异常，不是匣子的锅QAQ</string>
     <string name="tip_check_net">请检查网络后重试</string>
-    <string name="tip_library_login">(图书馆初始密码为123456)</string>
-    <string name="tip_no_more_borrow_book">无更多借书信息</string>
-    <string name="tip_select_weeks">选择上课周</string>
-    <string name="tip_select_course_time">添加上课时间</string>
-    <string name="tip_complete_course">请完善课程信息</string>
-    <string name="tip_lib_write_keyword">输入书名作者</string>
-    <string name="tip_net_error">网络异常</string>
-    <string name="tip_logining">登录中...</string>
-    <string name="tip_adding_course">正在添加课程...</string>
-    <string name="tip_adding_fail">添加课程失败 </string>
-    <string name="tip_delete_course_ok">删除课程成功</string>
+  <string name="tip_net_error">网络异常</string>
+  <string name="tip_delete_course_ok">删除课程成功</string>
     <string name="tip_school_server_error">学校服务器异常，不是匣子的锅QAQ</string>
     <string name="tip_share_success">分享成功</string>
     <string name="tip_share_fail">分享失败</string>
-    <string name="tip_login_first">请先登录</string>
-    <string name="tip_link_unable_open">该链接不能打开</string>
-    <string name="tip_copy_success">已复制到剪切板</string>
-    <string name="tip_not_remind">不再提醒</string>
-    <string name="tip_click_here_to_set_curweek">设置当前周也可以点这里噢</string>
-    <string name="tip_credit_source">提示：该学分情况依据信息门户数据统计</string>
-    <string name="delete">删除</string>
+  <string name="tip_copy_success">已复制到剪切板</string>
+  <string name="delete">删除</string>
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>
     <string name="edit">编辑</string>
     <string name="undo">撤销</string>
-    <string name="tip_xk_error">提醒匣客们:因近期学校教务系统故障,查成绩算学分,课程表,蹭课功能暂时无法使用QAQ\n" +
-                            "匣子将和你一起等待学校教务系统的恢复~</string>
-    <!--library-->
-    <string name="lib_search_tip">请输入要搜索的图书或作者</string>
-    <string name="lib_mybook_overdue">过期</string>
-    <string name="lib_bid">索书号:</string>
-    <string name="lib_tid">条码号:</string>
-    <string name="lib_place">校区-馆藏地:</string>
-    <string name="lib_mine_none_book">无任何图书借阅</string>
-    <string name="lib_book_name">书名:</string>
-    <string name="lib_author">作者:</string>
-    <string name="lib_itime">借阅日期:</string>
-    <string name="lib_return_time">归还日期:</string>
-    <string name="atten">关注</string>
+  <!--library-->
+  <string name="atten">关注</string>
     <string name="has_atten">已关注</string>
-    <string name="renew">续借图书</string>
-    <string name="can_borrow">可借</string>
+  <string name="can_borrow">可借</string>
     <string name="can_borrow_book">可借本</string>
-    <string name="lend">借出</string>
-    <string name="retained_book">保留本</string>
-    <string name="renew_ok">续借图书成功</string>
+  <string name="renew_ok">续借图书成功</string>
     <string name="renew_not_in_date">剩余天数不足3天的图书才能续借</string>
     <string name="renew_already">已经续借过一次啦</string>
     <string name="request_invalid">请求无效,请稍后再试</string>
@@ -109,44 +56,23 @@
     <string name="setting_library">图书到期通知和关注图书可借通知</string>
     <string name="setting_card">校园卡余额不足时圈存提醒</string>
 
-    <string name="course_single_week">单周</string>
-    <string name="course_double_week">双周</string>
-    <string name="course_all_week">全选</string>
-    <string name="course_week_format">第%d周</string>
-    <string name="course_set_curweek_title">请设置当前周</string>
-    <string name="course_conflict_title">添加课程与课程表已有课程冲突,是否继续添加</string>
-    <string name="course_delete_course_title">将此课程从课程表中删除</string>
-    <string name="course_complete_course">请完善课程信息</string>
+  <string name="course_complete_course">请完善课程信息</string>
 
     <string name="btn_negative">取消</string>
     <string name="btn_positive">确定</string>
     
     <!--成绩查询-->
-    <string name="tip_none_more">没有更多的成绩信息</string>
-    <string name="title_course_name">课程名称</string>
-    <string name="title_score">成绩:</string>
-    <string name="title_category">类别</string>
-    <string name="title_credit">学分:  </string>
-    <string name="title_year">学年信息</string>
-    <string name="title_term">学期信息</string>
-    <string name="tip_load_score">详细成绩查询中</string>
-    <string name="no_any_score">没有任何成绩信息</string>
 
-    <!--电费查询-->
+  <!--电费查询-->
     <string name="ele_room_not_found">请填写正确的寝室信息</string>
-    <string name="title_pay_hint">微信缴费提示</string>
-    <string name="content_pay_hint">微信能缴费啦，关注【华中师大节能办】微信公众号即可线上充值。\n充值内容包括照明和空调费。
-</string>
 
-    <!--空闲教室-->
+  <!--空闲教室-->
     <string name="content_correct_studyroom">亲爱的匣客，为了更好的使用空闲教室功能，欢迎积极反馈报错哟！</string>
     
 
     <!--关于-->
     <string name="title_input_suggeston">您的每一个意见都是我们宝贵的财富</string>
-    <string name="title_input_contact">留下您的QQ吧</string>
-    <string name="hint_contact">邮箱/QQ/手机号</string>
-    <string name="title_sugg_submit">反馈成功</string>
+  <string name="title_sugg_submit">反馈成功</string>
     <string name="content_sugg_submit">谢谢您的反馈，我们会仔细阅读并处理~</string>
     <string name="btn_submit_exit">给朕快点处理</string>
     <string name="btn_submit">反馈</string>
@@ -164,55 +90,27 @@
     <string name="tip_start_download_apk">开始下载更新包</string>
 
     <!--退出-->
-    <string name="id_log_out">退出信息门户</string>
-    <string name="library_log_out">退出图书馆</string>
-    <string name="all_log_out">退出登录</string>
-    <string name="tip_id_log_out">成功退出信息门户</string>
-    <string name="tip_library_log_out">成功退出图书馆</string>
-    <string name="tip_all_log_out">退出成功</string>
+  <string name="tip_all_log_out">退出成功</string>
 
     <string name="not_log_in">未登录账号</string>
-    <string name="txt_text">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
 
-    <string name="course_not_found">待修改课程不存在</string>
+  <string name="course_not_found">待修改课程不存在</string>
     <string name="tip_pull_to_refresh">下拉刷新课程表</string>
     <string name="tip_release_to_refresh">松开即刷新</string>
     <string name="tip_refreshing">正在刷新中</string>
     <string name="tip_refresh_ok">刷新成功</string>
     <string name="tip_refresh_fail">糟糕！刷新失败</string>
-    <string name="tip_refresh_retry">请再刷新一次</string>
-    <string name="tip_confirm_query">请确定查询学期/学年是否存在</string>
+  <string name="tip_confirm_query">请确定查询学期/学年是否存在</string>
     <!--分享-->
-    <string name="share_to_qq">QQ好友</string>
-    <string name="share_to_wx">微信好友</string>
-    <string name="share_to_weibo">微博</string>
-    <string name="share_to_qzone">QQ空间</string>
-    <string name="share_to_moments">朋友圈</string>
-    <string name="copy_download_url">复制下载链接</string>
 
-    <!--事件-->
-    <string name="event_score">查询成绩</string>
-    <string name="event_ele">查询电费</string>
-    <string name="event_calendar">查询校历</string>
-    <string name="event_apartment">查看部门信息</string>
-    <string name="event_notification">查看消息公告</string>
-    <string name="event_net">查询常用网站</string>
-    <string name="event_room">查看空闲教室</string>
-    <string name="event_library">进入图书馆</string>
-    <string name="event_timetable">课表查询</string>
-    <string name="event_login_library">图书馆登录</string>
-    <string name="event_credit">进入学分计算</string>
-    <string name="event_card">学生卡查询</string>
-    <string name="event_start_app">打开应用</string>
-    <string name="tip_input_id">请输入学号</string>
+  <!--事件-->
+  <string name="tip_input_id">请输入学号</string>
     <string name="tip_input_id_password">请输入学号和密码</string>
     <string name="tip_input_password">请输入密码</string>
     <string name="tip_require_write_permission">请在设置中对本应用开启读写文件的权限</string>
 
     <!--提示-->
-    <string name="error_xk">教务系统异常</string>
-    <string name="error_lib">图书馆系统异常</string>
-    <string name="info_source">该课程分类来源于教务处统计数据</string>
+  <string name="info_source">该课程分类来源于教务处统计数据</string>
 
 
 </resources>

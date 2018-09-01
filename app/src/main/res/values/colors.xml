@@ -27,76 +27,41 @@
     <color name="red">#fa3f40</color>
     <color name="hint_yellow">#ffc635</color>
     <color name="color_light_green">#13e776</color>
-    
-    <color name="grey_bottom_line">#c6d2de</color>
 
-    <color name="color_selected">#3AD49B</color>
+  <color name="color_selected">#3AD49B</color>
 
     <color name="primary_text_color">#333333</color>
     <color name="bottom_nav_enable">#333333</color>
     <color name="bottom_nav_disable">#33333333</color>
     <color name="hint_overlap_course">#ff3142</color>
 
-    <color name="shadow_dialog">#99333333</color>
-    <!--闪屏-->
-    <color name="entrance_color_start">#CC673AB7</color>
-    <color name="entrance_color_end">#673AB7</color>
+  <!--闪屏-->
 
-    <color name="hintColor">#B2B2B2</color>
-    <color name="dividerGrey">#B2B2B2</color>
-    <color name="colorWeekLayout">#8865C7</color>
-    <color name="colorCourseTimeLayout">#96F7F3FF</color>
-    <color name="shadow_bg">#50000000</color>
-    <color name="colorCheckBox">#6934B6</color>
+  <color name="hintColor">#B2B2B2</color>
+  <color name="shadow_bg">#50000000</color>
 
-    <!--课程表-->
+  <!--课程表-->
     <color name="colorBottomDialogText">#B2B2B2</color>
-    <color name="course_time_layout_bg">#96F7F3FF</color>
-    <color name="course_week_layout_bg">#96F7F2FF</color>
-    <color name="colorUnchecked">#010101</color>
-    <color name="divider_course_time">#F7F2FF</color>
-    <color name="divider_course">#96C5C5C5</color>
 
-    <color name="course_random_green">#9652CCC0</color>
-    <color name="course_random_orange">#96FF5722</color>
-    <color name="course_random_purple">#96673AB7</color>
-    <color name="course_random_pink">#96E91E63</color>
-    <color name="course_not_cur_week">#96C5C5C5</color>
-
-    <color name="week_random_pink">#96E91E63</color>
+  <color name="week_random_pink">#96E91E63</color>
     <color name="week_random_green">#96009688</color>
     <color name="week_random_purple">#96673AB7</color>
     <color name="week_random_orange">#96FF5722</color>
-    <color name="course_dialog_light_title_color">#80000000</color>
 
-    <color name="course_widget_content">#D9EEEA</color>
-    <color name="course_widget_start">#289AA4</color>
-    <color name="course_widget_end">#52B2A3</color>
-
-    <color name="course_audit_red">#F97266</color>
+  <color name="course_audit_red">#F97266</color>
 
     <!--成绩查询-->
-    <color name="colorScore">#E91E63</color>
-    <color name="secondTitle">#666666</color>
-    <color name="color_category_tag">#FEC84B</color>
+  <color name="color_category_tag">#FEC84B</color>
     
     <!--学分计算-->
     <color name="disable_color">#33333333</color>
-    <color name="bg_credit_all">#FFC635</color>
-    <color name="unchecked_color">#E5E5E5</color>
-    
-    <!--图书馆-->
-    <color name="state_available">#52CCC0</color>
-    <color name="state_unavailable">#E91E63</color>
-    <color name="divider_search_view">#99C5C5C5</color>
-    <color name="state_normal">#52CCC0</color>
-    <color name="state_warn">#E91E63</color>
-    <color name="color_shadow">#80000000</color>
 
-    <!--电费-->
+  <!--图书馆-->
+  <color name="divider_search_view">#99C5C5C5</color>
+
+  <!--电费-->
     <color name="color_normal_tab">#B2B2B2</color>
-    <color name="color_white_loading">#96FFFFFF</color>
-    <color name="color_card_light_one">#FFC635</color>
+  <color name="color_card_light_one">#FFC635</color>
     <color name="color_card_light_two">#52B6FF</color>
     <color name="color_card_air_one">#7B79FF</color>
     <color name="color_card_air_two">#3AD49B</color>
@@ -116,10 +81,8 @@
     <color name="color_map_start">#7286FA</color>
     <color name="color_map_end">#F8C548</color>
     <color name="color_map_details">#757882</color>
-    <color name="color_map_stroke">#DEC8ED</color>
-    <color name="color_map_item">#555151</color>
+  <color name="color_map_item">#555151</color>
 
     <!--更多-->
-    <color name="color_light_cyan">#18ffff</color>
 
 </resources>

@@ -78,7 +78,6 @@ public class SuggestionActivity extends ToolbarActivity {
             public void onClick(View v) {
                 if (mEtSuggestion.getText().length() == 0) {
                     showSnackbarShort(getString(R.string.tip_write_suggestion_first));
-                    return;
                 } else {
                     sendSuggestion(mEtSuggestion.getText().toString() + "联系方式" + mEtContact.getText().toString());
                 }

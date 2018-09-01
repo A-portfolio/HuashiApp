@@ -1,8 +1,5 @@
 package com.muxistudio.common.jsbridge;
 
-/**
- * Created by ybao on 16/10/8.
- */
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -12,6 +9,11 @@ import com.google.gson.Gson;
 import com.tencent.smtt.sdk.WebView;
 
 import java.util.HashMap;
+
+
+/**
+ * Created by ybao on 16/10/8.
+ */
 
 public class BridgeWebView extends WebView {
 

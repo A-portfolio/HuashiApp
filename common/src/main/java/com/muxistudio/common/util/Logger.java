@@ -33,15 +33,14 @@ public class Logger {
 
     private static String createLog(String log) {
 
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("[");
-        buffer.append(methodName);
-        buffer.append(":");
-        buffer.append(lineNumber);
-        buffer.append("]  ");
-        buffer.append(log);
+      String buffer = "["
+          + methodName
+          + ":"
+          + lineNumber
+          + "]  "
+          + log;
 
-        return buffer.toString();
+      return buffer;
     }
 
     private static void getMethodNames(StackTraceElement[] sElements) {

@@ -36,7 +36,7 @@ public class ApartmentAdapter
     @Override
     public void onBindViewHolder(MyApartViewHolder holder, int position) {
         holder.mTvApartment.setText(mApartmentDataList.get(position).getApartment());
-        String phone = new String();
+        String phone = "";
         for (String phoneStr : mApartmentDataList.get(position).getPhone()) {
             phone = phone + phoneStr + " ";
         }

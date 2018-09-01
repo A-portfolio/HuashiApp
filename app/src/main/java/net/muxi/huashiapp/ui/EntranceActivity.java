@@ -78,7 +78,7 @@ public class EntranceActivity extends BaseAppActivity implements View.OnClickLis
 
         if (v.getId() == R.id.drawee) {
             Intent intent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(PreferenceUtil.getString(Constants.SPLASH_URL).toString()));
+                    Uri.parse(PreferenceUtil.getString(Constants.SPLASH_URL)));
             startActivity(intent);
         }
     }

@@ -1,4 +1,6 @@
 package net.muxi.huashiapp.ui.location;
+
+//fixme ??? dandling JavaDoc comment?????????
 /**
  *
  */
@@ -17,6 +19,7 @@ import java.util.List;
 
 public class AMapUtil {
     public static int BUFFER_SIZE = 2048;
+    //fixme 没有去除的废弃的代码片段？
 /*
     public static byte[] inputStreamToByte(InputStream in) throws IOException {
 

@@ -182,7 +182,6 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                     DimensUtil.getScreenWidth() / 4,
                     (DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight()) / 2);
             PreferenceUtil.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN, false);
-            return;
         }
     }
 
@@ -205,6 +204,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                 new MyItemTouchCallback(mMainAdapter).setOnDragListener(this));
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
+        //fixme getActivity() may produce   referring to this post https://www.jianshu.com/p/9d75e328f1de
         mRecyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRecyclerView) {
             @Override
             public void onLongClick(RecyclerView.ViewHolder vh) {
@@ -400,6 +400,8 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
         }
     }
 
+    //fixme beginTransaction() may produce NPE
+    // fixme referring https://stackoverflow.com/questions/27742471/nullpointerexception-fragmentmanager-begintransaction
     public void refresh() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();

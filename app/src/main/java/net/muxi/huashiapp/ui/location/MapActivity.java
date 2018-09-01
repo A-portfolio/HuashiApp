@@ -147,17 +147,14 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
     }
 
     private void initAdapter(){
-        OnClickTextList onClickTextList = new OnClickTextList() {
-            @Override
-            public void onClickText(String s, LatLonPoint l) {
-                if(mEtStart.hasFocus()){mEtStart.setText(s);mStartName=s;mStartPoint=l;mEtStart.clearFocus();ifCanSearch();}
-                else if(mEtEnd.hasFocus()) {mEtEnd.setText(s);mEndName=s;mEndPoint=l;mEtEnd.clearFocus();ifCanSearch();}
-                else {mEtSearch.setText(s);mSearchPoint=l;
-                mSearchName=s;
-                mEtSearch.clearFocus();
-                }
-                hideKeyboard();
+        OnClickTextList onClickTextList = (s, l) -> {
+            if(mEtStart.hasFocus()){mEtStart.setText(s);mStartName=s;mStartPoint=l;mEtStart.clearFocus();ifCanSearch();}
+            else if(mEtEnd.hasFocus()) {mEtEnd.setText(s);mEndName=s;mEndPoint=l;mEtEnd.clearFocus();ifCanSearch();}
+            else {mEtSearch.setText(s);mSearchPoint=l;
+            mSearchName=s;
+            mEtSearch.clearFocus();
             }
+            hideKeyboard();
         };
         mAdapter = new MapSearchAdapter(getBaseContext(), mList,onClickTextList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -389,6 +386,8 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
         }
     }
 
+    //fixme this.getCurrentFocus may returning null, referring to this post
+  // https://stackoverflow.com/questions/19069448/null-pointer-error-with-hidesoftinputfromwindow
     private void hideKeyboard() {
         View viewFocus = this.getCurrentFocus();
         if (viewFocus != null) {
@@ -451,6 +450,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
     }
 
     // 隐藏键盘
+  //fixme imm.isActive may produce null NPE
     private void HideKeyboard(View v) {
         InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm.isActive()) {

@@ -14,19 +14,7 @@
         <item name="android:buttonStyle">@style/AppButtonStyle</item>
     </style>
 
-    <style name="ActionbarAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="windowActionBar">true</item>
-        <item name="android:windowNoTitle">false</item>
-    </style>
-
-    <style name="AppWelcomTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-     <style name="Theme.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
+   <style name="Theme.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
          <item name="android:windowIsTranslucent">true</item>
          <item name="android:windowBackground">@android:color/transparent</item>
          <item name="android:windowContentOverlay">@null</item>
@@ -34,15 +22,7 @@
          <item name="android:backgroundDimEnabled">false</item>
      </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
-    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="actionMenuTextColor">@android:color/white</item>
-    </style>
-
-    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
+   <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowFrame">@null</item>
@@ -66,43 +46,13 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="ItemStyle">
-        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
-        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
-        <item name="android:paddingBottom">@dimen/item_vertical_margin</item>
-        <item name="android:paddingTop">@dimen/item_vertical_margin</item>
-    </style>
 
-    <style name="ThemeHoloLightDialogAlert" parent="@style/AlertDialogTheme">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
-        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
-        <item name="android:windowTitleStyle">@style/DialogWindowTitleHoloLight</item>
-    </style>
-
-    <style name="DialogWindowTitleHoloLight">
-        <item name="android:maxLines">1</item>
-        <item name="android:scrollHorizontally">true</item>
-    </style>
-
-
-
-
-
-    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar" >
+   <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="android:textColorPrimary">@color/colorAccent</item>
     </style>
-    
-    <style name="LightBackgroundDialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowBackground">@color/light_dialog_background</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowIsFloating">false</item>
-    </style>
 
 
-    <style name="CenterDialogStyle" parent="@android:style/Theme.Dialog">
+   <style name="CenterDialogStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimAmount">0.7</item>
         <!--<item name="android:backgroundDimEnabled">true</item>-->
@@ -128,12 +78,4 @@
         <item name="android:paddingLeft">16dp</item>
     </style>
 
-    <style name="RippleAccentButton" parent="Base.Widget.AppCompat.Button.Colored">
-        <item name="colorButtonNormal">@color/colorAccent</item>
-    </style>
-
-    <style name="RippleOrangeButton" parent="Base.Widget.AppCompat.Button.Colored">
-        <item name="colorButtonNormal">@color/orange</item>
-    </style>
-
-</resources>
+ </resources>

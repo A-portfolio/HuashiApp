@@ -52,7 +52,6 @@
                     />
 
                 <TextView
-                    android:id="@+id/title_money_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_money_sign"
@@ -179,7 +178,6 @@
                     android:layout_below="@+id/layout">
 
                     <TextView
-                        android:id="@+id/title_month_money_use"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -189,7 +187,6 @@
                         />
 
                     <TextView
-                        android:id="@+id/title_month_ec_use"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -251,7 +248,6 @@
                     android:layout_alignParentBottom="true">
 
                     <TextView
-                        android:id="@+id/title_last_month_money_use"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -261,7 +257,6 @@
                         />
 
                     <TextView
-                        android:id="@+id/title_last_month_ec_use"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

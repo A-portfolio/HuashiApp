@@ -7,7 +7,6 @@
     >
 
     <ImageView
-        android:id="@+id/iv_empty"
         android:layout_width="266dp"
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"

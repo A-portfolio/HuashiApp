@@ -62,6 +62,7 @@ public class MapSearchAdapter extends RecyclerView.Adapter{
         }
     }
 
+    //fixme return null !!!!!????
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
         if (viewType == TYPE_CONTENT) {

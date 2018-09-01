@@ -47,6 +47,7 @@ public class LibrarySearchResultAdapter extends BaseAdapter {
         return i;
     }
 
+    //fixme using viewHolder pattern to reuse the view
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.item_book_search_result,

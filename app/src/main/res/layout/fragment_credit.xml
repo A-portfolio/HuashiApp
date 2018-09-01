@@ -19,7 +19,6 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/tv_credit_total"
             android:layout_toRightOf="@+id/iv_credit_total"
             android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"

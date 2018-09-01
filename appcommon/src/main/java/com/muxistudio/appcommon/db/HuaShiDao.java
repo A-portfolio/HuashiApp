@@ -194,7 +194,7 @@ public class HuaShiDao {
     }
 
     public void insertApart(ApartmentData data) {
-        String phone = new String();
+        String phone = "";
         for (String phoneStr : data.getPhone()) {
             phone = phone + phoneStr + " ";
         }

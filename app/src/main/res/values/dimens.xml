@@ -2,87 +2,26 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="item_vertical_margin">8dp</dimen>
-    <dimen name="appwidget_item_horizontal_margin">24dp</dimen>
-    <dimen name="dialog_horizontal_margin">64dp</dimen>
-    <dimen name="toolbar_height">56dp</dimen>
-    <dimen name="oval_height">40dp</dimen>
+  <dimen name="appwidget_item_horizontal_margin">24dp</dimen>
+  <dimen name="oval_height">40dp</dimen>
     <dimen name="dialog_btn_width">64dp</dimen>
-    <dimen name="elevation_height">8dp</dimen>
-    <dimen name="empty_img_marginTop">32dp</dimen>
+  <dimen name="empty_img_marginTop">32dp</dimen>
     <dimen name="empty_img_height">96dp</dimen>
 
-    <dimen name="most_large_size">28sp</dimen>
-    <dimen name="large_size">22sp</dimen>
-    <dimen name="medium_size">14sp</dimen>
+  <dimen name="medium_size">14sp</dimen>
     <dimen name="small_size">10sp</dimen>
-    <dimen name="login_edit_text_size">22sp</dimen>
-    <dimen name="login_btn_text_size">22sp</dimen>
-    <dimen name="login_hint_text_size">16sp</dimen>
-    <dimen name="schedule_add_course_size">18sp</dimen>
-    <dimen name="library_state_size">14sp</dimen>
-    <dimen name="website_site_size">20sp</dimen>
-
-    <dimen name="login_horizontal_margin">44dp</dimen>
+  <dimen name="library_state_size">14sp</dimen>
 
 
-    <dimen name="schedule_tv_course_number">18sp</dimen>
-    <dimen name="schedule_tv_course_time">18sp</dimen>
-    <dimen name="schedule_tv_course_week">18sp</dimen>
-    <dimen name="schedule_tv_course_date">18sp</dimen>
-    <dimen name="schedule_divider_height">4dp</dimen>
-    <dimen name="schedule_content_width">490dp</dimen>
-    <dimen name="schedule_content_height">735dp</dimen>
-    <dimen name="schedule_week_day_width">70dp</dimen>
-    <dimen name="schedule_course_time_height">105dp</dimen>
-    <dimen name="schedule_layout_week_height">40dp</dimen>
-    <dimen name="schedule_layout_select_week_height">40dp</dimen>
-    <dimen name="schedule_vertical_margin">20dp</dimen>
-
-    <dimen name="course_convenient_select_height">40dp</dimen>
-    <dimen name="course_convenient_select_width">60dp</dimen>
-    <dimen name="course_dialog_btn_padding">10dp</dimen>
-    <dimen name="course_number_picker_margin_horizontal">20dp</dimen>
-    <dimen name="course_edit_height">48dp</dimen>
-    <dimen name="course_select_text_height">40dp</dimen>
-    <dimen name="course_top_margin">32dp</dimen>
-    <dimen name="course_edit_text_margin">10dp</dimen>
-    <dimen name="course_button_margin">20dp</dimen>
-    <dimen name="course_button_select_height">40dp</dimen>
-    <dimen name="course_button_height">64dp</dimen>
-    <dimen name="course_rectangle_radius">2dp</dimen>
-    <dimen name="course_height">98dp</dimen>
-    <dimen name="course_width">50dp</dimen>
-    <dimen name="course_select_width">100dp</dimen>
-    <dimen name="course_add_drawable_padding">8dp</dimen>
-
-    <dimen name="library_horizontal_margin">8dp</dimen>
-    <dimen name="library_searchview_height">48dp</dimen>
-    <dimen name="library_searchview_marginright">64dp</dimen>
-    <dimen name="library_detail_margin_top">48dp</dimen>
-    <dimen name="library_book_item_height">60dp</dimen>
-    <dimen name="library_item_icon_padding">12dp</dimen>
+  <dimen name="library_item_icon_padding">12dp</dimen>
     <dimen name="library_item_text_padding">12dp</dimen>
     <dimen name="library_icon_padding">12dp</dimen>
-    <dimen name="library_item_search_height">90dp</dimen>
-    <dimen name="library_item_borrow_height">84dp</dimen>
-    <dimen name="library_detail_min_height">700dp</dimen>
-    <dimen name="library_search_view_margin">8dp</dimen>
+  <dimen name="library_detail_min_height">700dp</dimen>
 
-    <dimen name="study_room_tv_hint">12sp</dimen>
-    <dimen name="study_room_button_height">48dp</dimen>
-    <dimen name="study_room_button_margin_top">60dp</dimen>
+  <dimen name="study_room_tv_hint">12sp</dimen>
+  <dimen name="study_room_button_margin_top">60dp</dimen>
     <dimen name="study_room_iv_vertical_margin">46dp</dimen>
 
 
-    <dimen name="score_select_item_height">48dp</dimen>
-    <dimen name="score_btn_height">36dp</dimen>
-    <dimen name="score_select_item_size">18sp</dimen>
-
-    <dimen name="item_score_vertical_margin">8dp</dimen>
-    <dimen name="spinner_height">36dp</dimen>
-    <dimen name="spinner_marigin">170dp</dimen>
-
-    <dimen name="setting_preference_height">64dp</dimen>
-    <dimen name="select_checkbox_size">16dp</dimen>
+  <dimen name="setting_preference_height">64dp</dimen>
 </resources>

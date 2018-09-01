@@ -1,5 +1,6 @@
 package com.muxistudio.appcommon.net.ccnu;
 
+import android.text.TextUtils;
 import com.muxistudio.appcommon.data.InfoCookie;
 import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.common.util.PreferenceUtil;
@@ -7,6 +8,7 @@ import com.muxistudio.common.util.PreferenceUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -127,12 +129,14 @@ public class CcnuCrawler2 {
         try {
             //这里会阻塞线程 直到拿到数据
             Response response = client.newCall(request).execute();
-            getValue(response.body().string());
+            getValue((response.body()).string());
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+          e.printStackTrace();
         }
 
-        //将相关的cookie存放到cookieJar 以便于教务系统登录
+      //将相关的cookie存放到cookieJar 以便于教务系统登录
         OkHttpClient client2 = new OkHttpClient.Builder()
                 .readTimeout(25,TimeUnit.SECONDS)
                 .connectTimeout(25, TimeUnit.SECONDS)
@@ -246,7 +250,10 @@ public class CcnuCrawler2 {
     }
 
     //获取字段lt 和exe
-    private static void getValue(String responseBody) {
+    private static void getValue(String responseBody) throws Exception {
+      if(TextUtils.isEmpty(responseBody))
+        throw new Exception("responseBody is Empty");
+
         String str1 = "((.*)(name=\"lt\" value=\")(.*)(\" />))";
         String str2 = "((.*)(name=\"execution\" value=\")(.*)(\" />))";
         //<input type="hidden" name="lt" value="LT-31315-O4Nt1gZeHUSnmzr4DALQwyn3xNyir6-account.ccnu.edu.cn" />
@@ -332,6 +339,6 @@ public class CcnuCrawler2 {
             }
         }
         //假设其他几种情况
-        return flag1&&flag2&&flag3 ||flag1 ||flag1&&flag2 || flag1&&flag3;
+        return flag1&&flag2&&flag3 ||flag1 || flag1 && flag2 || flag1&&flag3;
     }
 }

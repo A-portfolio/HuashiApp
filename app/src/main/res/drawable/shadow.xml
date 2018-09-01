@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-       android:shape="rectangle">
-    <!--fixme xml的注释是这么写？？？？-->
-  //蒙版效果
-    <solid android:color="#55000000"/>
-
-
-</shape>
