@@ -291,9 +291,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(list ->{
                         mList.clear();
-                        if(list.getPoints() != null && list.getPoints().size() > 4) {
-                            mList.addAll(list.getPoints().subList(0,4));
-                        }else  mList.addAll(list.getPoints());
+                        mList.addAll(list.getPoints());
                         mAdapter.notifyDataSetChanged();
                     },Throwable::printStackTrace);
             if(mRecyclerView.getVisibility() != View.VISIBLE) {

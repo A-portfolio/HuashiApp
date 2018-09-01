@@ -57,8 +57,7 @@ public class MapPresenter {
     public void setLocation() {
         final MyLocationStyle myLocationStyle;
         myLocationStyle = new MyLocationStyle();
-        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
-        myLocationStyle.interval(3000);
+        myLocationStyle.interval(3000*20);
         myLocationStyle.strokeWidth(0.5F);
         myLocationStyle.strokeColor(Color.argb(130, 197, 229, 227));
         myLocationStyle.radiusFillColor(Color.argb(130, 197, 229, 227));
@@ -70,7 +69,6 @@ public class MapPresenter {
             @Override
             public void onMyLocationChange(Location location) {
                 mMyLocation = new LatLonPoint(location.getLatitude(), location.getLongitude());
-                mAMap.moveCamera(CameraUpdateFactory.changeLatLng(AMapUtil.convertToLatLng(mMyLocation)));
             }
         });
     }
