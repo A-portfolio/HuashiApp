@@ -31,9 +31,8 @@ import rx.android.schedulers.AndroidSchedulers;
 public class LoadingDialog extends BottomDialogFragment {
 
     private TextView mTvLoadingInfo;
-    private ImageView mIvPlace;
 
-    private OnSubscriptionCanceledListener mSubscriptionCanceldListener;
+  private OnSubscriptionCanceledListener mSubscriptionCanceldListener;
 
   public static LoadingDialog newInstance(){
     LoadingDialog fragment = new LoadingDialog();
@@ -53,7 +52,7 @@ public class LoadingDialog extends BottomDialogFragment {
         Dialog dialog = new Dialog(getContext(), R.style.FullScreenDialogStyle);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_loading, null);
 
-        mIvPlace = view.findViewById(R.id.iv_place);
+      ImageView mIvPlace = view.findViewById(R.id.iv_place);
         mTvLoadingInfo = view.findViewById(R.id.tv_loading_info);
 
 
