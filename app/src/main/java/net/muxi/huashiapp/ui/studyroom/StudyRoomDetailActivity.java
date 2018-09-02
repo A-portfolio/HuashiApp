@@ -16,12 +16,14 @@ import android.widget.TextView;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.ClassRoom;
 import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.appcommon.widgets.LoadingDialog;
 import com.muxistudio.common.util.DimensUtil;
 import com.muxistudio.common.util.Logger;
 import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -78,8 +80,8 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     }
 
     private void loadData() {
-        showLoading("正在请求空闲教室数据ing~");
-        CampusFactory.getRetrofitService()
+        LoadingDialog loadingDialog = showLoading("正在请求空闲教室数据ing~");
+        Subscription subscription = CampusFactory.getRetrofitService()
                 .getClassRoom(getWeek(mQuery), getDayValue(mQuery)
                         , getBuidingValue(mQuery))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -96,6 +98,11 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                 }, () -> {
                     hideLoading();
                 });
+
+        loadingDialog.setOnSubscriptionCanceledListener(()->{
+          if(!subscription.isUnsubscribed())
+            subscription.unsubscribe();
+        });
 
     }
 

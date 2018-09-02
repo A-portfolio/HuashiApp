@@ -15,10 +15,12 @@ import com.muxistudio.appcommon.data.AuditCourse;
 import com.muxistudio.appcommon.net.CampusFactory;
 
 import com.muxistudio.appcommon.utils.CommonTextUtils;
+import com.muxistudio.appcommon.widgets.LoadingDialog;
 import net.muxi.huashiapp.R;
 
 import java.util.HashMap;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -73,8 +75,9 @@ CourseAuditResultActivity extends ToolbarActivity {
 
     private void searchAuditCourse(HashMap<String, String> map) {
         //api文档中只有name teacher subject三个部分
-        showLoading(CommonTextUtils.generateRandomCourseText());
-        CampusFactory.getRetrofitService().getAuditCourse(map)
+
+         LoadingDialog loadingDialog = showLoading(CommonTextUtils.generateRandomCourseText());
+        Subscription subscription = CampusFactory.getRetrofitService().getAuditCourse(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(auditCourse -> {
@@ -95,6 +98,12 @@ CourseAuditResultActivity extends ToolbarActivity {
                     throwable.printStackTrace();
                 }, () -> {
                 });
+
+        loadingDialog.setOnSubscriptionCanceledListener(
+            () -> {
+              if(!subscription.isUnsubscribed())
+                subscription.unsubscribe();
+            });
     }
 
     private void showErrorMessage() {

@@ -22,6 +22,7 @@ import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.EleRequestData;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.utils.CommonTextUtils;
+import com.muxistudio.appcommon.widgets.LoadingDialog;
 import com.muxistudio.common.util.PreferenceUtil;
 import com.muxistudio.multistatusview.MultiStatusView;
 import com.umeng.analytics.MobclickAgent;
@@ -31,6 +32,7 @@ import net.muxi.huashiapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -44,6 +46,8 @@ public class ElectricityDetailActivity extends ToolbarActivity {
     private MultiStatusView mMultiStatusView;
     private ViewPager mViewPager;
     private TextView mPayHint;
+
+    private LoadingDialog mLoadingDialog ;
 
     public static void start(Context context, String query) {
         Intent starter = new Intent(context, ElectricityDetailActivity.class);
@@ -66,23 +70,22 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         PreferenceUtil sp = new PreferenceUtil();
         mQuery = getIntent().getStringExtra("query");
         mMultiStatusView.setOnRetryListener(v -> {
-            showLoading(CommonTextUtils.generateRandomApartmentText());
-            loadDatas();
+            mLoadingDialog = showLoading(CommonTextUtils.generateRandomApartmentText());
+            loadData();
         });
         setFontType(PAY_HINT);
-        loadDatas();
+        loadData();
 
     }
 
-    private void loadDatas() {
-//        showLoading();
+    private void loadData() {
         EleRequestData eleAirRequest = new EleRequestData();
         eleAirRequest.setDor(mQuery);
         eleAirRequest.setType("air");
         EleRequestData eleLightRequest = new EleRequestData();
         eleLightRequest.setDor(mQuery);
         eleLightRequest.setType("light");
-        CampusFactory.getRetrofitService().getElectricity(eleLightRequest)
+        Subscription subscriptionEle = CampusFactory.getRetrofitService().getElectricity(eleLightRequest)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(electricityResponse -> {
@@ -106,11 +109,9 @@ public class ElectricityDetailActivity extends ToolbarActivity {
                     hideLoading();
 
                     //onComplete()
-                }, () -> {
-                    hideLoading();
-                });
+                }, this::hideLoading);
 
-        CampusFactory.getRetrofitService().getElectricity(eleAirRequest)
+        Subscription subscriptionAir = CampusFactory.getRetrofitService().getElectricity(eleAirRequest)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(electricityResponse -> {
@@ -128,6 +129,14 @@ public class ElectricityDetailActivity extends ToolbarActivity {
                     mMultiStatusView.showNetError();
                     hideLoading();
                 }, this::hideLoading);
+
+        mLoadingDialog.setOnSubscriptionCanceledListener(
+            () -> {
+              if(!subscriptionAir.isUnsubscribed() || !subscriptionEle.isUnsubscribed()){
+                subscriptionAir.unsubscribe();
+                subscriptionEle.unsubscribe();
+              }
+            });
     }
 
     public void init() {

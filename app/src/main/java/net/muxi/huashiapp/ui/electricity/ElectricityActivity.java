@@ -17,10 +17,12 @@ import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.EleRequestData;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.utils.CommonTextUtils;
+import com.muxistudio.appcommon.widgets.LoadingDialog;
 import com.muxistudio.common.util.PreferenceUtil;
 
 import net.muxi.huashiapp.R;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -194,8 +196,8 @@ public class ElectricityActivity extends ToolbarActivity {
                 EleRequestData eleLightRequest = new EleRequestData();
                 eleLightRequest.setDor(mQuery);
                 eleLightRequest.setType("light");
-                showLoading(CommonTextUtils.generateRandomApartmentText());
-                CampusFactory.getRetrofitService().getElectricity(eleLightRequest)
+                LoadingDialog loadingDialog = showLoading(CommonTextUtils.generateRandomApartmentText());
+                Subscription subscription = CampusFactory.getRetrofitService().getElectricity(eleLightRequest)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.newThread())
                             /*
@@ -218,6 +220,11 @@ public class ElectricityActivity extends ToolbarActivity {
 
                                 }
                         );
+
+                        loadingDialog.setOnSubscriptionCanceledListener(()->{
+                          if(!subscription.isUnsubscribed())
+                            subscription.unsubscribe();
+                        });
             }
         }
 

@@ -14,6 +14,7 @@ import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.BookSearchResult;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.utils.CommonTextUtils;
+import com.muxistudio.appcommon.widgets.LoadingDialog;
 import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
@@ -21,6 +22,7 @@ import net.muxi.huashiapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -34,6 +36,9 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
     private ListView mListView;
     private List<BookSearchResult.ResultsBean> mBookList;
     private LibrarySearchResultAdapter mLibrarySearchResultAdapter;
+
+    private LoadingDialog mLoadingDialog ;
+
 
     private String query;
     private int page = 1;
@@ -55,7 +60,7 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
         setContentView(R.layout.activity_lib_result);
         initView();
         setTitle("搜索结果");
-        showLoading(CommonTextUtils.generateRandomLoginText());
+        mLoadingDialog =  showLoading(CommonTextUtils.generateRandomLoginText());
 
         query = getIntent().getStringExtra("query");
         mBookList = new ArrayList<>();
@@ -64,14 +69,14 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
 
         mMultiStatusView.setOnRetryListener(view -> {
             page = 1;
-            showLoading(CommonTextUtils.generateRandomLoginText());
+            mLoadingDialog = showLoading(CommonTextUtils.generateRandomLoginText());
             loadBooks();
         });
         loadBooks();
                                      }
 
     private void loadBooks() {
-        CampusFactory.getRetrofitService().searchBook(query, page)
+        Subscription subscription  = CampusFactory.getRetrofitService().searchBook(query, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bookSearchResult -> {
@@ -103,12 +108,17 @@ public class LibrarySearchResultActivity extends ToolbarActivity implements
                     mMultiStatusView.showError();
                     mMultiStatusView.setOnRetryListener(view -> {
                         page = 1;
-                        showLoading(CommonTextUtils.generateRandomLoginText());
+                        mLoadingDialog = showLoading(CommonTextUtils.generateRandomLoginText());
                         loadBooks();
                     });
                 }, () -> {
                     hideLoading();
                 });
+
+        mLoadingDialog.setOnSubscriptionCanceledListener(() ->{
+          if(!subscription.isUnsubscribed())
+            subscription.unsubscribe();
+      });
     }
 
     @Override

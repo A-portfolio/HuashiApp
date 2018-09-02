@@ -16,6 +16,7 @@ import com.muxistudio.appcommon.data.CardSumData;
 import com.muxistudio.appcommon.presenter.CardDataPresenter;
 import com.muxistudio.appcommon.utils.CommonTextUtils;
 import com.muxistudio.appcommon.view.ICardView;
+import com.muxistudio.appcommon.widgets.LoadingDialog;
 import com.muxistudio.common.jsbridge.BridgeWebView;
 import com.muxistudio.common.util.DateUtil;
 import com.muxistudio.common.util.Logger;
@@ -37,6 +38,8 @@ public class CardActivity extends ToolbarActivity implements ICardView {
 
     private CardDataPresenter mPresenter;
     private CardDailyUse mDailyUse;
+
+    private LoadingDialog mLoadingDialog;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, CardActivity.class);
@@ -65,7 +68,7 @@ public class CardActivity extends ToolbarActivity implements ICardView {
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
         mMultiStatusView.setOnRetryListener(v -> {
-            showLoading(CommonTextUtils.generateRandomLoginText());
+            mLoadingDialog = showLoading(CommonTextUtils.generateRandomLoginText());
             mPresenter = new CardDataPresenter(this);
             mPresenter.setCardView();
         });

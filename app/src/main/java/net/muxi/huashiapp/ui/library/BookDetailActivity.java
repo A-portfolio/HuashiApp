@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.library;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.Book;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.utils.CommonTextUtils;
+import com.muxistudio.appcommon.widgets.LoadingDialog;
 import com.muxistudio.common.util.PreferenceUtil;
 import com.muxistudio.multistatusview.MultiStatusView;
 
@@ -19,6 +21,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.library.fragment.BookBorrowedFragment;
 import net.muxi.huashiapp.ui.library.fragment.BookDetailFragment;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -54,9 +57,9 @@ public class BookDetailActivity extends ToolbarActivity {
     }
 
     private void loadData() {
-        showLoading(CommonTextUtils.generateRandomLoginText());
+      LoadingDialog loadingDialog = showLoading(CommonTextUtils.generateRandomLoginText());
         Intent intent = getIntent();
-        CampusFactory.getRetrofitService().getBookDetail(intent.getStringExtra("id"))
+        Subscription subscription  = CampusFactory.getRetrofitService().getBookDetail(intent.getStringExtra("id"))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(book -> {
@@ -72,6 +75,11 @@ public class BookDetailActivity extends ToolbarActivity {
                 }, () -> {
                     hideLoading();
                 });
+
+        loadingDialog.setOnSubscriptionCanceledListener(()->{
+          if(!subscription.isUnsubscribed())
+            subscription.unsubscribe();
+        });
     }
 
     public void showDetailFragment(Book book) {

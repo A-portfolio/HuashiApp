@@ -12,6 +12,7 @@ import com.muxistudio.appcommon.data.WebsiteData;
 import com.muxistudio.appcommon.db.HuaShiDao;
 import com.muxistudio.appcommon.net.CampusFactory;
 
+import com.muxistudio.appcommon.widgets.LoadingDialog;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -29,6 +31,7 @@ import rx.schedulers.Schedulers;
 public class WebsiteActivity extends ToolbarActivity {
 
     private RecyclerView mRecyclerView;
+    private LoadingDialog mLoadingDialog;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, WebsiteActivity.class);
@@ -55,12 +58,12 @@ public class WebsiteActivity extends ToolbarActivity {
             //学生信息服务平台暂时无法使用
             setupRecyclerView(filterData(mWebsiteDatas));
         } else {
-            showLoading("校园网站正在加载中~");
+            mLoadingDialog  = showLoading("校园网站正在加载中~");
         }
 
 
         setTitle("常用网站");
-        CampusFactory.getRetrofitService().getWebsite()
+        Subscription subscription = CampusFactory.getRetrofitService().getWebsite()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<List<WebsiteData>>() {
@@ -90,6 +93,12 @@ public class WebsiteActivity extends ToolbarActivity {
                         }
                     }
                 });
+
+        mLoadingDialog.setOnSubscriptionCanceledListener(
+            () -> {
+              if(!subscription.isUnsubscribed())
+                subscription.unsubscribe();
+            });
     }
 
     public void setupRecyclerView(List<WebsiteData> websiteData) {

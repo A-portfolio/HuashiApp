@@ -13,11 +13,13 @@ import com.muxistudio.appcommon.db.HuaShiDao;
 import com.muxistudio.appcommon.net.CampusFactory;
 
 import com.muxistudio.appcommon.utils.CommonTextUtils;
+import com.muxistudio.appcommon.widgets.LoadingDialog;
 import net.muxi.huashiapp.R;
 
 import java.util.List;
 
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -27,6 +29,7 @@ import rx.schedulers.Schedulers;
 public class ApartmentActivity extends ToolbarActivity {
 
     private RecyclerView mRecyclerView;
+    private LoadingDialog mLoadingDialog;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, ApartmentActivity.class);
@@ -47,10 +50,10 @@ public class ApartmentActivity extends ToolbarActivity {
         if (mApartDatas.size() > 0) {
             setupRecyclerView(mApartDatas);
         } else {
-            showLoading(CommonTextUtils.generateRandomApartmentText());
+           mLoadingDialog =  showLoading(CommonTextUtils.generateRandomApartmentText());
         }
         setTitle("部门信息");
-        CampusFactory.getRetrofitService().getApartment()
+        Subscription subscription = CampusFactory.getRetrofitService().getApartment()
                 //observeOn() 在主线程上面发送通知
                 .observeOn(AndroidSchedulers.mainThread())
                 //被观察者 在新的线程上面发送通知
@@ -77,6 +80,13 @@ public class ApartmentActivity extends ToolbarActivity {
                         }
                     }
                 });
+
+        if(mLoadingDialog != null)
+          mLoadingDialog.setOnSubscriptionCanceledListener(
+              () -> {
+                if(!subscription.isUnsubscribed())
+                  subscription.unsubscribe();
+              });
     }
 
     public void setupRecyclerView(List<ApartmentData> apartmentDataList) {

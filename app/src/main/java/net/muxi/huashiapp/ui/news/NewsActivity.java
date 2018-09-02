@@ -15,10 +15,12 @@ import com.muxistudio.appcommon.data.News;
 import com.muxistudio.appcommon.net.CampusFactory;
 
 import com.muxistudio.appcommon.utils.CommonTextUtils;
+import com.muxistudio.appcommon.widgets.LoadingDialog;
 import net.muxi.huashiapp.R;
 
 import java.util.List;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -45,11 +47,16 @@ public class NewsActivity extends ToolbarActivity {
         init();
 
 
-        showLoading(CommonTextUtils.generateRandomNewsText());
-        CampusFactory.getRetrofitService().getNews()
+        LoadingDialog loadingDialog = showLoading(CommonTextUtils.generateRandomNewsText());
+       Subscription subscription =  CampusFactory.getRetrofitService().getNews()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(news -> setupRecyclerView(news), Throwable::printStackTrace, this::hideLoading);
+
+       loadingDialog.setOnSubscriptionCanceledListener(()->{
+         if(!subscription.isUnsubscribed())
+           subscription.unsubscribe();
+       });
     }
 
     public void init() {

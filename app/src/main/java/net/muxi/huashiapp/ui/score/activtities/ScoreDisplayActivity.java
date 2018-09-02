@@ -20,6 +20,7 @@ import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.Score;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.utils.CommonTextUtils;
+import com.muxistudio.appcommon.widgets.LoadingDialog;
 import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
@@ -36,6 +37,7 @@ import java.util.Set;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -93,7 +95,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
 
     private void loadGrade() {
-        showLoading("正在请求成绩数据~~");
+        LoadingDialog loadingDialog = showLoading("正在请求成绩数据~~");
 
         Observable<List<Score>>[] scoreArray = new Observable[mYearParams.size()*mTermParams.size()];
         for(int i=0;i<mYearParams.size();i++) {
@@ -112,7 +114,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
             }
         }
 
-        Observable.merge(scoreArray,5)
+        Subscription subscription = Observable.merge(scoreArray,5)
                 .flatMap((Func1<List<Score>, Observable<Score>>) Observable::from)
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -149,6 +151,11 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                             renderedFilteredScoreList();
                     }
                 });
+
+        loadingDialog.setOnSubscriptionCanceledListener(()->{
+          if(!subscription.isUnsubscribed())
+            subscription.unsubscribe();
+        });
     }
 
 
