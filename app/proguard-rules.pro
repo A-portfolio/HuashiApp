@@ -51,6 +51,11 @@
 -keep class com.muxistudio.jsbridge.** { *; }
 -keep class com.umeng.commonsdk.** {*;}
 
+-keep   class com.amap.api.maps.**{*;}
+-keep   class com.autonavi.**{*;}
+-keep   class com.amap.api.trace.**{*;}
+
+-keep   class com.amap.api.services.**{*;}
 # rxjava
 -keep class rx.schedulers.Schedulers {
     public static <methods>;
