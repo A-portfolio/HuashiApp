@@ -10,6 +10,7 @@
 /libraries
 
 # key
+HuashiApp.jks
 app/HuashiApp.jks
 keystore.properties
 
