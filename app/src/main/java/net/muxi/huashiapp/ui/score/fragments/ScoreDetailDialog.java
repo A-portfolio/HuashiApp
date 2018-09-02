@@ -6,12 +6,15 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.muxistudio.appcommon.data.Score;
 
+import com.muxistudio.common.util.DimensUtil;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.widget.CenterDialogFragment;
 
@@ -56,25 +59,38 @@ public class ScoreDetailDialog  extends CenterDialogFragment{
         tvCourseCredit.setText(mScores.get(position).credit);
         tvCourseGrade.setText(mScores.get(position).grade);
 
+        boolean usualGradeEmpty = false;
+        boolean examGradeEmpty  = false;
         //现在教务系统课程的平时成绩和期末考试成绩可能为空
         tvCourseUsualGrade.setText(mScores.get(position).usual);
         if(TextUtils.isEmpty(mScores.get(position).usual)){
             tvCourseUsualGrade.setVisibility(View.INVISIBLE);
             tvCourseUsual.setVisibility(View.INVISIBLE);
+            usualGradeEmpty = true;
         }
 
         tvCourseExamGrade.setText(mScores.get(position).ending);
         if(TextUtils.isEmpty(mScores.get(position).ending)) {
             tvCourseExamGrade.setVisibility(View.INVISIBLE);
             tvCourseExam.setVisibility(View.INVISIBLE);
+            examGradeEmpty = true;
         }
 
         Dialog dialog = createCenterDialog(view);
 
-        Button btnConfirm = view.findViewById(R.id.btn_confirm);
+        TextView btnConfirm = view.findViewById(R.id.btn_confirm);
         btnConfirm.setOnClickListener( view1 ->{
             dialog.dismiss();
         });
+
+        if(examGradeEmpty && usualGradeEmpty){
+          RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+              ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+          params.addRule(RelativeLayout.BELOW,R.id.tv_grade);
+          params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+          params.setMargins(0, DimensUtil.dp2px(30),0,0);
+          btnConfirm.setLayoutParams(params);
+        }
         return dialog;
     }
 }

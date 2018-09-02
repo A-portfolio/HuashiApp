@@ -72,15 +72,6 @@ public class Constants {
             "其他"
     };
 
-    //todo to remove
-    public static final String[] CREDIT_CATEGORY = {
-            "个性发展课程",
-            "专业选修课",
-            "通识必修课",
-            "通识选修课",
-            "通识核心课",
-            "专业主干课程"
-    };
 
     public static final String[] TERMS = {
             "3",

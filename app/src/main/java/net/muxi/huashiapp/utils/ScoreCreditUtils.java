@@ -146,6 +146,13 @@ public class ScoreCreditUtils {
 
             for (int i = 0; i < Constants.CLASS_TYPE.length; i++) {
                 String type = Constants.CLASS_TYPE[i];
+
+                if(credit.kcxzmc == null){
+                  double addUp = creditMap.get("其他") + Double.parseDouble(credit.credit);
+                  creditMap.put("其他", addUp);
+                  break;
+                }
+
                 //将专业选修课和个性发展课归为一类课程
                 if(credit.kcxzmc.equals("专业选修课")){
                   double addup= creditMap.get(Constants.CLASS_TYPE[1]) + Double.parseDouble(credit.credit);
@@ -195,6 +202,12 @@ public class ScoreCreditUtils {
 
             for (int i = 0; i < Constants.CLASS_TYPE.length; i++) {
                 String type = Constants.CLASS_TYPE[i];
+                if(credit.kcxzmc == null ){
+                  List<Score> c = sortedMap.get("其他");
+                  c.add(credit);
+                  sortedMap.put("其他",c);
+                  break;
+                }
                 if (type.equals(credit.kcxzmc)) {
                     List<Score> c = sortedMap.get(type);
                     c.add(credit);

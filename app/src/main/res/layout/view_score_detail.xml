@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tv_course_name"
@@ -21,7 +22,7 @@
         android:layout_marginRight="30dp"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/tv_course_name"
-        android:background="@color/divider_dark"
+        android:background="@color/grey"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 
@@ -134,19 +135,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <Button
+    <TextView
         android:layout_centerHorizontal="true"
         android:text="确定"
         android:layout_marginTop="30dp"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:layout_below="@+id/tv_exam_grade"
         android:id="@+id/btn_confirm"
-        android:layout_width="match_parent"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:textColor="@color/colorWhite"
-        android:background="@drawable/ripple_accent"
-        android:layout_height="48dp" />
+        android:layout_width="wrap_content"
+        android:textColor="@color/textColorGrey"
+        android:layout_height="wrap_content" />
 
     <View
         android:layout_below="@+id/btn_confirm"

@@ -77,7 +77,7 @@ public class CurCreditFragment extends BaseAppFragment {
         showLoading();
         Observable<List<Score>> scoreObservable =
                 Observable.merge(listObservable, 5)
-                .flatMap((Func1<List<Score>, Observable<Score>>) scoreList -> Observable.from(scoreList))
+                .flatMap((Func1<List<Score>, Observable<Score>>) Observable::from)
                 .toList();
 
         scoreObservable
