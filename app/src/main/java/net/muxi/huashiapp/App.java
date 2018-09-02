@@ -34,7 +34,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        sContext = getContext();
+        sContext = getApplicationContext();
         Global. setApplication(this);
         UserAccountManager.getInstance().initUser();
         Fresco.initialize(this);

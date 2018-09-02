@@ -275,22 +275,6 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_all) {
-            if (mScoresAdapter != null) {
-              if(mAllChecked )
-                mScoresAdapter.setAllChecked(true);
-                mAllChecked = false;
-            }else{
-              mScoresAdapter.setAllChecked(false);
-              mAllChecked = true;
-            }
-            mScoresAdapter.notifyDataSetChanged();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
