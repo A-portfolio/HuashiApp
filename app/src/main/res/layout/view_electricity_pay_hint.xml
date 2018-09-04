@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+  <ImageView
+      android:layout_gravity="end"
+      android:id="@+id/view_close_btn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginRight="@dimen/activity_vertical_margin"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:src="@drawable/ic_close"
+      />
+
+  <TextView
+      android:id="@+id/tv_title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="86dp"
+      android:text="@string/title_pay_hint"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="20sp"
+      />
+
+  <TextView
+      android:id="@+id/tv_content"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="70dp"
+      android:lineSpacingMultiplier="1.4"
+      android:paddingLeft="24dp"
+      android:paddingRight="24dp"
+      android:text="@string/content_pay_hint"
+      android:textSize="14sp"
+      />
+
+  <RelativeLayout
+      android:id="@+id/relative_layout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="68dp"
+      android:layout_marginTop="60dp"
+      android:layout_marginRight="68dp"
+      >
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="华中师大节能办"
+        android:textColor="?android:attr/textColorPrimary"
+        />
+
+    <TextView
+        android:id="@+id/tv_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tv_name"
+        android:layout_alignParentRight="true"
+        android:text="点击复制,并且打开微信"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/medium_size"
+        />
+
+  </RelativeLayout>
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_below="@+id/relative_layout"
+      android:layout_margin="@dimen/activity_horizontal_margin"
+      android:background="@color/divider"/>
+
+
+</LinearLayout>

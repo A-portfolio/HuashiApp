@@ -173,7 +173,11 @@ public class TimeTableUtil {
 
     }
 
-    public static void saveCurWeek(int week) {
+  /**
+   * 保存当前的周数
+   * @param week 周数 周数是正常周数的值-1
+   */
+  public static void saveCurWeek(int week) {
         Date date = new Date(System.currentTimeMillis());
         int day = DateUtil.getDayInWeek(date);
         int distance = 1 - day - (week - 1) * 7;

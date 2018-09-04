@@ -196,15 +196,19 @@ public class TimetableFragment extends BaseAppFragment {
         ((BaseAppActivity) getContext()).addSubscription(subscription3);
         Subscription subscription4 = RxBus.getDefault().toObservable(CurWeekChangeEvent.class)
                 .subscribe(curWeekChangeEvent -> {
-                    setCurweek(TimeTableUtil.getCurWeek());
-                    setSelectedWeek(TimeTableUtil.getCurWeek());
+                  //在回调之前更新过的课程都会储存在SharedPerference中
+                    int curWeek = TimeTableUtil.getCurWeek();
+                    selectedWeek = curWeek;
+                    setCurweek(curWeek);
+                    setSelectedWeek(curWeek);
                     renderCourseView(mCourses);
                 }, Throwable::printStackTrace);
         ((BaseAppActivity) getContext()).addSubscription(subscription4);
-        RxBus.getDefault().toObservable(AuditCourseEvent.class)
+        Subscription subscription5  = RxBus.getDefault().toObservable(AuditCourseEvent.class)
                 .subscribe(auditCourseEvent -> {
                     loadTable();
                 });
+        ((BaseAppActivity) getContext()).addSubscription(subscription5);
 
         mTimetable.setOnRefreshListener(() -> {
             handlingRefresh = true;

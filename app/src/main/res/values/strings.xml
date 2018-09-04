@@ -64,6 +64,8 @@
     <!--成绩查询-->
 
   <!--电费查询-->
+    <string name="title_pay_hint">微信缴费提示</string>
+  <string name="content_pay_hint">微信能缴费啦，关注【华中师大节能办】微信公众号即可线上充值。\n充值内容包括照明和空调费。</string>
     <string name="ele_room_not_found">请填写正确的寝室信息</string>
 
   <!--空闲教室-->
