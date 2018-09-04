@@ -152,13 +152,6 @@ public class ScoreCreditUtils {
                   creditMap.put("其他", addUp);
                   break;
                 }
-
-                //将专业选修课和个性发展课归为一类课程
-                if(credit.kcxzmc.equals("专业选修课")){
-                  double addup= creditMap.get(Constants.CLASS_TYPE[1]) + Double.parseDouble(credit.credit);
-                  creditMap.put(type,addup);
-                  break;
-              }
                 if (type.equals(credit.kcxzmc)) {
                     double addUp = creditMap.get(type) + Double.parseDouble(credit.credit);
                     creditMap.put(type, addUp);
@@ -217,6 +210,13 @@ public class ScoreCreditUtils {
                   sortedMap.put(Constants.CLASS_TYPE[2],c);
                   break;
                 }
+                if(type.equals("专业选修课")){
+                  c = sortedMap.get(Constants.CLASS_TYPE[1]);
+                  c.add(credit);
+                  sortedMap.put(Constants.CLASS_TYPE[1],c);
+                  break;
+                }
+
                 if (type.equals(credit.kcxzmc)) {
                     c = sortedMap.get(type);
                     c.add(credit);
@@ -228,7 +228,6 @@ public class ScoreCreditUtils {
                     c = sortedMap.get(Constants.CLASS_TYPE[5]);
                     c.add(credit);
                     sortedMap.put(Constants.CLASS_TYPE[5],c);
-                    break;
                 }
 
             }
