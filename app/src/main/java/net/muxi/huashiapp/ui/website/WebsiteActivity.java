@@ -56,9 +56,8 @@ public class WebsiteActivity extends ToolbarActivity {
 
         if (mWebsiteDatas != null && mWebsiteDatas.size() > 0) {
             //学生信息服务平台暂时无法使用
-            setupRecyclerView(filterData(mWebsiteDatas));
-        } else {
             mLoadingDialog  = showLoading("校园网站正在加载中~");
+            setupRecyclerView(filterData(mWebsiteDatas));
         }
 
 
@@ -81,8 +80,6 @@ public class WebsiteActivity extends ToolbarActivity {
 
                     @Override
                     public void onNext(List<WebsiteData> websiteData) {
-                        for (WebsiteData data : websiteData) {
-                        }
                         if (mWebsiteDatas == null || websiteData.size() != mWebsiteDatas.size()) {
                             //学生信息服务平台暂时无法使用
                             setupRecyclerView(filterData(mWebsiteDatas));

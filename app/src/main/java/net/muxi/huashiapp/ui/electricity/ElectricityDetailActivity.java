@@ -47,8 +47,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
     private ViewPager mViewPager;
     private TextView mPayHint;
 
-    private LoadingDialog mLoadingDialog ;
-
     public static void start(Context context, String query) {
         Intent starter = new Intent(context, ElectricityDetailActivity.class);
         starter.putExtra("query", query);
@@ -70,7 +68,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         PreferenceUtil sp = new PreferenceUtil();
         mQuery = getIntent().getStringExtra("query");
         mMultiStatusView.setOnRetryListener(v -> {
-            mLoadingDialog = showLoading(CommonTextUtils.generateRandomApartmentText());
             loadData();
         });
         setFontType(PAY_HINT);
@@ -129,14 +126,6 @@ public class ElectricityDetailActivity extends ToolbarActivity {
                     mMultiStatusView.showNetError();
                     hideLoading();
                 }, this::hideLoading);
-
-        mLoadingDialog.setOnSubscriptionCanceledListener(
-            () -> {
-              if(!subscriptionAir.isUnsubscribed() || !subscriptionEle.isUnsubscribed()){
-                subscriptionAir.unsubscribe();
-                subscriptionEle.unsubscribe();
-              }
-            });
     }
 
     public void init() {

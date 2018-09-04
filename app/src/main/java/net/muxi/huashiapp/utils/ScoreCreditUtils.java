@@ -202,23 +202,33 @@ public class ScoreCreditUtils {
 
             for (int i = 0; i < Constants.CLASS_TYPE.length; i++) {
                 String type = Constants.CLASS_TYPE[i];
+                List<Score> c ;
+                //如果类型是null 的话直接加入不可分类的类型
                 if(credit.kcxzmc == null ){
-                  List<Score> c = sortedMap.get("其他");
+                  c = sortedMap.get(Constants.CLASS_TYPE[5]);
                   c.add(credit);
-                  sortedMap.put("其他",c);
+                  sortedMap.put(Constants.CLASS_TYPE[5],c);
+                  break;
+                }
+                //如果类型1错误 比如有些通识核心变成了通识选修分类
+                if(type.contains("通核")){
+                  c = sortedMap.get(Constants.CLASS_TYPE[2]);
+                  c.add(credit);
+                  sortedMap.put(Constants.CLASS_TYPE[2],c);
                   break;
                 }
                 if (type.equals(credit.kcxzmc)) {
-                    List<Score> c = sortedMap.get(type);
+                    c = sortedMap.get(type);
                     c.add(credit);
                     sortedMap.put(type,c);
                     break;
                 }
 
                 if(i== Constants.CLASS_TYPE.length - 1){
-                    List<Score> c = sortedMap.get("其他");
+                    c = sortedMap.get(Constants.CLASS_TYPE[5]);
                     c.add(credit);
-                    sortedMap.put("其他",c);
+                    sortedMap.put(Constants.CLASS_TYPE[5],c);
+                    break;
                 }
 
             }
