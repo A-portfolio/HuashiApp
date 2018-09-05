@@ -39,7 +39,7 @@ public class ScoreDetailDialog  extends CenterDialogFragment{
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view  = LayoutInflater.from(getContext()).inflate(R.layout.view_score_detail,null,false);
 
-        TextView tvCourseType= view.findViewById(R.id.tv_course_type);
+        TextView tvCourseType= view.findViewById(R.id.tv_course_type_value);
         TextView tvCourseCredit = view.findViewById(R.id.tv_course_credit);
         TextView tvCourseGrade = view.findViewById(R.id.tv_grade_value);
         TextView tvCourseUsualGrade = view.findViewById(R.id.tv_usual_grade_value);
@@ -54,8 +54,8 @@ public class ScoreDetailDialog  extends CenterDialogFragment{
 
         int position = (int) getArguments().get("position");
 
-        tvCourseName.setText(mScores.get(position).course);
         tvCourseType.setText(mScores.get(position).kcxzmc);
+        tvCourseName.setText(mScores.get(position).course);
         tvCourseCredit.setText(mScores.get(position).credit);
         tvCourseGrade.setText(mScores.get(position).grade);
 

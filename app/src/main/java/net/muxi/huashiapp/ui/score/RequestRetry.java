@@ -31,8 +31,6 @@ public class RequestRetry implements
 
         private RetryInfoListener mListener;
 
-        //todo to refactor
-    // using following method :https://www.linkedin.com/pulse/switch-case-if-else-blocks-rx-java-streams-ahmed-adel
         @Override
         public Observable<?> call(Observable<? extends Throwable> attempts) {
             return attempts

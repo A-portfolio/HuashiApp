@@ -33,11 +33,11 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
     Map<Integer,Boolean> mCheckMap = new HashMap<>();
     ArrayList<Score> mScores;
     FragmentActivity mContext;
-    private boolean mAllChecked = false;
 
     public ScoreCreditAdapter(ArrayList<Score> scores) {
         super();
         this.mScores = scores;
+      initCheckList(true);
     }
 
     //默认情况下全选checklist中所有的成绩 去计算学分绩
@@ -72,7 +72,6 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
         mContext = (FragmentActivity) parent.getContext();
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_score_credit,parent,false);
 
-        initCheckList(true);
         return new ViewHolder(view);
     }
 
@@ -81,7 +80,12 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
 
         String totalScore = String.format("总成绩:%s",mScores.get(position).grade);
 
-        holder.mCbCredit.setChecked(mCheckMap.get(position));
+        if(mCheckMap.keySet().contains(position)){
+          if(mCheckMap.get(position))
+            holder.mCbCredit.setChecked(true);
+          else
+            holder.mCbCredit.setChecked(false);
+        }
         holder.mTvTotalScore.setText(totalScore);
 
         String credit = String.format("学分:%s",mScores.get(position).credit);
@@ -103,12 +107,14 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
 
         //先变化ui 变化之后的状态
         holder.mCbCredit.setOnClickListener(v -> {
-            if(holder.mCbCredit.isChecked()){
-                mCheckMap.put(position,true);
-            }else{
+            if(!holder.mCbCredit.isChecked()){
                 mCheckMap.put(position,false);
+            }else{
+                mCheckMap.put(position,true);
             }
         });
+
+
     }
 
 
@@ -141,8 +147,7 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
 
             mItemView = itemView;
 
-            mCbCredit.setChecked(true);
-        }
+          }
 
     }
 
