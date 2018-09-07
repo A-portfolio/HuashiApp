@@ -9,7 +9,7 @@ package com.muxistudio.appcommon.data;
 public class UserInfo {
     /**
      * sid : 0
-     * password : string
+     * userinfo : string
      */
 
     private int sid;

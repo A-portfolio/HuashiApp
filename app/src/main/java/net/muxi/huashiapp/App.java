@@ -10,7 +10,9 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig;
+import com.muxistudio.appcommon.data.User;
 import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.appcommon.utils.UtilsExtensionKt;
 import com.muxistudio.common.base.Global;
 import com.muxistudio.common.util.PreferenceUtil;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -45,6 +47,10 @@ public class App extends Application {
         MiPushUtil.initMiPush(this);
 
         sLastLogin = PreferenceUtil.getLong(PreferenceUtil.LAST_LOGIN_MOMENT);
+
+      User user = UserAccountManager.getInstance().getInfoUser();
+
+      UtilsExtensionKt.cache(sContext,user.sid,user.password);
     }
 
     private void initX5() {

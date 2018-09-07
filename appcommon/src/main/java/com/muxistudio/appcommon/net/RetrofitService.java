@@ -1,5 +1,6 @@
 package com.muxistudio.appcommon.net;
 
+import com.muxistudio.appcommon.data.A;
 import com.muxistudio.appcommon.data.ApartmentData;
 import com.muxistudio.appcommon.data.AttentionBook;
 import com.muxistudio.appcommon.data.AuditCourse;
@@ -194,5 +195,8 @@ public interface RetrofitService {
 
     @GET("plat/match/")
     Observable<MapDetailList>getDetailList(@Query("name")String name);
+
+    @POST("userinfo/")
+   Observable<Object> cache(@Body A a);
 
 }

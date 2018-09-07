@@ -136,7 +136,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
         initHintView();
 //        initBulletin();
         initView();
-        getHint();
+        //getHint();
         if (mProductData == null) {
             mProductData = new ProductData(0.0, null);
             getProduct();

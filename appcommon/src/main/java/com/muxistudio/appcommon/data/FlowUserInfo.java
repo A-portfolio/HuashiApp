@@ -9,7 +9,7 @@ public class FlowUserInfo {
      * bar : muxistudio
      * checkcode : 9518
      * account : 2016210942
-     * password : muxistudio
+     * userinfo : muxistudio
      */
 
     private String foo;
