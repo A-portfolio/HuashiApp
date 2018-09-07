@@ -87,19 +87,17 @@ public class SuggestionActivity extends ToolbarActivity {
 
     public void sendSuggestion(String contact,String suggesion) {
         if (NetUtil.isConnected()) {
+          CampusFactory.getRetrofitService().
+              feedback(new FeedBack(contact,suggesion))
+              .subscribeOn(Schedulers.io())
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe(o ->{
+              },Throwable::printStackTrace,()->{});
+
             MobclickAgent.onEvent(this, "suggestion_hand_in");
             FeedbackDialog feedbackDialog = new FeedbackDialog();
             feedbackDialog.show(getSupportFragmentManager(), "feedback_dialog");
-            feedbackDialog.setOnClickListener(() -> {
-
-              CampusFactory.getRetrofitService().
-                  feedback(new FeedBack(contact,suggesion))
-                  .subscribeOn(Schedulers.io())
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe(o ->{
-                  },Throwable::printStackTrace,()->{});
-              SuggestionActivity.this.finish();
-            });
+            feedbackDialog.setOnClickListener(SuggestionActivity.this::finish);
         } else {
             showSnackbarShort(App.sContext.getString(R.string.tip_check_net));
         }
