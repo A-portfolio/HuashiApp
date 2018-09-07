@@ -52,7 +52,7 @@ public class AboutActivity extends ToolbarActivity {
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.tv_muxi_link){
-            Intent intent = WebViewActivity.newIntent(AboutActivity.this,"http://muxistudio.com");
+            Intent intent = WebViewActivity.newIntent(AboutActivity.this,"http://www.muxixyz.com");
             startActivity(intent);
         }else if (id == R.id.tv_copy){
             AppUtil.clipToClipBoard(this, "576225292");
