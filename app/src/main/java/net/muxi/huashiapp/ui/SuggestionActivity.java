@@ -95,6 +95,9 @@ public class SuggestionActivity extends ToolbarActivity {
               },Throwable::printStackTrace,()->{});
 
             MobclickAgent.onEvent(this, "suggestion_hand_in");
+
+
+
             FeedbackDialog feedbackDialog = new FeedbackDialog();
             feedbackDialog.show(getSupportFragmentManager(), "feedback_dialog");
             feedbackDialog.setOnClickListener(SuggestionActivity.this::finish);
@@ -122,6 +125,7 @@ public class SuggestionActivity extends ToolbarActivity {
     public void onClick() {
         ClipboardManager manager = (ClipboardManager) this
                 .getSystemService(Context.CLIPBOARD_SERVICE);
+
         manager.setPrimaryClip(ClipData.newPlainText(null, mGroupCcnubox.getText()));
         if (manager.hasPrimaryClip()) {
             manager.getPrimaryClip().getItemAt(0).getText();

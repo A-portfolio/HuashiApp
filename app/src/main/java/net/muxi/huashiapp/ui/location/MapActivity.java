@@ -102,9 +102,6 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
         initLayout(10,10,5);
         checkPermission();
         mMapView =  findViewById(R.id.map);
-        // TODO: 18-8-30 待改进
-        hideFragment();
-
         mMapView.onCreate(savedInstanceState);
         aMap = mMapView.getMap();
         if (aMap != null) {
@@ -447,7 +444,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.map_bottom_ll, fragment, FRAGMENT_TAG)
                     .setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_bottom)
-                    .commit();
+                    .commitNow();
         }
         return fragment;
     }
