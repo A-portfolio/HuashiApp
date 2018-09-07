@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,15 +16,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
+import com.muxistudio.appcommon.data.FeedBack;
+import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.common.util.NetUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.more.FeedbackDialog;
-
-
-//import net.muxi.huashiapp.util.ZhugeUtils;
+import net.muxi.huashiapp.ui.more.LogoutDialog;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by december on 16/8/1.
@@ -73,62 +76,29 @@ public class SuggestionActivity extends ToolbarActivity {
             }
         });
 
-        mBtnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mEtSuggestion.getText().length() == 0) {
-                    showSnackbarShort(getString(R.string.tip_write_suggestion_first));
-                } else {
-                    sendSuggestion(mEtSuggestion.getText().toString() + "联系方式" + mEtContact.getText().toString());
-                }
+        mBtnSubmit.setOnClickListener(v -> {
+            if (mEtSuggestion.getText().length() == 0) {
+                showSnackbarShort(getString(R.string.tip_write_suggestion_first));
+            } else {
+                sendSuggestion(mEtContact.getText().toString(),mEtSuggestion.getText().toString());
             }
         });
     }
 
-    //        mBtnSubmit.set(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (mEtSuggestion.getText().length() == 0) {
-//                    ToastUtil.showShort(getString(R.string.tip_write_suggestion_first));
-//                    return;
-//                }
-//                if (mEtContact.getText().length() == 0){
-//                    final MaterialDialog materialDialog = new MaterialDialog(SuggestionActivity.this);
-//                    materialDialog.setTitle(App.sContext.getString(R.string.title_sugg_submit));
-//                    materialDialog.setContent(App.sContext.getString(R.string.content_sugg_submit));
-//                    materialDialog.setNegativeButton(App.sContext.getString(R.string.btn_negative), new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            materialDialog.dismiss();
-//                        }
-//                    });
-//                    materialDialog.setNegativeButtonColor(ContextCompat.getColor(context,R.color.colorPrimary));
-//                    materialDialog.setPositiveButtonColor(ContextCompat.getColor(context,R.color.colorPrimary));
-//                    materialDialog.setPositiveButton(App.sContext.getString(R.string.btn_positive), new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            sendSuggestion(mEtSuggestion.getText().toString() + "联系方式:" + mEtContact.getText().toString());
-//                            materialDialog.dismiss();
-//                        }
-//                    });
-//                    materialDialog.show();
-//                }else {
-//                    sendSuggestion(mEtSuggestion.getText().toString() + "联系方式:" + mEtContact.getText().toString());
-//                }
-//            }
-//        });
-//    }
-//
-    public void sendSuggestion(String str) {
+    public void sendSuggestion(String contact,String suggesion) {
         if (NetUtil.isConnected()) {
             MobclickAgent.onEvent(this, "suggestion_hand_in");
             FeedbackDialog feedbackDialog = new FeedbackDialog();
             feedbackDialog.show(getSupportFragmentManager(), "feedback_dialog");
-            feedbackDialog.setOnClickListener(new FeedbackDialog.OnClickListener() {
-                @Override
-                public void OnClick() {
-                    SuggestionActivity.this.finish();
-                }
+            feedbackDialog.setOnClickListener(() -> {
+
+              CampusFactory.getRetrofitService().
+                  feedback(new FeedBack(contact,suggesion))
+                  .subscribeOn(Schedulers.io())
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(o ->{
+                  },Throwable::printStackTrace,()->{});
+              SuggestionActivity.this.finish();
             });
         } else {
             showSnackbarShort(App.sContext.getString(R.string.tip_check_net));

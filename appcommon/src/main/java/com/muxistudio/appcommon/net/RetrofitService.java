@@ -18,6 +18,7 @@ import com.muxistudio.appcommon.data.CourseId;
 import com.muxistudio.appcommon.data.Detail;
 import com.muxistudio.appcommon.data.EleRequestData;
 import com.muxistudio.appcommon.data.Electricity;
+import com.muxistudio.appcommon.data.FeedBack;
 import com.muxistudio.appcommon.data.Hint;
 import com.muxistudio.appcommon.data.MapDetailList;
 import com.muxistudio.appcommon.data.Msg;
@@ -127,7 +128,7 @@ public interface RetrofitService {
     Observable<List<News>> getNews();
 
     @GET("msg/")
-    Observable<Hint> getHint();
+    Observable<Hint> getHinuint();
 
 
     @POST("cache/userinfo/")
@@ -198,5 +199,12 @@ public interface RetrofitService {
 
     @POST("userinfo/")
    Observable<Object> cache(@Body A a);
+
+  /**
+   * 意见反馈
+   */
+
+  @POST("feedback/")
+  Observable<Object> feedback(@Body FeedBack feedBack);
 
 }
