@@ -71,15 +71,16 @@ public class BookBorrowedFragment extends BaseAppFragment {
         return fragment;
     }
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_borrowed, container, false);
-        initView(view);
 
         mBook = getArguments().getParcelable("book");
         id = getArguments().getString("id");
+        initView(view);
 
         return view;
     }
