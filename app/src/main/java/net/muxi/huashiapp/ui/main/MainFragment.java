@@ -382,24 +382,6 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
         }
     }
 
-    private void getHint() {
-        if (NetUtil.isConnected()) {
-            CampusFactory.getRetrofitService()
-                    .getHint()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(hint -> {
-                        mHint = hint;
-                        mMainAdapter.setHint(hint);
-                        initView();
-                        mRecyclerView.invalidate();
-                    }, Throwable::printStackTrace, () -> {
-                    });
-        } else {
-            initView();
-        }
-    }
-
     //fixme beginTransaction() may produce NPE
     // fixme referring https://stackoverflow.com/questions/27742471/nullpointerexception-fragmentmanager-begintransaction
     public void refresh() {

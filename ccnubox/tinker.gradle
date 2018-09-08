@@ -1,8 +1,8 @@
 apply plugin: 'tinkerpatch-support'
 
 def versionMajor = 2
-def versionMinor = 3
-def versionBuild = 1
+def versionMinor = 4
+def versionBuild = 0
 
 def bakPath = file("${buildDir}/bakApk/")
 //def baseInfo = rootProject.ext.baseInfo

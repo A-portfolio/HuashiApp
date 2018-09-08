@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +96,8 @@ public class BookBorrowedFragment extends BaseAppFragment {
         mIvPlace = view.findViewById(R.id.iv_place);
         mTvPlace = view.findViewById(R.id.tv_place);
         mBtnRenew = view.findViewById(R.id.btn_renew);
-        mTvTitle.setText(mBook.book);
+        if(!TextUtils.isEmpty(mBook.book))
+           mTvTitle.setText(mBook.book);
         mTvAuthor.setText(mBook.author);
         mTvInfo.setText(mBook.intro);
         mTvBid.setText("索书号" + mBook.bid);

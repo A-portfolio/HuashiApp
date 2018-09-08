@@ -127,9 +127,6 @@ public interface RetrofitService {
     @GET("webview_info/")
     Observable<List<News>> getNews();
 
-    @GET("msg/")
-    Observable<Hint> getHinuint();
-
 
     @POST("cache/userinfo/")
     Observable<Msg> postUserInfo(@Body UserInfo user);
