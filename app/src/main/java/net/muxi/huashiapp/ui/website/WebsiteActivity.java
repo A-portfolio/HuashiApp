@@ -56,46 +56,74 @@ public class WebsiteActivity extends ToolbarActivity {
 
         if (mWebsiteDatas != null && mWebsiteDatas.size() > 0) {
             //学生信息服务平台暂时无法使用
-            mLoadingDialog  = showLoading("校园网站正在加载中~");
             setupRecyclerView(filterData(mWebsiteDatas));
-        }
+            Subscription subscription = CampusFactory.getRetrofitService().getWebsite()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.newThread())
+                    .subscribe(new Observer<List<WebsiteData>>() {
+                        @Override
+                        public void onCompleted() {
 
+                        }
 
-        setTitle("常用网站");
-        Subscription subscription = CampusFactory.getRetrofitService().getWebsite()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<List<WebsiteData>>() {
-                    @Override
-                    public void onCompleted() {
-                        hideLoading();
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                            showSnackbarShort(getString(R.string.tip_net_error));
+                        }
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        showSnackbarShort(getString(R.string.tip_net_error));
-                    }
-
-                    @Override
-                    public void onNext(List<WebsiteData> websiteData) {
-                        if (mWebsiteDatas == null || websiteData.size() != mWebsiteDatas.size()) {
-                            //学生信息服务平台暂时无法使用
-                            setupRecyclerView(filterData(mWebsiteDatas));
-                            mDao.deleteWebsite();
-                            for (WebsiteData data : websiteData) {
-                                mDao.insertSite(data);
+                        @Override
+                        public void onNext(List<WebsiteData> websiteData) {
+                            if (mWebsiteDatas == null || websiteData.size() != mWebsiteDatas.size()) {
+                                //学生信息服务平台暂时无法使用
+                                setupRecyclerView(filterData(websiteData));
+                                mDao.deleteWebsite();
+                                for (WebsiteData data : websiteData) {
+                                    mDao.insertSite(data);
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }else {
 
-        mLoadingDialog.setOnSubscriptionCanceledListener(
-            () -> {
-              if(!subscription.isUnsubscribed())
-                subscription.unsubscribe();
-            });
+            mLoadingDialog = showLoading("校园网站正在加载中~");
+            setTitle("常用网站");
+            Subscription subscription = CampusFactory.getRetrofitService().getWebsite()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.newThread())
+                    .subscribe(new Observer<List<WebsiteData>>() {
+                        @Override
+                        public void onCompleted() {
+                            hideLoading();
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideLoading();
+                            e.printStackTrace();
+                            showSnackbarShort(getString(R.string.tip_net_error));
+                        }
+
+                        @Override
+                        public void onNext(List<WebsiteData> websiteData) {
+                            if (mWebsiteDatas == null || websiteData.size() != mWebsiteDatas.size()) {
+                                //学生信息服务平台暂时无法使用
+                                setupRecyclerView(filterData(websiteData));
+                                mDao.deleteWebsite();
+                                for (WebsiteData data : websiteData) {
+                                    mDao.insertSite(data);
+                                }
+                            }
+                        }
+                    });
+
+            mLoadingDialog.setOnSubscriptionCanceledListener(
+                    () -> {
+                        if (!subscription.isUnsubscribed())
+                            subscription.unsubscribe();
+                    });
+        }
     }
 
     public void setupRecyclerView(List<WebsiteData> websiteData) {

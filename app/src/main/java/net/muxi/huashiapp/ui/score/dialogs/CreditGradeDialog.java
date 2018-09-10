@@ -32,7 +32,7 @@ public class CreditGradeDialog extends DialogFragment implements View.OnClickLis
     View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_grade_result, null);
     initView(view);
     float result = getArguments().getFloat("result",0);
-    mTvCreditGrade.setText(String.format(Locale.CHINESE,"%.2f",result + 0.005));
+    mTvCreditGrade.setText(String.format(Locale.CHINESE,"%.4f",result + 0.005));
     mBtnOk.setOnClickListener(this);
 
     Dialog dialog = new Dialog(getContext());

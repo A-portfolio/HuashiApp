@@ -42,7 +42,7 @@ public class Book implements Parcelable {
         public BooksBean() {
         }
 
-        protected BooksBean(Parcel in) {
+        public BooksBean(Parcel in) {
             this.status = in.readString();
             this.tid = in.readString();
             this.room = in.readString();
@@ -80,7 +80,7 @@ public class Book implements Parcelable {
     public Book() {
     }
 
-    protected Book(Parcel in) {
+    public Book(Parcel in) {
         this.bid = in.readString();
         this.book = in.readString();
         this.intro = in.readString();

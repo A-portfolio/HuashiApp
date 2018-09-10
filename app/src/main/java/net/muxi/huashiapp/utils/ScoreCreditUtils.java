@@ -99,13 +99,10 @@ public class ScoreCreditUtils {
      */
     @SuppressLint("DefaultLocale")
     public static String parseYears2Title(List<String> years) {
-        if (years.size() == 1) {
-            int start = Integer.parseInt(years.get(0));
-            int end = start + 1;
-            return String.format("%d-%d学年", start, end);
-        }
-        String start = years.get(0), end = years.get(years.size() - 1);
-        return String.format("%s-%s", start, end);
+
+        int start = Integer.parseInt(years.get(0));
+        int end=Integer.parseInt(years.get(years.size()-1))+1;
+        return String.format("%d-%d学年",start,end);
     }
 
     /**
