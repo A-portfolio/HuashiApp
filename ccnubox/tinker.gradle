@@ -6,7 +6,7 @@ def versionBuild = 0
 
 def bakPath = file("${buildDir}/bakApk/")
 //def baseInfo = rootProject.ext.baseInfo
-def baseInfo = 'ccnubox-2.3.1-0601-20-55-26'
+def baseInfo = 'ccnubox-2.4.0-0907-17-44-48'
 def variantName = "release"
 
 tinkerpatchSupport {

@@ -161,6 +161,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
     /**
      * 根据 {@link com.muxistudio.appcommon.Constants} 中的 CLASS_TYPE 中用户选择所要计算学分绩的个别类型进行过滤
+     *
      * 因为 {@link Score} 中 kcxmzc字段没有 “其他”类型for循环遍历完成之后依然没有这个类型，同样需要添加到filterList中去
      * @param scores
      * @return 是否为空 如果不为空返回true 如果为空返回false

@@ -284,7 +284,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                             break;
                         case "地图":
                             MapActivity.start(getActivity());
-//                            MobclickAgent.onEvent(getActivity(),"");
+                            MobclickAgent.onEvent(getActivity(),"map");
                             break;
                         case "更多":
                             MoreActivity.start(getActivity());
