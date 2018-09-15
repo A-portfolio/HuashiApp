@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.google.gson.Gson;
+import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.Score;
 import com.muxistudio.appcommon.net.CampusFactory;
@@ -170,6 +171,8 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
         List<Score> filteredList = new ArrayList<>();
         for(Score score: scores) {
+          boolean  flag = false;
+          //没有课程分类的课程
             if(score.kcxzmc == null) {
                 filteredList.add(score);
                 continue;
@@ -180,7 +183,14 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                     break;
                 }
                 //说明这些课程是不在我们的确定的名称集合中
-                if(i == mCourseParams.size() -1){
+              // 但是有可能在我们确定的集合的补集 中
+                for(String type: Constants.CLASS_TYPE) {
+                  if (score.kcxzmc.equals(type)) {
+                    flag = true;
+                    break;
+                  }
+                }
+                if(i == mCourseParams.size() -1 && !flag){
                     filteredList.add(score);
                 }
             }
