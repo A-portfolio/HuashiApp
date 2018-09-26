@@ -53,7 +53,7 @@ public class LoginPresenter {
                             ToastUtil.showLong("匣子服务器出错请反馈，谢谢！");
                         Log.i(TAG, "call: call success");
                         return Observable.
-                                create((Observable.OnSubscribe<Boolean>) subscriber -> {
+                                unsafeCreate(((Observable.OnSubscribe<Boolean>) subscriber -> {
                                     subscriber.onStart();
                                     boolean crawlerResult = false;
                                     try {
