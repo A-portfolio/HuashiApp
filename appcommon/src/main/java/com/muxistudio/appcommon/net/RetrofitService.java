@@ -39,6 +39,7 @@ import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.adapter.rxjava.Result;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -195,7 +196,7 @@ public interface RetrofitService {
     Observable<MapDetailList>getDetailList(@Query("name")String name);
 
     @POST("userinfo/")
-   Observable<Object> cache(@Body A a);
+   Observable<Result<Msg>> cache(@Body A a);
 
   /**
    * 意见反馈

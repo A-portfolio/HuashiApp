@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,6 +33,7 @@ public class BaseAppFragment extends BaseFragment{
 
 
     private LoadingDialog mLoadingDialog;
+    private Context mContext;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +52,14 @@ public class BaseAppFragment extends BaseFragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mContext=getActivity();
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        mContext=null;
     }
 
     public void showSnackBarShort(String word){
@@ -77,7 +86,8 @@ public class BaseAppFragment extends BaseFragment{
         if (mLoadingDialog == null) {
             mLoadingDialog = new LoadingDialog();
         }
-        mLoadingDialog.show(getActivity().getSupportFragmentManager(),"Loading");
+
+        mLoadingDialog.showNow(getActivity().getSupportFragmentManager(),"Loading");
     }
 
     public void hideLoading() {

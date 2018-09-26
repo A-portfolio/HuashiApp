@@ -97,11 +97,11 @@ public class ElectricityDetailFragment extends BaseAppFragment {
         int index3 = eleData.getEle().getBefore().indexOf(".");
         int index4 = eleData.getEle().getCurrent().indexOf(".");
         mTvDegreeLeft.setText(eleData.getDegree().getRemain() + "");
-        mTvDegreeLastMonth.setText(eleData.getDegree().getBefore().substring(0, index + 2));
-        mTvDegreeCurMonth.setText(eleData.getDegree().getCurrent().substring(0, index2 + 2));
+        mTvDegreeLastMonth.setText(eleData.getEle().getBefore().substring(0, index3 + 2));
+        mTvDegreeCurMonth.setText(eleData.getEle().getCurrent().substring(0, index4 + 2));
         mTvMoneyLeft.setText(eleData.getEle().getRemain());
-        mTvMoneyLastMonth.setText(eleData.getEle().getBefore().substring(0, index3 + 2));
-        mTvMoneyCurMonth.setText(eleData.getEle().getCurrent().substring(0, index4 + 2));
+        mTvMoneyLastMonth.setText(eleData.getDegree().getBefore().substring(0, index + 2));
+        mTvMoneyCurMonth.setText(eleData.getDegree().getCurrent().substring(0, index2 + 2));
     }
 
     @Override

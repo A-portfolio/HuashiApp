@@ -157,7 +157,7 @@ public class CourseEditActivity extends ToolbarActivity {
                     }
                 }, throwable -> {
                     throwable.printStackTrace();
-                    showErrorSnackbarShort(R.string.tip_school_server_error);
+                    showErrorSnackbarShort("匣子服务器出现异常，请反馈给匣子");
                 });
     }
 

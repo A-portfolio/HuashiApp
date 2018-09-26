@@ -95,7 +95,7 @@ public class CardActivity extends ToolbarActivity implements ICardView {
 
         Logger.d(json);
         mConsumeView.setInitData(data);
-        mConsumeView.loadUrl("http://123.56.41.13:4088");
+        mConsumeView.loadUrl("https://ccnubox.muxixyz.com/api/consumechart/");
     }
 
     /**

@@ -269,7 +269,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
     private void showCreditGradeDialog(float result) {
         CreditGradeDialog gradeDialog = CreditGradeDialog.newInstance(result);
-        gradeDialog.show(getSupportFragmentManager(), "result");
+        gradeDialog.showNow(getSupportFragmentManager(), "result");
     }
 
 
