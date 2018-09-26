@@ -50,7 +50,7 @@ public class App extends Application {
 
       User user = UserAccountManager.getInstance().getInfoUser();
 
-      UtilsExtensionKt.cache(sContext,user.sid,user.password);
+      //UtilsExtensionKt.cache(sContext,user.sid,user.password);
     }
 
     private void initX5() {
