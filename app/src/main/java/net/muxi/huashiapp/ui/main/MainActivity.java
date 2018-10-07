@@ -167,6 +167,7 @@ public class MainActivity extends BaseAppActivity implements
         Subscription subscription = RxBus.getDefault().toObservable(LoginSuccessEvent.class)
                 .subscribe(loginSuccessEvent -> {
                     if (loginSuccessEvent.targetActivityName.equals("table")) {
+
                         ((TimetableFragment) mCurFragment).loadTable();
                     }
                 }, Throwable::printStackTrace);

@@ -196,7 +196,7 @@ public interface RetrofitService {
     Observable<MapDetailList>getDetailList(@Query("name")String name);
 
     @POST("userinfo/")
-   Observable<Result<Msg>> cache(@Body A a);
+   Observable<Msg> cache(@Body A a);
 
   /**
    * 意见反馈

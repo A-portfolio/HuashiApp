@@ -1,6 +1,7 @@
 package com.muxistudio.appcommon.presenter;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.muxistudio.appcommon.RxBus;
@@ -44,50 +45,20 @@ public class LoginPresenter {
      */
     //在完成登陆之后无论是否成功需要清除了 cookieStore
     public Observable<Boolean> login(User user){
-        int id;
-        try{
-            id=Integer.parseInt(user.sid);
-        }catch (NumberFormatException nfe){
-            nfe.printStackTrace();
-            return Observable.create(subscriber -> {
-                subscriber.onStart();
-                boolean crawlerResult = false;
-                try {
-                    crawlerResult = CcnuCrawler2.performLogin(user.sid, user.password);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                subscriber.onNext(crawlerResult);
-                subscriber.onCompleted();
-            });
-        }
-
-        return CampusFactory.getRetrofitService()
-                .cache(new A(id,user.password))
-                .subscribeOn(Schedulers.io())
-                .flatMap(new Func1<Result<Msg>, Observable<Boolean>>() {
-                    @Override
-                    public Observable<Boolean> call(Result<Msg> msg) {
-                        if (msg.isError())
-                            ToastUtil.showLong("匣子服务器出错请反馈，谢谢！");
-                        Log.i(TAG, "call: call success");
-                        return Observable.
-                                unsafeCreate((Observable.OnSubscribe<Boolean>) subscriber -> {
-                                    subscriber.onStart();
-                                    boolean crawlerResult = false;
-                                    try {
-                                        crawlerResult  = CcnuCrawler2.performLogin(user.sid,user.password);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                    subscriber.onNext(crawlerResult);
-                                    subscriber.onCompleted();
-                                });
+        return Observable.
+                unsafeCreate((Observable.OnSubscribe<Boolean>) subscriber -> {
+                    subscriber.onStart();
+                    boolean crawlerResult = false;
+                    try {
+                        crawlerResult  = CcnuCrawler2.performLogin(user.sid,user.password);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                    subscriber.onNext(crawlerResult);
+                    subscriber.onCompleted();
+                });
     }
+
 
     public void saveLoginState(Intent intent,User user,String type){
         UserAccountManager.getInstance().saveInfoUser(user);
