@@ -42,7 +42,8 @@ public class EntranceActivity extends BaseAppActivity implements View.OnClickLis
         sp = new PreferenceUtil();
         isFirstOpen = PreferenceUtil.getBoolean(PreferenceUtil.APP_FIRST_OPEN, true);
         if (!isFirstOpen) {
-            if (PreferenceUtil.getString(Constants.SPLASH_IMG).equals("")) {
+            startMainActivityDelay(0);
+            /*if (PreferenceUtil.getString(Constants.SPLASH_IMG).equals("")) {
                 startMainActivityDelay(0);
             } else {
                 setContentView(R.layout.activity_entrance);
@@ -60,7 +61,7 @@ public class EntranceActivity extends BaseAppActivity implements View.OnClickLis
                 mDrawee.setImageURI(Uri.parse(PreferenceUtil.getString(Constants.SPLASH_IMG)));
                 mDrawee.setOnClickListener(this);
                 startMainActivityDelay(2500);
-            }
+            }*/
             return;
         }
 
