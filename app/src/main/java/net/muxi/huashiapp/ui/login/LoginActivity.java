@@ -106,7 +106,8 @@ public class LoginActivity extends ToolbarActivity {
 
         mLoadingDialog = showLoading(CommonTextUtils.generateRandomLoginText());
         if (type.equals("info") || type.equals("lib")) {
-             mSubscription = presenter.login(user)
+
+                     mSubscription =presenter.login(user)
                      .flatMap(new Func1<Boolean, Observable<?>>() {
                          @Override
                          public Observable<?> call(Boolean result) {

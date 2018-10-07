@@ -97,12 +97,12 @@ public class BookBorrowedFragment extends BaseAppFragment {
         mIvPlace = view.findViewById(R.id.iv_place);
         mTvPlace = view.findViewById(R.id.tv_place);
         mBtnRenew = view.findViewById(R.id.btn_renew);
-        if(!TextUtils.isEmpty(mBook.book))
-           mTvTitle.setText(mBook.book);
-        mTvAuthor.setText(mBook.author);
-        mTvInfo.setText(mBook.intro);
-        mTvBid.setText("索书号" + mBook.bid);
-
+        if(!TextUtils.isEmpty(mBook.book)) {
+            mTvTitle.setText(mBook.book);
+            mTvAuthor.setText(mBook.author);
+            mTvInfo.setText(mBook.intro);
+            mTvBid.setText("索书号" + mBook.bid);
+        }
         loadPersonBook();
         ViewTreeObserver vto = mTvInfo.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(() -> {

@@ -87,8 +87,8 @@ public class MainActivity extends BaseAppActivity implements
         if(!PreferenceUtil.isCookieValid()&& UserAccountManager.getInstance().isInfoUserLogin())
             new LoginPresenter()
                     .login(UserAccountManager.getInstance().getInfoUser())
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(b->{Logger.d("cookie 过期 重新登录成功");},Throwable::printStackTrace,()->{});
 
 
