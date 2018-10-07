@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import retrofit2.HttpException;
 import retrofit2.adapter.rxjava.Result;
+import rx.Emitter;
 import rx.Observable;
 import rx.Scheduler;
 import rx.Subscriber;
@@ -43,8 +44,26 @@ public class LoginPresenter {
      */
     //在完成登陆之后无论是否成功需要清除了 cookieStore
     public Observable<Boolean> login(User user){
+        int id;
+        try{
+            id=Integer.parseInt(user.sid);
+        }catch (NumberFormatException nfe){
+            nfe.printStackTrace();
+            return Observable.create(subscriber -> {
+                subscriber.onStart();
+                boolean crawlerResult = false;
+                try {
+                    crawlerResult = CcnuCrawler2.performLogin(user.sid, user.password);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                subscriber.onNext(crawlerResult);
+                subscriber.onCompleted();
+            });
+        }
+
         return CampusFactory.getRetrofitService()
-                .cache(new A(Integer.parseInt(user.sid),user.password))
+                .cache(new A(id,user.password))
                 .subscribeOn(Schedulers.io())
                 .flatMap(new Func1<Result<Msg>, Observable<Boolean>>() {
                     @Override
