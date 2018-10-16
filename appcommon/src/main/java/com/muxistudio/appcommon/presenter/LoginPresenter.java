@@ -56,8 +56,7 @@ public class LoginPresenter {
                     }
                     subscriber.onNext(crawlerResult);
                     subscriber.onCompleted();
-                })
-                .subscribeOn(Schedulers.io()) ;
+                });
     }
 
 
