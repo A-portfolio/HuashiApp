@@ -47,7 +47,7 @@ public class LoginActivity extends ToolbarActivity {
 
     private LoginPresenter presenter = new LoginPresenter();
     private String type;
-
+    private final static String TAG="LOGIN";
     private LoadingDialog mLoadingDialog;
     private boolean isShownPassword = false;
     private TextInputLayout mLayoutSid;
@@ -111,21 +111,28 @@ public class LoginActivity extends ToolbarActivity {
                      .flatMap(new Func1<Boolean, Observable<?>>() {
                          @Override
                          public Observable<?> call(Boolean result) {
+                             // TODO: 18-10-15 test 
                              if(result){
+                                 Log.i(TAG, " login thread "+Thread.currentThread().getName());
                                  hideLoading();
                                  presenter.saveLoginState(getIntent(),user,type);
                                  finish();
                                  return CampusFactory.getRetrofitService()
-                                         .cache(new A(Integer.parseInt(user.sid),user.password));
+                                         .cache(new A(Integer.parseInt(user.sid),user.password))
+                                         .onErrorResumeNext(Observable.empty());
 
                              }
                              return Observable.error(new Throwable());
                          }
                      }).subscribeOn(Schedulers.io())
-                     .observeOn(AndroidSchedulers.mainThread())
+                             .observeOn(AndroidSchedulers.mainThread())
                      .subscribe(msg->{
+                         Log.i(TAG, " cache thread "+Thread.currentThread().getName());
                          Logger.i(((Msg)msg).getMsg());
-                     },Throwable::printStackTrace);
+                     },e->{
+                        ToastUtil.showShort("登录失败！");
+                        hideLoading();
+                     }, this::hideLoading);
 
              mLoadingDialog.setOnSubscriptionCanceledListener(
                  () -> {
