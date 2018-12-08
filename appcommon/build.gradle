@@ -44,9 +44,9 @@ dependencies {
     api rootProject.ext.dependencies["bugly"]
     api rootProject.ext.dependencies["umeng_sdk"]
     api rootProject.ext.dependencies["umeng_analytics"]
-    provided rootProject.ext.dependencies.tinker_android_anno
+    compileOnly rootProject.ext.dependencies.tinker_android_anno
     api rootProject.ext.dependencies.tinker_patch
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {
     mavenCentral()
