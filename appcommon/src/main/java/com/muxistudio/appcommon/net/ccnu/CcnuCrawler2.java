@@ -334,7 +334,7 @@ public class CcnuCrawler2 {
                 flag1 = true;
             }
             if (!PreferenceUtil.getString(PreferenceUtil.PHPSESSID).equals("")) {
-                UserAccountManager.getInstance().setPHPSESSID(PreferenceUtil.PHPSESSID);
+                UserAccountManager.getInstance().setPHPSESSID(PreferenceUtil.getString(PreferenceUtil.PHPSESSID));
                 flag3 = true;
             }
         }

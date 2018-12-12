@@ -27,6 +27,7 @@ public class PreferenceUtil {
     public static final String LIBRARY_PWD = "libraryPwd";
     public static final String COURSE_ID = "course_id";
 
+
     //课程表
     //课表中的第一周的第一天日期
     public static final String FIRST_WEEK_DATE = "first_date";
