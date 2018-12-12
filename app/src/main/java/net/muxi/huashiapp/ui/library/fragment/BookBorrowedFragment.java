@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.library.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -152,7 +153,14 @@ public class BookBorrowedFragment extends BaseAppFragment {
                 .subscribe(personalBooks -> {
                     if (personalBooks != null && personalBooks.size() > 0) {
                         mTvTid.setText("条码号" + personalBooks.get(0).bar_code);
-                        mTvDay.setText(String.format(Locale.CHINESE,"当前借阅（剩余%d天）", personalBooks.get(0).time));
+                        int day=personalBooks.get(0).time;
+                        mTvDay.setText(String.format(Locale.CHINESE,"当前借阅（剩余%d天）", day));
+                        if (day>3){
+                            mBtnRenew.setText("剩余天数不足三天无法续借");
+                            mBtnRenew.setEnabled(false);
+                            mBtnRenew.setBackgroundColor(Color.GRAY);
+
+                        }
                         mTvPlace.setText(personalBooks.get(0).room);
                         mBorrowedBook = personalBooks.get(0);
                     }

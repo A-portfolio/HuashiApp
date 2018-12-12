@@ -130,7 +130,7 @@ public class LoginActivity extends ToolbarActivity {
                          Log.i(TAG, " cache thread "+Thread.currentThread().getName());
                          Logger.i(((Msg)msg).getMsg());
                      },e->{
-                        ToastUtil.showShort("登录失败！");
+                        ToastUtil.showShort("登录失败！请检查账号密码是否正确");
                         hideLoading();
                      }, this::hideLoading);
 

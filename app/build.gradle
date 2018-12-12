@@ -14,8 +14,8 @@ def androidCompileVersion = rootProject.ext.android
 
 android {
 
-    compileSdkVersion androidCompileVersion.compileSdkVersion
-    buildToolsVersion androidCompileVersion.buildToolsVersion
+    compileSdkVersion  androidCompileVersion.compileSdkVersion
+    buildToolsVersion  androidCompileVersion.buildToolsVersion
 
     dexOptions {
         jumboMode = true

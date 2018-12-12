@@ -123,12 +123,13 @@ public class TimetableFragment extends BaseAppFragment {
         }
         setCurweek(TimeTableUtil.getCurWeek());
         setSelectedWeek(TimeTableUtil.getCurWeek());
-        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true)) {
-            IndicatedView indicatedView = new IndicatedView(getContext());
-            indicatedView.setTipViewText("设置当前周也可以点这里噢");
-            TipViewUtil.addToContent(getContext(), indicatedView, DIRECTION_DOWN,
-                    DimensUtil.getScreenWidth() - DimensUtil.dp2px(38), DimensUtil.dp2px(38));
-        }
+
+//        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true)) {
+//            IndicatedView indicatedView = new IndicatedView(getContext());
+//            indicatedView.setTipViewText("设置当前周也可以点这里噢");
+//            TipViewUtil.addToContent(getContext(), indicatedView, DIRECTION_DOWN,
+//                    DimensUtil.getScreenWidth() - DimensUtil.dp2px(38), DimensUtil.dp2px(38));
+//        }删除这里的设置周数功能
 
     }
 
