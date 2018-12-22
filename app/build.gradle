@@ -43,7 +43,9 @@ android {
                 includeCompileClasspath true
             }
         }
-        ndk{abiFilters "armeabi"}
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
     }
 
     compileOptions {

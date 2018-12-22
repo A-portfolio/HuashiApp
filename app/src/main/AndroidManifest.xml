@@ -77,7 +77,7 @@
 
         <activity android:name="net.muxi.huashiapp.ui.main.MainActivity"
                   android:launchMode="singleTask"
-                  android:screenOrientation="landscape"
+                  android:screenOrientation="portrait"
                   android:windowSoftInputMode="adjustResize">
 
 

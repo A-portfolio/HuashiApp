@@ -14,7 +14,9 @@ import com.muxistudio.appcommon.Constants;
 import com.muxistudio.common.util.DateUtil;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.utils.TimeTableUtil;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,6 +46,10 @@ public class WeekLayout extends ScheduleTimeLayout {
             views[i] = LayoutInflater.from(mContext).inflate(R.layout.view_weekday, this, false);
             ((TextView)views[i].findViewById(R.id.tv_weekday)).setText(Constants.WEEKDAYS[i]);
             ((TextView)views[i].findViewById(R.id.tv_date)).setText(dateList.get(i));
+            if(i+1 == DateUtil.getDayInWeek(new Date())){
+                views[i].setBackground(getResources().getDrawable(TimeTableUtil.getCourseBgAccordDay(i)));
+                ((TextView)views[i].findViewById(R.id.tv_weekday)).setTextColor(Color.WHITE);
+            }
             addView(views[i]);
         }
     }

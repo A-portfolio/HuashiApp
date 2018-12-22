@@ -211,12 +211,13 @@ public class CourseEditActivity extends ToolbarActivity {
                 });
         }else if (id == R.id.btn_ensure){
             mCourse.course = mEtCourse.getText().toString();
-            mCourse.teacher = mEtCourseTeacher.getText().toString();
-            mCourse.place = mEtPlace.getText().toString();
             mCourse.weeks = TextUtils.join(",", mWeeks);
             mCourse.day = Constants.WEEKDAYS_XQ[mWeekday];
             mCourse.start = start;
             mCourse.during = duration;
+            //place and teacher are nullable
+            mCourse.place = mEtPlace.getText().toString()+" ";
+            mCourse.teacher = mEtCourseTeacher.getText().toString()+" ";
             mCourse.remind = "false";
             if (TextUtils.isEmpty(mCourse.id)) {
                 mCourse.id = generateId();

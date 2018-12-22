@@ -147,7 +147,6 @@ public class TimetableFragment extends BaseAppFragment {
                 rotateSelectView();
             }
             mTableMenuView.show();
-            mTableMenuView.setCurweek(curWeek);
         });
         mTimetable.setOnCourseClickListener(v -> {
             String id = ((CourseView) v).getCourseId();

@@ -92,6 +92,20 @@ public class TimeTableUtil {
         return color;
     }
 
+    public static int getCourseBgAccordDay(int day) {
+        int[] colors = {R.drawable.ripple_green_light,
+                R.drawable.ripple_yellow,
+                R.drawable.ripple_blue,
+                R.drawable.ripple_orange,
+                R.drawable.ripple_green};
+        for (int i = 0; i < 7; i++) {
+            if (day == i) {
+                return colors[i % 5];
+            }
+        }
+        return colors[0];
+    }
+
     public static int getCourseBgAccordDay(String day) {
         int[] colors = {R.drawable.ripple_green_light,
                 R.drawable.ripple_yellow,
