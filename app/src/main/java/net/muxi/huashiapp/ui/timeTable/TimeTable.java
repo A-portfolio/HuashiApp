@@ -205,8 +205,7 @@ public class TimeTable extends RelativeLayout {
                 mCourseTimeLayout.scrollBy(0, yDistance);
                 mTimetableContent.scrollBy(xDistance, yDistance);
 
-                curX = event.getX();
-                curY = event.getY();
+
                 break;
             case MotionEvent.ACTION_UP:
                 if (curDownTargetView != null) {
