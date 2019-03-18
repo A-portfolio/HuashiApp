@@ -148,7 +148,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                     public void onNext(Object o) {
                         List<Score> scoreList = (List<Score>) o;
                         boolean isFull = filterList(scoreList,mFilteredList);
-                        if(isFull)
+                        if(!isFull)
                             renderedFilteredScoreList();
                     }
                 });
@@ -165,7 +165,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
      *
      * 因为 {@link Score} 中 kcxmzc字段没有 “其他”类型for循环遍历完成之后依然没有这个类型，同样需要添加到filterList中去
      * @param scores
-     * @return 是否为空 如果不为空返回true 如果为空返回false
+     * @return 是否为空 如果不为空返回false 如果为空返回true
      */
     private boolean filterList(List<Score> scores,List<Score> resultList){
 
@@ -198,11 +198,11 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
         if ( filteredList.isEmpty()) {
             mMultiStatusView.showEmpty();
-            return false;
+            return true;
         }else{
             resultList.clear();
             resultList.addAll(filteredList);
-            return true;
+            return false;
         }
     }
 
@@ -242,8 +242,14 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         setTitle(ScoreCreditUtils.parseYears2Title(mYearParams));
 
         mBtnEnter = findViewById(R.id.btn_confirm);
-        mBtnEnter.setOnClickListener(v -> {
 
+        mBtnEnter.setOnClickListener(v -> {
+            // FIXME: 19-1-22
+            if (mScoresAdapter==null){
+                mBtnEnter.setEnabled(false);
+                mBtnEnter.setText("列表为空无法计算");
+                return;
+            }
             Map<Integer,Boolean> map = mScoresAdapter.getCheckMap();
             float credit = 0, sum = 0;
             Set<Integer> set = map.keySet();
@@ -299,7 +305,6 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_display);
         slideFromBottom(this);
-
         //获取解析 mYear mTerm params
         getParams();
         initView();

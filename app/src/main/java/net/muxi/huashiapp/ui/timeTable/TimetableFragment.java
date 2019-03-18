@@ -2,6 +2,8 @@ package net.muxi.huashiapp.ui.timeTable;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 27
 
@@ -35,7 +36,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api project(':common')
-    annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
+    kapt rootProject.ext.dependencies["aroutercompiler"]
     api rootProject.ext.dependencies["retrofit"]
     api rootProject.ext.dependencies["converter_gson"]
     api rootProject.ext.dependencies["adapter_rxjava"]

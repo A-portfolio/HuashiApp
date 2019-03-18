@@ -86,8 +86,8 @@ public class BaseAppFragment extends BaseFragment{
         if (mLoadingDialog == null) {
             mLoadingDialog = new LoadingDialog();
         }
-
-        mLoadingDialog.showNow(getActivity().getSupportFragmentManager(),"Loading");
+        if (getActivity()!=null)
+            mLoadingDialog.showNow(getActivity().getSupportFragmentManager(),"Loading");
     }
 
     public void hideLoading() {

@@ -31,11 +31,10 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
-//    api files('tbs_sdk_thirdapp_v3.0.0.1038_43000_sharewithdownload_obfs_20170110_144724.jar')
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    //    api files('tbs_sdk_thirdapp_v3.0.0.1038_43000_sharewithdownload_obfs_20170110_144724.jar')
     api rootProject.ext.dependencies["arouterapi"]
     annotationProcessor rootProject.ext.dependencies["aroutercompiler"]
-
     api rootProject.ext.dependencies.fresco
     api rootProject.ext.dependencies.fresco_animated_gif
     api rootProject.ext.dependencies["rxjava"]
@@ -44,7 +43,7 @@ dependencies {
     api rootProject.ext.dependencies["cardview"]
     api rootProject.ext.dependencies.appcompat_v7
     api rootProject.ext.dependencies.gson
-//    testImplementation 'junit:junit:4.12'
-//    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    //    testImplementation 'junit:junit:4.12'
+    //    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }

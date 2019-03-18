@@ -62,11 +62,9 @@ dependencies {
     implementation 'com.zhy:base-rvadapter:3.0.3'
     implementation 'com.github.fengminchao:CardBanner:1.0'
     implementation 'com.android.support:multidex:1.0.2'
-
     implementation 'com.amap.api:3dmap:6.4.0'
     implementation 'com.amap.api:location:4.2.0'
     implementation 'com.amap.api:search:6.1.0'
-
     implementation files('libs/MiPush_SDK_Client_3_6_2.jar')
 }
 
