@@ -13,7 +13,7 @@
 - **buildToolsVersion** :28.0.3
 - **Java version** :java1.8   
 - **Gradle version**:4.10.1+  
-
+- **instant run**:unenable(due to tinker)   
 
 - 注:其中gradle-wrapper中`distributionUrl=https\://services.gradle.org/distributions/gradle-4.10.1-all.zip`指定为gradle4.10.1
 
