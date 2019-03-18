@@ -26,7 +26,6 @@ public class TableMenuView extends FrameLayout {
     private ImageView mBtnClose;
     private TextView mTvAuditClass;
     private TextView mTvAdd;
-    private TextView mTvSetcurweek;
 
     public TableMenuView(Context context) {
         this(context, null);
@@ -43,12 +42,6 @@ public class TableMenuView extends FrameLayout {
         mBtnClose.setOnClickListener(v -> {
             dismiss();
         });
-    }
-
-    public void setCurweek(int week) {
-        String textStr1 = "<font color=\"#000000\">设置当前周</font>";
-        String textStr2 = "<font color=\"#7B79FF\">(当前周设置为" + week + ")</font>";
-        mTvSetcurweek.setText(Html.fromHtml(textStr1 + textStr2));
     }
 
     public void show() {
@@ -92,9 +85,6 @@ public class TableMenuView extends FrameLayout {
         }else if (id == R.id.tv_add){
             CourseEditActivity.start(getContext(), true, null);
             dismiss();
-        }else if (id == R.id.tv_setcurweek){
-            CurweekSetActivity.start(getContext());
-            dismiss();
         }
     }
 
@@ -103,9 +93,7 @@ public class TableMenuView extends FrameLayout {
         mBtnClose = findViewById(R.id.btn_close);
         mTvAuditClass = findViewById(R.id.tv_audit_class);
         mTvAdd = findViewById(R.id.tv_add);
-        mTvSetcurweek = findViewById(R.id.tv_setcurweek);
         mTvAdd.setOnClickListener(v -> onClick(v));
-        mTvSetcurweek.setOnClickListener(v -> onClick(v));
         mTvAuditClass.setOnClickListener(v -> onClick(v));
     }
 }

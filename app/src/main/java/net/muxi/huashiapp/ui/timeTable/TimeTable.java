@@ -30,8 +30,9 @@ public class TimeTable extends RelativeLayout {
     public static final int COURSE_TIME_HEIGHT = DimensUtil.dp2px(57);
     public static final int LITTLE_VIEW_WIDTH = DimensUtil.dp2px(49);
     public static final int LITTLE_VIEW_HEIGHT = DimensUtil.dp2px(41);
-    //course height = COURSE_TIME_HEIGHT * x -1-x
     public static final int COURSE_WIDTH = DimensUtil.dp2px(62);
+    //course height = COURSE_TIME_HEIGHT * x -1-x
+
     public static final int REFRESH_VIEW_HEIGHT = DimensUtil.dp2px(100);
     public static final int ABLE_TO_REFRESH_HEIGHT = DimensUtil.dp2px(82);
     public static final int REFRESHING_VIEW_HEIGHT = DimensUtil.dp2px(82);
@@ -90,6 +91,7 @@ public class TimeTable extends RelativeLayout {
                         smoothScrollTo(0, 0);
                     }, 1000);
                 });
+        //注册刷新事件，响应RefreshView
     }
 
     public void initLayout() {
@@ -203,8 +205,7 @@ public class TimeTable extends RelativeLayout {
                 mCourseTimeLayout.scrollBy(0, yDistance);
                 mTimetableContent.scrollBy(xDistance, yDistance);
 
-                curX = event.getX();
-                curY = event.getY();
+
                 break;
             case MotionEvent.ACTION_UP:
                 if (curDownTargetView != null) {

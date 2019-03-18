@@ -10,6 +10,7 @@ import com.muxistudio.common.util.DateUtil;
 import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.PreferenceUtil;
 
+import java.util.Calendar;
 import java.util.Locale;
 import net.muxi.huashiapp.R;
 
@@ -91,6 +92,20 @@ public class TimeTableUtil {
         return color;
     }
 
+    public static int getCourseBgAccordDay(int day) {
+        int[] colors = {R.drawable.ripple_green_light,
+                R.drawable.ripple_yellow,
+                R.drawable.ripple_blue,
+                R.drawable.ripple_orange,
+                R.drawable.ripple_green};
+        for (int i = 0; i < 7; i++) {
+            if (day == i) {
+                return colors[i % 5];
+            }
+        }
+        return colors[0];
+    }
+
     public static int getCourseBgAccordDay(String day) {
         int[] colors = {R.drawable.ripple_green_light,
                 R.drawable.ripple_yellow,
@@ -157,20 +172,13 @@ public class TimeTableUtil {
         return curWeek >= 1 ? curWeek : 1;
        */
 
-        int day = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
-        //获取date的格式 根据 distance 定
-        String defaluteDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()),
-                1 - day);
         int curWeek;
-        String firstWeek = PreferenceUtil.getString(PreferenceUtil.FIRST_WEEK_DATE, defaluteDate);
-        String weekArg =  DateUtil.toDateInYear(new Date(System.currentTimeMillis()));
         curWeek = (int) DateUtil.getDistanceWeek(
-                PreferenceUtil.getString(PreferenceUtil.FIRST_WEEK_DATE, defaluteDate),
+                DateUtil.FIRST_DAY,
                 DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
         curWeek = curWeek <= Constants.WEEKS_LENGTH ? curWeek : Constants.WEEKS_LENGTH;
         curWeek = curWeek >= 1 ? curWeek : 1;
         return curWeek;
-
     }
 
   /**
