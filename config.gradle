@@ -1,5 +1,9 @@
 ext {
 
+    accessKey="0"
+    secretkey="0"
+
+
     def versionMajor = 2
     def versionMinor = 4
     def versionBuild = 1

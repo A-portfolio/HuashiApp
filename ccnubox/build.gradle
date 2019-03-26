@@ -1,3 +1,8 @@
+plugins {
+    id 'com.ppdai.qiniu.upload' version '0.0.4'
+}
+
+apply from: 'qiniu.gradle'
 apply plugin: 'com.android.application'
 apply plugin: 'com.tencent.tinker.patch'
 
@@ -5,9 +10,19 @@ apply plugin: 'com.tencent.tinker.patch'
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 // Initialize a new Properties() object called keystoreProperties.
 def keystoreProperties = new Properties()
-
 // Load your keystore.properties file into the keystoreProperties object.
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+if (keystorePropertiesFile.isFile())
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+else
+    keystoreProperties=null
+
+uploadConfig {
+    if(keystoreProperties!=null) {
+        secretKey = keystoreProperties['secretKey']
+        accessKey = keystoreProperties['accessKey']
+    }
+
+}
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -40,10 +55,12 @@ android {
 
     signingConfigs {
         release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+            if(keystoreProperties!=null) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
         }
     }
 

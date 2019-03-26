@@ -71,7 +71,9 @@ public class CalendarActivity extends ToolbarActivity {
         lastTime = PreferenceUtil.getLong(PreferenceUtil.CALENDAR_UPDATE);
         setTitle("校历");
 
-        //如果有本地缓存就从中读取
+        //如果有本地缓存就从中读取?????
+
+
         if (lastTime != DEFAULT_TIME) {
             getImgSize(PreferenceUtil.getString(PreferenceUtil.CALENDAR_SIZE));
             if (imgWidth != 0) {
