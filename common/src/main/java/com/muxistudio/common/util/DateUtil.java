@@ -16,7 +16,7 @@ import java.util.TimeZone;
  * 时间处理类
  */
 public class DateUtil {
-    public static String FIRST_DAY = "2019-02-24";
+    public static String FIRST_DAY = "2019-02-18";
 
 
     public static String toDate(Date date) {
