@@ -70,6 +70,7 @@ public class MainActivity extends BaseAppActivity implements
         setContentView(R.layout.activity_main);
         mNavView = findViewById(R.id.nav_view);
         mNavView.setOnNavigationItemSelectedListener(this);
+
         //开启动态权限
         if (!isStoragePermissionGranted()) {
             ActivityCompat.requestPermissions(this,

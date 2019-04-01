@@ -1,12 +1,16 @@
 ext {
 
+    accessKey="0"
+    secretkey="0"
+
+
     def versionMajor = 2
     def versionMinor = 4
     def versionBuild = 1
 
 
     android = [compileSdkVersion: 27,
-               buildToolsVersion: "27.0.3",
+               buildToolsVersion: "28.0.3",
                supportLibVersion: "27.1.1",
                applicationId    : "net.muxi.huashiapp",
                minSdkVersion    : 16,

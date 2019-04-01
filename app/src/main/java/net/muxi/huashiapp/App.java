@@ -2,6 +2,7 @@ package net.muxi.huashiapp;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -39,7 +40,11 @@ public class App extends Application {
         sContext = getApplicationContext();
         Global. setApplication(this);
         UserAccountManager.getInstance().initUser();
-        Fresco.initialize(this);
+
+
+
+
+        Fresco.initialize(this,setFrescoConfig());
         initBugly();
         initUMeng();
         initARouter(this);
@@ -94,4 +99,15 @@ public class App extends Application {
     public static Context getContext() {
         return sContext;
     }
+
+    private ImagePipelineConfig setFrescoConfig(){
+
+        //可详细设置缓存的文件夹等
+        return ImagePipelineConfig.newBuilder(sContext)
+                .setDownsampleEnabled(true)
+                .setBitmapsConfig(Bitmap.Config.RGB_565)
+                .build();
+
+    }
+
 }

@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+
 import com.facebook.drawee.view.SimpleDraweeView;
+
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.CalendarData;
 import com.muxistudio.appcommon.net.CampusFactory;
@@ -69,7 +71,9 @@ public class CalendarActivity extends ToolbarActivity {
         lastTime = PreferenceUtil.getLong(PreferenceUtil.CALENDAR_UPDATE);
         setTitle("校历");
 
-        //如果有本地缓存就从中读取
+        //如果有本地缓存就从中读取?????
+
+
         if (lastTime != DEFAULT_TIME) {
             getImgSize(PreferenceUtil.getString(PreferenceUtil.CALENDAR_SIZE));
             if (imgWidth != 0) {
