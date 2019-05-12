@@ -44,7 +44,7 @@ import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.adapter.rxjava.HttpException;
+import retrofit2.HttpException;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -283,12 +283,13 @@ public class TimetableFragment extends BaseAppFragment {
                         retryLoadTable();
 
                     }
-                    int code = ((HttpException) throwable).code();
-                    if (code == 401) {
-                        RxBus.getDefault().send(new RefreshFinishEvent(false
-                                , code));
+                    if (throwable instanceof HttpException) {
+                        int code = ((HttpException) throwable).code();
+                        if (code == 401) {
+                            RxBus.getDefault().send(new RefreshFinishEvent(false
+                                    , code));
+                        }
                     }
-
                 });
     }
 
