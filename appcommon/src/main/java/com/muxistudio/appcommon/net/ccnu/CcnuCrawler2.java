@@ -126,6 +126,7 @@ public class CcnuCrawler2 {
                 .url("https://account.ccnu.edu.cn/cas/login")
                 .get()
                 .build();
+
         try {
             //这里会阻塞线程 直到拿到数据
             Response response = client.newCall(request).execute();

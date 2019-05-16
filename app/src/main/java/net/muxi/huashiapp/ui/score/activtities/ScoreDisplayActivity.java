@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 
@@ -28,14 +29,18 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.score.RequestRetry;
 import net.muxi.huashiapp.ui.score.adapter.ScoreCreditAdapter;
 import net.muxi.huashiapp.ui.score.dialogs.CreditGradeDialog;
+import net.muxi.huashiapp.ui.score.scoresNet.GetScorsePresenter;
 import net.muxi.huashiapp.utils.ScoreCreditUtils;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import okhttp3.ResponseBody;
+import retrofit2.HttpException;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -57,10 +62,11 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
     private ScoreCreditAdapter mScoresAdapter;
 
+    private final static String TAG="getScores";
     private List<String> mCourseParams = new ArrayList<>();
     private List<String> mYearParams = new ArrayList<>();
     private List<String> mTermParams = new ArrayList<>();
-
+    private GetScorsePresenter scorsePresenter;
     private boolean mAllChecked = true;
 
     /**
@@ -308,7 +314,13 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         //获取解析 mYear mTerm params
         getParams();
         initView();
-        loadGrade();
+        performLogin();
+
+
+
+
+
+        //loadGrade();
     }
 
   @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -319,6 +331,58 @@ public class ScoreDisplayActivity extends ToolbarActivity {
     }
 
 
+    /**
+     *     以下是新版的获取成绩方法
+     *     written by messi-wpy
+     *
+     */
+    //这是个独立的登录,在打开这个页面时开始登陆，且只会登陆一次
+    public void performLogin(){
+        scorsePresenter.LoginJWC(new Subscriber<ResponseBody>(){
+            @Override
+            public void onCompleted() {
+                Log.i(TAG, "onCompleted: ");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if (e instanceof HttpException){
+                    Log.e(TAG, "onError: httpexception code "+((HttpException)e).response().code());
+                    try {
+                        Log.e(TAG, "onError:  httpexception errorbody: "+ ((HttpException)e).response().errorBody().string());
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                else if (e instanceof NullPointerException)
+                    Log.e(TAG, "onError: null   "+e.getMessage());
+                else
+                    Log.e(TAG, "onError: ");
+                e.printStackTrace();
+                mMultiStatusView.showError();
+
+            }
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                Log.i(TAG, "onNext: "+"login success");
+                scorsePresenter.setLgoined(true);
+            }
+        });
+
+    }
+
+
+    public void getScores(List<Score>){
+        LoadingDialog loadingDialog = showLoading("正在请求成绩数据~~");
+
+    }
+
+    //手动解析,为了和以前的数据结构相匹配...
+    public void getScoreFromJson(){
+
+
+    }
 
 }
 
