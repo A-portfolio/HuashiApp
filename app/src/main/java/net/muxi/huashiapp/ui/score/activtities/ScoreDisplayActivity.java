@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -32,11 +33,16 @@ import net.muxi.huashiapp.ui.score.dialogs.CreditGradeDialog;
 import net.muxi.huashiapp.ui.score.scoresNet.GetScorsePresenter;
 import net.muxi.huashiapp.utils.ScoreCreditUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import okhttp3.ResponseBody;
@@ -62,7 +68,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
     private ScoreCreditAdapter mScoresAdapter;
 
-    private final static String TAG="getScores";
+    private final static String TAG = "getScores";
     private List<String> mCourseParams = new ArrayList<>();
     private List<String> mYearParams = new ArrayList<>();
     private List<String> mTermParams = new ArrayList<>();
@@ -70,58 +76,57 @@ public class ScoreDisplayActivity extends ToolbarActivity {
     private boolean mAllChecked = true;
 
     /**
-     *
-     * @param context context
-     * @param year year eg: arraylistOf("2016","2017")
-     * @param term term code
+     * @param context    context
+     * @param year       year eg: arraylistOf("2016","2017")
+     * @param term       term code
      * @param courseType courseType name eg: arraylistOf("专业主干课程","通识选修课")
      */
-    public static void start(Context context, String year, String term,String courseType) {
+    public static void start(Context context, String year, String term, String courseType) {
         Intent starter = new Intent(context, ScoreDisplayActivity.class);
         starter.putExtra("mYear", year);
         starter.putExtra("mTerm", term);
-        starter.putExtra("mCourseType",courseType);
+        starter.putExtra("mCourseType", courseType);
         context.startActivity(starter);
     }
 
 
-
-    private void getParams(){
+    private void getParams() {
         mYear = getIntent().getStringExtra("mYear");
         mTerm = getIntent().getStringExtra("mTerm");
         mCourseType = getIntent().getStringExtra("mCourseType");
 
         Gson gson = new Gson();
 
-        mCourseParams = gson.fromJson(mCourseType,List.class);
-        mYearParams = gson.fromJson(mYear,List.class);
-        mTermParams = gson.fromJson(mTerm,List.class);
+        mCourseParams = gson.fromJson(mCourseType, List.class);
+        mYearParams = gson.fromJson(mYear, List.class);
+        mTermParams = gson.fromJson(mTerm, List.class);
 
     }
 
 
-
+    @SuppressWarnings("unchecked")
+    //跳过泛型数组检测的编译器警告
     private void loadGrade() {
         LoadingDialog loadingDialog = showLoading("正在请求成绩数据~~");
 
-        Observable<List<Score>>[] scoreArray = new Observable[mYearParams.size()*mTermParams.size()];
-        for(int i=0;i<mYearParams.size();i++) {
+        Observable<List<Score>>[] scoreArray = new Observable[mYearParams.size() * mTermParams.size()];
+        for (int i = 0; i < mYearParams.size(); i++) {
             for (int j = 0; j < mTermParams.size(); j++) {
                 int index = i;
-                scoreArray[i*mTermParams.size() + j] = CampusFactory.getRetrofitService()
+                scoreArray[i * mTermParams.size() + j] = CampusFactory.getRetrofitService()
                         .getScores(mYearParams.get(i), mTermParams.get(j))
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(scoreList -> {
-                           setLoadingInfo(CommonTextUtils.generateRandomScoreText(mYearParams.get(index)));
+                            setLoadingInfo(CommonTextUtils.generateRandomScoreText(mYearParams.get(index)));
                         })
                         .retryWhen(new RequestRetry.Builder()
-                        .setMaxretries(3)
-                        .setObservable(scoreArray).setRetryInfo(() -> setLoadingInfo("登录过期，正在重新登录中"))
+                                .setMaxretries(3)
+                                .setObservable(scoreArray).setRetryInfo(() -> setLoadingInfo("登录过期，正在重新登录中"))
                                 .build());
             }
         }
 
-        Subscription subscription = Observable.merge(scoreArray,5)
+        Subscription subscription = Observable.merge(scoreArray, 5)
                 .flatMap((Func1<List<Score>, Observable<Score>>) Observable::from)
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -136,9 +141,9 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                     public void onError(Throwable e) {
                         e.printStackTrace();
 
-                        if(e instanceof RequestRetry.RetryException){
+                        if (e instanceof RequestRetry.RetryException) {
                             int code = ((RequestRetry.RetryException) e).code;
-                            switch (code){
+                            switch (code) {
                                 case RequestRetry.RetryException.CONFIRM_QUERY:
                                     mMultiStatusView.showError();
                                     break;
@@ -153,59 +158,60 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                     @Override
                     public void onNext(Object o) {
                         List<Score> scoreList = (List<Score>) o;
-                        boolean isFull = filterList(scoreList,mFilteredList);
-                        if(!isFull)
+                        boolean isFull = filterList(scoreList, mFilteredList);
+                        if (!isFull)
                             renderedFilteredScoreList();
                     }
                 });
 
-        loadingDialog.setOnSubscriptionCanceledListener(()->{
-          if(!subscription.isUnsubscribed())
-            subscription.unsubscribe();
+        loadingDialog.setOnSubscriptionCanceledListener(() -> {
+            if (!subscription.isUnsubscribed())
+                subscription.unsubscribe();
         });
     }
 
 
     /**
      * 根据 {@link com.muxistudio.appcommon.Constants} 中的 CLASS_TYPE 中用户选择所要计算学分绩的个别类型进行过滤
-     *
+     * <p>
      * 因为 {@link Score} 中 kcxmzc字段没有 “其他”类型for循环遍历完成之后依然没有这个类型，同样需要添加到filterList中去
+     *
      * @param scores
      * @return 是否为空 如果不为空返回false 如果为空返回true
      */
-    private boolean filterList(List<Score> scores,List<Score> resultList){
+    private boolean filterList(List<Score> scores, List<Score> resultList) {
 
         List<Score> filteredList = new ArrayList<>();
-        for(Score score: scores) {
-          boolean  flag = false;
-          //没有课程分类的课程
-            if(score.kcxzmc == null) {
+        for (Score score : scores) {
+            boolean flag = false;
+            //没有课程分类的课程
+            if (score.kcxzmc == null) {
                 filteredList.add(score);
                 continue;
             }
-            for(int i=0;i<mCourseParams.size();i++){
-                if(score.kcxzmc.equals(mCourseParams.get(i))){
+            for (int i = 0; i < mCourseParams.size(); i++) {
+                if (score.kcxzmc.equals(mCourseParams.get(i))) {
                     filteredList.add(score);
                     break;
                 }
                 //说明这些课程是不在我们的确定的名称集合中
-              // 但是有可能在我们确定的集合的补集 中
-                for(String type: Constants.CLASS_TYPE) {
-                  if (score.kcxzmc.equals(type)) {
-                    flag = true;
-                    break;
-                  }
+                // 但是有可能在我们确定的集合的补集 中
+                for (String type : Constants.CLASS_TYPE) {
+                    if (score.kcxzmc.equals(type)) {
+                        flag = true;
+                        break;
+                    }
                 }
-                if(i == mCourseParams.size() -1 && !flag){
+                if (i == mCourseParams.size() - 1 && !flag) {
                     filteredList.add(score);
                 }
             }
         }
 
-        if ( filteredList.isEmpty()) {
+        if (filteredList.isEmpty()) {
             mMultiStatusView.showEmpty();
             return true;
-        }else{
+        } else {
             resultList.clear();
             resultList.addAll(filteredList);
             return false;
@@ -251,30 +257,29 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
         mBtnEnter.setOnClickListener(v -> {
             // FIXME: 19-1-22
-            if (mScoresAdapter==null){
+            if (mScoresAdapter == null) {
                 mBtnEnter.setEnabled(false);
                 mBtnEnter.setText("列表为空无法计算");
                 return;
             }
-            Map<Integer,Boolean> map = mScoresAdapter.getCheckMap();
+            Map<Integer, Boolean> map = mScoresAdapter.getCheckMap();
             float credit = 0, sum = 0;
             Set<Integer> set = map.keySet();
-            for(int key : set){
-                if(map.get(key)){
-                    if(!Character.isDigit(mFilteredList.get(key).grade.charAt(0)))
+            for (int key : set) {
+                if (map.get(key)) {
+                    if (!Character.isDigit(mFilteredList.get(key).grade.charAt(0)))
                         continue;
                     double curSum = Float.parseFloat(mFilteredList.get(key).grade);
                     double curCredit = Float.parseFloat(mFilteredList.get(key).credit);
-                    sum += curSum*curCredit;
+                    sum += curSum * curCredit;
                     credit += curCredit;
                 }
             }
-            if(credit == 0)
+            if (credit == 0)
                 showCreditGradeDialog(0);
             float result = sum / credit;
             showCreditGradeDialog(result);
         });
-
 
 
     }
@@ -287,19 +292,20 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
     /**
      * activity出入的两种动画
+     *
      * @param context
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public static void slideFromBottom(AppCompatActivity context){
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN) {
+    public static void slideFromBottom(AppCompatActivity context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             Transition transition = TransitionInflater.from(context).inflateTransition(com.muxistudio.common.R.transition.trans_slide_from_bottom);
             context.getWindow().setEnterTransition(transition);
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public static void slideFromTop(AppCompatActivity context){
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN) {
+    public static void slideFromTop(AppCompatActivity context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             Transition transition = TransitionInflater.from(context).inflateTransition(com.muxistudio.common.R.transition.trans_slide_from_bottom);
             context.getWindow().setEnterTransition(transition);
         }
@@ -314,16 +320,13 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         //获取解析 mYear mTerm params
         getParams();
         initView();
-        performLogin();
+        //performLogin();
 
 
-
-
-
-        //loadGrade();
+        loadGrade();
     }
 
-  @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -332,13 +335,12 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
 
     /**
-     *     以下是新版的获取成绩方法
-     *     written by messi-wpy
-     *
+     * 以下是新版的获取成绩方法
+     * written by messi-wpy
      */
     //这是个独立的登录,在打开这个页面时开始登陆，且只会登陆一次
-    public void performLogin(){
-        scorsePresenter.LoginJWC(new Subscriber<ResponseBody>(){
+    public void performLogin() {
+        scorsePresenter.LoginJWC(new Subscriber<ResponseBody>() {
             @Override
             public void onCompleted() {
                 Log.i(TAG, "onCompleted: ");
@@ -346,16 +348,15 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
             @Override
             public void onError(Throwable e) {
-                if (e instanceof HttpException){
-                    Log.e(TAG, "onError: httpexception code "+((HttpException)e).response().code());
+                if (e instanceof HttpException) {
+                    Log.e(TAG, "onError: httpexception code " + ((HttpException) e).response().code());
                     try {
-                        Log.e(TAG, "onError:  httpexception errorbody: "+ ((HttpException)e).response().errorBody().string());
+                        Log.e(TAG, "onError:  httpexception errorbody: " + ((HttpException) e).response().errorBody().string());
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
-                }
-                else if (e instanceof NullPointerException)
-                    Log.e(TAG, "onError: null   "+e.getMessage());
+                } else if (e instanceof NullPointerException)
+                    Log.e(TAG, "onError: null   " + e.getMessage());
                 else
                     Log.e(TAG, "onError: ");
                 e.printStackTrace();
@@ -365,7 +366,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
             @Override
             public void onNext(ResponseBody responseBody) {
-                Log.i(TAG, "onNext: "+"login success");
+                Log.i(TAG, "onNext: " + "login success");
                 scorsePresenter.setLgoined(true);
             }
         });
@@ -373,15 +374,43 @@ public class ScoreDisplayActivity extends ToolbarActivity {
     }
 
 
-    public void getScores(List<Score>){
+
+    public void getScores() {
         LoadingDialog loadingDialog = showLoading("正在请求成绩数据~~");
+
+
 
     }
 
     //手动解析,为了和以前的数据结构相匹配...
-    public void getScoreFromJson(){
+    public @Nullable List<Score> getScoreFromJson(String json) throws JSONException {
+        List<Score> list = new ArrayList<>();
+        JSONObject jsonRoot = new JSONObject(json);
+        JSONArray items = jsonRoot.getJSONArray("items");
+        if (items == null || items.length() == 0) {
+            Log.i(TAG, "getScoreFromJson: item==null?" + (items == null));
+            return null;
+        }
+        for (int i = 0; i < items.length(); i++) {
+            JSONObject item = items.getJSONObject(i);
+            Score score = new Score();
+            score.course = item.getString("kcmc");
+            if (score.course==null)
+                score.course="  ";
+            score.credit = item.getString("xf");
+            if (score.credit==null)
+                score.credit="0";
+            score.grade=item.getString("cj");
+            if (score.grade==null)
+                score.grade="0";
+            score.jxb_id=item.getString("jxb_id");
+            if (score.jxb_id==null)
+                score.jxb_id="  ";
 
-
+            score.kcxzmc=item.getString("kcxzmc");
+            list.add(score);
+        }
+        return list;
     }
 
 }
