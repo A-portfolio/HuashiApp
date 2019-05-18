@@ -39,6 +39,7 @@ public class CcnuCrawler2 {
     //在这个callback中拿到相关信息 valueoflt valueofexe
     private static CcnuService2 mCcnuService;
     private static String JSESSIONID_LOGIN_IN = null;
+
     private static List<Cookie> cookieStore = new ArrayList<>();
     private static String LIB_URL = "http://202.114.34.15/reader/hwthau.php";
     //初始登录时候暂时缓存一下cookie
@@ -160,10 +161,21 @@ public class CcnuCrawler2 {
             e.printStackTrace();
             flag2 = false;
         }
+
+
+
+
+
+
+
         performLibLogin();
         //三重验证确保登录成功
         return loginCode(flag2);
     }
+
+
+
+
 
     private static boolean performLibLogin() throws IOException {
         //整个步骤拆分成三个部分:获取第一个phpsessionid

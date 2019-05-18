@@ -30,7 +30,6 @@ public class RequestRetry implements
         private Observable<List<Score>> listObservable[] ;
 
         private RetryInfoListener mListener;
-
         @Override
         public Observable<?> call(Observable<? extends Throwable> attempts) {
             return attempts

@@ -13,6 +13,7 @@ public class MyCookieJar implements CookieJar {
 
     public static final String TAG="cookie";
     private List<Cookie> cookieStore=new ArrayList<>();
+
     private int lastIndex=-1;
     @Override
     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
