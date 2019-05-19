@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.util.Log;
-import android.view.MenuItem;
 import android.widget.Button;
 
 import com.google.gson.Gson;
@@ -27,22 +25,20 @@ import com.muxistudio.appcommon.widgets.LoadingDialog;
 import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.login.GetScorsePresenter;
 import net.muxi.huashiapp.ui.score.RequestRetry;
 import net.muxi.huashiapp.ui.score.adapter.ScoreCreditAdapter;
 import net.muxi.huashiapp.ui.score.dialogs.CreditGradeDialog;
-import net.muxi.huashiapp.ui.score.scoresNet.GetScorsePresenter;
 import net.muxi.huashiapp.utils.ScoreCreditUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import okhttp3.ResponseBody;

@@ -1,24 +1,22 @@
-package com.muxistudio.appcommon.net.ccnu3;
+package net.muxi.huashiapp.login;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 
-import com.muxistudio.appcommon.utils.AppUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import okhttp3.Cookie;
 
@@ -89,6 +87,19 @@ public class CookieManager {
 
     }
 
+    public void addAll(String host,List<Cookie>list){
+        if (newCookies==null){
+            newCookies=new HashMap<>();
+        }
+        if (newCookies.get(host)==null){
+            newCookies.put(host,new ArrayList<>());
+        }
+
+        newCookies.get(host).addAll(list);
+
+
+    }
+
     /**
      * 这个方法其实是比较新cookie和旧cookie的差别,
      * 如果不同说明更新了，要更换
@@ -128,14 +139,17 @@ public class CookieManager {
 
     }
 
-    @Nullable
+    @NotNull
     public List<Cookie> provideCookies(String host) {
-        if (newCookies != null) {
+        getDataFromPre();
+        if (newCookies!=null&&newCookies.get(host)!=null){
             return newCookies.get(host);
-        } else {
+        }
+        else if (cookies!=null&&cookies.get(host)!=null){
             return cookies.get(host);
         }
-
+        else
+            return Collections.emptyList();
 
     }
 

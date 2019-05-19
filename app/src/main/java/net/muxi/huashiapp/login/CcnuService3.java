@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.score.scoresNet;
+package net.muxi.huashiapp.login;
 
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -9,7 +9,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import rx.Observable;
 
-public interface CcnuServices {
+public interface CcnuService3 {
 
     @POST("https://account.ccnu.edu.cn/cas/login;jsessionid={jsession}")
     @FormUrlEncoded

@@ -1,10 +1,11 @@
-package net.muxi.huashiapp.ui.score.scoresNet;
+package net.muxi.huashiapp.login;
 
 import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,10 +24,8 @@ public class GetScorsePresenter {
     private Subscription loginSubscription;
     private Subscription scoreSubscription;
     private Date date;
-    private static int time;
-    public void addTime(){
-        time++;
-    }
+    private static AtomicInteger time;
+
 
     public void setLgoined(boolean l){
         logined=l;
@@ -35,13 +34,13 @@ public class GetScorsePresenter {
         return logined;
 
     }
-    public CcnuServices clientWithRetrofit;
+    public CcnuService3 clientWithRetrofit;
     public GetScorsePresenter(){
-            clientWithRetrofit=SingleRetrofit.getClient().create(CcnuServices.class);
+            clientWithRetrofit= SingleRetrofit.getClient().create(CcnuService3.class);
             date=new Date();
 
     }
-    public CcnuServices getClientWithRetrofit(){
+    public CcnuService3 getClientWithRetrofit(){
         return clientWithRetrofit;
     }
 
@@ -110,7 +109,7 @@ public class GetScorsePresenter {
                 .flatMap(new Func1<String, Observable<ResponseBody>>() {
                     @Override
                     public Observable<ResponseBody> call(String s) {
-                        return clientWithRetrofit.getScores("2018","3",false, String.valueOf(date.getTime()),15,1,"","asc", time);
+                        return clientWithRetrofit.getScores("2018","3",false, String.valueOf(date.getTime()),15,1,"","asc", time.get());
                     }
                 }).subscribe(subscriber);
 

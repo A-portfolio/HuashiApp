@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui.score.scoresNet;
+package net.muxi.huashiapp.login;
 
 import android.util.Log;
 
@@ -13,7 +13,7 @@ public class AddHeadInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request=chain.request();
         if (request.url().toString().contains("ccnu.edu.cn")) {
-            Log.i("intercept", "intercept: load head for ccnu.edu.cn");
+            Log.i("head  intercept  url", request.url().toString()+"   intercept: load head for ccnu.edu.cn");
             request.newBuilder()
                     .addHeader("accept", "text/html,application/xhtml+xml" +
                             ",application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")

@@ -1,4 +1,4 @@
-package com.muxistudio.appcommon.net.ccnu3;
+package net.muxi.huashiapp.login;
 
 import android.support.annotation.NonNull;
 
