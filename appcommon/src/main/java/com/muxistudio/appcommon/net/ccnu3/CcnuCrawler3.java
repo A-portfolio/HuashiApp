@@ -1,5 +1,7 @@
 package com.muxistudio.appcommon.net.ccnu3;
 
+import okhttp3.OkHttpClient;
+
 /**
  * Created by ybao (ybaovv@gmail.com)
  *
@@ -7,6 +9,9 @@ package com.muxistudio.appcommon.net.ccnu3;
  */
 
 public class CcnuCrawler3  {
+
+    private OkHttpClient client;
+    private
 
 
 }
