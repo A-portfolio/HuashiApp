@@ -1,7 +1,16 @@
 package net.muxi.huashiapp.login;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.muxistudio.appcommon.RxBus;
+import com.muxistudio.appcommon.data.User;
+import com.muxistudio.appcommon.event.LibLoginEvent;
+import com.muxistudio.appcommon.event.LoginSuccessEvent;
+import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
+import com.muxistudio.appcommon.user.UserAccountManager;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.Date;
 import java.util.List;
@@ -35,7 +44,7 @@ public class CcnuCrawler3  {
         date=new Date();
     }
 
-    public void performLogin(Subscriber<ResponseBody>subscriber){
+    public void performLogin(Subscriber<ResponseBody>subscriber, final User user){
         loginSubscription= clientWithRetrofit.firstLogin()
                 .subscribeOn(Schedulers.io())
                 .flatMap(new Func1<Response<ResponseBody>, Observable<ResponseBody>>() {
@@ -43,6 +52,7 @@ public class CcnuCrawler3  {
                     public Observable<ResponseBody> call(Response<ResponseBody> response) {
                         if (response.code()!=200)
                             return Observable.error(new HttpException(response));
+
 
                         //这步获取cookie是因为它是下一次请求的url参数
                         String valueOfcookie;
@@ -58,19 +68,23 @@ public class CcnuCrawler3  {
                         }
 
                         String[]params=null;
+                        String html=" ";
                         try {
-                            //todo 判断是否已经登录
-                            params= getWordFromHtml(response.body().string());
-                            Log.i(TAG, "call: regex get param from html:" + params[0]+"  "+params[1]);
-
-
+                            html=response.body().string();
                         } catch (Exception e) {
                             return Observable.error(e);
                         }
+                        //判断是否已经登录过了
+                        if(isLogined(html)){
+                            return Observable.empty();
+                        }
+
+                        params= getWordFromHtml(html);
+                        Log.i(TAG, "call: regex get param from html:" + params[0]+"  "+params[1]);
                         if (params==null)
                             return Observable.error(new NullPointerException("first html get words wrong"));
 
-                        return clientWithRetrofit.performCampusLogin(valueOfcookie,"2017212163","13569158099",params[0],params[1],"submit","登录");
+                        return clientWithRetrofit.performCampusLogin(valueOfcookie,user.sid,user.password,params[0],params[1],"submit","登录");
                     }
                 }).flatMap(new Func1<ResponseBody, Observable<ResponseBody>>() {
                     @Override
@@ -106,7 +120,22 @@ public class CcnuCrawler3  {
         if (m2.find())
             res[1]=m2.group(1);
         else res[1]=null;
+
+
         return res;
+    }
+
+    private boolean isLogined(String html){
+        Pattern p=Pattern.compile("<div id=\"msg\" class=\"success\">.+?</div>");
+        Matcher m=p.matcher(html);
+        if (m.find()){
+            Log.i(TAG, "isLogined: ");
+            return true;
+        }
+        else {
+            Log.i(TAG, "has not Logined or out of data ");
+            return false;
+        }
     }
 
     private String getCookieValueFromHeader(String header){
@@ -119,6 +148,17 @@ public class CcnuCrawler3  {
             loginSubscription.unsubscribe();
     }
 
+    public void saveLoginState(Intent intent, User user, String type){
+        UserAccountManager.getInstance().saveInfoUser(user);
+        MobclickAgent.onProfileSignIn(user.getSid());
+        String target = intent.hasExtra("target") ?
+                intent.getStringExtra("target") : null;
+        if (type.equals("info")) {
+            RxBus.getDefault().send(new LoginSuccessEvent(target));
+        } else {
+            RxBus.getDefault().send(new LibLoginEvent());
+        }
+    }
 
 
 
