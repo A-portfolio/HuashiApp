@@ -100,6 +100,13 @@ public class CookieManager {
 
     }
 
+    public void clearAll(){
+        newCookies=null;
+        cookies=null;
+        cookiePrefs.edit().clear().commit();
+
+
+    }
     /**
      * 这个方法其实是比较新cookie和旧cookie的差别,
      * 如果不同说明更新了，要更换

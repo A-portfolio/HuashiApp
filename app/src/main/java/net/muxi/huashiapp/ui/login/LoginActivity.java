@@ -30,6 +30,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.login.CcnuCrawler3;
+import net.muxi.huashiapp.login.SingleCCNUClient;
 
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -111,7 +112,7 @@ public class LoginActivity extends ToolbarActivity {
         mLoadingDialog = showLoading(CommonTextUtils.generateRandomLoginText());
         if (type.equals("info") || type.equals("lib")) {
 
-
+            loginPresenter.getClient().clearAllCookie();
             loginPresenter.performLogin(new Subscriber<ResponseBody>() {
                 @Override
                 public void onCompleted() {
@@ -120,7 +121,7 @@ public class LoginActivity extends ToolbarActivity {
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.e(TAG, "onError: ");
+                    Log.e(TAG, "onError: "+e.getMessage());
                     ToastUtil.showShort("登录失败！请检查账号密码是否正确");
                     hideLoading();
                 }
@@ -128,6 +129,7 @@ public class LoginActivity extends ToolbarActivity {
                 @Override
                 public void onNext(ResponseBody responseBody) {
                     loginPresenter.saveLoginState(getIntent(), user, type);
+                    loginPresenter.getClient().saveCookieToLocal();
                     hideLoading();
                     finish();
                 }
@@ -151,6 +153,7 @@ public class LoginActivity extends ToolbarActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        loginPresenter.unsubscription();
     }
 
     @Override
@@ -180,4 +183,6 @@ public class LoginActivity extends ToolbarActivity {
         mBtnLogin = findViewById(R.id.btn_login);
         mBtnLogin.setOnClickListener(v -> onClick());
     }
+
+
 }

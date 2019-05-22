@@ -8,13 +8,13 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SingleRetrofit {
+public class SingleCCNUClient {
 
     private volatile static CcnuService3 client=null;
     private static OkHttpClient okHttpClient;
     public static CcnuService3 getClient(){
         if (client ==null){
-            synchronized (SingleRetrofit.class) {
+            synchronized (SingleCCNUClient.class) {
                 if (client == null) {
                     HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor()
                             .setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -39,9 +39,15 @@ public class SingleRetrofit {
     return client;
     }
 
-    public static void saveCookieToLocal(){
+    public void saveCookieToLocal(){
         if (okHttpClient==null)
             return;
         ((MyCookieJar)okHttpClient.cookieJar()).saveCookieToLocal();
+    }
+
+    public void clearAllCookie(){
+        if (okHttpClient==null)
+            return;
+        ((MyCookieJar)okHttpClient.cookieJar()).clearCookie();
     }
 }

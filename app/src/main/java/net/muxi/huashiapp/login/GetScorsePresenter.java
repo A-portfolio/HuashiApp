@@ -36,7 +36,7 @@ public class GetScorsePresenter {
     }
     public CcnuService3 clientWithRetrofit;
     public GetScorsePresenter(){
-            clientWithRetrofit= SingleRetrofit.getClient();
+            clientWithRetrofit= SingleCCNUClient.getClient();
             date=new Date();
 
     }

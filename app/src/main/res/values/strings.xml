@@ -113,6 +113,7 @@
 
     <!--提示-->
   <string name="info_source">该课程分类来源于教务处统计数据</string>
+    <string name="score_error_1">获取成绩失败，请尝试重新登录或联系匣子</string>
 
 
 </resources>

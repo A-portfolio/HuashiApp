@@ -45,13 +45,18 @@ public class MyCookieJar implements CookieJar {
     @Override
     public List<Cookie> loadForRequest(HttpUrl url) {
         Log.i(TAG, "loadForRequest:  "+url.host());
-
-        return manager.provideCookies(url.host());
+        List<Cookie> cookies=manager.provideCookies(url.host());
+        Log.i(TAG, "loadForRequest: "+cookies.size());
+        return cookies;
     }
 
     //把cookie保存到本地
     //在每次请求结束是调用
     public void saveCookieToLocal(){
         manager.saveToPre();
+    }
+
+    public void clearCookie(){
+        manager.clearAll();
     }
 }

@@ -12,6 +12,7 @@ import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
 import com.muxistudio.appcommon.user.UserAccountManager;
 import com.umeng.analytics.MobclickAgent;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -23,6 +24,7 @@ import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -37,11 +39,18 @@ import static com.sina.weibo.sdk.statistic.WBAgent.TAG;
 public class CcnuCrawler3  {
 
     private Subscription loginSubscription;
+    private SingleCCNUClient client;
     public CcnuService3 clientWithRetrofit;
     private Date date;
 
+
+    public SingleCCNUClient getClient(){
+        return client;
+    }
     public CcnuCrawler3(){
         date=new Date();
+        client=new SingleCCNUClient();
+        clientWithRetrofit=SingleCCNUClient.getClient();
     }
 
     public void performLogin(Subscriber<ResponseBody>subscriber, final User user){
@@ -52,6 +61,28 @@ public class CcnuCrawler3  {
                     public Observable<ResponseBody> call(Response<ResponseBody> response) {
                         if (response.code()!=200)
                             return Observable.error(new HttpException(response));
+
+                        String html=" ";
+                        try {
+                            html=response.body().string();
+                        } catch (Exception e) {
+                            return Observable.error(e);
+                        }
+
+                        //判断是否已经登录过了
+                        if(isLogined(html)){
+                            Log.i(TAG, "call: has logined");
+                            return clientWithRetrofit.performSystemLogin()
+                                    .flatMap(new Func1<ResponseBody, Observable<ResponseBody>>() {
+                                        @Override
+                                        public Observable<ResponseBody> call(ResponseBody responseBody) {
+                                            return Observable.empty();
+                                        }
+                                    });
+
+
+
+                        }
 
 
                         //这步获取cookie是因为它是下一次请求的url参数
@@ -68,17 +99,6 @@ public class CcnuCrawler3  {
                         }
 
                         String[]params=null;
-                        String html=" ";
-                        try {
-                            html=response.body().string();
-                        } catch (Exception e) {
-                            return Observable.error(e);
-                        }
-                        //判断是否已经登录过了
-                        if(isLogined(html)){
-                            return Observable.empty();
-                        }
-
                         params= getWordFromHtml(html);
                         Log.i(TAG, "call: regex get param from html:" + params[0]+"  "+params[1]);
                         if (params==null)
@@ -89,11 +109,25 @@ public class CcnuCrawler3  {
                 }).flatMap(new Func1<ResponseBody, Observable<ResponseBody>>() {
                     @Override
                     public Observable<ResponseBody> call(ResponseBody responseBody) {
-                        //todo 完善错误处理
+                        String html= null;
+                        try {
+                            html = responseBody.string();
+                        } catch (IOException e) {
+                            return Observable.error(e);
+
+                        }
+                        if (loginFailed(html)){
+                            Log.i(TAG, "call: 密码错误");
+                            return Observable.error(new Throwable("密码错误"));
+                        }
+
                         Log.i(TAG, "call: first 学校系统登录完成，下一步进行教务处登录验证");
                         return clientWithRetrofit.performSystemLogin();
                     }
-                }).subscribe(subscriber);
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .retry(1)
+                .subscribe(subscriber);
         Log.i(TAG, "LoginJWC: subscription :"+loginSubscription.isUnsubscribed());
 
 
@@ -126,7 +160,7 @@ public class CcnuCrawler3  {
     }
 
     private boolean isLogined(String html){
-        Pattern p=Pattern.compile("<div id=\"msg\" class=\"success\">.+?</div>");
+        Pattern p=Pattern.compile("<div id=\"msg\" class=\"success\">.+?</div>",Pattern.DOTALL);
         Matcher m=p.matcher(html);
         if (m.find()){
             Log.i(TAG, "isLogined: ");
@@ -136,6 +170,20 @@ public class CcnuCrawler3  {
             Log.i(TAG, "has not Logined or out of data ");
             return false;
         }
+    }
+
+    //判断登录失败(密码错误,依然返回200...),
+    private boolean loginFailed(String html){
+        Pattern p=Pattern.compile("<div id=\"msg\" class=\"errors\">.+?</div>",Pattern.DOTALL);
+        Matcher m=p.matcher(html);
+        if (m.find()){
+            Log.i(TAG, "faild 密码错误 ");
+            return true;
+        }
+        else {
+            return false;
+        }
+
     }
 
     private String getCookieValueFromHeader(String header){

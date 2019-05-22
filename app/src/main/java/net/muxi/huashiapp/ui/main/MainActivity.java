@@ -37,6 +37,7 @@ import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.login.CcnuCrawler3;
+import net.muxi.huashiapp.login.SingleCCNUClient;
 import net.muxi.huashiapp.service.DownloadService;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMainFragment;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
@@ -120,6 +121,8 @@ public class MainActivity extends BaseAppActivity implements
                 @Override
                 public void onNext(ResponseBody responseBody) {
                     Log.i(TAG, "onNext: " + "login success");
+                    ccnuCrawler3.getClient().saveCookieToLocal();
+
 
                 }
             },UserAccountManager.getInstance().getInfoUser());
