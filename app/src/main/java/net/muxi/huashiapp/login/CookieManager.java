@@ -3,6 +3,7 @@ package net.muxi.huashiapp.login;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -87,12 +88,20 @@ public class CookieManager {
 
     }
 
-    public void addAll(String host,List<Cookie>list){
-        if (newCookies==null){
-            newCookies=new HashMap<>();
+    public void useOldAccountCookie() {
+        if (newCookies == null) return;
+        if (newCookies.get("account.ccnu.edu.cn") != null) {
+            newCookies.remove("account.ccnu.edu.cn");
         }
-        if (newCookies.get(host)==null){
-            newCookies.put(host,new ArrayList<>());
+
+    }
+
+    public void addAll(String host, List<Cookie> list) {
+        if (newCookies == null) {
+            newCookies = new HashMap<>();
+        }
+        if (newCookies.get(host) == null) {
+            newCookies.put(host, new ArrayList<>());
         }
 
         newCookies.get(host).addAll(list);
@@ -100,13 +109,14 @@ public class CookieManager {
 
     }
 
-    public void clearAll(){
-        newCookies=null;
-        cookies=null;
+    public void clearAll() {
+        newCookies = null;
+        cookies = null;
         cookiePrefs.edit().clear().commit();
 
 
     }
+
     /**
      * 这个方法其实是比较新cookie和旧cookie的差别,
      * 如果不同说明更新了，要更换
@@ -114,6 +124,7 @@ public class CookieManager {
      * 最终存储的实现写在{@link #performSave(Map)} 方法里
      */
     public void saveToPre() {
+        Log.i("CookieManager", "saveToPre: ");
         if (newCookies == null) {
             return;
         } else if (cookies.keySet().size() == 0) {
@@ -149,13 +160,11 @@ public class CookieManager {
     @NotNull
     public List<Cookie> provideCookies(String host) {
         getDataFromPre();
-        if (newCookies!=null&&newCookies.get(host)!=null){
+        if (newCookies != null && newCookies.get(host) != null) {
             return newCookies.get(host);
-        }
-        else if (cookies!=null&&cookies.get(host)!=null){
+        } else if (cookies != null && cookies.get(host) != null) {
             return cookies.get(host);
-        }
-        else
+        } else
             return Collections.emptyList();
 
     }
