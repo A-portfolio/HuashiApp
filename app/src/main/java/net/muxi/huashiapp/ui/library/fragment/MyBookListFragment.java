@@ -115,6 +115,11 @@ public class MyBookListFragment extends BaseAppFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(attentionBooksResponse -> {
                     switch (attentionBooksResponse.code()) {
+
+
+                        //https://stackoverflow.com/questions/33774940/get-response-status-code-using-retrofit-2-0-and-rxjava
+                        //如果响应被Response（Retrofit包下的）包裹，则所有的响应码都将进入onnext里,包括4xx，5xx，
+                        //如果响应是一个typebody,则只有，只有2xx的响应吗会进入onnext，其他的都会直接进入onerror
                         case 200:
                             List<AttentionBook> attentionBooks = attentionBooksResponse.body();
                             if (attentionBooks.size() == 0) {

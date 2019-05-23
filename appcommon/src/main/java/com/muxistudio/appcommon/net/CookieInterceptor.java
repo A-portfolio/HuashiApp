@@ -26,6 +26,15 @@ import okhttp3.Response;
 //携带这个截断器在设置cookie到header的同时保存cookie
     //网络请求步骤：信息门户 和教务系统https://www.zybuluo.com/Humbert/note/970726
     //图书馆 ：https://www.zybuluo.com/Humbert/note/1032966
+
+
+/**
+ *
+ * 这个拦截器是添加在与我们木犀的后端ccnumuxi交互的okhttpclient里的
+ * 在进行学校请求的client里不要添加
+ *
+ *
+  */
 public class CookieInterceptor implements Interceptor {
 
     @Override
@@ -35,26 +44,19 @@ public class CookieInterceptor implements Interceptor {
 
         List<String> pathSegments = originRequest.url().pathSegments();
 
-        if (pathSegments.get(1).equals("table") || pathSegments.get(1).equals("grade")) {
+        if (pathSegments.get(1).equals("table")) {
             if (CcnuCrawler.sSid != null && !CcnuCrawler.sSid.equals(UserAccountManager.getInstance().getInfoUser().sid)) {
                 CcnuCrawler.clearCookieStore();
             }
             //执行了储存
-            InfoCookie cookie = CcnuCrawler2.getInfoCookie();
-            CcnuCrawler2.   saveCookies();
+
             String big = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL);
             String jid = PreferenceUtil.getString(PreferenceUtil.JSESSIONID);
-            if (big.equals("") && jid.equals("")) {
-                builder.addHeader("Bigipserverpool", cookie.Bigipserverpool_Jwc_Xk);
-                builder.addHeader("Jsessionid", cookie.Jsessionid);
-                builder.addHeader("Sid", UserAccountManager.getInstance().getInfoUser().sid);
-                builder.addHeader("Authorization", Base64Util.createBaseStr(UserAccountManager.getInstance().getInfoUser()));
-            } else {
                 builder.addHeader("Bigipserverpool", big);
                 builder.addHeader("Jsessionid", jid);
                 builder.addHeader("Sid", UserAccountManager.getInstance().getInfoUser().sid);
                 builder.addHeader("Authorization", Base64Util.createBaseStr(UserAccountManager.getInstance().getInfoUser()));
-            }
+
         }
 
                 return chain.proceed(builder.build());

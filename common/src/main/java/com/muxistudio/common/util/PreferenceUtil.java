@@ -172,6 +172,9 @@ public class PreferenceUtil {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Global.getApplication());
     }
 
+
+
+    //这个方法竟然都没有用,怪不得以前每次打开app都重新登录,有点坑啊
     /**
      * 记录用户登录的时间差 如果超过2个小时启动自动登录 可以直接通过 App中常量引用
      */

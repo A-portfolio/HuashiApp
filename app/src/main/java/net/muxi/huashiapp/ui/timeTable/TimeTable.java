@@ -118,6 +118,8 @@ public class TimeTable extends RelativeLayout {
         super.onFinishInflate();
     }
 
+
+    //fixme:重构触摸事件,某些情况下不能下滑,导致用户以为没有下滑刷新
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {

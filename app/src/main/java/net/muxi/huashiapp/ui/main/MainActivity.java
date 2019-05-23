@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
@@ -35,6 +36,8 @@ import com.muxistudio.common.util.ToastUtil;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.login.CcnuCrawler3;
+import net.muxi.huashiapp.login.SingleCCNUClient;
 import net.muxi.huashiapp.service.DownloadService;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMainFragment;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
@@ -46,8 +49,11 @@ import net.muxi.huashiapp.utils.AlarmUtil;
 
 import java.io.File;
 
+import okhttp3.ResponseBody;
+import retrofit2.HttpException;
 import rx.Observer;
 import rx.Scheduler;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -58,7 +64,8 @@ public class MainActivity extends BaseAppActivity implements
 
     private Fragment mCurFragment;
     private BottomNavigationView mNavView;
-
+    private CcnuCrawler3 ccnuCrawler3;
+    private final static  String TAG="MAINLOGIN";
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);
         context.startActivity(starter);
@@ -85,12 +92,46 @@ public class MainActivity extends BaseAppActivity implements
 
         //登录重试
         //todo test
-        if(!PreferenceUtil.isCookieValid()&& UserAccountManager.getInstance().isInfoUserLogin())
-            new LoginPresenter()
-                    .login(UserAccountManager.getInstance().getInfoUser())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(b->{Logger.d("cookie 过期 重新登录成功");},Throwable::printStackTrace,()->{});
+        if( UserAccountManager.getInstance().isInfoUserLogin()){
+            ccnuCrawler3=new CcnuCrawler3();
+            ccnuCrawler3.performLogin(new Subscriber<ResponseBody>() {
+                @Override
+                public void onCompleted() {
+                    Log.i(TAG, "onCompleted: ");
+                    ccnuCrawler3.getClient().saveCookieToLocal();
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    if (e instanceof HttpException) {
+                        Log.e(TAG, "onError: httpexception code " + ((HttpException) e).response().code());
+                        try {
+                            Log.e(TAG, "onError:  httpexception errorbody: " + ((HttpException) e).response().errorBody().string());
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
+                    } else if (e instanceof NullPointerException)
+                        Log.e(TAG, "onError: null   " + e.getMessage());
+                    else
+                        Log.e(TAG, "onError: ");
+                    e.printStackTrace();
+
+
+                }
+
+                @Override
+                public void onNext(ResponseBody responseBody) {
+                    Log.i(TAG, "onNext: " + "login success");
+
+
+                }
+            },UserAccountManager.getInstance().getInfoUser());
+
+
+
+
+        }
 
 
     }
@@ -327,6 +368,14 @@ public class MainActivity extends BaseAppActivity implements
         } else {
             return true;
         }
+    }
+    @Override
+    public void  onDestroy(){
+        super.onDestroy();
+        if (ccnuCrawler3!=null){
+            ccnuCrawler3.unsubscription();
+        }
+
     }
 
 }

@@ -27,6 +27,7 @@ import com.umeng.analytics.MobclickAgent;
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.login.CcnuCrawler3;
 import net.muxi.huashiapp.service.DownloadService;
 import net.muxi.huashiapp.ui.AboutActivity;
 import net.muxi.huashiapp.ui.SettingActivity;
@@ -190,6 +191,7 @@ public class MoreFragment extends BaseAppFragment {
             ((BaseAppActivity) getActivity()).showErrorSnackbarShort(
                     App.sContext.getString(R.string.not_log_in));
         } else {
+            new CcnuCrawler3().getClient().clearAllCookie();
             UserAccountManager.getInstance().logoutInfoUser();
             UserAccountManager.getInstance().logoutLibUser();
             MobclickAgent.onProfileSignOff();

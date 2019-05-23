@@ -29,10 +29,14 @@ import com.muxistudio.common.util.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.login.CcnuCrawler3;
+import net.muxi.huashiapp.login.SingleCCNUClient;
 
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.adapter.rxjava.Result;
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -45,9 +49,8 @@ public class LoginActivity extends ToolbarActivity {
     //此处方便登录调试,到时候要删除
     public static final boolean DEBUG_VALUE = true;
 
-    private LoginPresenter presenter = new LoginPresenter();
     private String type;
-    private final static String TAG="LOGIN";
+    private final static String TAG = "LOGIN";
     private LoadingDialog mLoadingDialog;
     private boolean isShownPassword = false;
     private TextInputLayout mLayoutSid;
@@ -55,7 +58,9 @@ public class LoginActivity extends ToolbarActivity {
     private TextInputLayout mLayoutPwd;
     private EditText mEtPwd;
     private Button mBtnLogin;
-    private Subscription mSubscription ;
+    private Subscription mSubscription;
+
+    private CcnuCrawler3 loginPresenter;
 
     /**
      * @param loginType 分为 lib 和 info
@@ -82,7 +87,7 @@ public class LoginActivity extends ToolbarActivity {
         if (type.equals("info")) {
             setTitle("登录信息门户");
         }
-        setLoginListener();
+        loginPresenter = new CcnuCrawler3();
     }
 
     public void onClick() {
@@ -107,39 +112,28 @@ public class LoginActivity extends ToolbarActivity {
         mLoadingDialog = showLoading(CommonTextUtils.generateRandomLoginText());
         if (type.equals("info") || type.equals("lib")) {
 
-                     mSubscription =presenter.login(user)
-                     .flatMap(new Func1<Boolean, Observable<?>>() {
-                         @Override
-                         public Observable<?> call(Boolean result) {
-                             // TODO: 18-10-15 test 
-                             if(result){
-                                 Log.i(TAG, " login thread "+Thread.currentThread().getName());
-                                 hideLoading();
-                                 presenter.saveLoginState(getIntent(),user,type);
-                                 finish();
-                                 return CampusFactory.getRetrofitService()
-                                         .cache(new A(Integer.parseInt(user.sid),user.password))
-                                         .onErrorResumeNext(Observable.empty());
+            loginPresenter.getClient().clearAllCookie();
+            loginPresenter.performLogin(new Subscriber<ResponseBody>() {
+                @Override
+                public void onCompleted() {
+                    Log.i(TAG, "onCompleted: ");
+                }
 
-                             }
-                             return Observable.error(new Throwable());
-                         }
-                     }).subscribeOn(Schedulers.io())
-                             .observeOn(AndroidSchedulers.mainThread())
-                     .subscribe(msg->{
-                         Log.i(TAG, " cache thread "+Thread.currentThread().getName());
-                         Logger.i(((Msg)msg).getMsg());
-                     },e->{
-                        ToastUtil.showShort("登录失败！请检查账号密码是否正确");
-                        hideLoading();
-                     }, this::hideLoading);
+                @Override
+                public void onError(Throwable e) {
+                    Log.e(TAG, "onError: "+e.getMessage());
+                    ToastUtil.showShort("登录失败！请检查账号密码是否正确");
+                    hideLoading();
+                }
 
-             mLoadingDialog.setOnSubscriptionCanceledListener(
-                 () -> {
-                   if(! mSubscription.isUnsubscribed())
-                     CcnuCrawler2.clear();
-                     mSubscription.unsubscribe();
-                 });
+                @Override
+                public void onNext(ResponseBody responseBody) {
+                    loginPresenter.saveLoginState(getIntent(), user, type);
+                    loginPresenter.getClient().saveCookieToLocal();
+                    hideLoading();
+                    finish();
+                }
+            }, user);
 
 
             if (type.equals("info"))
@@ -151,15 +145,7 @@ public class LoginActivity extends ToolbarActivity {
     }
 
 
-    private void setLoginListener() {
-        RxBus.getDefault().toObservable(RefreshSessionEvent.class)
-                .subscribe(refreshSessionEvent -> {
-                    presenter.login(refreshSessionEvent.getUser());
-                }, Throwable::printStackTrace);
-    }
-
-
-  @Override
+    @Override
     protected void onResume() {
         super.onResume();
     }
@@ -167,6 +153,7 @@ public class LoginActivity extends ToolbarActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        loginPresenter.unsubscription();
     }
 
     @Override
@@ -177,7 +164,7 @@ public class LoginActivity extends ToolbarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_close){
+        if (item.getItemId() == R.id.action_close) {
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -196,4 +183,6 @@ public class LoginActivity extends ToolbarActivity {
         mBtnLogin = findViewById(R.id.btn_login);
         mBtnLogin.setOnClickListener(v -> onClick());
     }
+
+
 }

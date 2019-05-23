@@ -18,23 +18,21 @@ public class Score implements Parcelable {
      *
      */
 
-    public String category;
     public String credit;
     public String grade;
     public String jxb_id;
     public String course;
-    public String type;
     public String kcxzmc;
     public String usual;
     public String ending;
 
+    public Score(){}
+
     protected Score(Parcel in) {
-        category = in.readString();
         credit = in.readString();
         grade = in.readString();
         jxb_id = in.readString();
         course = in.readString();
-        type = in.readString();
         kcxzmc = in.readString();
         usual = in.readString();
         ending = in.readString();
@@ -59,12 +57,10 @@ public class Score implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(category);
         dest.writeString(credit);
         dest.writeString(grade);
         dest.writeString(jxb_id);
         dest.writeString(course);
-        dest.writeString(type);
         dest.writeString(kcxzmc);
         dest.writeString(usual);
         dest.writeString(ending);

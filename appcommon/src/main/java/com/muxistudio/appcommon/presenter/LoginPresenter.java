@@ -71,7 +71,6 @@ public class LoginPresenter {
         } else {
             RxBus.getDefault().send(new LibLoginEvent());
         }
-        CcnuCrawler2.saveCookies();
     }
 }
 
