@@ -47,6 +47,22 @@ public class MyCookieJar implements CookieJar {
         Log.i(TAG, "loadForRequest:  "+url.host());
         List<Cookie> cookies=manager.provideCookies(url.host());
         Log.i(TAG, "loadForRequest: "+cookies.size());
+        for (int i = 0; i <cookies.size() ; i++) {
+            Log.i(TAG, "loadForRequest: "+cookies.get(i).name());
+        }
+
+        //专门对图书馆登录的处理，否则会无限循环重定向，原因是有两个PHPSESSID,他只会读取第一个，造成无限重定向循环
+        //真不知道该怎么处理了...
+        if (url.toString().equals("http://202.114.34.15/reader/hwthau.php")){
+            for (int i = 0; i < cookies.size(); i++) {
+                if (cookies.get(i).value().contains("ST-")){
+                    List<Cookie>temp=new ArrayList<>();
+                    temp.add(cookies.get(i));
+                    return temp;
+                }
+            }
+
+        }
         return cookies;
     }
 

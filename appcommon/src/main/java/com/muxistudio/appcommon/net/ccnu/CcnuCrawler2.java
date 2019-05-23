@@ -109,7 +109,7 @@ public class CcnuCrawler2 {
                                                 .readTimeout(25, TimeUnit.SECONDS)
                                                 .connectTimeout(25, TimeUnit.SECONDS)
                                                  .writeTimeout(25, TimeUnit.SECONDS)
-                                                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                                                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS))
                                                 .cookieJar(cookieJar)
                                                 .build();
 

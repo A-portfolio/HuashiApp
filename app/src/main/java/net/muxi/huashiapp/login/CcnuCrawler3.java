@@ -10,6 +10,7 @@ import com.muxistudio.appcommon.event.LibLoginEvent;
 import com.muxistudio.appcommon.event.LoginSuccessEvent;
 import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
 import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.common.util.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ import static com.sina.weibo.sdk.statistic.WBAgent.TAG;
 public class CcnuCrawler3  {
 
     private Subscription loginSubscription;
+    private Subscription libSubscription;
     private SingleCCNUClient client;
     public CcnuService3 clientWithRetrofit;
     private Date date;
@@ -54,6 +56,9 @@ public class CcnuCrawler3  {
     }
 
     public void performLogin(Subscriber<ResponseBody>subscriber, final User user){
+
+        //其实这里可以把统一验证的登录  与 教务处登录, 图书馆登录分开，写三个observable（这样其实更符合浏览器的逻辑）
+        // 这里只将图书馆分开了，影响不大
         loginSubscription= clientWithRetrofit.firstLogin()
                 .subscribeOn(Schedulers.io())
                 .flatMap(new Func1<Response<ResponseBody>, Observable<ResponseBody>>() {
@@ -128,7 +133,50 @@ public class CcnuCrawler3  {
                 .observeOn(AndroidSchedulers.mainThread())
                 .retry(1)
                 .subscribe(subscriber);
-        Log.i(TAG, "LoginJWC: subscription :"+loginSubscription.isUnsubscribed());
+
+
+        //图书馆登录
+        libSubscription=Observable.unsafeCreate(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                if (loginSubscription==null)return;
+                int time=0;
+                while (!loginSubscription.isUnsubscribed()&&time<10){
+                    Log.i(TAG, "call: wait");
+                    try {
+                        Thread.sleep(500);
+                        time++;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (time==10)
+                    subscriber.onError(new Throwable("图书馆登录失败"));
+                else
+                    subscriber.onNext("start");
+            }
+        }).subscribeOn(Schedulers.io())
+                .flatMap(new Func1<String, Observable<ResponseBody>>() {
+            @Override
+            public Observable<ResponseBody> call(String s) {
+                return clientWithRetrofit.perLibLogin();
+            }
+        }).subscribe(new Subscriber<ResponseBody>() {
+            @Override
+            public void onCompleted() {
+                Log.i(TAG, "onCompleted: lib login finish");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: lib login fail");
+            }
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+
+            }
+        });
 
 
     }
@@ -194,6 +242,8 @@ public class CcnuCrawler3  {
     public void unsubscription(){
         if (loginSubscription!=null&&loginSubscription.isUnsubscribed())
             loginSubscription.unsubscribe();
+        if (libSubscription!=null&&libSubscription.isUnsubscribed())
+            libSubscription.unsubscribe();
     }
 
     public void saveLoginState(Intent intent, User user, String type){

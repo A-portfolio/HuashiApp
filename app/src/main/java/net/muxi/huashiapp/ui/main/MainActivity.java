@@ -98,6 +98,8 @@ public class MainActivity extends BaseAppActivity implements
                 @Override
                 public void onCompleted() {
                     Log.i(TAG, "onCompleted: ");
+                    ccnuCrawler3.getClient().saveCookieToLocal();
+
                 }
 
                 @Override
@@ -121,7 +123,6 @@ public class MainActivity extends BaseAppActivity implements
                 @Override
                 public void onNext(ResponseBody responseBody) {
                     Log.i(TAG, "onNext: " + "login success");
-                    ccnuCrawler3.getClient().saveCookieToLocal();
 
 
                 }

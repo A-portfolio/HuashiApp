@@ -33,4 +33,9 @@ public interface CcnuService3 {
     Observable<ResponseBody>getScores(@Field("xnm") String xnm, @Field("xqm") String xqm, @Field("_search") boolean search,
                                       @Field("nd") String nd, @Field("queryModel.showCount") int num, @Field("queryModel.currentPage") int page,
                                       @Field("queryModel.sortName") String sortname, @Field("queryModel.sortOrder") String order, @Field("time") int time);
+
+
+    @GET("http://202.114.34.15/reader/hwthau.php")
+    Observable<ResponseBody>perLibLogin();
+
 }

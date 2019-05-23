@@ -1,5 +1,7 @@
 package net.muxi.huashiapp.login;
 
+import android.support.annotation.Nullable;
+
 import net.muxi.huashiapp.App;
 
 import okhttp3.OkHttpClient;
@@ -22,6 +24,7 @@ public class SingleCCNUClient {
                             .cookieJar(new MyCookieJar(App.getContext()))
                             .addInterceptor(new AddHeadInterceptor())
                             .addInterceptor(interceptor)
+                             .addNetworkInterceptor(new RedirectInterceptor())
                             .build();
 
                     client=new Retrofit.Builder()
@@ -38,6 +41,8 @@ public class SingleCCNUClient {
 
     return client;
     }
+
+
 
     public void saveCookieToLocal(){
         if (okHttpClient==null)
