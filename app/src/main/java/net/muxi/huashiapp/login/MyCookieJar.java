@@ -78,12 +78,9 @@ public class MyCookieJar implements CookieJar {
     }
 
     public void clearCookie() {
+        Log.i(TAG, "clearCookie: clear");
         manager.clearAll();
     }
 
-    //如果登录成功请用这个
-    public void useOldAccountCookie() {
 
-        manager.useOldAccountCookie();
-    }
 }
