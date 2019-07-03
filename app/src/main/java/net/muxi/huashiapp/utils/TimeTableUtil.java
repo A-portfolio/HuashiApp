@@ -172,13 +172,20 @@ public class TimeTableUtil {
         return curWeek >= 1 ? curWeek : 1;
        */
 
+        int day = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
+        //获取date的格式 根据 distance 定
+        String defaluteDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()),
+                1 - day);
         int curWeek;
+        String firstWeek = PreferenceUtil.getString(PreferenceUtil.FIRST_WEEK_DATE, defaluteDate);
+        String weekArg =  DateUtil.toDateInYear(new Date(System.currentTimeMillis()));
         curWeek = (int) DateUtil.getDistanceWeek(
-                DateUtil.FIRST_DAY,
+                PreferenceUtil.getString(PreferenceUtil.FIRST_WEEK_DATE, defaluteDate),
                 DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
         curWeek = curWeek <= Constants.WEEKS_LENGTH ? curWeek : Constants.WEEKS_LENGTH;
         curWeek = curWeek >= 1 ? curWeek : 1;
         return curWeek;
+
     }
 
   /**

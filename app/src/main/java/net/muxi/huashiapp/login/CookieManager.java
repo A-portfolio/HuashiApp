@@ -33,6 +33,7 @@ public class CookieManager {
     private final SharedPreferences cookiePrefs;
     private static final String HOST_PRE = "HOST_";
     private HashMap<String, List<Cookie>> cookies;
+    private Context context;
     //private HashMap<String, List<Cookie>> newCookies;
     private static final String COOKIE_FILE = "CookiePreFile";
 
@@ -41,6 +42,7 @@ public class CookieManager {
      *                关于在构造函数里进行很多操作是否ok的讨论:  https://stackoverflow.com/questions/7048515/is-doing-a-lot-in-constructors-bad
      */
     public CookieManager(Context context) {
+       this.context=context;
         this.cookiePrefs = context.getSharedPreferences(COOKIE_FILE, 0);
     }
 
@@ -105,7 +107,8 @@ public class CookieManager {
 
     public void clearAll() {
         cookies = null;
-        cookiePrefs.edit().clear().commit();
+        SharedPreferences pref=context.getSharedPreferences(COOKIE_FILE, 0);
+        pref.edit().clear().commit();
 
 
     }
@@ -234,14 +237,16 @@ public class CookieManager {
 
 
     public boolean isSameCookie(@NotNull Cookie first,@NotNull Cookie second){
-        return first.name().equals(second.name())
+
+        boolean flag= first.name().equals(second.name())
                 &&first.domain().equals(second.domain())
                 &&first.hostOnly()==second.hostOnly()
                 &&first.httpOnly()==second.httpOnly()
                 &&first.path().equals(second.path())
                 &&first.persistent()==second.persistent()
-                &&first.secure()==second.secure()
-                &&first.expiresAt()==second.expiresAt();
+                &&first.secure()==second.secure();
+        Log.i("sad", "isSameCookie: "+flag);
+        return flag;
 
     }
 }

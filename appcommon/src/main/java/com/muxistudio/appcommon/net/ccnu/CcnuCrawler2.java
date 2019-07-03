@@ -89,7 +89,7 @@ public class CcnuCrawler2 {
                         list.add(cookieStore.get(i));
                         if(cookieStore.get(i).value()!=null||cookieStore.get(i).value().equals("")){
                             PreferenceUtil.saveString(PreferenceUtil.PHPSESSID,cookieStore.get(i).value());
-                            UserAccountManager.getInstance().setPHPSESSID(cookieStore.get(i).value());
+                            //UserAccountManager.getInstance().setPHPSESSID(cookieStore.get(i).value());
                         }
                         return list;
                     }
@@ -335,7 +335,7 @@ public class CcnuCrawler2 {
                 flag1 = true;
             }
             if (!PreferenceUtil.getString(PreferenceUtil.PHPSESSID).equals("")) {
-                UserAccountManager.getInstance().setPHPSESSID(PreferenceUtil.getString(PreferenceUtil.PHPSESSID));
+               // UserAccountManager.getInstance().setPHPSESSID(PreferenceUtil.getString(PreferenceUtil.PHPSESSID));
                 flag3 = true;
             }
         }

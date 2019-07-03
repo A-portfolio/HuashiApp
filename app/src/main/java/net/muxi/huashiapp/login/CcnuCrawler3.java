@@ -166,6 +166,7 @@ public class CcnuCrawler3 {
                     @Override
                     public void onCompleted() {
                         Log.i(TAG, "onCompleted: lib login finish");
+
                     }
 
                     @Override
@@ -175,7 +176,9 @@ public class CcnuCrawler3 {
 
                     @Override
                     public void onNext(ResponseBody responseBody) {
+                        Log.i(TAG, "onCompleted: lib login finish");
 
+                        //RxBus.getDefault().send(new LibLoginEvent());
                     }
                 });
 
