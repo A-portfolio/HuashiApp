@@ -45,6 +45,7 @@ public class LibraryMainFragment extends BaseAppFragment {
         mToolbar.setTitle(R.string.library);
         mEtSearch.setOnClickListener(v -> LibrarySearchActivity.start(getContext()));
         mBtnLoginLib.setOnClickListener(v -> LoginActivity.start(getContext(), "lib"));
+
         return view;
     }
 

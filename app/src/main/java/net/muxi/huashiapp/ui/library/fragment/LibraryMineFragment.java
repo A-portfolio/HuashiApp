@@ -4,13 +4,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.muxistudio.appcommon.appbase.BaseAppFragment;
+import com.muxistudio.appcommon.user.UserAccountManager;
 import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.R;
@@ -32,6 +36,7 @@ public class LibraryMineFragment extends BaseAppFragment {
 
     private MyBookListFragment mBooksBorrowedFragment;
     private MyBookListFragment mBooksAttentionFragment;
+    private LibraryMainFragment mainFragment;
 
     private MyBookListPagerAdapter mPagerAdapter;
     private EditText mEtSearch;
@@ -55,6 +60,12 @@ public class LibraryMineFragment extends BaseAppFragment {
         mViewPager = view.findViewById(R.id.view_pager);
         initView();
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
     }
 
     private void initView() {

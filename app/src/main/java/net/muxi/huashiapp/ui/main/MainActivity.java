@@ -339,7 +339,7 @@ public class MainActivity extends BaseAppActivity implements
                 showFragment(TimetableFragment.newInstance(), tag);
                 break;
             case "lib_main":
-                showFragment(LibraryMainFragment.newInstance(), tag);
+                showFragment(LibraryMineFragment.newInstance(), tag);
                 break;
             case "lib_mine":
                 showFragment(LibraryMineFragment.newInstance(), tag);

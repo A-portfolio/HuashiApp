@@ -78,7 +78,7 @@ public class CcnuCrawler3 {
                         //判断是否已经登录过了
                         if (isLogined(html)) {
                             Log.i(TAG, "call: has logined");
-                            ((MyCookieJar) client.getCookieJar()).useOldAccountCookie();
+
                             return clientWithRetrofit.performSystemLogin()
                                     .flatMap(new Func1<ResponseBody, Observable<ResponseBody>>() {
                                         @Override
@@ -166,6 +166,7 @@ public class CcnuCrawler3 {
                     @Override
                     public void onCompleted() {
                         Log.i(TAG, "onCompleted: lib login finish");
+
                     }
 
                     @Override
@@ -175,7 +176,9 @@ public class CcnuCrawler3 {
 
                     @Override
                     public void onNext(ResponseBody responseBody) {
+                        Log.i(TAG, "onCompleted: lib login finish");
 
+                        //RxBus.getDefault().send(new LibLoginEvent());
                     }
                 });
 

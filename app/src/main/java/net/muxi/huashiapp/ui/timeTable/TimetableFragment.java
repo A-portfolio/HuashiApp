@@ -149,6 +149,7 @@ public class TimetableFragment extends BaseAppFragment {
                 rotateSelectView();
             }
             mTableMenuView.show();
+          //  mTableMenuView.setCurweek(curWeek);
         });
         mTimetable.setOnCourseClickListener(v -> {
             String id = ((CourseView) v).getCourseId();
@@ -280,7 +281,7 @@ public class TimetableFragment extends BaseAppFragment {
                         //没有联网会抛出这个异常
                         RxBus.getDefault().send(new RefreshFinishEvent(false
                                 , RefreshFinishEvent.SELF_DEFINE_CODE));
-                        retryLoadTable();
+                     //   retryLoadTable();
 
                     }
                     if (throwable instanceof HttpException) {

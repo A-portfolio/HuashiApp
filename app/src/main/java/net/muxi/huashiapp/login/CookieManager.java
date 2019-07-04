@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import okhttp3.Cookie;
+import okhttp3.CookieJar;
 
 
 /**
@@ -32,7 +33,8 @@ public class CookieManager {
     private final SharedPreferences cookiePrefs;
     private static final String HOST_PRE = "HOST_";
     private HashMap<String, List<Cookie>> cookies;
-    private HashMap<String, List<Cookie>> newCookies;
+    private Context context;
+    //private HashMap<String, List<Cookie>> newCookies;
     private static final String COOKIE_FILE = "CookiePreFile";
 
     /**
@@ -40,6 +42,7 @@ public class CookieManager {
      *                关于在构造函数里进行很多操作是否ok的讨论:  https://stackoverflow.com/questions/7048515/is-doing-a-lot-in-constructors-bad
      */
     public CookieManager(Context context) {
+       this.context=context;
         this.cookiePrefs = context.getSharedPreferences(COOKIE_FILE, 0);
     }
 
@@ -77,42 +80,35 @@ public class CookieManager {
      * @param cookie
      */
     public void addCookie(String host, Cookie cookie) {
-        if (this.newCookies == null) {
-            newCookies = new HashMap<>();
+        if (cookies==null)
+            throw new NullPointerException("cookies is null,please use getDataFromPre() firstly to init cookies ");
+        if (cookies.get(host)==null){
+            cookies.put(host,new ArrayList<>());
         }
-        if (newCookies.get(host) == null) {
-            newCookies.put(host, new ArrayList<>());
+        List<Cookie>list=cookies.get(host);
+        for (int i = 0; i <list.size() ; i++) {
+            if (this.isSameCookie(cookie,list.get(i))){
+                list.set(i,cookie);
+                return;
+            }
         }
-        newCookies.get(host).add(cookie);
-
+        list.add(cookie);
 
     }
 
-    public void useOldAccountCookie() {
-        if (newCookies == null) return;
-        if (newCookies.get("account.ccnu.edu.cn") != null) {
-            newCookies.remove("account.ccnu.edu.cn");
-        }
-
-    }
 
     public void addAll(String host, List<Cookie> list) {
-        if (newCookies == null) {
-            newCookies = new HashMap<>();
-        }
-        if (newCookies.get(host) == null) {
-            newCookies.put(host, new ArrayList<>());
-        }
 
-        newCookies.get(host).addAll(list);
-
+        for (int i = 0; i <list.size() ; i++) {
+            addCookie(host,list.get(i));
+        }
 
     }
 
     public void clearAll() {
-        newCookies = null;
         cookies = null;
-        cookiePrefs.edit().clear().commit();
+        SharedPreferences pref=context.getSharedPreferences(COOKIE_FILE, 0);
+        pref.edit().clear().commit();
 
 
     }
@@ -124,22 +120,7 @@ public class CookieManager {
      * 最终存储的实现写在{@link #performSave(Map)} 方法里
      */
     public void saveToPre() {
-        Log.i("CookieManager", "saveToPre: ");
-        if (newCookies == null) {
-            return;
-        } else if (cookies.keySet().size() == 0) {
-            performSave(newCookies);
-        } else {
-            for (String oldKey : cookies.keySet()) {
-                if (newCookies.get(oldKey) == null) {
-                    newCookies.put(oldKey, new ArrayList<>());
-                    newCookies.get(oldKey).addAll(cookies.get(oldKey));
-                }
-
-            }
-            performSave(newCookies);
-        }
-
+      performSave(cookies);
     }
 
     private void performSave(Map<String, List<Cookie>> res) {
@@ -160,9 +141,7 @@ public class CookieManager {
     @NotNull
     public List<Cookie> provideCookies(String host) {
         getDataFromPre();
-        if (newCookies != null && newCookies.get(host) != null) {
-            return newCookies.get(host);
-        } else if (cookies != null && cookies.get(host) != null) {
+        if (cookies != null && cookies.get(host) != null) {
             return cookies.get(host);
         } else
             return Collections.emptyList();
@@ -257,4 +236,17 @@ public class CookieManager {
     }
 
 
+    public boolean isSameCookie(@NotNull Cookie first,@NotNull Cookie second){
+
+        boolean flag= first.name().equals(second.name())
+                &&first.domain().equals(second.domain())
+                &&first.hostOnly()==second.hostOnly()
+                &&first.httpOnly()==second.httpOnly()
+                &&first.path().equals(second.path())
+                &&first.persistent()==second.persistent()
+                &&first.secure()==second.secure();
+        Log.i("sad", "isSameCookie: "+flag);
+        return flag;
+
+    }
 }
