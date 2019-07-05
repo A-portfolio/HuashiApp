@@ -73,7 +73,6 @@ public class ScoreDisplayActivity extends ToolbarActivity {
     private List<String> mCourseParams = new ArrayList<>();
     private List<String> mYearParams = new ArrayList<>();
     private List<String> mTermParams = new ArrayList<>();
-    private GetScorsePresenter scorsePresenter;
     private boolean mAllChecked = true;
     private Date date=new Date();
     private AtomicInteger time=new AtomicInteger(0);
@@ -112,7 +111,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         Observable<ResponseBody>[] scoreArray=new Observable[mYearParams.size()*mTermParams.size()];
         for (int i = 0; i <mYearParams.size() ; i++) {
             for (int j = 0; j <mTermParams.size() ; j++) {
-                scoreArray[i*mTermParams.size()+j] = SingleCCNUClient.getClient().getScores(mYearParams.get(i),mTermParams.get(j),false, String.valueOf(date.getTime()),15,1,"","asc",time.get() );
+                scoreArray[i*mTermParams.size()+j] = SingleCCNUClient.getClient().getScores(mYearParams.get(i),mTermParams.get(j),false, String.valueOf(date.getTime()),100,1,"","asc",time.get() );
             }
 
         }
@@ -181,11 +180,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(scoreList -> {
                             setLoadingInfo(CommonTextUtils.generateRandomScoreText(mYearParams.get(index)));
-                        })
-                        .retryWhen(new RequestRetry.Builder()
-                                .setMaxretries(3)
-                                .setObservable(scoreArray).setRetryInfo(() -> setLoadingInfo("登录过期，正在重新登录中"))
-                                .build());
+                        });
             }
         }
 
@@ -433,6 +428,10 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                 score.jxb_id="  ";
 
             score.kcxzmc=item.getString("kcxzmc");
+
+            score.xnm=item.getInt("xnm");
+            score.xqm=item.getInt("xqm");
+
             list.add(score);
         }
         return list;

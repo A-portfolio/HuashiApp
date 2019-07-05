@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +34,7 @@ public class CookieManager {
 
     private final SharedPreferences cookiePrefs;
     private static final String HOST_PRE = "HOST_";
-    private HashMap<String, List<Cookie>> cookies;
+    private HashMap<String, Map<String,Cookie>> cookies;
     private Context context;
     //private HashMap<String, List<Cookie>> newCookies;
     private static final String COOKIE_FILE = "CookiePreFile";
@@ -64,9 +66,10 @@ public class CookieManager {
         for (Object key : tempCookieMap.keySet()) {
             String host = ((String) key).split("___")[0];
             if (!cookies.containsKey(host)) {
-                cookies.put(host, new ArrayList<>());
+                cookies.put(host, new HashMap<>());
             }
-            cookies.get(host).add(decodeCookie((String) tempCookieMap.get(key)));
+            Cookie cookie=decodeCookie((String) tempCookieMap.get(key));
+            cookies.get(host).put(cookie.name(),cookie);
 
         }
 
@@ -83,16 +86,10 @@ public class CookieManager {
         if (cookies==null)
             throw new NullPointerException("cookies is null,please use getDataFromPre() firstly to init cookies ");
         if (cookies.get(host)==null){
-            cookies.put(host,new ArrayList<>());
+            cookies.put(host,new HashMap<>());
         }
-        List<Cookie>list=cookies.get(host);
-        for (int i = 0; i <list.size() ; i++) {
-            if (this.isSameCookie(cookie,list.get(i))){
-                list.set(i,cookie);
-                return;
-            }
-        }
-        list.add(cookie);
+        Map<String,Cookie> hashMap=cookies.get(host);
+        hashMap.put(cookie.name(),cookie);
 
     }
 
@@ -123,11 +120,11 @@ public class CookieManager {
       performSave(cookies);
     }
 
-    private void performSave(Map<String, List<Cookie>> res) {
+    private void performSave(Map<String, Map<String,Cookie>> res) {
         SharedPreferences.Editor writer = cookiePrefs.edit();
 
         for (String key : res.keySet()) {
-            List<Cookie> list = res.get(key);
+            List<Cookie>list=new ArrayList<>(res.get(key).values());
             for (int i = 0; i < list.size(); i++) {
                 String preKey = key + "___" + i;
                 writer.putString(preKey, encodeCookie(new SerializableCookie(list.get(i))));
@@ -142,7 +139,7 @@ public class CookieManager {
     public List<Cookie> provideCookies(String host) {
         getDataFromPre();
         if (cookies != null && cookies.get(host) != null) {
-            return cookies.get(host);
+            return new ArrayList<>(cookies.get(host).values());
         } else
             return Collections.emptyList();
 
@@ -242,9 +239,7 @@ public class CookieManager {
                 &&first.domain().equals(second.domain())
                 &&first.hostOnly()==second.hostOnly()
                 &&first.httpOnly()==second.httpOnly()
-                &&first.path().equals(second.path())
-                &&first.persistent()==second.persistent()
-                &&first.secure()==second.secure();
+                &&first.path().equals(second.path());
         Log.i("sad", "isSameCookie: "+flag);
         return flag;
 

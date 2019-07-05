@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.appbase.BaseAppFragment;
 import com.muxistudio.appcommon.utils.UserUtil;
+import com.muxistudio.common.util.ToastUtil;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.score.activtities.ScoreDisplayActivity;
@@ -180,6 +181,10 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
         SelectTermDialog dialog = SelectTermDialog.newInstance();
         dialog.show(getActivity().getSupportFragmentManager(),"score_credit_term_select");
         dialog.setOnPositiveButtonClickListener(terms -> {
+            if (!terms[0]&&!terms[1] && !terms[2]){
+                ToastUtil.showShort("请至少选择一个学期");
+                return;
+            }
             mDefault = false;
 
             mTerms = terms;

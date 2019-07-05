@@ -64,7 +64,10 @@ public class SelectYearDialog extends BottomDialogFragment {
         mBtnCancel.setOnClickListener(v -> {
             dismiss();
         });
+
+
         mBtnEnter.setOnClickListener(v -> {
+
             dismiss();
             if (mOnPositiveButtonClickListener != null) {
                 mOnPositiveButtonClickListener.onPositiveButtonClick(

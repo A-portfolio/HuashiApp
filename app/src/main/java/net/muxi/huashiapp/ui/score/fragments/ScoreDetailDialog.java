@@ -62,6 +62,7 @@ public class ScoreDetailDialog  extends CenterDialogFragment{
         boolean usualGradeEmpty = false;
         boolean examGradeEmpty  = false;
         //现在教务系统课程的平时成绩和期末考试成绩可能为空
+
         tvCourseUsualGrade.setText(mScores.get(position).usual);
         if(TextUtils.isEmpty(mScores.get(position).usual)){
             tvCourseUsualGrade.setVisibility(View.INVISIBLE);

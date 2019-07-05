@@ -177,6 +177,7 @@ public class CcnuCrawler3 {
                     @Override
                     public void onNext(ResponseBody responseBody) {
                         Log.i(TAG, "onCompleted: lib login finish");
+                        getClient().saveCookieToLocal();
 
                         //RxBus.getDefault().send(new LibLoginEvent());
                     }
