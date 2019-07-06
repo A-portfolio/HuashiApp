@@ -33,6 +33,7 @@ public class SingleCCNUClient {
                             .client(okHttpClient)
                             .addConverterFactory(GsonConverterFactory.create())
                             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                            //这个url并没有用,但因为必须要有他才能运行
                             .baseUrl("http://xk.ccnu.edu.cn/")
                             .build()
                             .create(CcnuService3.class);
