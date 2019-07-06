@@ -36,7 +36,7 @@
 
 
   <TextView
-      android:id="@+id/tv_course_credit"
+      android:id="@+id/course_credit"
       android:layout_marginTop="16dp"
       android:layout_marginLeft="20dp"
       android:layout_below="@+id/tv_course_name"
@@ -48,7 +48,7 @@
             android:id="@+id/tv_score_total_value"
             android:layout_marginTop="16dp"
             android:layout_marginLeft="30dp"
-            android:layout_toRightOf="@id/tv_course_credit"
+            android:layout_toRightOf="@id/course_credit"
             android:layout_below="@+id/tv_course_name"
             android:text="总成绩：86.3"
             android:layout_width="wrap_content"

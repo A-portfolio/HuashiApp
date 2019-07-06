@@ -146,7 +146,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                         Log.i(TAG, "onNext: ");
                         List<Score> scoreList = null;
                         try {
-                            scoreList = getScoreFromJson(responseBody.string());
+                            scoreList = ScoreCreditUtils.getScoreFromJson(responseBody.string());
                         } catch (JSONException e) {
                             e.printStackTrace();
                             ToastUtil.showShort(R.string.score_error_1);
@@ -157,8 +157,10 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                         if (scoreList==null)return;
 
                         boolean isFull = filterList(scoreList, mFilteredList);
-                        if (!isFull)
-                            renderedFilteredScoreList();
+                        if (!isFull) {
+                            mMultiStatusView.showContent();
+                            mScoresAdapter.notifyDataSetChanged();
+                        }
                     }
                 });
 
@@ -238,7 +240,6 @@ public class ScoreDisplayActivity extends ToolbarActivity {
      * @return 是否为空 如果不为空返回false 如果为空返回true
      */
     private boolean filterList(List<Score> scores, List<Score> resultList) {
-
         List<Score> filteredList = new ArrayList<>();
         for (Score score : scores) {
             boolean flag = false;
@@ -270,7 +271,6 @@ public class ScoreDisplayActivity extends ToolbarActivity {
             mMultiStatusView.showEmpty();
             return true;
         } else {
-            resultList.clear();
             resultList.addAll(filteredList);
             return false;
         }
@@ -341,7 +341,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
             showCreditGradeDialog(result);
         });
 
-
+        renderedFilteredScoreList();
     }
 
     private void showCreditGradeDialog(float result) {
@@ -402,40 +402,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
     }
 
-    //手动解析,为了和以前的数据结构相匹配...
-    public @Nullable List<Score> getScoreFromJson(String json) throws JSONException {
-        List<Score> list = new ArrayList<>();
-        JSONObject jsonRoot = new JSONObject(json);
-        JSONArray items = jsonRoot.getJSONArray("items");
-        if (items == null || items.length() == 0) {
-            Log.i(TAG, "getScoreFromJson: item==null?" + (items == null));
-            return null;
-        }
-        for (int i = 0; i < items.length(); i++) {
-            JSONObject item = items.getJSONObject(i);
-            Score score = new Score();
-            score.course = item.getString("kcmc");
-            if (score.course==null)
-                score.course="  ";
-            score.credit = item.getString("xf");
-            if (score.credit==null)
-                score.credit="0";
-            score.grade=item.getString("cj");
-            if (score.grade==null)
-                score.grade="0";
-            score.jxb_id=item.getString("jxb_id");
-            if (score.jxb_id==null)
-                score.jxb_id="  ";
 
-            score.kcxzmc=item.getString("kcxzmc");
-
-            score.xnm=item.getInt("xnm");
-            score.xqm=item.getInt("xqm");
-
-            list.add(score);
-        }
-        return list;
-    }
 
 }
 

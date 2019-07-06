@@ -3,18 +3,12 @@ package net.muxi.huashiapp.ui.score.fragments;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.muxistudio.appcommon.data.Score;
 
-import com.muxistudio.common.util.DimensUtil;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.login.SingleCCNUClient;
 import net.muxi.huashiapp.widget.CenterDialogFragment;
@@ -128,19 +122,19 @@ public class ScoreDetailDialog  extends CenterDialogFragment{
 
     private String[] getScoreFromHtml(String html){
         String[]strings=new String[2];
-        Pattern p = Pattern.compile("<td valign=\"middle\">【 平时 】</td>.+?<td valign=\"middle\">(\\d+)%&nbsp;</td>.+?<td valign=\"middle\">(\\d+)&nbsp;</td>", Pattern.DOTALL);
-        Pattern p2 = Pattern.compile("<td valign=\"middle\">【 期末 】</td>.+?<td valign=\"middle\">(\\d+)%&nbsp;</td>.+?<td valign=\"middle\">(\\d+)&nbsp;</td>", Pattern.DOTALL);
+        Pattern p = Pattern.compile("<td valign=\"middle\">【 平时 】</td>.+?<td valign=\"middle\">(.+?)%&nbsp;</td>.+?<td valign=\"middle\">(.+?)&nbsp;</td>", Pattern.DOTALL);
+        Pattern p2 = Pattern.compile("<td valign=\"middle\">【 期末 】</td>.+?<td valign=\"middle\">(.+?)%&nbsp;</td>.+?<td valign=\"middle\">(.+?)&nbsp;</td>", Pattern.DOTALL);
         Matcher m = p.matcher(html);
         Matcher m2=p2.matcher(html);
         if (m.find()){
-            strings[0]= String.format("%s (%s%)",m.group(1),m.group(2));
+            strings[0]= String.format("%s (%s%%)",m.group(2),m.group(1));
         }else {
             strings[0]= "获取失败";
         }
         if (m2.find()){
-            strings[0]= String.format("%s (%s%)",m2.group(1),m2.group(2));
+            strings[1]= String.format("%s (%s%%)",m2.group(2),m2.group(1));
         }else {
-            strings[0]= "获取失败";
+            strings[1]= "获取失败";
         }
         return strings;
     }

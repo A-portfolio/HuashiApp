@@ -118,7 +118,7 @@ public class CreditAdapter implements ExpandableListAdapter {
 
         Score credits = (Score) getChild(groupPosition,childPosition);
         TextView mCreditName = childView.findViewById(R.id.tv_course_name);
-        TextView mCreditValue = childView.findViewById(R.id.tv_course_credit);
+        TextView mCreditValue = childView.findViewById(R.id.course_credit);
 
 
         mCreditName.setText((credits.course));
