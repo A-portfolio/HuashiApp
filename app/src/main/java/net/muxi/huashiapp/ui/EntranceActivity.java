@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -39,11 +40,11 @@ public class EntranceActivity extends BaseAppActivity implements View.OnClickLis
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sp = new PreferenceUtil();
         isFirstOpen = PreferenceUtil.getBoolean(PreferenceUtil.APP_FIRST_OPEN, true);
+        Log.i("aaa", "onCreate: entrance");
         if (!isFirstOpen) {
             startMainActivityDelay(0);
-            /*if (PreferenceUtil.getString(Constants.SPLASH_IMG).equals("")) {
+            if (PreferenceUtil.getString(Constants.SPLASH_IMG).equals("")) {
                 startMainActivityDelay(0);
             } else {
                 setContentView(R.layout.activity_entrance);
@@ -61,7 +62,7 @@ public class EntranceActivity extends BaseAppActivity implements View.OnClickLis
                 mDrawee.setImageURI(Uri.parse(PreferenceUtil.getString(Constants.SPLASH_IMG)));
                 mDrawee.setOnClickListener(this);
                 startMainActivityDelay(2500);
-            }*/
+            }
             return;
         }
 
