@@ -19,15 +19,20 @@ import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.appcommon.utils.UserUtil;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.login.SingleCCNUClient;
 import net.muxi.huashiapp.ui.score.adapter.CreditAdapter;
 import net.muxi.huashiapp.utils.ScoreCreditUtils;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -37,6 +42,7 @@ import rx.schedulers.Schedulers;
 public class CurCreditFragment extends BaseAppFragment {
 
     private int startYear,endYear;
+    private Date date=new Date();
     private List<Score> mCredit = new ArrayList<>();
 
     private TextView mTvTotalCredit;
@@ -69,6 +75,21 @@ public class CurCreditFragment extends BaseAppFragment {
         for (int i = 0; i < (end - start); i++) {
             observables[i] = CampusFactory.getRetrofitService()
                     .getScores(String.valueOf(start + i), "");
+            observables[i]=  SingleCCNUClient.getClient().getScores(String.valueOf(start + i), "",false, String.valueOf(date.getTime()),100,1,"","asc",1 )
+                                .flatMap(new Func1<ResponseBody, Observable<List<Score>>>() {
+                                    @Override
+                                    public Observable<List<Score>> call(ResponseBody responseBody) {
+                                        List<Score>list=null;
+                                        try {
+                                            list=ScoreCreditUtils.getScoreFromJson(responseBody.string());
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        return Observable.just(list);
+                                    }
+                                });
         }
         return observables;
     }
@@ -82,12 +103,6 @@ public class CurCreditFragment extends BaseAppFragment {
 
         scoreObservable
                 .subscribeOn(Schedulers.io())
-                .onErrorResumeNext(throwable -> {
-                    throwable.printStackTrace();
-                    CcnuCrawler2.clear();
-                    return new LoginPresenter().login(UserAccountManager.getInstance().getInfoUser())
-                            .flatMap(aubBoolean -> scoreObservable);
-                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(scores -> {
                     hideLoading();

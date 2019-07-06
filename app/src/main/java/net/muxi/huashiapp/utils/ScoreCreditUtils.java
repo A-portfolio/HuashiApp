@@ -1,10 +1,16 @@
 package net.muxi.huashiapp.utils;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.data.Score;
 import com.muxistudio.common.util.DateUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -363,6 +369,40 @@ public class ScoreCreditUtils {
           total += groupCredit.get(key);
         }
         return total;
+    }
+
+    public @Nullable static List<Score> getScoreFromJson(String json) throws JSONException {
+        List<Score> list = new ArrayList<>();
+        JSONObject jsonRoot = new JSONObject(json);
+        JSONArray items = jsonRoot.getJSONArray("items");
+        if (items == null || items.length() == 0) {
+            Log.i("util", "getScoreFromJson: item==null?" + (items == null));
+            return null;
+        }
+        for (int i = 0; i < items.length(); i++) {
+            JSONObject item = items.getJSONObject(i);
+            Score score = new Score();
+            score.course = item.getString("kcmc");
+            if (score.course==null)
+                score.course="  ";
+            score.credit = item.getString("xf");
+            if (score.credit==null)
+                score.credit="0";
+            score.grade=item.getString("cj");
+            if (score.grade==null)
+                score.grade="0";
+            score.jxb_id=item.getString("jxb_id");
+            if (score.jxb_id==null)
+                score.jxb_id="  ";
+
+            score.kcxzmc=item.getString("kcxzmc");
+
+            score.xnm=item.getInt("xnm");
+            score.xqm=item.getInt("xqm");
+
+            list.add(score);
+        }
+        return list;
     }
 
 }

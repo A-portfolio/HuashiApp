@@ -73,7 +73,6 @@ public class ScoreDisplayActivity extends ToolbarActivity {
     private List<String> mCourseParams = new ArrayList<>();
     private List<String> mYearParams = new ArrayList<>();
     private List<String> mTermParams = new ArrayList<>();
-    private GetScorsePresenter scorsePresenter;
     private boolean mAllChecked = true;
     private Date date=new Date();
     private AtomicInteger time=new AtomicInteger(0);
@@ -112,7 +111,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         Observable<ResponseBody>[] scoreArray=new Observable[mYearParams.size()*mTermParams.size()];
         for (int i = 0; i <mYearParams.size() ; i++) {
             for (int j = 0; j <mTermParams.size() ; j++) {
-                scoreArray[i*mTermParams.size()+j] = SingleCCNUClient.getClient().getScores(mYearParams.get(i),mTermParams.get(j),false, String.valueOf(date.getTime()),15,1,"","asc",time.get() );
+                scoreArray[i*mTermParams.size()+j] = SingleCCNUClient.getClient().getScores(mYearParams.get(i),mTermParams.get(j),false, String.valueOf(date.getTime()),100,1,"","asc",time.get() );
             }
 
         }
@@ -147,7 +146,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                         Log.i(TAG, "onNext: ");
                         List<Score> scoreList = null;
                         try {
-                            scoreList = getScoreFromJson(responseBody.string());
+                            scoreList = ScoreCreditUtils.getScoreFromJson(responseBody.string());
                         } catch (JSONException e) {
                             e.printStackTrace();
                             ToastUtil.showShort(R.string.score_error_1);
@@ -158,8 +157,10 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                         if (scoreList==null)return;
 
                         boolean isFull = filterList(scoreList, mFilteredList);
-                        if (!isFull)
-                            renderedFilteredScoreList();
+                        if (!isFull) {
+                            mMultiStatusView.showContent();
+                            mScoresAdapter.notifyDataSetChanged();
+                        }
                     }
                 });
 
@@ -181,11 +182,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(scoreList -> {
                             setLoadingInfo(CommonTextUtils.generateRandomScoreText(mYearParams.get(index)));
-                        })
-                        .retryWhen(new RequestRetry.Builder()
-                                .setMaxretries(3)
-                                .setObservable(scoreArray).setRetryInfo(() -> setLoadingInfo("登录过期，正在重新登录中"))
-                                .build());
+                        });
             }
         }
 
@@ -243,7 +240,6 @@ public class ScoreDisplayActivity extends ToolbarActivity {
      * @return 是否为空 如果不为空返回false 如果为空返回true
      */
     private boolean filterList(List<Score> scores, List<Score> resultList) {
-
         List<Score> filteredList = new ArrayList<>();
         for (Score score : scores) {
             boolean flag = false;
@@ -275,7 +271,6 @@ public class ScoreDisplayActivity extends ToolbarActivity {
             mMultiStatusView.showEmpty();
             return true;
         } else {
-            resultList.clear();
             resultList.addAll(filteredList);
             return false;
         }
@@ -346,7 +341,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
             showCreditGradeDialog(result);
         });
 
-
+        renderedFilteredScoreList();
     }
 
     private void showCreditGradeDialog(float result) {
@@ -407,36 +402,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
     }
 
-    //手动解析,为了和以前的数据结构相匹配...
-    public @Nullable List<Score> getScoreFromJson(String json) throws JSONException {
-        List<Score> list = new ArrayList<>();
-        JSONObject jsonRoot = new JSONObject(json);
-        JSONArray items = jsonRoot.getJSONArray("items");
-        if (items == null || items.length() == 0) {
-            Log.i(TAG, "getScoreFromJson: item==null?" + (items == null));
-            return null;
-        }
-        for (int i = 0; i < items.length(); i++) {
-            JSONObject item = items.getJSONObject(i);
-            Score score = new Score();
-            score.course = item.getString("kcmc");
-            if (score.course==null)
-                score.course="  ";
-            score.credit = item.getString("xf");
-            if (score.credit==null)
-                score.credit="0";
-            score.grade=item.getString("cj");
-            if (score.grade==null)
-                score.grade="0";
-            score.jxb_id=item.getString("jxb_id");
-            if (score.jxb_id==null)
-                score.jxb_id="  ";
 
-            score.kcxzmc=item.getString("kcxzmc");
-            list.add(score);
-        }
-        return list;
-    }
 
 }
 

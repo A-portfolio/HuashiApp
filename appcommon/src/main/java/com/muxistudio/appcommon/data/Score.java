@@ -25,6 +25,8 @@ public class Score implements Parcelable {
     public String kcxzmc;
     public String usual;
     public String ending;
+    public int xnm;
+    public int xqm;
 
     public Score(){}
 
