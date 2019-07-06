@@ -34,7 +34,10 @@ public interface CcnuService3 {
                                       @Field("nd") String nd, @Field("queryModel.showCount") int num, @Field("queryModel.currentPage") int page,
                                       @Field("queryModel.sortName") String sortname, @Field("queryModel.sortOrder") String order, @Field("time") int time);
 
-
+    //获取平时成绩和期末成绩
+    @POST("http://xk.ccnu.edu.cn/cjcx/cjcx_cxCjxq.html?time=1562376341836&gnmkdm=N305005")
+    @FormUrlEncoded
+    Observable<ResponseBody>getUAE(@Field(("jxb_id"))String jxb_id,@Field("xnm")int xnm,@Field(("xqm"))int xqm,@Field("kcmc")String name);
     @GET("http://202.114.34.15/reader/hwthau.php")
     Observable<ResponseBody>perLibLogin();
 
