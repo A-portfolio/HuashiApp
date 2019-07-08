@@ -221,8 +221,8 @@ public class MainActivity extends BaseAppActivity implements
 
     private void getSplashData() {
         CampusFactory.getRetrofitService().getSplash()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<SplashData>() {
                     @Override
                     public void onCompleted() {
