@@ -131,8 +131,8 @@ public class CcnuCrawler3 {
                         return clientWithRetrofit.performSystemLogin();
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
                 .retry(1)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
 
 

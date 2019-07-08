@@ -41,19 +41,27 @@ public class App extends Application {
         Global. setApplication(this);
         UserAccountManager.getInstance().initUser();
 
+        Fresco.initialize(getContext(),setFrescoConfig());
+        Application application=this;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                initBugly();
+                initUMeng();
+                initARouter(application);
+                initX5();
+                MiPushUtil.initMiPush(getContext());
 
-
-
-        Fresco.initialize(this,setFrescoConfig());
-        initBugly();
-        initUMeng();
-        initARouter(this);
-        initX5();
-        MiPushUtil.initMiPush(this);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         sLastLogin = PreferenceUtil.getLong(PreferenceUtil.LAST_LOGIN_MOMENT);
 
-      User user = UserAccountManager.getInstance().getInfoUser();
 
       //UtilsExtensionKt.cache(sContext,user.sid,user.password);
     }
