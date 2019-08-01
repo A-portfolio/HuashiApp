@@ -1,4 +1,4 @@
-package net.muxi.huashiapp.ui;
+package net.muxi.huashiapp.ui.Calendar;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +21,6 @@ import com.muxistudio.appcommon.data.CalendarData;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.utils.FrescoUtil;
 import com.muxistudio.common.util.Logger;
-import com.muxistudio.common.util.NetUtil;
 import com.muxistudio.common.util.PreferenceUtil;
 
 import net.muxi.huashiapp.R;
@@ -65,8 +64,16 @@ public class CalendarActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         initView();
-        mDraweeView = findViewById(R.id.drawee);
 
+
+
+
+
+
+
+
+
+       /*
         sp = new PreferenceUtil();
         lastTime = PreferenceUtil.getLong(PreferenceUtil.CALENDAR_UPDATE);
         setTitle("校历");
@@ -88,7 +95,34 @@ public class CalendarActivity extends ToolbarActivity {
                 setImageNotFound();
             }
         }
+        */
+
+
+
+
+
+
     }
+
+    //先从本地查找，再从网络
+    public void getCalendarImage(String url){
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private void setImageNotFound() {
         mImgEmpty.setVisibility(View.VISIBLE);
