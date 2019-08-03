@@ -14,13 +14,20 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.core.ImagePipeline;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.CalendarData;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.utils.FrescoUtil;
 import com.muxistudio.common.util.Logger;
+import com.muxistudio.common.util.NetUtil;
 import com.muxistudio.common.util.PreferenceUtil;
 
 import net.muxi.huashiapp.R;
@@ -36,78 +43,64 @@ import rx.schedulers.Schedulers;
 public class CalendarActivity extends ToolbarActivity {
 
     private ScrollView mScrollView;
-    private SimpleDraweeView mDrawee;
-    private ImageView mImgEmpty;
-    private TextView mTvEmpty;
+    private SimpleDraweeView mDraweeView;
+
+    private String picUrl;
+
 
     public static void start(Context context) {
         Intent starter = new Intent(context, CalendarActivity.class);
         context.startActivity(starter);
     }
 
-
-    private SimpleDraweeView mDraweeView;
-
-    private int imgWidth;
-    private int imgHeight;
-
-    private Bitmap bitmap;
-
-    //上次距离最近的时间
-    private long lastTime;
-    private String picUrl;
-    private PreferenceUtil sp;
-    private static final long DEFAULT_TIME = -1;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         initView();
+        //picUrl = "https://static.muxixyz.com/calendar/2018-2019%E7%AC%AC%E4%BA%8C%E3%80%81%E4%B8%89%E5%AD%A6%E6%9C%9F%E6%A0%A1%E5%8E%86.png";
+        picUrl=PreferenceUtil.getString(PreferenceUtil.CALENDAR_ADDRESS);
 
-
-
-
-
-
-
-
-
-       /*
-        sp = new PreferenceUtil();
-        lastTime = PreferenceUtil.getLong(PreferenceUtil.CALENDAR_UPDATE);
         setTitle("校历");
+        loadImage(Uri.parse(picUrl));
 
-        //如果有本地缓存就从中读取?????
 
 
-        if (lastTime != DEFAULT_TIME) {
-            getImgSize(PreferenceUtil.getString(PreferenceUtil.CALENDAR_SIZE));
-            if (imgWidth != 0) {
-                setCalendarDrawee(PreferenceUtil.getString(PreferenceUtil.CALENDAR_ADDRESS));
+
+
+    }
+
+
+
+    private void loadImage(Uri uri){
+        clearOldCalendar();
+
+        ImageRequestBuilder builder=ImageRequestBuilder.newBuilderWithSource(uri);
+        builder.setResizeOptions(new ResizeOptions(760,3246));
+        ImageRequest request=builder.build();
+        DraweeController controller=Fresco.newDraweeControllerBuilder()
+                .setImageRequest(request)
+                .build();
+        mDraweeView.setAspectRatio((float)760/(float)3246);
+        mDraweeView.setController(controller);
+
+    }
+
+
+    private void clearOldCalendar(){
+        String oldUrl=PreferenceUtil.getString(PreferenceUtil.OLD_CALENDAR_ADDRESS,"first");
+        if (oldUrl.equals("first")){
+            PreferenceUtil.saveString(PreferenceUtil.OLD_CALENDAR_ADDRESS,picUrl);
+            return;
+        }else {
+            if (oldUrl.equals(picUrl))
+                return;
+            else {
+                ImagePipeline imagePipeline= Fresco.getImagePipeline();
+                imagePipeline.evictFromCache(Uri.parse(oldUrl));
+
             }
         }
-        if (NetUtil.isConnected()) {
-            updateImage();
-        } else {
-            if (lastTime == DEFAULT_TIME) {
-                //当第一次没联网时则显示图片无法显示
-                setImageNotFound();
-            }
-        }
-        */
-
-
-
-
-
-
-    }
-
-    //先从本地查找，再从网络
-    public void getCalendarImage(String url){
-
-
     }
 
 
@@ -120,76 +113,6 @@ public class CalendarActivity extends ToolbarActivity {
 
 
 
-
-
-
-
-    private void setImageNotFound() {
-        mImgEmpty.setVisibility(View.VISIBLE);
-        mTvEmpty.setVisibility(View.VISIBLE);
-    }
-
-    //更新图片信息
-    private void updateImage() {
-        CampusFactory.getRetrofitService().getCalendar()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(new Observer<CalendarData>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(final CalendarData calendarData) {
-                        if (lastTime != calendarData.getUpdate()) {
-                            saveCalendarData(calendarData);
-                            getImgSize(calendarData.getSize());
-                            setCalendarDrawee(calendarData.getImg());
-                            FrescoUtil.savePicture(picUrl, CalendarActivity.this, calendarData.getFilename());
-                        }
-                    }
-                });
-    }
-
-    /**
-     * 设置校历的图片
-     *
-     * @param url
-     */
-    public void setCalendarDrawee(String url) {
-        if (imgHeight != 0) {
-            float ratio = (float) (imgWidth) / (float) (imgHeight);
-            Logger.d(ratio + "");
-            mDraweeView.setAspectRatio(ratio);
-            mDraweeView.setImageURI(Uri.parse(url));
-        }
-    }
-
-
-    //保存 calendar 的相关信息
-    private void saveCalendarData(CalendarData calendarData) {
-        lastTime = calendarData.getUpdate();
-        picUrl = calendarData.getImg();
-        PreferenceUtil.saveLong(PreferenceUtil.CALENDAR_UPDATE, lastTime);
-        PreferenceUtil.saveString(PreferenceUtil.CALENDAR_ADDRESS, picUrl);
-        PreferenceUtil.saveString(PreferenceUtil.CALENDAR_SIZE, calendarData.getSize());
-    }
-
-    public void getImgSize(String size) {
-        int index = size.indexOf("x");
-        if(index != -1) {
-            String heightStr = size.substring(index + 1, size.length());
-            String widthStr = size.substring(0, index);
-            imgWidth = Integer.valueOf(widthStr);
-            imgHeight = Integer.valueOf(heightStr);
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -209,8 +132,6 @@ public class CalendarActivity extends ToolbarActivity {
 
     private void initView() {
         mScrollView = findViewById(R.id.scroll_view);
-        mDrawee = findViewById(R.id.drawee);
-        mImgEmpty = findViewById(R.id.img_empty);
-        mTvEmpty = findViewById(R.id.tv_empty);
+        mDraweeView = findViewById(R.id.drawee);
     }
 }
