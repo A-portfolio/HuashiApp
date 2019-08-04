@@ -58,8 +58,8 @@ public class CalendarActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         initView();
-        //picUrl = "https://static.muxixyz.com/calendar/2018-2019%E7%AC%AC%E4%BA%8C%E3%80%81%E4%B8%89%E5%AD%A6%E6%9C%9F%E6%A0%A1%E5%8E%86.png";
-        picUrl=PreferenceUtil.getString(PreferenceUtil.CALENDAR_ADDRESS);
+        picUrl = "https://static.muxixyz.com/calendar/2018-2019%E7%AC%AC%E4%BA%8C%E3%80%81%E4%B8%89%E5%AD%A6%E6%9C%9F%E6%A0%A1%E5%8E%86.png";
+       // picUrl=PreferenceUtil.getString(PreferenceUtil.CALENDAR_ADDRESS);
 
         setTitle("校历");
         loadImage(Uri.parse(picUrl));
@@ -76,7 +76,7 @@ public class CalendarActivity extends ToolbarActivity {
         clearOldCalendar();
 
         ImageRequestBuilder builder=ImageRequestBuilder.newBuilderWithSource(uri);
-        builder.setResizeOptions(new ResizeOptions(760,3246));
+        //builder.setResizeOptions(new ResizeOptions(760,3246));
         ImageRequest request=builder.build();
         DraweeController controller=Fresco.newDraweeControllerBuilder()
                 .setImageRequest(request)
