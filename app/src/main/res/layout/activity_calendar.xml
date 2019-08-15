@@ -17,38 +17,11 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <ScrollView
-        android:id="@+id/scroll_view"
+    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+        android:id="@+id/largeImageView"
+        fresco:quickScaleEnabled="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar">
+        android:layout_height="match_parent"/>
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/drawee"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            fresco:placeholderImageScaleType="fitXY"/>
-
-    </ScrollView>
-
-    <ImageView
-        android:id="@+id/img_empty"
-        android:layout_width="@dimen/empty_img_height"
-        android:layout_height="@dimen/empty_img_height"
-        android:layout_below="@+id/toolbar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/empty_img_marginTop"
-        android:scaleType="fitXY"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/tv_empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/img_empty"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:text="网络异常"
-        android:visibility="gone"/>
 
 </RelativeLayout>

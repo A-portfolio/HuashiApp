@@ -155,7 +155,6 @@ public class TimeTableUtil {
      * 获取当前周的周次
      */
     public static int getCurWeek() {
-        PreferenceUtil sp = new PreferenceUtil();
         /*
         SimpleDateFormat yearFormmatter = new SimpleDateFormat("yyyy");
         Date now = new Date(System.currentTimeMillis());

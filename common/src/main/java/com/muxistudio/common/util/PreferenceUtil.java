@@ -44,6 +44,7 @@ public class PreferenceUtil {
     public static final String CALENDAR_UPDATE = "calendar_update";
     //校历的图片地址
     public static final String CALENDAR_ADDRESS = "calendar_address";
+    public static final String OLD_CALENDAR_ADDRESS="old_calendar_url";
     //校历的尺寸
     public static final String CALENDAR_SIZE = "calendar_size";
 

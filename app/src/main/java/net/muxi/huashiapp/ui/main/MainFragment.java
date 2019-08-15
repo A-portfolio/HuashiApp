@@ -36,7 +36,7 @@ import com.muxistudio.common.util.PreferenceUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.R;
-import net.muxi.huashiapp.ui.CalendarActivity;
+import net.muxi.huashiapp.ui.Calendar.CalendarActivity;
 import net.muxi.huashiapp.ui.MoreActivity;
 import net.muxi.huashiapp.ui.apartment.ApartmentActivity;
 import net.muxi.huashiapp.ui.card.CardActivity;

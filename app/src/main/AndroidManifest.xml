@@ -140,7 +140,7 @@
             android:name="net.muxi.huashiapp.ui.apartment.ApartmentActivity"
             android:launchMode="singleTask"/>
 
-        <activity android:name="net.muxi.huashiapp.ui.CalendarActivity"
+        <activity android:name="net.muxi.huashiapp.ui.Calendar.CalendarActivity"
             android:launchMode="singleTask"/>
 
         <activity android:name="net.muxi.huashiapp.ui.AboutActivity"
