@@ -7,7 +7,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,6 +57,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
+import okhttp3.OkHttpClient;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -67,7 +70,7 @@ public class CalendarActivity extends ToolbarActivity {
     private SubsamplingScaleImageView mLargeImageView;
     DataSource<CloseableReference<PooledByteBuffer>> imageSource;
     private String picUrl;
-
+    private String cachePath;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, CalendarActivity.class);
@@ -79,10 +82,10 @@ public class CalendarActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         initView();
+        setTitle("校历");
 
         picUrl=PreferenceUtil.getString(PreferenceUtil.CALENDAR_ADDRESS);
-
-        setTitle("校历");
+        cachePath=getDiskCacheDir(this);
 
         ViewTreeObserver vto = mLargeImageView.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -91,7 +94,7 @@ public class CalendarActivity extends ToolbarActivity {
                 mLargeImageView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 mLargeImageView.getHeight();
                 int w=mLargeImageView.getWidth();
-                loadLargeImage(Uri.parse(picUrl),w);
+                loadLargeImage(picUrl,w);
 
             }
         });
@@ -100,10 +103,21 @@ public class CalendarActivity extends ToolbarActivity {
     }
 
 
-    private void loadLargeImage(Uri url,int w){
-
+    private void loadLargeImage(String url,int w){
+      //  String cacheKey= Base64.encodeToString();
     }
 
+
+    public String getDiskCacheDir(Context context) {
+        String cachePath = null;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = context.getExternalCacheDir().getPath();
+        } else {
+            cachePath = context.getCacheDir().getPath();
+        }
+        return cachePath;
+    }
     public float  fiTXY(int width,File file)  {
         BitmapFactory.Options option=new BitmapFactory.Options();
         option.inJustDecodeBounds=true;
