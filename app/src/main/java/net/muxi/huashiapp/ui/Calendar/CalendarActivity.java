@@ -79,8 +79,8 @@ public class CalendarActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         initView();
-        picUrl = "https://static.muxixyz.com/calendar/2018-2019%E7%AC%AC%E4%BA%8C%E3%80%81%E4%B8%89%E5%AD%A6%E6%9C%9F%E6%A0%A1%E5%8E%86.png";
-       // picUrl=PreferenceUtil.getString(PreferenceUtil.CALENDAR_ADDRESS);
+
+        picUrl=PreferenceUtil.getString(PreferenceUtil.CALENDAR_ADDRESS);
 
         setTitle("校历");
 
@@ -101,46 +101,7 @@ public class CalendarActivity extends ToolbarActivity {
 
 
     private void loadLargeImage(Uri url,int w){
-        clearOldCalendar();
-        FileCache fileCache=Fresco.getImagePipelineFactory().getMainFileCache();
-        SimpleCacheKey cacheKey=new SimpleCacheKey(url.toString());
-        if (fileCache.hasKey(cacheKey)) {
 
-            FileBinaryResource resource = (FileBinaryResource) fileCache.getResource(cacheKey);
-            File file = resource.getFile();
-            mLargeImageView.setImage(ImageSource.uri(Uri.fromFile(file)),new ImageViewState(fiTXY(w,file),new PointF(0,0),0));
-            return;
-        }
-
-
-        ImageRequestBuilder builder=ImageRequestBuilder.newBuilderWithSource(url);
-        ImageRequest request=builder.build();
-        imageSource=Fresco.getImagePipeline()
-                        .fetchEncodedImage(request,getApplicationContext());
-
-        DataSubscriber<CloseableReference<PooledByteBuffer>>subscriber=new BaseDataSubscriber<CloseableReference<PooledByteBuffer>>() {
-            @Override
-            protected void onNewResultImpl(DataSource<CloseableReference<PooledByteBuffer>> dataSource) {
-                if (!dataSource.isFinished()){
-                    return;
-                }
-
-                FileBinaryResource resource = (FileBinaryResource) fileCache.getResource(cacheKey);
-                File file = resource.getFile();
-                mLargeImageView.setImage(ImageSource.uri(Uri.fromFile(file)),new ImageViewState(fiTXY(w,file),new PointF(0,0),0));
-
-
-
-
-            }
-
-            @Override
-            protected void onFailureImpl(DataSource<CloseableReference<PooledByteBuffer>> dataSource) {
-                ToastUtil.showLong("加载校历出错!");
-            }
-        };
-
-        imageSource.subscribe(subscriber, UiThreadImmediateExecutorService.getInstance());
     }
 
     public float  fiTXY(int width,File file)  {
@@ -151,33 +112,6 @@ public class CalendarActivity extends ToolbarActivity {
 
         return scale;
     }
-
-
-
-    private void clearOldCalendar(){
-        String oldUrl=PreferenceUtil.getString(PreferenceUtil.OLD_CALENDAR_ADDRESS,"first");
-        if (oldUrl.equals("first")){
-            PreferenceUtil.saveString(PreferenceUtil.OLD_CALENDAR_ADDRESS,picUrl);
-            return;
-        }else {
-            if (oldUrl.equals(picUrl))
-                return;
-            else {
-                ImagePipeline imagePipeline= Fresco.getImagePipeline();
-                imagePipeline.evictFromCache(Uri.parse(oldUrl));
-
-            }
-        }
-    }
-
-
-
-
-
-
-
-
-
 
 
 

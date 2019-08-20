@@ -1,7 +1,7 @@
 # HuashiApp发版流程
 ---
 ## 1.更改版本号：  
-- 修改在`config.gradle`中的ext块中的版本号，2.4.x，如有大改动再升级2.5  
+- 修改在`configBean.gradle`中的ext块中的版本号，2.4.x，如有大改动再升级2.5
 另所有新添加的dependencies都需添加到config.gradle中集中管理，然后再到各个板块中引用
 
 ## 注：打包签名需要的 HuashiApp.jks和 keystore.properties请像相关人员请求

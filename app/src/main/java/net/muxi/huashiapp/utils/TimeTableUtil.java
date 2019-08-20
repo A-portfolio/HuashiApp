@@ -10,6 +10,9 @@ import com.muxistudio.common.util.DateUtil;
 import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.PreferenceUtil;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import net.muxi.huashiapp.R;
@@ -155,50 +158,70 @@ public class TimeTableUtil {
      * 获取当前周的周次
      */
     public static int getCurWeek() {
-        /*
-        SimpleDateFormat yearFormmatter = new SimpleDateFormat("yyyy");
-        Date now = new Date(System.currentTimeMillis());
-        int thisYear  = Integer.parseInt(yearFormmatter.format(now));
-        Date schoolDay = new Date(thisYear-1900,9 -1,1);
-        //获得开学的那一天是一周中的第几天
-        int dayOfSchoolDay = DateUtil.getDayInWeek(schoolDay);
-        //获得第二周的第一天是九月几号：
-        int dayOfSecondWeek = 7 - dayOfSchoolDay + 1 + 1;
-        String secondWeek = thisYear + "-" +"09"+"-"+"0"+dayOfSecondWeek;
-        int curWeek = (int) (DateUtil.getDistanceWeek(secondWeek,DateUtil
-                                .toDateInYear(new Date(System.currentTimeMillis()))))+2;
-        //计算两周之间的距离就是八周　
-        return curWeek >= 1 ? curWeek : 1;
-       */
+       int selectWeek=PreferenceUtil.getInt(PreferenceUtil.SELECTED_WEEK,-1);
+        DateFormat dataFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.CHINESE);
+        String cur=dataFormat.format(new Date());
+       //selectWeek==-1表示用户没有自己设置周数
+       if (selectWeek==-1){
+           String startTime=PreferenceUtil.getString(PreferenceUtil.FIRST_WEEK_DATE,"NULL");
+           if (startTime.equals("NULL")){
+               return 1;
+           }
+           try {
+               int dis=getDistanceWeek(startTime,cur);
+               return dis+1;
+           }catch (ParseException e){
+               return 1;
+           }
 
-        int day = DateUtil.getDayInWeek(new Date(System.currentTimeMillis()));
-        //获取date的格式 根据 distance 定
-        String defaluteDate = DateUtil.getTheDateInYear(new Date(System.currentTimeMillis()),
-                1 - day);
-        int curWeek;
-        String firstWeek = PreferenceUtil.getString(PreferenceUtil.FIRST_WEEK_DATE, defaluteDate);
-        String weekArg =  DateUtil.toDateInYear(new Date(System.currentTimeMillis()));
-        curWeek = (int) DateUtil.getDistanceWeek(
-                PreferenceUtil.getString(PreferenceUtil.FIRST_WEEK_DATE, defaluteDate),
-                DateUtil.toDateInYear(new Date(System.currentTimeMillis()))) + 1;
-        curWeek = curWeek <= Constants.WEEKS_LENGTH ? curWeek : Constants.WEEKS_LENGTH;
-        curWeek = curWeek >= 1 ? curWeek : 1;
-        return curWeek;
+       }else {
+           String startTime=PreferenceUtil.getString(PreferenceUtil.SELECTED_WEEK_DATE,"NULL");
+           try {
+               int dis=getDistanceWeek(startTime,cur);
+               return selectWeek+dis;
+           }catch (ParseException e) {
+               e.printStackTrace();
+               return 1;
+           }
+
+
+       }
+
 
     }
 
+
+    /**
+     *
+     * @param start 起始日期 yyyy-MM-dd
+     * @param end 现在的日期  yyyy-MM-dd
+     * @return 相隔的周数
+     * @throws ParseException
+     */
+    public static int getDistanceWeek(String start,String end) throws ParseException {
+        DateFormat dataFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.CHINESE);
+        Date date1=dataFormat.parse(start);
+        Date date2=dataFormat.parse(end);
+        Calendar calendar=Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        int days=(int)((date2.getTime()-date1.getTime())/(1000*60*60*24));
+        calendar.setTime(date1);
+        int weekDay=calendar.get(Calendar.DAY_OF_WEEK)-1;
+        System.out.println(weekDay);
+        int disWeeks=days/7;
+        int off=days%7;
+
+        return (off+weekDay>7?1:0)+disWeeks;
+    }
   /**
    * 保存当前的周数
-   * @param week 周数 周数是正常周数的值-1
+   *
    */
   public static void saveCurWeek(int week) {
-        Date date = new Date(System.currentTimeMillis());
-        int day = DateUtil.getDayInWeek(date);
-        int distance = 1 - day - (week - 1) * 7;
-        PreferenceUtil.saveString(PreferenceUtil.FIRST_WEEK_DATE,
-                DateUtil.getTheDateInYear(date, distance));
-        PreferenceUtil.saveInt(PreferenceUtil.SELECTED_WEEK,week);
-    }
+      DateFormat dataFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.CHINESE);
+      PreferenceUtil.saveString(PreferenceUtil.SELECTED_WEEK_DATE,dataFormat.format(new Date()));
+      PreferenceUtil.saveInt(PreferenceUtil.SELECTED_WEEK,week);
+  }
 
     /**
      * 获取选择的周期的周次
