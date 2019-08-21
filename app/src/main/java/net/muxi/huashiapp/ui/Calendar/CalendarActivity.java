@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,12 +54,20 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.more.ShareDialog;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.Objects;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -72,6 +81,7 @@ public class CalendarActivity extends ToolbarActivity {
     private String picUrl;
     private String cachePath;
 
+    private final static String TAG="calendar";
     public static void start(Context context) {
         Intent starter = new Intent(context, CalendarActivity.class);
         context.startActivity(starter);
@@ -85,14 +95,13 @@ public class CalendarActivity extends ToolbarActivity {
         setTitle("校历");
 
         picUrl=PreferenceUtil.getString(PreferenceUtil.CALENDAR_ADDRESS);
-        cachePath=getDiskCacheDir(this);
+        cachePath=getDiskCacheDir(this)+"/"+getImageName(picUrl);
 
         ViewTreeObserver vto = mLargeImageView.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                mLargeImageView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                mLargeImageView.getHeight();
+                mLargeImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 int w=mLargeImageView.getWidth();
                 loadLargeImage(picUrl,w);
 
@@ -104,9 +113,54 @@ public class CalendarActivity extends ToolbarActivity {
 
 
     private void loadLargeImage(String url,int w){
-      //  String cacheKey= Base64.encodeToString();
+        File file=new File(cachePath);
+        if (file.exists()){
+            mLargeImageView.setImage(ImageSource.uri(Uri.fromFile(file)),new ImageViewState(fiTXY(w,new File(cachePath)),new PointF(0,0),0));
+            return;
+        }
+        Observable.unsafeCreate(new Observable.OnSubscribe<Object>() {
+            @Override
+            public void call(Subscriber<? super Object> subscriber) {
+                OkHttpClient client=new OkHttpClient();
+                Request request=new Request.Builder().url(url).get().build();
+                Response response=null;
+                FileOutputStream out=null;
+                try {
+                    Log.i(TAG, "call: "+file.getPath());
+                    response=client.newCall(request).execute();
+                    out=new FileOutputStream(file);
+                    Bitmap bitmap=BitmapFactory.decodeStream(response.body().byteStream());
+                    bitmap.compress(Bitmap.CompressFormat.PNG,100,out);
+                    subscriber.onNext(0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    ToastUtil.showLong("加载校历出错!");
+                    return;
+                }finally {
+                    try {
+                        out.close();
+                        response.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+         }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o -> {
+                    mLargeImageView.setImage(ImageSource.uri(Uri.fromFile(file)),new ImageViewState(fiTXY(w,new File(cachePath)),new PointF(0,0),0));
+
+                });
+
+
     }
 
+    public String getImageName(String url){
+        return url.substring(url.lastIndexOf('/')+1);
+
+
+    }
 
     public String getDiskCacheDir(Context context) {
         String cachePath = null;
@@ -116,6 +170,7 @@ public class CalendarActivity extends ToolbarActivity {
         } else {
             cachePath = context.getCacheDir().getPath();
         }
+
         return cachePath;
     }
     public float  fiTXY(int width,File file)  {
@@ -123,7 +178,7 @@ public class CalendarActivity extends ToolbarActivity {
         option.inJustDecodeBounds=true;
         BitmapFactory.decodeFile(file.getPath(), option);
         float scale=(float) width/option.outWidth;
-
+        Log.i(TAG, "fiTXY: "+scale);
         return scale;
     }
 
