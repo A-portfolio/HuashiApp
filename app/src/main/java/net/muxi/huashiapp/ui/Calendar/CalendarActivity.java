@@ -202,6 +202,7 @@ public class CalendarActivity extends ToolbarActivity {
 
     private void initView() {
         mLargeImageView=findViewById(R.id.largeImageView);
+        mLargeImageView.setZoomEnabled(false);
     }
 
     @Override

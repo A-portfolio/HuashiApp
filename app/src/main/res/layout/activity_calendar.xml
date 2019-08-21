@@ -18,8 +18,8 @@
     </android.support.v7.widget.Toolbar>
 
     <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+        android:layout_below="@id/toolbar"
         android:id="@+id/largeImageView"
-        fresco:quickScaleEnabled="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
