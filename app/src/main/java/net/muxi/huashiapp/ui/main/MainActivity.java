@@ -92,9 +92,8 @@ public class MainActivity extends BaseAppActivity implements
         //这个提醒好像不能用,先暂停
         //AlarmUtil.register(this);
         getSplashData();
+        getConfig();
 
-        //登录重试
-        //todo test
         if( UserAccountManager.getInstance().isInfoUserLogin()){
             ccnuCrawler3=new CcnuCrawler3();
             ccnuCrawler3.performLogin(new Subscriber<ResponseBody>() {
@@ -189,6 +188,7 @@ public class MainActivity extends BaseAppActivity implements
         Logger.d("file not exists");
     }
 
+
     private void initListener() {
         // TODO: 18-8-20
         RxBus.getDefault().toObservable(LibLoginEvent.class)
@@ -219,6 +219,19 @@ public class MainActivity extends BaseAppActivity implements
         addSubscription(subscription);
     }
 
+    public void getConfig(){
+        CampusFactory.getRetrofitService().getConfig()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(config -> {
+                    PreferenceUtil.saveString(PreferenceUtil.FIRST_WEEK_DATE,config.getStartCountDayPresetForV2());
+                    PreferenceUtil.saveString(PreferenceUtil.CALENDAR_ADDRESS,config.getCalendarUrl());
+
+
+                });
+
+
+    }
     private void getSplashData() {
         CampusFactory.getRetrofitService().getSplash()
                 .subscribeOn(Schedulers.io())

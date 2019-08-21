@@ -357,8 +357,9 @@ public class TimetableFragment extends BaseAppFragment {
             if (!selectedIvStatus) {
                 mWeekSelectedView.slideDown();
                 MobclickAgent.onEvent(getActivity(), "week_select");
-                mWeekSelectedView.setSelectedWeek(selectedWeek);
-                PreferenceUtil.saveInt(PreferenceUtil.CURWEEK, selectedWeek);
+                if (selectedWeek>0&&selectedWeek<=21) {
+                    mWeekSelectedView.setSelectedWeek(selectedWeek);
+                }
                 mShadeView.setVisibility(View.VISIBLE);
             } else {
                 mWeekSelectedView.slideUp();

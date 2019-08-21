@@ -13,6 +13,7 @@ import com.muxistudio.appcommon.data.BorrowedBook;
 import com.muxistudio.appcommon.data.CalendarData;
 import com.muxistudio.appcommon.data.CardData;
 import com.muxistudio.appcommon.data.ClassRoom;
+import com.muxistudio.appcommon.data.Config;
 import com.muxistudio.appcommon.data.Course;
 import com.muxistudio.appcommon.data.CourseId;
 import com.muxistudio.appcommon.data.Detail;
@@ -58,6 +59,7 @@ import rx.Observable;
  */
 public interface RetrofitService {
 
+    //https://ccnubox.muxixyz.com/api/
 
 
     @GET("lib/search/")
@@ -202,7 +204,10 @@ public interface RetrofitService {
    * 意见反馈
    */
 
-  @POST("feedback/")
-  Observable<Object> feedback(@Body FeedBack feedBack);
+    @POST("feedback/")
+    Observable<Object> feedback(@Body FeedBack feedBack);
+
+    @GET("ios/config/")
+    Observable<Config>getConfig();
 
 }

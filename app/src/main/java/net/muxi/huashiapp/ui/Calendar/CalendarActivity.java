@@ -7,7 +7,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,24 +54,34 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.more.ShareDialog;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.Objects;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by ybao on 16/7/24.
+ *
  */
 public class CalendarActivity extends ToolbarActivity {
 
     private SubsamplingScaleImageView mLargeImageView;
     DataSource<CloseableReference<PooledByteBuffer>> imageSource;
     private String picUrl;
+    private String cachePath;
 
-
+    private final static String TAG="calendar";
     public static void start(Context context) {
         Intent starter = new Intent(context, CalendarActivity.class);
         context.startActivity(starter);
@@ -79,19 +92,18 @@ public class CalendarActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         initView();
-        picUrl = "https://static.muxixyz.com/calendar/2018-2019%E7%AC%AC%E4%BA%8C%E3%80%81%E4%B8%89%E5%AD%A6%E6%9C%9F%E6%A0%A1%E5%8E%86.png";
-       // picUrl=PreferenceUtil.getString(PreferenceUtil.CALENDAR_ADDRESS);
-
         setTitle("校历");
+
+        picUrl=PreferenceUtil.getString(PreferenceUtil.CALENDAR_ADDRESS);
+        cachePath=getDiskCacheDir(this)+"/"+getImageName(picUrl);
 
         ViewTreeObserver vto = mLargeImageView.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                mLargeImageView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                mLargeImageView.getHeight();
+                mLargeImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 int w=mLargeImageView.getWidth();
-                loadLargeImage(Uri.parse(picUrl),w);
+                loadLargeImage(picUrl,w);
 
             }
         });
@@ -100,84 +112,75 @@ public class CalendarActivity extends ToolbarActivity {
     }
 
 
-    private void loadLargeImage(Uri url,int w){
-        clearOldCalendar();
-        FileCache fileCache=Fresco.getImagePipelineFactory().getMainFileCache();
-        SimpleCacheKey cacheKey=new SimpleCacheKey(url.toString());
-        if (fileCache.hasKey(cacheKey)) {
-
-            FileBinaryResource resource = (FileBinaryResource) fileCache.getResource(cacheKey);
-            File file = resource.getFile();
-            mLargeImageView.setImage(ImageSource.uri(Uri.fromFile(file)),new ImageViewState(fiTXY(w,file),new PointF(0,0),0));
+    private void loadLargeImage(String url,int w){
+        File file=new File(cachePath);
+        if (file.exists()){
+            mLargeImageView.setImage(ImageSource.uri(Uri.fromFile(file)),new ImageViewState(fiTXY(w,new File(cachePath)),new PointF(0,0),0));
             return;
         }
-
-
-        ImageRequestBuilder builder=ImageRequestBuilder.newBuilderWithSource(url);
-        ImageRequest request=builder.build();
-        imageSource=Fresco.getImagePipeline()
-                        .fetchEncodedImage(request,getApplicationContext());
-
-        DataSubscriber<CloseableReference<PooledByteBuffer>>subscriber=new BaseDataSubscriber<CloseableReference<PooledByteBuffer>>() {
+        Observable.unsafeCreate(new Observable.OnSubscribe<Object>() {
             @Override
-            protected void onNewResultImpl(DataSource<CloseableReference<PooledByteBuffer>> dataSource) {
-                if (!dataSource.isFinished()){
+            public void call(Subscriber<? super Object> subscriber) {
+                OkHttpClient client=new OkHttpClient();
+                Request request=new Request.Builder().url(url).get().build();
+                Response response=null;
+                FileOutputStream out=null;
+                try {
+                    Log.i(TAG, "call: "+file.getPath());
+                    response=client.newCall(request).execute();
+                    out=new FileOutputStream(file);
+                    Bitmap bitmap=BitmapFactory.decodeStream(response.body().byteStream());
+                    bitmap.compress(Bitmap.CompressFormat.PNG,100,out);
+                    subscriber.onNext(0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    ToastUtil.showLong("加载校历出错!");
                     return;
+                }finally {
+                    try {
+                        out.close();
+                        response.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
-                FileBinaryResource resource = (FileBinaryResource) fileCache.getResource(cacheKey);
-                File file = resource.getFile();
-                mLargeImageView.setImage(ImageSource.uri(Uri.fromFile(file)),new ImageViewState(fiTXY(w,file),new PointF(0,0),0));
-
-
-
-
             }
+         }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o -> {
+                    mLargeImageView.setImage(ImageSource.uri(Uri.fromFile(file)),new ImageViewState(fiTXY(w,new File(cachePath)),new PointF(0,0),0));
 
-            @Override
-            protected void onFailureImpl(DataSource<CloseableReference<PooledByteBuffer>> dataSource) {
-                ToastUtil.showLong("加载校历出错!");
-            }
-        };
+                });
 
-        imageSource.subscribe(subscriber, UiThreadImmediateExecutorService.getInstance());
+
     }
 
+    public String getImageName(String url){
+        return url.substring(url.lastIndexOf('/')+1);
+
+
+    }
+
+    public String getDiskCacheDir(Context context) {
+        String cachePath = null;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = context.getExternalCacheDir().getPath();
+        } else {
+            cachePath = context.getCacheDir().getPath();
+        }
+
+        return cachePath;
+    }
     public float  fiTXY(int width,File file)  {
         BitmapFactory.Options option=new BitmapFactory.Options();
         option.inJustDecodeBounds=true;
         BitmapFactory.decodeFile(file.getPath(), option);
         float scale=(float) width/option.outWidth;
-
+        Log.i(TAG, "fiTXY: "+scale);
         return scale;
     }
-
-
-
-    private void clearOldCalendar(){
-        String oldUrl=PreferenceUtil.getString(PreferenceUtil.OLD_CALENDAR_ADDRESS,"first");
-        if (oldUrl.equals("first")){
-            PreferenceUtil.saveString(PreferenceUtil.OLD_CALENDAR_ADDRESS,picUrl);
-            return;
-        }else {
-            if (oldUrl.equals(picUrl))
-                return;
-            else {
-                ImagePipeline imagePipeline= Fresco.getImagePipeline();
-                imagePipeline.evictFromCache(Uri.parse(oldUrl));
-
-            }
-        }
-    }
-
-
-
-
-
-
-
-
-
 
 
 
