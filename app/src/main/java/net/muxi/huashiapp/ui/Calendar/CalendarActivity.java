@@ -72,7 +72,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by ybao on 16/7/24.
+ *
  */
 public class CalendarActivity extends ToolbarActivity {
 
