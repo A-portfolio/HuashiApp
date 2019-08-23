@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:lineSpacingExtra="6dp"
+        android:textColor="@color/colorBlack"
+        android:textStyle="normal"
+        android:textSize="15sp"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_prompt"/>
+
+    <CheckBox
+        android:id="@+id/prompt_checkbox"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="不再提醒"/>
+    <View
+        android:id="@+id/divider"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/tv_course_name"
+        android:background="@color/colorBlack"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <Button
+        android:id="@+id/prompt_ok"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorWhite"
+        android:text="OK"
+        android:textColor="@color/colorAccent"
+        android:textSize="24sp"/>
+
+
+</LinearLayout>

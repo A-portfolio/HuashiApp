@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.login;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.muxistudio.appcommon.utils.CommonTextUtils;
 import com.muxistudio.appcommon.widgets.LoadingDialog;
 import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.NetUtil;
+import com.muxistudio.common.util.PreferenceUtil;
 import com.muxistudio.common.util.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
 
@@ -182,6 +184,10 @@ public class LoginActivity extends ToolbarActivity {
         mEtPwd = findViewById(R.id.et_pwd);
         mBtnLogin = findViewById(R.id.btn_login);
         mBtnLogin.setOnClickListener(v -> onClick());
+        if (PreferenceUtil.getBoolean("prompt",true)){
+            LoginPromptDialog dialog=new LoginPromptDialog();
+            dialog.show(getSupportFragmentManager(),"prompt");
+        }
     }
 
 
