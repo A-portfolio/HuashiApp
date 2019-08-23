@@ -21,11 +21,12 @@ public class CampusRetrofit{
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
+                .addInterceptor(new TimeOutChangeInterceptor("https://ccnubox.muxixyz.com/api/ios/config/"))
                 .addInterceptor(new CookieInterceptor())
                 .addInterceptor(new AuthorizationInterceptor())
-                .readTimeout(25,TimeUnit.SECONDS)
-                .connectTimeout(25, TimeUnit.SECONDS)
-                .writeTimeout(25,TimeUnit.SECONDS)
+                .readTimeout(10,TimeUnit.SECONDS)
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .writeTimeout(10,TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
