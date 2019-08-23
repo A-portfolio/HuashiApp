@@ -53,12 +53,12 @@ public class MoreFragment extends BaseAppFragment {
 
     private PreferenceUtil sp;
 
-    private Integer[] colors = {R.color.blue,R.color.green,R.color.yellow
+    private Integer[] colors = {R.color.green,R.color.yellow
             ,R.color.grey,R.color.color_light_green,R.color.red,R.color.red};
 
-    private String[] titles = {"常见问题Q&A", "分享App给好友", "通知栏提醒", "意见反馈", "检查更新 ", "关于", "退出账号"};
+    private String[] titles = {"分享App给好友", "通知栏提醒", "意见反馈", "检查更新 ", "关于", "退出账号"};
     private Integer[] icons =
-            {R.drawable.ic_more_qa, R.drawable.ic_more_share, R.drawable.ic_more_notice,
+            { R.drawable.ic_more_share, R.drawable.ic_more_notice,
                     R.drawable.ic_more_feedback,
                     R.drawable.ic_more_update, R.drawable.ic_more_about,
                     R.drawable.ic_more_sign_out};
@@ -93,27 +93,22 @@ public class MoreFragment extends BaseAppFragment {
         mAdapter.setItemClickListener((view, position) -> {
             switch (position) {
                 case 0:
-                    Intent intent = WebViewActivity.newIntent(getContext(),
-                            "https://ccnubox.muxixyz.com/qa/");
-                    startActivity(intent);
-                    break;
-                case 1:
                     ShareDialog shareDialog = ShareDialog.newInstance(0);
                     shareDialog.show(getFragmentManager(), "dialog_share");
                     break;
-                case 2:
+                case 1:
                     SettingActivity.start(getContext());
                     break;
-                case 3:
+                case 2:
                     SuggestionActivity.start(getContext());
                     break;
-                case 4:
+                case 3:
                     checkUpdates();
                     break;
-                case 5:
+                case 4:
                     AboutActivity.start(getContext());
                     break;
-                case 6:
+                case 5:
                     logout();
                     break;
 

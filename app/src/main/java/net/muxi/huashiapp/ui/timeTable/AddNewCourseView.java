@@ -14,6 +14,7 @@ import net.muxi.huashiapp.R;
 /**
  * Created by ybao (ybaovv@gmail.com)
  * Date: 17/2/24
+ * 2019-8-23 废弃
  */
 
 //点击右上角的加号，添加新课程

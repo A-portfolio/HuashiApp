@@ -342,13 +342,7 @@ public class TimetableFragment extends BaseAppFragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true)) {
-            PreferenceUtil.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, false);
-//            FragmentTransaction ft = getFragmentManager().beginTransaction();
-//            ft.detach(this);
-//            ft.attach(this);
-//            ft.commitNowAllowingStateLoss();
-        }
+
     }
 
     public void onClick(View view) {

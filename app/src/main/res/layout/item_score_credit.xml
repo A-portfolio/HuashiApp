@@ -28,10 +28,11 @@
     <TextView
         android:id="@+id/tv_course_name"
         android:layout_toRightOf="@id/iv_dot"
+        android:layout_toLeftOf="@id/cb_cal_credit"
         android:textStyle="bold"
         android:text="计算机网络"
         android:layout_marginLeft="10dp"
-        android:layout_width="85dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
 

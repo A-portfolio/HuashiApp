@@ -143,7 +143,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                     @Override
                     public void onNext(ResponseBody responseBody) {
 
-                        Log.i(TAG, "onNext: ");
+                        Log.i(TAG, "onNext: getscore");
                         List<Score> scoreList = null;
                         try {
                             scoreList = ScoreCreditUtils.getScoreFromJson(responseBody.string());
@@ -158,76 +158,13 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
                         boolean isFull = filterList(scoreList, mFilteredList);
                         if (!isFull) {
-                            mMultiStatusView.showContent();
-                            mScoresAdapter.notifyDataSetChanged();
-                        }
-                    }
-                });
-
-
-
-    }
-
-    @SuppressWarnings("unchecked")
-    //跳过泛型数组检测的编译器警告
-    private void loadGrade() {
-        LoadingDialog loadingDialog = showLoading("正在请求成绩数据~~");
-
-        Observable<List<Score>>[] scoreArray = new Observable[mYearParams.size() * mTermParams.size()];
-        for (int i = 0; i < mYearParams.size(); i++) {
-            for (int j = 0; j < mTermParams.size(); j++) {
-                int index = i;
-                scoreArray[i * mTermParams.size() + j] = CampusFactory.getRetrofitService()
-                        .getScores(mYearParams.get(i), mTermParams.get(j))
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnNext(scoreList -> {
-                            setLoadingInfo(CommonTextUtils.generateRandomScoreText(mYearParams.get(index)));
-                        });
-            }
-        }
-
-        Subscription subscription = Observable.merge(scoreArray, 5)
-                .flatMap((Func1<List<Score>, Observable<Score>>) Observable::from)
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber() {
-                    @Override
-                    public void onCompleted() {
-                        hideLoading();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-
-                        if (e instanceof RequestRetry.RetryException) {
-                            int code = ((RequestRetry.RetryException) e).code;
-                            switch (code) {
-                                case RequestRetry.RetryException.CONFIRM_QUERY:
-                                    mMultiStatusView.showError();
-                                    break;
-                                case RequestRetry.RetryException.NET_ERROR:
-                                    mMultiStatusView.showNetError();
-                                    break;
-                            }
-                        }
-                        hideLoading();
-                    }
-
-                    @Override
-                    public void onNext(Object o) {
-                        List<Score> scoreList = (List<Score>) o;
-                        boolean isFull = filterList(scoreList, mFilteredList);
-                        if (!isFull)
                             renderedFilteredScoreList();
+                        }
                     }
                 });
 
-        loadingDialog.setOnSubscriptionCanceledListener(() -> {
-            if (!subscription.isUnsubscribed())
-                subscription.unsubscribe();
-        });
+
+
     }
 
 
@@ -337,11 +274,13 @@ public class ScoreDisplayActivity extends ToolbarActivity {
             }
             if (credit == 0)
                 showCreditGradeDialog(0);
-            float result = sum / credit;
-            showCreditGradeDialog(result);
+            else {
+                float result = sum / credit;
+                showCreditGradeDialog(result);
+            }
         });
 
-        renderedFilteredScoreList();
+
     }
 
     private void showCreditGradeDialog(float result) {

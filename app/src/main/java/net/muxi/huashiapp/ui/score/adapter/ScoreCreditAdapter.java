@@ -4,6 +4,7 @@ package net.muxi.huashiapp.ui.score.adapter;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +30,12 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
     public ScoreCreditAdapter(ArrayList<Score> scores) {
         super();
         this.mScores = scores;
-      initCheckList(true);
+        initCheckList(true);
     }
 
     //默认情况下全选checklist中所有的成绩 去计算学分绩
     private void initCheckList(boolean mAllChecked){
-        int size = getItemCount();
+        int size = mScores.size();
         for(int i=0;i<size;i++){
             mCheckMap.put(i,mAllChecked);
         }
@@ -72,12 +73,17 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
 
         String totalScore = String.format("总成绩:%s",mScores.get(position).grade);
 
+
+        //由于recycleview的复用，多页的checkbox会出现混乱，点击一个可能好几个跟着变，所以要用这个map来记录
         if(mCheckMap.keySet().contains(position)){
           if(mCheckMap.get(position))
             holder.mCbCredit.setChecked(true);
           else
             holder.mCbCredit.setChecked(false);
         }
+
+
+
         holder.mTvTotalScore.setText(totalScore);
 
         String credit = String.format("学分:%s",mScores.get(position).credit);
@@ -99,6 +105,7 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
 
         //先变化ui 变化之后的状态
         holder.mCbCredit.setOnClickListener(v -> {
+            Log.i("bug", "onBindViewHolder: "+position);
             if(!holder.mCbCredit.isChecked()){
                 mCheckMap.put(position,false);
             }else{
@@ -131,13 +138,11 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
         public ViewHolder(View itemView) {
             super(itemView);
             mCbCredit     = itemView.findViewById(R.id.cb_cal_credit);
-
             mTvCourseCredit = itemView.findViewById(R.id.course_credit);
-
             mTvTotalScore = itemView.findViewById(R.id.tv_score_total_value);
             mTvCourseName = itemView.findViewById(R.id.tv_course_name);
-
             mItemView = itemView;
+            mCbCredit.setChecked(true);
 
           }
 

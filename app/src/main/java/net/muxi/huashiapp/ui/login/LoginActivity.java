@@ -87,7 +87,7 @@ public class LoginActivity extends ToolbarActivity {
         initView();
         type = getIntent().getStringExtra("type");
         if (type.equals("info")) {
-            setTitle("登录信息门户");
+            setTitle("统一身份认证");
         }
         loginPresenter = new CcnuCrawler3();
     }

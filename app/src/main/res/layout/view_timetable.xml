@@ -22,11 +22,6 @@
         android:layout_height="100dp"
         android:visibility="gone"/>
 
-    <net.muxi.huashiapp.ui.timeTable.AddNewCourseView
-        android:id="@+id/view_curweek_set"
-        android:layout_width="match_parent"
-        android:layout_height="196dp"
-        android:visibility="gone"/>
 
     <net.muxi.huashiapp.ui.timeTable.TimeTableLayout
         android:id="@+id/layout_table"

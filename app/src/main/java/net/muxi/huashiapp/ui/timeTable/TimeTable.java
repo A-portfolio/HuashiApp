@@ -45,7 +45,6 @@ public class TimeTable extends RelativeLayout {
     public static final int MAX_CLICK_DURATION = 500;
 
     private View curDownTargetView;
-    private boolean isFirstShow = true;
     private Scroller mScroller;
     private Context mContext;
     private List<TextView> mCourseViews = new ArrayList<>();
@@ -59,7 +58,6 @@ public class TimeTable extends RelativeLayout {
     private OnClickListener mOnCourseClickListener;
     private TextView mTvTip;
     private RefreshView mRefreshView;
-    private AddNewCourseView mViewCurweekSet;
     private TimeTableLayout mLayoutTable;
     private View mDivider;
     private TableContent mTimetableContent;
@@ -74,7 +72,6 @@ public class TimeTable extends RelativeLayout {
         super(context, attrs);
         mContext = context;
         mScroller = new Scroller(context);
-        isFirstShow = PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true);
         initLayout();
         RxBus.getDefault().toObservable(RefreshFinishEvent.class)
                 .subscribe(refreshFinishEvent -> {
@@ -132,12 +129,7 @@ public class TimeTable extends RelativeLayout {
                 break;
             case MotionEvent.ACTION_MOVE:
 
-                if (!isFirstShow) {
-                    if (mRefreshView.status == RefreshView.Status.REFRESH_FINISHED ||
-                            mRefreshView.status == RefreshView.Status.REFRESHING) {
-                        return true;
-                    }
-                }
+
 
                 int scrolledX = mTimetableContent.getScrollX();
                 int scrolledY = mTimetableContent.getScrollY();
@@ -156,11 +148,7 @@ public class TimeTable extends RelativeLayout {
                 }
 
                 //不同情况下的区别滚动
-                if (isFirstShow) {
-                    if (scrolledY + curY - event.getY() < 0) {
-                        yDistance = -scrolledY;
-                    }
-                } else {
+
                     if (getScrollY() + curY - event.getY() < 0 && scrolledY <= 1) {
                         isPulling = true;
                         if (getScrollY() + curY - event.getY() < 0
@@ -180,7 +168,7 @@ public class TimeTable extends RelativeLayout {
                         curY = event.getY();
                         return true;
                     }
-                }
+
 
                 //滚动课表
                 if (scrolledY + curY - event.getY() >= 0 && scrolledY + curY - event.getY()
@@ -280,7 +268,6 @@ public class TimeTable extends RelativeLayout {
     private void initView(View view) {
         mTvTip = view.findViewById(R.id.tv_tip);
         mRefreshView = view.findViewById(R.id.refresh_view);
-        mViewCurweekSet = view.findViewById(R.id.view_curweek_set);
         mLayoutTable = view.findViewById(R.id.layout_table);
         mDivider = view.findViewById(R.id.divider);
         mTimetableContent = view.findViewById(R.id.timetable_content);
