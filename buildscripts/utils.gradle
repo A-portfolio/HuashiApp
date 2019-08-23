@@ -22,12 +22,14 @@ boolean isDebug() {
  * @return 是否是 Release 版本
  */
 boolean isRelease() {
+
     if(gradle.startParameter.getTaskNames().size() == 0) {
         return true
     }
 
     List<String> tasks = gradle.startParameter.getTaskNames()
     for (String s : tasks) {
+        println(s+"<-------->")
         if (s.contains("Release")) {
             return true
         }

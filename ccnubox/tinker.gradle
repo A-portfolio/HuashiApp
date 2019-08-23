@@ -1,4 +1,11 @@
+apply from: rootProject.file('./buildscripts/utils.gradle')
+if (!isRelease()) {
+    return
+}
+
+
 apply plugin: 'tinkerpatch-support'
+apply plugin: 'com.tencent.tinker.patch'
 
 def versionMajor = 2
 def versionMinor = 4
@@ -8,6 +15,7 @@ def bakPath = file("${buildDir}/bakApk/")
 //def baseInfo = rootProject.ext.baseInfo
 def baseInfo = 'ccnubox-2.4.1-1029-23-37-08'
 def variantName = "release"
+
 
 tinkerpatchSupport {
 

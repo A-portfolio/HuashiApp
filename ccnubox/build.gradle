@@ -1,11 +1,21 @@
-plugins {
+
+//七牛云上传gradle脚本
+/*plugins {
     id 'com.ppdai.qiniu.upload' version '0.0.4'
 }
 
 apply from: 'qiniu.gradle'
-apply plugin: 'com.android.application'
-apply plugin: 'com.tencent.tinker.patch'
 
+uploadConfig {
+    if(keystoreProperties!=null) {
+        secretKey = keystoreProperties['secretKey']
+        accessKey = keystoreProperties['accessKey']
+    }
+
+}
+*/
+apply plugin: 'com.android.application'
+apply from :'tinker.gradle'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 // Initialize a new Properties() object called keystoreProperties.
@@ -16,13 +26,6 @@ if (keystorePropertiesFile.isFile())
 else
     keystoreProperties=null
 
-uploadConfig {
-    if(keystoreProperties!=null) {
-        secretKey = keystoreProperties['secretKey']
-        accessKey = keystoreProperties['accessKey']
-    }
-
-}
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -108,4 +111,3 @@ dependencies {
     implementation project(':app')
 }
 
-apply from :'tinker.gradle'
