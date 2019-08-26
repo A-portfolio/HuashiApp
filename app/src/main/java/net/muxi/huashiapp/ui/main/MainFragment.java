@@ -104,7 +104,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
 
         RxBus.getDefault().toObservable(LoginSuccessEvent.class)
                 .subscribe(loginSuccessEvent -> {
-                    if (getActivity()!=null)
+                    if (getActivity()!=null&&getActivity().getSupportFragmentManager().findFragmentByTag("table")!=null)
                         ((TimetableFragment) getActivity().getSupportFragmentManager().findFragmentByTag("table")).deferLoadTable();
 
                     switch (loginSuccessEvent.targetActivityName) {
@@ -132,7 +132,9 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
         sp = new PreferenceUtil();
         dao = new HuaShiDao();
         mBannerDatas = dao.loadBannerData();
+
         getBannerData();
+
         RxBus.getDefault().toObservable(RefreshBanner.class)
                 .subscribe(refreshBanner -> {
                     refresh();

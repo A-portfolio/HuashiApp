@@ -133,6 +133,7 @@ public class LoginActivity extends ToolbarActivity {
                     loginPresenter.saveLoginState(getIntent(), user, type);
                     loginPresenter.getClient().saveCookieToLocal();
                     hideLoading();
+                    ToastUtil.showShort("登陆成功!");
                     finish();
                 }
             }, user);

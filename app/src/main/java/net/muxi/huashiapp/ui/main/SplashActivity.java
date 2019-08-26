@@ -71,13 +71,14 @@ public class SplashActivity extends Activity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(config -> {
-                    PreferenceUtil.saveString(PreferenceUtil.FIRST_WEEK_DATE,config.getStartCountDayPresetForV2());
-                    PreferenceUtil.saveString(PreferenceUtil.CALENDAR_ADDRESS,config.getCalendarUrl());
+                    Log.i(TAG, "getConfig: "+config.getConfig().getCalendarUrl());
+                    PreferenceUtil.saveString(PreferenceUtil.FIRST_WEEK_DATE,config.getConfig().getStartCountDayPresetForV2());
+                    PreferenceUtil.saveString(PreferenceUtil.CALENDAR_ADDRESS,config.getConfig().getCalendarUrl());
                     DateFormat dataFormat=new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
                     String cur=dataFormat.format(new Date());
-                    if (cur.compareTo(config.getFlashStartDay())>=0&&cur.compareTo(config.getFlashEndDay())<=0){
+                    if (cur.compareTo(config.getConfig().getFlashStartDay())>=0&&cur.compareTo(config.getConfig().getFlashEndDay())<=0){
                         Log.i(TAG, "getConfig: display");
-                        draweeView.setImageURI(config.getFlashScreenUrl());
+                        draweeView.setImageURI(config.getConfig().getFlashScreenUrl());
                         button.setVisibility(View.VISIBLE);
                         return Observable.interval(1, TimeUnit.SECONDS)
                                 .takeUntil(aLong -> {

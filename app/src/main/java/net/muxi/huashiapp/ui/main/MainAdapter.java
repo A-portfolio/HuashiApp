@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.muxistudio.appcommon.data.BannerData;
 import com.muxistudio.appcommon.data.Hint;
 import com.muxistudio.appcommon.data.ItemData;
@@ -191,7 +198,17 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             for (int i = 0; i < mBannerDatas.size(); i++) {
                 ViewHolder<BannerData> viewHolder = (context, bannerDatas) -> {
                     SimpleDraweeView simpleDraweeView = new SimpleDraweeView(mContext);
-                    simpleDraweeView.setImageURI(Uri.parse(bannerDatas.getImg()));
+
+                    ImageRequest request=ImageRequestBuilder.newBuilderWithSource(Uri.parse(bannerDatas.getImg()))
+                           .setResizeOptions(new ResizeOptions(720,300))
+                            .build();
+                    DraweeController controller = Fresco.newDraweeControllerBuilder()
+                            .setOldController(simpleDraweeView.getController())
+                            .setImageRequest(request)
+                            .build();
+
+                    simpleDraweeView.setController(controller);
+
                     simpleDraweeView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     simpleDraweeView.setOnClickListener(v -> {
                         Intent intent = WebViewActivity.newIntent(mContext, bannerDatas.getUrl());
@@ -290,9 +307,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     public class BannerViewHolder extends RecyclerView.ViewHolder {
         public CardBanner mCardBanner;
-
+        View itemView;
         public BannerViewHolder(View itemView) {
             super(itemView);
+            this.itemView=itemView;
             mCardBanner = itemView.findViewById(R.id.card_banner);
         }
     }

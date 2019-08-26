@@ -90,7 +90,6 @@ public class MainActivity extends BaseAppActivity implements
 
         //这个提醒好像不能用,先暂停
         //AlarmUtil.register(this);
-        getSplashData();
 
         if( UserAccountManager.getInstance().isInfoUserLogin()){
             ccnuCrawler3=new CcnuCrawler3();
