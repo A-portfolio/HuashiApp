@@ -205,6 +205,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             ViewGroup.LayoutParams lp = bannerViewHolder.mCardBanner.getLayoutParams();
             //banner 按宽高比布局
             lp.height = (DimensUtil.getScreenWidth() - DimensUtil.dp2px(32)) * 300 / 750;
+            // FIXME: 19-8-26 
             ((BannerViewHolder) holder).mCardBanner.setViewHolders(mViewHolders, mBannerDatas);
             ((BannerViewHolder) holder).mCardBanner.setAutoScroll(true);
             ((BannerViewHolder) holder).mCardBanner.setScrollDuration(3000);

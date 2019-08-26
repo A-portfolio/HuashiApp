@@ -9,6 +9,17 @@
     <include layout="@layout/view_toolbar"
              />
 
+    <TextView
+        android:id="@+id/cur_week_prompt_tv"
+        android:background="@drawable/dividerline"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:text="@string/cur_week_prompt"
+        android:textSize="16sp"
+        android:paddingLeft="72dp"
+        android:textColor="@color/colorBlack"
+
+        android:gravity="center_vertical" />
     <ListView
         android:id="@+id/lv"
         android:descendantFocusability="blocksDescendants"

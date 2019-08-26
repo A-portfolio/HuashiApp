@@ -11,6 +11,7 @@ import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.event.CurWeekChangeEvent;
+import com.muxistudio.common.util.PreferenceUtil;
 
 import java.util.Locale;
 import net.muxi.huashiapp.R;
@@ -49,6 +50,13 @@ public class CurweekSetActivity extends ToolbarActivity {
                 R.layout.item_curweek_set, s);
         mLv.setDivider(null);
         mLv.setAdapter(arrayAdapter);
+
+        findViewById(R.id.cur_week_prompt_tv).setOnClickListener(v -> {
+            PreferenceUtil.saveInt(PreferenceUtil.SELECTED_WEEK,-1);
+            RxBus.getDefault().send(new CurWeekChangeEvent());
+            CurweekSetActivity.this.finish();
+        });
+
         mLv.setOnItemClickListener((adapterView, view, i, l) -> {
             TimeTableUtil.saveCurWeek(i + 1);
             RxBus.getDefault().send(new CurWeekChangeEvent());

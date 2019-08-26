@@ -18,6 +18,7 @@ import net.muxi.huashiapp.ui.score.fragments.ScoreDetailDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //包括展示成绩和计算学分绩

@@ -48,20 +48,20 @@ public class TableContent extends FrameLayout {
         super.onDraw(canvas);
         //绘制背景分割线
         Path path = new Path();
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < 12; i++) {
             path.moveTo(0, TimeTable.COURSE_TIME_HEIGHT * (i + 1) - DimensUtil.dp2px(0.5f));
             path.lineTo(TimeTable.WEEK_DAY_WIDTH * 7, TimeTable.COURSE_TIME_HEIGHT * (i + 1) - DimensUtil.dp2px(0.5f));
         }
         for (int i = 0; i < 7; i++) {
             path.moveTo(TimeTable.WEEK_DAY_WIDTH * (i + 1) - DimensUtil.dp2px(0.5f) , 0);
-            path.lineTo(TimeTable.WEEK_DAY_WIDTH * (i + 1) - DimensUtil.dp2px(0.5f), TimeTable.COURSE_TIME_HEIGHT * 14);
+            path.lineTo(TimeTable.WEEK_DAY_WIDTH * (i + 1) - DimensUtil.dp2px(0.5f), TimeTable.COURSE_TIME_HEIGHT * 12);
         }
         Paint p = new Paint();
         p.setAntiAlias(true);
 
         p.setColor(Color.WHITE);
         p.setStyle(Paint.Style.FILL);
-        canvas.drawRect(0,0,TimeTable.WEEK_DAY_WIDTH * 7,TimeTable.COURSE_TIME_HEIGHT * 14,p);
+        canvas.drawRect(0,0,TimeTable.WEEK_DAY_WIDTH * 7,TimeTable.COURSE_TIME_HEIGHT * 12,p);
 
         p.setColor(getResources().getColor(R.color.divider));
         p.setStrokeWidth(DimensUtil.dp2px(1));

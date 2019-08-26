@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
           android:layout_height="72dp"
           android:background="?android:attr/selectableItemBackground"
-          android:textColor="@color/colorBlack"
+          android:textColor="@color/textColorGrey"
           android:paddingLeft="72dp"
           android:gravity="center_vertical"
           android:textSize="16sp">

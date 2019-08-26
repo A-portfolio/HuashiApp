@@ -49,6 +49,7 @@ import net.muxi.huashiapp.ui.score.activtities.ScoreCreditActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomActivity;
 import net.muxi.huashiapp.ui.studyroom.StudyRoomBlankActivity;
 import net.muxi.huashiapp.ui.timeTable.CourseAuditSearchActivity;
+import net.muxi.huashiapp.ui.timeTable.TimetableFragment;
 import net.muxi.huashiapp.ui.website.WebsiteActivity;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
 import net.muxi.huashiapp.utils.TipViewUtil;
@@ -103,6 +104,9 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
 
         RxBus.getDefault().toObservable(LoginSuccessEvent.class)
                 .subscribe(loginSuccessEvent -> {
+                    if (getActivity()!=null)
+                        ((TimetableFragment) getActivity().getSupportFragmentManager().findFragmentByTag("table")).deferLoadTable();
+
                     switch (loginSuccessEvent.targetActivityName) {
                         case CARD_ACTIVITY:
                             CardActivity.start(getContext());

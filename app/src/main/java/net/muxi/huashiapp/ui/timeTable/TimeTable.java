@@ -172,18 +172,18 @@ public class TimeTable extends RelativeLayout {
 
                 //滚动课表
                 if (scrolledY + curY - event.getY() >= 0 && scrolledY + curY - event.getY()
-                        <= COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56) * 2
+                        <= COURSE_TIME_HEIGHT * 12 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56) * 2
                         + DimensUtil.dp2px(60)
                         + DimensUtil.getStatusBarHeight() - DimensUtil.getScreenHeight()) {
                     yDistance = (int) (curY - event.getY());
                 }
 
                 if (scrolledY + curY - event.getY()
-                        > COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56)
+                        > COURSE_TIME_HEIGHT * 12 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(56)
                         * 2
                         + DimensUtil.dp2px(60)
                         + DimensUtil.getStatusBarHeight() - DimensUtil.getScreenHeight()) {
-                    yDistance = COURSE_TIME_HEIGHT * 14 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(
+                    yDistance = COURSE_TIME_HEIGHT * 12 + LITTLE_VIEW_HEIGHT + DimensUtil.dp2px(
                             56)
                             * 2 + DimensUtil.dp2px(56) + DimensUtil.getStatusBarHeight()
                             - DimensUtil.getScreenHeight()

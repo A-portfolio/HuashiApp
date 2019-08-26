@@ -48,9 +48,7 @@ public class RefreshView extends RelativeLayout {
     }
 
     private void initView() {
-        if (!PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true)) {
-            setVisibility(VISIBLE);
-        }
+
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_table_refresh, this);
         mLayoutRefresh = findViewById(R.id.layout_refresh);
         mDrawee = findViewById(R.id.drawee);

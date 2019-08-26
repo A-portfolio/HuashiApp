@@ -20,9 +20,7 @@ import net.muxi.huashiapp.R;
 public class CourseTimeLayout extends ScheduleTimeLayout{
     private Context mContext;
     private Scroller mScroller;
-    //侧边栏的表格
-    //竖着的表格
-    private View[] views;
+
 
     public CourseTimeLayout(Context context) {
         this(context,null);
@@ -39,12 +37,16 @@ public class CourseTimeLayout extends ScheduleTimeLayout{
 
     //给竖着的每一个日期的方格设置序号和逢双数设置时间
     private void initView() {
-        views = new View[14];
-        for (int i = 0;i < 14;i ++){
+        //侧边栏的表格
+        //竖着的表格
+        View[] views = new View[12];
+        String[] times=new String[]{"8:00","10:10","14:00","16:10","18:30","20:15"};
+
+        for (int i = 0;i < 12;i ++){
             views[i] = LayoutInflater.from(mContext).inflate(R.layout.view_course_time,this,false);
-            ((TextView)views[i].findViewById(R.id.tv_order)).setText((i + 1) + "");
+            ((TextView) views[i].findViewById(R.id.tv_order)).setText((i + 1) + "");
             if (i % 2 == 0){
-                ((TextView)views[i].findViewById(R.id.tv_time)).setText((8 + i) + ":00");
+                ((TextView) views[i].findViewById(R.id.tv_time)).setText(times[i/2]);
             }
             addView(views[i]);
         }

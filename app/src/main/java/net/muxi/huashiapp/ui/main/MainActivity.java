@@ -84,7 +84,6 @@ public class MainActivity extends BaseAppActivity implements
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
         initView();
-        initListener();
         handleIntent(getIntent());
 
         checkNewVersion();
@@ -188,35 +187,6 @@ public class MainActivity extends BaseAppActivity implements
     }
 
 
-    private void initListener() {
-        // TODO: 18-8-20
-        RxBus.getDefault().toObservable(LibLoginEvent.class)
-                .subscribe(libLoginEvent -> {
-                    FragmentManager fm = getSupportFragmentManager();
-                    fm.beginTransaction().remove(mCurFragment).commitAllowingStateLoss();
-                    if (fm.findFragmentByTag("lib_mine") != null) {
-                        fm.beginTransaction()
-                                .replace(R.id.content_layout, fm.findFragmentByTag("lib_mine"))
-                                .commitAllowingStateLoss();
-                    } else {
-                        Fragment fragment = LibraryMineFragment.newInstance();
-                        fm.beginTransaction()
-                                .replace(R.id.content_layout, fragment, "lib_mine")
-                                .addToBackStack("lib_mine")
-                                .commitAllowingStateLoss();
-                    }
-                }, Throwable::printStackTrace);
-
-
-        Subscription subscription = RxBus.getDefault().toObservable(LoginSuccessEvent.class)
-                .subscribe(loginSuccessEvent -> {
-                    if (loginSuccessEvent.targetActivityName.equals("table")) {
-
-                        ((TimetableFragment) mCurFragment).loadTable();
-                    }
-                }, Throwable::printStackTrace);
-        addSubscription(subscription);
-    }
 
 
     private void getSplashData() {

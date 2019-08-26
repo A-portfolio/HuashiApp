@@ -2,8 +2,6 @@ package net.muxi.huashiapp.ui.timeTable;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,27 +27,24 @@ import com.muxistudio.appcommon.event.RefreshTableEvent;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.presenter.LoginPresenter;
 import com.muxistudio.appcommon.user.UserAccountManager;
-import com.muxistudio.common.util.DimensUtil;
 import com.muxistudio.common.util.Logger;
-import com.muxistudio.common.util.PreferenceUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.Locale;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.provider.ScheduleWidgetProvider;
 import net.muxi.huashiapp.utils.TimeTableUtil;
-import net.muxi.huashiapp.utils.TipViewUtil;
-import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.HttpException;
+import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-
-import static net.muxi.huashiapp.widget.IndicatedView.IndicatedView.DIRECTION_DOWN;
 
 /**
  * Created by ybao on 17/1/25.
@@ -262,10 +257,33 @@ public class TimetableFragment extends BaseAppFragment {
         getTable();
     }
 
-    private void getTable() {
-        CampusFactory.getRetrofitService().getTimeTable()
-                .observeOn(AndroidSchedulers.mainThread())
+    public void deferLoadTable(){
+        Observable.timer(500,TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<Long, Observable<List<Course>>>() {
+                    @Override
+                    public Observable<List<Course>> call(Long aLong) {
+                        return CampusFactory.getRetrofitService().getTimeTable();
+                    }
+                }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(courseList -> {
+                    updateDB(courseList);
+                    mCourses = courseList;
+                    renderCourseView(courseList);
+                    if (handlingRefresh) {
+                        handlingRefresh = false;
+                        RxBus.getDefault().send(new RefreshFinishEvent(courseList.size() != 0));
+                    }
+                },Throwable::printStackTrace);
+
+    }
+    private void getTable() {
+        //int[] retryCount=new int[1];
+        CampusFactory.getRetrofitService().getTimeTable()
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+
                 .subscribe(courseList -> {
                     updateDB(courseList);
                     mCourses = courseList;

@@ -257,11 +257,8 @@ public class CcnuCrawler3 {
         MobclickAgent.onProfileSignIn(user.getSid());
         String target = intent.hasExtra("target") ?
                 intent.getStringExtra("target") : null;
-        if (type.equals("info")) {
             RxBus.getDefault().send(new LoginSuccessEvent(target));
-        } else {
-            RxBus.getDefault().send(new LibLoginEvent());
-        }
+
     }
 
 
