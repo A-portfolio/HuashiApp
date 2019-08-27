@@ -36,7 +36,6 @@ public class CourseAuditSearchActivity extends ToolbarActivity {
         intent.putExtra("courseSubject", subject);
         CourseAuditResultActivity.start(this, intent);
         MobclickAgent.onEvent(this, "course_audit");
-        finish();
     }
 
 

@@ -6,6 +6,7 @@
 
     <ImageView
         android:id="@+id/iv_course_marker"
+        android:layout_alignParentRight="true"
         android:layout_gravity="center"
         android:layout_margin="16dp"
         android:layout_width="wrap_content"
@@ -13,7 +14,7 @@
 
     <TextView
         android:id="@+id/tv_course_name_teacher"
-        android:layout_toRightOf="@id/iv_course_marker"
+        android:layout_toLeftOf="@id/iv_course_marker"
         android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +25,6 @@
     <TextView
         android:id="@+id/tv_course_week"
         android:layout_below="@+id/tv_course_name_teacher"
-        android:layout_toRightOf="@id/iv_course_marker"
         android:layout_marginLeft="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,6 +48,7 @@
         android:layout_below="@+id/tv_course_name_teacher"
         android:layout_toRightOf="@id/tv_course_period"
         android:layout_marginLeft="16dp"
+        android:layout_toLeftOf="@+id/btn_choose_course"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
@@ -55,12 +56,12 @@
         tools:text="12121"/>
 
     <Button
+        android:layout_below="@+id/iv_course_marker"
         android:id="@+id/btn_choose_course"
         android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@+id/tv_course_site"
         android:layout_margin="16dp"
         android:background="@drawable/bg_course_audit_btn"
-        android:layout_width="64dp"
+        android:layout_width="50dp"
         android:layout_height="32dp"
         android:text="添加"
         android:textColor="@color/colorWhite"/>
