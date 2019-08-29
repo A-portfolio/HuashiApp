@@ -188,42 +188,6 @@ public class MainActivity extends BaseAppActivity implements
 
 
 
-    private void getSplashData() {
-        CampusFactory.getRetrofitService().getSplash()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<SplashData>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(SplashData splashData) {
-                        if (splashData.getUpdate() != 0
-                                && PreferenceUtil.getLong(Constants.SPLASH_UPDATE)
-                                != splashData.getUpdate()) {
-                            saveSplashData(splashData);
-                            if (!splashData.getImg().equals("")) {
-                                FrescoUtil.savePicture(splashData.getImg(), MainActivity.this,
-                                        "splash.jpg");
-                            }
-                        }
-                    }
-                });
-    }
-
-    private void saveSplashData(SplashData splashData) {
-        PreferenceUtil.saveLong(Constants.SPLASH_UPDATE, splashData.update);
-        PreferenceUtil.saveString(Constants.SPLASH_IMG, splashData.img);
-        PreferenceUtil.saveString(Constants.SPLASH_URL, splashData.url);
-    }
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

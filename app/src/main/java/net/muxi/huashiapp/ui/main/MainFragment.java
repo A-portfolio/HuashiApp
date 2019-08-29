@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +77,6 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
     private List<ItemData> mItemDatas = new ArrayList<ItemData>();
     private List<BannerData> mBannerDatas;
     private HuaShiDao dao;
-    private PreferenceUtil sp;
     private ProductData mProductData;
     private String mProductJson;
     private Hint mHint = new Hint();
@@ -125,30 +125,25 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i("mainfragment", "onCreateView: call");
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mToolbar = view.findViewById(R.id.toolbar);
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mToolbar.setTitle("华师匣子");
-        sp = new PreferenceUtil();
         dao = new HuaShiDao();
         mBannerDatas = dao.loadBannerData();
 
         getBannerData();
 
-        RxBus.getDefault().toObservable(RefreshBanner.class)
-                .subscribe(refreshBanner -> {
-                    refresh();
-                }, throwable -> throwable.printStackTrace());
-        initHintView();
-//        initBulletin();
         initView();
-        //getHint();
+
+        Gson gson = new Gson();
+        mProductData = gson.fromJson(PreferenceUtil.getString(PreferenceUtil.PRODUCT_DATA), ProductData.class);
         if (mProductData == null) {
             mProductData = new ProductData(0.0, null);
             getProduct();
         } else {
-            Gson gson = new Gson();
-            mProductData = gson.fromJson(PreferenceUtil.getString(PreferenceUtil.PRODUCT_DATA), ProductData.class);
+
             getProduct();
         }
         return view;
@@ -174,22 +169,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
 
     }
 
-    private void initHintView() {
-        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN, true)) {
-            IndicatedView indicatedView = new IndicatedView(getContext());
-            indicatedView.setTipViewText("试试图书馆功能吧!");
-            TipViewUtil.addToContent(getContext(), indicatedView, DIRECTION_UP,
-                    DimensUtil.getScreenWidth() / 4,
-                    DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight()
-                            - DimensUtil.dp2px(98));
-            IndicatedView indicatedView1 = new IndicatedView(getContext());
-            indicatedView1.setTipViewText("新加入了蹭课功能哟!");
-            TipViewUtil.addToContent(getContext(), indicatedView1, DIRECTION_UP,
-                    DimensUtil.getScreenWidth() / 4,
-                    (DimensUtil.getScreenHeight() - DimensUtil.getNavigationBarHeight()) / 2);
-            PreferenceUtil.saveBoolean(PreferenceUtil.IS_FIRST_ENTER_MAIN, false);
-        }
-    }
+
 
     private void initView() {
         final GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
@@ -371,26 +351,38 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
 
                         @Override
                         public void onNext(List<BannerData> bannerDatas) {
-                            if (getTheLastUpdateTime(bannerDatas) > getTheLastUpdateTime(
-                                    mBannerDatas) || bannerDatas.size() != mBannerDatas.size()) {
-                                mBannerDatas.clear();
-                                mBannerDatas.addAll(bannerDatas);
-                                dao.deleteAllBannerData();
-                                for (int i = 0; i < mBannerDatas.size(); i++) {
-                                    dao.insertBannerData(mBannerDatas.get(i));
-                                }
-                                updateRecyclerView(bannerDatas);
-                                RxBus.getDefault().send(new RefreshBanner());
 
-                            }
+                            //在下次再次打开app时才会更新，之后可以改进
+                                if ((bannerDatas.size()!=mBannerDatas.size())||!compareBannerSame(bannerDatas,mBannerDatas)) {
+
+                                    mBannerDatas.clear();
+                                    mBannerDatas.addAll(bannerDatas);
+                                    dao.deleteAllBannerData();
+
+                                    for (int i = 0; i < bannerDatas.size(); i++) {
+                                        dao.insertBannerData(bannerDatas.get(i));
+                                    }
+                                    updateRecyclerView(bannerDatas);
+
+                                }
                         }
                     });
         }
     }
 
+    private boolean compareBannerSame(List<BannerData>old,List<BannerData>now){
+        for (int i = 0; i <old.size() ; i++) {
+            if (!old.get(i).getImg().equals(now.get(i).getImg())){
+                return false;
+            }
+        }
+        return true;
+
+    }
     //fixme beginTransaction() may produce NPE
     // fixme referring https://stackoverflow.com/questions/27742471/nullpointerexception-fragmentmanager-begintransaction
     public void refresh() {
+        Log.i("refresh", "refresh: call");
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
     }

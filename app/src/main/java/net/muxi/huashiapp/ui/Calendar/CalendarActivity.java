@@ -138,8 +138,12 @@ public class CalendarActivity extends ToolbarActivity {
                     return;
                 }finally {
                     try {
-                        out.close();
-                        response.close();
+                        if (out!=null) {
+                            out.close();
+                        }
+                        if (response!=null) {
+                            response.close();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
