@@ -184,7 +184,8 @@ public class MyBookListFragment extends BaseAppFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(personalBooks -> {
                     if (personalBooks.size() == 0) {
-                        throw new RuntimeException();
+                        mMultiStatusView.showEmpty();
+                        return;
                     }
                     mBorrowedBookList = personalBooks;
                     renderBorrowedBooks(personalBooks);

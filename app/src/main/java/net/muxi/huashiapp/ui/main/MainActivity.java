@@ -65,6 +65,7 @@ public class MainActivity extends BaseAppActivity implements
     private Fragment mCurFragment;
     private BottomNavigationView mNavView;
     private CcnuCrawler3 ccnuCrawler3;
+    private String curFragmentTag="def";
     private final static  String TAG="MAINLOGIN";
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);
@@ -246,42 +247,45 @@ public class MainActivity extends BaseAppActivity implements
         finish();
     }
 
-    public void showFragment(Fragment fragment, String tag) {
-        mCurFragment = fragment;
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.content_layout,
-                fragment, tag);
-        fragmentTransaction.addToBackStack(tag);
-        fragmentTransaction.commit();
+    public void showFragment(Fragment fragment, String tag,FragmentTransaction fragmentTransaction) {
+        fragmentTransaction.add(R.id.content_layout,fragment,tag);
+        curFragmentTag=tag;
+        fragmentTransaction.commitNow();
         Logger.d(fragment.getTag());
     }
 
     public void showFragment(String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.findFragmentByTag(tag) != null) {
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_layout,
-                    fragmentManager.findFragmentByTag(tag), tag);
-            fragmentTransaction.addToBackStack(tag);
-            fragmentTransaction.commit();
+        Fragment targetFragment=fragmentManager.findFragmentByTag(tag);
+        Fragment curFragment=fragmentManager.findFragmentByTag(curFragmentTag);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        if (curFragment!=null)
+            fragmentTransaction.hide(curFragment);
+
+        if (targetFragment!= null) {
+            curFragmentTag=tag;
+            fragmentTransaction.show(targetFragment);
+            fragmentTransaction.commitNow();
             return;
         }
+
         Logger.d("begin new fragment instance");
         switch (tag) {
             case "main":
-                showFragment(MainFragment.newInstance(), tag);
+                showFragment(MainFragment.newInstance(), tag,fragmentTransaction);
                 break;
             case "table":
-                showFragment(TimetableFragment.newInstance(), tag);
+                showFragment(TimetableFragment.newInstance(), tag,fragmentTransaction);
                 break;
             case "lib_main":
-                showFragment(LibraryMineFragment.newInstance(), tag);
+                showFragment(LibraryMineFragment.newInstance(), tag,fragmentTransaction);
                 break;
             case "lib_mine":
-                showFragment(LibraryMineFragment.newInstance(), tag);
+                showFragment(LibraryMineFragment.newInstance(), tag,fragmentTransaction);
                 break;
             case "more":
-                showFragment(MoreFragment.newInstance(), tag);
+                showFragment(MoreFragment.newInstance(), tag,fragmentTransaction);
                 break;
         }
     }

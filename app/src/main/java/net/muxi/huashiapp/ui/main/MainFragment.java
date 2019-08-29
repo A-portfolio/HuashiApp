@@ -77,8 +77,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
     private List<ItemData> mItemDatas = new ArrayList<ItemData>();
     private List<BannerData> mBannerDatas;
     private HuaShiDao dao;
-    private ProductData mProductData;
-    private String mProductJson;
+
     private Hint mHint = new Hint();
 
     public static final int DIRECTION_UP = 1;
@@ -132,20 +131,8 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
         mToolbar.setTitle("华师匣子");
         dao = new HuaShiDao();
         mBannerDatas = dao.loadBannerData();
-
         getBannerData();
-
         initView();
-
-        Gson gson = new Gson();
-        mProductData = gson.fromJson(PreferenceUtil.getString(PreferenceUtil.PRODUCT_DATA), ProductData.class);
-        if (mProductData == null) {
-            mProductData = new ProductData(0.0, null);
-            getProduct();
-        } else {
-
-            getProduct();
-        }
         return view;
     }
 
@@ -164,6 +151,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
             mItemDatas.add(new ItemData("校历", R.drawable.ic_calendar + "", false));
             mItemDatas.add(new ItemData("常用网站", R.drawable.ic_net + "", false));
             mItemDatas.add(new ItemData("地图",R.drawable.ic_map + "",false));
+            mItemDatas.add(new ItemData("学而",R.drawable.ic_xueer+"",false));
             mItemDatas.add(new ItemData("更多", R.drawable.ic_more + "", false));
         }
 
@@ -253,10 +241,9 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                             MobclickAgent.onEvent(getActivity(), "frequent_web_query");
                             break;
                         case "学而":
-                            Intent intent = WebViewActivity.newIntent(getActivity(), mProductData.get_product().get(0).getUrl(),
-                                    mProductData.get_product().get(0).getName(),
-                                    mProductData.get_product().get(0).getIntro(),
-                                    mProductData.get_product().get(0).getIcon());
+                            Intent intent = WebViewActivity.newIntent(getActivity(),"https://xueer.muxixyz.com" ,
+                                    "学而", "学而，你的选课经验挖掘机",
+                                    "https://static.muxixyz.com/ic_xueer.png");
                             startActivity(intent);
                             MobclickAgent.onEvent(getActivity(), "xueer");
                             break;
@@ -292,7 +279,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
         });
 
     }
-
+/*
     //更新首页视图
     public void updateProductDisplay(ProductData productData) {
         if (mItemDatas.size() - 11 != productData.get_product().size()) {
@@ -333,7 +320,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                 });
 
     }
-
+*/
     private void getBannerData() {
         if (NetUtil.isConnected()) {
             CampusFactory.getRetrofitService().getBanner()
