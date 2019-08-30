@@ -58,6 +58,7 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
      */
     public void setAllChecked(boolean allChecked){
         initCheckList(allChecked);
+
     }
 
     @NonNull

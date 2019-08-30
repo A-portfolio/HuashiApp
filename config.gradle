@@ -4,9 +4,9 @@ ext {
     secretkey="0"
 
 
-    def versionMajor = 2
-    def versionMinor = 4
-    def versionBuild = 1
+    versionMajor = 2
+    versionMinor = 5
+    versionBuild = 0
 
 
     android = [compileSdkVersion: 27,

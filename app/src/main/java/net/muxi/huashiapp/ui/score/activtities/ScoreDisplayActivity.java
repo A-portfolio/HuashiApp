@@ -14,6 +14,8 @@ import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.google.gson.Gson;
 import com.muxistudio.appcommon.Constants;
@@ -66,7 +68,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
     private MultiStatusView mMultiStatusView;
     private Button mBtnEnter;
-
+    private CheckBox allChecked;
     private ScoreCreditAdapter mScoresAdapter;
 
     private final static String TAG = "getScores";
@@ -251,7 +253,14 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         setTitle(ScoreCreditUtils.parseYears2Title(mYearParams));
 
         mBtnEnter = findViewById(R.id.btn_confirm);
-
+        allChecked=findViewById(R.id.all_check);
+        allChecked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mScoresAdapter.setAllChecked(isChecked);
+                mScoresAdapter.notifyDataSetChanged();
+            }
+        });
         mBtnEnter.setOnClickListener(v -> {
             // FIXME: 19-1-22
             if (mScoresAdapter == null) {

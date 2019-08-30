@@ -132,6 +132,10 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
         dao = new HuaShiDao();
         mBannerDatas = dao.loadBannerData();
         getBannerData();
+        RxBus.getDefault().toObservable(RefreshBanner.class)
+                .subscribe(refreshBanner -> {
+                    refresh();
+                }, throwable -> throwable.printStackTrace());
         initView();
         return view;
     }
@@ -350,6 +354,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                                         dao.insertBannerData(bannerDatas.get(i));
                                     }
                                     updateRecyclerView(bannerDatas);
+                                    RxBus.getDefault().send(new RefreshBanner());
 
                                 }
                         }

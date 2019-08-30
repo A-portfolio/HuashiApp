@@ -8,13 +8,13 @@ if (!isRelease()) {
 apply plugin: 'tinkerpatch-support'
 apply plugin: 'com.tencent.tinker.patch'
 
-def versionMajor = 2
-def versionMinor = 4
-def versionBuild = 1
+def versionMajor = rootProject.ext.versionMajor
+def versionMinor = rootProject.ext.versionMinor
+def versionBuild = rootProject.ext.versionBuild
 
 def bakPath = file("${buildDir}/bakApk/")
 //def baseInfo = rootProject.ext.baseInfo
-def baseInfo = 'ccnubox-2.4.1-1029-23-37-08'
+def baseInfo = 'ccnubox-2.5.0-0830-23-38-06'
 def variantName = "release"
 
 
