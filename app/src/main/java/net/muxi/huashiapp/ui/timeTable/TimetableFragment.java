@@ -115,6 +115,8 @@ public class TimetableFragment extends BaseAppFragment {
     @Override
     public void onHiddenChanged(boolean hidden){
         if (!hidden){
+            setCurweek(curWeek);
+            setSelectedWeek(selectedWeek);
             int nowWeek=TimeTableUtil.getCurWeek();
             if (nowWeek!=curWeek){
                 curWeek=nowWeek;
@@ -390,6 +392,7 @@ public class TimetableFragment extends BaseAppFragment {
                 mShadeView.setVisibility(View.VISIBLE);
             } else {
                 mWeekSelectedView.slideUp();
+
                 mShadeView.setVisibility(View.GONE);
             }
             rotateSelectView();

@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.timeTable;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -87,6 +88,7 @@ public class WeekSelectedView extends GridLayout {
         slide(0);
     }
     public void slide(int toY){
+        // FIXME: 19-9-1 属性动画
         TranslateAnimation animation;
         if (toY < 0){
             animation = new TranslateAnimation(0,0,0,toY);

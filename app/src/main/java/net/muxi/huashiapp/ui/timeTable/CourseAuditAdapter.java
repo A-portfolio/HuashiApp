@@ -134,16 +134,27 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
     //转换格式1-17周 -- 1,2,3,4,5,6,7 String数组
     //有些课程如果两周的话格式是: 1-17周\n1-17周
     private String[] getWeek(String string) {
-        String stringCopy = string;
-        if (string.contains("\n")) {
-            stringCopy = string.split("\n")[0];
+        String stringCopy = string.split("\n")[0];
+        String array[]=null;
+        if (string.contains("双")||string.contains("单")) {
+            String num[] = stringCopy.substring(0, stringCopy.indexOf("周")).split("-");
+            //2,4,6,8,10,12,14,16,18  9
+            int start = Integer.parseInt(num[0]);
+            int end = Integer.parseInt(num[1]);
+            array = new String[(end-start+ 2) / 2];
+            int index = 0;
+            for (int i = start; i <= end; i += 2) {
+                array[index++] = i + "";
+            }
         }
-        String pieces[] = stringCopy.substring(0, stringCopy.length() - 1).split("-");
-        String stater = pieces[0], end = pieces[1];
-        // FIXME: 19-8-31 
-        String array[] = new String[Integer.parseInt(end) - Integer.parseInt(stater) + 1];
-        for (int i = Integer.parseInt(stater), index = 0; i <= Integer.parseInt(end); i++, index++) {
-            array[index] = i + "";
+        else  {
+            String pieces[] = stringCopy.substring(0, stringCopy.length() - 1).split("-");
+            String stater = pieces[0], end = pieces[1];
+            // FIXME: 19-8-31
+             array = new String[Integer.parseInt(end) - Integer.parseInt(stater) + 1];
+            for (int i = Integer.parseInt(stater), index = 0; i <= Integer.parseInt(end); i++, index++) {
+                array[index] = i + "";
+            }
         }
         return array;
     }
@@ -164,7 +175,6 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         if (isTwoClassWeek(period)) {
             String peroids[] = period.split("\n");
             //week 如果没有修改的格式是 1-17周"\n"1-17周 这两个是一样的 所以在下面的week参数中选取一样的
-            // FIXME: 19-8-31 单双周，如3-17周(双)这样，还有两个周可能不一样，不能只是选取[0]
             String week = holder.mTvCourseWeek.getText().toString().split("\n")[0];
             List<AuditCourse.ResBean> list = createRequestCourse(auditCourse, peroids, week);
             Observable<CourseId> observable1 = CampusFactory.getRetrofitService().addCourse(convertCourse(list.get(0)));
@@ -175,11 +185,11 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                     .subscribe(courseId -> {
                         ToastUtil.showShort("课程已经加入");
                         holder.mBtnChooseCourse.setText("已添加");
-                        RxBus.getDefault().send(new AuditCourseEvent());
                         Course c = convertCourse(auditCourse);
                         //必须要在服务端发送回来的时候在本地放置id!
                         c.setId(String.valueOf(courseId));
-                        dao.insertCourse(convertCourse(auditCourse));
+                        dao.insertCourse(c);
+                        RxBus.getDefault().send(new AuditCourseEvent());
                     }, throwable -> {
                         throwable.printStackTrace();
                     }, () -> {
@@ -384,23 +394,13 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
 
     //eg : audit class 的课程周数格式为 1-7 周 要改成课表的格式 1,2,3,4,5,6,7
     private String getWeekString(String week) {
-        String patter = "((\\d+)-(\\d+))";
-        Pattern pattern = Pattern.compile(patter);
-        Matcher matcher = pattern.matcher(week);
-        int start = 0, end = 0;
-        while (matcher.find()) {
-            start = Integer.parseInt(matcher.group(2));
-            end = Integer.parseInt(matcher.group(3));
+        String [] weeks=getWeek(week);
+        StringBuilder sb=new StringBuilder();
+        for (int i = 0; i < weeks.length; i++) {
+            sb.append(weeks[i]).append(",");
         }
-        String weekString = "";
-        for (int i = start; i <= end; i++) {
-            if (i != end) {
-                weekString += i + ",";
-            } else {
-                weekString += i + "";
-            }
-        }
-        return weekString;
+
+        return sb.substring(0,sb.length()-1).toString();
     }
 
     @Override
