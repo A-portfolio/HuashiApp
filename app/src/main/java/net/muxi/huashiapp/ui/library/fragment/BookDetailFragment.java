@@ -140,7 +140,7 @@ public class BookDetailFragment extends BaseAppFragment {
         startAttenStatus = hasAttention;
         mBtnAttention.setOnClickListener(v -> {
             //ToastUtil.showShort("我的图书馆功能还在修复中~敬请期待");
-            if (!UserAccountManager.getInstance().isLibLogin()) {
+            if (!UserAccountManager.getInstance().isInfoUserLogin()) {
                 LoginActivity.start(getContext(), "lib");
                 mBtnAttention.setChecked(false);
                 return;

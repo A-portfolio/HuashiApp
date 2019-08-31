@@ -101,7 +101,7 @@
     <string name="tip_release_to_refresh">松开即刷新</string>
     <string name="tip_refreshing">正在刷新中</string>
     <string name="tip_refresh_ok">刷新成功</string>
-    <string name="tip_refresh_fail">糟糕！刷新失败,再刷一下试试吧</string>
+    <string name="tip_refresh_fail">糟糕！刷新失败,再下拉刷一下试试吧</string>
   <string name="tip_confirm_query">请确定查询学期/学年是否存在</string>
     <!--分享-->
 

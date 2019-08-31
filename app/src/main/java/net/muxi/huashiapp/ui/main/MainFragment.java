@@ -104,7 +104,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
         RxBus.getDefault().toObservable(LoginSuccessEvent.class)
                 .subscribe(loginSuccessEvent -> {
                     if (getActivity()!=null&&getActivity().getSupportFragmentManager().findFragmentByTag("table")!=null)
-                        ((TimetableFragment) getActivity().getSupportFragmentManager().findFragmentByTag("table")).deferLoadTable();
+                        ((TimetableFragment) getActivity().getSupportFragmentManager().findFragmentByTag("table")).startRefreshView();
 
                     switch (loginSuccessEvent.targetActivityName) {
                         case CARD_ACTIVITY:

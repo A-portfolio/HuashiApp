@@ -39,15 +39,19 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.login.CcnuCrawler3;
 import net.muxi.huashiapp.login.SingleCCNUClient;
 import net.muxi.huashiapp.service.DownloadService;
+import net.muxi.huashiapp.ui.card.CardActivity;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMainFragment;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.more.CheckUpdateDialog;
 import net.muxi.huashiapp.ui.more.MoreFragment;
+import net.muxi.huashiapp.ui.score.activtities.ScoreCreditActivity;
+import net.muxi.huashiapp.ui.timeTable.CourseAuditSearchActivity;
 import net.muxi.huashiapp.ui.timeTable.TimetableFragment;
 import net.muxi.huashiapp.utils.AlarmUtil;
 
 import java.io.File;
+import java.util.Objects;
 
 import okhttp3.ResponseBody;
 import retrofit2.HttpException;
@@ -226,10 +230,11 @@ public class MainActivity extends BaseAppActivity implements
         if (itemId == R.id.action_main){
             showFragment("main");
         }else if (itemId == R.id.action_timetable){
-            if (TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().sid)) {
+            if (TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().sid))
                 LoginActivity.start(MainActivity.this, "info", "table");
-            }
+
             showFragment("table");
+
         }else if (itemId == R.id.action_library){
             if (UserAccountManager.getInstance().isLibLogin()){
                 showFragment("lib_mine");

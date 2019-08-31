@@ -227,6 +227,11 @@ public class TimeTable extends RelativeLayout {
         return true;
     }
 
+    public void startRefreshView(){
+        mRefreshView.setRefreshing();
+        smoothScrollTo(0, -REFRESHING_VIEW_HEIGHT);
+    }
+
     public void smoothScrollTo(int x, int y) {
         Logger.d(getScrollX() + "y: " + getScrollY());
         mScroller.startScroll(getScrollX(), getScrollY(), x - getScrollX(), y - getScrollY());

@@ -94,6 +94,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                 //如果是两门课程的话都要不冲突才可以
                 // 关于两门课程的解释 同一周的不同时间的同一门课程 教务处作为两门课程处理
                 //只用有一门课的情况:
+                // FIXME: 19-8-31 
                 String formerWeeks[] = getWeek(holder.mTvCourseWeek.getText().toString());
                 if (p.length == 1) {
                     if (isConflict(p[0], formerWeeks)) {
@@ -139,6 +140,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         }
         String pieces[] = stringCopy.substring(0, stringCopy.length() - 1).split("-");
         String stater = pieces[0], end = pieces[1];
+        // FIXME: 19-8-31 
         String array[] = new String[Integer.parseInt(end) - Integer.parseInt(stater) + 1];
         for (int i = Integer.parseInt(stater), index = 0; i <= Integer.parseInt(end); i++, index++) {
             array[index] = i + "";
@@ -162,6 +164,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         if (isTwoClassWeek(period)) {
             String peroids[] = period.split("\n");
             //week 如果没有修改的格式是 1-17周"\n"1-17周 这两个是一样的 所以在下面的week参数中选取一样的
+            // FIXME: 19-8-31 单双周，如3-17周(双)这样，还有两个周可能不一样，不能只是选取[0]
             String week = holder.mTvCourseWeek.getText().toString().split("\n")[0];
             List<AuditCourse.ResBean> list = createRequestCourse(auditCourse, peroids, week);
             Observable<CourseId> observable1 = CampusFactory.getRetrofitService().addCourse(convertCourse(list.get(0)));

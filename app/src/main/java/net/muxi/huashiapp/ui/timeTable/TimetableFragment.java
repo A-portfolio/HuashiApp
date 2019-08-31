@@ -107,6 +107,23 @@ public class TimetableFragment extends BaseAppFragment {
         return view;
     }
 
+    public void startRefreshView(){
+        handlingRefresh=true;
+        mTimetable.startRefreshView();
+        loadTable();
+    }
+    @Override
+    public void onHiddenChanged(boolean hidden){
+        if (!hidden){
+            int nowWeek=TimeTableUtil.getCurWeek();
+            if (nowWeek!=curWeek){
+                curWeek=nowWeek;
+                setCurweek(curWeek);
+                setSelectedWeek(selectedWeek);
+                RxBus.getDefault().send(new CurWeekChangeEvent());
+            }
+        }
+    }
     private void initData() {
         curWeek = TimeTableUtil.getCurWeek();
         selectedWeek = curWeek;
@@ -118,8 +135,8 @@ public class TimetableFragment extends BaseAppFragment {
         } else {
             renderCourseView(mCourses);
         }
-        setCurweek(TimeTableUtil.getCurWeek());
-        setSelectedWeek(TimeTableUtil.getCurWeek());
+        setCurweek(curWeek);
+        setSelectedWeek(selectedWeek);
 
 //        if (PreferenceUtil.getBoolean(PreferenceUtil.IS_FIRST_ENTER_TABLE, true)) {
 //            IndicatedView indicatedView = new IndicatedView(getContext());
@@ -278,12 +295,10 @@ public class TimetableFragment extends BaseAppFragment {
 
     }
     private void getTable() {
-        //int[] retryCount=new int[1];
-        CampusFactory.getRetrofitService().getTimeTable()
 
+        CampusFactory.getRetrofitService().getTimeTable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-
                 .subscribe(courseList -> {
                     updateDB(courseList);
                     mCourses = courseList;

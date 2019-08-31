@@ -133,8 +133,7 @@ public class CalendarActivity extends ToolbarActivity {
                     bitmap.compress(Bitmap.CompressFormat.PNG,100,out);
                     subscriber.onNext(0);
                 } catch (IOException e) {
-                    e.printStackTrace();
-                    ToastUtil.showLong("加载校历出错!");
+                    subscriber.onError(e);
                     return;
                 }finally {
                     try {
@@ -154,6 +153,11 @@ public class CalendarActivity extends ToolbarActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
                     mLargeImageView.setImage(ImageSource.uri(Uri.fromFile(file)),new ImageViewState(fiTXY(w,new File(cachePath)),new PointF(0,0),0));
+
+                },e->{
+                    e.printStackTrace();
+
+                    ToastUtil.showLong("加载校历出错!");
 
                 });
 
