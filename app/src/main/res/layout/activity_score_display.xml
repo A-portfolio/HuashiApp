@@ -9,6 +9,7 @@
             layout="@layout/toolbar_layout"/>
 
     <CheckBox
+        android:checked="true"
         android:id="@+id/all_check"
         android:button="@null"
         android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
@@ -17,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="36dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="15dp"/>
 
     <com.muxistudio.multistatusview.MultiStatusView
         android:layout_marginTop="56dp"

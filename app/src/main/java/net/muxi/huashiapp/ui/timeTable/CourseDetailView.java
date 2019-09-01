@@ -121,11 +121,11 @@ public class CourseDetailView extends RelativeLayout {
                         dao.deleteCourse(course.id);
                         RxBus.getDefault().send(new RefreshTableEvent());
                     } else {
-                        ((BaseAppActivity) mContext).showErrorSnackbarShort(R.string.tip_err_server);
+                        ((BaseAppActivity) mContext).showErrorSnackbarLong("删除失败，新增课程请先下拉刷新再删除");
                     }
                 }, throwable -> {
                     throwable.printStackTrace();
-                    ((BaseAppActivity) mContext).showErrorSnackbarShort(R.string.tip_err_server);
+                    ((BaseAppActivity) mContext).showErrorSnackbarLong("删除失败，新增课程请先下拉刷新再删除");
                 });
     }
 

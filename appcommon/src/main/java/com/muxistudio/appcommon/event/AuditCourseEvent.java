@@ -5,4 +5,9 @@ package com.muxistudio.appcommon.event;
  */
 
 public class AuditCourseEvent {
+    public boolean isRefresh=false;
+    public AuditCourseEvent(){}
+    public AuditCourseEvent(boolean isRefresh){
+        this.isRefresh=isRefresh;
+    }
 }

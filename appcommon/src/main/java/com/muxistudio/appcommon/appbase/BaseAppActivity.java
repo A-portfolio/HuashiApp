@@ -144,6 +144,14 @@ public class  BaseAppActivity extends BaseActivity {
         view.setBackgroundColor(getResources().getColor(R.color.red));
         snackbar.show();
     }
+    public void showErrorSnackbarLong(String msg) {
+        Snackbar snackbar;
+        snackbar = make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG)
+                .setText(msg);
+        View view = snackbar.getView();
+        view.setBackgroundColor(getResources().getColor(R.color.red));
+        snackbar.show();
+    }
 
     /**
      * 给loadingDialog设置加载动画的提示，注意这个方法需要运行在创建dialog的线程上

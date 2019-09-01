@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,6 +105,11 @@ public class TimetableFragment extends BaseAppFragment {
         initView();
         initListener();
 
+        if (mCourses.size()==0&&(!TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().sid))) {
+            handlingRefresh=true;
+            mTimetable.startRefreshView();
+            loadTable();
+        }
         return view;
     }
 
@@ -223,7 +229,11 @@ public class TimetableFragment extends BaseAppFragment {
         ((BaseAppActivity) getContext()).addSubscription(subscription4);
         Subscription subscription5  = RxBus.getDefault().toObservable(AuditCourseEvent.class)
                 .subscribe(auditCourseEvent -> {
-                    loadTable();
+                    if (auditCourseEvent.isRefresh) {
+                        mCourses = dao.loadAllCourses();
+                        renderCourseView(mCourses);
+                        loadTable();
+                    }
                 });
         ((BaseAppActivity) getContext()).addSubscription(subscription5);
 
