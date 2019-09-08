@@ -83,6 +83,9 @@ public class CcnuCrawler3 {
                                     .flatMap(new Func1<ResponseBody, Observable<ResponseBody>>() {
                                         @Override
                                         public Observable<ResponseBody> call(ResponseBody responseBody) {
+
+
+                                            // FIXME: 19-9-5 
                                             return Observable.empty();
                                         }
                                     });
@@ -212,6 +215,26 @@ public class CcnuCrawler3 {
 
 
         return res;
+    }
+
+    /**
+     * md 单点登录异常
+     * <p>
+     *    		尊敬的用户：<br />
+     *    		系统单点登录出现异常，请及时与系统管理员联系。<br />
+     *
+     *  		身份验证超时！请检查网络通信是否正常。
+     *
+     * </p>
+     * @return
+     */
+    private boolean isSingleSignOn(String html){
+        if (html.contains("系统单点登录出现异常")){
+            return true;
+        }else
+            return false;
+
+
     }
 
     private boolean isLogined(String html) {

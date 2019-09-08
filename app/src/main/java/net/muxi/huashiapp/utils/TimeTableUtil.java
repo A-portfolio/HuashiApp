@@ -140,11 +140,17 @@ public class TimeTableUtil {
     public static String getCourseTime(int time, boolean isStart) {
         String s = "";
         if (isStart) {
-            int start = time / 2 * 2 + 8;
-            s += (start < 10 ? "0" + start : start);
-            s += ":";
-            s += time % 2 == 0 ? "55" : "00";
-            return s;
+           switch (time){
+               case 1:return "8:00";
+               case 3:return "10:10";
+               case 5:return "14:00";
+               case 7:return "16:10";
+               case 9:return "18:30";
+               case 11:return "20:15";
+               default:return " ";
+
+
+           }
         }
 
         int end = time - 1 + 8;

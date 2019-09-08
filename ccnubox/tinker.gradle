@@ -14,7 +14,7 @@ def versionBuild = rootProject.ext.versionBuild
 
 def bakPath = file("${buildDir}/bakApk/")
 //def baseInfo = rootProject.ext.baseInfo
-def baseInfo = 'ccnubox-2.5.0-0830-23-38-06'
+def baseInfo = 'ccnubox-2.5.0-0901-12-47-22'
 def variantName = "release"
 
 
