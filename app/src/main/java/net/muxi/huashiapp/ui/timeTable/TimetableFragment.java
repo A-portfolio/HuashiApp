@@ -120,6 +120,7 @@ public class TimetableFragment extends BaseAppFragment {
     }
     @Override
     public void onHiddenChanged(boolean hidden){
+        super.onHiddenChanged(hidden);
         if (!hidden){
             setCurweek(curWeek);
             setSelectedWeek(selectedWeek);
