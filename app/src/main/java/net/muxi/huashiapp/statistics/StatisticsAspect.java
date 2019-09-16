@@ -96,9 +96,14 @@ public class StatisticsAspect {
         Log.i(TAG, "webPage: "+joinPoint.getArgs()[1]);
     }
 
+    public static long lastOnErrorTime=0;
     //apiEvent
     @After("execution(* rx.Observer+.onError(..))")
     public void afterOnerror(JoinPoint joinPoint){
+        long time=System.currentTimeMillis();
+        long lastTime=net.muxi.huashiapp.statistics.StatisticsAspect.lastOnErrorTime;
+        net.muxi.huashiapp.statistics.StatisticsAspect.lastOnErrorTime=time;
+        if (time-lastTime<500)return;
         //处理重复
         Log.i(TAG, "afterOnerror: "+joinPoint.getArgs()[0].getClass().getSimpleName());
         if (joinPoint.getArgs()[0] instanceof HttpException){
