@@ -159,7 +159,7 @@ public interface RetrofitService {
             @Query("startNum") String start,
             @Query("num") String num);
 
-    @GET("app/latest/")
+    @GET("app/latest/a")
     Observable<VersionData> getLatestVersion();
 
     @GET("patch/")

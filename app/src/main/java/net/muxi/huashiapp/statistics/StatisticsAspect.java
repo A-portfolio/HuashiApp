@@ -11,6 +11,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 
+import retrofit2.HttpException;
+
 @Aspect
 public class StatisticsAspect {
 
@@ -95,7 +97,18 @@ public class StatisticsAspect {
     }
 
     //apiEvent
+    @After("execution(* rx.Observer+.onError(..))")
+    public void afterOnerror(JoinPoint joinPoint){
+        //处理重复
+        Log.i(TAG, "afterOnerror: "+joinPoint.getArgs()[0].getClass().getSimpleName());
+        if (joinPoint.getArgs()[0] instanceof HttpException){
+            HttpException e=(HttpException) joinPoint.getArgs()[0];
+            Log.i(TAG, "afterOnerror: "+e.message());
+            Log.i(TAG, "afterOnerror: "+e.response().raw().request().url().toString());
+        }
 
+
+    }
 
 
 

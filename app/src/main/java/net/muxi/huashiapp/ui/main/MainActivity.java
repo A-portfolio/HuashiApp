@@ -166,7 +166,11 @@ public class MainActivity extends BaseAppActivity implements
                                 () -> checkUpdateDialog.dismiss());
                         checkUpdateDialog.show(getSupportFragmentManager(), "dialog_update");
                     }
-                }, throwable -> throwable.printStackTrace());
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    Log.i(TAG, "checkNewVersion: onerror");
+                
+                });
     }
 
     private void beginUpdate(String download) {
