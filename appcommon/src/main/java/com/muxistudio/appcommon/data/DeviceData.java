@@ -1,6 +1,6 @@
-package net.muxi.huashiapp.statistics.data;
+package com.muxistudio.appcommon.data;
 
-public class deviceData {
+public class DeviceData {
 
 
     /**

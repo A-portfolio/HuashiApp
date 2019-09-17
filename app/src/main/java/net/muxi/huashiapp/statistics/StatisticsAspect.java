@@ -5,11 +5,16 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 
+import com.muxistudio.appcommon.data.StatisticsData;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import com.muxistudio.appcommon.data.StatisticsData.DataBean;
+
+import net.muxi.huashiapp.App;
 
 import retrofit2.HttpException;
 
@@ -17,6 +22,16 @@ import retrofit2.HttpException;
 public class StatisticsAspect {
 
 
+    /**
+     * pid : String
+     * deviceId : String
+     * type : String
+     * mainCat : String
+     * subCat : String
+     * value : String
+     * timestamp : Int
+     * extra : String
+     */
     public static final String TAG="statistics";
 
     //pageView
@@ -26,7 +41,9 @@ public class StatisticsAspect {
     public void activityCreate(){}
     @After("activityCreate()")
     public void afterActivityCreate(JoinPoint point){
+        Log.i(TAG, "afterActivityCreate: "+ App.getDevicesId());
         Log.i(TAG, "afterActivityCreate: "+point.getThis().getClass().getSimpleName());
+        DataBean dataBean=new DataBean("ccnubox",)
     }
 
 

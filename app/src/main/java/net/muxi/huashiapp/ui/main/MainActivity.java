@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -50,6 +51,8 @@ import net.muxi.huashiapp.ui.timeTable.CourseAuditSearchActivity;
 import net.muxi.huashiapp.ui.timeTable.TimetableFragment;
 import net.muxi.huashiapp.utils.AlarmUtil;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.Objects;
 
@@ -69,8 +72,10 @@ public class MainActivity extends BaseAppActivity implements
     private Fragment mCurFragment;
     private BottomNavigationView mNavView;
     private CcnuCrawler3 ccnuCrawler3;
-    private String curFragmentTag="def";
-    private final static  String TAG="MAINLOGIN";
+    private String curFragmentTag = "def";
+    private final static String TAG = "MAINLOGIN";
+    private static int REQUEST_PERMISSION_CODE = 1111;
+
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);
         context.startActivity(starter);
@@ -86,7 +91,7 @@ public class MainActivity extends BaseAppActivity implements
         //开启动态权限
         if (!isStoragePermissionGranted()) {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE}, REQUEST_PERMISSION_CODE);
         }
         initView();
         handleIntent(getIntent());
@@ -96,8 +101,8 @@ public class MainActivity extends BaseAppActivity implements
         //这个提醒好像不能用,先暂停
         //AlarmUtil.register(this);
 
-        if( UserAccountManager.getInstance().isInfoUserLogin()){
-            ccnuCrawler3=new CcnuCrawler3();
+        if (UserAccountManager.getInstance().isInfoUserLogin()) {
+            ccnuCrawler3 = new CcnuCrawler3();
             ccnuCrawler3.performLogin(new Subscriber<ResponseBody>() {
                 @Override
                 public void onCompleted() {
@@ -130,9 +135,7 @@ public class MainActivity extends BaseAppActivity implements
 
 
                 }
-            },UserAccountManager.getInstance().getInfoUser());
-
-
+            }, UserAccountManager.getInstance().getInfoUser());
 
 
         }
@@ -146,7 +149,7 @@ public class MainActivity extends BaseAppActivity implements
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(versionData -> {
-                    if (versionData == null){
+                    if (versionData == null) {
                         return;
                     }
                     if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME)) {
@@ -169,7 +172,7 @@ public class MainActivity extends BaseAppActivity implements
                 }, throwable -> {
                     throwable.printStackTrace();
                     Log.i(TAG, "checkNewVersion: onerror");
-                
+
                 });
     }
 
@@ -193,8 +196,6 @@ public class MainActivity extends BaseAppActivity implements
         }
         Logger.d("file not exists");
     }
-
-
 
 
     @Override
@@ -231,21 +232,21 @@ public class MainActivity extends BaseAppActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.action_main){
+        if (itemId == R.id.action_main) {
             showFragment("main");
-        }else if (itemId == R.id.action_timetable){
+        } else if (itemId == R.id.action_timetable) {
             if (TextUtils.isEmpty(UserAccountManager.getInstance().getInfoUser().sid))
                 LoginActivity.start(MainActivity.this, "info", "table");
 
             showFragment("table");
 
-        }else if (itemId == R.id.action_library){
-            if (UserAccountManager.getInstance().isLibLogin()){
+        } else if (itemId == R.id.action_library) {
+            if (UserAccountManager.getInstance().isLibLogin()) {
                 showFragment("lib_mine");
-            }else {
+            } else {
                 showFragment("lib_main");
             }
-        }else if (itemId == R.id.action_more){
+        } else if (itemId == R.id.action_more) {
             showFragment("more");
         }
         return true;
@@ -256,24 +257,24 @@ public class MainActivity extends BaseAppActivity implements
         finish();
     }
 
-    public void showFragment(Fragment fragment, String tag,FragmentTransaction fragmentTransaction) {
-        fragmentTransaction.add(R.id.content_layout,fragment,tag);
-        curFragmentTag=tag;
+    public void showFragment(Fragment fragment, String tag, FragmentTransaction fragmentTransaction) {
+        fragmentTransaction.add(R.id.content_layout, fragment, tag);
+        curFragmentTag = tag;
         fragmentTransaction.commitNow();
         Logger.d(fragment.getTag());
     }
 
     public void showFragment(String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment targetFragment=fragmentManager.findFragmentByTag(tag);
-        Fragment curFragment=fragmentManager.findFragmentByTag(curFragmentTag);
+        Fragment targetFragment = fragmentManager.findFragmentByTag(tag);
+        Fragment curFragment = fragmentManager.findFragmentByTag(curFragmentTag);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        if (curFragment!=null)
+        if (curFragment != null)
             fragmentTransaction.hide(curFragment);
 
-        if (targetFragment!= null) {
-            curFragmentTag=tag;
+        if (targetFragment != null) {
+            curFragmentTag = tag;
             fragmentTransaction.show(targetFragment);
             fragmentTransaction.commitNow();
             return;
@@ -282,19 +283,19 @@ public class MainActivity extends BaseAppActivity implements
         Logger.d("begin new fragment instance");
         switch (tag) {
             case "main":
-                showFragment(MainFragment.newInstance(), tag,fragmentTransaction);
+                showFragment(MainFragment.newInstance(), tag, fragmentTransaction);
                 break;
             case "table":
-                showFragment(TimetableFragment.newInstance(), tag,fragmentTransaction);
+                showFragment(TimetableFragment.newInstance(), tag, fragmentTransaction);
                 break;
             case "lib_main":
-                showFragment(LibraryMineFragment.newInstance(), tag,fragmentTransaction);
+                showFragment(LibraryMineFragment.newInstance(), tag, fragmentTransaction);
                 break;
             case "lib_mine":
-                showFragment(LibraryMineFragment.newInstance(), tag,fragmentTransaction);
+                showFragment(LibraryMineFragment.newInstance(), tag, fragmentTransaction);
                 break;
             case "more":
-                showFragment(MoreFragment.newInstance(), tag,fragmentTransaction);
+                showFragment(MoreFragment.newInstance(), tag, fragmentTransaction);
                 break;
         }
     }
@@ -310,19 +311,34 @@ public class MainActivity extends BaseAppActivity implements
         }
     }
 
+
     public boolean isStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-          return checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-              == PackageManager.PERMISSION_GRANTED;
-        } else {
-            return true;
-        }
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
+
     }
+
     @Override
-    public void  onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
-        if (ccnuCrawler3!=null){
+        if (ccnuCrawler3 != null) {
             ccnuCrawler3.unsubscription();
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
+        if (requestCode == REQUEST_PERMISSION_CODE) {
+            TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                String id=tm.getDeviceId();
+                if (id!=null) {
+                    PreferenceUtil.saveString(PreferenceUtil.DEVICES_ID,id);
+                    App.devicesId= id;
+                }
+            }
+
         }
 
     }

@@ -16,7 +16,7 @@ public class DataBase extends SQLiteOpenHelper {
     private static DataBase instance;
 
     private static final String DB_NAME = "huashi_db";
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 5;
 
     //图书馆搜索的历史记录
     public static final String TABLE_SEARCH_HISTORY = "search_history";
@@ -71,13 +71,18 @@ public class DataBase extends SQLiteOpenHelper {
     public static final String KEY_SEARCH = "search";
 
 
+
+
     public DataBase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
     public static SQLiteDatabase getInstance() {
         if (instance == null) {
-            instance = new DataBase(Global.getApplication(), DB_NAME, null, DB_VERSION);
+            synchronized (DataBase.class) {
+                if (instance==null)
+                    instance = new DataBase(Global.getApplication(), DB_NAME, null, DB_VERSION);
+            }
         }
         return instance.getReadableDatabase();
     }
@@ -135,6 +140,8 @@ public class DataBase extends SQLiteOpenHelper {
         //                KEY_INTRO + " text, " +
         //                KEY_BOOK_ID + " text);";
         //        db.execSQL(createLibTable);
+
+
 
 
     }
@@ -197,6 +204,32 @@ public class DataBase extends SQLiteOpenHelper {
 
         }
 
+        if (newVersion>=5){
+            //埋点统计数据：
+            /*
+            private String pid;
+            private String deviceId;
+            private String type;
+            private String mainCat;
+            private String subCat;
+            private String value;
+            private String timestamp;
+            private String extra;
+             */
+            db.execSQL("create table if not exists "+"StatisticsData"+
+                      "(pid text," +
+                      "deviceId text," +
+                      "type text," +
+                      "mainCat text," +
+                      "subCat text," +
+                      "value text," +
+                      "timestamp text," +
+                      "extra text," +
+                      "id integer primary key autoincrement);"
+            );
+
+
+        }
         Logger.d("database update");
     }
 }

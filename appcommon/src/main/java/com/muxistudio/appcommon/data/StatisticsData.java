@@ -1,8 +1,8 @@
-package net.muxi.huashiapp.statistics.data;
+package com.muxistudio.appcommon.data;
 
 import java.util.List;
 
-public class statisticsData {
+public class StatisticsData {
 
 
     private List<DataBean> data;
@@ -35,6 +35,18 @@ public class statisticsData {
         private String value;
         private String timestamp;
         private String extra;
+
+        public DataBean(){}
+        public DataBean(String pid, String deviceId, String type, String mainCat, String subCat, String value, String timestamp, String extra) {
+            this.pid = pid;
+            this.deviceId = deviceId;
+            this.type = type;
+            this.mainCat = mainCat;
+            this.subCat = subCat;
+            this.value = value;
+            this.timestamp = timestamp;
+            this.extra = extra;
+        }
 
         public String getPid() {
             return pid;

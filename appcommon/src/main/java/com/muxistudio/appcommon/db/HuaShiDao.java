@@ -7,6 +7,7 @@ import android.util.Log;
 import com.muxistudio.appcommon.data.ApartmentData;
 import com.muxistudio.appcommon.data.BannerData;
 import com.muxistudio.appcommon.data.Course;
+import com.muxistudio.appcommon.data.StatisticsData;
 import com.muxistudio.appcommon.data.WebsiteData;
 import com.muxistudio.common.util.PreferenceUtil;
 
@@ -25,7 +26,22 @@ public class HuaShiDao {
     public HuaShiDao() {
         db = DataBase.getInstance();
     }
+    /**
+     * pid : String
+     * deviceId : String
+     * type : String
+     * mainCat : String
+     * subCat : String
+     * value : String
+     * timestamp : Int
+     * extra : String
+     */
 
+    public static void insertStatisticsData(StatisticsData.DataBean dataBean){
+        DataBase.getInstance().execSQL("insert into StatisticsData " +
+                "VALUES(?,?,?,?,?,?,?,?)",new String[]{dataBean.getPid(),dataBean.getDeviceId(),dataBean.getType(),dataBean.getMainCat(),
+        dataBean.getSubCat(),dataBean.getValue(),dataBean.getTimestamp(),dataBean.getExtra()});
+    }
     //插入当前用户的搜索记录,如果当前用户没有登录则为 null
     public void insertSearchHistory(String book) {
         String libraryId = PreferenceUtil.getString(PreferenceUtil.LIBRARY_ID, "0");

@@ -2,7 +2,10 @@ package net.muxi.huashiapp;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.support.v4.app.ActivityCompat;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -22,6 +25,10 @@ import com.umeng.commonsdk.UMConfigure;
 
 import net.muxi.huashiapp.utils.MiPushUtil;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import static com.muxistudio.appcommon.Constants.UMENG_APP_KEY;
 import static com.muxistudio.common.util.DimensUtil.dp2px;
 
@@ -33,37 +40,37 @@ public class App extends Application {
 
     public static Context sContext;
     public static long sLastLogin;
+    public static ExecutorService mainPool = Executors.newFixedThreadPool(3);
+    public static String devicesId;
+
     @Override
     public void onCreate() {
         super.onCreate();
-
         sContext = getApplicationContext();
-        Global. setApplication(this);
+        Global.setApplication(this);
         UserAccountManager.getInstance().initUser();
-
-        Fresco.initialize(getContext(),setFrescoConfig());
-        Application application=this;
+        Fresco.initialize(getContext(), setFrescoConfig());
+        Application application = this;
         new Thread(new Runnable() {
             @Override
             public void run() {
                 initBugly();
                 initUMeng();
-                initARouter(application);
+                //暂时没用到aRouter
+                //initARouter(application);
                 initX5();
-                MiPushUtil.initMiPush(getContext());
 
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
-        });
+        }).start();
 
         sLastLogin = PreferenceUtil.getLong(PreferenceUtil.LAST_LOGIN_MOMENT);
 
 
-      //UtilsExtensionKt.cache(sContext,user.sid,user.password);
+        //UtilsExtensionKt.cache(sContext,user.sid,user.password);
+    }
+
+    public static ExecutorService getMainPool() {
+        return mainPool;
     }
 
     private void initX5() {
@@ -82,6 +89,18 @@ public class App extends Application {
 
     }
 
+    public static String getDevicesId() {
+        if (devicesId==null){
+            synchronized (App.class){
+                if (devicesId==null){
+                    devicesId=PreferenceUtil.getString(PreferenceUtil.DEVICES_ID,"Unknow");
+                }
+            }
+
+        }
+        return devicesId;
+
+    }
     private void initBugly() {
         if (!BuildConfig.DEBUG) {
             CrashReport.initCrashReport(getApplicationContext(), "900043675", BuildConfig.DEBUG);
