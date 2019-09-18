@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import com.muxistudio.appcommon.data.StatisticsData.DataBean;
+import com.muxistudio.appcommon.db.HuaShiDao;
 
 import net.muxi.huashiapp.App;
 
@@ -20,6 +21,7 @@ import retrofit2.HttpException;
 
 @Aspect
 public class StatisticsAspect {
+
 
 
     /**
@@ -43,7 +45,21 @@ public class StatisticsAspect {
     public void afterActivityCreate(JoinPoint point){
         Log.i(TAG, "afterActivityCreate: "+ App.getDevicesId());
         Log.i(TAG, "afterActivityCreate: "+point.getThis().getClass().getSimpleName());
-        DataBean dataBean=new DataBean("ccnubox",)
+        long time=System.currentTimeMillis();
+        App.getMainPool().execute(()->{
+            Log.i(TAG, "afterActivityCreate: execute");
+            DataBean dataBean=new DataBean.Builder()
+                    .deviceId(App.getDevicesId())
+                    .mainCat("pageView")
+                    .subCat(point.getThis().getClass().getSimpleName())
+                    .timestamp(String.valueOf(time))
+                    .Build();
+            HuaShiDao.insertStatisticsData(dataBean);
+
+
+        });
+
+
     }
 
 
@@ -53,9 +69,21 @@ public class StatisticsAspect {
     public void fragmentResume(Fragment fragment) {}
     @After("fragmentResume(fragment)")
     public void afterFragment(Fragment fragment){
-
+        if (fragment.getClass().getSimpleName().equals("CardFragment"))return;
         Log.i(TAG, "afterFragment: "+fragment.getClass().getSimpleName());
+        long time=System.currentTimeMillis();
+        App.getMainPool().execute(()->{
+            Log.i(TAG, "afterFragment: execute");
+            DataBean dataBean=new DataBean.Builder()
+                    .deviceId(App.getDevicesId())
+                    .mainCat("pageView")
+                    .subCat(fragment.getClass().getSimpleName())
+                    .timestamp(String.valueOf(time))
+                    .Build();
+            HuaShiDao.insertStatisticsData(dataBean);
 
+
+        });
     }
 
     //2.统记隐藏打开：
@@ -64,9 +92,21 @@ public class StatisticsAspect {
     @After("onHiddenChanged(fragment,hidden)")
     public void afterFragmentHidden(Fragment fragment,boolean hidden){
         if (hidden)return;
+        if (fragment.getClass().getSimpleName().equals("CardFragment"))return;
         Log.i(TAG, "afterFragmentHidden: " + fragment.getClass().getSimpleName());
-        Log.i(TAG, "afterFragmentHidden: hidden"+hidden);
+        long time=System.currentTimeMillis();
+        App.getMainPool().execute(()->{
+            Log.i(TAG, "afterFragmentHidden: execute");
+            DataBean dataBean=new DataBean.Builder()
+                    .deviceId(App.getDevicesId())
+                    .mainCat("pageView")
+                    .subCat(fragment.getClass().getSimpleName())
+                    .timestamp(String.valueOf(time))
+                    .Build();
+            HuaShiDao.insertStatisticsData(dataBean);
 
+
+        });
     }
 
     //3.viewpage+fragment转换调用这个方法：
@@ -78,6 +118,19 @@ public class StatisticsAspect {
         if (!visible)return;
         if (fragment.getClass().getSimpleName().equals("CardFragment"))return;
         Log.i(TAG, "afterFragmentVisible: "+fragment.getClass().getSimpleName());
+        long time=System.currentTimeMillis();
+        App.getMainPool().execute(()->{
+            Log.i(TAG, "afterFragmentVisible: execute");
+            DataBean dataBean=new DataBean.Builder()
+                    .deviceId(App.getDevicesId())
+                    .mainCat("pageView")
+                    .subCat(fragment.getClass().getSimpleName())
+                    .timestamp(String.valueOf(time))
+                    .Build();
+            HuaShiDao.insertStatisticsData(dataBean);
+
+
+        });
 
     }
 
@@ -90,6 +143,22 @@ public class StatisticsAspect {
     public void afterOnClickAll(View view,JoinPoint joinPoint) {
         Log.i(TAG, "afterOnClickAll: "+joinPoint.getThis().getClass().getSimpleName());
         Log.i(TAG, "afterOnClickAll: "+view.getClass().getSimpleName());
+
+        long time=System.currentTimeMillis();
+        App.getMainPool().execute(()->{
+            Log.i(TAG, "afterOnClickAll: execute");
+            DataBean dataBean=new DataBean.Builder()
+                    .deviceId(App.getDevicesId())
+                    .mainCat("userEvent")
+                    .subCat(joinPoint.getThis().getClass().getSimpleName())
+                    .value(view.getClass().getSimpleName())
+                    .type("click")
+                    .timestamp(String.valueOf(time))
+                    .Build();
+            HuaShiDao.insertStatisticsData(dataBean);
+
+
+        });
     }
 
     @After("execution(void android.view.View.OnClickListener+.onClick(..))  && args(view)")
@@ -100,6 +169,23 @@ public class StatisticsAspect {
         try {
             Resources res = view.getResources();
             Log.i(TAG, "afterOnClick: " + res.getResourceEntryName(view.getId()));
+            long time=System.currentTimeMillis();
+            App.getMainPool().execute(()->{
+                Log.i(TAG, "afterOnClick: execute");
+                DataBean dataBean=new DataBean.Builder()
+                        .deviceId(App.getDevicesId())
+                        .mainCat("userEvent")
+                        .subCat(joinPoint.getThis().getClass().getSimpleName())
+                        .value(view.getClass().getSimpleName())
+                        .extra(res.getResourceEntryName(view.getId()))
+                        .type("click")
+                        .timestamp(String.valueOf(time))
+                        .Build();
+                HuaShiDao.insertStatisticsData(dataBean);
+
+
+            });
+
         }catch (Resources.NotFoundException e){
             Log.e(TAG, "afterOnClick: ",e );
         }catch (Exception e){
@@ -111,6 +197,20 @@ public class StatisticsAspect {
     @After("execution(* net.muxi.huashiapp.ui.webview.WebViewActivity.newIntent(..))")
     public void afterOpenWebPage(JoinPoint joinPoint) {
         Log.i(TAG, "webPage: "+joinPoint.getArgs()[1]);
+        long time=System.currentTimeMillis();
+        App.getMainPool().execute(()-> {
+            Log.i(TAG, "afterOpenWebPage: execute");
+            DataBean dataBean = new DataBean.Builder()
+                    .deviceId(App.getDevicesId())
+                    .mainCat("pageView")
+                    .subCat("WebViewActivity")
+                    .value((String) joinPoint.getArgs()[1])
+                    .type("WebView")
+                    .timestamp(String.valueOf(time))
+                    .Build();
+            HuaShiDao.insertStatisticsData(dataBean);
+        });
+
     }
 
     public static long lastOnErrorTime=0;
@@ -127,6 +227,20 @@ public class StatisticsAspect {
             HttpException e=(HttpException) joinPoint.getArgs()[0];
             Log.i(TAG, "afterOnerror: "+e.message());
             Log.i(TAG, "afterOnerror: "+e.response().raw().request().url().toString());
+
+
+            long cTime=System.currentTimeMillis();
+            App.getMainPool().execute(()-> {
+                Log.i(TAG, "afterOnerror: execute");
+                DataBean dataBean = new DataBean.Builder()
+                        .deviceId(App.getDevicesId())
+                        .mainCat("apiEvent")
+                        .subCat(e.response().raw().request().url().toString())
+                        .value(e.message())
+                        .timestamp(String.valueOf(cTime))
+                        .Build();
+                HuaShiDao.insertStatisticsData(dataBean);
+            });
         }
 
 

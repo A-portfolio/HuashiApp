@@ -111,5 +111,72 @@ public class StatisticsData {
         public void setExtra(String extra) {
             this.extra = extra;
         }
+
+
+        public static class Builder{
+            private String pid;
+            private String deviceId;
+            private String type;
+            private String mainCat;
+            private String subCat;
+            private String value;
+            private String timestamp;
+            private String extra;
+
+            public Builder(){
+                pid="pid";
+                deviceId="Unknow";
+                type="type";
+                mainCat="mainCat";
+                subCat="subCat";
+                value="value";
+                timestamp="time";
+                extra="extra";
+
+            }
+
+            public DataBean Build(){
+
+                return new DataBean(pid,deviceId,type,mainCat,subCat,value,timestamp,extra);
+            }
+            public Builder pid(String pid){
+                this.pid=pid;
+                return this;
+            }
+
+            public Builder deviceId(String deviceId){
+                this.deviceId=deviceId;
+                return this;
+            }
+
+            public Builder type(String type){
+                this.type=type;
+                return this;
+            }
+
+            public Builder mainCat(String mainCat){
+                this.mainCat=mainCat;
+                return this;
+            }
+            public Builder subCat(String subCat){
+                this.subCat=subCat;
+                return this;
+            }
+            public Builder value(String value){
+                this.value=value;
+                return this;
+            }
+
+            public Builder timestamp(String timestamp){
+                this.timestamp=timestamp;
+                return this;
+            }
+
+            public Builder extra(String extra){
+                this.extra=extra;
+                return this;
+            }
+
+        }
     }
 }

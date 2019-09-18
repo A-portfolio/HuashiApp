@@ -39,7 +39,7 @@ public class HuaShiDao {
 
     public static void insertStatisticsData(StatisticsData.DataBean dataBean){
         DataBase.getInstance().execSQL("insert into StatisticsData " +
-                "VALUES(?,?,?,?,?,?,?,?)",new String[]{dataBean.getPid(),dataBean.getDeviceId(),dataBean.getType(),dataBean.getMainCat(),
+                "VALUES(?,?,?,?,?,?,?,?,null)",new String[]{dataBean.getPid(),dataBean.getDeviceId(),dataBean.getType(),dataBean.getMainCat(),
         dataBean.getSubCat(),dataBean.getValue(),dataBean.getTimestamp(),dataBean.getExtra()});
     }
     //插入当前用户的搜索记录,如果当前用户没有登录则为 null

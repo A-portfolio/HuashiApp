@@ -335,7 +335,7 @@ public class MainActivity extends BaseAppActivity implements
                 String id=tm.getDeviceId();
                 if (id!=null) {
                     PreferenceUtil.saveString(PreferenceUtil.DEVICES_ID,id);
-                    App.devicesId= id;
+                    App.setDevicesId(id);
                 }
             }
 

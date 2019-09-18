@@ -40,8 +40,8 @@ public class App extends Application {
 
     public static Context sContext;
     public static long sLastLogin;
-    public static ExecutorService mainPool = Executors.newFixedThreadPool(3);
-    public static String devicesId;
+    private static ExecutorService mainPool = Executors.newFixedThreadPool(3);
+    private static String devicesId;
 
     @Override
     public void onCreate() {
@@ -89,6 +89,9 @@ public class App extends Application {
 
     }
 
+    public static void setDevicesId(String Id){
+        devicesId=Id;
+    }
     public static String getDevicesId() {
         if (devicesId==null){
             synchronized (App.class){
