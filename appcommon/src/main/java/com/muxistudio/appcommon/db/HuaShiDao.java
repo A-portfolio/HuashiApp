@@ -10,7 +10,7 @@ import com.muxistudio.appcommon.data.Course;
 import com.muxistudio.appcommon.data.StatisticsData;
 import com.muxistudio.appcommon.data.WebsiteData;
 import com.muxistudio.common.util.PreferenceUtil;
-
+import com.muxistudio.appcommon.data.StatisticsData.DataBean;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +40,31 @@ public class HuaShiDao {
     public static void insertStatisticsData(StatisticsData.DataBean dataBean){
         DataBase.getInstance().execSQL("insert into StatisticsData " +
                 "VALUES(?,?,?,?,?,?,?,?,null)",new String[]{dataBean.getPid(),dataBean.getDeviceId(),dataBean.getType(),dataBean.getMainCat(),
-        dataBean.getSubCat(),dataBean.getValue(),dataBean.getTimestamp(),dataBean.getExtra()});
+        dataBean.getSubCat(),dataBean.getValue(),String.valueOf(dataBean.getTimestamp()),dataBean.getExtra()});
+    }
+
+    public static void deleteAllStatistics(){
+        DataBase.getInstance().execSQL("delete from StatisticsData;");
+
+    }
+    public static List<DataBean> getAllStatisticsData(){
+        Cursor cursor=DataBase.getInstance().rawQuery("select*from StatisticsData ",null);
+        List<DataBean>list=new ArrayList<>();
+        if (cursor.getCount()>0){
+            Log.i("database", "getAllStatisticsData: "+cursor.getCount());
+            while (cursor.moveToNext()){
+                DataBean dataBean=new DataBean(cursor.getString(cursor.getColumnIndex(DataBase.S_PID)),
+                        cursor.getString(cursor.getColumnIndex(DataBase.S_DEVICEID)),cursor.getString(cursor.getColumnIndex(DataBase.S_TYPE)),
+                                cursor.getString(cursor.getColumnIndex(DataBase.S_MAINCAT)),cursor.getString(cursor.getColumnIndex(DataBase.S_SUBCAT)),
+                                cursor.getString(cursor.getColumnIndex(DataBase.S_VALUE)),Long.parseLong(cursor.getString(cursor.getColumnIndex(DataBase.S_TIMESTAMP))),cursor.getString(cursor.getColumnIndex(DataBase.S_EXTRA)));
+                list.add(dataBean);
+            }
+
+
+        }
+        cursor.close();
+        return list;
+
     }
     //插入当前用户的搜索记录,如果当前用户没有登录则为 null
     public void insertSearchHistory(String book) {

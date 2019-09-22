@@ -20,10 +20,17 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.appbase.BaseAppActivity;
 import com.muxistudio.appcommon.data.SplashData;
+import com.muxistudio.appcommon.data.StatisticsData;
+import com.muxistudio.appcommon.db.HuaShiDao;
 import com.muxistudio.appcommon.event.LibLoginEvent;
 import com.muxistudio.appcommon.event.LoginSuccessEvent;
 import com.muxistudio.appcommon.net.CampusFactory;
@@ -40,6 +47,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.login.CcnuCrawler3;
 import net.muxi.huashiapp.login.SingleCCNUClient;
 import net.muxi.huashiapp.service.DownloadService;
+import net.muxi.huashiapp.statistics.work.UploadWork;
 import net.muxi.huashiapp.ui.card.CardActivity;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMainFragment;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
@@ -54,15 +62,19 @@ import net.muxi.huashiapp.utils.AlarmUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 import okhttp3.ResponseBody;
 import retrofit2.HttpException;
+import rx.Observable;
 import rx.Observer;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseAppActivity implements
@@ -95,7 +107,6 @@ public class MainActivity extends BaseAppActivity implements
         }
         initView();
         handleIntent(getIntent());
-
         checkNewVersion();
 
         //这个提醒好像不能用,先暂停
@@ -142,6 +153,18 @@ public class MainActivity extends BaseAppActivity implements
 
 
     }
+
+
+   public void setUploadWork(){
+       Constraints constraints=new Constraints.Builder()
+               .setRequiredNetworkType(NetworkType.CONNECTED)
+               .setRequiresDeviceIdle(true)
+               .build();
+       OneTimeWorkRequest request=new OneTimeWorkRequest.Builder(UploadWork.class)
+               .setConstraints(constraints)
+               .build();
+       WorkManager.getInstance(this).enqueue(request);
+   }
 
 
     private void checkNewVersion() {
@@ -324,6 +347,7 @@ public class MainActivity extends BaseAppActivity implements
         if (ccnuCrawler3 != null) {
             ccnuCrawler3.unsubscription();
         }
+        setUploadWork();
 
     }
 

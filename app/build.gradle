@@ -56,6 +56,8 @@ android {
 }
 
 dependencies {
+    def work_version = "2.2.0"
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api project(':appcommon')
     implementation 'me.biubiubiu.justifytext:library:1.1'
@@ -69,6 +71,7 @@ dependencies {
     implementation 'com.amap.api:search:6.1.0'
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
     api 'org.aspectj:aspectjrt:1.9.4'
+    implementation "androidx.work:work-runtime:$work_version"
 
     implementation files('libs/MiPush_SDK_Client_3_6_2.jar')
 }

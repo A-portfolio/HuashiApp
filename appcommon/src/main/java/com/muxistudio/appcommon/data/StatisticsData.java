@@ -33,11 +33,11 @@ public class StatisticsData {
         private String mainCat;
         private String subCat;
         private String value;
-        private String timestamp;
+        private long timestamp;
         private String extra;
 
         public DataBean(){}
-        public DataBean(String pid, String deviceId, String type, String mainCat, String subCat, String value, String timestamp, String extra) {
+        public DataBean(String pid, String deviceId, String type, String mainCat, String subCat, String value, long timestamp, String extra) {
             this.pid = pid;
             this.deviceId = deviceId;
             this.type = type;
@@ -96,11 +96,11 @@ public class StatisticsData {
             this.value = value;
         }
 
-        public String getTimestamp() {
+        public long getTimestamp() {
             return timestamp;
         }
 
-        public void setTimestamp(String timestamp) {
+        public void setTimestamp(long timestamp) {
             this.timestamp = timestamp;
         }
 
@@ -120,17 +120,17 @@ public class StatisticsData {
             private String mainCat;
             private String subCat;
             private String value;
-            private String timestamp;
+            private long timestamp;
             private String extra;
 
             public Builder(){
-                pid="pid";
+                pid="ccnubox";
                 deviceId="Unknow";
                 type="type";
                 mainCat="mainCat";
                 subCat="subCat";
                 value="value";
-                timestamp="time";
+                timestamp=0;
                 extra="extra";
 
             }
@@ -167,7 +167,7 @@ public class StatisticsData {
                 return this;
             }
 
-            public Builder timestamp(String timestamp){
+            public Builder timestamp(long timestamp){
                 this.timestamp=timestamp;
                 return this;
             }

@@ -52,7 +52,7 @@ public class StatisticsAspect {
                     .deviceId(App.getDevicesId())
                     .mainCat("pageView")
                     .subCat(point.getThis().getClass().getSimpleName())
-                    .timestamp(String.valueOf(time))
+                    .timestamp(time)
                     .Build();
             HuaShiDao.insertStatisticsData(dataBean);
 
@@ -78,7 +78,7 @@ public class StatisticsAspect {
                     .deviceId(App.getDevicesId())
                     .mainCat("pageView")
                     .subCat(fragment.getClass().getSimpleName())
-                    .timestamp(String.valueOf(time))
+                    .timestamp(time)
                     .Build();
             HuaShiDao.insertStatisticsData(dataBean);
 
@@ -101,7 +101,7 @@ public class StatisticsAspect {
                     .deviceId(App.getDevicesId())
                     .mainCat("pageView")
                     .subCat(fragment.getClass().getSimpleName())
-                    .timestamp(String.valueOf(time))
+                    .timestamp(time)
                     .Build();
             HuaShiDao.insertStatisticsData(dataBean);
 
@@ -125,7 +125,7 @@ public class StatisticsAspect {
                     .deviceId(App.getDevicesId())
                     .mainCat("pageView")
                     .subCat(fragment.getClass().getSimpleName())
-                    .timestamp(String.valueOf(time))
+                    .timestamp(time)
                     .Build();
             HuaShiDao.insertStatisticsData(dataBean);
 
@@ -153,7 +153,7 @@ public class StatisticsAspect {
                     .subCat(joinPoint.getThis().getClass().getSimpleName())
                     .value(view.getClass().getSimpleName())
                     .type("click")
-                    .timestamp(String.valueOf(time))
+                    .timestamp(time)
                     .Build();
             HuaShiDao.insertStatisticsData(dataBean);
 
@@ -179,7 +179,7 @@ public class StatisticsAspect {
                         .value(view.getClass().getSimpleName())
                         .extra(res.getResourceEntryName(view.getId()))
                         .type("click")
-                        .timestamp(String.valueOf(time))
+                        .timestamp(time)
                         .Build();
                 HuaShiDao.insertStatisticsData(dataBean);
 
@@ -206,7 +206,7 @@ public class StatisticsAspect {
                     .subCat("WebViewActivity")
                     .value((String) joinPoint.getArgs()[1])
                     .type("WebView")
-                    .timestamp(String.valueOf(time))
+                    .timestamp(time)
                     .Build();
             HuaShiDao.insertStatisticsData(dataBean);
         });
@@ -237,7 +237,7 @@ public class StatisticsAspect {
                         .mainCat("apiEvent")
                         .subCat(e.response().raw().request().url().toString())
                         .value(e.message())
-                        .timestamp(String.valueOf(cTime))
+                        .timestamp(cTime)
                         .Build();
                 HuaShiDao.insertStatisticsData(dataBean);
             });

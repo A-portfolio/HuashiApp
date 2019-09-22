@@ -70,7 +70,25 @@ public class DataBase extends SQLiteOpenHelper {
     public static final String KEY_BOOK_ID = "book_id";
     public static final String KEY_SEARCH = "search";
 
-
+    /**
+     * pid : String
+     * deviceId : String
+     * type : String
+     * mainCat : String
+     * subCat : String
+     * value : String
+     * timestamp : Int
+     * extra : String
+     */
+    //StatisticsData
+    public static final String S_PID="pid";
+    public static final String S_DEVICEID="deviceId";
+    public static final String S_TYPE="type";
+    public static final String S_MAINCAT="mainCat";
+    public static final String S_SUBCAT="subCat";
+    public static final String S_VALUE="value";
+    public static final String S_TIMESTAMP="timestamp";
+    public static final String S_EXTRA="extra";
 
 
     public DataBase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {

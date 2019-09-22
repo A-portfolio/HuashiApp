@@ -29,6 +29,7 @@ import com.muxistudio.appcommon.data.ProductData;
 import com.muxistudio.appcommon.data.RenewData;
 import com.muxistudio.appcommon.data.Score;
 import com.muxistudio.appcommon.data.SplashData;
+import com.muxistudio.appcommon.data.StatisticsData;
 import com.muxistudio.appcommon.data.UserInfo;
 import com.muxistudio.appcommon.data.VerifyResponse;
 import com.muxistudio.appcommon.data.VersionData;
@@ -159,7 +160,7 @@ public interface RetrofitService {
             @Query("startNum") String start,
             @Query("num") String num);
 
-    @GET("app/latest/a")
+    @GET("app/latest/")
     Observable<VersionData> getLatestVersion();
 
     @GET("patch/")
@@ -209,5 +210,7 @@ public interface RetrofitService {
 
     @GET("ios/config/")
     Observable<Config>getConfig();
+    @POST("http://120.77.246.73:8080/statistics")
+    Observable<ResponseBody>uploadStatisticsData(@Body StatisticsData datas);
 
 }
