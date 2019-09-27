@@ -4,6 +4,8 @@ import android.support.annotation.Nullable;
 
 import net.muxi.huashiapp.App;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.CookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -27,6 +29,7 @@ public class SingleCCNUClient {
                             .addInterceptor(new AddHeadInterceptor())
                             .addInterceptor(interceptor)
                             .addNetworkInterceptor(new RedirectInterceptor())
+                            .connectTimeout(6, TimeUnit.SECONDS)
                             .build();
 
                     client = new Retrofit.Builder()

@@ -83,7 +83,6 @@ public class UserAccountManager {
         //原先数据表没设计好，课程那块应该加个用户 id 字段，有空可以加
         HuaShiDao dao = new HuaShiDao();
         dao.deleteAllCourse();
-        CcnuCrawler2.clear();
     }
 
     @Deprecated
