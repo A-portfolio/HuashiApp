@@ -8,7 +8,7 @@
 /projectFilesBackup
 /.idea
 /libraries
-build.gradle
+/build.gradle
 # key
 HuashiApp.jks
 app/HuashiApp.jks

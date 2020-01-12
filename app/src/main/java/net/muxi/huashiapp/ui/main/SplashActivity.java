@@ -78,6 +78,7 @@ public class SplashActivity extends Activity {
                     String cur=dataFormat.format(new Date());
                     if (cur.compareTo(config.getConfig().getFlashStartDay())>=0&&cur.compareTo(config.getConfig().getFlashEndDay())<=0){
                         Log.i(TAG, "getConfig: display");
+                        draweeView.setVisibility(View.VISIBLE);
                         draweeView.setImageURI(config.getConfig().getFlashScreenUrl());
                         button.setVisibility(View.VISIBLE);
                         return Observable.interval(1, TimeUnit.SECONDS)
