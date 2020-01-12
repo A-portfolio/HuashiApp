@@ -54,6 +54,7 @@ import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.more.ShareDialog;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -129,8 +130,17 @@ public class CalendarActivity extends ToolbarActivity {
                     Log.i(TAG, "call: "+file.getPath());
                     response=client.newCall(request).execute();
                     out=new FileOutputStream(file);
-                    Bitmap bitmap=BitmapFactory.decodeStream(response.body().byteStream());
-                    bitmap.compress(Bitmap.CompressFormat.PNG,100,out);
+                    if (response.body().byteStream()==null)
+                        subscriber.onError(new NullPointerException("response.body()的byteStream为空"));
+                    InputStream in=response.body().byteStream();
+                    byte[]bytes=new byte[1024];
+                    int n=in.read(bytes);
+                    while (n!=-1){
+                        //一定要用这个write(byte[],off,length),指明起尾，否则最后会写入多余的东西损坏文件
+                        out.write(bytes,0,n);
+                        n=in.read(bytes);
+                    }
+
                     subscriber.onNext(0);
                 } catch (IOException e) {
                     subscriber.onError(e);
