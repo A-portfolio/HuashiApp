@@ -50,8 +50,8 @@ public class CookieInterceptor implements Interceptor {
             }
             //执行了储存
 
-            String big = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL);
-            String jid = PreferenceUtil.getString(PreferenceUtil.JSESSIONID);
+            String big = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL,"default");
+            String jid = PreferenceUtil.getString(PreferenceUtil.JSESSIONID,"default");
                 builder.addHeader("Bigipserverpool", big);
                 builder.addHeader("Jsessionid", jid);
                 builder.addHeader("Sid", UserAccountManager.getInstance().getInfoUser().sid);

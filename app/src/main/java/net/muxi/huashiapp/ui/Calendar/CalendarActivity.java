@@ -129,8 +129,15 @@ public class CalendarActivity extends ToolbarActivity {
                     Log.i(TAG, "call: "+file.getPath());
                     response=client.newCall(request).execute();
                     out=new FileOutputStream(file);
-                    Bitmap bitmap=BitmapFactory.decodeStream(response.body().byteStream());
-                    bitmap.compress(Bitmap.CompressFormat.PNG,100,out);
+
+                    InputStream in=response.body().byteStream();
+                    byte[]bytes=new byte[1024];
+                    int n=in.read(bytes);
+                    while (n!=-1){
+                        out.write(bytes,0,n);
+                        n=in.read(bytes);
+                    }
+
                     subscriber.onNext(0);
                 } catch (IOException e) {
                     subscriber.onError(e);
@@ -138,6 +145,7 @@ public class CalendarActivity extends ToolbarActivity {
                 }finally {
                     try {
                         if (out!=null) {
+
                             out.close();
                         }
                         if (response!=null) {

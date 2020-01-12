@@ -27,6 +27,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 import static com.sina.weibo.sdk.statistic.WBAgent.TAG;
@@ -130,11 +131,24 @@ public class CcnuCrawler3 {
                             return Observable.error(new Throwable("密码错误"));
                         }
 
+                        //到这证明账号密码正确，可以拉去缓存
+                        UserAccountManager.getInstance().saveInfoUser(user);
+
                         Log.i(TAG, "call: first 学校系统登录完成，下一步进行教务处登录验证");
                         return clientWithRetrofit.performSystemLogin();
                     }
                 })
-                .retry(1)
+                /*
+                .retry(new Func2<Integer, Throwable, Boolean>() {
+                    @Override
+                    public Boolean call(Integer integer, Throwable throwable) {
+                        getClient().clearAllCookie();
+                        if (integer>1){
+                            return false;
+                        }
+                        return true;
+                    }
+                })*/
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
 

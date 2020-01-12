@@ -22,6 +22,7 @@ import com.muxistudio.appcommon.event.RefreshSessionEvent;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
 import com.muxistudio.appcommon.presenter.LoginPresenter;
+import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.appcommon.utils.CommonTextUtils;
 import com.muxistudio.appcommon.widgets.LoadingDialog;
 import com.muxistudio.common.util.Logger;
@@ -124,8 +125,13 @@ public class LoginActivity extends ToolbarActivity {
                 @Override
                 public void onError(Throwable e) {
                     Log.e(TAG, "onError: "+e.getMessage());
-                    ToastUtil.showShort("登录失败！请检查账号密码是否正确");
                     hideLoading();
+                    if (UserAccountManager.getInstance().isInfoUserLogin()) {
+                        ToastUtil.showLong("认证成功！");
+                        finish();
+                    }
+                    else
+                        ToastUtil.showShort("登录失败！请检查账号密码是否正确");
                 }
 
                 @Override
