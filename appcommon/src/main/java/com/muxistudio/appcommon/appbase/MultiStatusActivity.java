@@ -1,7 +1,8 @@
 package com.muxistudio.appcommon.appbase;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
+//import android.support.annotation.Nullable;
 
 /**
  * Created by ybao (ybaovv@gmail.com)

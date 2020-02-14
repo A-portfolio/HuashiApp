@@ -3,6 +3,7 @@ package net.muxi.huashiapp.utils;
 import android.text.TextUtils;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.data.Course;
@@ -115,9 +116,14 @@ public class TimeTableUtil {
                 R.drawable.ripple_blue,
                 R.drawable.ripple_orange,
                 R.drawable.ripple_green};
-        for (int i = 0; i < Constants.WEEKDAYS_XQ.length; i++) {
+        /*for (int i = 0; i < Constants.WEEKDAYS_XQ.length; i++) {
             if (day.equals(Constants.WEEKDAYS_XQ[i])) {
                 return colors[i % 5];
+            }
+        }*/
+        for ( int i = 0 ; i < 7 ; i++ ) {
+            if ( day.equals((i+1)+"") ) {
+                return colors[i%5];
             }
         }
         return colors[0];
@@ -249,7 +255,7 @@ public class TimeTableUtil {
     public static List<Course> getTodayCourse(List<Course> allCourseList) {
         List<Course> courseList = new ArrayList<>();
         for (int i = 0; i < allCourseList.size(); i++) {
-            String weeks = allCourseList.get(i).getWeeks();
+            String weeks = Course.listToString(allCourseList.get(i).getWeeks());
             String day = allCourseList.get(i).getDay();
             if (isThisWeek(getCurWeek(), weeks)&& day.equals(
                     Constants.WEEKDAYS_XQ[

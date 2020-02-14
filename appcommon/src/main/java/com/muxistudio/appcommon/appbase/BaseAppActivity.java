@@ -2,14 +2,18 @@ package com.muxistudio.appcommon.appbase;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
+//import android.support.annotation.Nullable;
+//import android.support.design.widget.Snackbar;
+//import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.muxistudio.appcommon.R;
 import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.data.User;
@@ -30,7 +34,8 @@ import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 
-import static android.support.design.widget.Snackbar.make;
+//import static android.support.design.widget.Snackbar.make;
+import static com.google.android.material.snackbar.Snackbar.make;
 
 /**
  * Created by ybao on 16/4/19.

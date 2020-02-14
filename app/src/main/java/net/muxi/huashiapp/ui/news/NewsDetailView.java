@@ -1,7 +1,7 @@
 package net.muxi.huashiapp.ui.news;
 
 import android.content.Context;
-import android.support.v4.view.MotionEventCompat;
+//import android.support.v4.view.MotionEventCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
+
+import androidx.core.view.MotionEventCompat;
 
 import com.muxistudio.appcommon.data.News;
 import com.muxistudio.common.util.DimensUtil;

@@ -1,9 +1,13 @@
 package net.muxi.huashiapp.ui.library.adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
+//import android.support.v4.app.Fragment;
+//import android.support.v4.app.FragmentManager;
+//import android.support.v4.app.FragmentPagerAdapter;
+//import android.support.v4.app.FragmentStatePagerAdapter;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
@@ -11,12 +15,12 @@ import java.util.List;
  * Created by ybao on 17/2/21.
  */
 
-public class MyBookListPagerAdapter extends FragmentStatePagerAdapter{
+public class MyBookListPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> mFragmentList;
     private List<String> mTitles;
 
-    public MyBookListPagerAdapter(FragmentManager fm,List<Fragment> fragments,List<String> titles) {
+    public MyBookListPagerAdapter(FragmentManager fm, List<Fragment> fragments, List<String> titles) {
         super(fm);
         mFragmentList = fragments;
         mTitles = titles;

@@ -1,7 +1,7 @@
 package net.muxi.huashiapp.ui.electricity;
 
 import android.content.Context;
-import android.support.v4.view.MotionEventCompat;
+//import android.support.v4.view.MotionEventCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
+
+import androidx.core.view.MotionEventCompat;
 
 import com.muxistudio.appcommon.appbase.BaseAppActivity;
 import com.muxistudio.appcommon.utils.AppUtil;

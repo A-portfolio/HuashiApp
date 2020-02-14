@@ -1,12 +1,15 @@
 package net.muxi.huashiapp.ui.electricity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
+//import android.support.annotation.Nullable;
+//import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
 import com.muxistudio.appcommon.appbase.BaseAppFragment;
 import com.muxistudio.appcommon.data.Electricity;

@@ -1,8 +1,10 @@
 package com.muxistudio.appcommon.utils;
 
-import android.support.v7.app.AlertDialog;
+//import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.muxistudio.appcommon.data.User;
 import java.util.ArrayList;

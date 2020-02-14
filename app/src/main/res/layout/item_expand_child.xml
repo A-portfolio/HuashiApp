@@ -20,7 +20,7 @@
         android:textSize="20sp"
         tools:text="东区"/>
 
-    <android.support.v7.widget.AppCompatRadioButton
+    <androidx.appcompat.widget.AppCompatRadioButton
         android:id="@+id/rb_child"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

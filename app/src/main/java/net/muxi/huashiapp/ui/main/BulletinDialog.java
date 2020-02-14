@@ -2,12 +2,14 @@ package net.muxi.huashiapp.ui.main;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+//import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.widget.CenterDialogFragment;

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
@@ -93,20 +94,20 @@ public class TableContent extends FrameLayout {
         //查有没有重叠的课程
         generateMap(courseList);
         for (int i = 0; i < courseList.size(); i++) {
-            if (!TimeTableUtil.isThisWeek(selectWeek,courseList.get(i).weeks)) {
-                    addCourseView(courseList.get(i),selectWeek,courseList.get(i).weeks);
+            if (!TimeTableUtil.isThisWeek(selectWeek,Course.listToString(courseList.get(i).weeks))) {
+                    addCourseView(courseList.get(i),selectWeek,Course.listToString(courseList.get(i).weeks));
             }
         }
         for (int i = 0;i < courseList.size();i ++){
-            if (TimeTableUtil.isThisWeek(selectWeek,courseList.get(i).weeks)){
-                    addCourseView(courseList.get(i),selectWeek,courseList.get(i).weeks);
+            if (TimeTableUtil.isThisWeek(selectWeek,Course.listToString(courseList.get(i).weeks))){
+                    addCourseView(courseList.get(i),selectWeek,Course.listToString(courseList.get(i).weeks));
             }
         }
     }
 
     private List<String>   convert(String[] weeks){
         List<String > list = new ArrayList<>();
-        for(int i=Integer.parseInt(weeks[0]);i<=Integer.parseInt(weeks[weeks.length-1]);i++){
+        for(int i=Integer.parseInt(weeks[0]);i<=Integer.parseInt(weeks[weeks.length-1]+"");i++){
             list.add(String.valueOf(i));
         }
         return list;
@@ -126,11 +127,11 @@ public class TableContent extends FrameLayout {
         tvCourse.setPadding(DimensUtil.dp2px(10),DimensUtil.dp2px(8),DimensUtil.dp2px(10),DimensUtil.dp2px(8));
         LayoutParams courseParams = new LayoutParams(TimeTable.COURSE_WIDTH,
                 course.during * TimeTable.COURSE_TIME_HEIGHT - DimensUtil.dp2px(3));
-        courseParams.setMargins(DimensUtil.dp2px(65 * TimeTableUtil.weekday2num(course.day) + 1),
+        courseParams.setMargins(DimensUtil.dp2px(65 * (TimeTableUtil.weekday2num(course.day)-1) + 1),
                 DimensUtil.dp2px(57 * (course.start - 1) + 1), 0, 0);
 
 
-        if (TimeTableUtil.isThisWeek(selectWeek,course.weeks)) {
+        if (TimeTableUtil.isThisWeek(selectWeek,Course.listToString(course.weeks))) {
             tvCourse.setBackground(getResources().getDrawable(TimeTableUtil.getCourseBgAccordDay(course.day)));
             tvCourse.setText(ellipseCourse(course.course) + "\n\n@" +
                     course.place + "\n" +

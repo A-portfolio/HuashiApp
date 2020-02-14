@@ -1,12 +1,14 @@
 package net.muxi.huashiapp.ui.news;
 
-import android.support.v7.widget.RecyclerView;
+//import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.muxistudio.appcommon.data.News;
 import com.muxistudio.common.util.NoDoubleClickUtil;

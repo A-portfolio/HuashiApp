@@ -7,6 +7,8 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatTextView;
+
 import net.muxi.huashiapp.R;
 
 /**
@@ -15,7 +17,7 @@ import net.muxi.huashiapp.R;
  */
 
 //只含有课程id
-public class CourseView extends android.support.v7.widget.AppCompatTextView{
+public class CourseView extends AppCompatTextView {
 
     private String cid;
     private Context context;

@@ -2,11 +2,13 @@ package net.muxi.huashiapp.ui.timeTable;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+//import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.widgets.BottomDialogFragment;

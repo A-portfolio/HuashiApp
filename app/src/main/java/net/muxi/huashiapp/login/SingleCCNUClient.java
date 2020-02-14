@@ -1,6 +1,6 @@
 package net.muxi.huashiapp.login;
 
-import android.support.annotation.Nullable;
+//import android.support.annotation.Nullable;
 
 import net.muxi.huashiapp.App;
 

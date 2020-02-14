@@ -1,5 +1,7 @@
 package com.muxistudio.appcommon.net;
 
+import android.util.Log;
+
 import com.muxistudio.appcommon.data.InfoCookie;
 import com.muxistudio.appcommon.net.ccnu.CcnuCrawler;
 import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
@@ -52,9 +54,10 @@ public class CookieInterceptor implements Interceptor {
 
             String big = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL,"default");
             String jid = PreferenceUtil.getString(PreferenceUtil.JSESSIONID,"default");
-                builder.addHeader("Bigipserverpool", big);
-                builder.addHeader("Jsessionid", jid);
-                builder.addHeader("Sid", UserAccountManager.getInstance().getInfoUser().sid);
+                //builder.addHeader("Bigipserverpool", big);
+                //builder.addHeader("Jsessionid", jid);
+                //builder.addHeader("Sid", UserAccountManager.getInstance().getInfoUser().sid);
+            Log.e("Header",Base64Util.createBaseStr(UserAccountManager.getInstance().getInfoUser()));
                 builder.addHeader("Authorization", Base64Util.createBaseStr(UserAccountManager.getInstance().getInfoUser()));
 
         }

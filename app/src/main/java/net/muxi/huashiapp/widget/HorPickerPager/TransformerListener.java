@@ -1,6 +1,8 @@
 package net.muxi.huashiapp.widget.HorPickerPager;
 
-import android.support.v4.view.ViewPager;
+//import android.support.v4.view.ViewPager;
+
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by ybao (ybaovv@gmail.com)

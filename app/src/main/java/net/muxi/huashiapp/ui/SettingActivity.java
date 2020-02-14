@@ -3,11 +3,14 @@ package net.muxi.huashiapp.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.SwitchCompat;
+//import android.support.design.widget.AppBarLayout;
+//import android.support.v7.widget.SwitchCompat;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SwitchCompat;
+
+import com.google.android.material.appbar.AppBarLayout;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.common.util.PreferenceUtil;
 

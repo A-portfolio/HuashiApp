@@ -16,7 +16,7 @@
         android:textColor="?android:attr/textColorPrimary"
         />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_marginTop="24dp"
         android:layout_marginLeft="32dp"

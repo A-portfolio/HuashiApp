@@ -3,8 +3,11 @@ package net.muxi.huashiapp.ui.main;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+//import android.support.v7.widget.RecyclerView;
+//import android.support.v7.widget.helper.ItemTouchHelper;
 
 /**
  * Created by december on 17/2/28.

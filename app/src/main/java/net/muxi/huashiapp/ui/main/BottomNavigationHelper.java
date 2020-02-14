@@ -1,9 +1,15 @@
 package net.muxi.huashiapp.ui.main;
 
-import android.support.design.internal.BottomNavigationItemView;
-import android.support.design.internal.BottomNavigationMenuView;
-import android.support.design.widget.BottomNavigationView;
-import android.util.Log;
+//import android.support.design.internal.BottomNavigationItemView;
+//import android.support.design.internal.BottomNavigationMenuView;
+//import android.support.design.widget.BottomNavigationView;
+//import android.util.Log;
+
+import android.annotation.SuppressLint;
+
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.lang.reflect.Field;
 
@@ -14,6 +20,7 @@ import java.lang.reflect.Field;
 
 public class BottomNavigationHelper {
 
+    @SuppressLint("RestrictedApi")
     public static void disableShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
         try {
@@ -23,7 +30,7 @@ public class BottomNavigationHelper {
             shiftingMode.setAccessible(false);
             for (int i = 0; i < menuView.getChildCount(); i++) {
                 BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
-                item.setShiftingMode(false);
+                item.setShifting(false);//.setShiftingMode(false);
                 item.setChecked(item.getItemData().isChecked());
             }
         } catch (NoSuchFieldException e) {

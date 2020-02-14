@@ -15,12 +15,14 @@ import com.muxistudio.appcommon.data.CardData;
 import com.muxistudio.appcommon.data.ClassRoom;
 import com.muxistudio.appcommon.data.Config;
 import com.muxistudio.appcommon.data.Course;
+import com.muxistudio.appcommon.data.CourseAdded;
+import com.muxistudio.appcommon.data.CourseAddedResponse;
 import com.muxistudio.appcommon.data.CourseId;
+import com.muxistudio.appcommon.data.CourseList;
 import com.muxistudio.appcommon.data.Detail;
 import com.muxistudio.appcommon.data.EleRequestData;
 import com.muxistudio.appcommon.data.Electricity;
 import com.muxistudio.appcommon.data.FeedBack;
-import com.muxistudio.appcommon.data.Hint;
 import com.muxistudio.appcommon.data.MapDetailList;
 import com.muxistudio.appcommon.data.Msg;
 import com.muxistudio.appcommon.data.News;
@@ -39,9 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.adapter.rxjava.Result;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -112,17 +112,17 @@ public interface RetrofitService {
                                                    @Body RenewData renewData);
 
     //获取用户课表
-    @GET("table/")
-    Observable<List<Course>> getTimeTable();
+    @GET("table/v2/")
+    Observable<CourseList> getTimeTable();
 
 
     //添加课程
-    @POST("table/")
-    Observable<CourseId> addCourse(@Body Course course);
+    @POST("table/v2/")
+    Observable<CourseAddedResponse> addCourse(@Body CourseAdded course);
 
     //删除课程
-    @DELETE("table/{id}/")
-    Observable<Response<VerifyResponse>> deleteCourse(@Path("id") String id);
+    @DELETE("table/v2/")
+    Observable<Response<VerifyResponse>> deleteCourse(@Query("id") String id);
 
     @PUT("table/{id}/")
     Observable<Response<VerifyResponse>> updateCourse(@Path("id") String id,

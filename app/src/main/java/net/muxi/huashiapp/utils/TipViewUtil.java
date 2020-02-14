@@ -1,12 +1,14 @@
 package net.muxi.huashiapp.utils;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.muxistudio.common.util.DimensUtil;
 import com.muxistudio.common.util.Logger;

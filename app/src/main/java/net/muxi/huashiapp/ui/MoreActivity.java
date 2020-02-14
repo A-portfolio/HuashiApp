@@ -3,8 +3,10 @@ package net.muxi.huashiapp.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+//import android.support.annotation.Nullable;
 import android.widget.Button;
+
+import androidx.annotation.Nullable;
 
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 

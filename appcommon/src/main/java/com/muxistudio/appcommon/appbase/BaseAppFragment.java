@@ -3,10 +3,10 @@ package com.muxistudio.appcommon.appbase;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
+//import android.support.annotation.Nullable;
+//import android.support.design.widget.Snackbar;
+//import android.support.v4.app.FragmentActivity;
+//import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +14,9 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.muxistudio.appcommon.R;
 import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.data.User;

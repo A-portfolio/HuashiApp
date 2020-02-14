@@ -1,7 +1,7 @@
 package net.muxi.huashiapp.widget.HorPickerPager;
 
 import android.graphics.Typeface;
-import android.support.v4.view.PagerAdapter;
+//import android.support.v4.view.PagerAdapter;
 import android.text.style.TextAppearanceSpan;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

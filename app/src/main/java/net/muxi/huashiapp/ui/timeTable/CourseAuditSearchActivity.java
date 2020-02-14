@@ -3,10 +3,12 @@ package net.muxi.huashiapp.ui.timeTable;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+//import android.support.annotation.Nullable;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.umeng.analytics.MobclickAgent;

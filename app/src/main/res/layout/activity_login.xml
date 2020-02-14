@@ -8,7 +8,7 @@
     >
     <include layout="@layout/view_toolbar"/>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_sid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,9 +31,9 @@
             android:textStyle="bold"
             />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             android:textStyle="bold"
             />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 
     <!--<net.muxi.huashiapp.ui.library.VerifyCodeView

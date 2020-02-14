@@ -2,7 +2,7 @@ package net.muxi.huashiapp.ui.studyroom;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.MotionEventCompat;
+//import android.support.v4.view.MotionEventCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
+
+import androidx.core.view.MotionEventCompat;
 
 import com.muxistudio.common.util.DimensUtil;
 import com.muxistudio.common.util.Logger;

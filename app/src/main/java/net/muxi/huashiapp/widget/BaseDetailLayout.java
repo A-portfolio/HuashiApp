@@ -5,8 +5,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v7.widget.Toolbar;
+//import android.support.v4.view.MotionEventCompat;
+//import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,6 +18,9 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Scroller;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MotionEventCompat;
 
 import com.muxistudio.appcommon.appbase.BaseAppActivity;
 import com.muxistudio.common.util.DimensUtil;

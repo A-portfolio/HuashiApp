@@ -3,9 +3,11 @@ package net.muxi.huashiapp.ui.timeTable;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+//import android.support.annotation.Nullable;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import androidx.annotation.Nullable;
 
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.RxBus;

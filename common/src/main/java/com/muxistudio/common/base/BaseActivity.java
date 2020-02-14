@@ -1,8 +1,10 @@
 package com.muxistudio.common.base;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+//import android.support.annotation.Nullable;
+//import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 
 /**
  * Created by fengminchao on 18/3/19

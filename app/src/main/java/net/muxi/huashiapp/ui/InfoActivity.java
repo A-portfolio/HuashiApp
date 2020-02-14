@@ -1,7 +1,9 @@
 package net.muxi.huashiapp.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+//import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 

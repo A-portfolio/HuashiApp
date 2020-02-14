@@ -4,15 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.RxBus;
+import com.muxistudio.appcommon.appbase.BaseAppActivity;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.Course;
+import com.muxistudio.appcommon.data.CourseAdded;
 import com.muxistudio.appcommon.db.HuaShiDao;
 import com.muxistudio.appcommon.event.RefreshTableEvent;
 import com.muxistudio.appcommon.net.CampusFactory;
@@ -26,7 +30,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.internal.util.ObserverSubscriber;
 import rx.schedulers.Schedulers;
 
 import static net.muxi.huashiapp.utils.TimeTableUtil.isContinuOusWeeks;
@@ -80,15 +88,11 @@ public class CourseEditActivity extends ToolbarActivity {
         isAdd = getIntent().getBooleanExtra("is_add", true);
         if (!isAdd) {
             mCourse = getIntent().getParcelableExtra("course");
-            String[] arrays = mCourse.weeks.split(",");
+            String[] arrays = Course.listToString(mCourse.weeks).split(",");
             for (String s : arrays) {
                 mWeeks.add(Integer.parseInt(s));
             }
-            for (int i = 0; i < 7; i++) {
-                if (mCourse.day.equals(Constants.WEEKDAYS_XQ[i])) {
-                    mWeekday = i;
-                }
-            }
+            mWeekday = Integer.parseInt(mCourse.day);
             start = mCourse.start;
             duration = mCourse.during;
         } else {
@@ -96,7 +100,7 @@ public class CourseEditActivity extends ToolbarActivity {
             for (int i = 1; i < 19; i++) {
                 mWeeks.add(i);
             }
-            mWeekday = 0;
+            mWeekday = 1;
             start = 1;
             duration = 2;
         }
@@ -134,19 +138,20 @@ public class CourseEditActivity extends ToolbarActivity {
             mEtCourse.setText(mCourse.course);
             mEtPlace.setText(mCourse.place);
             mEtWeek.setText(getDisplayWeeks());
-            mEtTime.setText(String.format(Locale.CHINESE,"周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
+            mEtTime.setText(String.format(Locale.CHINESE,"周%s%d-%d节", Constants.WEEKDAYS[mWeekday-1], start,
                     start + duration - 1));
             mEtCourseTeacher.setText(mCourse.teacher);
         }
     }
 
     public void addCourse() {
-        CampusFactory.getRetrofitService().addCourse(mCourse)
+        CourseAdded courseAdded = CourseAdded.convert(mCourse);
+        CampusFactory.getRetrofitService().addCourse(courseAdded)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(courseId -> {
-                    if (courseId.id != 0) {
-                        mCourse.id = String.valueOf(courseId.id);
+                .subscribe(courseAddedResponse -> {
+                    if (courseAddedResponse.getCode() == 0) {
+                        mCourse.id = String.valueOf(courseAddedResponse.getData().getId());
                         dao.insertCourse(mCourse);
                         showSnackbarShort("添加课程成功");
                         Intent intent = new Intent(this, ScheduleWidgetProvider.class);
@@ -174,7 +179,7 @@ public class CourseEditActivity extends ToolbarActivity {
                     (course.start + course.during) > newCourse.start)
                     || (course.start >= newCourse.start &&
                     course.start < (newCourse.start + newCourse.during))) {
-                String[] localCourse = course.weeks.split(",");
+                String[] localCourse = Course.listToString(course.weeks).split(",");
                 for (int j = 0; j < localCourse.length; j++) {
                     for (int k = 0; k < mWeeks.size(); k++) {
                         if (localCourse[j].equals(String.valueOf(mWeeks.get(k)))) {
@@ -199,29 +204,29 @@ public class CourseEditActivity extends ToolbarActivity {
             });
         }else if (id == R.id.tv_time || id == R.id.et_time){
                 CourseTimePickerDialogFragment pickerDialogFragment =
-                        CourseTimePickerDialogFragment.newInstance(mWeekday, start - 1,
+                        CourseTimePickerDialogFragment.newInstance(mWeekday-1, start - 1,
                                 start + duration - 2);
                 pickerDialogFragment.show(getSupportFragmentManager(), "picker_time");
                 pickerDialogFragment.setOnPositiveButtonClickListener((weekday, start1, end) -> {
-                    mWeekday = weekday;
+                    mWeekday = weekday+1;
                     start = start1;
                     duration = end - start1 + 1;
-                    mEtTime.setText(String.format(Locale.CHINESE,"周%s%d-%d节", Constants.WEEKDAYS[mWeekday], start,
+                    mEtTime.setText(String.format(Locale.CHINESE,"周%s%d-%d节", Constants.WEEKDAYS[mWeekday-1], start,
                             start + duration - 1));
                 });
         }else if (id == R.id.btn_ensure){
             mCourse.course = mEtCourse.getText().toString();
-            mCourse.weeks = TextUtils.join(",", mWeeks);
-            mCourse.day = Constants.WEEKDAYS_XQ[mWeekday];
+            mCourse.weeks = mWeeks;//Course.convertWeeks(TextUtils.join(",", mWeeks));
+            mCourse.day = mWeekday+"";//Constants.WEEKDAYS_XQ[mWeekday];
             mCourse.start = start;
             mCourse.during = duration;
             //place and teacher are nullable
             mCourse.place = mEtPlace.getText().toString()+" ";
             mCourse.teacher = mEtCourseTeacher.getText().toString()+" ";
             mCourse.remind = "false";
-            if (TextUtils.isEmpty(mCourse.id)) {
+            /*if (TextUtils.isEmpty(mCourse.id)) {
                 mCourse.id = generateId();
-            }
+            }*/
             if (mCourse.hasNullValue()) {
                 showSnackbarShort(R.string.course_complete_course);
                 return;
@@ -275,6 +280,74 @@ public class CourseEditActivity extends ToolbarActivity {
     }
 
     private void updateCourse() {
+        //新版的api没有更新 所以先进行删除再添加
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                CampusFactory.getRetrofitService().deleteCourse(mCourse.id)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(verifyResponseResponse -> {
+                            if (verifyResponseResponse.code() == 200) {
+                                HuaShiDao dao = new HuaShiDao();
+                                dao.deleteCourse(mCourse.id);
+                                RxBus.getDefault().send(new RefreshTableEvent());
+                                subscriber.onNext(false);
+                            } else if (verifyResponseResponse.code() == 400) { //当用户试图修改教务处课程时
+                                subscriber.onNext(true);
+                            } else {
+                                showErrorSnackbarLong("匣子服务器出现异常，请反馈给匣子");
+                                subscriber.onCompleted();
+                            }
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                            showErrorSnackbarLong("匣子服务器出现异常，请反馈给匣子");
+                            subscriber.onCompleted();
+                        });
+            }
+        }).subscribe(new Observer<Boolean>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+
+            @Override
+            public void onNext(Boolean aBoolean) {
+                if ( !aBoolean ) {
+                    CampusFactory.getRetrofitService().addCourse(CourseAdded.convert(mCourse))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(courseAddedResponse ->  {
+                                mCourse.id = String.valueOf(courseAddedResponse.getData().getId());
+                                dao.insertCourse(mCourse);
+                                showSnackbarLong("修改课程成功");
+                                Intent intent = new Intent(CourseEditActivity.this, ScheduleWidgetProvider.class);
+                                intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                                sendBroadcast(intent);
+                                RxBus.getDefault().send(new RefreshTableEvent());
+                                finish();
+                            }, throwable -> {
+                                throwable.printStackTrace();
+                            });
+                } else {
+                    showSnackbarLong("修改课程成功");
+                    dao.deleteCourse(mCourse.id);
+                    dao.insertCourse(mCourse);
+                    Intent intent = new Intent(CourseEditActivity.this, ScheduleWidgetProvider.class);
+                    intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                    sendBroadcast(intent);
+                    RxBus.getDefault().send(new RefreshTableEvent());
+                    finish();
+                }
+            }
+        });
+
+
+
+/*
         CampusFactory.getRetrofitService().updateCourse(mCourse.id, mCourse)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -295,7 +368,7 @@ public class CourseEditActivity extends ToolbarActivity {
                         default:
                             showErrorSnackbarShort(R.string.tip_school_server_error);
                     }
-                });
+                }); */
     }
 
 }

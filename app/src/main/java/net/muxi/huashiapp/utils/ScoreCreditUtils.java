@@ -1,8 +1,10 @@
 package net.muxi.huashiapp.utils;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.Nullable;
+//import android.support.annotation.Nullable;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.data.Score;
@@ -371,7 +373,8 @@ public class ScoreCreditUtils {
         return total;
     }
 
-    public @Nullable static List<Score> getScoreFromJson(String json) throws JSONException {
+    public @Nullable
+    static List<Score> getScoreFromJson(String json) throws JSONException {
         List<Score> list = new ArrayList<>();
         JSONObject jsonRoot = new JSONObject(json);
         JSONArray items = jsonRoot.getJSONArray("items");

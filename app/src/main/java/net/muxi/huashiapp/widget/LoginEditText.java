@@ -8,13 +8,15 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.EditText;
 
+import androidx.appcompat.widget.AppCompatEditText;
+
 import net.muxi.huashiapp.R;
 
 
 /**
  * Created by ybao on 16/4/18.
  */
-public class LoginEditText extends android.support.v7.widget.AppCompatEditText {
+public class LoginEditText extends AppCompatEditText {
 
     private Drawable mDrawable;
 

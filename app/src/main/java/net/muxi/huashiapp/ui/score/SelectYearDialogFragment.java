@@ -2,9 +2,11 @@ package net.muxi.huashiapp.ui.score;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+//import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.NonNull;
 
 import net.muxi.huashiapp.ui.timeTable.LargeSizeNumberPicker;
 import com.muxistudio.appcommon.utils.UserUtil;

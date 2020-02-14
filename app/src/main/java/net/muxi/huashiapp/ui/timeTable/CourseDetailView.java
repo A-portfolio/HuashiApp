@@ -1,22 +1,26 @@
 package net.muxi.huashiapp.ui.timeTable;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
+//import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Space;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.appbase.BaseAppActivity;
 import com.muxistudio.appcommon.data.Course;
+import com.muxistudio.appcommon.data.CourseAdded;
 import com.muxistudio.appcommon.db.HuaShiDao;
 import com.muxistudio.appcommon.event.RefreshTableEvent;
 import com.muxistudio.appcommon.net.CampusFactory;
 
+import java.io.IOException;
 import java.util.Locale;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.utils.TimeTableUtil;
@@ -24,6 +28,8 @@ import net.muxi.huashiapp.utils.TimeTableUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
+import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -52,7 +58,7 @@ public class CourseDetailView extends RelativeLayout {
         initView();
 
         int color;
-        if (TimeTableUtil.isThisWeek(selectWeek, course.getWeeks())) {
+        if (TimeTableUtil.isThisWeek(selectWeek, Course.listToString(course.getWeeks()))) {
             color = getResources().getColor(R.color.primary_text_color);
         } else {
             color = getResources().getColor(R.color.grey);
@@ -78,10 +84,10 @@ public class CourseDetailView extends RelativeLayout {
         mTvTeacher.setText(course.teacher);
         mTvPlace.setText(course.place);
         mTvTime.setText(String.format(Locale.CHINESE,"周%s%d-%d节",
-                Constants.WEEKDAYS[TimeTableUtil.weekday2num(course.day)], course.start,
+                Constants.WEEKDAYS[TimeTableUtil.weekday2num(course.day)-1], course.start,
                 course.during + course.start - 1));
         List<Integer> weekList = new ArrayList<>();
-        String[] arrays = TextUtils.split(course.weeks, ",");
+        String[] arrays = TextUtils.split(Course.listToString(course.weeks), ",");
         for (String s : arrays) {
             try {
                 weekList.add(Integer.parseInt(s));
@@ -120,23 +126,35 @@ public class CourseDetailView extends RelativeLayout {
                         HuaShiDao dao = new HuaShiDao();
                         dao.deleteCourse(course.id);
                         RxBus.getDefault().send(new RefreshTableEvent());
+                    } else if (verifyResponseResponse.code() == 400) { //当用户试图删除教务处课程，把本地缓存删除
+                        HuaShiDao dao = new HuaShiDao();
+                        dao.deleteCourse(course.id);
+                        Snackbar.make(((BaseAppActivity) mContext).getWindow().findViewById(
+                                android.R.id.content),
+                                R.string.tip_delete_course_ok, Snackbar.LENGTH_LONG)
+                                .setAction(R.string.undo, v -> {
+                                    dao.insertCourse(course);
+                                    RxBus.getDefault().send(new RefreshTableEvent());
+                                }).show();
+                        RxBus.getDefault().send(new RefreshTableEvent());
                     } else {
                         ((BaseAppActivity) mContext).showErrorSnackbarLong("删除失败，新增课程请先下拉刷新再删除");
                     }
                 }, throwable -> {
                     throwable.printStackTrace();
-                    ((BaseAppActivity) mContext).showErrorSnackbarLong("删除失败，新增课程请先下拉刷新再删除");
+                        ((BaseAppActivity) mContext).showErrorSnackbarLong("删除失败，新增课程请先下拉刷新再删除");
                 });
     }
 
     public void addCourse(Course course) {
+        CourseAdded courseAdded = CourseAdded.convert(course);
         CampusFactory.getRetrofitService()
-                .addCourse(course)
+                .addCourse(courseAdded)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(courseId -> {
-                    if (courseId.id != 0) {
-                        course.id = String.valueOf(courseId.id);
+                .subscribe(courseAddedResponse -> {
+                    if (courseAddedResponse.getCode() == 0) {
+                        course.id = String.valueOf(courseAddedResponse.getData().getId());
                         HuaShiDao dao = new HuaShiDao();
                         dao.insertCourse(course);
                         RxBus.getDefault().send(new RefreshTableEvent());

@@ -1,9 +1,11 @@
 package net.muxi.huashiapp.statistics;
 
 import android.content.res.Resources;
-import android.support.v4.app.Fragment;
+//import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
+
+import androidx.fragment.app.Fragment;
 
 import com.muxistudio.appcommon.data.StatisticsData;
 

@@ -14,7 +14,7 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         >
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/card_money_left"
             android:layout_width="match_parent"
             android:layout_height="92dp"
@@ -63,9 +63,9 @@
             </RelativeLayout>
 
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/card_degree_left"
             android:layout_width="match_parent"
             android:layout_height="92dp"
@@ -108,10 +108,10 @@
 
             </RelativeLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/card_total_use"
             android:layout_width="match_parent"
             android:layout_height="152dp"
@@ -271,7 +271,7 @@
 
             </RelativeLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
 
     </RelativeLayout>

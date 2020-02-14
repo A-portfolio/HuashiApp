@@ -2,8 +2,10 @@ package net.muxi.huashiapp.login;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
+//import android.support.annotation.Nullable;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
 

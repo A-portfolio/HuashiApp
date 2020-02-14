@@ -3,7 +3,7 @@ package net.muxi.huashiapp.ui.timeTable;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatRadioButton;
+//import android.support.v7.widget.AppCompatRadioButton;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatRadioButton;
 
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.common.util.DimensUtil;
