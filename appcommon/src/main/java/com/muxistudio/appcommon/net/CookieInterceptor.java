@@ -52,9 +52,9 @@ public class CookieInterceptor implements Interceptor {
 
             String big = PreferenceUtil.getString(PreferenceUtil.BIG_SERVER_POOL,"default");
             String jid = PreferenceUtil.getString(PreferenceUtil.JSESSIONID,"default");
-                builder.addHeader("Bigipserverpool", big);
-                builder.addHeader("Jsessionid", jid);
-                builder.addHeader("Sid", UserAccountManager.getInstance().getInfoUser().sid);
+                //builder.addHeader("Bigipserverpool", big);
+                //builder.addHeader("Jsessionid", jid);
+                //builder.addHeader("Sid", UserAccountManager.getInstance().getInfoUser().sid);
                 builder.addHeader("Authorization", Base64Util.createBaseStr(UserAccountManager.getInstance().getInfoUser()));
 
         }

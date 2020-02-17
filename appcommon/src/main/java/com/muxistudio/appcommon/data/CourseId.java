@@ -7,5 +7,5 @@ package com.muxistudio.appcommon.data;
 
 public class CourseId {
 
-    public int id;
+    public String id;
 }
