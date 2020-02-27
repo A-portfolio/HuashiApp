@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.data.AuditCourse;
 import com.muxistudio.appcommon.data.Course;
+import com.muxistudio.appcommon.data.CourseAdded;
 import com.muxistudio.appcommon.data.CourseId;
 import com.muxistudio.appcommon.db.HuaShiDao;
 import com.muxistudio.appcommon.event.AuditCourseEvent;
@@ -177,30 +178,30 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
             //week 如果没有修改的格式是 1-17周"\n"1-17周 这两个是一样的 所以在下面的week参数中选取一样的
             String week = holder.mTvCourseWeek.getText().toString().split("\n")[0];
             List<AuditCourse.ResBean> list = createRequestCourse(auditCourse, peroids, week);
-            CampusFactory.getRetrofitService().addCourse(convertCourse(list.get(0)))
+            CampusFactory.getRetrofitService().addCourse(convertCourseAdded(list.get(0)))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(courseId -> {
+                    .subscribe(courseAddedResponse -> {
                         ToastUtil.showShort("课程已经加入");
                         holder.mBtnChooseCourse.setText("已添加");
                         Course c = convertCourse(list.get(0));
                         //必须要在服务端发送回来的时候在本地放置id!
-                        c.setId(String.valueOf(courseId));
+                        c.setId(String.valueOf(courseAddedResponse.getData().getId()));
                         dao.insertCourse(c);
                         RxBus.getDefault().send(new AuditCourseEvent());
                     }, throwable -> {
                         throwable.printStackTrace();
                     }, () -> {
                     });
-            CampusFactory.getRetrofitService().addCourse(convertCourse(list.get(1)))
+            CampusFactory.getRetrofitService().addCourse(convertCourseAdded(list.get(1)))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(courseId -> {
+                    .subscribe(courseAddedResponse -> {
                         ToastUtil.showShort("课程已经加入");
                         holder.mBtnChooseCourse.setText("已添加");
                         Course c = convertCourse(list.get(1));
                         //必须要在服务端发送回来的时候在本地放置id!
-                        c.setId(String.valueOf(courseId));
+                        c.setId(String.valueOf(courseAddedResponse.getData().getId()));
                         dao.insertCourse(c);
                         RxBus.getDefault().send(new AuditCourseEvent(true));
                     }, throwable -> {
@@ -249,15 +250,15 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
 
     public void addCourseNetWork(AuditCourse.ResBean auditCourse, AuditViewHolder holder) {
         CampusFactory.getRetrofitService()
-                .addCourse(convertCourse(auditCourse))
+                .addCourse(convertCourseAdded(auditCourse))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(courseId -> {
+                .subscribe(courseAddedResponse -> {
                     holder.mBtnChooseCourse.setText("已添加");
                     ToastUtil.showShort("课程已经加入");
                     Course c = convertCourse(auditCourse);
                     //必须要在服务端发送回来的时候在本地放置id!
-                    c.setId(String.valueOf(courseId));
+                    c.setId(String.valueOf(courseAddedResponse.getData().getId()));
                     dao.insertCourse(c);
                     RxBus.getDefault().send(new AuditCourseEvent(true));
 
@@ -276,7 +277,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
             int infos[] = getDayDuring(period);
             int day = infos[0], start = infos[1], during = infos[2];
             //原来在课表中的周数表示
-            String array[] = TextUtils.split(course.getWeeks(), ",");
+            String array[] = TextUtils.split(Course.listToString(course.getWeeks()), ",");
             List<String> formerWeek = Arrays.asList(array), auditWeek = Arrays.asList(courseArray);
             //false 没有交集: true 有交集
             if (isIntersection(formerWeek, auditWeek)) {
@@ -295,6 +296,23 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         return flag;
     }
 
+    //转成一个请求添加课程的对象
+    private CourseAdded convertCourseAdded(AuditCourse.ResBean auditCourse) {
+        CourseAdded courseAdded = new CourseAdded();
+        courseAdded.setCourse(auditCourse.getName());
+        courseAdded.setTeacher(auditCourse.getTeacher());
+
+        courseAdded.setCourse(auditCourse.getName());
+        courseAdded.setTeacher(auditCourse.getTeacher());
+        String info[] = AuditCourse.getCourseTime(auditCourse.getWw().get(0).getWhen());
+        courseAdded.setWeeks(Course.convertWeeks(getWeekString(info[1])));
+        courseAdded.setDay(getDay(getDayDuring(info[0])[0]));
+        courseAdded.setStart(getDayDuring(info[0])[1]+"");
+        courseAdded.setDuring(getDayDuring(info[0])[2]+"");
+        courseAdded.setPlace(getCorrectPlace(auditCourse.getWw().get(0).getWhere()));
+        return courseAdded;
+    }
+
     private Course convertCourse(AuditCourse.ResBean auditCourse) {
         Course course = new Course();
         /*
@@ -305,7 +323,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         course.setCourse(auditCourse.getName());
         course.setTeacher(auditCourse.getTeacher());
         String info[] = AuditCourse.getCourseTime(auditCourse.getWw().get(0).getWhen());
-        course.setWeeks(getWeekString(info[1]));
+        course.setWeeks(Course.convertWeeks(getWeekString(info[1])));
         //auditCourses 格式 :星期一7-8节
         course.setDay(getDay(getDayDuring(info[0])[0]));
         course.setStart(getDayDuring(info[0])[1]);

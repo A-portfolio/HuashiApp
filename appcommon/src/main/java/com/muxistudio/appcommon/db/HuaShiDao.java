@@ -70,7 +70,7 @@ public class HuaShiDao {
                         course.id,
                         course.course,
                         course.teacher,
-                        course.weeks,
+                        Course.listToString(course.weeks),
                         course.day,
                         course.place,
                         String.valueOf(course.remind),
@@ -103,7 +103,7 @@ public class HuaShiDao {
                 course.id = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_ID)));
                 course.course = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_COURSE_NAME)));
                 course.teacher = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_TEACHER)));
-                course.weeks = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
+                course.weeks = Course.convertWeeks(cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
                 course.day = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKDAY)));
                 course.start = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_TIME)));
                 course.during = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_DURATION)));
@@ -128,7 +128,7 @@ public class HuaShiDao {
                 course.id = cursor.getString(cursor.getColumnIndex(DataBase.KEY_ID));
                 course.course = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_COURSE_NAME)));
                 course.teacher = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_TEACHER)));
-                course.weeks = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
+                course.weeks = Course.convertWeeks(cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKS)));
                 course.day = (cursor.getString(cursor.getColumnIndex(DataBase.KEY_WEEKDAY)));
                 course.start = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_TIME)));
                 course.during = (cursor.getInt(cursor.getColumnIndex(DataBase.KEY_DURATION)));

@@ -4,6 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by ybao on 16/7/30.
  */
@@ -13,7 +16,7 @@ public class Course implements Parcelable {
     public String id;
     public String course;
     public String teacher;
-    public String weeks;
+    public List<Integer> weeks;
     public String day;
     public int start;
     public int during;
@@ -31,7 +34,7 @@ public class Course implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.course);
         dest.writeString(this.teacher);
-        dest.writeString(this.weeks);
+        dest.writeList(this.weeks);
         dest.writeString(this.day);
         dest.writeInt(this.start);
         dest.writeInt(this.during);
@@ -47,7 +50,7 @@ public class Course implements Parcelable {
         this.id = in.readString();
         this.course = in.readString();
         this.teacher = in.readString();
-        this.weeks = in.readString();
+        this.weeks = in.readArrayList(Integer.class.getClassLoader());
         this.day = in.readString();
         this.start = in.readInt();
         this.during = in.readInt();
@@ -69,10 +72,10 @@ public class Course implements Parcelable {
     };
 
     public boolean hasNullValue() {
-      return TextUtils.isEmpty(id)
-          || TextUtils.isEmpty(course)
+      return //TextUtils.isEmpty(id)
+           TextUtils.isEmpty(course)
           || TextUtils.isEmpty(teacher)
-          || TextUtils.isEmpty(weeks)
+          || weeks.size() == 0
           || TextUtils.isEmpty(day)
           || TextUtils.isEmpty(place)
           || TextUtils.isEmpty(remind);
@@ -102,11 +105,11 @@ public class Course implements Parcelable {
         this.teacher = teacher;
     }
 
-    public String getWeeks() {
+    public List<Integer> getWeeks() {
         return weeks;
     }
 
-    public void setWeeks(String weeks) {
+    public void setWeeks(List<Integer> weeks) {
         this.weeks = weeks;
     }
 
@@ -160,5 +163,22 @@ public class Course implements Parcelable {
 
     public static Creator<Course> getCREATOR() {
         return CREATOR;
+    }
+
+    public static List<Integer> convertWeeks (String weeks) {
+        List<Integer> weekList = new ArrayList<>();
+        if ( weeks.charAt(0) == '[')
+            weeks = weeks.substring(1,weeks.length()-1);
+        weeks = weeks.replaceAll(" ","");
+        String[] week = weeks.split(",");
+        for ( int i = 0 ; i < week.length ; i++ )
+            weekList.add(Integer.parseInt(week[i]));
+        return weekList;
+    }
+
+    public static String listToString(List<Integer> list) {
+        String t = list.toString();
+        t = t.replaceAll(" ","");
+        return t.substring(1,t.length()-1);
     }
 }
