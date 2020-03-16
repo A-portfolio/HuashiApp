@@ -15,7 +15,10 @@ import com.muxistudio.appcommon.data.CardData;
 import com.muxistudio.appcommon.data.ClassRoom;
 import com.muxistudio.appcommon.data.Config;
 import com.muxistudio.appcommon.data.Course;
+import com.muxistudio.appcommon.data.CourseAdded;
+import com.muxistudio.appcommon.data.CourseAddedResponse;
 import com.muxistudio.appcommon.data.CourseId;
+import com.muxistudio.appcommon.data.CourseList;
 import com.muxistudio.appcommon.data.Detail;
 import com.muxistudio.appcommon.data.EleRequestData;
 import com.muxistudio.appcommon.data.Electricity;
@@ -111,17 +114,17 @@ public interface RetrofitService {
                                                    @Body RenewData renewData);
 
     //获取用户课表
-    @GET("table/")
-    Observable<List<Course>> getTimeTable();
+    @GET("table/v2/")
+    Observable<CourseList> getTimeTable();
 
 
     //添加课程
-    @POST("table/")
-    Observable<CourseId> addCourse(@Body Course course);
+    @POST("table/v2/")
+    Observable<CourseAddedResponse> addCourse(@Body CourseAdded course);
 
     //删除课程
-    @DELETE("table/{id}/")
-    Observable<Response<VerifyResponse>> deleteCourse(@Path("id") String id);
+    @DELETE("table/v2/")
+    Observable<Response<VerifyResponse>> deleteCourse(@Query("id") String id);
 
     @PUT("table/{id}/")
     Observable<Response<VerifyResponse>> updateCourse(@Path("id") String id,
