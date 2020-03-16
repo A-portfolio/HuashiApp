@@ -210,9 +210,11 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     simpleDraweeView.setController(controller);
 
                     simpleDraweeView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
                     simpleDraweeView.setOnClickListener(v -> {
                         Intent intent = WebViewActivity.newIntent(mContext, bannerDatas.getUrl());
                         mContext.startActivity(intent);
+
                     });
                     return simpleDraweeView;
                 };
