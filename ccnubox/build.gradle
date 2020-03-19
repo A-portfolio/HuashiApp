@@ -17,6 +17,7 @@ uploadConfig {
 println("ccnubox/build.gradle")
 apply plugin: 'com.android.application'
 apply from :'tinker.gradle'
+apply plugin: 'android-aspectjx'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 // Initialize a new Properties() object called keystoreProperties.

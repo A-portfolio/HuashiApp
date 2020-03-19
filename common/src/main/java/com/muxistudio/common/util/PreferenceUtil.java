@@ -11,6 +11,7 @@ import com.muxistudio.common.base.Global;
  */
 public class PreferenceUtil {
 
+    public static final String DEVICES_ID="devices";
     public static final String LAST_LOGIN_MOMENT = "sLastLoginMoment";
 
     public static final String HINT_UPDATE_TIME = "sHintUpdateTime";
