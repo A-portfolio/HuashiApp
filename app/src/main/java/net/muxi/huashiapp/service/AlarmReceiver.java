@@ -231,7 +231,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 if (Integer.parseInt(allCourses.get(i).id) < 1000
                         && allCourses.get(i).day.equals(Constants.WEEKDAYS_XQ[day - 1])
                         && !allCourses.get(i).getCourse().equals(Constants.INIT_COURSE)
-                        && TimeTableUtil.isThisWeek(curWeek, allCourses.get(i).weeks)) {
+                        && TimeTableUtil.isThisWeek(curWeek, allCourses.get(i).weeks.toString())) {
                     courses.add(allCourses.get(i).course);
                 }
             }

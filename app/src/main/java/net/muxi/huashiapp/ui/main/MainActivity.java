@@ -275,9 +275,16 @@ public class MainActivity extends BaseAppActivity implements
         return true;
     }
 
+    private  long lastBackTime=0;
     @Override
     public void onBackPressed() {
-        finish();
+        if (System.currentTimeMillis()-lastBackTime<=2000){
+            super.onBackPressed();
+        }else {
+            ToastUtil.showShort("再按一次退出");
+            lastBackTime=System.currentTimeMillis();
+
+        }
     }
 
     public void showFragment(Fragment fragment, String tag, FragmentTransaction fragmentTransaction) {

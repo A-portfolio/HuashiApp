@@ -18,6 +18,7 @@ import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.appbase.BaseAppActivity;
 import com.muxistudio.appcommon.appbase.BaseAppFragment;
 import com.muxistudio.appcommon.data.Course;
+import com.muxistudio.appcommon.data.CourseList;
 import com.muxistudio.appcommon.db.HuaShiDao;
 import com.muxistudio.appcommon.event.AddCourseEvent;
 import com.muxistudio.appcommon.event.AuditCourseEvent;
@@ -273,12 +274,12 @@ public class TimetableFragment extends BaseAppFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(courses -> {
-                    updateDB(courses);
-                    mCourses = courses;
-                    renderCourseView(courses);
+                    updateDB(courses.getData().getTable());
+                    mCourses = courses.getData().getTable();
+                    renderCourseView(courses.getData().getTable());
                     if (handlingRefresh) {
                         handlingRefresh = false;
-                        RxBus.getDefault().send(new RefreshFinishEvent(courses.size() != 0));
+                        RxBus.getDefault().send(new RefreshFinishEvent(courses.getData().getTable().size() != 0));
                     }
                 });
     }
@@ -290,19 +291,19 @@ public class TimetableFragment extends BaseAppFragment {
     public void deferLoadTable(){
         Observable.timer(500,TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
-                .flatMap(new Func1<Long, Observable<List<Course>>>() {
+                .flatMap(new Func1<Long, Observable<CourseList>>() {
                     @Override
-                    public Observable<List<Course>> call(Long aLong) {
+                    public Observable<CourseList> call(Long aLong) {
                         return CampusFactory.getRetrofitService().getTimeTable();
                     }
                 }).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(courseList -> {
-                    updateDB(courseList);
-                    mCourses = courseList;
-                    renderCourseView(courseList);
+                    updateDB(courseList.getData().getTable());
+                    mCourses = courseList.getData().getTable();
+                    renderCourseView(courseList.getData().getTable());
                     if (handlingRefresh) {
                         handlingRefresh = false;
-                        RxBus.getDefault().send(new RefreshFinishEvent(courseList.size() != 0));
+                        RxBus.getDefault().send(new RefreshFinishEvent(courseList.getData().getTable().size() != 0));
                     }
                 },Throwable::printStackTrace);
 
@@ -313,12 +314,12 @@ public class TimetableFragment extends BaseAppFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(courseList -> {
-                    updateDB(courseList);
-                    mCourses = courseList;
-                    renderCourseView(courseList);
+                    updateDB(courseList.getData().getTable());
+                    mCourses = courseList.getData().getTable();
+                    renderCourseView(courseList.getData().getTable());
                     if (handlingRefresh) {
                         handlingRefresh = false;
-                        RxBus.getDefault().send(new RefreshFinishEvent(courseList.size() != 0));
+                        RxBus.getDefault().send(new RefreshFinishEvent(courseList.getData().getTable().size() != 0));
                     }
                 }, throwable -> {
                     throwable.printStackTrace();

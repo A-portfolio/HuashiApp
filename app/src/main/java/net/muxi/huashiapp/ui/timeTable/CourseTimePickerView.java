@@ -51,9 +51,9 @@ public class CourseTimePickerView extends RelativeLayout {
         mNpWeekday.setMinValue(0);
         mNpWeekday.setMaxValue(6);
         mNpStart.setMinValue(0);
-        mNpStart.setMaxValue(13);
+        mNpStart.setMaxValue(11);
         mNpEnd.setMinValue(0);
-        mNpEnd.setMaxValue(13);
+        mNpEnd.setMaxValue(11);
         mNpWeekday.setDisplayedValues(WEEKDAYS);
         for (int i = 1; i < 15; i++) {
             COURSE_TIME[i - 1] = String.valueOf(i);

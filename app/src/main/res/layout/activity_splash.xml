@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:actualImageScaleType="fitXY"
-        app:placeholderImage="@drawable/wel_page"/>
+        android:visibility="invisible"/>
 
     <Button
         android:text="跳过"

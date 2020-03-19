@@ -17,16 +17,11 @@ public class CampusRetrofit{
     private final RetrofitService mRetrofitService;
 
     public CampusRetrofit() {
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(interceptor)
+
+        OkHttpClient client = SingleOkHttpClient.getClient().newBuilder()
                 .addInterceptor(new TimeOutChangeInterceptor("https://ccnubox.muxixyz.com/api/ios/config/"))
                 .addInterceptor(new CookieInterceptor())
                 .addInterceptor(new AuthorizationInterceptor())
-                .readTimeout(10,TimeUnit.SECONDS)
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10,TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -44,4 +39,5 @@ public class CampusRetrofit{
     public RetrofitService getRetrofitService(){
         return mRetrofitService;
     }
+
 }

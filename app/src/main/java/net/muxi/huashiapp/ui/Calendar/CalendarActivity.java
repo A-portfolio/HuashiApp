@@ -132,11 +132,15 @@ public class CalendarActivity extends ToolbarActivity {
                     out=new FileOutputStream(file);
                     if (response.body().byteStream()==null)
                         subscriber.onError(new NullPointerException("response.body()的byteStream为空"));
+
                     InputStream in=response.body().byteStream();
                     byte[]bytes=new byte[1024];
                     int n=in.read(bytes);
                     while (n!=-1){
+
+
                         //一定要用这个write(byte[],off,length),指明起尾，否则最后会写入多余的东西损坏文件
+
                         out.write(bytes,0,n);
                         n=in.read(bytes);
                     }
@@ -148,6 +152,7 @@ public class CalendarActivity extends ToolbarActivity {
                 }finally {
                     try {
                         if (out!=null) {
+
                             out.close();
                         }
                         if (response!=null) {
