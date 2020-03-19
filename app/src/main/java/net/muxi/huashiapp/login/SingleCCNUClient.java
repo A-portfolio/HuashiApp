@@ -2,6 +2,8 @@ package net.muxi.huashiapp.login;
 
 import android.support.annotation.Nullable;
 
+import com.muxistudio.appcommon.net.SingleOkHttpClient;
+
 import net.muxi.huashiapp.App;
 
 import java.util.concurrent.TimeUnit;
@@ -24,7 +26,7 @@ public class SingleCCNUClient {
                 if (client == null) {
                     HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor()
                             .setLevel(HttpLoggingInterceptor.Level.BODY);
-                    okHttpClient = new OkHttpClient.Builder()
+                    okHttpClient = SingleOkHttpClient.getClient().newBuilder()
                             .cookieJar(new MyCookieJar(App.getContext()))
                             .addInterceptor(new AddHeadInterceptor())
                             .addInterceptor(interceptor)

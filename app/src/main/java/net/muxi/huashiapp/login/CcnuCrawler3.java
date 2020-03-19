@@ -84,9 +84,13 @@ public class CcnuCrawler3 {
                                     .flatMap(new Func1<ResponseBody, Observable<ResponseBody>>() {
                                         @Override
                                         public Observable<ResponseBody> call(ResponseBody responseBody) {
-
-
-                                            // FIXME: 19-9-5 
+                                            try {
+                                                if (isSingleSignOn(responseBody.string()))
+                                                    Log.i(TAG, "call: 单点登录异常，清除cookie重试");
+                                                    return Observable.error(new SingleSignException());
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
                                             return Observable.empty();
                                         }
                                     });
@@ -138,17 +142,19 @@ public class CcnuCrawler3 {
                         return clientWithRetrofit.performSystemLogin();
                     }
                 })
-                /*
                 .retry(new Func2<Integer, Throwable, Boolean>() {
                     @Override
                     public Boolean call(Integer integer, Throwable throwable) {
-                        getClient().clearAllCookie();
-                        if (integer>1){
+                        if (integer>1)
                             return false;
-                        }
-                        return true;
+                        if (throwable instanceof SingleSignException){
+                            getClient().clearAllCookie();
+                            Log.i(TAG, "call: retry");
+                            return true;
+                        }else
+                            return false;
                     }
-                })*/
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
 

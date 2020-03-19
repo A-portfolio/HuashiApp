@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
@@ -34,7 +35,7 @@ public class CookieManager {
 
     private final SharedPreferences cookiePrefs;
     private static final String HOST_PRE = "HOST_";
-    private HashMap<String, Map<String,Cookie>> cookies;
+    private ConcurrentHashMap<String, Map<String,Cookie>> cookies;
     private Context context;
     //private HashMap<String, List<Cookie>> newCookies;
     private static final String COOKIE_FILE = "CookiePreFile";
@@ -60,7 +61,7 @@ public class CookieManager {
         if (cookies != null) {
             return;
         }
-        cookies = new HashMap<>();
+        cookies = new ConcurrentHashMap<>();
         Map tempCookieMap = new HashMap<String, Object>(cookiePrefs.getAll());
 
         for (Object key : tempCookieMap.keySet()) {
