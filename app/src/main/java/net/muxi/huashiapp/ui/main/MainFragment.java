@@ -14,23 +14,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
 import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.appbase.BaseAppFragment;
 import com.muxistudio.appcommon.data.BannerData;
 import com.muxistudio.appcommon.data.Hint;
 import com.muxistudio.appcommon.data.ItemData;
-import com.muxistudio.appcommon.data.ProductData;
 import com.muxistudio.appcommon.db.HuaShiDao;
 import com.muxistudio.appcommon.event.LoginSuccessEvent;
 import com.muxistudio.appcommon.event.RefreshBanner;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.user.UserAccountManager;
-import com.muxistudio.appcommon.utils.FrescoUtil;
+
 import com.muxistudio.appcommon.utils.VibratorUtil;
 import com.muxistudio.common.util.ACache;
 import com.muxistudio.common.util.DateUtil;
-import com.muxistudio.common.util.DimensUtil;
 import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.NetUtil;
 import com.muxistudio.common.util.PreferenceUtil;
@@ -53,8 +50,6 @@ import net.muxi.huashiapp.ui.timeTable.CourseAuditSearchActivity;
 import net.muxi.huashiapp.ui.timeTable.TimetableFragment;
 import net.muxi.huashiapp.ui.website.WebsiteActivity;
 import net.muxi.huashiapp.ui.webview.WebViewActivity;
-import net.muxi.huashiapp.utils.TipViewUtil;
-import net.muxi.huashiapp.widget.IndicatedView.IndicatedView;
 
 import java.util.ArrayList;
 import java.util.Date;

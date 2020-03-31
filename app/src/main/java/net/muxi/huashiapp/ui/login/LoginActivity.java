@@ -1,6 +1,5 @@
 package net.muxi.huashiapp.ui.login;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,19 +12,12 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
-import com.muxistudio.appcommon.data.A;
-import com.muxistudio.appcommon.data.Msg;
 import com.muxistudio.appcommon.data.User;
-import com.muxistudio.appcommon.event.RefreshSessionEvent;
-import com.muxistudio.appcommon.net.CampusFactory;
-import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
-import com.muxistudio.appcommon.presenter.LoginPresenter;
+
 import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.appcommon.utils.CommonTextUtils;
 import com.muxistudio.appcommon.widgets.LoadingDialog;
-import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.NetUtil;
 import com.muxistudio.common.util.PreferenceUtil;
 import com.muxistudio.common.util.ToastUtil;
@@ -33,17 +25,10 @@ import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.login.CcnuCrawler3;
-import net.muxi.huashiapp.login.SingleCCNUClient;
 
 import okhttp3.ResponseBody;
-import retrofit2.Response;
-import retrofit2.adapter.rxjava.Result;
-import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by ybao on 16/4/18.

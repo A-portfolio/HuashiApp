@@ -1,8 +1,6 @@
 package com.muxistudio.appcommon.net;
 
-import com.muxistudio.appcommon.data.InfoCookie;
 import com.muxistudio.appcommon.net.ccnu.CcnuCrawler;
-import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
 import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.appcommon.utils.Base64Util;
 import com.muxistudio.common.util.PreferenceUtil;

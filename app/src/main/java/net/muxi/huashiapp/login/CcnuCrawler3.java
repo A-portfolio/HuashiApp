@@ -6,11 +6,8 @@ import android.util.Log;
 
 import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.data.User;
-import com.muxistudio.appcommon.event.LibLoginEvent;
 import com.muxistudio.appcommon.event.LoginSuccessEvent;
-import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
 import com.muxistudio.appcommon.user.UserAccountManager;
-import com.muxistudio.common.util.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.IOException;
@@ -85,9 +82,10 @@ public class CcnuCrawler3 {
                                         @Override
                                         public Observable<ResponseBody> call(ResponseBody responseBody) {
                                             try {
-                                                if (isSingleSignOn(responseBody.string()))
+                                                if (isSingleSignOn(responseBody.string())) {
                                                     Log.i(TAG, "call: 单点登录异常，清除cookie重试");
                                                     return Observable.error(new SingleSignException());
+                                                }
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }

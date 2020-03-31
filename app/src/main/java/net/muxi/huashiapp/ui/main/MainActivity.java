@@ -17,48 +17,31 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
-import com.muxistudio.appcommon.Constants;
-import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.appbase.BaseAppActivity;
-import com.muxistudio.appcommon.data.SplashData;
-import com.muxistudio.appcommon.event.LibLoginEvent;
-import com.muxistudio.appcommon.event.LoginSuccessEvent;
 import com.muxistudio.appcommon.net.CampusFactory;
-import com.muxistudio.appcommon.presenter.LoginPresenter;
+
 import com.muxistudio.appcommon.user.UserAccountManager;
-import com.muxistudio.appcommon.utils.FrescoUtil;
+
 import com.muxistudio.common.util.Logger;
-import com.muxistudio.common.util.PreferenceUtil;
 import com.muxistudio.common.util.ToastUtil;
 
 import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.BuildConfig;
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.login.CcnuCrawler3;
-import net.muxi.huashiapp.login.SingleCCNUClient;
 import net.muxi.huashiapp.service.DownloadService;
-import net.muxi.huashiapp.ui.card.CardActivity;
-import net.muxi.huashiapp.ui.library.fragment.LibraryMainFragment;
 import net.muxi.huashiapp.ui.library.fragment.LibraryMineFragment;
 import net.muxi.huashiapp.ui.login.LoginActivity;
 import net.muxi.huashiapp.ui.more.CheckUpdateDialog;
 import net.muxi.huashiapp.ui.more.MoreFragment;
-import net.muxi.huashiapp.ui.score.activtities.ScoreCreditActivity;
-import net.muxi.huashiapp.ui.timeTable.CourseAuditSearchActivity;
 import net.muxi.huashiapp.ui.timeTable.TimetableFragment;
-import net.muxi.huashiapp.utils.AlarmUtil;
 
 import java.io.File;
-import java.util.Objects;
 
 import okhttp3.ResponseBody;
 import retrofit2.HttpException;
-import rx.Observer;
-import rx.Scheduler;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 

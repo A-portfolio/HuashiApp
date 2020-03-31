@@ -13,7 +13,7 @@ ext {
                buildToolsVersion: "28.0.3",
                supportLibVersion: "27.1.1",
                applicationId    : "net.muxi.huashiapp",
-               minSdkVersion    : 16,
+               minSdkVersion    : 19,
                targetSdkversion : 27,
                versionCode      : versionMajor * 10000 + versionMinor * 100 + versionBuild,
                versionName      : "${versionMajor}.${versionMinor}.${versionBuild}"

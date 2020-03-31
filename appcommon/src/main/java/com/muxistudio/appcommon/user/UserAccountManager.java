@@ -21,11 +21,14 @@ public class UserAccountManager {
     private User mLibUser = new User();
 
     private String mPHPSESSID;
-
+    private EncryptionUser encryptionUser;
     private static class SingletonHolder {
         private static final UserAccountManager INSTANCE = new UserAccountManager();
     }
 
+    public UserAccountManager(){
+        encryptionUser =new EncryptionUser();
+    }
     public static UserAccountManager getInstance() {
         return SingletonHolder.INSTANCE;
     }
@@ -36,6 +39,19 @@ public class UserAccountManager {
     public void initUser() {
         mInfoUser.setSid(PreferenceUtil.getString(PreferenceUtil.STUDENT_ID, ""));
         mInfoUser.setPassword(PreferenceUtil.getString(PreferenceUtil.STUDENT_PWD, ""));
+
+        try {
+
+
+            if (mInfoUser.sid.length() != 0) {
+                mInfoUser.setSid(encryptionUser.decryptAES(mInfoUser.sid));
+            }
+            if (mInfoUser.password.length() != 0) {
+                mInfoUser.setPassword(encryptionUser.decryptAES(mInfoUser.password));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         mLibUser.setSid(PreferenceUtil.getString(PreferenceUtil.LIBRARY_ID, ""));
         mLibUser.setPassword(PreferenceUtil.getString(PreferenceUtil.LIBRARY_PWD, ""));
     }
@@ -58,8 +74,13 @@ public class UserAccountManager {
      * @param infoUser
      */
     public void saveInfoUser(User infoUser) {
-        PreferenceUtil.saveString(PreferenceUtil.STUDENT_ID, infoUser.getSid());
-        PreferenceUtil.saveString(PreferenceUtil.STUDENT_PWD, infoUser.getPassword());
+        try {
+            PreferenceUtil.saveString(PreferenceUtil.STUDENT_ID, encryptionUser.encryptAES(infoUser.getSid()));
+            PreferenceUtil.saveString(PreferenceUtil.STUDENT_PWD, encryptionUser.encryptAES(infoUser.getPassword()));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mInfoUser.sid = infoUser.sid;
         mInfoUser.password = infoUser.password;
     }

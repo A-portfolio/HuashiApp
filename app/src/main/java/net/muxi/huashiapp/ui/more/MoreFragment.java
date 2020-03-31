@@ -32,11 +32,9 @@ import net.muxi.huashiapp.service.DownloadService;
 import net.muxi.huashiapp.ui.AboutActivity;
 import net.muxi.huashiapp.ui.SettingActivity;
 import net.muxi.huashiapp.ui.SuggestionActivity;
-import net.muxi.huashiapp.ui.webview.WebViewActivity;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

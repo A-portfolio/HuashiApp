@@ -164,7 +164,7 @@ public class CalendarActivity extends ToolbarActivity {
 
                 },e->{
                     e.printStackTrace();
-
+                    file.delete();
                     ToastUtil.showLong("加载校历出错!");
 
                 });

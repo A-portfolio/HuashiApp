@@ -39,7 +39,7 @@ public class CookieManager {
     private Context context;
     //private HashMap<String, List<Cookie>> newCookies;
     private static final String COOKIE_FILE = "CookiePreFile";
-
+    private Encryption encryption;
     /**
      * @param context 必须是application的context,用app类里的，千万别用当前activity的Context否则造成内存泄漏
      *                关于在构造函数里进行很多操作是否ok的讨论:  https://stackoverflow.com/questions/7048515/is-doing-a-lot-in-constructors-bad
@@ -47,6 +47,7 @@ public class CookieManager {
     public CookieManager(Context context) {
        this.context=context;
         this.cookiePrefs = context.getSharedPreferences(COOKIE_FILE, 0);
+        encryption=new Encryption();
     }
 
 
@@ -69,7 +70,12 @@ public class CookieManager {
             if (!cookies.containsKey(host)) {
                 cookies.put(host, new HashMap<>());
             }
-            Cookie cookie=decodeCookie((String) tempCookieMap.get(key));
+            Cookie cookie= null;
+            try {
+                cookie = decodeCookie(encryption.decryptAES((String) tempCookieMap.get(key)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             cookies.get(host).put(cookie.name(),cookie);
 
         }
@@ -128,7 +134,11 @@ public class CookieManager {
             List<Cookie>list=new ArrayList<>(res.get(key).values());
             for (int i = 0; i < list.size(); i++) {
                 String preKey = key + "___" + i;
-                writer.putString(preKey, encodeCookie(new SerializableCookie(list.get(i))));
+                try {
+                    writer.putString(preKey, encryption.encryptAES(encodeCookie(new SerializableCookie(list.get(i)))));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
         }

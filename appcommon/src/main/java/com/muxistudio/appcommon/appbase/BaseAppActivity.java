@@ -10,23 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.muxistudio.appcommon.R;
-import com.muxistudio.appcommon.RxBus;
-import com.muxistudio.appcommon.data.User;
-import com.muxistudio.appcommon.event.NetErrorEvent;
-import com.muxistudio.appcommon.event.RefreshSessionEvent;
-import com.muxistudio.appcommon.presenter.LoginPresenter;
 import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.appcommon.widgets.LoadingDialog;
 import com.muxistudio.common.base.BaseActivity;
-import com.muxistudio.common.util.Logger;
 import com.umeng.analytics.MobclickAgent;
 
-import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func0;
-import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 
 import static android.support.design.widget.Snackbar.make;

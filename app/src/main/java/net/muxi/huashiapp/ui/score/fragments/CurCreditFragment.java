@@ -13,9 +13,6 @@ import android.widget.TextView;
 import com.muxistudio.appcommon.appbase.BaseAppFragment;
 import com.muxistudio.appcommon.data.Score;
 import com.muxistudio.appcommon.net.CampusFactory;
-import com.muxistudio.appcommon.net.ccnu.CcnuCrawler2;
-import com.muxistudio.appcommon.presenter.LoginPresenter;
-import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.appcommon.utils.UserUtil;
 
 import net.muxi.huashiapp.R;
